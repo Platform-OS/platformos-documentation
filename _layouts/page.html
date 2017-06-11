@@ -30,9 +30,9 @@ layout: default
 
 <div class="post-content">
 
-   {% if page.summary %}
+{% comment %}   {% if page.summary %}
     <div class="summary">{{page.summary}}</div>
-   {% endif %}
+   {% endif %}{% endcomment %}
 
     {% unless page.toc == false %}
     {% include toc.html %}
@@ -46,7 +46,7 @@ layout: default
     {% endif %}
 
   {{content}}
-
+{% comment %}
     <div class="tags">
         {% if page.tags != null %}
         <b>Tags: </b>
@@ -58,8 +58,8 @@ layout: default
         {% endfor %}
         {% endif %}
     </div>
-
-{% include disqus.html %}
+{% endcomment %}
+{% comment %}{% include disqus.html %}{% endcomment %}
 
 </div>
 
