@@ -13,7 +13,6 @@ Marketplace Platform is the most flexible and advanced marketplace platform on t
 
 ---
 
-
 If you are an software house interested in developing marketplaces for your clients on our platform, read [comparison page](http://marketplace-platform.com) to see where our platform excel.
 
 ---

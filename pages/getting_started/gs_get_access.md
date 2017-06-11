@@ -9,6 +9,5 @@ folder: getting_started
 layout: page
 ---
 
-
-* Setup git repo
-* Copy over files
+* Write us email at: [help@marketplace-platform.com](mailto:help@marketplace-platform.com)
+* Call us directly at: [+64 1337 128 MPP](tel:+641337128MPP)

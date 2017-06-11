@@ -4,28 +4,21 @@ layout: default
 
 <div class="post-header">
    <h1 class="post-title-main">{{ page.title }}</h1>
+   {% if page.last_updated %}<h4><span>Page last updated:</span> {{ page.last_updated }}</h4>{% endif %}
 </div>
 
 {% if page.simple_map == true %}
-
-<script>
-    $(document).ready ( function(){
-        $('.box{{page.box_number}}').addClass('active');
-    });
-</script>
-
-{% include custom/{{page.map_name}}.html %}
-
+    <script>
+        $(document).ready(function(){
+            $('.box{{page.box_number}}').addClass('active');
+        });
+    </script>
 {% elsif page.complex_map == true %}
-
-<script>
-    $(document).ready ( function(){
+    <script>
+    $(document).ready(function(){
         $('.modalButton{{page.box_number}}').addClass('active');
     });
-</script>
-
-{% include custom/{{page.map_name}}.html %}
-
+    </script>
 {% endif %}
 
 <div class="post-content">
@@ -35,17 +28,11 @@ layout: default
    {% endif %}{% endcomment %}
 
     {% unless page.toc == false %}
-    {% include toc.html %}
+        {% include toc.html %}
     {% endunless %}
 
+    {{content}}
 
-    {% if site.github_editme_path %}
-
-    <a target="_blank" href="https://github.com/{{site.github_editme_path}}{% unless page.url contains "index.html" %}pages/{% endunless %}{{page.folder}}{{page.url | remove: ".html" | append: ".md"}}" class="btn btn-default githubEditButton" role="button"><i class="fa fa-github fa-lg"></i> Edit me</a>
-
-    {% endif %}
-
-  {{content}}
 {% comment %}
     <div class="tags">
         {% if page.tags != null %}
@@ -60,9 +47,6 @@ layout: default
     </div>
 {% endcomment %}
 {% comment %}{% include disqus.html %}{% endcomment %}
-
 </div>
-
-{{site.data.alerts.hr_shaded}}
 
 {% include footer.html %}
