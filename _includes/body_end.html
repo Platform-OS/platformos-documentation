@@ -1,72 +1,45 @@
+<script src="/js/jquery.min.js"></script>
 <script src="/js/jquery.cookie.min.js"></script>
 <script src="/js/jquery.navgoco.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/anchor.min.js"></script>
 {% if page.datatable == true %} <script type="text/javascript" src="/js/jquery.dataTables.min.js"></script> {% endif %}
-
 <script src="/js/toc.js"></script>
 <script src="/js/customscripts.js"></script>
 
 <script>
-  $(document).ready(function() {
+  $(function() {
     // Initialize navgoco with default options
     $("#mysidebar").navgoco({
-        caretHtml: '',
-        accordion: true,
-        openClass: 'active', // open
-        save: false, // leave false or nav highlighting doesn't work right
-        cookie: {
-            name: 'navgoco',
-            expires: false,
-            path: '/'
-        },
-        slide: {
-            duration: 400,
-            easing: 'swing'
-        }
+      caretHtml: '',
+      accordion: true,
+      openClass: 'active', // open
+      save: false, // leave false or nav highlighting doesn't work right
+      cookie: {
+        name: 'navgoco',
+        expires: false,
+        path: '/'
+      },
+      slide: {
+        duration: 400,
+        easing: 'swing'
+      }
     });
 
-    $("#collapseAll").click(function(e) {
-      e.preventDefault();
-      $("#mysidebar").navgoco('toggle', false);
-    });
-
-    $("#expandAll").click(function(e) {
-      e.preventDefault();
-      $("#mysidebar").navgoco('toggle', true);
-    });
+    // Tooltips
+    $('[data-toggle="tooltip"]').tooltip();
   });
 </script>
-<script>
-    $(function () {
-      $('[data-toggle="tooltip"]').tooltip()
-    });
-</script>
-<script>
-  $(document).ready(function() {
-    $("#tg-sb-link").click(function() {
-        $("#tg-sb-sidebar").toggle();
-        $("#tg-sb-content").toggleClass('col-md-9 col-md-12');
-        $("#tg-sb-icon").toggleClass('fa-toggle-on fa-toggle-off');
-    });
-  });
-</script>
-
 
 {% if page.datatable == true %}
- <!-- First, this walks through the tables that occur between ...-begin
-     and ...-end and add the "datatable" class to them.
-     Then it invokes DataTable's standard initializer
-     Credit here: http://www.beardedhacker.com/blog/2015/08/28/add-class-attribute-to-markdown-table/
-  -->
   <script>
-    $(document).ready(function(){
-        $('div.datatable-begin').nextUntil('div.datatable-end', 'table').addClass('display');
-        $('table.display').DataTable({
-            paging: true,
-            stateSave: true,
-            searching: true
-        });
+    $(function(){
+      $('div.datatable-begin').nextUntil('div.datatable-end', 'table').addClass('display');
+      $('table.display').DataTable({
+        paging: true,
+        stateSave: true,
+        searching: true
+      });
      });
   </script>
 {% endif %}

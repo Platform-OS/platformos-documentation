@@ -100,3 +100,15 @@
     render[settings.showEffect]();
   };
 })(jQuery);
+
+$(function() {
+  $('#toc').toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2,h3,h4' });
+
+  /* this offset helps account for the space taken up by the floating toolbar. */
+  $('#toc').on('click', 'a', function() {
+    var target = $(this.getAttribute('href')), scroll_target = target.offset().top;
+
+    $(window).scrollTop(scroll_target - 40);
+    return false;
+  });
+});
