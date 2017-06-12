@@ -4,6 +4,7 @@ keywords: sample homepage
 tags: [home]
 permalink: index.html
 hide_sidebar: true
+topnav: topnav
 ---
 
 Marketplace Platform is the most flexible and advanced marketplace platform on the market.

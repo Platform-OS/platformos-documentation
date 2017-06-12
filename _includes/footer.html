@@ -1,14 +1,13 @@
 <footer>
 	<div class="row">
-    {% if site.github_editme_path %}
+    {% if site.prose_editme_path %}
       <div class="col-md-6">
-				<a target="_blank" href="https://github.com/{{site.github_editme_path}}{% unless page.url contains "index.html" %}pages/{% endunless %}{{page.folder}}{{page.url | remove: ".html" | append: ".md"}}" class="btn btn-default githubEditButton" role="button"><i class="fa fa-github fa-lg"></i> Edit this page on Github</a>
+				<a target="_blank" href="{{site.prose_editme_path}}pages{{page.url | replace: ".html", ".md" }}" class="btn btn-default githubEditButton" role="button"><i class="fa fa-github fa-lg"></i> Edit this page on Github</a>
       </div>
 		{% endif %}
 
-    <div class="{% if site.github_editme_path %}col-md-6{% else %}col-md-12{% endif %} footer">
-       &copy;{{ site.time | date: "%Y"  }} {{site.company_name}}. All rights reserved. <br />
-			<!-- <p><img src="images/company_logo.png" alt="Company logo"/></p> -->
+    <div class="{% if site.prose_editme_path %}col-md-6{% else %}col-md-12{% endif %} footer">
+       &copy; {{ site.time | date: "%Y"  }} {{site.company_name}}. All rights reserved. <br />
     </div>
 
   </div>
