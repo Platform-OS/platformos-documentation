@@ -2,12 +2,7 @@
 title: How to contribute to our documentation pages
 summary: Quick introduction to help anyone improve Marketplace Platform documentation.
 keywords: documentation edit pages github prose
-tags:
-- meta
-- documentation
-- edit
-- prose
-- github
+tags: [meta, documentation, edit, prose, github]
 permalink: meta_how_to_edit_pages.html
 hide_sidebar: true
 ---

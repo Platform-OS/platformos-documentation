@@ -23,17 +23,22 @@
         <div class="{{content_col_size}}" id="tg-sb-content">
             {{content}}
 
-            <div class="tags">
+
+<!--
+    TODO:
+    Implement tags
+        * Allowed tags list
+        * Create pages per tag to show index of particular tag
+
+ -->
+<!--             <div class="tags">
                 {% if page.tags != null %}
-                <b>Tags: </b>
-                {% assign projectTags = site.data.tags.allowed-tags %}
-                {% for tag in page.tags %}
-                {% if projectTags contains tag %}
-                <a href="{{ "tag_" | append: tag | append: ".html" }}" class="btn btn-default navbar-btn cursorNorm" role="button">{{page.tagName}}{{tag}}</a>
+                    <b>Tags: </b>
+                    {% for tag in page.tags %}
+                        <a href="{{ "tag_" | append: tag | append: ".html" }}" class="btn btn-default navbar-btn cursorNorm" role="button">{{ tag }}</a>
+                    {% endfor %}
                 {% endif %}
-                {% endfor %}
-                {% endif %}
-            </div>
+            </div> -->
         </div>
 
 
