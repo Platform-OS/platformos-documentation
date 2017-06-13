@@ -11,6 +11,8 @@ sidebar: tools_sidebar
 [GraphQL](http://graphql.org/learn/) can be executed on liquid with `query_graph` tag.
 
 {% raw %}
-	{% query_graph users_query, result_name: g, current_user: current_user %}
-	{{ g }}
+```liquid
+{% query_graph users_query, result_name: g, current_user: current_user %}
+{{ g }}
+```
 {% endraw %}
