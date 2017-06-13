@@ -1,10 +1,12 @@
 ---
 title: Marketplace Platform Documentation
 keywords: sample homepage
-tags: [home]
+tags:
+  - home
 permalink: index.html
 hide_sidebar: true
 topnav: topnav
+published: true
 ---
 
 Marketplace Platform is the most flexible and advanced marketplace platform on the market.
@@ -29,6 +31,6 @@ If you are a developer looking for help developing marketplace on our platform, 
 
 * [Tools](tools_index.html)
 	* [Marketplace Builder](tools_marketplace_builder.html)
-  * [FormBuilder](tools_formbuilder.html)
-  * [Liquid Customizations](tools_liquid_customizations.html)
-  * [GraphQL in Liquid](tools_graphql_in_liquid.html)
+	* [FormBuilder](tools_formbuilder.html)
+	* [Liquid Customizations](tools_liquid_customizations.html)
+	* [GraphQL in Liquid](tools_graphql_in_liquid.html)
