@@ -7,3 +7,6 @@ sidebar: tools_sidebar
 ---
 
 Hello from <i>{{ page.title }}</i>
+
+
+[Validations]({{ site.baseurl }}{% post_url /tools/form_builder/validations %})
