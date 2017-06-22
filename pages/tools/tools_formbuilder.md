@@ -9,4 +9,4 @@ sidebar: tools_sidebar
 Hello from <i>{{ page.title }}</i>
 
 
-[Validations]({{ site.baseurl }}/pages/tools/form_builder/validations)
+[Validations](formbuilder-validations.html)
