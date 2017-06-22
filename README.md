@@ -1,6 +1,6 @@
-Building locally
+# Building locally
 
-   bundle install
+    bundle install
 
 
-   jekyll build; open _site/index.html
+    jekyll build; open _site/index.html
