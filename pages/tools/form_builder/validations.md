@@ -8,4 +8,12 @@ sidebar: tools_sidebar
 
 validations in form builder
 
-foo
+{% raw %}
+    validation:
+      presence: true
+      unique:
+        scope:
+          - customizable_type
+          - properties: giger_slug
+        message: Invitation already sent
+{% endraw %}
