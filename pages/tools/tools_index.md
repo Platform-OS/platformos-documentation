@@ -13,3 +13,4 @@ Read more about goods we have prepapred for you.
 * [FormBuilder](tools_formbuilder.html)
 * [Liquid Customizations](tools_liquid_customizations.html)
 * [GraphQL in Liquid](tools_graphql_in_liquid.html)
+* [AuthorizationPolicy](tools_authorizationpolicy.html)
