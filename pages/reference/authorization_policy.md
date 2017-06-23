@@ -1,12 +1,12 @@
 ---
-title: AuthorizationPolicy
-keywords: [authorization authentication authorisation restricting_access]
+title: Authorization Policy
 tags: [authorization authentication authorisation restricting_access]
-permalink: tools_authorizationpolicy.html
-sidebar: tools_sidebar
+permalink: /reference/authorization-policy
+sidebar: reference_sidebar
+folder: authorization_policy
 ---
 
-AuthorizationPolicy allows you to restrict access to forms and pages in a flexible way. Each form and page can have multiple policies attached to it. Policy is parsed using Liquid. If the content of the policy evaluates to anything other than `true`, policy is considered violated and the system will not proceed with executing action (like submitting a form or render a page).
+Authorization policies allows you to restrict access to forms and pages in a flexible way. Each form and page can have multiple policies attached to it. Policy is parsed using Liquid. If the content of the policy evaluates to anything other than `true`, policy is considered violated and the system will not proceed with executing action (like submitting a form or render a page).
 
 ## Adding a policy
 
@@ -92,5 +92,6 @@ authorization_policies:
 ## Handling violated Policy
 
 For now, a 403 status will be returned by the server without any body. Todo list:
+
 * Add feature to render a custom page
 * Add feature to redirect the user

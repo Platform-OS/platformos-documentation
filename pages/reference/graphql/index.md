@@ -2,8 +2,9 @@
 title: GraphQL in Liquid
 keywords: graphql liquid
 tags: [tools marketplace_builder graphl formbuilder]
-permalink: tools_graphql_in_liquid.html
-sidebar: tools_sidebar
+permalink: /reference/graphql
+sidebar: reference_sidebar
+folder: GraphQL
 ---
 
 ## GraphQL: in Liquid

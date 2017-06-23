@@ -1,9 +1,9 @@
 ---
 title: Marketplace Builder
-keywords: graphql
 tags: [tools marketplace_builder graphl formbuilder]
-permalink: tools_marketplace_builder.html
-sidebar: tools_sidebar
+permalink: /reference/marketplace-builder
+sidebar: reference_sidebar
+folder: marketplace_builder
 ---
 
 Hello from <i>{{ page.title }}</i>
