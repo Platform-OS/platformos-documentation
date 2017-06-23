@@ -4,7 +4,7 @@ tags: [getting_started]
 keywords:
 summary: "Get access to our platform"
 sidebar: getting_started_sidebar
-permalink: gs_get_access.html
+permalink: getting-started/get-access.html
 folder: getting_started
 layout: page
 ---
