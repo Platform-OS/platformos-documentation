@@ -21,19 +21,19 @@ To install Marketplace Builder you need to install ruby gem via `gem install nea
     {
       "user_key": "your_user_key",
       "staging": {
-        "url": "https://`project_domain`.staging-`region`.near-me.com/",
+        "url": "https://<project_domain>.staging-<region>.near-me.com/",
         "api_key": "xxx"
       },
       "production": {
-        "url": "https://`project_domain`.`region`.near-me.com/",
+        "url": "https://<project_domain>.<region>.near-me.com/",
         "api_key": "xxx"
       }
     }
 ```
-
-To obtain `user_key`, please contact with NearMe - currently there is no other way.
-The host to production and staging are visible in channel partner portal. API key can be generated at `/instance_admin/settings/api_keys`
 4. Pull current configuration via `nearme-marketplace pull` (see below) and start customizing!
+
+Please note - to obtain `user_key`, please contact NearMe Support - currently there is no way to obtain it on your own.
+The host to production and staging are visible in channel partner portal. API key can be generated at `/instance_admin/settings/api_keys`.
 
 ## Usage
 
