@@ -8,6 +8,6 @@ sidebar: reference_sidebar
 
 * [Marketplace Builder](/reference/marketplace-builder)
 * [FormBuilder](/reference/form-builder)
-* [GraphQL](/reference/grapql)
+* [GraphQL](/reference/graphql)
 * [Authorization Policy](/reference/authorization-policy)
 
