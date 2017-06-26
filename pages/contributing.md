@@ -35,12 +35,6 @@ Our documentation is written in Markdown. You can use Liquid inside this markdow
 
 [See example gist](https://jsbin.com/zokide/1) of Liquid and javascript snippets of code.
 
-## Documentation Standards
-
-Written documentation will now become a part of regular process of writing code and become a part of the development cycle. To achieve that we will introduce a following process for every developer to follow when writing any code:.
-
-[![Documentation Standard](/images/documentation_process.png)](/images/documentation_process.png)
-
 ### Permalinks
 
 
@@ -48,7 +42,7 @@ Written documentation will now become a part of regular process of writing code 
 Documentation is separated into following sections:
 
 * *Getting started* - step by step description of setting up a marketplace
-* *How-to* - list of common use patterns
+* *Guides* - list of common use patterns
 * *Reference* - list of all APIs, drops, graphql properties etc
 * *Contribute* - how to contribute to the documentation
 
@@ -56,7 +50,7 @@ Based on this structure we create permalinks using folder structure, where each 
 
 ```!text
 Reference > Liquid Drops > User => /reference/liquid-drops/user
-How to > Split Registration => /how-to/split-registration
+Guides > Split Registration => /Guides/split-registration
 ```
 
 #### Top level file
@@ -102,15 +96,14 @@ Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis fugiat ipsam dol
 ```
 
 ### Code examples
-
-```
+{% raw %}
 ```!javascript
 <h1>Code.ruby = 'awesome'</h1>
 <script>
 document.write('attack');
 </script>
 ```
-```
+{% endraw %}
 
 ### Screenshots
 
