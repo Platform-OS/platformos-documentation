@@ -1,6 +1,6 @@
-# Building locally
+
+#  Editing locally with auto-rebuild
 
     bundle install
 
-
-    jekyll build; open _site/index.html
+    jekyll serve --baseurl '/'
