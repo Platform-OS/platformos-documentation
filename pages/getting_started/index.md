@@ -2,7 +2,7 @@
 title: Getting Started
 keywords: getting started
 tags: [getting_started]
-permalink: getting_started_index.html
+permalink: getting-started/
 sidebar: getting_started_sidebar
 ---
 

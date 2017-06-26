@@ -2,7 +2,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="{% if page.summary %}{{ page.summary | strip_html | strip_newlines | truncate: 160 }}{% endif %}">
-<meta name="keywords" content="{{page.tags}}{% if page.tags %}, {% endif %} {{page.keywords}}">
+<meta name="keywords" content="{{page.tags}}{% if page.tags %} {% endif %} {{page.keywords}}">
 <title>{{ page.title }} | {{ site.site_title }}</title>
 
 <link rel="stylesheet" media="screen" href="/css/bootstrap.min.css" />
@@ -16,6 +16,6 @@
 
 {% if page.datatable == true %}<link rel="stylesheet" media="screen" href="/css/jquery.dataTables.css" />{% endif %}
 
-<link rel="shortcut icon" href="images/favicon.ico" />
+<link rel="shortcut icon" href="/images/favicon.ico" />
 
 <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ "/feed.xml" | prepend: site.url }}" />
