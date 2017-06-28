@@ -18,7 +18,7 @@ Documentation is separated into following sections:
 
 Based on this structure we create permalinks using folder structure, where each nested level is another folder, e.g
 
-```!text
+```text
 Reference > Liquid Drops > User => /reference/liquid-drops/user
 Guides > Split Registration => /Guides/split-registration
 ```

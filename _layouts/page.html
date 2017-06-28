@@ -2,33 +2,13 @@
 layout: default
 ---
 
-{% unless page.toc == false %}
-    {% include toc.html %}
-{% endunless %}
+<article class="article-a">
+  <header class="article-a__header">
+    <h1>{{ page.title }}</h1>
+    {% if page.last_updated %}
+      <p class="meta">Page last updated: <time datetime="{{ page.last_updated }}">{{ page.last_updated }}</time></p>
+    {% endif %}
+  </header>
 
-<div class="post-header">
-   <h1 class="post-title-main">{{ page.title }}</h1>
-   {% if page.last_updated %}<h4><span>Page last updated:</span> {{ page.last_updated }}</h4>{% endif %}
-</div>
-
-{% assign active_selector = '' %}
-{% assign show_map = page.simple_map == true or page.complex_map == true %}
-
-{% if page.simple_map == true %}
-    {% assign active_selector = 'box' %}
-{% elsif page.complex_map == true %}
-    {% assign active_selector = 'modalButton' %}
-{% endif %}
-
-{% if show_map %}
-    <script>
-    $(function(){
-        $('.{{active_selector}}{{page.box_number}}').addClass('active');
-    });
-    </script>
-{% endif %}
-
-<div class="post-content">
-    {{content}}
-</div>
-
+  {{content}}
+</article>

@@ -1,55 +1,18 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en" class="no-js" >
 <head>
-    {% include head.html %}
-</head>
+  {% include head.html %}
+<link href="/assets/app.ffdaf0aa.css" rel="stylesheet"></head>
 <body>
-{% include topnav.html %}
-<!-- Page Content -->
-<div class="container">
-  <div id="main">
-    <!-- Content Row -->
-    <div class="row">
-        {% assign content_col_size = "col-md-12" %}
-        {% unless page.hide_sidebar %}
-            <!-- Sidebar Column -->
-            <div class="col-md-3" id="tg-sb-sidebar">
-                {% include sidebar.html %}
-            </div>
-            {% assign content_col_size = "col-md-9" %}
-        {% endunless %}
 
-        <!-- Content Column -->
-        <div class="{{content_col_size}}" id="tg-sb-content">
-            {{content}}
+{% include skips.html %}
 
+{% include main_navigation.html %}
 
-<!--
-    TODO:
-    Implement tags
-        * Allowed tags list
-        * Create pages per tag to show index of particular tag
+<main id="content">
+  {{content}}
+</main>
 
- -->
-<!--             <div class="tags">
-                {% if page.tags != null %}
-                    <b>Tags: </b>
-                    {% for tag in page.tags %}
-                        <a href="{{ "tag_" | append: tag | append: ".html" }}" class="btn btn-default navbar-btn cursorNorm" role="button">{{ tag }}</a>
-                    {% endfor %}
-                {% endif %}
-            </div> -->
-        </div>
-
-
-    <!-- /.row -->
-</div>
 {% include footer.html %}
-<!-- /.container -->
-</div>
-<!-- /#main -->
-    </div>
-    {% include body_end.html %}
-
-</body>
+<script type="text/javascript" src="/assets/vendor.6282cb0c.js"></script><script type="text/javascript" src="/assets/app.03c15840.js"></script></body>
 </html>

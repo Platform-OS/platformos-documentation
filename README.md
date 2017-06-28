@@ -1,6 +1,13 @@
+# Editing
 
-#  Editing locally with auto-rebuild
+##  Development
 
     bundle install
 
-    jekyll serve --baseurl '/'
+    yarn start
+
+## Build assets before commit if changed CSS/JS
+
+    yarn build
+
+

@@ -1,0 +1,61 @@
+{
+  "name": "desksnearme",
+  "version": "1.0.0",
+  "description": "Documentation for NearMe Marketplace Platform.",
+  "private": true,
+  "directories": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mdyd-dev/documentation.git"
+  },
+  "scripts": {
+    "assets": "webpack -w --env development",
+    "jekyll": "bundle exec jekyll build -w",
+    "build": "webpack --env production; bundle exec jekyll build",
+    "lint:js": "eslint src/ webpack.*.js --cache",
+    "lint:style": "stylelint src/scss/**/*.scss"
+  },
+  "pre-commit": [
+    "lint:js",
+    "lint:style",
+    "build"
+  ],
+  "author": "NearMe",
+  "license": "UNLICENSED",
+  "homepage": "https://github.com/mdyd-dev/documentation",
+  "devDependencies": {
+    "autoprefixer": "^7.1.1",
+    "babel-eslint": "^7.2.3",
+    "babel-loader": "^7.1.1",
+    "babel-plugin-syntax-dynamic-import": "^6.18.0",
+    "babel-plugin-transform-flow-strip-types": "^6.22.0",
+    "babel-plugin-transform-object-assign": "^6.22.0",
+    "babel-plugin-typecheck": "^3.9.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babili-webpack-plugin": "^0.1.2",
+    "clean-webpack-plugin": "^0.1.16",
+    "copy-webpack-plugin": "^4.0.1",
+    "css-loader": "^0.28.4",
+    "cssnano": "^3.10.0",
+    "eslint": "^4.1.1",
+    "eslint-loader": "^1.8.0",
+    "eslint-plugin-flowtype": "^2.34.0",
+    "extract-text-webpack-plugin": "^2.1.2",
+    "html-webpack-harddisk-plugin": "^0.1.0",
+    "html-webpack-inline-chunk-plugin": "^1.1.1",
+    "html-webpack-plugin": "^2.29.0",
+    "node-sass": "^4.5.3",
+    "optimize-css-assets-webpack-plugin": "^2.0.0",
+    "postcss-loader": "^2.0.6",
+    "pre-commit": "^1.2.2",
+    "sass-loader": "^6.0.6",
+    "style-loader": "^0.18.2",
+    "stylelint": "^7.12.0",
+    "webpack": "^3.0.0",
+    "webpack-merge": "^4.1.0"
+  },
+  "dependencies": {
+    "normalize-scss": "^7.0.0",
+    "prismjs": "^1.6.0"
+  }
+}
