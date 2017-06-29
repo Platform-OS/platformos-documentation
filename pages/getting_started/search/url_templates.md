@@ -10,28 +10,36 @@ folder: getting_started
 layout: page
 published: true
 ---
-Requirments: graphql queries, pages, liquid
+    Requirments: graphql queries, pages, liquid
 
 
-We want to have listings divided by country, so we will have `/catalogue/Australia/Sydney`, `/catalogue/Spain/Seville`
+We want to have listings divided by country, so we will have 
+
+**/catalogue/Australia/Sydney**
+
+**/catalogue/Spain/Seville**
+
 In order to achieve this we need to define url template.
 
-1. Create Search Page with slug '/catalogue'
-2. Define you URL template in page.
+## Create Search Page with slug '/catalogue'
+
+## Define you URL template in page.
+
 {% raw %}
 ```liquid
 {% assign url_template = '/catalogue/{country}/{city}' %}
 ```
 {% endraw %}
 
-3. Decode current_url into params with liquid filter `extract_url_params`
+## Decode current_url into params with liquid filter `extract_url_params`
+
 {% raw %}
 ```liquid
 {% assign url_params = current_full_path | extract_url_params: url_template %}
 ```
 {% endraw %}
 
-4. Prepare GraphQL query with county and city.
+## Prepare GraphQL query with county and city.
 
 ```js
 query get_catalogue_listings(
@@ -63,7 +71,8 @@ query get_catalogue_listings(
 }
 ```
 
-5. Pass decoded params to graphql query.
+## Pass decoded params to graphql query.
+
 {% raw %}
 ```liquid
 {% query_graph 'get_catalogue_listings', result_name: g,
@@ -75,7 +84,8 @@ query get_catalogue_listings(
 {% endraw %}
 
 
-6. Final Page
+## Final Page
+
 {% raw %}
 ```liquid
 {% assign url_template = '/catalogue/{country}/{city}' %}
@@ -104,7 +114,7 @@ query get_catalogue_listings(
 ```
 {% endraw %}
 
-7. Example urls:
+## Example urls:
 
 /catalogue/Australia/Melbourne - listings from Melbourne Australia
 
