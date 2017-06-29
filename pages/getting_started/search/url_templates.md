@@ -1,7 +1,9 @@
 ---
 title: SEO friendly URL
 tags:
-  - search url seo
+  - search
+  - url
+  - seo
 keywords: null
 summary: How to make URLs SEO friendly
 sidebar: getting_started_sidebar
