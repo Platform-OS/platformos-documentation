@@ -73,7 +73,7 @@ query get_catalogue_listings(
 
 ## Add graphql query to your page
 
-- and pass decoded params to it
+- and pass extracted params to it
 
 {% raw %}
 ```liquid
