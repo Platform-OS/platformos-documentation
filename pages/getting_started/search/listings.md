@@ -10,7 +10,7 @@ folder: getting_started
 layout: page
 published: true
 ---
-Requirments: graph queries, pages, slug, liquid, liquid views
+Requirements: graphql queries, pages, slug, liquid
 
 ```js
 query demo_search_listings(
@@ -42,11 +42,11 @@ query demo_search_listings(
   <div class="results">
     <form action="/demo_search" method="GET">
       {% query_graph 'demo_search_listings', result_name: g,
-      query: query,
-      state: params.state,
-      street: params.street,
-      city: params.city,
-      is_deleted: false,
+        query: query,
+        state: params.state,
+        street: params.street,
+        city: params.city,
+        is_deleted: false
       %}
       <input name="query" value="{{ query }}" />
       <input type="submit" value="Search" />
@@ -67,4 +67,4 @@ query demo_search_listings(
 ```
 {% endraw %}
 
-3. Head to /demo_search and enjoy your search
+3. Head to **/demo_search** and enjoy your search
