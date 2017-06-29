@@ -10,7 +10,7 @@ folder: getting_started
 layout: page
 published: true
 ---
-    Requirments: graphql queries, pages, liquid
+    Requirments: graphql queries, pages, liquid, html
 
 
 We want to have listings divided by country, so we will have 
@@ -39,7 +39,7 @@ We want to have listings divided by country, so we will have
 ```
 {% endraw %}
 
-## Prepare GraphQL query with country and city.
+## Prepare GraphQL query with country and city
 
 ```js
 query get_catalogue_listings(
@@ -71,7 +71,7 @@ query get_catalogue_listings(
 }
 ```
 
-## Add graphql query to your page
+## Add GraphQL query to your page
 
 - and pass extracted params to it
 
@@ -116,7 +116,7 @@ query get_catalogue_listings(
 ```
 {% endraw %}
 
-## Example urls:
+## Example URLs
 
 **/catalogue/Australia/Melbourne** - listings from Melbourne Australia
 
