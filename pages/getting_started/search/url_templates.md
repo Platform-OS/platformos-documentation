@@ -39,7 +39,7 @@ We want to have listings divided by country, so we will have
 ```
 {% endraw %}
 
-## Prepare GraphQL query with county and city.
+## Prepare GraphQL query with country and city.
 
 ```js
 query get_catalogue_listings(
@@ -80,7 +80,7 @@ query get_catalogue_listings(
 {% query_graph 'get_catalogue_listings', result_name: g,
   country: url_params.country,
   city: url_params.city,
-  is_deleted: false,
+  is_deleted: false
 %}
 ```
 {% endraw %}
@@ -99,7 +99,7 @@ query get_catalogue_listings(
       {% query_graph 'demo_search_listings', result_name: g,
         country: url_params.country,
         city: url_params.city,
-        is_deleted: false,
+        is_deleted: false
       %}
 
       <strong>{{ g.listings.total_entries }}</strong>
@@ -118,8 +118,8 @@ query get_catalogue_listings(
 
 ## Example urls:
 
-/catalogue/Australia/Melbourne - listings from Melbourne Australia
+**/catalogue/Australia/Melbourne** - listings from Melbourne Australia
 
-/catalogue//Sydney - listing from Sydney
+**/catalogue//Sydney** - listing from Sydney
 
-/catalogue// - all listings
+**/catalogue//** - all listings
