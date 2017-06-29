@@ -1,12 +1,14 @@
 ---
 title: SEO friendly URL
-tags: [search url seo]
-keywords:
-summary: "How to make URLs SEO friendly"
+tags:
+  - search url seo
+keywords: null
+summary: How to make URLs SEO friendly
 sidebar: getting_started_sidebar
 permalink: /getting-started/search/url_templates
 folder: getting_started
 layout: page
+published: true
 ---
 Requirments: graphql queries, pages, liquid
 
@@ -102,4 +104,10 @@ query get_catalogue_listings(
 ```
 {% endraw %}
 
-7. Head to /catalogue/Australia/Melbourne
+7. Example urls:
+
+/catalogue/Australia/Melbourne - listings from Melbourne Australia
+
+/catalogue//Sydney - listing from Sydney
+
+/catalogue// - all listings
