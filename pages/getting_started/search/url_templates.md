@@ -19,11 +19,11 @@ We want to have listings divided by country, so we will have
 
 **/catalogue/Spain/Seville**
 
-In order to achieve this we need to define url template.
+## Setup page 
 
-## Create Search Page with slug '/catalogue'
+- create Search Page with slug `catalogue`
 
-## Define you URL template in page.
+- define URL template in page.
 
 {% raw %}
 ```liquid
@@ -31,7 +31,7 @@ In order to achieve this we need to define url template.
 ```
 {% endraw %}
 
-## Decode current_url into params with liquid filter `extract_url_params`
+- decode current_url into params with liquid filter `extract_url_params`
 
 {% raw %}
 ```liquid
@@ -71,7 +71,9 @@ query get_catalogue_listings(
 }
 ```
 
-## Pass decoded params to graphql query.
+## Add graphql query to your page
+
+- and pass decoded params to it
 
 {% raw %}
 ```liquid
