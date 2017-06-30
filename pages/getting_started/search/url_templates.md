@@ -12,7 +12,7 @@ folder: getting_started
 layout: page
 published: true
 ---
-    Requirments: graphql queries, pages, liquid, html
+    Requirements: graphql queries, pages, liquid, html
 
 
 We want to have listings divided by country, so we will have 
