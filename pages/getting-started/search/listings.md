@@ -1,17 +1,9 @@
 ---
 title: Search for listings
-tags:
-  - search
-  - listing
-  - graphql
-keywords: null
 summary: How to add simple search to your Marketplace
-sidebar: getting_started_sidebar
 permalink: /getting-started/search/listings
-folder: getting_started
-layout: page
-published: true
 ---
+
 Requirements: graphql queries, pages, slug, liquid
 
 ```js

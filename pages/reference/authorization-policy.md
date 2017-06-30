@@ -1,9 +1,6 @@
 ---
 title: Authorization Policy
-tags: [authorization authentication authorisation restricting_access]
 permalink: /reference/authorization-policy
-sidebar: reference_sidebar
-folder: authorization_policy
 ---
 
 Authorization policies allows you to restrict access to forms and pages in a flexible way. Each form and page can have multiple policies attached to it. Policy is parsed using Liquid. If the content of the policy evaluates to anything other than `true`, policy is considered violated and the system will not proceed with executing action (like submitting a form or render a page).

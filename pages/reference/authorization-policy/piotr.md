@@ -1,14 +1,8 @@
 ---
 title: Authorization Policy
-keywords: authorization liquid formbuilder
-tags:
-  - authorization
-  - formbuilder
-permalink: /reference/authorization_policy
-sidebar: reference_sidebar
-folder: Authorization Policy
-published: true
+permalink: /reference/authorization-policy/piotr
 ---
+
 
 ## Prevent access for pages/forms
 

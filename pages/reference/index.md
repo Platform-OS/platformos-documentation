@@ -1,9 +1,7 @@
 ---
 title: Reference
 summary: List of all APIs
-tags: [reference]
-permalink: reference/
-sidebar: reference_sidebar
+permalink: /reference
 ---
 
 * [Marketplace Builder](/reference/marketplace-builder)
