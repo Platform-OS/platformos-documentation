@@ -1,0 +1,24 @@
+<ul>
+  {% for entry in site.data.navigation %}
+    <li>
+      <a href="{{ entry.url }}">{{ entry.title }}</a>
+      {% if entry.children %}
+        <ul>
+          {% for child in entry.children %}
+            <li{% if page.url contains child.url %} class="selected"{% endif %}>
+              <a href="{{ child.url }}">{{ child.title }}</a>
+
+              {% if child.children %}
+                <ul>
+                  {% for grandchild in child.children %}
+                    <li{% if page.url contains grandchild.url %} class="selected"{% endif %}><a href="{{ grandchild.url }}">{{ grandchild.title }}</a></li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </li>
+  {% endfor %}
+</ul>

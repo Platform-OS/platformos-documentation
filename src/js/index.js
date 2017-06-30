@@ -1,3 +1,13 @@
 import '../scss/app.scss';
 
-console.log('yooo');
+/* Navigation */
+(function() {
+  let nav = document.querySelector('select.navigation-select');
+  if (!nav) {
+    return;
+  }
+
+  nav.addEventListener('change', () => {
+    window.location = nav.value;
+  });
+})();

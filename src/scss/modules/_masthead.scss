@@ -1,57 +1,112 @@
+$max-select-width: 120px;
+
 .masthead {
   background: #fafafa;
-  padding: 20px;
+  padding: 10px 20px;
   margin-bottom: 0;
+
+  @include clear;
+
+  @include bp($desktop-view-bp) {
+    padding: 20px;
+  }
 }
 
-.nav-main {
-  ul {
-    list-style: none;
-    padding: 0;
-  }
+.branding {
+  float: left;
+  max-width: calc(100% - #{$max-select-width + 20px});
 
-  ul ul {
-    margin: 0;
-  }
-
-  li {
-    padding-top: 5px;
-    padding-bottom: 5px;
-  }
-
-  a {
-    text-decoration: none;
-    color: inherit;
-
-    &:hover, &:focus, &:active {
-      text-decoration: underline;
-    }
-  }
-
-  li li li {
-    padding-left: 20px;
-    font-size: 13px;
-  }
-
-  > ul > li {
-    margin-bottom: 20px;
-
-    > a {
-      font-weight: bold;
-      text-transform: uppercase;
-    }
-  }
-
-  li li ul {
-    display: none;
-  }
-
-  li li.selected ul {
+  a, img {
     display: block;
   }
 
-  li li li.selected > a {
-    font-weight: bold;
-    color: #c33;
+  img {
+    width: 100%;
+    max-width: 125px;
+  }
+
+  @include bp($desktop-view-bp) {
+    float: none;
+    max-width: none;
+  }
+}
+
+.nav-main {
+  float: right;
+  max-width: $max-select-width;
+}
+
+.navigation-select {
+  max-width: 100%;
+  display: block;
+  box-sizing: border-box;
+}
+
+.nav-main {
+  > ul {
+    display: none;
+  }
+
+  @include bp($desktop-view-bp) {
+    font-weight: normal;
+    max-width: none;
+
+    .navigation-select {
+      display: none;
+    }
+
+    > ul {
+      display: block;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    ul ul {
+      margin: 0;
+    }
+
+    li {
+      padding-top: 5px;
+      padding-bottom: 5px;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+
+      &:hover, &:focus, &:active {
+        text-decoration: underline;
+      }
+    }
+
+    li li li {
+      padding-left: 20px;
+      font-size: 13px;
+    }
+
+    > ul > li {
+      margin-bottom: 20px;
+
+      > a {
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+    }
+
+    li li ul {
+      display: none;
+    }
+
+    li li.selected ul {
+      display: block;
+    }
+
+    li li li.selected > a {
+      font-weight: bold;
+      color: #c33;
+    }
   }
 }

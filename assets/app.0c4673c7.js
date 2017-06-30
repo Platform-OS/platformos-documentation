@@ -1,0 +1,2 @@
+webpackJsonp([0],{Vp6e:function(){},vGYV:function(a,b,c){"use strict";c("Vp6e"),function(){var a=document.querySelector("select.navigation-select");a&&a.addEventListener("change",function(){window.location=a.value})}()}},["vGYV"]);
+//# sourceMappingURL=app.0c4673c7.js.map
