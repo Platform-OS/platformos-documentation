@@ -7,7 +7,7 @@ tags:
 keywords: null
 summary: How to make URLs SEO friendly
 sidebar: getting_started_sidebar
-permalink: /getting-started/search/url_templates
+permalink: /getting-started/search/url-templates
 folder: getting_started
 layout: page
 published: true
