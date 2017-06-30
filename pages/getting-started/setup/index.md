@@ -1,4 +1,4 @@
 ---
-title: Search
-permalink: /getting-started/setup
+title: Setup
+permalink: /getting-started/setup/
 ---

@@ -1,4 +1,4 @@
 ---
 title: Search
-permalink: /getting-started/search
+permalink: /getting-started/search/
 ---
