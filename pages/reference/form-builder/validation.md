@@ -1,9 +1,6 @@
 ---
 title: Form Builder - Validation
-tags: [tools marketplace_builder graphl formbuilder]
 permalink: /reference/form-builder/validation
-sidebar: reference_sidebar
-folder: Form Builder
 ---
 
 ## Example

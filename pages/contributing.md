@@ -1,9 +1,7 @@
 ---
 title: How to contribute to our documentation pages
 summary: Quick introduction to help anyone improve Marketplace Platform documentation.
-tags: [meta, documentation, edit, prose, github]
 permalink: /contributing
-hide_sidebar: true
 ---
 
 ## Permalinks
@@ -20,7 +18,7 @@ Based on this structure we create permalinks using folder structure, where each 
 
 ```text
 Reference > Liquid Drops > User => /reference/liquid-drops/user
-Guides > Split Registration => /Guides/split-registration
+Guides > Split Registration => /guides/split-registration
 ```
 
 ### Top level file
@@ -44,13 +42,11 @@ Every page can have meta data set via [YAML Front Matter](https://jekyllrb.com/d
 * `title` - HTML title, good title is crucial for improving findability
 * `summary` - This is used in search engines to provide a description of the search result. Make sure it’s short and to the point - *it needs to fit below 70 characters*
 * `permalink` - Permalink that will be used to display this page
-* `sidebar` - Which sidebar should be displayed. Available options are `getting_started_sidebar`, `guides_sidebar`, `reference_sidebar`.
 
 ### Example
 ```liquid
 title:     Get access to our platform
 summary:   Get access to our platform description
-sidebar:   getting_started_sidebar
 permalink: /getting-started/get-access
 ---
 ## Here goes the actual page content

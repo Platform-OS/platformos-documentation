@@ -1,15 +1,6 @@
 ---
 title: GraphQL
-keywords: graphql liquid
-tags:
-  - tools
-  - marketplace_builder
-  - graphl
-  - formbuilder
 permalink: /reference/graphql
-sidebar: reference_sidebar
-folder: GraphQL
-published: true
 ---
 
 ## What is GraphQL

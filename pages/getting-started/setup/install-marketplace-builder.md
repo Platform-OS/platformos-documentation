@@ -2,7 +2,6 @@
 title: Install Marketplace Builder
 summary: "Installing Marketplace Builder gem"
 permalink: /getting-started/setup/install-marketplace-builder
-section: Getting Started
 ---
 ## Installation
 
