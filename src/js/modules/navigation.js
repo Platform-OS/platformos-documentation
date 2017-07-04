@@ -5,7 +5,7 @@ import Hammer from 'hammerjs';
 
 const NAV_VISIBLE_CLASS = 'nav-visible';
 const NAV_SELECTOR = '.nav-section';
-const CONTAINER_SELECTOR = '.topbar';
+const CONTAINER_SELECTOR = '.masthead';
 
 const body = findElement('body');
 const container = findElement(CONTAINER_SELECTOR);
