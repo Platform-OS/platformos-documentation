@@ -1,13 +1,13 @@
-<!doctype html>
+{% include variables.html %}<!doctype html>
 <html lang="en" class="no-js" <% if(htmlWebpackPlugin.files.manifest) { %> manifest="<%= htmlWebpackPlugin.files.manifest %>"<% } %>>
 <head>
   {% include head.html %}
 </head>
-<body>
+<body{% if has_sidebar == false %} class="no-sidebar"{% endif %}>
 
 {% include skips.html %}
 
-{% include main_navigation.html %}
+{% include masthead.html %}
 
 <main id="content">
   {{content}}

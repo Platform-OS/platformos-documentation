@@ -1,0 +1,120 @@
+$max-select-width: 120px;
+
+.nav-section {
+  background: #fafafa;
+  padding: 20px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 90vw;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  bottom: 0;
+  overflow-y: auto;
+  z-index: 20;
+  transform: translateX(calc(-100% - 10px));
+  will-change: transform;
+  transition: transform .3s ease;
+
+  > ul {
+    position: relative;
+    display: block;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  ul ul {
+    margin: 0;
+  }
+
+  li {
+    position: relative;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+
+    &:hover, &:focus, &:active {
+      text-decoration: underline;
+    }
+  }
+
+  li li li {
+    padding-left: 20px;
+    font-size: 13px;
+  }
+
+  > ul > li {
+    margin-bottom: 20px;
+
+    > a {
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+  }
+
+  li li ul {
+    display: none;
+  }
+
+  li li.selected::before {
+    position: absolute;
+    margin-left: -12px;
+    content: "\2022";
+    font-size: 26px;
+    margin-top: -9px;
+  }
+
+  li li.selected ul {
+    display: block;
+  }
+
+  li li li.selected::before {
+    display: none;
+  }
+
+  li li li.selected > a {
+    font-weight: bold;
+    color: #c33;
+  }
+}
+
+@include bp($desktop-view-bp) {
+  body {
+    padding-left: $sidebar-width;
+  }
+
+  body.no-sidebar {
+    padding-left: 0;
+  }
+
+  .nav-section {
+    top: $topbar-height;
+    width: $sidebar-width;
+    transform: translateX(0);
+    box-shadow: none;
+  }
+}
+
+
+.nav-visible::before {
+  content: "";
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 10;
+}
+
+.nav-visible .nav-section {
+  transform: translateX(0);
+}

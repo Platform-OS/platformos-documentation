@@ -13,17 +13,17 @@ To install Marketplace Builder you need to install ruby gem via `gem install nea
 3. Create `marketplace_builder/.endpoints` - this is main configuration file. It should contain your authentication token, staging host and url host with corresponding API keys, like this:
 
 ```json
-    {
-      "user_key": "your_user_key",
-      "staging": {
-        "url": "https://<project_domain>.staging-<region>.near-me.com/",
-        "api_key": "xxx"
-      },
-      "production": {
-        "url": "https://<project_domain>.<region>.near-me.com/",
-        "api_key": "xxx"
-      }
-    }
+{
+  "user_key": "your_user_key",
+  "staging": {
+    "url": "https://<project_domain>.staging-<region>.near-me.com/",
+    "api_key": "xxx"
+  },
+  "production": {
+    "url": "https://<project_domain>.<region>.near-me.com/",
+    "api_key": "xxx"
+  }
+}
 ```
 4. Pull current configuration via `nearme-marketplace pull` (see below) and start customizing!
 

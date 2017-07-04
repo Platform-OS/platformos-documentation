@@ -1,6 +1,6 @@
 ---
 title: Guides
-permalink: /guides
+permalink: /guides/
 ---
 
 TODO

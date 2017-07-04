@@ -1,20 +1,10 @@
-$max-select-width: 120px;
-
-.masthead {
-  background: #fafafa;
-  padding: 10px 20px;
-  margin-bottom: 0;
-
-  @include clear;
-
-  @include bp($desktop-view-bp) {
-    padding: 20px;
-  }
+.topbar {
+  background: #333;
+  padding: 0;
 }
 
 .branding {
-  float: left;
-  max-width: calc(100% - #{$max-select-width + 20px});
+  padding: 10px 20px;
 
   a, img {
     display: block;
@@ -24,89 +14,110 @@ $max-select-width: 120px;
     width: 100%;
     max-width: 125px;
   }
+}
 
-  @include bp($desktop-view-bp) {
-    float: none;
-    max-width: none;
+.navigation-toggler {
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  border: 1px solid #666;
+  padding: 5px 10px;
+  color: #ccc;
+  background: transparent;
+}
+
+.nav-main {
+  background: #666;
+  padding: 0 20px;
+
+  ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: flex;
+
+    // When guides are added, change this to space-between
+    justify-content: left;
+  }
+
+  li {
+    display: inline-block;
+    line-height: 40px;
+    font-size: 14px;
+
+    //When guides are added, remove this value
+    margin-right: 20px;
+  }
+
+  a {
+    display: block;
+    position: relative;
+    text-decoration: none;
+    color: #fff;
+  }
+
+  .selected a::after {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    content: "";
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top: none;
+    border-bottom-color: #fff;
   }
 }
 
-.nav-main {
-  float: right;
-  max-width: $max-select-width;
-}
+@include bp($desktop-view-bp) {
+  body {
+    padding-top: $topbar-height;
+  }
 
-.navigation-select {
-  max-width: 100%;
-  display: block;
-  box-sizing: border-box;
-}
-
-.nav-main {
-  > ul {
+  .navigation-toggler {
     display: none;
   }
 
-  @include bp($desktop-view-bp) {
-    font-weight: normal;
-    max-width: none;
+  .topbar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    height: $topbar-height;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+  }
 
-    .navigation-select {
-      display: none;
+  .branding {
+    @include clear;
+
+    width: $sidebar-width;
+    margin-bottom: 0;
+
+    a {
+      float: left;
     }
 
-    > ul {
-      display: block;
+    img {
+      max-height: 30px;
     }
+  }
+
+  .nav-main {
+    height: $topbar-height;
+    background: none;
 
     ul {
-      list-style: none;
-      padding: 0;
-    }
-
-    ul ul {
-      margin: 0;
+      display: block;
     }
 
     li {
-      padding-top: 5px;
-      padding-bottom: 5px;
-    }
-
-    a {
-      text-decoration: none;
-      color: inherit;
-
-      &:hover, &:focus, &:active {
-        text-decoration: underline;
-      }
-    }
-
-    li li li {
-      padding-left: 20px;
-      font-size: 13px;
-    }
-
-    > ul > li {
-      margin-bottom: 20px;
-
-      > a {
-        font-weight: bold;
-        text-transform: uppercase;
-      }
-    }
-
-    li li ul {
-      display: none;
-    }
-
-    li li.selected ul {
-      display: block;
-    }
-
-    li li li.selected > a {
-      font-weight: bold;
-      color: #c33;
+      line-height: $topbar-height;
+      font-size: 16px;
+      margin-right: 30px;
     }
   }
 }
+
+
+@import "sidenav";

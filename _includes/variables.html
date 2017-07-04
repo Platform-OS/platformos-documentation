@@ -1,0 +1,7 @@
+{% assign has_sidebar = false %}
+{% for entry in site.data.navigation %}
+  {% if page.url contains entry.url %}
+    {% assign has_sidebar = true %}
+    {% assign current_section = entry %}
+  {% endif %}
+{% endfor %}

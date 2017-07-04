@@ -1,7 +1,7 @@
 ---
 title: Reference
 summary: List of all APIs
-permalink: /reference
+permalink: /reference/
 ---
 
 * [Marketplace Builder](/reference/marketplace-builder)

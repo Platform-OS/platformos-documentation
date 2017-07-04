@@ -1,0 +1,20 @@
+<header class="masthead">
+  <div class="topbar">
+    <div class="branding">
+      <a href="/"><img src="/assets/images/marketplace-platform-logo.svg" alt="{{ site.site_title }}" width="125" height="33"></a>
+    </div>
+
+    <nav class="nav-main" id="navigation">
+      <h2 class="struct-label">Navigation</h2>
+      <ul>
+        {% for entry in site.data.navigation %}
+          <li{% if page.url contains entry.url %} class="selected"{% endif %}>
+            <a href="{{ entry.url }}">{{ entry.title }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </nav>
+  </div>
+
+  {% include section_navigation.html %}
+</header>
