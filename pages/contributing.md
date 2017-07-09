@@ -47,7 +47,7 @@ Every page can have meta data set via [YAML Front Matter](https://jekyllrb.com/d
 ```liquid
 title:     Get access to our platform
 summary:   Get access to our platform description
-permalink: /getting-started/get-access
+permalink: /getting-started/create-marketplace
 ---
 ## Here goes the actual page content
 
