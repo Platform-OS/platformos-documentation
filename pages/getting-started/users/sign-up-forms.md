@@ -16,6 +16,9 @@ configuration:
   first_name:
     validation:
       presence: true
+  password:
+    validation:
+      presence: true
   profiles:
     developer:
       enabled:
@@ -53,7 +56,7 @@ A lot going on here, so let's start from the beginning. Creating a form consists
   * name - the name of the form, written in snake case. It is used to embed the form in a page
   * base_form - it defines for which model this form is created. In our example it is user, because we want to create a user. Please check [full FormBuilder documentation](/reference/form-builder/) for all options.
   * return_to - defines the url to which user will be redirected after success. You can use liquid. In our example, we will just redirect to the home page.
-  * configuration - this is the heart of the configuration. Here one defines which fields should be acceptable by the form and it is possible to define validation of each of the field. Please note that depending on base form, some fields are hardcoded. In our example, such hardcoded fields are `email` and `password` - you might have noticed, that later in the example we create inputs for `email` and `password`, but those are not included in the configuration. If you wondered why it is working, the hardcoded fields is the answer.
+  * configuration - this is the heart of the configuration. Here one defines which fields should be acceptable by the form and it is possible to define validation of each of the field. Please note that depending on base form, some fields are hardcoded. In our example, such hardcoded fields is `email` - you might have noticed, that later in the example we create input for `email`, but it is not included in the configuration. If you wondered why it is working, the hardcoded fields is the answer.
 
 # Configuration
 
@@ -95,6 +98,9 @@ base_form: UserForm
 return_to: '/'
 configuration:
   first_name:
+    validation:
+      presence: true
+  password:
     validation:
       presence: true
 ---
@@ -158,6 +164,9 @@ base_form: UserForm
 return_to: '/'
 configuration:
   first_name:
+    validation:
+      presence: true
+  password:
     validation:
       presence: true
   profiles:
