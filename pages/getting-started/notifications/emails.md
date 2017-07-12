@@ -68,4 +68,4 @@ view_type: mail_layout
 ```
 {% endraw %}
 
-Again, the key thing in the layout is the {% raw %}`{{ content_for_layout }}`{% endraw %}, which injects the body defined in email notification into the layout.
+Again, the key thing in the layout is the {% raw %}`{{ content_for_layout }}`{% endraw %}, which injects the body defined in email notification into the layout. Without it, you would be sending layout without actual content.
