@@ -41,7 +41,7 @@ email_notifications:
 ...
 ```
 
-And that's it. Please note: if you are working on staging environment, you also need to configure test email - you can do it via the instance admin in the browser, the path is `/instance_admin/settings/configuration#instance_test_email`. The reason is that we intercept all emails on staging to avoid spamming real users during tessts. Now, when you submit the form, the newly registered user should receive the email. Please take a look at [full Notification documentation](/reference/notifications/general) to get an overview of how to control when notification should be sent.
+And that's it. Please note: if you are working on staging environment, you also need to configure test email - you can do it via the instance admin in the browser, the path is `/instance_admin/settings/configuration#instance_test_email`. The reason is that we intercept all emails on staging to avoid spamming real users during tests. Now, when you submit the form, the newly registered user should receive the email. Please take a look at [full Notification documentation](/reference/notifications/general) to get an overview of how to control when notification should be sent.
 
 # Using Email Layouts
 
