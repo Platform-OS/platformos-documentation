@@ -6,22 +6,22 @@ tags:
   - seo
 keywords: null
 summary: How to make URLs SEO friendly
-sidebar: getting_started_sidebar
-permalink: /getting-started/search/url-templates
-folder: getting_started
+sidebar: guides_started_sidebar
+permalink: /guides/category-seo-pages
+folder: guides
 layout: page
 published: true
 ---
     Requirements: graphql queries, pages, liquid, html
 
 
-We want to have listings divided by country, so we will have 
+We want to have listings divided by country, so we will have
 
 **/catalogue/Australia/Sydney**
 
 **/catalogue/Spain/Seville**
 
-## Setup page 
+## Setup page
 
 - create Search Page with slug `catalogue`
 

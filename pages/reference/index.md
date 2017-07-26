@@ -8,6 +8,7 @@ permalink: /reference/
 * [Custom Model Types](/reference/custom-model-types)
 * [Categories](/reference/categories)
 * [Instance Profile Types](/reference/instance-profile-types)
+* [Transactable Types](/reference/transactable-types)
 * [Marketplace Builder](/reference/marketplace-builder)
 * [FormBuilder](/reference/form-builder)
 * [GraphQL](/reference/graphql)
