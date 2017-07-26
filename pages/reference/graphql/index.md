@@ -1,6 +1,6 @@
 ---
 title: GraphQL
-permalink: /reference/graphql
+permalink: /reference/graphql/
 ---
 
 ## What is GraphQL

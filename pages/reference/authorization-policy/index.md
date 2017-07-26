@@ -1,6 +1,6 @@
 ---
 title: Authorization Policy
-permalink: /reference/authorization-policy
+permalink: /reference/authorization-policy/
 ---
 
 * [Maciej](/reference/authorization-policy/maciej)
