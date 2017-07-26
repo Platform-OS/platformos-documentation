@@ -13,7 +13,9 @@
     "start": "bundle exec jekyll serve -w",
     "build": "webpack --env production; bundle exec jekyll build",
     "lint:js": "eslint src/ webpack.*.js --cache",
-    "lint:style": "stylelint src/scss/**/*.scss"
+    "lint:style": "stylelint src/scss/**/*.scss",
+    "lint:html": "bundle exec htmlproofer ./_site --http-status-ignore '999' --check-html --assume-extension --check-opengraph --check-favicon",
+    "lint": "yarn run lint:js; yarn run lint:style; yarn run lint:html"
   },
   "pre-commit": [
     "lint:js",
