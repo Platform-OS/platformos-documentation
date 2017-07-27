@@ -8,7 +8,7 @@ const NAV_SELECTOR = '.nav-section';
 const CONTAINER_SELECTOR = '.masthead';
 
 const body = findElement('body');
-const container = findElement(CONTAINER_SELECTOR);
+const container = document.querySelector(CONTAINER_SELECTOR);
 
 function initializeSwiping(sidebar: HTMLElement) {
   let hmSidebar = new Hammer.Manager(sidebar);
@@ -75,7 +75,7 @@ function createToggler(): HTMLButtonElement {
 }
 
 let sidebar = document.querySelector(NAV_SELECTOR);
-if (sidebar instanceof HTMLElement) {
+if (container instanceof HTMLElement && sidebar instanceof HTMLElement) {
   initializeSwiping(sidebar);
   container.appendChild(createToggler());
 }
