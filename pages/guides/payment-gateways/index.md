@@ -1,6 +1,6 @@
 ---
 title: Guides
-permalink: /guides/payment_gateways
+permalink: /guides/payment-gateways/
 ---
 The heart of payments is a concept around PaymentGateway. We do not process money ourselelves; instead, we have integrated with multiple reliable third party systems, such as [Stripe](https://stripe.com) or [PayPal](https://www.paypal.com). PaymentGateway can be configured only in InstanceAdmin at `/instance_admin/settings/payments`.
 
@@ -19,7 +19,7 @@ Near Me supports the following Payment gateway integrations:
 * SagePay
 * Spreedly
 * Stripe (payIN)
-* Stripe Connect (full cycle, payIN and automated payOUT)
+* [Stripe Connect (full cycle, payIN and automated payOUT)](/guides/stripe-connect-integration/)
 * Worldpay
 * Offline Payment
 

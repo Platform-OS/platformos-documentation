@@ -3,16 +3,11 @@
 <head>
   {% include head.html %}
 </head>
-<body{% if has_sidebar == false %} class="no-sidebar"{% endif %}>
+<body class="{% if has_sidebar == false %}no-sidebar{% endif %}{% if is_home %} layout-home{% endif %}">
 
 {% include skips.html %}
 
-{% include masthead.html %}
+{{content}}
 
-<main id="content">
-  {{content}}
-</main>
-
-{% include footer.html %}
 </body>
 </html>
