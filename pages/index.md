@@ -7,6 +7,6 @@ If you are a developer looking for help developing marketplace on our platform, 
 
 * [Getting started](/getting-started)
 * [Reference](/reference)
-	* [Marketplace Builder](/reference/marketplace-builder)
+	* [Marketplace Kit](/reference/marketplace-kit)
 	* [Form Builder](/reference/form-builder)
 	* [GraphQL in Liquid](/reference/graphql)

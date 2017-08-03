@@ -1,6 +1,6 @@
 ---
-title: Form Builder - Validation
-permalink: /reference/form-builder/validation
+title: Form Configuration - Validation
+permalink: /reference/form-configurations/validation
 ---
 
 ## Example

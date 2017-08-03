@@ -29,7 +29,7 @@ body {
 ```
 {% endraw %}
 
-And that is all you need to do. You can do the same with javascript and images. Please note, that you can use any pre-processors or post-processors you want. You can keep all of your `scss` file outside of `marketplace_builder` this directory, for example in `src`, and just copy the end result css file to `custom_themes/default_custom_theme_assets/`.
+And that is all you need to do. You can do the same with javascript and images. Please note, that you can use any pre-processors or post-processors you want. You can keep all of your `scss` file outside of `marketplace_kit` this directory, for example in `src`, and just copy the end result css file to `custom_themes/default_custom_theme_assets/`.
 
 ## Using assets in Liquid
 
