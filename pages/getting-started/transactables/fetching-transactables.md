@@ -31,6 +31,7 @@ The full example could look like this:
 
 {% endraw %}
 
+
 In order for this to work, we need to create two graphql queries - one for fetching currently logged in user, and the second for fetching all transactables for user with given id. Let's start with `graph_queries/current_user.graphql`:
 
 ```graphql
