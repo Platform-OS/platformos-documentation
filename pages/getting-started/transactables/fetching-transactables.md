@@ -7,6 +7,7 @@ Now when form pages for creating/editing transactables are done, we might want t
 The full example could look like this:
 
 {% raw %}
+
 ```liquid
 {% query_graph 'current_user', result_name: g %}
 <h1>Welcome{% if g.current_user%}, {{ g.current_user.first_name }}{% endif %}</h1>
@@ -27,6 +28,7 @@ The full example could look like this:
   {% endif %}
 {% endif %}
 ```
+
 {% endraw %}
 
 In order for this to work, we need to create two graphql queries - one for fetching currently logged in user, and the second for fetching all transactables for user with given id. Let's start with `graph_queries/current_user.graphql`:
@@ -47,6 +49,7 @@ In order for this to work, we need to create two graphql queries - one for fetch
   }
 }
 ```
+
 The query should be self explanatory in terms of what data we fetch. If current user doesn't have developer / client profile, then it will be `null`, this is why example {% raw %}`{% if g.current_user.client_profile %}`{%end raw%} -  the condition will be evaluted as `false`.
 
 The next query could be defined in `graph_queries/client_projects` and look like this:
