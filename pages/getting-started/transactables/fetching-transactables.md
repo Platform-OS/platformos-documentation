@@ -7,7 +7,6 @@ Now when form pages for creating/editing transactables are done, we might want t
 The full example could look like this:
 
 {% raw %}
-
 ```liquid
 {% query_graph 'current_user', result_name: g %}
 <h1>Welcome{% if g.current_user%}, {{ g.current_user.first_name }}{% endif %}</h1>
@@ -28,7 +27,6 @@ The full example could look like this:
   {% endif %}
 {% endif %}
 ```
-
 {% endraw %}
 
 
