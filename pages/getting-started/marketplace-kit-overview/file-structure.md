@@ -2,11 +2,11 @@
 title: Marketplace Kit Overview
 permalink: /getting-started/marketplace-kit-overview/file-structure
 ---
-It is expected that the root directory of your project would contain `marketplace_kit` directory. All directories other than `marketplace_kit` will be ignored by gem. Hence, you can keep all your js, css files outside of marketplace_kit andd use whatever pre-processors you want to automatically generate end result files in proper path inside `marketplace_kit`.
+It is expected that the root directory of your project would contain `marketplace_builder` directory. All directories other than `marketplace_builder` will be ignored by gem. Hence, you can keep all your js, css files outside of marketplace_kit andd use whatever pre-processors you want to automatically generate end result files in proper path inside `marketplace_builder`.
 
 Here is the usual content of the directory, along with short explanation about each file or directory:
 
-* `.endpoints` - this is configuration files, which determines which endpoints are available. Usually, you want to have two endpoints - staging and production.
+* `.builder` - this is configuration files, which determines which endpoints are available. Usually, you want to have two endpoints - staging and production.
 * `instance_attributes.yml` - configuration files, which define things like allowed countries within marketplace, allowed currencies etc.
 * `authorization_policies` - used to configure [Authorization Policies](/reference/authorization-policy/), which defines rules that control whether user has access to certain form and/or page. Files inside this directory should have `liquid` extension.
 * `categories` - allows you to define [Categories](/reference/categories/), which you can then associate with UserProfiles, Transactables or Orders. Try to avoid using those if possible - most of the time, [Custom Attributes](/reference/custom-attributes/)  will be sufficient, and it is way easier to work with Custom Attributes than with Categories. Files are expected to have `yml` extension.
