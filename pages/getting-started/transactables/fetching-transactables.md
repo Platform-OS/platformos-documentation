@@ -49,7 +49,7 @@ In order for this to work, we need to create two graphql queries - one for fetch
 }
 ```
 
-The query should be self explanatory in terms of what data we fetch. If current user doesn't have developer / client profile, then it will be `null`, this is why example {% raw %}`{% if g.current_user.client_profile %}`{%end raw%} -  the condition will be evaluted as `false`.
+The query should be self explanatory in terms of what data we fetch. If current user doesn't have developer / client profile, then it will be `null`, this is why example {% raw %}`{% if g.current_user.client_profile %}`{% endraw %} -  the condition will be evaluted as `false`.
 
 The next query could be defined in `graph_queries/client_projects` and look like this:
 
