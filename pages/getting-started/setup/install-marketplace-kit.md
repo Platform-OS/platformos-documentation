@@ -22,6 +22,6 @@ To install Marketplace Kit you need to install ruby gem via `gem install marketp
   }
 }
 ```
-4. Pull current configuration via `marketplace-kit pull` and start customizing!
+4. Pull current configuration via `marketplace-kit pull`. You will be prompted to provide your email and password. Once done, you will be able to start customizing!
 
 
