@@ -2,7 +2,7 @@
 title: Marketplace Kit Overview
 permalink: /getting-started/marketplace-kit-overview/file-structure
 ---
-It is expected that the root directory of your project would contain `marketplace_builder` directory. All directories other than `marketplace_builder` will be ignored by gem. Hence, you can keep all your js, css files outside of marketplace_kit andd use whatever pre-processors you want to automatically generate end result files in proper path inside `marketplace_builder`.
+It is expected that the root directory of your project would contain `marketplace_builder` directory. All directories other than `marketplace_builder` will be ignored by gem. Hence, you can keep all your js, css files outside of maretplace_builder andd use whatever pre-processors you want to automatically generate end result files in proper path inside `marketplace_builder`.
 
 Here is the usual content of the directory, along with short explanation about each file or directory:
 

@@ -10,7 +10,7 @@ Some pages should be accessible only for registered users and some should have d
 Authorization Policy allow you to write rule in liquid an reuse it on different pages/forms.
 
 
-Basic case is to have `marketplace_kit/authorization_policies/registered_user.liquid`
+Basic case is to have `marketplace_builder/authorization_policies/registered_user.liquid`
 policy that will ensure that only registered users will see the page.
 
 {% raw %}
