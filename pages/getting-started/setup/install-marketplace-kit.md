@@ -9,8 +9,8 @@ To install Marketplace Kit you need to install ruby gem via `gem install marketp
 
 ## Recommended workflow
 1. Create a new git repository for your marketplace
-2. Inside newly created repository, create `maretplace_builder` directory
-3. Create `maretplace_builder/.builder` - this is main configuration file. It should contain your authentication token, staging host and url host with corresponding API keys, like this:
+2. Inside newly created repository, create `marketplace_builder` directory
+3. Create `marketplace_builder/.builder` - this is main configuration file. It should contain your authentication token, staging host and url host with corresponding API keys, like this:
 
 ```json
 {
