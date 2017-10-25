@@ -33,28 +33,4 @@ And that is all you need to do. You can do the same with javascript and images. 
 
 ## Using assets in Liquid
 
-In every liquid view you have access to a hash named `asset_url`. They key is always the file name and the value is a final url to the actual asset. Because it is a simple hash, you can render it, for debugging purposes for example, by adding {{ asset_url }} for example to application.liquid:
-
-{% raw %}
-```liquid
-...
-  <header>here usually come header, navbar etc.. Assets: {{ asset_url }}</header>
-...
-```
-{% endraw %}
-
-It should render something like `Assets: {"app.css"=>"https://<dynamically created url to cdn>/app.css"}`. If you have basic knowledge of working with hash in liquid, you already realized, that adding this css file to your layout would be as simple as editing `application.liquid` to include this code:
-
-{% raw %}
-```liquid
-...
-<head>
-  <link rel="stylesheet" media="screen" href="{{ asset_url['app.css'] }}">
-</head>
-...
-```
-{% endraw %}
-
-After refreshing the page, you should see that the background color has changed.
-
-Please note, that you can nest assets in any number of directories as you want. For example, you can put the app.css file to `custom_themes/default_custom_theme_assets/css/app.css`. You would then access it via `asset_url['css/app.css']`.
+To access files put into `custom_themes/default_custom_theme_assets/` use [asset_url](/reference/liquid-filters#asset_url) filter.
