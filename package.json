@@ -9,14 +9,14 @@
     "url": "git+https://github.com/mdyd-dev/documentation.git"
   },
   "scripts": {
-    "start": "yarn serve & yarn assets",
+    "start": "npm run serve & npm run assets",
     "assets": "webpack -w --env development",
     "serve": "bundle exec jekyll serve -w",
     "build": "webpack --env production; bundle exec jekyll build",
     "lint:js": "eslint src/ webpack.*.js --cache",
     "lint:style": "stylelint src/scss/**/*.scss",
     "lint:html": "bundle exec htmlproofer ./_site --http-status-ignore '999' --check-html --assume-extension --check-opengraph --check-favicon",
-    "lint": "yarn run lint:js; yarn run lint:style; yarn run lint:html"
+    "lint": "npm run lint:js; npm run lint:style; npm run lint:html"
   },
   "pre-commit": [
     "lint:js",
