@@ -28,6 +28,9 @@ const commonConfig = merge([
     entry: PATHS.styles,
     use: [
       {
+        loader: 'cache-loader'
+      },
+      {
         loader: 'css-loader',
         options: {
           sourceMap: true
