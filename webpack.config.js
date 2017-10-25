@@ -78,9 +78,6 @@ const productionConfig = merge([
     },
     plugins: [new webpack.HashedModuleIdsPlugin()]
   },
-  parts.generateSourceMaps({
-    type: 'source-map'
-  }),
   parts.minifyJavaScript(),
   parts.minifyCSS({
     options: {
@@ -107,8 +104,7 @@ const developmentConfig = merge([
     output: {
       devtoolModuleFilenameTemplate: 'webpack:///[absolute-resource-path]'
     }
-  },
-  parts.generateSourceMaps({ type: 'cheap-module-eval-source-map' })
+  }
 ]);
 
 module.exports = env => {

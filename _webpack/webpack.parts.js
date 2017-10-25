@@ -115,10 +115,6 @@ exports.extractCSS = ({ entry, use }) => {
   };
 };
 
-exports.generateSourceMaps = ({ type }) => ({
-  devtool: type
-});
-
 exports.createManifest = () => ({
   plugins: [
     new InlineChunkWebpackPlugin({
