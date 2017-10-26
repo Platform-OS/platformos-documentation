@@ -31,41 +31,19 @@ const commonConfig = merge([
         loader: 'cache-loader'
       },
       {
-        loader: 'css-loader',
-        options: {
-          sourceMap: true
-        }
+        loader: 'css-loader'
       },
       parts.autoprefix(),
       {
-        loader: 'sass-loader',
-        options: {
-          sourceMap: true
-        }
+        loader: 'sass-loader'
       }
     ]
   }),
-  parts.loadJavaScript({ include: path.join(PATHS.app, 'js') }),
-  parts.copyStaticAssets([
-    {
-      from: {
-        glob: 'images/**/*'
-      },
-      to: PATHS.build,
-      context: PATHS.app
-    },
-    {
-      from: {
-        glob: 'fonts/**/*'
-      },
-      to: PATHS.build,
-      context: PATHS.app
-    }
-  ])
+  parts.loadJavaScript({ include: path.join(PATHS.app, 'js') })
 ]);
 
 const productionConfig = merge([
-  parts.clean(PATHS.build),
+  parts.clean(['*.js', '*.css']),
   {
     performance: {
       hints: 'warning', // 'error' or false are valid too
@@ -90,7 +68,6 @@ const productionConfig = merge([
   parts.extractBundles([
     {
       name: 'vendor',
-
       minChunks: ({ resource }) =>
         resource &&
         resource.indexOf('node_modules') >= 0 &&

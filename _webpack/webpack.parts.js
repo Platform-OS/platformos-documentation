@@ -24,7 +24,6 @@ exports.createLoadingHTML = () => ({
 exports.autoprefix = () => ({
   loader: 'postcss-loader',
   options: {
-    sourceMap: true,
     plugins: () => [require('autoprefixer')()]
   }
 });
@@ -37,7 +36,6 @@ exports.lintJavaScript = ({ include, exclude, options }) => ({
         include,
         exclude,
         enforce: 'pre',
-
         loader: 'eslint-loader',
         options
       }
@@ -53,7 +51,6 @@ exports.lintCSS = ({ include, exclude }) => ({
         include,
         exclude,
         enforce: 'pre',
-
         loader: 'postcss-loader',
         options: {
           plugins: () => [require('stylelint')()]
@@ -70,7 +67,6 @@ exports.loadJavaScript = ({ include, exclude }) => ({
         test: /\.js$/,
         include,
         exclude,
-
         loader: 'babel-loader',
         options: {
           // Enable caching for improved performance during
@@ -102,10 +98,7 @@ exports.extractCSS = ({ entry, use }) => {
           use: plugin.extract({
             use,
             fallback: {
-              loader: 'style-loader',
-              options: {
-                sourceMap: true
-              }
+              loader: 'style-loader'
             }
           })
         }
@@ -129,10 +122,10 @@ exports.extractBundles = bundles => ({
   )
 });
 
-exports.clean = filepath => ({
+exports.clean = paths => ({
   plugins: [
-    new CleanWebpackPlugin([filepath], {
-      root: path.resolve(__dirname, '..')
+    new CleanWebpackPlugin(paths, {
+      root: path.resolve(__dirname, '..', 'assets')
     })
   ]
 });
