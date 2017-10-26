@@ -6,26 +6,23 @@
   "directories": {},
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mdyd-dev/documentation.git"
+    "url": "git+https://github.com/mdyd-dev/nearme-documentation.git"
   },
   "scripts": {
     "start": "npm run serve & npm run assets",
     "assets": "webpack -w --env development",
-    "serve": "bundle exec jekyll serve -w",
+    "serve": "bundle exec jekyll serve -w --incremental",
     "build": "webpack --env production; bundle exec jekyll build",
     "lint:js": "eslint src/ webpack.*.js --cache",
     "lint:style": "stylelint src/scss/**/*.scss",
-    "lint:html": "bundle exec htmlproofer ./_site --http-status-ignore '999' --check-html --assume-extension --check-opengraph --check-favicon",
+    "lint:html":
+      "bundle exec htmlproofer ./_site --http-status-ignore '999' --check-html --assume-extension --check-opengraph --check-favicon",
     "lint": "npm run lint:js; npm run lint:style; npm run lint:html"
   },
-  "pre-commit": [
-    "lint:js",
-    "lint:style",
-    "build"
-  ],
+  "pre-commit": ["lint:js", "lint:style", "build"],
   "author": "NearMe",
   "license": "UNLICENSED",
-  "homepage": "https://github.com/mdyd-dev/documentation",
+  "homepage": "https://github.com/mdyd-dev/nearme-documentation",
   "devDependencies": {
     "autoprefixer": "^7.1.6",
     "babel-eslint": "^8.0.1",
