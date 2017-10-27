@@ -109,20 +109,15 @@ If we parse it to JSON format for readability purposes it becomes:
 
 Because other users are outside of the bounding box we provided, only Jacek came back in the response.
 
+### Excercise
+1. Create couple users with their current address coordinates - make them in different cities 
+2. Create a page that will have a form on the page that contains 4 text inputs that will take coordinates of bounding box points
+3. Make the response page to return only users with their location within the bounding box 
+  * If you want to, make the page return JSON as shown in the example
+
 ### Notes
 
 If you want to receive all the results for whatever reason, you can pass empty `geo_query` hash - points will become optional and filter will not affect results at all.
-
-### Excercise
-1. Create couple users with their current address coordinates - make them in different cities 
-2. Write graphql query that will accept `geo_query` points to filter out users within bounding box 
-3. Test your graphql query in our WYSIWYG editor
-4. Create a page that will have a form on the page that contains 4 text inputs and a submit button
-  * Inputs should define lat/lng coordinates for bounding box points
-  * Submit button should submit the form to the search endpoint
-5. Make the response page to return only users with their location within the bounding box 
-  * If you want to, make the page return JSON as shown in the example
-
 
 If you need help determining coordinates of a point try one of those:
 1. open [mapcoordinates.net](http://www.mapcoordinates.net/en) and type location that you want to find
