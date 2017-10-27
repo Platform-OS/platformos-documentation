@@ -9,10 +9,9 @@ You can choose which ones do you want to use, in this guide we will be using `No
 
 Points are consisting of GeoPoint type, which is basically an hash with `lat` and `lng` keys.
 
-{% include alert/note.html content="Of course you can use the opposite points, which are called `top_left` and `bottom_right` in our system." %}
+{% include alert/note.html content="You can also use the opposite points, which are called `top_left` and `bottom_right` in our system." %}
 
 ### Query
-
 ```graphql
 query search_users_by_bounding_box(
   $per_page: Int = 20
@@ -68,15 +67,21 @@ name: Search On Map
 Couple of notes of whats going on in this page:
 1. `layout_name: false` means that content in side will not be rendered inside any layout. Very useful when you are constructing for example JSON response in liquid like we do in this case
 2. `format: json` sets proper content headers and allows browser to understand response type correctly
-3. Last line is returning results parsed by `json` filter or returns an empty collection to prevent throwing errors. You can handle them however you want to.
+3. Last line is returns results parsed by `json` filter *or* an empty collection if there are no results to return.
 
 ### Results
+To retrieve data we are going to use get request to ask for the users within the box that is containing west side of the US, including Jacek that is located in San Francisco.
+Slug of the page is `search/users/map` so correct request url is `http://example.com/search/users/map.json`
 
-To continue our example, we are going to use jQuery AJAX request to ask for the users within the box that is containing west side of the US, including Jacek that is located in San Francisco.
+{% include alert/note.html content="`.json` at the end of the url is dictated by `format: json` in page definition." %}
 
-GET request is sent with bounding box points coordinates:
+#### Browser GET request
+GET request will look similar to:
+```
+https://example.com/search/users/map.json?ne%5Blat%5D=59.17324480195229&ne%5Blng%5D=-94.48281250000002&sw%5Blat%5D=12.20606185258179&sw%5Blng%5D=178.68124999999998
+```
 
-#### Request
+If we parse it to JSON format for readability purposes it becomes:
 ```js
 {
   ne: {
@@ -90,7 +95,7 @@ GET request is sent with bounding box points coordinates:
 }
 ```
 
-#### Response
+#### Server response
 ```js
 [{
   "id": "133737",
@@ -102,4 +107,23 @@ GET request is sent with bounding box points coordinates:
 }]
 ```
 
-Because other users are outside of the bounding box we provided, only Jacek came back.
+Because other users are outside of the bounding box we provided, only Jacek came back in the response.
+
+### Notes
+
+If you want to receive all the results for whatever reason, you can pass empty `geo_query` hash - points will become optional and filter will not affect results at all.
+
+### Excercise
+1. Create couple users with their current address coordinates - make them in different cities 
+2. Write graphql query that will accept `geo_query` points to filter out users within bounding box 
+3. Test your graphql query in our WYSIWYG editor
+4. Create a page that will have a form on the page that contains 4 text inputs and a submit button
+  * Inputs should define lat/lng coordinates for bounding box points
+  * Submit button should submit the form to the search endpoint
+5. Make the response page to return only users with their location within the bounding box 
+  * If you want to, make the page return JSON as shown in the example
+
+
+If you need help determining coordinates of a point try one of those:
+1. open [mapcoordinates.net](http://www.mapcoordinates.net/en) and type location that you want to find
+2. open [Google Maps](https://maps.google.com) and click on a point you want to know coordinates of - a box should appear on the bottom of the page with coordinates inside
