@@ -99,7 +99,7 @@ If we parse it to JSON format for readability purposes it becomes:
 ```js
 [{
   "id": "133737",
-  "name": "Jacek",
+  "first_name": "Jacek",
   "coordinates": {
     "latitude": 37.7898112,
     "longitude": -122.3884296
