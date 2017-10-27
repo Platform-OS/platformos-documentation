@@ -3,9 +3,16 @@ title: Bounding box
 permalink: /guides/searching-by-location/bounding-box
 ---
 
-Bounding box is a rectangle defined by coordinates of two extreme points.
+Bounding box is a rectangle defined by coordinates of two corner points of an rectangle.
 
-You can choose which ones do you want to use, in this guide we will be using `NorthEast` (later called `top right`) and `SouthWest` (later called `bottom left`). Google Maps JS API returns them by default using `.getBounds()` method.
+There are two `geo_query` bounding box points methods available in the platform:
+
+* `box_top_right_bottom_left`
+* `box_top_left_bottom_right`
+
+Depending on which one you use, you need to pass proper points accordingly, otherwise you might observe strange results.
+
+In this guide we will use `box_top_right_bottom_left`. Google Maps JS API returns them by default using `.getBounds()` method as `NorthEast` and `SouthWest`.
 
 Points are consisting of GeoPoint type, which is basically an hash with `lat` and `lng` keys.
 
@@ -14,29 +21,22 @@ Points are consisting of GeoPoint type, which is basically an hash with `lat` an
 ### Query
 ```graphql
 query search_users_by_bounding_box(
-  $per_page: Int = 20
-  $page: Int = 1
-  $query: String
   $top_right: GeoPoint
   $bottom_left: GeoPoint
 ) {
-  users: people(
-    per_page: $per_page
-    page: $page
-    query: { keyword: $query }
+  people(
     geo_query: {
       box_top_right_bottom_left: {
-        top_right: $top_right,
+        top_right: $top_right
         bottom_left: $bottom_left
       }
     }
   ) {
     results {
-      id
       first_name
-      coordinates: current_address {
-        latitude
-        longitude
+      current_address {
+        lat
+        lng
       }
     }
   }
@@ -98,11 +98,10 @@ If we parse it to JSON format for readability purposes it becomes:
 #### Server response
 ```js
 [{
-  "id": "133737",
   "first_name": "Jacek",
-  "coordinates": {
-    "latitude": 37.7898112,
-    "longitude": -122.3884296
+  "current_address": {
+    "lat": 37.7898112,
+    "lng": -122.3884296
   }
 }]
 ```
