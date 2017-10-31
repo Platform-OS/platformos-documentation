@@ -15,11 +15,12 @@
     "build": "webpack -p --env production",
     "lint:js": "eslint src/ webpack.*.js --cache",
     "lint:style": "stylelint src/scss/**/*.scss",
-    "lint:html":
-      "bundle exec htmlproofer ./_site --http-status-ignore '999' --check-html --assume-extension --check-opengraph --check-favicon",
+    "lint:html": "bundle exec htmlproofer ./_site --http-status-ignore '999' --check-html --assume-extension --check-opengraph --check-favicon",
     "lint": "npm run lint:js; npm run lint:style; npm run lint:html"
   },
-  "pre-commit": ["build"],
+  "pre-commit": [
+    "build"
+  ],
   "author": "NearMe",
   "license": "UNLICENSED",
   "homepage": "https://github.com/mdyd-dev/nearme-documentation",
@@ -38,7 +39,7 @@
     "copy-webpack-plugin": "^4.2.0",
     "css-loader": "^0.28.7",
     "cssnano": "^3.10.0",
-    "eslint": "^4.9.0",
+    "eslint": "^4.10.0",
     "eslint-loader": "^1.9.0",
     "eslint-plugin-flowtype": "^2.39.1",
     "extract-text-webpack-plugin": "^3.0.2",
