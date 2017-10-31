@@ -39,7 +39,15 @@ const commonConfig = merge([
       }
     ]
   }),
-  parts.loadJavaScript({ include: path.join(PATHS.app, 'js') })
+  parts.loadJavaScript({ include: path.join(PATHS.app, 'js') }),
+  parts.minifyJavaScript(),
+  parts.minifyCSS({
+    options: {
+      // Run cssnano in safe mode to avoid
+      // potentially unsafe transformations.
+      safe: true
+    }
+  })
 ]);
 
 const productionConfig = merge([
@@ -56,15 +64,6 @@ const productionConfig = merge([
     },
     plugins: [new webpack.HashedModuleIdsPlugin()]
   },
-  parts.minifyJavaScript(),
-  parts.minifyCSS({
-    options: {
-      // Run cssnano in safe mode to avoid
-      // potentially unsafe transformations.
-      safe: true
-    }
-  }),
-
   parts.extractBundles([
     {
       name: 'vendor',
@@ -76,18 +75,10 @@ const productionConfig = merge([
   ])
 ]);
 
-const developmentConfig = merge([
-  {
-    output: {
-      devtoolModuleFilenameTemplate: 'webpack:///[absolute-resource-path]'
-    }
-  }
-]);
-
 module.exports = env => {
   if (env === 'production') {
     return merge(commonConfig, productionConfig);
   }
 
-  return merge(commonConfig, developmentConfig);
+  return merge(commonConfig, {});
 };

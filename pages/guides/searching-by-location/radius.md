@@ -3,12 +3,12 @@ title: Radius
 permalink: /guides/searching-by-location/radius
 ---
 
-Sometimes users might provide their services in given distance from their location - you might want to 
-
 Searching by radius takes two arguments:
 
-* center - GeoPoint
-* radius - String - ie. `300mi`, `100km`, `1500m`
+* center - GeoPoint - point around you want to search
+* radius - String - ie. `300mi`, `100km`, `1500m` - max distance of users returned from center point 
+
+See all available [distance units](./reference/distance-units).
 
 ## Query 
 ```graphql
@@ -78,14 +78,3 @@ But when I made radius only `30mi` results were empty.
   }
 }
 ```
-
-### Distance units
-
-Distance units at your disposal:
-
-| Mile          | `mi` or `miles`                |
-| Yard          | `yd` or `yards`                |
-| Feet          | `ft` or `feet`                 |
-| Kilometer     | `km` or `kilometers`           |
-| Meter         | `m` or `meters`                |
-| Nautical mile | `NM`, `nmi` or `nauticalmiles` |
