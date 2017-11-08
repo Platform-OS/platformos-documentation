@@ -1,6 +1,6 @@
 ---
 title: Narrowing keyword search
-permalink: /guides/searching-by-location/reference/narrowing-keyword-search
+permalink: /reference/search/narrowing-keyword-search
 ---
 
 By default keyword search is looking in all fields that are provided to the database.
@@ -9,46 +9,6 @@ In your graphql query you can decide which fields should be search in.
 
 If you leave the `keyword` field empty, it means you are looking for everything, so narrowing by field names will not be applied.
 
-
-## Custom attributes
-```graphql
-query get_providers {
-  listings(
-    query: {
-      keyword: "20"
-      fields: [{
-        name: "properties.service_radius"
-      }]
-    }
-  ) {
-    results {
-      service_radius: property(name: "service_radius")
-    }
-  }
-}
-```
-
-Gets all transactables that custom attribute `service_radius` equals `20`. It is exact search, but it is not case sensitive.
-
-## Profile fields
-```graphql
-query get_owners {
-  people(
-    query: {
-      keyword: "John"
-      fields: [{
-        name: "first_name"
-      }]
-    }
-  ) {
-    results {
-      first_name
-    }
-  }
-}
-```
-
-Returns users that have `first_name` exactly `John`.
 
 ## Operator
 
@@ -131,6 +91,10 @@ query get_owners {
   }
 }
 ```
+
+## Filtered fields 
+
+To learn more about filtered fields see [selecting fields for search](./selecting-fields-for-search) section.
 
 ### OR with filtered fields example
 ```graphql

@@ -8,7 +8,7 @@ Searching by radius takes two arguments:
 * center - GeoPoint - point around you want to search
 * radius - String - ie. `300mi`, `100km`, `1500m` - max distance of users returned from center point 
 
-See all available [distance units](./reference/distance-units).
+See all available [distance units](/reference/search/distance-units).
 
 ## Query 
 ```graphql

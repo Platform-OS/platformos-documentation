@@ -113,7 +113,7 @@ Server will return an empty collection because this point is not within `service
 
 This feature may change in the future.
 
-* `service_radius` will accept string with units (ie. `20km`, `20mi`). See all available [distance units](./reference/distance-units).
+* `service_radius` will accept string with units (ie. `20km`, `20mi`). See all available [distance units](/reference/search/distance-units).
 
 
 

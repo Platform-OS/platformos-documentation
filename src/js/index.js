@@ -8,4 +8,4 @@ anchors.options = {
   placement: 'left',
   icon: '#'
 };
-anchors.add('main h2, main h3');
+anchors.add('main > article > h2');

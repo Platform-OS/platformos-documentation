@@ -1,9 +1,9 @@
 ---
 title: Radius
-permalink: /guides/searching-by-location/reference/distance-units
+permalink: /reference/search/distance-units
 ---
 
-Distance units at your disposal when querying our server (often used in [radius](../radius), [point in shape](../point-in-shape)).
+Distance units at your disposal when querying our server.
 
 | Mile          | `mi` or `miles`                |
 | Yard          | `yd` or `yards`                |

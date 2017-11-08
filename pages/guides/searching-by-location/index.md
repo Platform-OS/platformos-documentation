@@ -16,7 +16,4 @@ If you gather information about your user's location you can easily search them 
 5. [Point in shape](./point-in-shape) - returns transactables/users that have `service_radius` overlapping given point. 
 
 
-Reference:
-
-* [Narrowing keyword search](./reference/narrowing-keyword-search) 
-* [Distance units](./reference/distance-units) 
+[Search Reference](/reference/search)
