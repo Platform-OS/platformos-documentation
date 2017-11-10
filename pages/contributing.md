@@ -12,7 +12,6 @@ Documentation is separated into following sections:
 * *Getting started* - step by step description of setting up a marketplace
 * *Guides* - list of common use patterns
 * *Reference* - list of all APIs, drops, graphql properties etc
-* *Contribute* - how to contribute to the documentation
 
 Based on this structure we create permalinks using folder structure, where each nested level is another folder, e.g
 
@@ -86,9 +85,50 @@ To add liquid markup examples, wrap the whole block in <code>{{ "{% raw "}}%}</c
 ```
 {{ "{% endraw "}}%}</pre>
 
+## Tables
+
+Tables are easy to create in markdown. Use tables if you are describing tabular data.
+
+### Table example
+<pre class="highlight">
+{% raw %}
+| Unit          | Shortcut                       |
+|---            |---                             |
+| Mile          | `mi` or `miles`                |
+| Meter         | `m` or `meters`                |
+| Yard          | `yd` or `yards`                |
+{% endraw %}
+</pre>
+
+If you have trouble remembering the syntax, don't worry, just use [Markdown Tables Generator](https://www.tablesgenerator.com/markdown_tables) to speed things up.
+
 ## Screenshots
+
+Please use screenshots whenever appropriate.
+
+Bad examples
+
+* Code
+* Example server response
+* Form configuration view
+* Table with parameters description
+
+Good examples
+
+* Visualization of the flow/process
+* Visualization of explain with words concept
+* Result of browser rendering if helpful
 
 ## Headings
 
+Headings are very important part of decreasing time that is needed for reader to find interesting information. [Please use them](https://m.eliteediting.com.au/what-are-headings-and-why-are-they-important/).
 
+Please do not use `#` (h1) heading in your articles, as those should be reserved for the title of the article.
 
+We encourage using `##` (h2) headings to separate important sections of the article. Because they are automatically anchored and it is possible to copy url directly to their position on the page.
+
+Use `###` (h3) at your discretion to increase readability and scanability of your content.
+
+## Links
+
+Use links to avoid duplication of content - you can describe a term once (for example in [reference](/reference)) and leverage its existence in many places.

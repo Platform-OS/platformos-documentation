@@ -3,7 +3,7 @@ title: Email Notification
 permalink: /getting-started/notifications/emails
 ---
 
-# Creating first email
+## Creating first email
 
 Let's assume we want to send a welcome email to the newly signed up user. To do it, firstly we create a file in `notifications/email_notifications/welcome_user.liquid` with content:
 
@@ -28,6 +28,8 @@ layout_path: mailer
 ```
 {% endraw %}
 
+{% include alert/note.html content="See [reference](/reference/notifications) for more detailed information." %}
+
 Then all we need to do is to edit `form_configurations/developer/sign_up.liquid` file to associate this email with it:
 
 ```yaml
@@ -43,7 +45,7 @@ email_notifications:
 
 And that's it. Please note: if you are working on staging environment, you also need to configure test email - you can do it via the instance admin in the browser, the path is `/instance_admin/settings/configuration#instance_test_email`. The reason is that we intercept all emails on staging to avoid spamming real users during tests. Now, when you submit the form, the newly registered user should receive the email. Please take a look at [full Notification documentation](/reference/notifications/general) to get an overview of how to control when notification should be sent.
 
-# Using Email Layouts
+## Using Email Layouts
 
 The next step when working with emails is providing a layout. The concept is the same as with the layout for pages. The default layout file for all emails is located at `liquid_views/layouts/mailer.liquid`. It's content is slightly different though then the layout for pages, because it needs to be marked as email layout. A sample minimal content looks like this:
 

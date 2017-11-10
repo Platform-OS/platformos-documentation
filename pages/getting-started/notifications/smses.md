@@ -1,9 +1,9 @@
 ---
-title: Sms Notification
+title: SMS Notification
 permalink: /getting-started/notifications/smses
 ---
 
-# Creating first sms
+## Creating first SMS
 
 We have done the integration part with Twilio for you. However, you need to take care that `to` number is formated according to [Twilio's phone number format guideline](https://support.twilio.com/hc/en-us/articles/223183008-Formatting-International-Phone-Numbers)
 
@@ -57,4 +57,4 @@ sms_notifications:
 ```
 {% endraw %}
 
-Please note - we do not send real sms-es on staging by default. However, because any error with sending real smses on staging might be more costly than sending emails, you do not have possibility to enable it yourself. If you want to test sms-es on staging, please contact us.
+{% include alert/important.html content="We do not send real sms-es on staging by default. However, because any error with sending real smses on staging might be more costly than sending emails, you do not have possibility to enable it yourself. If you want to test sms-es on staging, please [contact us](/contact-us)." %}

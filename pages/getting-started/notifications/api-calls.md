@@ -1,9 +1,9 @@
 ---
-title: Api Call Notification
+title: API Call Notification
 permalink: /getting-started/notifications/api-calls
 ---
 
-# Creating first api call
+## Creating first API call
 
 The last notification type is api call. The principle is the same as with previous examples. We first create api call notification by adding `notifications/api_call_notifications/ping_example_com_on_user_sign_up.liquid`:
 
@@ -41,6 +41,7 @@ api_call_notifications:
 ```
 {% endraw %}
 
-And that's it. Whenever user successfully sign ups, the example.com will be notified.
+And that's it. Whenever user successfully sign ups, the `https://example.com/endpoint/{{ form.id }}` endpoint will be notified.
 
-Please note - we do not send api calls on staging by default. Please contact us if you want to change this behaviour.
+
+{% include alert/important.html content="We do not send api calls on staging by default. Please contact us if you want to change this behaviour." %}
