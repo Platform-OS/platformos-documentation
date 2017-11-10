@@ -22,4 +22,4 @@ Property | Description | Default | Example
 `enabled` | Boolean which defines whether alert should be invoked or not. If false, it will be simply ignored. | true | false
 `trigger_condition` | Liquid condition to control whether notification should be sent or not. The only value that allows notification to be delivered is `true`. If you skip it, the notification will be sent (unless enabled is false) | true | {% raw %}`{% if should_send == 'some_value'%}true{% endif %}`{% endraw %} - this code will trigger the notification only if value of `should_send` is equal to 'some_value'.
 
-{% include alert/important.html content="`to` property is required. Without a destination point none notification can be sent." %}
+{% include alert/important.html content="`to` property is required in SMS and API Call notifications." %}
