@@ -1,0 +1,1641 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  Class: TransactableForm
+  
+    &mdash; Documentation by YARD 0.9.9
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  pathId = "TransactableForm";
+  relpath = '';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="class_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="_index.html">Index (T)</a> &raquo;
+    
+    
+    <span class="title">TransactableForm</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><h1>Class: TransactableForm
+  
+  
+  
+</h1>
+<div class="box_info">
+  
+  <dl>
+    <dt>Inherits:</dt>
+    <dd>
+      <span class="inheritName"><span class='object_link'><a href="BaseForm.html" title="BaseForm (class)">BaseForm</a></span></span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next">Reform::Form</li>
+          
+            <li class="next"><span class='object_link'><a href="BaseForm.html" title="BaseForm (class)">BaseForm</a></span></li>
+          
+            <li class="next">TransactableForm</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+    </dd>
+  </dl>
+  
+
+  
+  
+  
+  
+  <dl>
+      <dt>Includes:</dt>
+      <dd>Reform::Form::ActiveModel::ModelReflections</dd>
+  </dl>
+  
+  
+
+  
+
+  
+  <dl>
+    <dt>Defined in:</dt>
+    <dd>app/forms/transactable_form.rb</dd>
+  </dl>
+  
+</div>
+
+
+  <h2>Constant Summary</h2>
+  <dl class="constants">
+    
+      <dt id="AVAILABLE_ACTION_TYPES-constant" class="">AVAILABLE_ACTION_TYPES =
+        
+      </dt>
+      <dd><pre class="code"><span class='lbracket'>[</span><span class='symbol'>:time_based_booking</span><span class='comma'>,</span> <span class='symbol'>:event_booking</span><span class='comma'>,</span>
+<span class='symbol'>:subscription_booking</span><span class='comma'>,</span> <span class='symbol'>:purchase_action</span><span class='comma'>,</span> <span class='symbol'>:no_action_booking</span><span class='comma'>,</span> <span class='symbol'>:offer_action</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_freeze'>freeze</span></pre></dd>
+    
+  </dl>
+
+
+
+
+  <h2>Instance Attribute Summary <small><a href="#" class="summary_toggle">collapse</a></small></h2>
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#action_type-instance_method" title="#action_type (instance method)">#<strong>action_type</strong>  &#x21d2; ActionTypeForm </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p><span class='object_link'><a href="ActionTypeForm.html" title="ActionTypeForm (class)">ActionTypeForm</a></span> to which this Transactable belongs.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#categories-instance_method" title="#categories (instance method)">#<strong>categories</strong>  &#x21d2; CategoriesForm </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p><span class='object_link'><a href="CategoriesForm.html" title="CategoriesForm (class)">CategoriesForm</a></span> encapsulating the categories selected for this
+Transactable.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#company-instance_method" title="#company (instance method)">#<strong>company</strong>  &#x21d2; CompanyForm </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p><span class='object_link'><a href="CompanyForm.html" title="CompanyForm (class)">CompanyForm</a></span> to which this Transactable belongs.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#currency-instance_method" title="#currency (instance method)">#<strong>currency</strong>  &#x21d2; String </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Currency used for this Transactable&#39;s pricings.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#custom_attachments-instance_method" title="#custom_attachments (instance method)">#<strong>custom_attachments</strong>  &#x21d2; CustomAttachmentsForm </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p><span class='object_link'><a href="CustomAttachmentsForm.html" title="CustomAttachmentsForm (class)">CustomAttachmentsForm</a></span> encapsulating the custom attachments for this
+Transactable.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#custom_images-instance_method" title="#custom_images (instance method)">#<strong>custom_images</strong>  &#x21d2; CustomImagesForm </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p><span class='object_link'><a href="CustomImagesForm.html" title="CustomImagesForm (class)">CustomImagesForm</a></span> encapsulating the custom images for this Transactable.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#customizations-instance_method" title="#customizations (instance method)">#<strong>customizations</strong>  &#x21d2; CustomizationsForm </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p><span class='object_link'><a href="CustomizationsForm.html" title="CustomizationsForm (class)">CustomizationsForm</a></span> encapsulating the customizations for this
+Transactable.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#enabled-instance_method" title="#enabled (instance method)">#<strong>enabled</strong>  &#x21d2; Boolean </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Whether the Transactable is enabled; if not enabled, it will not be visible
+in search or purchasable.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#event_booking-instance_method" title="#event_booking (instance method)">#<strong>event_booking</strong>  &#x21d2; EventBookingForm </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p><span class='object_link'><a href="EventBookingForm.html" title="EventBookingForm (class)">EventBookingForm</a></span> action for this Transactable (if available).</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#location-instance_method" title="#location (instance method)">#<strong>location</strong>  &#x21d2; LocationForm </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The <span class='object_link'><a href="LocationForm.html" title="LocationForm (class)">LocationForm</a></span> for this Transactable.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#no_action_booking-instance_method" title="#no_action_booking (instance method)">#<strong>no_action_booking</strong>  &#x21d2; NoActionBookingForm </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p><span class='object_link'><a href="NoActionBookingForm.html" title="NoActionBookingForm (class)">NoActionBookingForm</a></span> action for this Transactable (if available).</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#offer_action-instance_method" title="#offer_action (instance method)">#<strong>offer_action</strong>  &#x21d2; OfferActionForm </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p><span class='object_link'><a href="OfferActionForm.html" title="OfferActionForm (class)">OfferActionForm</a></span> action for this Transactable (if available).</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#photo_ids-instance_method" title="#photo_ids (instance method)">#<strong>photo_ids</strong>  &#x21d2; Array&lt;Integer&gt; </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Array of numeric identifiers for the photos associated with this
+Transactable.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#photos-instance_method" title="#photos (instance method)">#<strong>photos</strong>  &#x21d2; Array&lt;PhotoForm&gt; </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Array of <span class='object_link'><a href="PhotoForm.html" title="PhotoForm (class)">PhotoForm</a></span> forms encapsulating the photos for this Transactable.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#purchase_action-instance_method" title="#purchase_action (instance method)">#<strong>purchase_action</strong>  &#x21d2; PurchaseActionForm </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p><span class='object_link'><a href="PurchaseActionForm.html" title="PurchaseActionForm (class)">PurchaseActionForm</a></span> action for this Transactable (if available).</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#subscription_booking-instance_method" title="#subscription_booking (instance method)">#<strong>subscription_booking</strong>  &#x21d2; SubscriptionBookingForm </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p><span class='object_link'><a href="SubscriptionBookingForm.html" title="SubscriptionBookingForm (class)">SubscriptionBookingForm</a></span> action for this Transactable (if available).</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#time_based_booking-instance_method" title="#time_based_booking (instance method)">#<strong>time_based_booking</strong>  &#x21d2; TimeBasedBookingForm </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p><span class='object_link'><a href="TimeBasedBookingForm.html" title="TimeBasedBookingForm (class)">TimeBasedBookingForm</a></span> action for this Transactable (if available).</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#transactable_type-instance_method" title="#transactable_type (instance method)">#<strong>transactable_type</strong>  &#x21d2; TransactableType </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>TransactableType to which this Transactable belongs.</p>
+</div></span>
+  
+</li>
+
+    
+  </ul>
+
+
+
+
+  
+    <h2>
+      Class Method Summary
+      <small><a href="#" class="summary_toggle">collapse</a></small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#decorate-class_method" title="decorate (class method)">.<strong>decorate</strong>(configuration)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+    </ul>
+  
+    <h2>
+      Instance Method Summary
+      <small><a href="#" class="summary_toggle">collapse</a></small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#_destroy-instance_method" title="#_destroy (instance method)">#<strong>_destroy</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#_destroy=-instance_method" title="#_destroy= (instance method)">#<strong>_destroy=</strong>(value)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#custom_attachments_open_struct!-instance_method" title="#custom_attachments_open_struct! (instance method)">#<strong>custom_attachments_open_struct!</strong>(fragment:, **_args)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#custom_images_open_struct!-instance_method" title="#custom_images_open_struct! (instance method)">#<strong>custom_images_open_struct!</strong>(fragment:, **_args)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods inherited from <span class='object_link'><a href="BaseForm.html" title="BaseForm (class)">BaseForm</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="BaseForm.html#add_property-class_method" title="BaseForm.add_property (method)">add_property</a></span>, <span class='object_link'><a href="BaseForm.html#add_validation-class_method" title="BaseForm.add_validation (method)">add_validation</a></span>, <span class='object_link'><a href="BaseForm.html#checked%3F-class_method" title="BaseForm.checked? (method)">checked?</a></span>, <span class='object_link'><a href="BaseForm.html#checked%3F-instance_method" title="BaseForm#checked? (method)">#checked?</a></span>, <span class='object_link'><a href="BaseForm.html#date_time_handler-instance_method" title="BaseForm#date_time_handler (method)">#date_time_handler</a></span>, <span class='object_link'><a href="BaseForm.html#field_whitelisted-class_method" title="BaseForm.field_whitelisted (method)">field_whitelisted</a></span>, <span class='object_link'><a href="BaseForm.html#inject_custom_attributes-class_method" title="BaseForm.inject_custom_attributes (method)">inject_custom_attributes</a></span>, <span class='object_link'><a href="BaseForm.html#inject_dynamic_fields-class_method" title="BaseForm.inject_dynamic_fields (method)">inject_dynamic_fields</a></span>, <span class='object_link'><a href="BaseForm.html#reflect_on_association-class_method" title="BaseForm.reflect_on_association (method)">reflect_on_association</a></span>, <span class='object_link'><a href="BaseForm.html#required%3F-instance_method" title="BaseForm#required? (method)">#required?</a></span>, <span class='object_link'><a href="BaseForm.html#to_liquid-instance_method" title="BaseForm#to_liquid (method)">#to_liquid</a></span></p>
+
+  
+  <div id="instance_attr_details" class="attr_details">
+    <h2>Instance Attribute Details</h2>
+    
+      
+      <span id="action_type=-instance_method"></span>
+      <div class="method_details first">
+  <h3 class="signature first" id="action_type-instance_method">
+  
+    #<strong>action_type</strong>  &#x21d2; <tt><span class='object_link'><a href="ActionTypeForm.html" title="ActionTypeForm (class)">ActionTypeForm</a></span></tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns <span class='object_link'><a href="ActionTypeForm.html" title="ActionTypeForm (class)">ActionTypeForm</a></span> to which this Transactable belongs</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="ActionTypeForm.html" title="ActionTypeForm (class)">ActionTypeForm</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p><span class='object_link'><a href="ActionTypeForm.html" title="ActionTypeForm (class)">ActionTypeForm</a></span> to which this Transactable belongs</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      
+      <span id="categories=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="categories-instance_method">
+  
+    #<strong>categories</strong>  &#x21d2; <tt><span class='object_link'><a href="CategoriesForm.html" title="CategoriesForm (class)">CategoriesForm</a></span></tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns <span class='object_link'><a href="CategoriesForm.html" title="CategoriesForm (class)">CategoriesForm</a></span> encapsulating the categories selected for this
+Transactable</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="CategoriesForm.html" title="CategoriesForm (class)">CategoriesForm</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p><span class='object_link'><a href="CategoriesForm.html" title="CategoriesForm (class)">CategoriesForm</a></span> encapsulating the categories selected for this
+Transactable</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      
+      <span id="company=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="company-instance_method">
+  
+    #<strong>company</strong>  &#x21d2; <tt><span class='object_link'><a href="CompanyForm.html" title="CompanyForm (class)">CompanyForm</a></span></tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns <span class='object_link'><a href="CompanyForm.html" title="CompanyForm (class)">CompanyForm</a></span> to which this Transactable belongs</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="CompanyForm.html" title="CompanyForm (class)">CompanyForm</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p><span class='object_link'><a href="CompanyForm.html" title="CompanyForm (class)">CompanyForm</a></span> to which this Transactable belongs</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      
+      <span id="currency=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="currency-instance_method">
+  
+    #<strong>currency</strong>  &#x21d2; <tt>String</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns currency used for this Transactable&#39;s pricings</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>currency used for this Transactable&#39;s pricings</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      
+      <span id="custom_attachments=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="custom_attachments-instance_method">
+  
+    #<strong>custom_attachments</strong>  &#x21d2; <tt><span class='object_link'><a href="CustomAttachmentsForm.html" title="CustomAttachmentsForm (class)">CustomAttachmentsForm</a></span></tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns <span class='object_link'><a href="CustomAttachmentsForm.html" title="CustomAttachmentsForm (class)">CustomAttachmentsForm</a></span> encapsulating the custom attachments for
+this Transactable</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="CustomAttachmentsForm.html" title="CustomAttachmentsForm (class)">CustomAttachmentsForm</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p><span class='object_link'><a href="CustomAttachmentsForm.html" title="CustomAttachmentsForm (class)">CustomAttachmentsForm</a></span> encapsulating the custom attachments for this
+Transactable</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      
+      <span id="custom_images=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="custom_images-instance_method">
+  
+    #<strong>custom_images</strong>  &#x21d2; <tt><span class='object_link'><a href="CustomImagesForm.html" title="CustomImagesForm (class)">CustomImagesForm</a></span></tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns <span class='object_link'><a href="CustomImagesForm.html" title="CustomImagesForm (class)">CustomImagesForm</a></span> encapsulating the custom images for this
+Transactable</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="CustomImagesForm.html" title="CustomImagesForm (class)">CustomImagesForm</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p><span class='object_link'><a href="CustomImagesForm.html" title="CustomImagesForm (class)">CustomImagesForm</a></span> encapsulating the custom images for this Transactable</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      
+      <span id="customizations=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="customizations-instance_method">
+  
+    #<strong>customizations</strong>  &#x21d2; <tt><span class='object_link'><a href="CustomizationsForm.html" title="CustomizationsForm (class)">CustomizationsForm</a></span></tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns <span class='object_link'><a href="CustomizationsForm.html" title="CustomizationsForm (class)">CustomizationsForm</a></span> encapsulating the customizations for this
+Transactable</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="CustomizationsForm.html" title="CustomizationsForm (class)">CustomizationsForm</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p><span class='object_link'><a href="CustomizationsForm.html" title="CustomizationsForm (class)">CustomizationsForm</a></span> encapsulating the customizations for this Transactable</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      
+      <span id="enabled=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="enabled-instance_method">
+  
+    #<strong>enabled</strong>  &#x21d2; <tt>Boolean</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns whether the Transactable is enabled; if not enabled, it will not be
+visible in search or purchasable</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>whether the Transactable is enabled; if not enabled, it will not be visible
+in search or purchasable</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      
+      <span id="event_booking=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="event_booking-instance_method">
+  
+    #<strong>event_booking</strong>  &#x21d2; <tt><span class='object_link'><a href="EventBookingForm.html" title="EventBookingForm (class)">EventBookingForm</a></span></tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns <span class='object_link'><a href="EventBookingForm.html" title="EventBookingForm (class)">EventBookingForm</a></span> action for this Transactable (if available)</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="EventBookingForm.html" title="EventBookingForm (class)">EventBookingForm</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p><span class='object_link'><a href="EventBookingForm.html" title="EventBookingForm (class)">EventBookingForm</a></span> action for this Transactable (if available)</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      
+      <span id="location=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="location-instance_method">
+  
+    #<strong>location</strong>  &#x21d2; <tt><span class='object_link'><a href="LocationForm.html" title="LocationForm (class)">LocationForm</a></span></tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the <span class='object_link'><a href="LocationForm.html" title="LocationForm (class)">LocationForm</a></span> for this Transactable</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="LocationForm.html" title="LocationForm (class)">LocationForm</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the <span class='object_link'><a href="LocationForm.html" title="LocationForm (class)">LocationForm</a></span> for this Transactable</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      
+      <span id="no_action_booking=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="no_action_booking-instance_method">
+  
+    #<strong>no_action_booking</strong>  &#x21d2; <tt><span class='object_link'><a href="NoActionBookingForm.html" title="NoActionBookingForm (class)">NoActionBookingForm</a></span></tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns <span class='object_link'><a href="NoActionBookingForm.html" title="NoActionBookingForm (class)">NoActionBookingForm</a></span> action for this Transactable (if available)</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="NoActionBookingForm.html" title="NoActionBookingForm (class)">NoActionBookingForm</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p><span class='object_link'><a href="NoActionBookingForm.html" title="NoActionBookingForm (class)">NoActionBookingForm</a></span> action for this Transactable (if available)</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      
+      <span id="offer_action=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="offer_action-instance_method">
+  
+    #<strong>offer_action</strong>  &#x21d2; <tt><span class='object_link'><a href="OfferActionForm.html" title="OfferActionForm (class)">OfferActionForm</a></span></tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns <span class='object_link'><a href="OfferActionForm.html" title="OfferActionForm (class)">OfferActionForm</a></span> action for this Transactable (if available)</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="OfferActionForm.html" title="OfferActionForm (class)">OfferActionForm</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p><span class='object_link'><a href="OfferActionForm.html" title="OfferActionForm (class)">OfferActionForm</a></span> action for this Transactable (if available)</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      
+      <span id="photo_ids=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="photo_ids-instance_method">
+  
+    #<strong>photo_ids</strong>  &#x21d2; <tt>Array&lt;Integer&gt;</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns array of numeric identifiers for the photos associated with this
+Transactable</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array&lt;Integer&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>array of numeric identifiers for the photos associated with this
+Transactable</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      
+      <span id="photos=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="photos-instance_method">
+  
+    #<strong>photos</strong>  &#x21d2; <tt>Array&lt;<span class='object_link'><a href="PhotoForm.html" title="PhotoForm (class)">PhotoForm</a></span>&gt;</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns array of <span class='object_link'><a href="PhotoForm.html" title="PhotoForm (class)">PhotoForm</a></span> forms encapsulating the photos for this
+Transactable</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array&lt;<span class='object_link'><a href="PhotoForm.html" title="PhotoForm (class)">PhotoForm</a></span>&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>array of <span class='object_link'><a href="PhotoForm.html" title="PhotoForm (class)">PhotoForm</a></span> forms encapsulating the photos for this Transactable</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      
+      <span id="purchase_action=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="purchase_action-instance_method">
+  
+    #<strong>purchase_action</strong>  &#x21d2; <tt><span class='object_link'><a href="PurchaseActionForm.html" title="PurchaseActionForm (class)">PurchaseActionForm</a></span></tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns <span class='object_link'><a href="PurchaseActionForm.html" title="PurchaseActionForm (class)">PurchaseActionForm</a></span> action for this Transactable (if available)</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="PurchaseActionForm.html" title="PurchaseActionForm (class)">PurchaseActionForm</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p><span class='object_link'><a href="PurchaseActionForm.html" title="PurchaseActionForm (class)">PurchaseActionForm</a></span> action for this Transactable (if available)</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      
+      <span id="subscription_booking=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="subscription_booking-instance_method">
+  
+    #<strong>subscription_booking</strong>  &#x21d2; <tt><span class='object_link'><a href="SubscriptionBookingForm.html" title="SubscriptionBookingForm (class)">SubscriptionBookingForm</a></span></tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns <span class='object_link'><a href="SubscriptionBookingForm.html" title="SubscriptionBookingForm (class)">SubscriptionBookingForm</a></span> action for this Transactable (if
+available)</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="SubscriptionBookingForm.html" title="SubscriptionBookingForm (class)">SubscriptionBookingForm</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p><span class='object_link'><a href="SubscriptionBookingForm.html" title="SubscriptionBookingForm (class)">SubscriptionBookingForm</a></span> action for this Transactable (if available)</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      
+      <span id="time_based_booking=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="time_based_booking-instance_method">
+  
+    #<strong>time_based_booking</strong>  &#x21d2; <tt><span class='object_link'><a href="TimeBasedBookingForm.html" title="TimeBasedBookingForm (class)">TimeBasedBookingForm</a></span></tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns <span class='object_link'><a href="TimeBasedBookingForm.html" title="TimeBasedBookingForm (class)">TimeBasedBookingForm</a></span> action for this Transactable (if available)</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="TimeBasedBookingForm.html" title="TimeBasedBookingForm (class)">TimeBasedBookingForm</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p><span class='object_link'><a href="TimeBasedBookingForm.html" title="TimeBasedBookingForm (class)">TimeBasedBookingForm</a></span> action for this Transactable (if available)</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      
+      <span id="transactable_type=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="transactable_type-instance_method">
+  
+    #<strong>transactable_type</strong>  &#x21d2; <tt>TransactableType</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns TransactableType to which this Transactable belongs</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>TransactableType</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>TransactableType to which this Transactable belongs</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+  </div>
+
+
+  <div id="class_method_details" class="method_details_list">
+    <h2>Class Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="decorate-class_method">
+  
+    .<strong>decorate</strong>(configuration)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3>
+</div>
+    
+  </div>
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="_destroy-instance_method">
+  
+    #<strong>_destroy</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="_destroy=-instance_method">
+  
+    #<strong>_destroy=</strong>(value)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="custom_attachments_open_struct!-instance_method">
+  
+    #<strong>custom_attachments_open_struct!</strong>(fragment:, **_args)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="custom_images_open_struct!-instance_method">
+  
+    #<strong>custom_images_open_struct!</strong>(fragment:, **_args)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3>
+</div>
+    
+  </div>
+
+</div>
+
+      <div id="footer">
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+</div>
+
+    </div>
+  </body>
+</html>

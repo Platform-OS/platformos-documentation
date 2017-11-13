@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  Class: ScheduleRuleForm
+  
+    &mdash; Documentation by YARD 0.9.9
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  pathId = "ScheduleRuleForm";
+  relpath = '';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="class_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="_index.html">Index (S)</a> &raquo;
+    
+    
+    <span class="title">ScheduleRuleForm</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><h1>Class: ScheduleRuleForm
+  
+  
+  
+</h1>
+<div class="box_info">
+  
+  <dl>
+    <dt>Inherits:</dt>
+    <dd>
+      <span class="inheritName"><span class='object_link'><a href="BaseForm.html" title="BaseForm (class)">BaseForm</a></span></span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next">Reform::Form</li>
+          
+            <li class="next"><span class='object_link'><a href="BaseForm.html" title="BaseForm (class)">BaseForm</a></span></li>
+          
+            <li class="next">ScheduleRuleForm</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+    </dd>
+  </dl>
+  
+
+  
+  
+  
+  
+  <dl>
+      <dt>Includes:</dt>
+      <dd>Reform::Form::ActiveModel::ModelReflections</dd>
+  </dl>
+  
+  
+
+  
+
+  
+  <dl>
+    <dt>Defined in:</dt>
+    <dd>app/forms/schedule_rule_form.rb</dd>
+  </dl>
+  
+</div>
+
+
+
+
+
+  <h2>Instance Attribute Summary <small><a href="#" class="summary_toggle">collapse</a></small></h2>
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#every_hours-instance_method" title="#every_hours (instance method)">#<strong>every_hours</strong>  &#x21d2; Integer </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Used together with run_hours_mode &#39;recurring&#39;; the actual schedule
+times will be every_hours.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#id-instance_method" title="#id (instance method)">#<strong>id</strong>  &#x21d2; Integer </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Numeric identifier for the ScheduleRule object.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#run_dates_mode-instance_method" title="#run_dates_mode (instance method)">#<strong>run_dates_mode</strong>  &#x21d2; String </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Can be &#39;recurring&#39;, &#39;specific&#39;, or &#39;range&#39;; if
+&#39;recurring&#39; the property &#39;week_days&#39; will be used to
+determine the actual schedule rule dates; if &#39;specific&#39;, the
+user_dates array will be used to determine the schedule rule dates; if
+&#39;range&#39;, then user_date_start and user_date_end will be used to
+determine the actual schedule rule (range).</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#run_hours_mode-instance_method" title="#run_hours_mode (instance method)">#<strong>run_hours_mode</strong>  &#x21d2; String </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Can be &#39;recurring&#39; or &#39;specific&#39;; if recurring, the actual
+schedule times will occur &#39;every_hours&#39;; if &#39;specific&#39;, the
+attribute &#39;user_times&#39; will be used.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#user_date_end-instance_method" title="#user_date_end (instance method)">#<strong>user_date_end</strong>  &#x21d2; Date </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Used together with run_dates_mode &#39;range&#39;; specifies the actual end
+date of the schedule rule.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#user_date_start-instance_method" title="#user_date_start (instance method)">#<strong>user_date_start</strong>  &#x21d2; Date </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Used together with run_dates_mode &#39;range&#39;; specifies the actual
+start date of the schedule rule.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#user_dates-instance_method" title="#user_dates (instance method)">#<strong>user_dates</strong>  &#x21d2; Array&lt;Date&gt; </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Used together with run_dates_mode &#39;specific&#39;; the dates specified
+will be the actual dates of the schedule rule.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#user_time_end-instance_method" title="#user_time_end (instance method)">#<strong>user_time_end</strong>  &#x21d2; Time </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Used together with run_hours_mode &#39;recurring&#39;; defines the actual
+end time for the schedule rule.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#user_time_start-instance_method" title="#user_time_start (instance method)">#<strong>user_time_start</strong>  &#x21d2; Time </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Used together with run_hours_mode &#39;recurring&#39;; defines the actual
+start time for the schedule rule.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#user_times-instance_method" title="#user_times (instance method)">#<strong>user_times</strong>  &#x21d2; Array&lt;Time&gt; </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Used together with run_hours_mode &#39;specific&#39;; defines the actual
+times for the schedule rule.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#week_days-instance_method" title="#week_days (instance method)">#<strong>week_days</strong>  &#x21d2; Array&lt;Integer&gt; </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Used together with run_dates_mode &#39;recurring&#39;; week_days specify
+the actual days of the week in the recurring schedule rule.</p>
+</div></span>
+  
+</li>
+
+    
+  </ul>
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  <h2>Method Summary</h2>
+  
+  <h3 class="inherited">Methods inherited from <span class='object_link'><a href="BaseForm.html" title="BaseForm (class)">BaseForm</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="BaseForm.html#add_property-class_method" title="BaseForm.add_property (method)">add_property</a></span>, <span class='object_link'><a href="BaseForm.html#add_validation-class_method" title="BaseForm.add_validation (method)">add_validation</a></span>, <span class='object_link'><a href="BaseForm.html#checked%3F-class_method" title="BaseForm.checked? (method)">checked?</a></span>, <span class='object_link'><a href="BaseForm.html#checked%3F-instance_method" title="BaseForm#checked? (method)">#checked?</a></span>, <span class='object_link'><a href="BaseForm.html#date_time_handler-instance_method" title="BaseForm#date_time_handler (method)">#date_time_handler</a></span>, <span class='object_link'><a href="BaseForm.html#field_whitelisted-class_method" title="BaseForm.field_whitelisted (method)">field_whitelisted</a></span>, <span class='object_link'><a href="BaseForm.html#inject_custom_attributes-class_method" title="BaseForm.inject_custom_attributes (method)">inject_custom_attributes</a></span>, <span class='object_link'><a href="BaseForm.html#inject_dynamic_fields-class_method" title="BaseForm.inject_dynamic_fields (method)">inject_dynamic_fields</a></span>, <span class='object_link'><a href="BaseForm.html#reflect_on_association-class_method" title="BaseForm.reflect_on_association (method)">reflect_on_association</a></span>, <span class='object_link'><a href="BaseForm.html#required%3F-instance_method" title="BaseForm#required? (method)">#required?</a></span>, <span class='object_link'><a href="BaseForm.html#to_liquid-instance_method" title="BaseForm#to_liquid (method)">#to_liquid</a></span></p>
+
+  
+  <div id="instance_attr_details" class="attr_details">
+    <h2>Instance Attribute Details</h2>
+    
+      
+      <span id="every_hours=-instance_method"></span>
+      <div class="method_details first">
+  <h3 class="signature first" id="every_hours-instance_method">
+  
+    #<strong>every_hours</strong>  &#x21d2; <tt>Integer</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns used together with run_hours_mode &#39;recurring&#39;; the actual
+schedule times will be every_hours</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>used together with run_hours_mode &#39;recurring&#39;; the actual schedule
+times will be every_hours</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      
+      <span id="id=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="id-instance_method">
+  
+    #<strong>id</strong>  &#x21d2; <tt>Integer</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns numeric identifier for the ScheduleRule object</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>numeric identifier for the ScheduleRule object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      
+      <span id="run_dates_mode=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="run_dates_mode-instance_method">
+  
+    #<strong>run_dates_mode</strong>  &#x21d2; <tt>String</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns can be &#39;recurring&#39;, &#39;specific&#39;, or &#39;range&#39;;
+if &#39;recurring&#39; the property &#39;week_days&#39; will be used to
+determine the actual schedule rule dates; if &#39;specific&#39;, the
+user_dates array will be used to determine the schedule rule dates; if
+&#39;range&#39;, then user_date_start and user_date_end will be used to
+determine the actual schedule rule (range)</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>can be &#39;recurring&#39;, &#39;specific&#39;, or &#39;range&#39;; if
+&#39;recurring&#39; the property &#39;week_days&#39; will be used to
+determine the actual schedule rule dates; if &#39;specific&#39;, the
+user_dates array will be used to determine the schedule rule dates; if
+&#39;range&#39;, then user_date_start and user_date_end will be used to
+determine the actual schedule rule (range)</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      
+      <span id="run_hours_mode=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="run_hours_mode-instance_method">
+  
+    #<strong>run_hours_mode</strong>  &#x21d2; <tt>String</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns can be &#39;recurring&#39; or &#39;specific&#39;; if recurring, the
+actual schedule times will occur &#39;every_hours&#39;; if
+&#39;specific&#39;, the attribute &#39;user_times&#39; will be used</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>can be &#39;recurring&#39; or &#39;specific&#39;; if recurring, the actual
+schedule times will occur &#39;every_hours&#39;; if &#39;specific&#39;, the
+attribute &#39;user_times&#39; will be used</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      
+      <span id="user_date_end=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="user_date_end-instance_method">
+  
+    #<strong>user_date_end</strong>  &#x21d2; <tt>Date</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns used together with run_dates_mode &#39;range&#39;; specifies the
+actual end date of the schedule rule</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Date</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>used together with run_dates_mode &#39;range&#39;; specifies the actual end
+date of the schedule rule</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      
+      <span id="user_date_start=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="user_date_start-instance_method">
+  
+    #<strong>user_date_start</strong>  &#x21d2; <tt>Date</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns used together with run_dates_mode &#39;range&#39;; specifies the
+actual start date of the schedule rule</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Date</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>used together with run_dates_mode &#39;range&#39;; specifies the actual
+start date of the schedule rule</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      
+      <span id="user_dates=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="user_dates-instance_method">
+  
+    #<strong>user_dates</strong>  &#x21d2; <tt>Array&lt;Date&gt;</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns used together with run_dates_mode &#39;specific&#39;; the dates
+specified will be the actual dates of the schedule rule</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array&lt;Date&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>used together with run_dates_mode &#39;specific&#39;; the dates specified
+will be the actual dates of the schedule rule</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      
+      <span id="user_time_end=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="user_time_end-instance_method">
+  
+    #<strong>user_time_end</strong>  &#x21d2; <tt>Time</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns used together with run_hours_mode &#39;recurring&#39;; defines the
+actual end time for the schedule rule</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Time</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>used together with run_hours_mode &#39;recurring&#39;; defines the actual
+end time for the schedule rule</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      
+      <span id="user_time_start=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="user_time_start-instance_method">
+  
+    #<strong>user_time_start</strong>  &#x21d2; <tt>Time</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns used together with run_hours_mode &#39;recurring&#39;; defines the
+actual start time for the schedule rule</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Time</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>used together with run_hours_mode &#39;recurring&#39;; defines the actual
+start time for the schedule rule</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      
+      <span id="user_times=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="user_times-instance_method">
+  
+    #<strong>user_times</strong>  &#x21d2; <tt>Array&lt;Time&gt;</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns used together with run_hours_mode &#39;specific&#39;; defines the
+actual times for the schedule rule</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array&lt;Time&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>used together with run_hours_mode &#39;specific&#39;; defines the actual
+times for the schedule rule</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      
+      <span id="week_days=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="week_days-instance_method">
+  
+    #<strong>week_days</strong>  &#x21d2; <tt>Array&lt;Integer&gt;</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns used together with run_dates_mode &#39;recurring&#39;; week_days
+specify the actual days of the week in the recurring schedule rule</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array&lt;Integer&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>used together with run_dates_mode &#39;recurring&#39;; week_days specify
+the actual days of the week in the recurring schedule rule</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+  </div>
+
+
+</div>
+
+      <div id="footer">
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+</div>
+
+    </div>
+  </body>
+</html>
