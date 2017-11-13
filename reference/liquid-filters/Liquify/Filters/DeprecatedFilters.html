@@ -1,0 +1,3944 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  Module: Liquify::Filters::DeprecatedFilters
+  
+    &mdash; Documentation by YARD 0.9.9
+  
+</title>
+
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="../../css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  pathId = "Liquify::Filters::DeprecatedFilters";
+  relpath = '../../';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="../../class_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="../../_index.html">Index (D)</a> &raquo;
+    <span class='title'><span class='object_link'><a href="../../Liquify.html" title="Liquify (module)">Liquify</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../Filters.html" title="Liquify::Filters (module)">Filters</a></span></span>
+     &raquo; 
+    <span class="title">DeprecatedFilters</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="../../class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><h1>Module: Liquify::Filters::DeprecatedFilters
+  
+  
+  
+</h1>
+<div class="box_info">
+  
+
+  
+  
+  
+  
+  
+
+  
+
+  
+  <dl>
+    <dt>Defined in:</dt>
+    <dd>lib/liquid/filters/deprecated_filters.rb</dd>
+  </dl>
+  
+</div>
+
+
+
+
+
+
+
+
+  
+    <h2>
+      Instance Method Summary
+      <small><a href="#" class="summary_toggle">collapse</a></small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#already_favorite-instance_method" title="#already_favorite (instance method)">#<strong>already_favorite</strong>(user, object)  &#x21d2; Boolean </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Whether the user has the given object among his wishlisted items.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#attachments_visible_for-instance_method" title="#attachments_visible_for (instance method)">#<strong>attachments_visible_for</strong>(transactable_drop, user_drop)  &#x21d2; Array&lt;CkeditorAssetDrop&gt; </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Seller attachments tied to the given transactable object and that are
+visible by the given user.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#connections_for-instance_method" title="#connections_for (instance method)">#<strong>connections_for</strong>(listing, current_user)  &#x21d2; Array&lt;String&gt; </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Array of connection information strings for a user and a listing; for each
+of the user&#39;s friends (followed users) strings will be generated like
+so: If the friend visited the listing, the string &#39;User.name worked
+here&#39; will be added.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#connections_tooltip-instance_method" title="#connections_tooltip (instance method)">#<strong>connections_tooltip</strong>(connections, size = 5)  &#x21d2; String </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>String to be used as a tooltip displaying the connections
+LiquidFilters#connections_for for a listing and a user; if there
+are more than 5 connections the translation
+&#39;search.list.additional_social_connections&#39; (with the parameter
+count) is added to the tooltip.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#find_collaborator-instance_method" title="#find_collaborator (instance method)">#<strong>find_collaborator</strong>(user, transactable)  &#x21d2; TransactableCollaboratorDrop </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Transactable collaborator object for the given transactable and user; this
+object ties the collaborating user to the transactable.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#find_collaborators_for_user-instance_method" title="#find_collaborators_for_user (instance method)">#<strong>find_collaborators_for_user</strong>(user)  &#x21d2; Array&lt;Integer&gt; </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Array of ids of the TransactableCollaborator objects for given user pending
+owner approval.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#find_collaborators_for_user_transactables-instance_method" title="#find_collaborators_for_user_transactables (instance method)">#<strong>find_collaborators_for_user_transactables</strong>(current_user, user)  &#x21d2; Array&lt;Integer&gt; </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Array of ids of the TransactableCollaborator objects defining
+collaborations of the user given as the user parameter, collaborations on
+Transactable objects (with the state pending, or in_progress created by the
+user given as the current_user parameter.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#get_ckeditor_assets-instance_method" title="#get_ckeditor_assets (instance method)">#<strong>get_ckeditor_assets</strong>(access_level, options = {})  &#x21d2; Array&lt;CkeditorAssetDrop&gt; </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Paginated array of Ckeditor::Asset objects matching the given access_level
+and the options in the options hash.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#get_data_contents-instance_method" title="#get_data_contents (instance method)">#<strong>get_data_contents</strong>(external_id, options = {})  &#x21d2; Array&lt;DataSourceContentDrop&gt; </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Paginated array of DataSourceContent objects where the external_id matches
+the one given as the parameter; the pagination is done using options passed
+in as the second parameter.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#get_enquirer_confirmed_orders-instance_method" title="#get_enquirer_confirmed_orders (instance method)">#<strong>get_enquirer_confirmed_orders</strong>(user, transactable)  &#x21d2; Array&lt;OrderDrop&gt; </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>user given as the first parameter for the transactable given as the second
+parameter.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#get_enquirer_draft_orders-instance_method" title="#get_enquirer_draft_orders (instance method)">#<strong>get_enquirer_draft_orders</strong>(user, transactable)  &#x21d2; Array&lt;OrderDrop&gt; </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Array of orders for transactable, belonging to user, ordered descending by
+the creation date.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#get_enquirer_orders-instance_method" title="#get_enquirer_orders (instance method)">#<strong>get_enquirer_orders</strong>(user, transactable)  &#x21d2; Array&lt;OrderDrop&gt; </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Array of order objects containing orders placed by the user given as the
+first parameter for the transactable given as the second parameter.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#get_lister_orders-instance_method" title="#get_lister_orders (instance method)">#<strong>get_lister_orders</strong>(user, transactable)  &#x21d2; Array&lt;OrderDrop&gt; </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Array of order objects.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#get_lowest_price_with_options-instance_method" title="#get_lowest_price_with_options (instance method)">#<strong>get_lowest_price_with_options</strong>(object, lgpricing_filters, options = {})  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#get_payment_gateway_id-instance_method" title="#get_payment_gateway_id (instance method)">#<strong>get_payment_gateway_id</strong>(_str)  &#x21d2; Integer </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The ID of the PaymentGateway for which the credit card payment method
+exists.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#group_rules_by_day-instance_method" title="#group_rules_by_day (instance method)">#<strong>group_rules_by_day</strong>(rules)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#is_approved_collaborator-instance_method" title="#is_approved_collaborator (instance method)">#<strong>is_approved_collaborator</strong>(user, transactable)  &#x21d2; Boolean </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Whether the given user is an approved transactable collaborator of the
+Transactable given as the parameter.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#is_user_following-instance_method" title="#is_user_following (instance method)">#<strong>is_user_following</strong>(user, object_id, object_type)  &#x21d2; Boolean </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Checks if user is following events for activity stream.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#is_visible-instance_method" title="#is_visible (instance method)">#<strong>is_visible</strong>(key)  &#x21d2; Boolean </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Whether the element identified by the given key is visible according to the
+rules defined by the hidden UI controls in the admin section of the
+marketplace.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#location_path-instance_method" title="#location_path (instance method)">#<strong>location_path</strong>(_transactable_type, location)  &#x21d2; String<sup>?</sup> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Path to the first searchable listing for the location given as parameter;
+nil if no such listing can be found.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#lowest_full_price_with_cents_with_currency-instance_method" title="#lowest_full_price_with_cents_with_currency (instance method)">#<strong>lowest_full_price_with_cents_with_currency</strong>(object, lgpricing_filters = [])  &#x21d2; Hash{String =&gt; String} </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Hash of the form !{ &#39;price&#39; =&gt; &#39;$20&#39;, &#39;period&#39;
+=&gt; &#39;day&#39; } price is a formatted lowest full price for the object
+given as parameter (with cents, with currency included); includes
+additional charges and service guest fee; for the period, the translation
+key &#39;search.per_unit_price&#39; is used with the &#39;unit&#39; being
+“search.#pricingpricing.unit” pricing.unit is the actual unit of the pricing
+(e.g. day, hour, etc.).</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#lowest_full_price_without_cents_with_currency-instance_method" title="#lowest_full_price_without_cents_with_currency (instance method)">#<strong>lowest_full_price_without_cents_with_currency</strong>(object, lgpricing_filters = [])  &#x21d2; Hash{String =&gt; String} </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Hash of the form !{ &#39;price&#39; =&gt; &#39;$20&#39;, &#39;period&#39;
+=&gt; &#39;day&#39; } price is a formatted lowest full price for the object
+given as parameter (without cents, with currency included); includes
+additional charges and service guest fee; for the period, the translation
+key &#39;search.per_unit_price&#39; is used with the &#39;unit&#39; being
+“search.#pricingpricing.unit” pricing.unit is the actual unit of the pricing
+(e.g. day, hour, etc.).</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#lowest_price_with_cents_with_currency-instance_method" title="#lowest_price_with_cents_with_currency (instance method)">#<strong>lowest_price_with_cents_with_currency</strong>(object, lgpricing_filters = [])  &#x21d2; Hash{String =&gt; String} </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Hash of the form !{ &#39;price&#39; =&gt; &#39;$20&#39;, &#39;period&#39;
+=&gt; &#39;day&#39; } price is a formatted lowest price for the object
+given as parameter (with cents, with currency included); does not include
+additional charges and service guest fee; for the period, the translation
+key &#39;search.per_unit_price&#39; is used with the &#39;unit&#39; being
+“search.#pricingpricing.unit” pricing.unit is the actual unit of the pricing
+(e.g. day, hour, etc.).</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#lowest_price_without_cents_with_currency-instance_method" title="#lowest_price_without_cents_with_currency (instance method)">#<strong>lowest_price_without_cents_with_currency</strong>(object, lgpricing_filters = [])  &#x21d2; Hash{String =&gt; String} </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Hash of the form !{ &#39;price&#39; =&gt; &#39;$20&#39;, &#39;period&#39;
+=&gt; &#39;day&#39; } price is a formatted lowest price for the object
+given as parameter (without cents, with currency included); does not
+include additional charges and service guest fee; for the period, the
+translation key &#39;search.per_unit_price&#39; is used with the
+&#39;unit&#39; being “search.#pricingpricing.unit” pricing.unit is the actual
+unit of the pricing (e.g. day, hour, etc.).</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#no_footer!-instance_method" title="#no_footer! (instance method)">#<strong>no_footer!</strong>  &#x21d2; nil </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Sets the @no_footer variable to true to affect further rendering (i.e. the
+footer will not be rendered).</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#pagination_links-instance_method" title="#pagination_links (instance method)">#<strong>pagination_links</strong>(collection, options = {})  &#x21d2; String </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>HTML formatted pagination area generated for the input collection with the
+passed in options.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#pricing_units_translation-instance_method" title="#pricing_units_translation (instance method)">#<strong>pricing_units_translation</strong>(transactable_pricing, base_key, units_namespace)  &#x21d2; String </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Information about the unit pricing e.g.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#query-instance_method" title="#query (instance method)">#<strong>query</strong>(query_string, params = {}, current_user = nil)  &#x21d2; Hash </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns data.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#request_parameter-instance_method" title="#request_parameter (instance method)">#<strong>request_parameter</strong>(method)  &#x21d2; String </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of the request attribute indicated by the parameter
+&#39;method&#39;; e.g.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#search_box_for-instance_method" title="#search_box_for (instance method)">#<strong>search_box_for</strong>(tt_names, class_name = &#39;&#39;, inputs = &#39;&#39;)  &#x21d2; String </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Renders a form with search boxes for the specified transactable types and
+with the given options.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#search_button_for-instance_method" title="#search_button_for (instance method)">#<strong>search_button_for</strong>(tt_name, class_name = &#39;&#39;)  &#x21d2; String </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Renders a search button in a form for the given transactable type and with
+the given options.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#space_listing_placeholder_path-instance_method" title="#space_listing_placeholder_path (instance method)">#<strong>space_listing_placeholder_path</strong>(height, width)  &#x21d2; String </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Url to a placeholder image with the width and height given as parameters.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#tag_filter_link-instance_method" title="#tag_filter_link (instance method)">#<strong>tag_filter_link</strong>(tag, custom_classes = [])  &#x21d2; String </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>If the tag given as a parameter is already in the URL parameter for
+filtering by tags it will return a link to the tag which will remove it
+from the filter; otherwise, if the tag given as a parameter is not already
+in the URL parameter for filtering by tags, it will return a link to the
+tag which will add this tag to the tag filter.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#timeago-instance_method" title="#timeago (instance method)">#<strong>timeago</strong>(time)  &#x21d2; String </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Formatted HTML snippet containing the translated time (using the
+&#39;short&#39; format) e.g.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#total_entries-instance_method" title="#total_entries (instance method)">#<strong>total_entries</strong>(will_paginate_collection)  &#x21d2; Integer </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Total number of entries for the paginated collection of items passed in.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#translate_property-instance_method" title="#translate_property (instance method)">#<strong>translate_property</strong>(property, target_acting_as_set)  &#x21d2; String </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Translated property name; if the property is a basic transactable attribute
+the translation key is
+&#39;simple_form.labels.transactable.#{property_name}&#39;; if it&#39;s a
+custom attribute, the translation key is
+&#39;transactable_type.#transactable_typetransactable_type.name.labels.#{property_name}&#39;.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#user_message_create_path-instance_method" title="#user_message_create_path (instance method)">#<strong>user_message_create_path</strong>(displayed_user_message, user_message)  &#x21d2; String </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Path used for a form for creating a new message in a thread.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#widget_links-instance_method" title="#widget_links (instance method)">#<strong>widget_links</strong>(url, valid_params = &#39;&#39;)  &#x21d2; Array&lt;ReverseProxyLinkDrop&gt; </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Array of ReverseProxyLink objects to be used on the url given as a
+parameter; they define target destinations for the given url, eg: {
+current_url | widget_links } or { current_url | widget_links:
+&#39;per_page,loc&#39; }.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="already_favorite-instance_method">
+  
+    #<strong>already_favorite</strong>(user, object)  &#x21d2; <tt>Boolean</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns whether the user has the given object among his wishlisted items</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>user</span>
+      
+      
+        <span class='type'>(<tt>UserDrop</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>user object</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>object</span>
+      
+      
+        <span class='type'>(<tt>Object</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>any object; we look among the user&#39;s wishlisted items for this object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>whether the user has the given object among his wishlisted items</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="attachments_visible_for-instance_method">
+  
+    #<strong>attachments_visible_for</strong>(transactable_drop, user_drop)  &#x21d2; <tt>Array&lt;CkeditorAssetDrop&gt;</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns seller attachments tied to the given transactable object and that
+are visible by the given user</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>transactable_drop</span>
+      
+      
+        <span class='type'>(<tt>TransactableDrop</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>transactable object</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>user_drop</span>
+      
+      
+        <span class='type'>(<tt>UserDrop</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>user object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array&lt;CkeditorAssetDrop&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>seller attachments tied to the given transactable object and that are
+visible by the given user</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="connections_for-instance_method">
+  
+    #<strong>connections_for</strong>(listing, current_user)  &#x21d2; <tt>Array&lt;String&gt;</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns array of connection information strings for a user and a listing;
+for each of the user&#39;s friends (followed users) strings will be
+generated like so: If the friend visited the listing, the string
+&#39;User.name worked here&#39; will be added. If the friend is the host of
+the listing, the string &#39;User.name is the host&#39; will be added. If
+the friend knows the host of the listing the string &#39;User.name knows
+the host&#39; will be added. If a mutual friend (followed user [2] by a
+user this user follows [1]) visited the listing then the string  &#39;<a
+href="1">User</a>.name knows <a href="2">User</a>.name who worked here&#39;</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>listing</span>
+      
+      
+        <span class='type'>(<tt>TransactableDrop</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Transactable object used in the generation of the resulting array</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>current_user</span>
+      
+      
+        <span class='type'>(<tt>UserDrop</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>User object used in the generation of the resulting array</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array&lt;String&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>array of connection information strings for a user and a listing; for each
+of the user&#39;s friends (followed users) strings will be generated like
+so: If the friend visited the listing, the string &#39;User.name worked
+here&#39; will be added. If the friend is the host of the listing, the
+string &#39;User.name is the host&#39; will be added. If the friend knows
+the host of the listing the string &#39;User.name knows the host&#39; will
+be added. If a mutual friend (followed user [2] by a user this user follows
+[1]) visited the listing then the string  &#39;<a href="1">User</a>.name
+knows <a href="2">User</a>.name who worked here&#39;</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="connections_tooltip-instance_method">
+  
+    #<strong>connections_tooltip</strong>(connections, size = 5)  &#x21d2; <tt>String</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns string to be used as a tooltip displaying the connections
+LiquidFilters#connections_for for a listing and a user; if there
+are more than 5 connections the translation
+&#39;search.list.additional_social_connections&#39; (with the parameter
+count) is added to the tooltip</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>connections</span>
+      
+      
+        <span class='type'>(<tt>Array&lt;String&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>array of connections to be displayed in the tooltip</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>size</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>5</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the first &#39;size&#39; connections will be shown in the tooltip</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>string to be used as a tooltip displaying the connections
+LiquidFilters#connections_for for a listing and a user; if there
+are more than 5 connections the translation
+&#39;search.list.additional_social_connections&#39; (with the parameter
+count) is added to the tooltip</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="find_collaborator-instance_method">
+  
+    #<strong>find_collaborator</strong>(user, transactable)  &#x21d2; <tt>TransactableCollaboratorDrop</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns transactable collaborator object for the given transactable and
+user; this object ties the collaborating user to the transactable</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>user</span>
+      
+      
+        <span class='type'>(<tt>UserDrop</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>collaborating User object</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>transactable</span>
+      
+      
+        <span class='type'>(<tt>TransactableDrop</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Transactable object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>TransactableCollaboratorDrop</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>transactable collaborator object for the given transactable and user; this
+object ties the collaborating user to the transactable</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="find_collaborators_for_user-instance_method">
+  
+    #<strong>find_collaborators_for_user</strong>(user)  &#x21d2; <tt>Array&lt;Integer&gt;</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns array of ids of the TransactableCollaborator objects for given user
+pending owner approval</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>user</span>
+      
+      
+        <span class='type'>(<tt>UserDrop</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>user object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array&lt;Integer&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>array of ids of the TransactableCollaborator objects for given user pending
+owner approval</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="find_collaborators_for_user_transactables-instance_method">
+  
+    #<strong>find_collaborators_for_user_transactables</strong>(current_user, user)  &#x21d2; <tt>Array&lt;Integer&gt;</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns array of ids of the TransactableCollaborator objects defining
+collaborations of the user given as the user parameter, collaborations on
+Transactable objects (with the state pending, or in_progress created by the
+user given as the current_user parameter</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>current_user</span>
+      
+      
+        <span class='type'>(<tt>UserDrop</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>user object</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>user</span>
+      
+      
+        <span class='type'>(<tt>UserDrop</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>user object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array&lt;Integer&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>array of ids of the TransactableCollaborator objects defining
+collaborations of the user given as the user parameter, collaborations on
+Transactable objects (with the state pending, or in_progress created by the
+user given as the current_user parameter</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="get_ckeditor_assets-instance_method">
+  
+    #<strong>get_ckeditor_assets</strong>(access_level, options = {})  &#x21d2; <tt>Array&lt;CkeditorAssetDrop&gt;</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns paginated array of Ckeditor::Asset objects matching the given
+access_level and the options in the options hash</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>access_level</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>can be all, purchasers, enquirers, collaborators</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>options</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>options hash * sort - sort by (created_at, name) * direction - ordering
+direction (asc, desc) * query - string to match against the file name or
+the title of the object * per_page - number of items per page * page - the
+page to display from the paginated array</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array&lt;CkeditorAssetDrop&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>paginated array of Ckeditor::Asset objects matching the given access_level
+and the options in the options hash</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="get_data_contents-instance_method">
+  
+    #<strong>get_data_contents</strong>(external_id, options = {})  &#x21d2; <tt>Array&lt;DataSourceContentDrop&gt;</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns paginated array of DataSourceContent objects where the external_id
+matches the one given as the parameter; the pagination is done using
+options passed in as the second parameter</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>external_id</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>we will search for DataSourceContent object matching this external_id</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>options</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>options for paginating the results; only per_page will be employed e.g. 12
+| get_data_contents: per_page: 5</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array&lt;DataSourceContentDrop&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>paginated array of DataSourceContent objects where the external_id matches
+the one given as the parameter; the pagination is done using options passed
+in as the second parameter</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="get_enquirer_confirmed_orders-instance_method">
+  
+    #<strong>get_enquirer_confirmed_orders</strong>(user, transactable)  &#x21d2; <tt>Array&lt;OrderDrop&gt;</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>user given as the first parameter for the transactable given as the second
+parameter</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>user</span>
+      
+      
+        <span class='type'>(<tt>UserDrop</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>transactable object</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>transactable</span>
+      
+      
+        <span class='type'>(<tt>TransactableDrop</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>transactable object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array&lt;OrderDrop&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>array of confirmed order objects containing orders placed by the</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="get_enquirer_draft_orders-instance_method">
+  
+    #<strong>get_enquirer_draft_orders</strong>(user, transactable)  &#x21d2; <tt>Array&lt;OrderDrop&gt;</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns array of orders for transactable, belonging to user, ordered
+descending by the creation date</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>user</span>
+      
+      
+        <span class='type'>(<tt>UserDrop</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>user whose orders we want to show</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>transactable</span>
+      
+      
+        <span class='type'>(<tt>TransactableDrop</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>orders are for this transactable</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array&lt;OrderDrop&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>array of orders for transactable, belonging to user, ordered descending by
+the creation date</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="get_enquirer_orders-instance_method">
+  
+    #<strong>get_enquirer_orders</strong>(user, transactable)  &#x21d2; <tt>Array&lt;OrderDrop&gt;</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns array of order objects containing orders placed by the user given
+as the first parameter for the transactable given as the second parameter</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>user</span>
+      
+      
+        <span class='type'>(<tt>UserDrop</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>transactable object</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>transactable</span>
+      
+      
+        <span class='type'>(<tt>TransactableDrop</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>transactable object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array&lt;OrderDrop&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>array of order objects containing orders placed by the user given as the
+first parameter for the transactable given as the second parameter</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="get_lister_orders-instance_method">
+  
+    #<strong>get_lister_orders</strong>(user, transactable)  &#x21d2; <tt>Array&lt;OrderDrop&gt;</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns array of order objects</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>user</span>
+      
+      
+        <span class='type'>(<tt>UserDrop</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>orders returned are for items belonging to this user&#39;s companies</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>transactable</span>
+      
+      
+        <span class='type'>(<tt>TransactableDrop</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>orders returned are for this transactable</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array&lt;OrderDrop&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>array of order objects</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="get_lowest_price_with_options-instance_method">
+  
+    #<strong>get_lowest_price_with_options</strong>(object, lgpricing_filters, options = {})  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="get_payment_gateway_id-instance_method">
+  
+    #<strong>get_payment_gateway_id</strong>(_str)  &#x21d2; <tt>Integer</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the ID of the PaymentGateway for which the credit card payment
+method exists</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the ID of the PaymentGateway for which the credit card payment method
+exists</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="group_rules_by_day-instance_method">
+  
+    #<strong>group_rules_by_day</strong>(rules)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="is_approved_collaborator-instance_method">
+  
+    #<strong>is_approved_collaborator</strong>(user, transactable)  &#x21d2; <tt>Boolean</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns whether the given user is an approved transactable collaborator of
+the Transactable given as the parameter</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>user</span>
+      
+      
+        <span class='type'>(<tt>UserDrop</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>user object</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>transactable</span>
+      
+      
+        <span class='type'>(<tt>TransactableDrop</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>transactable object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>whether the given user is an approved transactable collaborator of the
+Transactable given as the parameter</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="is_user_following-instance_method">
+  
+    #<strong>is_user_following</strong>(user, object_id, object_type)  &#x21d2; <tt>Boolean</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns checks if user is following events for activity stream</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>user</span>
+      
+      
+        <span class='type'>(<tt>User</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>user we are checking against</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>object_id</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>object id we are checking for</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>object_type</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>class name of the object we are checking for - User, Topic, Transactable</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>checks if user is following events for activity stream</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="is_visible-instance_method">
+  
+    #<strong>is_visible</strong>(key)  &#x21d2; <tt>Boolean</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns whether the element identified by the given key is visible
+according to the rules defined by the hidden UI controls in the admin
+section of the marketplace</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>key</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>key identifying a UI element e.g. &#39;dashboard/credit_cards&#39;</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>whether the element identified by the given key is visible according to the
+rules defined by the hidden UI controls in the admin section of the
+marketplace</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="location_path-instance_method">
+  
+    #<strong>location_path</strong>(_transactable_type, location)  &#x21d2; <tt>String</tt><sup>?</sup> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns path to the first searchable listing for the location given as
+parameter; nil if no such listing can be found</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>location</span>
+      
+      
+        <span class='type'>(<tt>LocationDrop</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>location object whose first listing path is extracted</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>, <tt>nil</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>path to the first searchable listing for the location given as parameter;
+nil if no such listing can be found</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="lowest_full_price_with_cents_with_currency-instance_method">
+  
+    #<strong>lowest_full_price_with_cents_with_currency</strong>(object, lgpricing_filters = [])  &#x21d2; <tt>Hash{String =&gt; String}</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns hash of the form !{ &#39;price&#39; =&gt; &#39;$20&#39;,
+&#39;period&#39; =&gt; &#39;day&#39; } price is a formatted lowest full
+price for the object given as parameter (with cents, with currency
+included); includes additional charges and service guest fee; for the
+period, the translation key &#39;search.per_unit_price&#39; is used with
+the &#39;unit&#39; being “search.#Liquify::Filters::DeprecatedFilters.pricingpricing.unit” pricing.unit is the
+actual unit of the pricing (e.g. day, hour, etc.)</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>object</span>
+      
+      
+        <span class='type'>(<tt>LocationDrop</tt>, <tt>TransactableDrop</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>object whose price we want to display</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>lgpricing_filters</span>
+      
+      
+        <span class='type'>(<tt>Array&lt;String&gt;</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>[]</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>array of pricing type filters (e.g. [“1_day”, “1_hour”]) usually passed
+from the search page</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Hash{String =&gt; String}</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>hash of the form !{ &#39;price&#39; =&gt; &#39;$20&#39;, &#39;period&#39;
+=&gt; &#39;day&#39; } price is a formatted lowest full price for the object
+given as parameter (with cents, with currency included); includes
+additional charges and service guest fee; for the period, the translation
+key &#39;search.per_unit_price&#39; is used with the &#39;unit&#39; being
+“search.#Liquify::Filters::DeprecatedFilters.pricingpricing.unit” pricing.unit is the actual unit of the pricing
+(e.g. day, hour, etc.)</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="lowest_full_price_without_cents_with_currency-instance_method">
+  
+    #<strong>lowest_full_price_without_cents_with_currency</strong>(object, lgpricing_filters = [])  &#x21d2; <tt>Hash{String =&gt; String}</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns hash of the form !{ &#39;price&#39; =&gt; &#39;$20&#39;,
+&#39;period&#39; =&gt; &#39;day&#39; } price is a formatted lowest full
+price for the object given as parameter (without cents, with currency
+included); includes additional charges and service guest fee; for the
+period, the translation key &#39;search.per_unit_price&#39; is used with
+the &#39;unit&#39; being “search.#Liquify::Filters::DeprecatedFilters.pricingpricing.unit” pricing.unit is the
+actual unit of the pricing (e.g. day, hour, etc.)</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>object</span>
+      
+      
+        <span class='type'>(<tt>LocationDrop</tt>, <tt>TransactableDrop</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>object whose price we want to display</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>lgpricing_filters</span>
+      
+      
+        <span class='type'>(<tt>Array&lt;String&gt;</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>[]</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>array of pricing type filters (e.g. [“1_day”, “1_hour”]) usually passed
+from the search page</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Hash{String =&gt; String}</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>hash of the form !{ &#39;price&#39; =&gt; &#39;$20&#39;, &#39;period&#39;
+=&gt; &#39;day&#39; } price is a formatted lowest full price for the object
+given as parameter (without cents, with currency included); includes
+additional charges and service guest fee; for the period, the translation
+key &#39;search.per_unit_price&#39; is used with the &#39;unit&#39; being
+“search.#Liquify::Filters::DeprecatedFilters.pricingpricing.unit” pricing.unit is the actual unit of the pricing
+(e.g. day, hour, etc.)</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="lowest_price_with_cents_with_currency-instance_method">
+  
+    #<strong>lowest_price_with_cents_with_currency</strong>(object, lgpricing_filters = [])  &#x21d2; <tt>Hash{String =&gt; String}</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns hash of the form !{ &#39;price&#39; =&gt; &#39;$20&#39;,
+&#39;period&#39; =&gt; &#39;day&#39; } price is a formatted lowest price
+for the object given as parameter (with cents, with currency included);
+does not include additional charges and service guest fee; for the period,
+the translation key &#39;search.per_unit_price&#39; is used with the
+&#39;unit&#39; being “search.#Liquify::Filters::DeprecatedFilters.pricingpricing.unit” pricing.unit is the actual
+unit of the pricing (e.g. day, hour, etc.)</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>object</span>
+      
+      
+        <span class='type'>(<tt>LocationDrop</tt>, <tt>TransactableDrop</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>object whose price we want to display</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>lgpricing_filters</span>
+      
+      
+        <span class='type'>(<tt>Array&lt;String&gt;</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>[]</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>array of pricing type filters (e.g. [“1_day”, “1_hour”]) usually passed
+from the search page</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Hash{String =&gt; String}</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>hash of the form !{ &#39;price&#39; =&gt; &#39;$20&#39;, &#39;period&#39;
+=&gt; &#39;day&#39; } price is a formatted lowest price for the object
+given as parameter (with cents, with currency included); does not include
+additional charges and service guest fee; for the period, the translation
+key &#39;search.per_unit_price&#39; is used with the &#39;unit&#39; being
+“search.#Liquify::Filters::DeprecatedFilters.pricingpricing.unit” pricing.unit is the actual unit of the pricing
+(e.g. day, hour, etc.)</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="lowest_price_without_cents_with_currency-instance_method">
+  
+    #<strong>lowest_price_without_cents_with_currency</strong>(object, lgpricing_filters = [])  &#x21d2; <tt>Hash{String =&gt; String}</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns hash of the form !{ &#39;price&#39; =&gt; &#39;$20&#39;,
+&#39;period&#39; =&gt; &#39;day&#39; } price is a formatted lowest price
+for the object given as parameter (without cents, with currency included);
+does not include additional charges and service guest fee; for the period,
+the translation key &#39;search.per_unit_price&#39; is used with the
+&#39;unit&#39; being “search.#Liquify::Filters::DeprecatedFilters.pricingpricing.unit” pricing.unit is the actual
+unit of the pricing (e.g. day, hour, etc.)</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>object</span>
+      
+      
+        <span class='type'>(<tt>LocationDrop</tt>, <tt>TransactableDrop</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>object whose price we want to display</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>lgpricing_filters</span>
+      
+      
+        <span class='type'>(<tt>Array&lt;String&gt;</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>[]</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>array of pricing type filters (e.g. [“1_day”, “1_hour”]) usually passed
+from the search page</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Hash{String =&gt; String}</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>hash of the form !{ &#39;price&#39; =&gt; &#39;$20&#39;, &#39;period&#39;
+=&gt; &#39;day&#39; } price is a formatted lowest price for the object
+given as parameter (without cents, with currency included); does not
+include additional charges and service guest fee; for the period, the
+translation key &#39;search.per_unit_price&#39; is used with the
+&#39;unit&#39; being “search.#Liquify::Filters::DeprecatedFilters.pricingpricing.unit” pricing.unit is the actual
+unit of the pricing (e.g. day, hour, etc.)</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="no_footer!-instance_method">
+  
+    #<strong>no_footer!</strong>  &#x21d2; <tt>nil</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Sets the @no_footer variable to true to affect further rendering (i.e. the
+footer  will not be rendered)</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>nil</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="pagination_links-instance_method">
+  
+    #<strong>pagination_links</strong>(collection, options = {})  &#x21d2; <tt>String</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns HTML formatted pagination area generated for the input collection
+with the passed in options</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>collection</span>
+      
+      
+        <span class='type'>(<tt>Array&lt;Object&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>array of objects for which we want to generate the pagination area</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>options</span>
+      
+      
+        <span class='type'>(<tt>Hash{String =&gt; String}</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>hash of options for pagination; example: {{ listings | pagination_links:
+param_name: &#39;services_page&#39;, renderer:
+&#39;LiquidStyledLinkRenderer&#39; }} will render the pagination links for
+listings; services_page will be the name of the page parameters in the
+browser and the LiquidStyledLinkRenderer renderer will be used to generate
+the output HTML</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>HTML formatted pagination area generated for the input collection with the
+passed in options</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="pricing_units_translation-instance_method">
+  
+    #<strong>pricing_units_translation</strong>(transactable_pricing, base_key, units_namespace)  &#x21d2; <tt>String</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns information about the unit pricing e.g. &#39;Every calendar month
+price&#39;</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>transactable_pricing</span>
+      
+      
+        <span class='type'>(<tt>TransactablePricingDrop</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>transactable pricing object</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>base_key</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>base translation key</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>units_namespace</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>namespace for the units e.g. &#39;reservations&#39;</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>information about the unit pricing e.g. &#39;Every calendar month
+price&#39;</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="query-instance_method">
+  
+    #<strong>query</strong>(query_string, params = {}, current_user = nil)  &#x21d2; <tt>Hash</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns data</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>query_string</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>graphql query</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>params</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>, <tt>nil</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>variables used in query</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>current_user</span>
+      
+      
+        <span class='type'>(<tt>User</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>nil</tt>)</em>
+      
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>returns data</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="request_parameter-instance_method">
+  
+    #<strong>request_parameter</strong>(method)  &#x21d2; <tt>String</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the value of the request attribute indicated by the parameter
+&#39;method&#39;; e.g. {{ &#39;original_url&#39; | request_parameter }}</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>method</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>name of the request attribute to return</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>returns the value of the request attribute indicated by the parameter
+&#39;method&#39;; e.g. {{ &#39;original_url&#39; | request_parameter }}</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="search_box_for-instance_method">
+  
+    #<strong>search_box_for</strong>(tt_names, class_name = &#39;&#39;, inputs = &#39;&#39;)  &#x21d2; <tt>String</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns renders a form with search boxes for the specified transactable
+types and with the given options</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>tt_names</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Transactable Type names separated by &#39;,&#39;</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>class_name</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>additional CSS class name to be used for the search form</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>inputs</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>what inputs should be displayed: geolocation, fulltext, categories,
+datepickers. Separated by &#39;,&#39;</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>renders a form with search boxes for the specified transactable types and
+with the given options</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="search_button_for-instance_method">
+  
+    #<strong>search_button_for</strong>(tt_name, class_name = &#39;&#39;)  &#x21d2; <tt>String</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns renders a search button in a form for the given transactable type
+and with the given options</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>tt_name</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Transactable Type name</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>class_name</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>additional CSS class name to be used for the search form containing the
+search button</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>renders a search button in a form for the given transactable type and with
+the given options</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="space_listing_placeholder_path-instance_method">
+  
+    #<strong>space_listing_placeholder_path</strong>(height, width)  &#x21d2; <tt>String</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns url to a placeholder image with the width and height given as
+parameters</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>height</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>height of the placeholder image</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>width</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>width of the placeholder image</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>url to a placeholder image with the width and height given as parameters</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="tag_filter_link-instance_method">
+  
+    #<strong>tag_filter_link</strong>(tag, custom_classes = [])  &#x21d2; <tt>String</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns if the tag given as a parameter is already in the URL parameter for
+filtering by tags it will return a link to the tag which will remove it
+from the filter; otherwise, if the tag given as a parameter is not already
+in the URL parameter for filtering by tags, it will return a link to the
+tag which will add this tag to the tag filter</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>custom_classes</span>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>[]</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>array of custom classes to be added to the class attribute of the generated
+link</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>if the tag given as a parameter is already in the URL parameter for
+filtering by tags it will return a link to the tag which will remove it
+from the filter; otherwise, if the tag given as a parameter is not already
+in the URL parameter for filtering by tags, it will return a link to the
+tag which will add this tag to the tag filter</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="timeago-instance_method">
+  
+    #<strong>timeago</strong>(time)  &#x21d2; <tt>String</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns formatted HTML snippet containing the translated time (using the
+&#39;short&#39; format) e.g. &lt;abbr class=&#39;timeago&#39;
+title=&#39;2020-11-26T03:36:07+12:00&#39;&gt;3:35&lt;/abbr&gt;</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>time</span>
+      
+      
+        <span class='type'>(<tt>Time</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>time object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>formatted HTML snippet containing the translated time (using the
+&#39;short&#39; format) e.g. &lt;abbr class=&#39;timeago&#39;
+title=&#39;2020-11-26T03:36:07+12:00&#39;&gt;3:35&lt;/abbr&gt;</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="total_entries-instance_method">
+  
+    #<strong>total_entries</strong>(will_paginate_collection)  &#x21d2; <tt>Integer</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns total number of entries for the paginated collection of items
+passed in</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>will_paginate_collection</span>
+      
+      
+        <span class='type'>(<tt>WillPaginate::Collection</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>paginated collection of items</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>total number of entries for the paginated collection of items passed in</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="translate_property-instance_method">
+  
+    #<strong>translate_property</strong>(property, target_acting_as_set)  &#x21d2; <tt>String</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns translated property name; if the property is a basic transactable
+attribute the translation key is
+&#39;simple_form.labels.transactable.#{property_name}&#39;; if it&#39;s a
+custom attribute, the translation key is
+&#39;transactable_type.#Liquify::Filters::DeprecatedFilters.transactable_typetransactable_type.name.labels.#{property_name}&#39;</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>property</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>property name to be translated</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>target_acting_as_set</span>
+      
+      
+        <span class='type'>(<tt>TransactableTypeDrop</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>transactable type that the property belongs to</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>translated property name; if the property is a basic transactable attribute
+the translation key is
+&#39;simple_form.labels.transactable.#{property_name}&#39;; if it&#39;s a
+custom attribute, the translation key is
+&#39;transactable_type.#Liquify::Filters::DeprecatedFilters.transactable_typetransactable_type.name.labels.#{property_name}&#39;</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="user_message_create_path-instance_method">
+  
+    #<strong>user_message_create_path</strong>(displayed_user_message, user_message)  &#x21d2; <tt>String</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns path used for a form for creating a new message in a thread</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>displayed_user_message</span>
+      
+      
+        <span class='type'>(<tt>UserMessageDrop</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the parent displayed message</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>user_message</span>
+      
+      
+        <span class='type'>(<tt>UserMessageDrop</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>path used for a form for creating a new message in a thread</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="widget_links-instance_method">
+  
+    #<strong>widget_links</strong>(url, valid_params = &#39;&#39;)  &#x21d2; <tt>Array&lt;ReverseProxyLinkDrop&gt;</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns array of ReverseProxyLink objects to be used on the url given as a
+parameter; they define target destinations for the given url, eg: {
+current_url | widget_links } or { current_url | widget_links:
+&#39;per_page,loc&#39; }</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>url</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>url for the ReverseProxyLink objects</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>valid_params</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>query params separated by comma used to search proper ReverseProxyLink</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array&lt;ReverseProxyLinkDrop&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>array of ReverseProxyLink objects to be used on the url given as a
+parameter; they define target destinations for the given url, eg: {
+current_url | widget_links } or { current_url | widget_links:
+&#39;per_page,loc&#39; }</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+  </div>
+
+</div>
+
+      <div id="footer">
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+</div>
+
+    </div>
+  </body>
+</html>
