@@ -1,15 +1,16 @@
 ---
 title: Form Configuration - Validation
-permalink: /reference/form-configurations/validation
+permalink: /reference/form-configurations-static/validation
 ---
 
 ## Example
+
 ```
 validation:
   presence: true
   unique:
     scope:
       - customizable_type
-      - properties: giger_slug
+      - properties: customer_slug
     message: Invitation already sent
 ```
