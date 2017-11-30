@@ -10,7 +10,7 @@ interpreted by a server that returns data in a specified format.
 
 {% include alert/tip.html content="There is an excellent blog post about what all the parts of GraphQL query (and
 mutations for that matter) -
-<a href='https://dev-blog.apollodata.com/the-anatomy-of-a-graphql-query-6dffa9e9e747' rel="external noopener" target="_blank">The
+<a href='https://dev-blog.apollodata.com/the-anatomy-of-a-graphql-query-6dffa9e9e747' rel='external noopener' target='_blank'>The
 anatomy of a graphql query</a>. We highly recommend reading it to understand it better." %}
 
 Here is an example query:
