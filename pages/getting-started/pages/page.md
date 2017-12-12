@@ -16,7 +16,7 @@ path: About Us
 ```
 {% endraw %}
 
-* slug - defines the url at which this page will be accessible. In this example, assuming your marketplace domain is https://example.com, you will be able to access the page at https://example.com/about.
+* slug - defines the url at which this page will be accessible. In this example, assuming your marketplace domain is https://example.com, you will be able to access the page at https://example.com/about. For homepage use '/' [ which will work both for https://example.com and https://example.com/ ]
 * format - Currently two formats are available: html and json. The letter is useful when you make ajax request to the page and want to receive json response, not html.
 * layout_name  - defines which layout from `liquid_views/layouts/` you would like to use - defaults to application.
 * path - name might be a bit misleading, but currently it is used to generate the default `<title>` tag.
