@@ -1,6 +1,6 @@
 ---
 title: Custom Addresses
-permalink: /reference/custom-attributes/custom-adresses
+permalink: /reference/custom-attributes/custom-addresses
 ---
 
 Custom addresses are used to add one or many addresses to edited profile.
