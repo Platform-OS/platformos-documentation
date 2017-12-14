@@ -9,5 +9,5 @@ Custom Attributes are used to build custom forms and gather input from the user.
 
 Our platform also provides a few custom attributes for you so you don't have to write them on your own.
 
-* [Custom addresses](./custom-adresses) - Custom addresses are used to add one or many addresses to edited profile.
+* [Custom addresses](./custom-addresses) - Custom addresses are used to add one or many addresses to edited profile.
 * Custom images - TODO
