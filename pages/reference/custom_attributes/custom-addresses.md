@@ -3,7 +3,7 @@ title: Custom Addresses
 permalink: /reference/custom-attributes/custom-addresses
 ---
 
-Custom addresses are used to add one or many addresses to edited profile.
+Custom addresses are used to add one or many addresses to Profile, Order, Customization or Transactable.
 
 ## Fields
 
@@ -71,6 +71,31 @@ Having this declaration in any of `instance_profile_types/` files will result in
             validation: {}
           postcode:
             validation: {}
+```
+
+Another example: adding CustomAddress for a Customization names "EmergencyContact"
+
+```yml
+customizations:
+  emergency_contacts:
+    custom_addresses:
+      contact_address:
+        city:
+          validation:
+            presence: {}
+        street:
+          presence: {}
+    properties:
+      contact_name:
+        validation:
+          presence: {}
+      contact_email:
+        validation:
+          presence: {}
+      contact_phone:
+        validation:
+          presence: {}
+      contact_address:
 ```
 
 ## Displaying, updating
