@@ -15,6 +15,7 @@ Each address supports following self-descriptive fields:
 | latitude          | Float  | latitude part of coordinate used for geo searching                                                                                        |
 | longitude         | Float  | longitude part of coordinate used for geo searching                                                                                       |
 | formatted_address | String | formatted address that you want to display on your MP. f.e. you can send `address` to google API and get more complete address to display |
+| apartment         | String | apertment number                                                                                                                          |
 | street            | String |
 | suburb            | String |
 | city              | String |
@@ -135,3 +136,117 @@ After having this, the way for editing those addresses can be further customized
 ```
 
 {% endraw %}
+
+
+## Using GraphQL to query for `CustomAddress` geolocation
+
+It's possible to use `latitude` and `longitude` field in geolocation queries. 
+
+```graphql
+query geolocate_users(
+  $per_page: Int,
+  $page: Int,
+  $query: String,
+  $geo_points: [GeoPoint],
+  $geo_point_in_shape: GeoPoint,
+  $geo_radius: GeoRadius,
+  $geo_box: GeoBox,
+  $geo_box_top_left: GeoPoint,
+  $geo_box_bottom_right: GeoPoint,
+  $geo_box_top_right_bottom_left: GeoBoxTopRightBottomLeft,
+  $customizations_geo_points: [GeoPoint],
+  $street: String
+)
+{
+  users: people(
+    per_page: $per_page,
+    page: $page,
+    user: {
+      profiles: [{
+          profile_type: $profile_type,
+          addresses: [{
+              street: $street,
+              geo_query: {
+                polygon: {
+                  points: $geo_points
+                },
+                point_in_shape: {
+                  point: $geo_point_in_shape
+                },
+                radius: $geo_radius,
+                box: $geo_box,
+                box_top_left_bottom_right: {
+                  top_left: $geo_box_top_left,
+                  bottom_right: $geo_box_bottom_right
+                },
+                box_top_right_bottom_left: $geo_box_top_right_bottom_left
+              }
+
+            }],
+          customizations: [{
+              addresses: [{
+                  geo_query: {
+                    polygon: {
+                      points: $customizations_geo_points
+                    }
+                  }
+                }]
+            }]
+        }
+      ]
+    }
+  ) {
+    total_entries
+    has_next_page
+    has_previous_page
+    size
+
+    results {
+      id
+      slug
+      name
+      created_at
+
+      default_profile: profile(profile_type: "default") {
+        custom_addresses {
+          name
+          address
+          street
+        }
+      }
+
+      seller_profile: profile(profile_type: "seller") {
+        custom_addresses {
+          name
+          address
+          street
+        }
+      }
+
+      buyer_profile: profile(profile_type: "buyer") {
+        custom_addresses {
+          name
+          address
+          street
+        }
+      }
+    }
+  }
+}
+```
+
+In the example above we see how we can query `CustomAddress` both at the `user_profile` and `customization` levels.
+If we wanted to find user profiles in vicinity of (50, 20) geo point, we could do that using those parameters:
+
+```json
+{ "geo_radius":
+  { 
+    "center":
+    { 
+      "lat": 50,
+      "lng": 20 
+    }, 
+    "distance": "25km" 
+  }
+}
+```
