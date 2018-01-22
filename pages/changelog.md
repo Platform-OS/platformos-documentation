@@ -8,4 +8,4 @@ permalink: changelog
 
 
 ### Is it working?
-* Yep.
+* Yep. Let’s hope so
