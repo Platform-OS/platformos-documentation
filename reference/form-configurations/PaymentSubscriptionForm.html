@@ -6,7 +6,7 @@
 <title>
   Class: PaymentSubscriptionForm
   
-    &mdash; Documentation by YARD 0.9.9
+    &mdash; Documentation by YARD 0.9.12
   
 </title>
 
@@ -107,6 +107,92 @@
 
 
 
+  <h2>Instance Attribute Summary <small><a href="#" class="summary_toggle">collapse</a></small></h2>
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#credit_card_token-instance_method" title="#credit_card_token (instance method)">#<strong>credit_card_token</strong>  &#x21d2; String </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Token string identifying the credit card.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#id-instance_method" title="#id (instance method)">#<strong>id</strong>  &#x21d2; Integer </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Numeric identifier of the availability rule.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#with_process-instance_method" title="#with_process (instance method)">#<strong>with_process</strong>  &#x21d2; Boolean </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Do not change to false, unless you know what you are doing.</p>
+</div></span>
+  
+</li>
+
+    
+  </ul>
+
 
 
 
@@ -152,7 +238,51 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#save!-instance_method" title="#save! (instance method)">#<strong>save!</strong>(*args)  &#x21d2; Object </a>
+      <a href="#payment_source-instance_method" title="#payment_source (instance method)">#<strong>payment_source</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#payment_subscription_valid-instance_method" title="#payment_subscription_valid (instance method)">#<strong>payment_subscription_valid</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#sync!-instance_method" title="#sync! (instance method)">#<strong>sync!</strong>(*args)  &#x21d2; Object </a>
     
 
     
@@ -184,9 +314,143 @@
   
   
   <h3 class="inherited">Methods inherited from <span class='object_link'><a href="BaseForm.html" title="BaseForm (class)">BaseForm</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="BaseForm.html#add_property-class_method" title="BaseForm.add_property (method)">add_property</a></span>, <span class='object_link'><a href="BaseForm.html#add_validation-class_method" title="BaseForm.add_validation (method)">add_validation</a></span>, <span class='object_link'><a href="BaseForm.html#checked%3F-class_method" title="BaseForm.checked? (method)">checked?</a></span>, <span class='object_link'><a href="BaseForm.html#checked%3F-instance_method" title="BaseForm#checked? (method)">#checked?</a></span>, <span class='object_link'><a href="BaseForm.html#date_time_handler-instance_method" title="BaseForm#date_time_handler (method)">#date_time_handler</a></span>, <span class='object_link'><a href="BaseForm.html#field_whitelisted-class_method" title="BaseForm.field_whitelisted (method)">field_whitelisted</a></span>, <span class='object_link'><a href="BaseForm.html#inject_custom_attributes-class_method" title="BaseForm.inject_custom_attributes (method)">inject_custom_attributes</a></span>, <span class='object_link'><a href="BaseForm.html#inject_dynamic_fields-class_method" title="BaseForm.inject_dynamic_fields (method)">inject_dynamic_fields</a></span>, <span class='object_link'><a href="BaseForm.html#reflect_on_association-class_method" title="BaseForm.reflect_on_association (method)">reflect_on_association</a></span>, <span class='object_link'><a href="BaseForm.html#required%3F-instance_method" title="BaseForm#required? (method)">#required?</a></span>, <span class='object_link'><a href="BaseForm.html#to_liquid-instance_method" title="BaseForm#to_liquid (method)">#to_liquid</a></span></p>
+  <p class="inherited"><span class='object_link'><a href="BaseForm.html#add_property-class_method" title="BaseForm.add_property (method)">add_property</a></span>, <span class='object_link'><a href="BaseForm.html#add_validation-class_method" title="BaseForm.add_validation (method)">add_validation</a></span>, <span class='object_link'><a href="BaseForm.html#allowed_fields-class_method" title="BaseForm.allowed_fields (method)">allowed_fields</a></span>, <span class='object_link'><a href="BaseForm.html#checked%3F-class_method" title="BaseForm.checked? (method)">checked?</a></span>, <span class='object_link'><a href="BaseForm.html#checked%3F-instance_method" title="BaseForm#checked? (method)">#checked?</a></span>, <span class='object_link'><a href="BaseForm.html#date_time_handler-instance_method" title="BaseForm#date_time_handler (method)">#date_time_handler</a></span>, <span class='object_link'><a href="BaseForm.html#field_virtual%3F-class_method" title="BaseForm.field_virtual? (method)">field_virtual?</a></span>, <span class='object_link'><a href="BaseForm.html#field_whitelisted%3F-class_method" title="BaseForm.field_whitelisted? (method)">field_whitelisted?</a></span>, <span class='object_link'><a href="BaseForm.html#inject_custom_attributes-class_method" title="BaseForm.inject_custom_attributes (method)">inject_custom_attributes</a></span>, <span class='object_link'><a href="BaseForm.html#inject_dynamic_fields-class_method" title="BaseForm.inject_dynamic_fields (method)">inject_dynamic_fields</a></span>, <span class='object_link'><a href="BaseForm.html#reflect_on_association-class_method" title="BaseForm.reflect_on_association (method)">reflect_on_association</a></span>, <span class='object_link'><a href="BaseForm.html#required%3F-instance_method" title="BaseForm#required? (method)">#required?</a></span>, <span class='object_link'><a href="BaseForm.html#to_liquid-instance_method" title="BaseForm#to_liquid (method)">#to_liquid</a></span></p>
 
   
+  <div id="instance_attr_details" class="attr_details">
+    <h2>Instance Attribute Details</h2>
+    
+      
+      <span id="credit_card_token=-instance_method"></span>
+      <div class="method_details first">
+  <h3 class="signature first" id="credit_card_token-instance_method">
+  
+    #<strong>credit_card_token</strong>  &#x21d2; <tt>String</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns token string identifying the credit card</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>token string identifying the credit card</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      
+      <span id="id=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="id-instance_method">
+  
+    #<strong>id</strong>  &#x21d2; <tt>Integer</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns numeric identifier of the availability rule</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>numeric identifier of the availability rule</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      
+      <span id="with_process=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="with_process-instance_method">
+  
+    #<strong>with_process</strong>  &#x21d2; <tt>Boolean</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Do not change to false, unless you know what you are doing.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>virtual attribute which makes sure that CC is persisted in payment gateway.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+  </div>
+
 
   <div id="class_method_details" class="method_details_list">
     <h2>Class Method Details</h2>
@@ -211,9 +475,33 @@
 
     
       <div class="method_details first">
-  <h3 class="signature first" id="save!-instance_method">
+  <h3 class="signature first" id="payment_source-instance_method">
   
-    #<strong>save!</strong>(*args)  &#x21d2; <tt>Object</tt> 
+    #<strong>payment_source</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="payment_subscription_valid-instance_method">
+  
+    #<strong>payment_subscription_valid</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="sync!-instance_method">
+  
+    #<strong>sync!</strong>(*args)  &#x21d2; <tt>Object</tt> 
   
 
   
