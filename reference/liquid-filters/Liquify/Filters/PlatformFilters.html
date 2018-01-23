@@ -6,7 +6,7 @@
 <title>
   Module: Liquify::Filters::PlatformFilters
   
-    &mdash; Documentation by YARD 0.9.9
+    &mdash; Documentation by YARD 0.9.12
   
 </title>
 
@@ -101,31 +101,6 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#active_class-instance_method" title="#active_class (instance method)">#<strong>active_class</strong>(arg1, arg2, class_name = &#39;active&#39;)  &#x21d2; String<sup>?</sup> </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Returns class_name (by default &#39;active&#39;) if the first two arguments
-are equal, nil otherwise.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
       <a href="#add_to_array-instance_method" title="#add_to_array (instance method)">#<strong>add_to_array</strong>(array, item)  &#x21d2; Array&lt;Object&gt; </a>
     
 
@@ -199,7 +174,7 @@ negative values to obtain a date in the past.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#authorized%3F-instance_method" title="#authorized? (instance method)">#<strong>authorized?</strong>(user, object_name, object_type = &#39;form_configuration&#39;, _params = {})  &#x21d2; Boolean </a>
+      <a href="#asset_url-instance_method" title="#asset_url (instance method)">#<strong>asset_url</strong>(file_path, **options)  &#x21d2; String </a>
     
 
     
@@ -214,8 +189,9 @@ negative values to obtain a date in the past.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Boolean returns true if provided user satisfies policy with specified name
-two arguments are equal, nil otherwise.</p>
+<p>valid/file.jpg -&gt; <img src="https://cdn.com/valid/file.jpg" />
+non_existing_file.jpg -&gt; <a href="https://cdn.com">cdn.com</a>
+/search/Sydney/BlueRoad.</p>
 </div></span>
   
 </li>
@@ -266,6 +242,30 @@ two arguments are equal, nil otherwise.</p>
 <p>Sanitized version of the input string; uses a whitelist based approach for
 allowed elements and their attributes; the sanitization rules are not
 currently editable from the marketplace interface.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#date_before-instance_method" title="#date_before (instance method)">#<strong>date_before</strong>(first_date, second_date)  &#x21d2; Boolean </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns true if first date is lower than second date.</p>
 </div></span>
   
 </li>
@@ -422,31 +422,6 @@ to generate any url inside our platform; e.g.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#generate_url_with_user_token-instance_method" title="#generate_url_with_user_token (instance method)">#<strong>generate_url_with_user_token</strong>(url_name, user, args = {})  &#x21d2; String </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>e.g: &#39;user_path&#39; | generate_url_with_user_token: current_user, id:
-1 generates /users/1?temporary_token=TOKEN_HERE.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
       <a href="#group_by-instance_method" title="#group_by (instance method)">#<strong>group_by</strong>(objects, method)  &#x21d2; Hash&lt;MethodResult =&gt; Array&lt;Object&gt;&gt; </a>
     
 
@@ -489,30 +464,6 @@ to generate any url inside our platform; e.g.</p>
 <p>A human readable string derived from the input; capitalizes the first word,
 turns underscores into spaces, and strips a trailing &#39;_id&#39; if
 present.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#image_url-instance_method" title="#image_url (instance method)">#<strong>image_url</strong>(path_to_file)  &#x21d2; String </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Full url to the image given as a parameter; e.g.</p>
 </div></span>
   
 </li>
@@ -666,32 +617,6 @@ second parameter (an array of arrays).</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#make_html_safe-instance_method" title="#make_html_safe (instance method)">#<strong>make_html_safe</strong>(html = &#39;&#39;)  &#x21d2; String </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>The input text marked as &#39;HTML safe&#39;; this ensures that all HTML
-content will be output to the page; otherwise, without this filter the text
-would be sanitized; e.g.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
       <a href="#map-instance_method" title="#map (instance method)">#<strong>map</strong>(object, method)  &#x21d2; Array&lt;Object&gt; </a>
     
 
@@ -782,33 +707,6 @@ in the original array.</p>
   
     <span class="summary_desc"><div class='inline'>
 <p>Whether the given string matches the given regular expression.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#meta_attr-instance_method" title="#meta_attr (instance method)">#<strong>meta_attr</strong>(content)  &#x21d2; String </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Sanitized input string to be used as a meta tag content; uses a strict
-approach which means it will strip all HTML and leave only safe text
-behind; also will replace one or more spaces with a single space and will
-strip beginning and ending blank characters.</p>
 </div></span>
   
 </li>
@@ -987,82 +885,7 @@ as input.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#price_with_cents_with_currency-instance_method" title="#price_with_cents_with_currency (instance method)">#<strong>price_with_cents_with_currency</strong>(money)  &#x21d2; String </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Formatted price using the global price formatting rules; the default
-currency will be used.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#price_with_cents_with_currency_as_cost-instance_method" title="#price_with_cents_with_currency_as_cost (instance method)">#<strong>price_with_cents_with_currency_as_cost</strong>(money)  &#x21d2; String </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Formatted price using the global price formatting rules, displayed as
-negative amount; the default currency will be used.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#price_without_cents_with_currency-instance_method" title="#price_without_cents_with_currency (instance method)">#<strong>price_without_cents_with_currency</strong>(money)  &#x21d2; String </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Formatted price using the global price formatting rules; the default
-currency will be used.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#pricify-instance_method" title="#pricify (instance method)">#<strong>pricify</strong>(amount, currency = &#39;USD&#39;)  &#x21d2; String </a>
+      <a href="#pricify-instance_method" title="#pricify (instance method)">#<strong>pricify</strong>(amount, currency = &#39;USD&#39;, options = {})  &#x21d2; String </a>
     
 
     
@@ -1086,7 +909,7 @@ currency will be used.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#pricify_cents-instance_method" title="#pricify_cents (instance method)">#<strong>pricify_cents</strong>(amount, currency = &#39;USD&#39;)  &#x21d2; String </a>
+      <a href="#pricify_cents-instance_method" title="#pricify_cents (instance method)">#<strong>pricify_cents</strong>(amount, currency = &#39;USD&#39;, options = {})  &#x21d2; String </a>
     
 
     
@@ -1176,31 +999,6 @@ be visible in the browser.</p>
   
     <span class="summary_desc"><div class='inline'>
 <p>With objects from collection that don&#39;t match provided conditions.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#render_price-instance_method" title="#render_price (instance method)">#<strong>render_price</strong>(money)  &#x21d2; String </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>This should be used instead of the deprecated
-price_with_cents_with_currency and price_without_cents_with_currency.</p>
 </div></span>
   
 </li>
@@ -1380,31 +1178,6 @@ will be based on what the format parameter specifies.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#strip_tags-instance_method" title="#strip_tags (instance method)">#<strong>strip_tags</strong>(html = &#39;&#39;)  &#x21d2; String </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Sanitized version of the input string; uses a strict approach which means
-it will strip all HTML and leave only safe text behind.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
       <a href="#subtract_array-instance_method" title="#subtract_array (instance method)">#<strong>subtract_array</strong>(array, other_array)  &#x21d2; Array&lt;Object&gt; </a>
     
 
@@ -1494,6 +1267,30 @@ create a nicer looking title; it is meant for creating pretty output.</p>
   
     <span class="summary_desc"><div class='inline'>
 <p>A Date object obtained/parsed from the input object.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#to_hash-instance_method" title="#to_hash (instance method)">#<strong>to_hash</strong>(object)  &#x21d2; Hash </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Hash created based on JSON.</p>
 </div></span>
   
 </li>
@@ -1672,6 +1469,28 @@ href="https://example.com/account?temporary_token=TOKEN_HERE">example.com/accoun
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#video_params-instance_method" title="#video_params (instance method)">#<strong>video_params</strong>(url)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#videoify-instance_method" title="#videoify (instance method)">#<strong>videoify</strong>(url = &#39;&#39;, options = {})  &#x21d2; String </a>
     
 
@@ -1705,86 +1524,7 @@ otherwise an empty string is returned.</p>
 
     
       <div class="method_details first">
-  <h3 class="signature first" id="active_class-instance_method">
-  
-    #<strong>active_class</strong>(arg1, arg2, class_name = &#39;active&#39;)  &#x21d2; <tt>String</tt><sup>?</sup> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns class_name (by default &#39;active&#39;) if the first two arguments
-are equal, nil otherwise</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>arg1</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>any string - will be used for comparison with the other string</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>arg2</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>any string - will be used for comparison with the other string</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>, <tt>nil</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>returns class_name (by default &#39;active&#39;) if the first two arguments
-are equal, nil otherwise</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="add_to_array-instance_method">
+  <h3 class="signature first" id="add_to_array-instance_method">
   
     #<strong>add_to_array</strong>(array, item)  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
   
@@ -2021,9 +1761,9 @@ negative values to obtain a date in the past</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="authorized?-instance_method">
+  <h3 class="signature " id="asset_url-instance_method">
   
-    #<strong>authorized?</strong>(user, object_name, object_type = &#39;form_configuration&#39;, _params = {})  &#x21d2; <tt>Boolean</tt> 
+    #<strong>asset_url</strong>(file_path, **options)  &#x21d2; <tt>String</tt> 
   
 
   
@@ -2032,8 +1772,9 @@ negative values to obtain a date in the past</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns Boolean returns true if provided user satisfies policy with
-specified name two arguments are equal, nil otherwise</p>
+<p>valid/file.jpg -&gt; <img src="https://cdn.com/valid/file.jpg" />
+non_existing_file.jpg -&gt; <a href="https://cdn.com">cdn.com</a>
+/search/Sydney/BlueRoad</p>
 
 
   </div>
@@ -2044,51 +1785,16 @@ specified name two arguments are equal, nil otherwise</p>
   
     <li>
       
-        <span class='name'>user</span>
+        <span class='name'>file</span>
       
       
-        <span class='type'>(<tt>UserDrop</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>user object - in most scenarios it will be current_user</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>object_name</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
+        <span class='type'></span>
       
       
       
         &mdash;
         <div class='inline'>
-<p>name - name of the form_cofiguration or page slug to which we want to check
-access</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>object_type</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>&#39;form_configuration&#39;</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>name string - by default form_configuration, can also be page</p>
+<p>path [String]</p>
 </div>
       
     </li>
@@ -2101,14 +1807,13 @@ access</p>
     <li>
       
       
-        <span class='type'>(<tt>Boolean</tt>)</span>
+        <span class='type'>(<tt>String</tt>)</span>
       
       
       
         &mdash;
         <div class='inline'>
-<p>Boolean returns true if provided user satisfies policy with specified name
-two arguments are equal, nil otherwise</p>
+<p>url to the physical file if existing, root asset url otherwise</p>
 </div>
       
     </li>
@@ -2237,6 +1942,83 @@ are not currently editable from the marketplace interface</p>
 <p>sanitized version of the input string; uses a whitelist based approach for
 allowed elements and their attributes; the sanitization rules are not
 currently editable from the marketplace interface</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="date_before-instance_method">
+  
+    #<strong>date_before</strong>(first_date, second_date)  &#x21d2; <tt>Boolean</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns true if first date is lower than second date</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>first_date</span>
+      
+      
+        <span class='type'>(<tt>Time</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>time which will be compared to the second one</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>second_date</span>
+      
+      
+        <span class='type'>(<tt>Time</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>second time, against which we will do comparison</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>returns true if first date is lower than second date</p>
 </div>
       
     </li>
@@ -2627,49 +2409,6 @@ generate_url: id: 1 generates /users/1</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="generate_url_with_user_token-instance_method">
-  
-    #<strong>generate_url_with_user_token</strong>(url_name, user, args = {})  &#x21d2; <tt>String</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>e.g: &#39;user_path&#39; | generate_url_with_user_token: current_user, id:
-1 generates /users/1?temporary_token=TOKEN_HERE</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>returns a url for the given url helper name and the given arguments with
-the user temporary token;</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div>
-</div>
-    
-      <div class="method_details ">
   <h3 class="signature " id="group_by-instance_method">
   
     #<strong>group_by</strong>(objects, method)  &#x21d2; <tt>Hash&lt;MethodResult =&gt; Array&lt;Object&gt;&gt;</tt> 
@@ -2803,69 +2542,6 @@ first word, turns underscores into spaces, and strips a trailing
 <p>a human readable string derived from the input; capitalizes the first word,
 turns underscores into spaces, and strips a trailing &#39;_id&#39; if
 present. Meant for creating pretty output.</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="image_url-instance_method">
-  
-    #<strong>image_url</strong>(path_to_file)  &#x21d2; <tt>String</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns full url to the image given as a parameter; e.g.
-&#39;chevron.jpg&#39; | image_url</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>path_to_file</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>file name or relative path to file</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>full url to the image given as a parameter; e.g. &#39;chevron.jpg&#39; |
-image_url</p>
 </div>
       
     </li>
@@ -3268,75 +2944,6 @@ form &#39;time.formats.#{format_name}&#39;</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="make_html_safe-instance_method">
-  
-    #<strong>make_html_safe</strong>(html = &#39;&#39;)  &#x21d2; <tt>String</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns the input text marked as &#39;HTML safe&#39;; this ensures that all
-HTML content will be output to the page; otherwise, without this filter the
-text would be sanitized; e.g. {{ @some_variable_with_html_contents |
-make_html_safe }}</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>html</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>&#39;&#39;</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>input string to mark as &#39;HTML safe&#39;</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>the input text marked as &#39;HTML safe&#39;; this ensures that all HTML
-content will be output to the page; otherwise, without this filter the text
-would be sanitized; e.g. {{ @some_variable_with_html_contents |
-make_html_safe }}</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div>
-</div>
-    
-      <div class="method_details ">
   <h3 class="signature " id="map-instance_method">
   
     #<strong>map</strong>(object, method)  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
@@ -3634,73 +3241,6 @@ match the first parameter</p>
         &mdash;
         <div class='inline'>
 <p>whether the given string matches the given regular expression</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="meta_attr-instance_method">
-  
-    #<strong>meta_attr</strong>(content)  &#x21d2; <tt>String</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns sanitized input string to be used as a meta tag content; uses a
-strict approach which means it will strip all HTML and leave only safe text
-behind; also will replace one or more spaces with a single space and will
-strip beginning and ending blank characters</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>content</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>string to be sanitized</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>sanitized input string to be used as a meta tag content; uses a strict
-approach which means it will strip all HTML and leave only safe text
-behind; also will replace one or more spaces with a single space and will
-strip beginning and ending blank characters</p>
 </div>
       
     </li>
@@ -4220,198 +3760,9 @@ singularized</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="price_with_cents_with_currency-instance_method">
-  
-    #<strong>price_with_cents_with_currency</strong>(money)  &#x21d2; <tt>String</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns formatted price using the global price formatting rules; the
-default currency will be used</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>money</span>
-      
-      
-        <span class='type'>(<tt>Numeric</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>amount to be formatted</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>formatted price using the global price formatting rules; the default
-currency will be used</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="price_with_cents_with_currency_as_cost-instance_method">
-  
-    #<strong>price_with_cents_with_currency_as_cost</strong>(money)  &#x21d2; <tt>String</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns formatted price using the global price formatting rules, displayed
-as negative amount; the default currency will be used</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>money</span>
-      
-      
-        <span class='type'>(<tt>Numeric</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>amount to be formatted</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>formatted price using the global price formatting rules, displayed as
-negative amount; the default currency will be used</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="price_without_cents_with_currency-instance_method">
-  
-    #<strong>price_without_cents_with_currency</strong>(money)  &#x21d2; <tt>String</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns formatted price using the global price formatting rules; the
-default currency will be used</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>money</span>
-      
-      
-        <span class='type'>(<tt>Numeric</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>amount to be formatted</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>formatted price using the global price formatting rules; the default
-currency will be used</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div>
-</div>
-    
-      <div class="method_details ">
   <h3 class="signature " id="pricify-instance_method">
   
-    #<strong>pricify</strong>(amount, currency = &#39;USD&#39;)  &#x21d2; <tt>String</tt> 
+    #<strong>pricify</strong>(amount, currency = &#39;USD&#39;, options = {})  &#x21d2; <tt>String</tt> 
   
 
   
@@ -4490,7 +3841,7 @@ currency will be used</p>
       <div class="method_details ">
   <h3 class="signature " id="pricify_cents-instance_method">
   
-    #<strong>pricify_cents</strong>(amount, currency = &#39;USD&#39;)  &#x21d2; <tt>String</tt> 
+    #<strong>pricify_cents</strong>(amount, currency = &#39;USD&#39;, options = {})  &#x21d2; <tt>String</tt> 
   
 
   
@@ -4763,69 +4114,6 @@ conditions</p>
         &mdash;
         <div class='inline'>
 <p>with objects from collection that don&#39;t match provided conditions</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="render_price-instance_method">
-  
-    #<strong>render_price</strong>(money)  &#x21d2; <tt>String</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>This should be used instead of the deprecated
-price_with_cents_with_currency and price_without_cents_with_currency</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>money</span>
-      
-      
-        <span class='type'>(<tt>Numeric</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>amount to be formatted</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>formatted price using the global price formatting rules; the default
-currency will be used</p>
 </div>
       
     </li>
@@ -5359,71 +4647,6 @@ will be based on what the format parameter specifies</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="strip_tags-instance_method">
-  
-    #<strong>strip_tags</strong>(html = &#39;&#39;)  &#x21d2; <tt>String</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns sanitized version of the input string; uses a strict approach which
-means it will strip all HTML and leave only safe text behind</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>html</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>&#39;&#39;</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>HTML string to be sanitized</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>sanitized version of the input string; uses a strict approach which means
-it will strip all HTML and leave only safe text behind</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div>
-</div>
-    
-      <div class="method_details ">
   <h3 class="signature " id="subtract_array-instance_method">
   
     #<strong>subtract_array</strong>(array, other_array)  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
@@ -5677,6 +4900,67 @@ create a nicer looking title; it is meant for creating pretty output</p>
         &mdash;
         <div class='inline'>
 <p>a Date object obtained/parsed from the input object</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="to_hash-instance_method">
+  
+    #<strong>to_hash</strong>(object)  &#x21d2; <tt>Hash</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns Hash created based on JSON</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>object</span>
+      
+      
+        <span class='type'>(<tt>Object</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>String containing valid JSON</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Hash created based on JSON</p>
 </div>
       
     </li>
@@ -6177,6 +5461,18 @@ href="https://example.com/account?temporary_token=TOKEN_HERE">example.com/accoun
 </ul>
 
 </div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="video_params-instance_method">
+  
+    #<strong>video_params</strong>(url)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3>
 </div>
     
       <div class="method_details ">

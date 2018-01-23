@@ -6,7 +6,7 @@
 <title>
   Module: Liquify::Filters::DeprecatedFilters
   
-    &mdash; Documentation by YARD 0.9.9
+    &mdash; Documentation by YARD 0.9.12
   
 </title>
 
@@ -101,6 +101,31 @@
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#active_class-instance_method" title="#active_class (instance method)">#<strong>active_class</strong>(arg1, arg2, class_name = &#39;active&#39;)  &#x21d2; String<sup>?</sup> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns class_name (by default &#39;active&#39;) if the first two arguments
+are equal, nil otherwise.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#already_favorite-instance_method" title="#already_favorite (instance method)">#<strong>already_favorite</strong>(user, object)  &#x21d2; Boolean </a>
     
 
@@ -142,6 +167,31 @@
     <span class="summary_desc"><div class='inline'>
 <p>Seller attachments tied to the given transactable object and that are
 visible by the given user.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#authorized%3F-instance_method" title="#authorized? (instance method)">#<strong>authorized?</strong>(user, object_name, object_type = &#39;form_configuration&#39;, _params = {})  &#x21d2; Boolean </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Boolean returns true if provided user satisfies policy with specified name
+two arguments are equal, nil otherwise.</p>
 </div></span>
   
 </li>
@@ -274,6 +324,31 @@ owner approval.</p>
 collaborations of the user given as the user parameter, collaborations on
 Transactable objects (with the state pending, or in_progress created by the
 user given as the current_user parameter.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#generate_url_with_user_token-instance_method" title="#generate_url_with_user_token (instance method)">#<strong>generate_url_with_user_token</strong>(url_name, user, args = {})  &#x21d2; String </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>e.g: &#39;user_path&#39; | generate_url_with_user_token: current_user, id:
+1 generates /users/1?temporary_token=TOKEN_HERE.</p>
 </div></span>
   
 </li>
@@ -501,6 +576,30 @@ exists.</p>
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#image_url-instance_method" title="#image_url (instance method)">#<strong>image_url</strong>(path_to_file)  &#x21d2; String </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Full url to the image given as a parameter; e.g.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#is_approved_collaborator-instance_method" title="#is_approved_collaborator (instance method)">#<strong>is_approved_collaborator</strong>(user, transactable)  &#x21d2; Boolean </a>
     
 
@@ -721,6 +820,59 @@ unit of the pricing (e.g. day, hour, etc.).</p>
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#make_html_safe-instance_method" title="#make_html_safe (instance method)">#<strong>make_html_safe</strong>(html = &#39;&#39;)  &#x21d2; String </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>The input text marked as &#39;HTML safe&#39;; this ensures that all HTML
+content will be output to the page; otherwise, without this filter the text
+would be sanitized; e.g.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#meta_attr-instance_method" title="#meta_attr (instance method)">#<strong>meta_attr</strong>(content)  &#x21d2; String </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Sanitized input string to be used as a meta tag content; uses a strict
+approach which means it will strip all HTML and leave only safe text
+behind; also will replace one or more spaces with a single space and will
+strip beginning and ending blank characters.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#no_footer!-instance_method" title="#no_footer! (instance method)">#<strong>no_footer!</strong>  &#x21d2; nil </a>
     
 
@@ -771,6 +923,81 @@ passed in options.</p>
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#price_with_cents_with_currency-instance_method" title="#price_with_cents_with_currency (instance method)">#<strong>price_with_cents_with_currency</strong>(money)  &#x21d2; String </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Formatted price using the global price formatting rules; the default
+currency will be used.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#price_with_cents_with_currency_as_cost-instance_method" title="#price_with_cents_with_currency_as_cost (instance method)">#<strong>price_with_cents_with_currency_as_cost</strong>(money)  &#x21d2; String </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Formatted price using the global price formatting rules, displayed as
+negative amount; the default currency will be used.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#price_without_cents_with_currency-instance_method" title="#price_without_cents_with_currency (instance method)">#<strong>price_without_cents_with_currency</strong>(money)  &#x21d2; String </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Formatted price using the global price formatting rules; the default
+currency will be used.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#pricing_units_translation-instance_method" title="#pricing_units_translation (instance method)">#<strong>pricing_units_translation</strong>(transactable_pricing, base_key, units_namespace)  &#x21d2; String </a>
     
 
@@ -811,6 +1038,31 @@ passed in options.</p>
   
     <span class="summary_desc"><div class='inline'>
 <p>Returns data.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#render_price-instance_method" title="#render_price (instance method)">#<strong>render_price</strong>(money)  &#x21d2; String </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>This should be used instead of the deprecated
+price_with_cents_with_currency and price_without_cents_with_currency.</p>
 </div></span>
   
 </li>
@@ -910,6 +1162,31 @@ the given options.</p>
   
     <span class="summary_desc"><div class='inline'>
 <p>Url to a placeholder image with the width and height given as parameters.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#strip_tags-instance_method" title="#strip_tags (instance method)">#<strong>strip_tags</strong>(html = &#39;&#39;)  &#x21d2; String </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Sanitized version of the input string; uses a strict approach which means
+it will strip all HTML and leave only safe text behind.</p>
 </div></span>
   
 </li>
@@ -1081,7 +1358,86 @@ current_url | widget_links } or { current_url | widget_links:
 
     
       <div class="method_details first">
-  <h3 class="signature first" id="already_favorite-instance_method">
+  <h3 class="signature first" id="active_class-instance_method">
+  
+    #<strong>active_class</strong>(arg1, arg2, class_name = &#39;active&#39;)  &#x21d2; <tt>String</tt><sup>?</sup> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns class_name (by default &#39;active&#39;) if the first two arguments
+are equal, nil otherwise</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>arg1</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>any string - will be used for comparison with the other string</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>arg2</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>any string - will be used for comparison with the other string</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>, <tt>nil</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>returns class_name (by default &#39;active&#39;) if the first two arguments
+are equal, nil otherwise</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="already_favorite-instance_method">
   
     #<strong>already_favorite</strong>(user, object)  &#x21d2; <tt>Boolean</tt> 
   
@@ -1227,6 +1583,104 @@ are visible by the given user</p>
         <div class='inline'>
 <p>seller attachments tied to the given transactable object and that are
 visible by the given user</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="authorized?-instance_method">
+  
+    #<strong>authorized?</strong>(user, object_name, object_type = &#39;form_configuration&#39;, _params = {})  &#x21d2; <tt>Boolean</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns Boolean returns true if provided user satisfies policy with
+specified name two arguments are equal, nil otherwise</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>user</span>
+      
+      
+        <span class='type'>(<tt>UserDrop</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>user object - in most scenarios it will be current_user</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>object_name</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>name - name of the form_cofiguration or page slug to which we want to check
+access</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>object_type</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;form_configuration&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>name string - by default form_configuration, can also be page</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Boolean returns true if provided user satisfies policy with specified name
+two arguments are equal, nil otherwise</p>
 </div>
       
     </li>
@@ -1632,6 +2086,49 @@ user given as the current_user parameter</p>
 collaborations of the user given as the user parameter, collaborations on
 Transactable objects (with the state pending, or in_progress created by the
 user given as the current_user parameter</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="generate_url_with_user_token-instance_method">
+  
+    #<strong>generate_url_with_user_token</strong>(url_name, user, args = {})  &#x21d2; <tt>String</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>e.g: &#39;user_path&#39; | generate_url_with_user_token: current_user, id:
+1 generates /users/1?temporary_token=TOKEN_HERE</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>returns a url for the given url helper name and the given arguments with
+the user temporary token;</p>
 </div>
       
     </li>
@@ -2187,6 +2684,69 @@ exists</p>
 
   
 </h3>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="image_url-instance_method">
+  
+    #<strong>image_url</strong>(path_to_file)  &#x21d2; <tt>String</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns full url to the image given as a parameter; e.g.
+&#39;chevron.jpg&#39; | image_url</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>path_to_file</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>file name or relative path to file</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>full url to the image given as a parameter; e.g. &#39;chevron.jpg&#39; |
+image_url</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
 </div>
     
       <div class="method_details ">
@@ -2858,6 +3418,142 @@ unit of the pricing (e.g. day, hour, etc.)</p>
 </div>
     
       <div class="method_details ">
+  <h3 class="signature " id="make_html_safe-instance_method">
+  
+    #<strong>make_html_safe</strong>(html = &#39;&#39;)  &#x21d2; <tt>String</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the input text marked as &#39;HTML safe&#39;; this ensures that all
+HTML content will be output to the page; otherwise, without this filter the
+text would be sanitized; e.g. {{ @some_variable_with_html_contents |
+make_html_safe }}</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>html</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>input string to mark as &#39;HTML safe&#39;</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the input text marked as &#39;HTML safe&#39;; this ensures that all HTML
+content will be output to the page; otherwise, without this filter the text
+would be sanitized; e.g. {{ @some_variable_with_html_contents |
+make_html_safe }}</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="meta_attr-instance_method">
+  
+    #<strong>meta_attr</strong>(content)  &#x21d2; <tt>String</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns sanitized input string to be used as a meta tag content; uses a
+strict approach which means it will strip all HTML and leave only safe text
+behind; also will replace one or more spaces with a single space and will
+strip beginning and ending blank characters</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>content</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>string to be sanitized</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>sanitized input string to be used as a meta tag content; uses a strict
+approach which means it will strip all HTML and leave only safe text
+behind; also will replace one or more spaces with a single space and will
+strip beginning and ending blank characters</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
   <h3 class="signature " id="no_footer!-instance_method">
   
     #<strong>no_footer!</strong>  &#x21d2; <tt>nil</tt> 
@@ -2971,6 +3667,195 @@ the output HTML</p>
         <div class='inline'>
 <p>HTML formatted pagination area generated for the input collection with the
 passed in options</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="price_with_cents_with_currency-instance_method">
+  
+    #<strong>price_with_cents_with_currency</strong>(money)  &#x21d2; <tt>String</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns formatted price using the global price formatting rules; the
+default currency will be used</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>money</span>
+      
+      
+        <span class='type'>(<tt>Numeric</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>amount to be formatted</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>formatted price using the global price formatting rules; the default
+currency will be used</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="price_with_cents_with_currency_as_cost-instance_method">
+  
+    #<strong>price_with_cents_with_currency_as_cost</strong>(money)  &#x21d2; <tt>String</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns formatted price using the global price formatting rules, displayed
+as negative amount; the default currency will be used</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>money</span>
+      
+      
+        <span class='type'>(<tt>Numeric</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>amount to be formatted</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>formatted price using the global price formatting rules, displayed as
+negative amount; the default currency will be used</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="price_without_cents_with_currency-instance_method">
+  
+    #<strong>price_without_cents_with_currency</strong>(money)  &#x21d2; <tt>String</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns formatted price using the global price formatting rules; the
+default currency will be used</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>money</span>
+      
+      
+        <span class='type'>(<tt>Numeric</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>amount to be formatted</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>formatted price using the global price formatting rules; the default
+currency will be used</p>
 </div>
       
     </li>
@@ -3158,6 +4043,69 @@ price&#39;</p>
         &mdash;
         <div class='inline'>
 <p>returns data</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="render_price-instance_method">
+  
+    #<strong>render_price</strong>(money)  &#x21d2; <tt>String</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>This should be used instead of the deprecated
+price_with_cents_with_currency and price_without_cents_with_currency</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>money</span>
+      
+      
+        <span class='type'>(<tt>Numeric</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>amount to be formatted</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>formatted price using the global price formatting rules; the default
+currency will be used</p>
 </div>
       
     </li>
@@ -3481,6 +4429,71 @@ parameters</p>
         &mdash;
         <div class='inline'>
 <p>url to a placeholder image with the width and height given as parameters</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="strip_tags-instance_method">
+  
+    #<strong>strip_tags</strong>(html = &#39;&#39;)  &#x21d2; <tt>String</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns sanitized version of the input string; uses a strict approach which
+means it will strip all HTML and leave only safe text behind</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>html</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>HTML string to be sanitized</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>sanitized version of the input string; uses a strict approach which means
+it will strip all HTML and leave only safe text behind</p>
 </div>
       
     </li>
