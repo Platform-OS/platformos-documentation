@@ -6,6 +6,8 @@ Marketplace Kit is a ruby gem, which was developed to allow you to easily deploy
 
 There are three main commands available. All commands should be run in the project root directory - i.e. one level above `marketplace_builder` directory. Before each command you have to specify which endpoint you want to use - usually it will be either `staging` or `production`, however you can follow your own naming convention (for example, `<project name>-production` and `<project-name>-staging`, in  case you are working on multiple projects at the same time and want an extra safety check to avoid deploying the wrong project).
 
+Configuration for environments lays down in `marketplace_builder/.builder` file. There is also `marketplace_builder/.builder.example` which you can use as inspiration.
+
 Please note that you need to be an authenticated user in order to use this gem. You can authenticate by running any marketplace-kit command, which will prompt you for your email and password. If credentails are valid, and the user with this email address is an instance admin, the commands will be processed. You will be remembered for 14 days.
 
 1. Pushing changes to the NearMe Platform
