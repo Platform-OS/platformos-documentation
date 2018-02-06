@@ -30,9 +30,7 @@ configuration:
     validation:
       presence: true
 ---
-{% form_for form, url: '/api/users', method: post %}
-  <input value="{{ form_configuration.id }}" type="hidden" name="form_configuration_id" />
-  <input value="{{ page.id }}" type="hidden" name="page_id" />
+{% form_for form, url: '/api/users', method: 'post' %}
 
   {% input first_name %}
   {% input email %}
@@ -127,9 +125,10 @@ The second part of the form is the actual html that will be presented to the use
 
 ## Required inputs
 
-* {% raw %}{% form_for form, url: '/api/users', method: post %}{% endraw %} - In this line you define to which endpoint the form should point. It will always depend on a `base_form` value you have provided in the previous step. The method defines what you want to do with the model. If you want to create it, like in our example, you will use `post`. If you want to update existing model, you would use `put`. Finally, if you want to delete the resource - use `delete`. As always, we recommend to take a look at [full API Endpoints documentation](/reference/api-endpoints)
-* {% raw %}<input value="{{ form_configuration.id }}" type="hidden" name="form_configuration_id" />{% endraw %} - you will want to just copy paste this always. Since you can have multiple forms that access the same api, you need to let API now which form is submitted.
-* {% raw %}<input value="{{ page.id }}" type="hidden" name="page_id" />{% endraw %} - this is also the line that you most likely will just want to copy-paste. The `page` is a variable that is automagically set and represents current page. It is used to notify API which page should be rendered if submission of the form fails (most likely due to validation error). This allows to re-display user's input for all the field and display validation errors where applicable.
+* {% raw %}{% form_for form, url: '/api/users', method: 'post' %}{% endraw %} - In this line you define to which endpoint the form should point. It will always depend on a `base_form` value you have provided in the previous step. The method defines what you want to do with the model. If you want to create it, like in our example, you will use `post`. If you want to update existing model, you would use `put`. Finally, if you want to delete the resource - use `delete`. As always, we recommend to take a look at [full API Endpoints documentation](/reference/api-endpoints)
+
+## Optional inputs
+* {% raw %}<input value="{{ page.id }}" type="hidden" name="page_id" />{% endraw %} - The `page` is used to notify API which page should be rendered if submission of the form fails (most likely due to validation error). This allows to re-display user's input for all the field and display validation errors where applicable.
 
 ## Inputs
 
@@ -180,10 +179,7 @@ configuration:
     validation:
       presence: true
 ---
-{% form_for form, url: '/api/users', method: post %}
-  <input value="{{ form_configuration.id }}" type="hidden" name="form_configuration_id" />
-  <input value="{{ page.id }}" type="hidden" name="page_id" />
-
+{% form_for form, url: '/api/users', method: 'post' %}
   {% input first_name %}
   {% input email %}
   {% input password, as: password %}

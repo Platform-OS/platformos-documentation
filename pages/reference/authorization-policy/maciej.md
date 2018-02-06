@@ -36,8 +36,6 @@ configuration:
 ---
 {% assign form_url = "/api/users/" | append: current_user.id %}
 {% form_for form, url: @form_url %}
-  <input value="{{ form_configuration.id }}" type="hidden" name="form_configuration_id" />
-  <input value="{{ page.id }}" type="hidden" name="page_id" />
   {% input last_name, label: 'Last Name' %}
   {% submit 'Save' %}
 {% endform_for %}
@@ -60,8 +58,6 @@ configuration:
 ---
 {% assign form_url = "/api/users/" | append: current_user.id %}
 {% form_for form, url: @form_url %}
-  <input value="{{ form_configuration.id }}" type="hidden" name="form_configuration_id" />
-  <input value="{{ page.id }}" type="hidden" name="page_id" />
   {% input last_name, label: 'Last Name' %}
   {% submit 'Save' %}
 {% endform_for %}

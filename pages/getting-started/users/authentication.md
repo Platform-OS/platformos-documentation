@@ -33,7 +33,7 @@ It is not uncommen for users to forget the password. A feature to reset a passwo
 {% raw %}
 ```liquid
 <h1>Reset password</h1>
-{% form_for user, as: user, url: '/users/password', method: post %}
+{% form_for user, url: '/users/password', method: post %}
   <p>Fill in your email below and we'll send you instructions to reset your password.</p>
   {% input email, required: true %}
   {% submit 'Reset Password' %}

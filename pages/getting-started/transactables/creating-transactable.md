@@ -70,9 +70,7 @@ configuration:
   {% assign http_method = 'put' %}
 {% endif %}
 
-{% form_for form, url: @form_url, as: form, method: @http_method %}
-  <input value="{{ form_configuration.id }}" type="hidden" name="form_configuration_id" />
-  <input value="{{ page.id }}" type="hidden" name="page_id" />
+{% form_for form, url: @form_url, method: @http_method %}
   <input value="{{ form.model.transactable_type.id }}" type="hidden" name="transactable_type_id" />
   <input value="/" type="hidden" name="return_to" />
 

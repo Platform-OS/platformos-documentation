@@ -36,8 +36,6 @@ configuration:
 
 {% assign form_url = "/api/user/merchant_accounts" %}
 {% form_for form, url: @form_url, as: 'merchant_account', html-data-warn-on-leave: 'true', html-class: 'container' %}
-  <input value="{{ form_configuration.id }}" type="hidden" name="form_configuration_id" />
-  <input value="{{ page.id }}" type="hidden" name="page_id" />
   {% input_field account_type, as: hidden, value: 'individual' %}
   {% input_field currency, as: hidden, value: 'CAD' %}
 
