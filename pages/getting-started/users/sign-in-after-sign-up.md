@@ -41,7 +41,7 @@ We are executing form called `session_create_form` with the same arguments we ha
 
 ### Session create form configuration
 
-Because this form is supported in our backend, you dont need to define anything, just use - we will take care of everything else behind the scenes.
+Because this form (SessionForm) is supported in our backend and it knows what to when receiving correct email and password, you dont need to define anything else - we will take care of everything else behind the scenes.
 
 ```yml
 ---
