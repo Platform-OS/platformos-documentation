@@ -23,9 +23,12 @@ callback_actions: |-
 ```
 {% endraw %}
 
+We are executing `user_session_create` query.
+
+
 ### GraphQL mutation
 
-We are executing `user_session_create` query, so it needs to be created. It takes two obligatory arguments: `email` and `password` - both strings.
+This mutation takes two obligatory arguments: `email` and `password` - both strings.
 
 ```graphql
 mutation user_session_create($email: String!, $password: String!) {
@@ -35,11 +38,13 @@ mutation user_session_create($email: String!, $password: String!) {
 }
 ```
 
-We are executing form called `session_create_form` with the same arguments we have received from the `callback_action` and returning user email it sucessfully returns. Lets create the form that is used above.
+We are calling form called `session_create_form` with the same arguments we have received from the `callback_action`.
+
+Lets create that form now.
 
 ### Session create form configuration
 
-Because this form (SessionForm) is supported in our backend and it knows what to when receiving correct email and password, you dont need to define anything else - we will take care of everything else behind the scenes.
+Because SessionForm is supported in our backend and it knows what to when receiving correct email and password, you dont need to define anything else - we will take care of everything else behind the scenes.
 
 ```yml
 ---
@@ -50,4 +55,4 @@ base_form: SessionForm
 
 ## Summary
 
-Thats it. Your user should be logged in immediately after creating account.
+Thats it. Any user should be logged in immediately after successfully creating an account.
