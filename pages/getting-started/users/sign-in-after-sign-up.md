@@ -19,9 +19,8 @@ In you `sign_up` form configuration lets add callback_action at the end of the Y
 ```liquid
 ---
 ...
-callback_actions: "
+callback_actions: |-
   {% execute_query user_session_create, email: @form.email, password: @form.password %}
-"
 ---
 ```
 {% endraw %}
