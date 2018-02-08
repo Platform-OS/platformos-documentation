@@ -9,11 +9,9 @@ If you want your user to be immediately signed into the marketplace after sign u
 
 ## Example
 
-Lets look at the example.
-
 ### Sign Up form configuration
 
-In you `sign_up` form configuration lets add callback_action at the end of the YML definition.
+In your `sign_up` form configuration lets add callback_action at the end of the YML definition.
 
 {% raw %}
 ```liquid
@@ -27,7 +25,7 @@ callback_actions: |-
 
 ### GraphQL mutation
 
-Because we are executing `user_session_create` query, it needs to be created. It should take two arguments: `email` and `password` - both strings.
+We are executing `user_session_create` query, so it needs to be created. It takes two obligatory arguments: `email` and `password` - both strings.
 
 ```graphql
 mutation user_session_create($email: String!, $password: String!) {
