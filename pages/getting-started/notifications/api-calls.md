@@ -101,7 +101,7 @@ Last, but not least, you need to extend api call notification by adding proper c
 ---
 name: ping_example_com_on_user_sign_up
 to: 'https://example.com/endpoint/{{ form.id }}'
-callback: "{%- assign response_json = response.body | to_hash -%}{% execute_query persist_custom_attribute, id: form.id, custom_attribute_value: response_json.third_party_api_id %}"
+callback: "{%- assign response_json = response.body | to_hash -%}{% execute_query persist_custom_attribute, id: form.id, third_party_api_id: response_json.third_party_api_id %}"
 ...
 ---
 ...
