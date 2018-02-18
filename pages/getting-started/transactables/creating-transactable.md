@@ -4,20 +4,11 @@ permalink: /getting-started/transactables/creating-transactable
 ---
 Similarly to user profiles, for which we were creates a file in `instance_profile_types` first, before we start building a form for project, we need to create [TransactableType](/reference/transactable-type). It defines the business rules of the transaction associated with this transactable - whether it is time based booking, an offer or something else. This files also will define available property of project.
 
-In the previous section we have defined briefly super high level business rules - a client should be able to create a Project. Developer will be invited to the project by client, and he would need to submit his offer. Hence, the associatied transaction, which we call action type, is Offer. Project should contain enough information to let Developer decide, whether he is interested in working on it or not. Let's assume, that developers are mainly interested what is the deadline, the budget, whether it is remote or onsite. Each transactable by default have attributes name and description, which we will be able to use. Based on this specification, we create a file named `/transactable_types/project.yml` with the following content:
+In the previous section we have defined briefly super high level business rules - a client should be able to create a Project. Developer will be invited to the project by client, and he would need to submit his offer. Project should contain enough information to let Developer decide, whether he is interested in working on it or not. Let's assume, that developers are mainly interested what is the deadline, the budget, whether it is remote or onsite. Each transactable by default have attributes name and description, which we will be able to use. Based on this specification, we create a file named `/transactable_types/project.yml` with the following content:
 
 ```yaml
 ---
 name: Project
-action_types:
-- type: TransactableType::OfferAction
-  enabled: true
-  pricings:
-  - order_class_name: Offer
-    allow_free_booking: true
-    allow_nil_price_cents: true
-    number_of_units: 1
-    unit: item
 custom_attributes:
 - name: workplace_onsite
   attribute_type: boolean
@@ -35,6 +26,7 @@ Now we can proceed with building a form to create Transactable.
 ```liquid
 ---
 name: project
+return_to: '/'
 base_form: TransactableForm
 configuration:
   name:
@@ -53,15 +45,6 @@ configuration:
     budget:
       validation:
         presence: true
-  offer_action:
-    pricings:
-      enabled: {}
-      validation:
-        length:
-          minimum: 1
-        if: :enabled?
-    validation:
-      presence: true
 ---
 {% assign form_url = "/api/user/transactables/" | append: form.id %}
 {% if form.id == blank %}
@@ -71,8 +54,6 @@ configuration:
 {% endif %}
 
 {% form_for form, url: @form_url, method: @http_method %}
-  <input value="{{ form.model.transactable_type.id }}" type="hidden" name="transactable_type_id" />
-  <input value="/" type="hidden" name="return_to" />
 
   {% input name %}
   {% input description, as: text %}
@@ -82,15 +63,6 @@ configuration:
     {% input workplace_onsite, as: boolean, form: properties %}
     {% input budget, form: properties %}
     {% input deadline, form: properties, placeholder: 'Y-m-d' %}
-  {% endfields_for %}
-
-  {% fields_for offer_action %}
-    {% input_field enabled, as: hidden, value: 1, form: offer_action %}
-    {% fields_for pricings, form: offer_action %}
-      {% input_field enabled, as: hidden, value: 1, form: pricings %}
-      {% input_field transactable_type_pricing_id, as: hidden, form: pricings %}
-      {% input_field price, as: hidden, form: pricings %}
-    {% endfields_for %}
   {% endfields_for %}
 
   {% submit Save %}
