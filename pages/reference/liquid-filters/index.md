@@ -31,7 +31,7 @@ you do it is guaranteed for CDN to serve the most current file uploaded to your 
 
 Please note, that you can nest assets in any number of directories as you want.
 
-In example above file `images/logo.svg` would be placed in `custom_themes/default_custom_theme_assets/images/logo.svg`
+In example above file `images/logo.svg` would be placed in `assets/images/logo.svg`
 
 ### Example - file NOT found
 
