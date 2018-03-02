@@ -1,6 +1,6 @@
 ---
 title: Persist part of third party api response
-permalink: /guides/persist-third-party-api-response/
+permalink: /guides/integration-with-third-party-api/persist-third-party-api-response/
 ---
 
 Here is complete example of how to do it. We start by creating a new profile, let's call it `test_profile`. We will also need a custom attribute to store the actual value from the api, let's call it `third_party_api_value`:
