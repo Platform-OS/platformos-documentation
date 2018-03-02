@@ -114,5 +114,4 @@ callback: "{%- assign response_json = response.body | to_hash -%}{% execute_quer
 ---
 ...
 ```
-
 {% endraw %}
