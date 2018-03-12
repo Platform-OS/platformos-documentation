@@ -83,13 +83,13 @@ authorization_policies:
 <h1>Hello John!</h1>
 ```
 
-## Context `object`
+## Contextual `object`
 
-Apart from pulling data from GraphQL you have also access to a global object under variable called `object` (watch out to not override it).
+Apart from pulling data from GraphQL you have also access to a variable called `object` (watch out to not override it).
 
-* If authorization policy is called from a FormConfiguration this object will contain `Form` object
+* If authorization policy is called from a `FormConfiguration` this object will contain `Form` object
 
-* If authorization policy is called from a Page this object will contai `Page` object
+* If authorization policy is called from a `Page` this object will contain`Page` object
 
 ## Handling violated Policy
 
