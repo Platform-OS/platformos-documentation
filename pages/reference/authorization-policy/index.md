@@ -9,7 +9,10 @@ Each policy is parsed using Liquid and system will check them in order of their 
 
 If the content of the policy evaluates to anything other than `true`, policy is considered violated and the system will not proceed with executing action (like submitting a form or render a page).
 
-Violation means server will redirect to the path set in `redirect_to` with http status code of 403 (forbidden).
+Violation means server will either:
+
+* if `redirect_to` key is present, redirect to page set for this key using status code of `302 Moved`
+* return empty page with status `403 Forbidden`
 
 ## Adding a policy
 
