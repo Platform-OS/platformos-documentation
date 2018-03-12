@@ -3,7 +3,9 @@ title: Authorization Policy
 permalink: /reference/authorization-policy/
 ---
 
-Authorization policies allows you to restrict access to forms and pages in a flexible way. Each form and page can have multiple policies attached to it. Policy is parsed using Liquid.
+Authorization policies allows you to restrict access to forms and pages in a flexible way. Each form and page can have multiple policies attached to it.
+
+Each policy is parsed using Liquid and system will check them in order of their appearance in the `authorization_policies` key.
 
 If the content of the policy evaluates to anything other than `true`, policy is considered violated and the system will not proceed with executing action (like submitting a form or render a page).
 
@@ -87,9 +89,11 @@ authorization_policies:
 
 Apart from pulling data from GraphQL you have also access to a variable called `object` (watch out to not override it).
 
-* If authorization policy is called from a `FormConfiguration` this object will contain `Form` object
+Depending from where authorization policy is called this object contain:
 
-* If authorization policy is called from a `Page` this object will contain`Page` object
+* `Form` object in FormConfiguration context
+
+* `Page` object in Page context
 
 ## Handling violated Policy
 
