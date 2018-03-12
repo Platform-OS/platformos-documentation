@@ -11,8 +11,9 @@ Violation means server will redirect to the path set in `redirect_to` with http 
 
 ## Adding a policy
 
-To add an authorization policy, create a file in `authorization_policies/` directory, for example `only_allowed_by_johns.liquid`.
-You can provide a name for this policy and a content, using Liquid. In Liquid, you have access to `current_user`, `object` (either `FormConfiguration` or Page - depending what you authorize) and `params`. You are allowed to use all liquid ilters and GraphQL. Example policy file can look like:
+To add an authorization policy, create a file in `authorization_policies/` directory, for example `only_allowed_by_johns.liquid`. You are allowed to use all liquid features and GraphQL in your authorization policy.
+
+Assuming you have prepared graphql query called `current_user`, example policy file can look like:
 
 {% raw %}
 
@@ -81,6 +82,14 @@ authorization_policies:
 ---
 <h1>Hello John!</h1>
 ```
+
+## Context `object`
+
+Apart from pulling data from GraphQL you have also access to a global object under variable called `object` (watch out to not override it).
+
+* If authorization policy is called from a FormConfiguration this object will contain `Form` object
+
+* If authorization policy is called from a Page this object will contai `Page` object
 
 ## Handling violated Policy
 
