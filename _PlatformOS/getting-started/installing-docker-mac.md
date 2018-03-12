@@ -12,8 +12,8 @@ Docker for Mac requires OS X El Capitan 10.11 or newer macOS release running on 
 
 Installing Docker on a Mac is a two-step process:
 
-*   Download `Docker.dmg`
-*   Install Docker
+1.   Download `Docker.dmg`
+2.   Install Docker
 
 ### Step 1: Download Docker.dmg
 To download the recommended version of Docker (Docker Community Edition), go to the [Marketplace Kit Github page](https://github.com/mdyd-dev/marketplace-kit) and click on the link under **Get Docker Community Edition**.  
