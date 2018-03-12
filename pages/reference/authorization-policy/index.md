@@ -9,11 +9,6 @@ Each policy is parsed using Liquid and system will check them in order of their 
 
 If the content of the policy evaluates to anything other than `true`, policy is considered violated and the system will not proceed with executing action (like submitting a form or render a page).
 
-Violation means server will either:
-
-* if `redirect_to` key is present, redirect to page set for this key using status code of `302 Moved`
-* return empty page with status `403 Forbidden`
-
 ## Adding a policy
 
 To add an authorization policy, create a file in `authorization_policies/` directory, for example `only_allowed_by_johns.liquid`. You are allowed to use all liquid features and GraphQL in your authorization policy.
@@ -25,7 +20,6 @@ Assuming you have prepared graphql query called `current_user`, example policy f
 ```liquid
 ---
 name: 'only_allowed_by_johns'
-redirect_to: /login
 ---
 {% query_graph 'current_user', result_name: g %}
 {% if g.current_user.first_name == 'John' %}true{% endif %}
@@ -100,9 +94,18 @@ Depending from where authorization policy is called this object contain:
 
 ## Handling violated Policy
 
-For now, a 403 status will be returned by the server without any body.
+You can either send user to a different path or server by default will return empty page with `403 Forbidden` status code.
 
-{% comment %}
-TODO:
-Add feature to render a custom page
-{% endcomment %}
+To redirect user to a page after violation set `redirect_to` key, for example to redirect to page `/login`:
+
+{% raw %}
+
+```liquid
+---
+name: 'only_allowed_by_johns'
+redirect_to: /login
+---
+...
+```
+
+{% endraw %}
