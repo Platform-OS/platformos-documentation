@@ -16,9 +16,9 @@ Installing Docker on a Mac is a two-step process:
 2.   Install Docker
 
 ### Step 1: Download Docker.dmg
-To download the recommended version of Docker (Docker Community Edition), go to the [Marketplace Kit Github page](https://github.com/mdyd-dev/marketplace-kit) and click on the link under **Get Docker Community Edition**.  
+Download [Docker.dmg](https://download.docker.com/mac/stable/Docker.dmg). 
 
-On Docker's download site, click on the download link for **Docker CE for Mac**. You are redirected to the Docker Store. Click on the **Get Docker** button. Locate the Docker.dmg file you downloaded in your Downloads folder (or the folder you selected for download). 
+Locate the Docker.dmg file you downloaded in your Downloads folder (or the folder you selected for download). 
 
 ### Step 2: Install Docker
 
