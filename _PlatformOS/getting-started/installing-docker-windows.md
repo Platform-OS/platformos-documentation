@@ -15,10 +15,10 @@ Installing Docker on Windows is a two-step process:
 1.   Download  `Docker for Windows Installer.exe`
 2.   Install Docker
 
-### Step 1: Download Docker.dmg
-To download the recommended version of Docker (Docker Community Edition), go to the [Marketplace Kit Github page](https://github.com/mdyd-dev/marketplace-kit) and click on the link under **Get Docker Community Edition**.  
+### Step 1: Download Docker for Windows Installer.exe
+Download [Docker for Windows Installer.exe](https://download.docker.com/win/stable/Docker%20for%20Windows%20Installer.exe).  
 
-On Docker's download site, click on the download link for **Docker CE for Windows**. You are redirected to the Docker Store. Click on the **Get Docker** button. Locate the `Docker for Windows Installer.exe` file you downloaded in your Downloads folder (or the folder you selected for download). You can also run it from the recent downloads bar at the bottom of your web browser.
+Locate the `Docker for Windows Installer.exe` file you downloaded in your Downloads folder (or the folder you selected for download). You can also run it from the recent downloads bar at the bottom of your web browser.
 
 ### Step 2: Install Docker
 
