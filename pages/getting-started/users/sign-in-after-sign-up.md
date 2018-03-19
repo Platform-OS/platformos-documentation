@@ -1,50 +1,70 @@
 ---
-title: Sign In user after Sign Up
-permalink: /getting-started/users/sign-in-after-sign-up
+title: Singing in automatically after sign up
+permalink: /getting-started/users/signing-in-after-sign-up
 ---
 
-## Overview
+This tutorial will help you to add automatic sign in to a signup form, so that a new user will be logged in right after account creation.
 
-If you want your user to be immediately signed into the marketplace after sign up you need to use `callback_action` that will execute graphql mutation with his email and password. System knows it at this time, because it is still in the context of the form being sent.
+## Requirements
 
-## Example
+This tutorial assumes that you already have a working Sign up form, where a user can create a new account.
 
-### Sign Up form configuration
+* [Sign up forms](./sign-up-forms)
 
-In your `sign_up` form configuration lets add callback_action at the end of the YML definition.
+## Steps
+
+Automatic sign in after sign up is a three-step process:
+
+1. Add `callback_actions` key to Sign up form
+2. Create `user_session_create` GraphQL mutation
+3. Create `session_create_form` form
+
+### Step 1: Add `callback_actions` key to Sign up form
+
+In your `sign_up` form configuration add `callback_actions` at the end (order doesn't matter) of the YML definition.
+
+##### form_configurations/sign_up.liquid
 
 {% raw %}
+
 ```liquid
 ---
 ...
-callback_actions: |-
-  {% execute_query user_session_create, email: @form.email, password: @form.password %}
+callback_actions: "{% execute_query user_session_create, email: @form.email, password: @form.password %}"
 ---
 ```
+
 {% endraw %}
 
-We are executing `user_session_create` query.
+This code snippet executes the `user_session_create` query, so you have to create it.
 
+### Step 2: Create `user_session_create` GraphQL mutation
 
-### GraphQL mutation
+This mutation takes two obligatory arguments: `email` and `password`—both strings.
 
-This mutation takes two obligatory arguments: `email` and `password` - both strings.
+##### graph_queries/user_session_create.graphql
 
 ```graphql
 mutation user_session_create($email: String!, $password: String!) {
-  user_session_create(form_configuration_name: "session_create_form", email: $email, password: $password) {
+  user_session_create(
+    form_configuration_name: "session_create_form" # must match with `name` of your form
+    email: $email
+    password: $password
+  ) {
     email
   }
 }
 ```
 
-We are calling form called `session_create_form` with the same arguments we have received from the `callback_action`.
+This calls the `session_create_form` with the same arguments you received from the `callback_actions`.
 
-Lets create that form now.
+Create the `session_create_form` form now.
 
-### Session create form configuration
+### Create `session_create_form` form
 
-Because SessionForm is supported in our backend and it knows what to when receiving correct email and password, you dont need to define anything else - we will take care of everything else behind the scenes.
+SessionForm is supported by the server, so you don't need to define anything—the server will take care of handling user credentials and authenticating the user.
+
+##### form_configurations/session_create_form
 
 ```yml
 ---
@@ -53,6 +73,17 @@ base_form: SessionForm
 ---
 ```
 
-## Summary
+## Next steps
 
-Thats it. Any user should be logged in immediately after successfully creating an account.
+Congratulations! You have set up automatic user login after sign up.
+
+You can continue with adding other flow-control or informational features, for example:
+
+* [Singing in a user manually](./authentication)
+* [Welcoming a new user with an email notification](../notifications/emails)
+* [Creating a redirection to an edit profile page instead of the homepage after signup](../pages/redirects)
+* Displaying a flash message that will help a user decide what to do
+
+## Questions?
+
+We are always happy to help with any questions you may have. Consult our [documentation](/), [contact support](), or [connect with our sales team]().
