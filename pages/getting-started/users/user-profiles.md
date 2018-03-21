@@ -11,8 +11,6 @@ To create user profile, one needs to create a yml file in `instance_profiles` di
 ```yml
 ---
 name: developer
-admin_approval: false
-create_company_on_sign_up: true
 custom_attributes:
 - name: bio
   attribute_type: string
@@ -23,17 +21,13 @@ custom_attributes:
 ```
 
 * name - this is the most important setting. It's [snake case](https://en.wikipedia.org/wiki/Snake_case) version is used in many places like Form Configuration and GraphQL.
-* admin_approval - it's a utility feature, to ensure that Marketplace Owner personally verifies and approves each new user. For sake of this example, we will assume this is not needed.
-* create_company_on_sign_up - it is another utility feature, to simplify transactions. For now it is enough to assume, this should be true.
 * custom_attributes - this is the heart of user profiles. It allows to specify custom attributes for this user profile. They are used to build customized forms that gather user input during registration for later display. It takes an array of elements that consist of name and type. Please check [full Custom Attribute documentation](/reference/custom-attributes/)
 
-There are many other features one can use - please check [full Instance Profile Type documentation](/reference/instance-profile-types/). However, this is enough to define a new role 'developer' in the system. Similarly, we can create role 'client' by creating `/instance_profiles/client.yml`:
+Similarly, we can create role 'client' by creating `/instance_profiles/client.yml`:
 
 ```yml
 ---
 name: client
-admin_approval: false
-create_company_on_sign_up: true
 ```
 
 Having this set up, we can now create our first forms, which will allow user to register.

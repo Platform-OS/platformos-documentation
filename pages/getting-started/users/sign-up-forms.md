@@ -10,15 +10,13 @@ All forms should be located in `form_configuration` directory. Let's create form
 ```liquid
 ---
 name: developer_sign_up
-base_form: UserForm
-return_to: '/'
+resource: User
+return_to: '/sign-in'
 configuration:
-  first_name:
-    validation:
-      presence: true
+  email:
   password:
-    validation:
-      presence: true
+  first_name:
+    validation: { presence: true }
   profiles:
     developer:
       enabled:
@@ -52,13 +50,13 @@ A lot going on here, so let's start from the beginning. Creating a form consists
 
 1. Define configuration of the form
   * name - the name of the form, written in snake case. It is used to embed the form in a page
-  * base_form - it defines for which model this form is created. In our example it is user, because we want to create a user. Please check [full FormBuilder documentation](/reference/form-builder/) for all options.
-  * return_to - defines the url to which user will be redirected after success. You can use liquid. In our example, we will just redirect to the home page.
-  * configuration - this is the heart of the configuration. Here one defines which fields should be acceptable by the form and it is possible to define validation of each of the field. Please note that depending on base form, some fields are hardcoded. In our example, such hardcoded fields is `email` - you might have noticed, that later in the example we create input for `email`, but it is not included in the configuration. If you wondered why it is working, the hardcoded fields is the answer.
+  * resource - it defines what is the root resource in this form. In our example it is naturally User. Please check [full FormBuilder documentation](/reference/form-builder/) for all options.
+  * return_to - defines the url to which user will be redirected after success. You can use liquid. In our example, we will redirect to the /sign-in.
+  * configuration - this is the heart of the configuration. Here one defines which fields should be acceptable by the form and it is possible to define validation of each of the field. Depending on the `resource`, some fields are available without having to create custom attributes. Some of them have pre-defined validation due to the backend requirements. In our example, such fields are `email` - with validation that ensures uniqueness (no two user can sign up with the same email address), it has to be a valid email and it can't be blank;  and `password` - minimum 6 characters.
 
 # Configuration
 
-  It is worth to dig a little bit deeper in our example of configuration. The first property we have defined is `first_name`; we  also marked it as required. The second field is `profiles`, and this is where the complexity arises. This is special abstraction, to easily associate user with any number of profiles one wants. We will see similar concept later on. The `profiles` is an instance of UserProfilesForm. It's "hardcoded" fields are actually dynamically generated - those are the names of the profiles created via `instance_profile_types` directory. In our example, we have two choices: developer and client. Since we create sign up for developer, we provided `developer`. Now, the `developer` is an instance of UserProfileForm. If you take a look at documentation, you will notice that one of the hardcoded fields there is `enabled` - and this is the field we have defined. The `property_options` is a special construction to add special behavior to the field. Here we used `default`, which provides default value (i.e. the value that will be used if user does not fill this field); `readonly` on the other hand ignores the user's input. This combination is useful, if you want to set something in a background, and do not want user to be able to override it. Because any input by user will be ignored, the default value will always used.
+  It is worth to dig a little bit deeper in our example of configuration. The first property we have defined is `first_name`; we  also marked it as required. The second field is `profiles`, and this is where the complexity arises. This is special abstraction, to easily create `UserProfile` resource associated with the newly signup `User`. We will see similar concept later on. Within `profiles` you can specify names of the profiles created in `instance_profile_types` directory. In our example, we have two choices: `developer` and `client`. Since we create sign up for developer, this is what we used. Now, the `developer` is `UserProfile` resource - so you have access to it's field. If you take a look at UserProfile resource documentation, you will notice that one of the available fields is `enabled` - and this is the field we use. The `property_options` is a special construction to add special behavior to the field. Here we used `default`, which provides default value (i.e. the value that will be used if user does not fill this field); `readonly` on the other hand ignores the user's input. This combination is useful, if you want to set something in a background, and do not want user to be able to override it. Because any input by user will be ignored, the default value will always used.
 
 All of this might be a bit confusing at the first sight, like what really is this `enabled` field. All should be clearer, once you realize that last part of configuration, which is
 
@@ -77,7 +75,7 @@ can be also represented as independent form, with configuration like this:
 {% raw %}
 ```yml
 ...
-base_form: UserProfileForm
+resource: UserProfile
 configuration:
   enabled:
     property_options:
@@ -87,20 +85,18 @@ configuration:
 ```
 {% endraw %}
 
-In other words, our forms are nested in each other - you can access them as 'sub forms'. In our example we want to create User and corresponding UserProfile at the same time. This behavior is desired if in our UI we have a page with a button that says "Sign up as a Developer". User provides first name, email, password and that's it - he becomes developer. Alternatively, UI can split it into two separate actions. It can first ask user to register, so the button would be just 'Sign up', and only after registration we can ask user if he wants to become a developer or a client. In this scenario, the first form look like:
+In other words, our forms are nested in each other - you can access them as 'nested forms'. In our example we want to create User and corresponding UserProfile at the same time. This behavior is desired if in our UI we have a page with a button that says "Sign up as a Developer". User provides first name, email, password and that's it - he becomes developer. Alternatively, UI can split it into two separate actions. It can first ask user to register, so the button would be just 'Sign up', and only after registration we can ask user if he wants to become a developer or a client. In this scenario, the first form look like:
 
 ```yml
 ---
 name: generic_sign_up
-base_form: UserForm
+resource: User
 return_to: '/'
 configuration:
-  first_name:
-    validation:
-      presence: true
+  email:
   password:
-    validation:
-      presence: true
+  first_name:
+    validation: { presence: true }
 ---
 ```
 and the second one would be similar to:
@@ -108,31 +104,33 @@ and the second one would be similar to:
 ```yml
 ---
 name: become_developer_form
-base_form: UserProfileForm
+resource: UserProfile
 return_to: '/'
 configuration:
-  property_options:
-    default: true
-    readonly: true
+  enabled:
+    validation: { presence: true }
+    property_options:
+      default: true
+      readonly: true
 ---
 ```
 
-The end result would be the same. The point is, that with our platform, you have the power of creating multiple objects within one form submission - which might be more complex in terms of coniguration, but it can greatly simplify UX.
+The end result would be the same. The point is, that with our platform, you have the power of creating multiple resources within one form submission - which might be more complex in terms of coniguration, but it can greatly simplify UX.
 
 # Rendering inputs
 
 The second part of the form is the actual html that will be presented to the user. There are few things that you will want to include in every form.
 
-## Required inputs
+## Form tag
 
-* {% raw %}{% form_for form, url: '/api/users', method: 'post' %}{% endraw %} - In this line you define to which endpoint the form should point. It will always depend on a `base_form` value you have provided in the previous step. The method defines what you want to do with the model. If you want to create it, like in our example, you will use `post`. If you want to update existing model, you would use `put`. Finally, if you want to delete the resource - use `delete`. As always, we recommend to take a look at [full API Endpoints documentation](/reference/api-endpoints)
+* {% raw %}{% form %}{% endraw %} - form tag takes care of rendering `<form>` html tag with `action` set based on the `resource` provided in configuration. It also adds a bunch of hidden inputs. The most important are CSRF token (called `authenticity-token`) and `_method` - depending whether you want to create or update the resource, it will be either `post` or `patch`. In case you want to allow users to destroy their resources, you would need to manually pass `method` as argument to tag with value `delete`. Another set of hidden inputs are `resource_id` - the one that you passed in `render_form` if any, and `slug`, `slug2`, `slug3` - in case of validation errors, you most likely will need those to be available. Please note: If you want to invoke our write API manually (for example via AJAX or even from third-party API) we recommend to take a look at [full API Endpoints documentation](/reference/api-endpoints).
 
 ## Optional inputs
-* {% raw %}<input value="{{ page.id }}" type="hidden" name="page_id" />{% endraw %} - The `page` is used to notify API which page should be rendered if submission of the form fails (most likely due to validation error). This allows to re-display user's input for all the field and display validation errors where applicable.
+* {% raw %}<input value="{{ page.id }}" type="hidden" name="page_id" />{% endraw %} - The `page` is used to notify API which page should be rendered if submission of the form fails (most likely due to validation error). This allows to re-display user's input for all the field and display validation errors where applicable. By default it renders the page from which the form was submitted.
 
 ## Inputs
 
-Right after some standard hidden inputs, we proceed with rendering proper inputs that the user will be expected to fill. To do that, we use utility liquid tag named `input`. It can save quite a bit of work - by default it is configured to generate html that is compatible with bootstrap 3 framework. Moreover, in case of validation errors, it automatically adds 'error' css class to the input and renders valdiation error message below the input. If bootstrap 3 is not that framework of your choice, in How To section we explain how to create your own re-usable set of inputs.
+We proceed with rendering proper inputs that the user will be expected to fill. To do that, we use utility liquid tag named `input`. It can save quite a bit of work - by default it is configured to generate html that is compatible with bootstrap 3 framework. Moreover, in case of validation errors, it automatically adds 'error' css class to the input and renders valdiation error message below the input. If bootstrap 3 is not that framework of your choice, in How To section we explain how to create your own re-usable set of inputs.
 
 ## Nested fields
 
@@ -159,13 +157,12 @@ After the explanation, creating sign up form for client should be trivial. We ca
 ```liquid
 ---
 name: client_sign_up
-base_form: UserForm
-return_to: '/'
+resource: User
+return_to: '/sign-in'
 configuration:
-  first_name:
-    validation:
-      presence: true
+  email:
   password:
+  first_name:
     validation:
       presence: true
   profiles:
@@ -210,7 +207,7 @@ name: Developer Sign Up
 ---
 <h1>Create a Developer Account</h1>
 
-{% render_form developer_sign_up, object_class: User, object_id: new %}
+{% render_form developer_sign_up %}
 ```
 {% endraw %}
 
@@ -228,6 +225,6 @@ name: Client Sign Up
 ---
 <h1>Create a Client Account</h1>
 
-{% render_form client_sign_up, object_class: User, object_id: new %}
+{% render_form client_sign_up %}
 ```
 {% endraw %}

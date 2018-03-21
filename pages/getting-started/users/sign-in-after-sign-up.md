@@ -49,7 +49,7 @@ Because SessionForm is supported in our backend and it knows what to when receiv
 ```yml
 ---
 name: session_create_form
-base_form: SessionForm
+resource: Session
 ---
 ```
 

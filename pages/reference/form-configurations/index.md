@@ -14,7 +14,7 @@ It's possible to have values for `flash` messages as part of form configuration,
 ```yml
 ---
 name: lister_general
-base_form: UserForm
+resource: User
 flash_notice: "Validation error, please correct and save again"
 flash_alert: "Form Saved!"
 ```
@@ -27,7 +27,7 @@ Values for `flash` keys are processed using Liquid parser so can be interpolated
 ```yml
 ---
 name: lister_general
-base_form: UserForm
+resource: User
 flash_notice: "Validation {{ 'error' | capitalize }}, please correct and save again"
 flash_alert: "Form Saved! {{ 'created_successfully' | t: first_name: current_user.first_name }}"
 ```

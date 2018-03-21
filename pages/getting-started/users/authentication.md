@@ -12,19 +12,54 @@ The login form is always provided at `/users/sign_in` path by default. To custom
 
 {% raw %}
 ```liquid
-<h1>Sign in</h1>
-
-{% form_for user, url: '/users/sign_in', method: post %}
-  {% input email, required: true %}
-  {% input password, required: true %}
-  <p>Forgot password? <a href="/users/password/new">Reset your password</a></p>
+---
+name: sign_in
+resource: Session
+---
+{% form %}
+  {% input email %}
+  {% input password %}
   {% submit 'Log In' %}
-  <p>New user? Create <a href="/developer/sign-up"> new developer account</a> or <a href="/client/sign-up">new client account</a></p>
-{% endform_for %}
+{% endform %}
 ```
 {% endraw %}
 
-This form is hardcoded - there is nothing to customize here, this is why you do not need to create a new file in `form_configuration`.
+The Session resource is hardcoded - it has email and password fields, and that's it. This is why you do not even need to add configuration. To make the sign in available at `/sign-in`, you will want to create a page similar to:
+
+{% raw %}
+```liquid
+---
+slug: sign-in
+format: html
+layout_name: application
+---
+<h2>Log in </h2>
+{% render_form sign_in %}
+<p>New user? Create <a href="/developer/sign-up"> new developer account</a> or <a href="/client/sign-up">new client account</a></p>
+```
+{% endraw %}
+
+## Log Out
+
+If you want to allow user to log out, you can achieve it with following form:
+
+{% raw %}
+---
+name: log_out
+resource: Session
+---
+{% form method: delete %}
+  {% submit 'Log Out' %}
+{% endform %}
+{% endraw %}
+
+Please note that the difference from logging in, is that you actually want to destroy the session - hence you have to send DELETE request, which you can achieve by providing `method: delete` attribute to `form` tag. You embed this form the same way as sign in:
+
+{% raw %}
+```liquid
+{% render_form log_out %}
+```
+{% endraw %}
 
 ## Reset password
 

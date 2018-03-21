@@ -34,7 +34,7 @@ Here we define what data we expect and required validations.
 # form_configurations/import_flowers.liquid
 ---
 name: import_flowers
-base_form: TransactableForm
+resource: Transactable
 configuration:
   name:
     validation:

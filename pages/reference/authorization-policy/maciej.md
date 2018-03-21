@@ -28,7 +28,7 @@ Let's assume we have a very simple form, which the only thing it allow is changi
 ```liquid
 ---
 name: update_last_name
-base_form: UserUpdateProfileForm
+resource: User
 configuration:
   last_name:
     validation:
@@ -48,7 +48,7 @@ In order to associate authorization policy, one just needs to add a new key `aut
 ```liquid
 ---
 name: update_last_name
-base_form: UserUpdateProfileForm
+resource: User
 authorization_policies:
   - only_allowed_by_johns
 configuration:

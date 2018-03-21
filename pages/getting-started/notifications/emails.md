@@ -38,7 +38,7 @@ Then all we need to do is to edit `form_configurations/developer/sign_up.liquid`
 ```yaml
 ---
 name: developer_sign_up
-base_form: UserForm
+resource: User
 ...
 email_notifications:
   - welcome_user

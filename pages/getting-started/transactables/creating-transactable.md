@@ -27,7 +27,7 @@ Now we can proceed with building a form to create Transactable.
 ---
 name: project
 return_to: '/'
-base_form: TransactableForm
+resource: Transactable
 configuration:
   name:
     validation: { presence: true }

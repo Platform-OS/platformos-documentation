@@ -88,7 +88,7 @@ The mutation itself will pass the arguments to a form we called `callback_persis
 ---
 name: callback_persist_in_custom_attribute
 async_callback_actions:
-base_form: UserForm
+resource: User
 configuration:
   profiles:
     test_profile:
@@ -120,7 +120,7 @@ Now, let's create the form itself and associate it with our api call notificatio
 # marketplace_builder/form_configurations/test-form.liquid
 ---
 name: test_form
-base_form: UserForm
+resource: User
 configuration:
   profiles:
     test_profile:

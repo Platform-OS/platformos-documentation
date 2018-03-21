@@ -15,7 +15,7 @@ To create merchant account for a user we need to build form:
 ```liquid
 ---
 name: user_merchant_account
-base_form: StripeMerchantAccountForm
+resource: MerchantAccount
 configuration:
   owners:
     current_address:

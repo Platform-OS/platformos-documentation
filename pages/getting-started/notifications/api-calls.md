@@ -84,7 +84,7 @@ This mutation provides input for the form configuration called `callback_third_p
 # marketplace_builder/form_configurations/callback_third_party_api_id.liquid
 ---
 name: callback_third_party_api_id
-base_form: UserForm
+resource: User
 configuration:
   profiles:
     default:
