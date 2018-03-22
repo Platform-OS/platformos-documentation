@@ -7,7 +7,7 @@ What would be a website without static assets like css, images or javascript. In
 
 ## Uploading Assets
 
-To upload your first assets, you need to copy it into the `assets` directory. For example, you can create css file, like: `assets/app.css`. The example content could look like:
+To upload your first assets, you need to copy it into the `marketplace_builder/assets/` directory. For example, you can create css file, like: `marketplace_builder/assets/app.css`. The example content could look like:
 {% raw %}
 
 ```css
