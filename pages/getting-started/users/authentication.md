@@ -48,16 +48,19 @@ layout_name: application
 
 If you want to allow user to log out, you can achieve it with following form:
 
-## {% raw %}
+{% raw %}
 
+```liquid
+---
 name: log_out
 resource: Session
-
 ---
 
 {% form method: delete %}
-{% submit 'Log Out' %}
+  {% submit 'Log Out' %}
 {% endform %}
+```
+
 {% endraw %}
 
 Please note that the difference from logging in, is that you actually want to destroy the session - hence you have to send DELETE request, which you can achieve by providing `method: delete` attribute to `form` tag. You embed this form the same way as sign in:
