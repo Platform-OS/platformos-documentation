@@ -2,6 +2,7 @@
 title: Authentication
 permalink: /getting-started/users/authentication
 ---
+
 There is more than one way to authenticate the user in NearMe Platform, however for sake of Getting Start guide, the most common option will be presented - using email and password pair, which user provided via [sign up form](/getting-started/users/sign-up-forms).
 
 # Authentication forms
@@ -11,6 +12,7 @@ There is more than one way to authenticate the user in NearMe Platform, however 
 Usually you do not need anything more fancy than:
 
 {% raw %}
+
 ```liquid
 ---
 name: sign_in
@@ -22,11 +24,13 @@ resource: Session
   {% submit 'Log In' %}
 {% endform %}
 ```
+
 {% endraw %}
 
 The Session resource is hardcoded - it has email and password fields, and that's it. This is why you do not even need to add configuration. To make the sign in available at `/sign-in`, you will want to create a page similar to:
 
 {% raw %}
+
 ```liquid
 ---
 slug: sign-in
@@ -37,28 +41,33 @@ layout_name: application
 {% render_form sign_in %}
 <p>New user? Create <a href="/developer/sign-up"> new developer account</a> or <a href="/client/sign-up">new client account</a></p>
 ```
+
 {% endraw %}
 
 ## Log Out
 
 If you want to allow user to log out, you can achieve it with following form:
 
-{% raw %}
----
+## {% raw %}
+
 name: log_out
 resource: Session
+
 ---
+
 {% form method: delete %}
-  {% submit 'Log Out' %}
+{% submit 'Log Out' %}
 {% endform %}
 {% endraw %}
 
 Please note that the difference from logging in, is that you actually want to destroy the session - hence you have to send DELETE request, which you can achieve by providing `method: delete` attribute to `form` tag. You embed this form the same way as sign in:
 
 {% raw %}
+
 ```liquid
 {% render_form log_out %}
 ```
+
 {% endraw %}
 
 ## Reset password
@@ -68,6 +77,7 @@ It is not uncommen for users to forget the password. A feature to reset a passwo
 We start with creating a CustomModelType in which we will store each request for resetting password. We will call it 'reset_password' - hence we create a file `custom_model_types/reset_password.yml` with content:
 
 {% raw %}
+
 ```yaml
 ---
 name: reset_password
@@ -75,11 +85,13 @@ custom_attributes:
 - name: email
   attribute_type: string
 ```
+
 {% endraw %}
 
 Then we provide a form to allow user to enter his email address `form_configurations/recover_password.liquid`:
 
 {% raw %}
+
 ```liquid
 ---
 name: recover_password
@@ -106,6 +118,7 @@ callback_actions: |-
   {% submit 'Recover Password' %}
 {% endform %}
 ```
+
 {% endraw %}
 
 In a callback we graphql query to check if the provided email address has associated user in DB, and if yes, we generate a temporary token, which we will use to authenticate the request. The query in `graph_queries/generate_user_temporary_token.graphql` can look like this:
@@ -156,9 +169,10 @@ mutation update_password_token(
 }
 ```
 
-Each graphql mutation has associated form configuration with it, in this case it's update_password_token. Let's create `form_configurations/update_password_token.liquid`:
+Each graphql mutation has associated form configuration with it, in this case it's `update_password_token`. Let's create `form_configurations/update_password_token.liquid`:
 
 {% raw %}
+
 ```liquid
 ---
 name: update_password_token
@@ -175,11 +189,13 @@ email_notifications:
   - send_recover_password
 ---
 ```
+
 {% endraw %}
 
 After storing the token, we want to send email to user with password instruction. Hence we create a file `email_notifications/send_recover_password.liquid`:
 
 {% raw %}
+
 ```liquid
 ---
 name: send_recover_password
@@ -199,9 +215,10 @@ layout_path: mailer
 
 <p>To reset your password, follow the link: <a href="{{ platform_context.host }}/reset-password?token={{ g.user.default.password_token | url_encode }}&email={{ g.user.email | url_encode }}">reset password!</a></p>
 ```
+
 {% endraw %}
 
-The email relies on graphql query called get_user_with_password_token, to fetch user's first name and the value of the token. Let's create `graph_queries/get_user_with_password_token.graphql` then:
+The email relies on graphql query called `get_user_with_password_token`, to fetch user's first name and the value of the token. Let's create `graph_queries/get_user_with_password_token.graphql` then:
 
 ```
 query get_user_with_password_token($email: String, $id: ID) {
@@ -219,6 +236,7 @@ query get_user_with_password_token($email: String, $id: ID) {
 Finally, let's create entrypoint to the workflow - by creating `pages/recover_password.liquid` with content:
 
 {% raw %}
+
 ```liquid
 ---
 slug: recover-password
@@ -231,11 +249,13 @@ layout_name: application
 {% endif %}
 {% render_form recover_password, parent_resource_id: reset_password %}
 ```
+
 {% endraw %}
 
 The email contains a link to `/reset-password` page, which can look like this:
 
 {% raw %}
+
 ```liquid
 ---
 slug: reset-password
@@ -251,6 +271,7 @@ layout_name: application
   {% render_form reset_password, resource_id: @g.user.id %}
 {% endif %}
 ```
+
 {% endraw %}
 
 On this page we check, if the provided token is valid as well as we fetch user's id based on email provided in the parameter. We re-use the graphql query created earlier.
@@ -258,6 +279,7 @@ On this page we check, if the provided token is valid as well as we fetch user's
 On this page we want to embed form to actually reset password, hence we create a file `form_configurations/reset_password.liquid`:
 
 {% raw %}
+
 ```liquid
 ---
 name: reset_password
@@ -286,23 +308,25 @@ authorization_policies:
   {% submit 'Reset Password' %}
 {% endform %}
 ```
+
 {% endraw %}
 
-To be able to re-render previous page if validation for password fails, we forward parameters which came from the email - email and token. The letter will be also used in authorization policy - we want to authenticate the user with this token to make sure he can't change password of other users than himself. Let's create this authorization policy `authorization_policies/token_is_valid
+To be able to re-render previous page if validation for password fails, we forward parameters which came from the email - email and token. The letter will be also used in authorization policy - we want to authenticate the user with this token to make sure he can't change password of other users than himself. Let's create this authorization policy `authorization_policies/token_is_valid.liquid`
 
 {% raw %}
+
 ```liquid
 ---
 name: token_is_valid
 ---
 {%- query_graph get_user_with_password_token, id: params.id, result: g -%}
 {%- assign token_valid = params.token | temporary_token_valid: params.id -%}
-{% if g.user.id != blank and token_valid == true and g.user.default.password_token == params.token %}true{%endif %}
+{% if g.user.id != blank and token_valid == true and g.user.default.password_token == params.token %}true{% endif %}
 ```
+
 {% endraw %}
 
-We are done. If user provides valid password and confirms it, the password will be changed and he will be redirected to /sign_in page. If the password is not valid, the system will re-render the form and display message explaining what is wrong. Finally, if the user tries to hijack someone else account by manually change id or providing not valid token, 403 status will be returned and the request will not be processed.
-
+We are done. If user provides valid password and confirms it, the password will be changed and he will be redirected to `/sign_in page`. If the password is not valid, the system will re-render the form and display message explaining what is wrong. Finally, if the user tries to hijack someone else account by manually change id or providing not valid token, 403 status will be returned and the request will not be processed.
 
 # Accessing authenticated user data
 
@@ -310,7 +334,7 @@ You can access information of authenticated user by using [GraphQL](/reference/g
 
 ```graphql
 {
-  current_user{
+  current_user {
     id
     slug
     first_name
@@ -324,12 +348,15 @@ You can access information of authenticated user by using [GraphQL](/reference/g
   }
 }
 ```
+
 Now on any given page (including layout itself, though be careful with adding queries to the layout), you can add this liquid tag
 
 {% raw %}
+
 ```liquid
   {% query_graph current_user, result_name: g %}
 ```
+
 {% endraw %}
 
 which fetches information defined in the graphql file for currently logged in user and stores it in variable named `g`. The returned data is a standard hash, so you can even display it via doing {% raw %}{{ g }}{% endraw %}. B
