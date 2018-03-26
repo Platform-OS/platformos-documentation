@@ -266,7 +266,7 @@ format: html
 layout_name: application
 ---
 {%- query_graph get_user_with_password_token, email: params.email, result: g -%}
-{% assign token_valid = params.token | temporary_token_valid: g.user.id %}
+{% assign token_valid = params.token | is_token_valid: g.user.id %}
 {% if g.user.id == blank or token_valid == false or g.user.default.password_token != params.token %}
   Unfortunately, provided token is not valid anymore. Please request password instructions again.
 {% else %}
@@ -323,7 +323,7 @@ To be able to re-render previous page if validation for password fails, we forwa
 name: token_is_valid
 ---
 {%- query_graph get_user_with_password_token, id: params.id, result: g -%}
-{%- assign token_valid = params.token | temporary_token_valid: params.id -%}
+{%- assign token_valid = params.token | is_token_valid: params.id -%}
 {% if g.user.id != blank and token_valid == true and g.user.default.password_token == params.token %}true{% endif %}
 ```
 
