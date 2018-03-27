@@ -26,7 +26,6 @@ Now we can proceed with building a form to create Transactable.
 ```liquid
 ---
 name: project
-return_to: '/'
 resource: Transactable
 configuration:
   name:
@@ -39,22 +38,12 @@ configuration:
       validation:
         presence: true
     workplace_onsite:
-      validation: {}
     workplace_online:
-      validation: {}
     budget:
       validation:
         presence: true
 ---
-{% assign form_url = "/api/user/transactables/" | append: form.id %}
-{% if form.id == blank %}
-  {% assign http_method = 'post' %}
-{% else %}
-  {% assign http_method = 'put' %}
-{% endif %}
-
-{% form_for form, url: @form_url, method: @http_method %}
-
+{% form %}
   {% input name %}
   {% input description, as: text %}
 
@@ -62,11 +51,10 @@ configuration:
     {% input workplace_online, as: boolean, form: properties %}
     {% input workplace_onsite, as: boolean, form: properties %}
     {% input budget, form: properties %}
-    {% input deadline, form: properties, placeholder: 'Y-m-d' %}
+    {% input deadline, form: properties, placeholder: 'YYYY-mm-dd' %}
   {% endfields_for %}
-
   {% submit Save %}
-{% endform_for %}
+{% endform %}
 ```
 {% endraw %}
 
@@ -78,11 +66,9 @@ The page with embedded form could look like this:
 slug: client/projects/new
 format: html
 layout_name: application
-name: Add a Project
 ---
 <h1>Create Project</h1>
-
-{% render_form project, object_class: Transactable, object_id: 'new', parent_object_class: 'TransactableType', parent_object_id: 'project', return_to: @params.return_to %}
+{% render_form project, parent_resource_id: 'project' %}
 ```
 {% endraw %}
 
@@ -94,16 +80,54 @@ and the one to edit existing transactable:
 slug: client/projects/edit
 format: html
 layout_name: application
-name: Edit a Project
 ---
-<h1>Edit Project</h1>
-{% render_form project, object_class: Transactable, object_id: @params.slug, parent_object_class: 'TransactableType', parent_object_id: 'project' %}
+{% query_graph 'current_user', result_name: g %}
+{% query_graph 'get_project', result_name: graph_project, slug: params.slugs, creator_id: g.current_user.id %}
+{% if graph_project %}
+  <h1>Edit {{ project.name }}</h1>
+  {% render_form project, resource_id: @graph_project.project.id %}
+{% else %}
+  <p>Unfortunately we could not find this project.
+{% endif %}
 ```
 {% endraw %}
 
+Which would re-use current_user graph query created in previous step, and will require a new `graph_queries/get_project.graphql`:
 
-What is special about this form is that it can be used to both create a new and edit existing Transactable. The if statement shows one of many examples of how to check what is the current context. To create a new Transactable, the endpoint is POST `/api/user/transactables`, whereas for upating existing one, the context is `/api/user/transactables/<id>`. The second endpoint guarantees, that only user who created transactable will be able to edit it. To allow users to update transactables of others, one should skip the user namespace, making the url `/api/transactables/<id>`. This is not enabled by default for security reasons. One most likely will want to add proper authorization policies before making this endpoint accessible. If you are interested in this feature, please contact our support.
+```graphql
+query client_projects(
+  $creator_id: ID!
+  $slug: String!
+)
+{
+  project: transactable(
+    creator_id: $creator_id
+    slug: $slug
+  ) {
+    id
+    name
+    slug
+  }
+}
+```
 
-The next unintuitive thing is the hidden attribute with name `transactable_type_id` - this is necessary, because each marketplace might have multiple different transactables, each with different action types and properties. In this example, this value is inserted dynamically via a `Drop` associated with the form.
+To complete managing project, one would also need possibility to remove it via `form_configurations/destroy_project.liquid`:
 
-Last but not least is the configuration of [ActionTypes](/reference/action-types) - we encourage to get familiar with the concept on [Reference](/reference) page.
+{% raw %}
+```liquid
+---
+name: destroy_project
+resource: Transactable
+---
+{% form method: delete %}
+  {% submit Delete %}
+{% endform %}
+```
+{% endraw %}
+
+Rendering this form would be very similar to the one from edit:
+{% raw %}
+```liquid
+{% render_form destroy_project, resource_id: @project.id %}
+```
+{% endraw %}
