@@ -1,6 +1,6 @@
 ---
-title: Creating Transactable
-permalink: /getting-started/transactables/creating-transactable
+title: Managing Transactable
+permalink: /getting-started/transactables/managing-transactable
 ---
 Similarly to user profiles, for which we were creates a file in `instance_profile_types` first, before we start building a form for project, we need to create [TransactableType](/reference/transactable-type). It defines the business rules of the transaction associated with this transactable - whether it is time based booking, an offer or something else. This files also will define available property of project.
 
@@ -72,7 +72,79 @@ layout_name: application
 ```
 {% endraw %}
 
-and the one to edit existing transactable:
+To display newly created transactable (with pagination), we can inject this code for example on the home page, which re-uses already created `current_user.graphql`:
+
+{% raw %}
+```liquid
+{% query_graph 'current_user', result_name: g %}
+{% if g.current_user.client_profile %}
+  {% assign page = params.page | default: 1 | plus: 0 %}
+  <a href="/client/projects/new">Create project</a>
+
+  {% query_graph 'client_projects', result_name: g, creator_id: g.current_user.id, per_page: 20, page: page %}
+
+  {% if g.projects.total_entries > 0 %}
+    <ul>
+      {% for project in g.projects.results %}
+        <li>{{ project.name }} ({{ project.state }}) - <a href="/client/projects/edit/{{project.slug}}">edit</a></li>
+      {% endfor %}
+    </ul>
+    {% assign pages = g.projects.total_pages %}
+    {% assign current_page = g.projects.current_page %}
+    {% if pages > 1 %}
+      <div class="pager">
+        {% for page in (1..pages) %}
+          <a href="{{ current_path }}?page={{ page }}">{{ page }}</a>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% else %}
+    <p>You have not created any projects yet.</p>
+  {% endif %}
+{% endif %}
+```
+{% endraw %}
+
+A common issue in liquid are types - most of the time liquid converts everything to string. This is what it is often necessary to do coercion in liquid. In our example, url  parameters are strings, and graphql expects `page` variable to be integer. To solve the problem, we just add a `0`, which casts string to integer:
+{% raw %}`{% assign page = params.page | default: 1 | plus: 0 %}`{% endraw %}
+
+We also have to add the graph query `graph_queries/client_projects.graphql`:
+```graphql
+query client_projects(
+  $page: Int,
+  $creator_id: ID!
+)
+ {
+  projects: listings(
+    per_page: 20,
+    page: $page,
+    sort:[
+      {
+        name: "created_at",
+        order: "desc"
+      }
+    ],
+    listing: {
+      creator_id: $creator_id,
+      is_deleted: false,
+   }
+  ) {
+    total_entries
+    has_next_page
+    has_previous_page
+
+    results {
+      id
+      name
+      slug
+      state
+      description
+    }
+  }
+}
+```
+
+Now we can create edit transactable page `pages/client/projects/edit.liquid`:
 
 {% raw %}
 ```liquid
