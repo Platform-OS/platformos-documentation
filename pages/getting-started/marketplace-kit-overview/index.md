@@ -22,7 +22,7 @@ Configuration for environments lays down in `.marketplace-kit` file.
 ## Pushing changes to the Platform OS
 
 ```
-marketplace-kit deploy <endpoint>
+marketplace-kit deploy <environment>
 ```
 
 Example: `marketplace-kit deploy staging`
@@ -32,12 +32,12 @@ Deploys all the changes. It is recommended to first deploy to `staging`, test, a
 ## Watching changes
 
 ```
-marketplace-kit sync <endpoint>
+marketplace-kit sync <environment>
 ```
 
 Example: `marketplace-kit sync staging`
 
-Enables sync mode - immediately pushes changes made to filesystem to the proper endpoint. It feels like working on localhost. For obvious reason, it is dangerous to use on production, on a live marketplace - it is recommended to use it only for staging. Please note, that unlike `deploy`, this command will not delete resources when you delete the file.
+Enables sync mode - immediately pushes changes made to filesystem to the proper environment. It feels like working on localhost. For obvious reason, it is dangerous to use on production, on a live marketplace - it is recommended to use it only for staging. Please note, that unlike `deploy`, this command will not delete resources when you delete the file.
 
 ## Deploying with force flag (`-f` or `--force`)
 
@@ -45,7 +45,7 @@ If you want to deploy the whole `marketplace_builder` directory to environment o
 Note: It will also remove files from the server that are not present in your currently deployed source directory.
 
 ```
-marketplace-kit deploy <endpoint> -f
+marketplace-kit deploy <environment> -f
 ```
 
 Example: `marketplace-kit deploy staging -f`
