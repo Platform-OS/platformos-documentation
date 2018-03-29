@@ -18,15 +18,15 @@ The Platform OS package consists of three components that help you create, updat
 
 The workflow of developing a site using Platform OS starts with a Partner creating a new Instance through the Partner Portal. Besides creating a new Instance, the Partner has the options to update and configure existing Instances, or copy and modify the configuration of one Instance to create another with the same or similar configuration. The Platform OS engine saves the Instance, which—after authorization—becomes available for developers to deploy and sync to.
 
-Developers usually start with downloading the file structure of the Instance from the Partner Portal, or creating the required file structure in a local environment. This becomes the framework for the codebase of the Instance.
+Developers usually start with downloading the directory structure of the Instance from the Partner Portal, or creating the required directory structure in a local environment. This becomes the framework for the codebase of the Instance.
 
 The Marketplace Kit deploys and syncs the codebase to the Instance.
 
 [TO BE ADDED: diagram1: processes between Platform OS components]
 
-## Required file structure
+## Required directory structure
 
-In order to correctly communicate with the Platform OS engine and API, your code base should be organized into a specific file structure. The root directory of your project should contain the `marketplace_builder` directory. All directories other than the `marketplace_builder` will be ignored by the Marketplace Kit when deploying and syncing, so you can keep all your JS and CSS files outside of the `marketplace_builder` directory, and use any pre-processors you want to automatically generate the end result files in a proper path inside `marketplace_builder`.
+In order to correctly communicate with the Platform OS engine and API, your code base should be organized into a specific directory structure. The root directory of your project should contain the `marketplace_builder` directory. All directories other than the `marketplace_builder` will be ignored by the Marketplace Kit when deploying and syncing, so you can keep all your JS and CSS files outside of the `marketplace_builder` directory, and use any pre-processors you want to automatically generate the end result files in a proper path inside `marketplace_builder`.
 
 ### Recommended directories and files inside the marketplace_builder directory
 
