@@ -17,8 +17,8 @@ This guide will help you [describe what the user will achieve by the end of the 
 
 [Purpose of the tutorial/title] is a [number of large steps, e.g. two]-step process:
 
-* [step 1 short description, format VERB the/a(n)/your NOUN]
-* [step 2 short description, format VERB the/a(n)/your NOUN]
+1. [step 1 short description, format VERB the/a(n)/your NOUN]
+2. [step 2 short description, format VERB the/a(n)/your NOUN]
 
 ### Step 1: [VERB the/a(n)/your NOUN]
 
