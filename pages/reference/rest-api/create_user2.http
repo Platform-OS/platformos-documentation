@@ -1,0 +1,54 @@
+# -*- http -*-
+POST http://documentation.lvh.me:3000/api/users.json
+Authorization: Token token=192a8aee2e9c3bbd20e4e207506926c0
+Accept: application/json
+Content-Type: application/json
+
+{
+  "form_configuration_name": "reference_rest_api_create_user",
+  "form": {
+    "first_name": "Example",
+    "email": "example3@platformos.com",
+    "password": "somepassword"
+  }
+}
+
+
+
+POST http://documentation.lvh.me:3000/api/sessions
+Authorization: Token token=192a8aee2e9c3bbd20e4e207506926c0
+Accept: application/json
+Content-Type: application/json
+
+{
+  "form_configuration_name": "reference_rest_api_create_session",
+  "form": {
+    "email": "existing_user@platformos.com",
+    "password": "somepassword"
+  }
+}
+
+
+DELETE http://documentation.lvh.me:3000/api/sessions
+Authorization: Token token=192a8aee2e9c3bbd20e4e207506926c0
+Accept: application/json
+Content-Type: application/json
+
+{
+  "form_configuration_name": "reference_rest_api_delete_session"
+}
+
+
+POST http://documentation.lvh.me:3000/api/user/transactables
+Authorization: Token token=192a8aee2e9c3bbd20e4e207506926c0
+Accept: application/json
+Content-Type: application/json
+
+{
+  "form_configuration_name": "reference_rest_api_create_transactable",
+  "parent_resource_id": "boat",
+  "form": {
+    "name": "My boat",
+    "creator_id": 123455
+  }
+}

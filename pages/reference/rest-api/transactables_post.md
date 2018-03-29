@@ -1,23 +1,24 @@
 ---
-title: Create a User
-permalink: /reference/rest-api/users_post
+title: Create a Transactable
+permalink: /reference/rest-api/transactables_post
 ---
-To create a user, send a POST request to /api/users
+To create a transactable send a POST request to /api/user/transactables
 
 **HTTP request**
 
-POST /api/users 
+POST /api/user/transactables
 
 **Parameters**
 
 | Parameter | Type | Description | Required | Notes |
 |---------------------|--------------------------------------------------------------------|-------------------------------------------------------------|------------------------|---------------------------------------------|
-| form_configuration_name | String | Name of the form configuration | Required ||
-| form | UserForm | UserForm parameters that corresponds with FormConfiguration configuration | Required | |
+| form_configuration_name | String | Name of the form configuration | Required | underscored |
+| form | TransactableForm | TransactableForm parameters that corresponds with FormConfiguration configuration | Required | |
+| parent_resource_id | ID (Int or String) | Id or name of definced TransactableType | Required | name should be underscored |
 
 **User Parameters**
 
-{% include resources/UserForm.html %}
+{% include resources/TransactableForm.html %}
 
 **Example request**
 
@@ -28,11 +29,11 @@ POST /api/users
 ```
 ```
 {
-  "form_configuration_name": "reference_rest_api_create_user",
+  "form_configuration_name": "reference_rest_api_create_transactable",
+  "parent_resource_id": "boat",
   "form": {
-    "first_name": "Example",
-    "email": "example1@platformos.com",
-    "password": "somepassword"
+    "name": "Boat"
+    "creator_id": 1
   }
 }
 ```
@@ -40,7 +41,7 @@ POST /api/users
 | Element | Type | Description | Required? |
 |------------------------------------|--------------------------------------------|----------------------------------------------------------------------------------------------------|------------------------|
 | form_configuration_name | String | Name of the defined FormConfiguration | Required |
-| form | UserForm | Attributes for user, should match configuration defined in corresponding FormConfiguration | Required |
+| form | TransactableForm | Attributes for user, should match configuration defined in corresponding FormConfiguration | Required |
 
 **Example response**
 

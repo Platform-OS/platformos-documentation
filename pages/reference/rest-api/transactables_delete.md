@@ -1,23 +1,18 @@
 ---
-title: Create a User
-permalink: /reference/rest-api/users_post
+title: Delete Transactable
+permalink: /reference/rest-api/transactables_delete
 ---
-To create a user, send a POST request to /api/users
+To logout user, send a DELETE request to /api/user/transactables/:transactable_id
 
 **HTTP request**
 
-POST /api/users 
+DELETE /api/user/transactables/:transactable_id
 
 **Parameters**
 
 | Parameter | Type | Description | Required | Notes |
 |---------------------|--------------------------------------------------------------------|-------------------------------------------------------------|------------------------|---------------------------------------------|
 | form_configuration_name | String | Name of the form configuration | Required ||
-| form | UserForm | UserForm parameters that corresponds with FormConfiguration configuration | Required | |
-
-**User Parameters**
-
-{% include resources/UserForm.html %}
 
 **Example request**
 
@@ -28,31 +23,21 @@ POST /api/users
 ```
 ```
 {
-  "form_configuration_name": "reference_rest_api_create_user",
-  "form": {
-    "first_name": "Example",
-    "email": "example1@platformos.com",
-    "password": "somepassword"
-  }
+  "form_configuration_name": "reference_rest_api_delete_transactables",
 }
 ```
 
 | Element | Type | Description | Required? |
 |------------------------------------|--------------------------------------------|----------------------------------------------------------------------------------------------------|------------------------|
 | form_configuration_name | String | Name of the defined FormConfiguration | Required |
-| form | UserForm | Attributes for user, should match configuration defined in corresponding FormConfiguration | Required |
 
 **Example response**
 
 ```
-HTTP/1.1 201 Created
+HTTP/1.1 204 No Content
 Content-Type: application/vnd.api+json
 ```
 ```
-{
-  model: { id: 1 }
-  errors: {}
-}
 ```
 
 | Element | Type | Description |
@@ -60,4 +45,4 @@ Content-Type: application/vnd.api+json
 | [Element as it appears in response] | [Array, Object, String, Integer, or Float] | [Brief description of what information the element represents] |
 | […] | […] | […] |
 
-{% include reference/error_and_status_codes_post.md %}
+{% include reference/error_and_status_codes_delete.md %}

@@ -1,23 +1,23 @@
 ---
-title: Create a User
-permalink: /reference/rest-api/users_post
+title: Login User
+permalink: /reference/rest-api/sessions_post
 ---
-To create a user, send a POST request to /api/users
+To login user, send a POST request to /api/sessions
 
 **HTTP request**
 
-POST /api/users 
+POST /api/sessions
 
 **Parameters**
 
 | Parameter | Type | Description | Required | Notes |
 |---------------------|--------------------------------------------------------------------|-------------------------------------------------------------|------------------------|---------------------------------------------|
 | form_configuration_name | String | Name of the form configuration | Required ||
-| form | UserForm | UserForm parameters that corresponds with FormConfiguration configuration | Required | |
+| form | SessionForm | User email and password | Required | |
 
-**User Parameters**
+**Session Parameters**
 
-{% include resources/UserForm.html %}
+{% include resources/SessionForm.html %}
 
 **Example request**
 
@@ -28,9 +28,8 @@ POST /api/users
 ```
 ```
 {
-  "form_configuration_name": "reference_rest_api_create_user",
+  "form_configuration_name": "reference_rest_api_create_sessions",
   "form": {
-    "first_name": "Example",
     "email": "example1@platformos.com",
     "password": "somepassword"
   }
@@ -40,7 +39,7 @@ POST /api/users
 | Element | Type | Description | Required? |
 |------------------------------------|--------------------------------------------|----------------------------------------------------------------------------------------------------|------------------------|
 | form_configuration_name | String | Name of the defined FormConfiguration | Required |
-| form | UserForm | Attributes for user, should match configuration defined in corresponding FormConfiguration | Required |
+| form | SessionForm | User email and password | Required |
 
 **Example response**
 
@@ -49,10 +48,7 @@ HTTP/1.1 201 Created
 Content-Type: application/vnd.api+json
 ```
 ```
-{
-  model: { id: 1 }
-  errors: {}
-}
+{}
 ```
 
 | Element | Type | Description |
