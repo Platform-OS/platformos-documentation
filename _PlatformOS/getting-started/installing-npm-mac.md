@@ -1,0 +1,82 @@
+---
+title: [Installing NPM on a Mac]
+permalink: [link, e.g. /get-started/installing-npm-mac]
+---
+This guide will help you install NPM (Node.js Package Manager) on a Mac. 
+You will need NPM to install the Platform OS Marketplace Kit, that allows you to easily deploy your configuration files and assets to our platform, and communicate with the Platform OS API. 
+
+NPM is distributed with Node.js: when you install Node.js, you automatically get NPM installed on your computer. 
+
+## Requirements
+This tutorial describes installing Node.js using the Homebrew package manager for Mac. We recommend using Homebrew because it makes the installation of Node.js (and other packages like Git or Ruby) easier. It doesn't require access to areas of your computer that otherwise would only be accessible to administrators, i.e. it doesn't require the use of the `sudo` command (in contrast to the process of installing NPM directly from the Node.js installer).
+
+So for installing Node.js by following this tutorial, you'll need:  
+
+* [XCode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12), Apple's free development software
+* [Homebrew](https://brew.sh/) package manager for Mac 
+
+## Steps 
+
+Installing Node.js on a Mac with Homebrew is a two-step process:
+
+1.   Install Node.js via the Terminal 
+2.   Check if Node.js is installed  
+
+### Step 1: Install Node.js via the Terminal
+
+Open the Terminal app, and enter `brew install node`. 
+
+You should see something similar to the messages below while Homebrew installs Node.js:
+
+```
+==> Installing dependencies for node: icu4c
+==> Installing node dependency: icu4c
+==> Downloading https://homebrew.bintray.com/bottles/icu4c-61.1.high_sierra.bott
+==> Downloading from https://akamai.bintray.com/be/be8b3ba9420c4da1a75b2e6ebb7a0
+######################################################################## 100.0%
+==> Pouring icu4c-61.1.high_sierra.bottle.tar.gz
+==> Caveats
+This formula is keg-only, which means it was not symlinked into /usr/local,
+because macOS provides libicucore.dylib (but nothing else).
+
+If you need to have this software first in your PATH run:
+  echo 'export PATH="/usr/local/opt/icu4c/bin:$PATH"' >> ~/.bash_profile
+  echo 'export PATH="/usr/local/opt/icu4c/sbin:$PATH"' >> ~/.bash_profile
+
+For compilers to find this software you may need to set:
+    LDFLAGS:  -L/usr/local/opt/icu4c/lib
+    CPPFLAGS: -I/usr/local/opt/icu4c/include
+
+==> Summary
+🍺  /usr/local/Cellar/icu4c/61.1: 249 files, 67.2MB
+==> Installing node
+==> Downloading https://homebrew.bintray.com/bottles/node-9.10.0_1.high_sierra.b
+==> Downloading from https://akamai.bintray.com/46/46e27cdc41da39ae64ae30c9f737f
+######################################################################## 100.0%
+==> Pouring node-9.10.0_1.high_sierra.bottle.tar.gz
+==> Caveats
+Bash completion has been installed to:
+  /usr/local/etc/bash_completion.d
+==> Summary
+🍺  /usr/local/Cellar/node/9.10.0_1: 5,125 files, 49.7MB 
+```
+
+### Step 2: Check if Node.js is installed  
+
+To check if Node.js and NPM are installed, enter:
+
+* `node -v` in Terminal to see the version of Node.js installed
+* `npm -v` in Terminal to see the version of NPM installed
+
+The version number of Node.js/NPM will be displayed. 
+
+To upgrade to the latest version of Node.js, enter `brew update` (to update the version of Node.js in Homebrew), and `brew upgrade node`(to upgrade Node.js). 
+
+## Next steps
+Congratulations! You have installed NPM on your Mac. Now you can install the Platform OS Marketplace Kit.  
+
+* [Installing the Marketplace Kit]()
+
+## Questions?
+
+We are always happy to help with any questions you may have. Consult our  [documentation](), [contact support](), or  [connect with our sales team](). 
