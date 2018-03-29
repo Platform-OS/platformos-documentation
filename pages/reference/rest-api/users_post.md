@@ -1,6 +1,6 @@
 ---
 title: Create a User
-permalink: /reference/rest-api/users
+permalink: /reference/rest-api/users_post
 ---
 To create a user, send a POST request to /api/users
 
@@ -21,29 +21,38 @@ POST /api/users
 
 **Example request**
 
-[Example of a complete request for this endpoint, including header and body, followed by a table that lists each element in the example request]
-
 ```
-[Example: Request headers] 	
+"authorization: Token token=192a8aee2e9c3bbd20e4e207506926c0"
+"accept: application/json"
+"content-type: application/json"
 ```
 ```
-[Example: Request body]	
+{
+  "form_configuration_name": "reference_rest_api_create_user",
+  "form": {
+    "first_name": "Example",
+    "email": "example1@platformos.com",
+    "password": "somepassword"
+  }
+}
 ```
 
 | Element | Type | Description | Required? |
 |------------------------------------|--------------------------------------------|----------------------------------------------------------------------------------------------------|------------------------|
-| [Element as it appears in request] | [Array, Object, String, Integer, or Float] | [Brief description of what information the element represents, including default and valid values] | [Required or Optional] |
-| […] | […] | […] | […] | 
+| form_configuration_name | String | Name of the defined FormConfiguration | Required |
+| form | UserForm | Attributes for user, should match configuration defined in corresponding FormConfiguration | Required |
 
 **Example response**
 
-[Example of a complete response for this endpoint, followed by a table that lists each element in the example response]	
-
 ```
-[Example: Response headers]	
+HTTP/1.1 201 Created
+Content-Type: application/vnd.api+json
 ```
 ```
-[Example: Response body]	
+{
+  fields: { id: 1 }
+  errors: {}
+}
 ```
 
 | Element | Type | Description |
@@ -51,4 +60,4 @@ POST /api/users
 | [Element as it appears in response] | [Array, Object, String, Integer, or Float] | [Brief description of what information the element represents] |
 | […] | […] | […] |
 
-{% include reference/error_and_status_codes.md %}
+{% include reference/error_and_status_codes_post.md %}
