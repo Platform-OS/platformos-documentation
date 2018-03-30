@@ -1,6 +1,6 @@
 ---
-title: [Installing NPM on a Mac]
-permalink: [link, e.g. /get-started/installing-npm-mac]
+title: Installing NPM on a Mac
+permalink: /get-started/installing-npm-mac 
 ---
 This guide will help you install NPM (Node.js Package Manager) on a Mac. 
 You will need NPM to install the Platform OS Marketplace Kit, that allows you to easily deploy your configuration files and assets to our platform, and communicate with the Platform OS API. 
