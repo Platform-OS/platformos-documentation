@@ -12,5 +12,5 @@ permalink: /reference/rest-api/
   - [DELETE /api/sessions](/reference/rest-api/sessions_delete)
 * Transactable
   - [POST /api/user/transactables](/reference/rest-api/transactables_post)
-  - [PUT /api/user/transactables](/reference/rest-api/transactables_put)
-  - [DELETE /api/sessions](/reference/rest-api/transactables_delete)
+  - [PUT /api/user/transactables/1](/reference/rest-api/transactables_put)
+  - [DELETE /api/transactables/1](/reference/rest-api/transactables_delete)
