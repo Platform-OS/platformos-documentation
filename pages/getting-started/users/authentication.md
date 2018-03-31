@@ -333,7 +333,7 @@ We are done. If user provides valid password and confirms it, the password will 
 
 # Accessing authenticated user data
 
-You can access information of authenticated user by using [GraphQL](/reference/graphql). Create a file `graphql/current_user.graphql` with content
+You can access information of authenticated user by using [GraphQL](/reference/graphql). Create a file `graph_queries/current_user.graphql` with content
 
 ```graphql
 {
