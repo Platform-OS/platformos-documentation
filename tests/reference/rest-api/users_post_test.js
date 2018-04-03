@@ -7,7 +7,7 @@ Scenario('Create user', async (I) => {
     "form_configuration_name": "reference_rest_api_create_user",
     "form": {
       "first_name": "Example",
-      "email": "example@platformos.com",
+      "email": `example${(new Date()).getTime()}@platformos.com`,
       "password": "somepassword"
     }
   };

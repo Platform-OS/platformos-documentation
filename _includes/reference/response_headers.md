@@ -1,0 +1,4 @@
+```
+HTTP/1.1 201 Created
+Content-Type: application/vnd.api+json
+```

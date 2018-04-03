@@ -22,11 +22,7 @@ POST /api/sessions
 
 **Example request**
 
-```
-"authorization: Token token=192a8aee2e9c3bbd20e4e207506926c0"
-"accept: application/json"
-"content-type: application/json"
-```
+{% include reference/request_headers.md %}
 
 ```
 {
@@ -45,10 +41,7 @@ POST /api/sessions
 
 **Example response**
 
-```
-HTTP/1.1 201 Created
-Content-Type: application/vnd.api+json
-```
+{% include reference/response_headers.md %}
 
 ```
 {}

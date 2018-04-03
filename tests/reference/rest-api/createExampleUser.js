@@ -3,7 +3,7 @@ const createUser = async (I) => {
       "form_configuration_name": "reference_rest_api_create_user",
       "form": {
         "first_name": "Existing user",
-        "email": "existing_user@platformos.com",
+        "email": `existing_user${(new Date()).getTime()}@example.com`,
         "password": "somepassword"
       }
     };
