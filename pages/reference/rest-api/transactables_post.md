@@ -17,7 +17,7 @@ POST /api/user/transactables
 | form                    | TransactableForm   | TransactableForm parameters that corresponds with FormConfiguration configuration | Required |                            |
 | parent_resource_id      | ID (Int or String) | Id or name of definced TransactableType                                           | Required | name should be underscored |
 
-**User Parameters**
+**Transactable Parameters**
 
 {% include resources/TransactableForm.html %}
 
