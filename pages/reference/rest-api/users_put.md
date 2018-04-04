@@ -21,11 +21,7 @@ PUT /api/users/:user_id
 
 **Example request**
 
-```
-"authorization: Token token=192a8aee2e9c3bbd20e4e207506926c0"
-"accept: application/json"
-"content-type: application/json"
-```
+{% include reference/request_headers.md %}
 ```
 {
   "form_configuration_name": "reference_rest_api_update_user",
@@ -42,10 +38,7 @@ PUT /api/users/:user_id
 
 **Example response**
 
-```
-HTTP/1.1 204 No Content
-Content-Type: application/vnd.api+json
-```
+{% include reference/response_headers.md %}
 ```
 {}
 ```

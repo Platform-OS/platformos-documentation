@@ -1,6 +1,6 @@
 <div><!--
 <h1>
-  Class: TransactableForm
+  Class: AddressForm
   
   
   
@@ -22,55 +22,13 @@
         
 <tr>
   <td>
-    creator_id
-  </td>
-  <td>
-    Int
-  </td>
-  <td>
-    User that created transactable
-  </td>
-  <td>
-    Required
-  </td>
-  <td>
-    In html format it is taken from current_user
-    
-  </td>
-</tr>
-
-      
-        
-<tr>
-  <td>
-    currency
+    address
   </td>
   <td>
     String
   </td>
   <td>
-    Currency used for this Transactable's pricings, ex. USD CAD. Default: USD
-  </td>
-  <td>
-    Required
-  </td>
-  <td>
-    Currency in ISO format
-    
-  </td>
-</tr>
-
-      
-        
-<tr>
-  <td>
-    custom_addresses
-  </td>
-  <td>
-    CustomAddressesForm
-  </td>
-  <td>
-    Custom addresses for this resource
+    Formatted full address for the address object
   </td>
   <td>
     Optional
@@ -85,34 +43,15 @@
         
 <tr>
   <td>
-    custom_attachments
+    address_components
   </td>
   <td>
-    CustomAttachmentsForm
+    Array[Hash[String => String]]
   </td>
   <td>
-    Custom attachments for this resource, such as pdf, doc
-  </td>
-  <td>
-    Optional
-  </td>
-  <td>
-    
-    
-  </td>
-</tr>
-
-      
-        
-<tr>
-  <td>
-    custom_images
-  </td>
-  <td>
-    CustomImagesForm
-  </td>
-  <td>
-    Custom images for this resource
+    array of components for the address
+  keys are mostly long_name (e.g. California), short name (e.g. CA)
+  and types (e.g. administrative_area_level_1, political)
   </td>
   <td>
     Optional
@@ -127,34 +66,13 @@
         
 <tr>
   <td>
-    customizations
-  </td>
-  <td>
-    CustomizationsForm
-  </td>
-  <td>
-    Customizations for this resource
-  </td>
-  <td>
-    Optional
-  </td>
-  <td>
-    
-    
-  </td>
-</tr>
-
-      
-        
-<tr>
-  <td>
-    description
+    city
   </td>
   <td>
     String
   </td>
   <td>
-    Longer description of the transactable
+    city name for the address object
   </td>
   <td>
     Optional
@@ -169,13 +87,139 @@
         
 <tr>
   <td>
-    enabled
+    country
+  </td>
+  <td>
+    String
+  </td>
+  <td>
+    country name for the address object
+  </td>
+  <td>
+    Optional
+  </td>
+  <td>
+    
+    
+  </td>
+</tr>
+
+      
+        
+<tr>
+  <td>
+    formatted_address
+  </td>
+  <td>
+    String
+  </td>
+  <td>
+    formatted full address for the address object
+  </td>
+  <td>
+    Optional
+  </td>
+  <td>
+    
+    
+  </td>
+</tr>
+
+      
+        
+<tr>
+  <td>
+    iso_country_code
+  </td>
+  <td>
+    String
+  </td>
+  <td>
+    ISO country code
+  </td>
+  <td>
+    Optional
+  </td>
+  <td>
+    
+    
+  </td>
+</tr>
+
+      
+        
+<tr>
+  <td>
+    latitude
+  </td>
+  <td>
+    Float
+  </td>
+  <td>
+    latitude for the address object
+  </td>
+  <td>
+    Optional
+  </td>
+  <td>
+    
+    
+  </td>
+</tr>
+
+      
+        
+<tr>
+  <td>
+    longitude
+  </td>
+  <td>
+    Float
+  </td>
+  <td>
+    longitude for the address object
+  </td>
+  <td>
+    Optional
+  </td>
+  <td>
+    
+    
+  </td>
+</tr>
+
+      
+        
+<tr>
+  <td>
+    postcode
+  </td>
+  <td>
+    String
+  </td>
+  <td>
+    postcode for the address object
+  </td>
+  <td>
+    Optional
+  </td>
+  <td>
+    
+    
+  </td>
+</tr>
+
+      
+        
+<tr>
+  <td>
+    raw_address
   </td>
   <td>
     Boolean
   </td>
   <td>
-    Whether the Transactable is enabled
+    tell if we should take address form postcode, city, street etc
   </td>
   <td>
     Optional
@@ -190,19 +234,19 @@
         
 <tr>
   <td>
-    location
+    should_check_address
   </td>
   <td>
-    LocationForm
+    Boolean
   </td>
   <td>
-    
+    Whether the system should check for the presence of an accurate address including postcode, city, state, street
   </td>
   <td>
     Optional
   </td>
   <td>
-    
+    virtual property
     
   </td>
 </tr>
@@ -211,19 +255,19 @@
         
 <tr>
   <td>
-    name
+    state
   </td>
   <td>
     String
   </td>
   <td>
-    Name of the transactable
+    state name for the address object
   </td>
   <td>
     Optional
   </td>
   <td>
-    Will be used to generate slug
+    
     
   </td>
 </tr>
@@ -232,13 +276,34 @@
         
 <tr>
   <td>
-    transactable_type
+    street
   </td>
   <td>
-    TransactableType
+    String
   </td>
   <td>
-    TransactableType to which this Transactable belongs
+    street name for the address object
+  </td>
+  <td>
+    Optional
+  </td>
+  <td>
+    
+    
+  </td>
+</tr>
+
+      
+        
+<tr>
+  <td>
+    suburb
+  </td>
+  <td>
+    String
+  </td>
+  <td>
+    suburb name for the address object
   </td>
   <td>
     Optional

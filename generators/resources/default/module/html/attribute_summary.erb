@@ -1,0 +1,18 @@
+<% groups(attr_listing, "Attribute") do |list, name| %>
+  <table>
+    <thead>
+      <tr>
+        <th>Parameter</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Required</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% list.each do |meth| %>
+        <%= yieldall :item => meth %>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

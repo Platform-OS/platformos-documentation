@@ -1,0 +1,18 @@
+<tr>
+  <td>
+    <%= @item.name %>
+  </td>
+  <td>
+    <%= @item.tag(:return).types.first %>
+  </td>
+  <td>
+    <%= @item.docstring %>
+  </td>
+  <td>
+    <%= @item.tag(:required)&.text ? @item.tag(:required)&.text : 'Optional' %>
+  </td>
+  <td>
+    <%= @item.tag(:note)&.text %>
+    <%= @item.tag(:deprecated)&.text %>
+  </td>
+</tr>
