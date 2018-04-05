@@ -45,14 +45,7 @@ POST /api/user/transactables
 
 {% include reference/response_headers.md %}
 
-```
-{
-  model: {
-    id: 1
-  },
-  errors: {}
-}
-```
+{% include reference/response_post_body.md %}
 
 | Element                             | Type                                       | Description                                                    |
 | ----------------------------------- | ------------------------------------------ | -------------------------------------------------------------- |

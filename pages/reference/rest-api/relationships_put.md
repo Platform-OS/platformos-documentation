@@ -1,5 +1,5 @@
 ---
-title: Create a Relationship
+title: Update a Relationship
 permalink: /reference/rest-api/relationships_put
 ---
 To update a relationship, send a PUT request to /api/user/relationships/:relationship_id
@@ -41,9 +41,8 @@ PUT /api/user/relationships/:relationship_id
 **Example response**
 
 {% include reference/response_headers.md %}
-```
-{}
-```
+
+{% include reference/response_put_body.md %}
 
 | Element | Type | Description |
 |-------------------------------------|--------------------------------------------|----------------------------------------------------------------|

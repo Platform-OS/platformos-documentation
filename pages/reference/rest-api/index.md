@@ -5,27 +5,27 @@ permalink: /reference/rest-api/
 
 ## List of endpoints
 
-* Bank Accounts
-  * [POST /api/user/bank_accounts](/reference/rest-api/bank_accounts_post)
-* Credit Cards
-  * [POST /api/user/credit_cards](/reference/rest-api/credit_cards_post)
+<!-- * Bank Accounts -->
+<!--   * [POST /api/user/bank_accounts](/reference/rest-api/bank_accounts_post) -->
+<!-- * Credit Cards -->
+<!--   * [POST /api/user/credit_cards](/reference/rest-api/credit_cards_post) -->
 * Customizations
   * [POST /api/user/customizations](/reference/rest-api/customizations_post)
   * [PUT /api/user/customizations/1](/reference/rest-api/customizations_put)
   * [DELETE /api/customizations/1](/reference/rest-api/customizations_delete)
-* Custom Images
-  * [POST /api/user/custom_images](/reference/rest-api/custom_images_post)
-  * [PUT /api/user/custom_images/1](/reference/rest-api/custom_images_put)
-  * [DELETE /api/custom_images/1](/reference/rest-api/custom_images_delete)
-* Merchant Accounts
-  * [POST /api/user/merchant_accounts](/reference/rest-api/merchant_accounts_post)
-  * [PUT /api/user/merchant_accounts/1](/reference/rest-api/merchant_accounts_put)
-* Order Items
-  * [POST /api/user/order_items](/reference/rest-api/order_items_post)
-  * [PUT /api/user/order_items/1](/reference/rest-api/order_items_put)
-* Orders
-  * [POST /api/user/order](/reference/rest-api/order_post)
-  * [PUT /api/user/order/1](/reference/rest-api/order_put)
+<!-- * Custom Images -->
+<!--   * [POST /api/user/custom_images](/reference/rest-api/custom_images_post) -->
+<!--   * [PUT /api/user/custom_images/1](/reference/rest-api/custom_images_put) -->
+<!--   * [DELETE /api/custom_images/1](/reference/rest-api/custom_images_delete) -->
+<!-- * Merchant Accounts -->
+<!--   * [POST /api/user/merchant_accounts](/reference/rest-api/merchant_accounts_post) -->
+<!--   * [PUT /api/user/merchant_accounts/1](/reference/rest-api/merchant_accounts_put) -->
+<!-- * Order Items -->
+<!--   * [POST /api/user/order_items](/reference/rest-api/order_items_post) -->
+<!--   * [PUT /api/user/order_items/1](/reference/rest-api/order_items_put) -->
+<!-- * Orders -->
+<!--   * [POST /api/user/order](/reference/rest-api/order_post) -->
+<!--   * [PUT /api/user/order/1](/reference/rest-api/order_put) -->
 * Relationships
   * [POST /api/user/relationships](/reference/rest-api/relationships_post)
   * [PUT /api/user/relationships/1](/reference/rest-api/relationships_put)

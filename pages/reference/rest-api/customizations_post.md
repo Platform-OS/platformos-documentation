@@ -43,12 +43,8 @@ POST /api/user/customizations
 **Example response**
 
 {% include reference/response_headers.md %}
-```
-{
-  model: { id: 1 }
-  errors: {}
-}
-```
+{% include reference/response_post_body.md %}
+
 
 | Element | Type | Description |
 |-------------------------------------|--------------------------------------------|----------------------------------------------------------------|
