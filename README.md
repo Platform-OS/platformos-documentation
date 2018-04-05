@@ -1,5 +1,13 @@
 # Editing
 
+Requirements:
+
+ruby > 2
+
+nodejs > 8
+
+npm > 5.8
+
 ## Development
 
     bundle install && npm install
