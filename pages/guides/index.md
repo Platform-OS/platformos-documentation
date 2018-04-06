@@ -3,4 +3,4 @@ title: Guides
 permalink: /guides/
 ---
 
-Choose guide from the menu.
+Choose your topic of interest from the sidebar.
