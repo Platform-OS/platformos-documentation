@@ -4,7 +4,7 @@ permalink: /guides/stripe-connect-integration/required-information
 ---
 
 The topic of _required_ information for Stripe Connect has been a hot topic lately.
-There are a few things that go into how Stripe Connect can be integrated into a website / marketplace and how Near Me went about it:
+There are a few things that go into how Stripe Connect can be integrated into a website / marketplace and how Platform OS went about it:
 
 ## 1. What are the Minimum Verification Requirements and what are they (per country)?
 
@@ -13,11 +13,11 @@ The Minimum Verification Requirements vary from country to country and while it 
 
 ## 2. What are the Maximum Verification Requirements and what are they (per country)?
 
-This is the maximum amount of required information that it takes to fully verify a managed account. If all of the Maximum Verification Requirement information is provided, Stripe will fully verify an account with no additional information required from the user. This is called the Upfront approach and considered the better user experience as the user only has to fill out information 1 time. Near Me has chosen to use the Upfront approach in our Stripe Connect integration.
+This is the maximum amount of required information that it takes to fully verify a managed account. If all of the Maximum Verification Requirement information is provided, Stripe will fully verify an account with no additional information required from the user. This is called the Upfront approach and considered the better user experience as the user only has to fill out information 1 time. Platform OS has chosen to use the Upfront approach in our Stripe Connect integration.
 
 ## 3. Can we reduce the required information?
 
-It is not possible to reduce the Minimum or Maximum Verification Requirements, these requirements are controlled 100% by Stripe. Near Me does have the ability to choose to request this information via Stepped or Upfront approach however. Near Me has chosen the Upfront method, but can certainly customize marketplaces through work orders to change to a Stepped approach.
+It is not possible to reduce the Minimum or Maximum Verification Requirements, these requirements are controlled 100% by Stripe. Platform OS does have the ability to choose to request this information via Stepped or Upfront approach however. Platform OS has chosen the Upfront method, but can certainly customize marketplaces through work orders to change to a Stepped approach.
 
 ### Additional Notes
 

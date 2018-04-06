@@ -7,7 +7,7 @@ Setting up ACH payments via Stripe / Stripe Connect using an account with [Plaid
 
 **Important note:** You will need to sign up or have an existing Stripe account and have set up your Stripe or Stripe Connect integration on your marketplace first. You can find more information on [setting up a Stripe integration](http://support.near-me.com/article/81-integrating-stripe) or [setting up a Stripe Connect integration](http://support.near-me.com/article/565-integrating-stripe-connect) on our support site\*\*.
 
-Once that is complete, simply follow the steps below to set up ACH Payments on your Near Me marketplace.
+Once that is complete, simply follow the steps below to set up ACH Payments on your Platform OS marketplace.
 
 ## Sign up for an account at Plaid.com
 
