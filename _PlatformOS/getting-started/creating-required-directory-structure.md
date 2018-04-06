@@ -1,5 +1,5 @@
 ---
-title: Creating the Required Directory Structure 
+title: Creating the Required Directory Structure
 permalink: /get-started/creating-required-directory-structure
 ---
 
@@ -30,9 +30,7 @@ npm i @platform-os/blank-marketplace
 
 {% include alert/note.html content="Make sure you invoke this command where you have permissions to create a directory." %}
 
-The installer asks you to enter the name of your marketplace. This information will be used to pre-fill the names of your environments in the `.builder` file, and to name the directory where the required directory structure will be installed.
-
-The `.builder` file contains the URLs to the environments (staging, production) you set up on our Partner Portal. You can also change the contents of the `.builder` file manually.
+The installer asks you to enter the name of your marketplace. This information will be used to name the directory where the required directory structure will be installed.
 
 ### Step 2: Explore your directory structure
 
