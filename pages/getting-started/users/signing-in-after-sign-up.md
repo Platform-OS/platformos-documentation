@@ -15,9 +15,9 @@ This tutorial assumes that you already have a working Sign up form, where a user
 
 Automatic sign in after sign up is a three-step process:
 
-1. Add `callback_actions` key to Sign up form
-2. Create `user_session_create` GraphQL mutation
-3. Create `session_create_form` form
+1.  Add `callback_actions` key to Sign up form
+2.  Create `user_session_create` GraphQL mutation
+3.  Create `session_create_form` form
 
 ### Step 1: Add `callback_actions` key to Sign up form
 

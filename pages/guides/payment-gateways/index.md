@@ -2,6 +2,7 @@
 title: Guides
 permalink: /guides/payment-gateways/
 ---
+
 The heart of payments is a concept around PaymentGateway. We do not process money ourselelves; instead, we have integrated with multiple reliable third party systems, such as [Stripe](https://stripe.com) or [PayPal](https://www.paypal.com). PaymentGateway can be configured only in InstanceAdmin at `/instance_admin/settings/payments`.
 
 Near Me supports the following Payment gateway integrations:
@@ -24,4 +25,3 @@ Near Me supports the following Payment gateway integrations:
 * Offline Payment
 
 If you do not see the payment gateway you would like to use, please contact us for more information on how we can add more payment gateways to the Near Me platform.
-

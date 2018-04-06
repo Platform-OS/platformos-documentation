@@ -21,8 +21,18 @@ Points are consisting of GeoPoint type, which is basically an hash with `lat` an
 ### Query
 
 ```graphql
-query search_users_by_bounding_box($top_right: GeoPoint, $bottom_left: GeoPoint) {
-  people(geo_query: { box_top_right_bottom_left: { top_right: $top_right, bottom_left: $bottom_left } }) {
+query search_users_by_bounding_box(
+  $top_right: GeoPoint
+  $bottom_left: GeoPoint
+) {
+  people(
+    geo_query: {
+      box_top_right_bottom_left: {
+        top_right: $top_right
+        bottom_left: $bottom_left
+      }
+    }
+  ) {
     results {
       first_name
       current_address {

@@ -4,8 +4,9 @@ permalink: changelog
 ---
 
 ## Version 11.0
+
 * We’ve improved things.
 
-
 ### Is it working?
+
 * Yep. Let’s hope so

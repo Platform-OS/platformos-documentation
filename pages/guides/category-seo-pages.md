@@ -12,8 +12,8 @@ folder: guides
 layout: page
 published: true
 ---
-    Requirements: graphql queries, pages, liquid, html
 
+    Requirements: graphql queries, pages, liquid, html
 
 We want to have listings divided by country, so we will have
 
@@ -23,22 +23,26 @@ We want to have listings divided by country, so we will have
 
 ## Setup page
 
-- create Search Page with slug `catalogue`
+* create Search Page with slug `catalogue`
 
-- define URL template in page.
+* define URL template in page.
 
 {% raw %}
+
 ```liquid
 {% assign url_template = '/catalogue/{country}/{city}' %}
 ```
+
 {% endraw %}
 
-- decode current_url into params with liquid filter `extract_url_params`
+* decode current_url into params with liquid filter `extract_url_params`
 
 {% raw %}
+
 ```liquid
 {% assign url_params = current_full_path | extract_url_params: url_template %}
 ```
+
 {% endraw %}
 
 ## Prepare GraphQL query with country and city
@@ -75,9 +79,10 @@ query get_catalogue_listings(
 
 ## Add GraphQL query to your page
 
-- and pass extracted params to it
+* and pass extracted params to it
 
 {% raw %}
+
 ```liquid
 {% query_graph 'get_catalogue_listings', result_name: g,
   country: url_params.country,
@@ -85,12 +90,13 @@ query get_catalogue_listings(
   is_deleted: false
 %}
 ```
-{% endraw %}
 
+{% endraw %}
 
 ## Final Page
 
 {% raw %}
+
 ```liquid
 {% assign url_template = '/catalogue/{country}/{city}' %}
 {% assign url_params = current_full_path | extract_url_params: url_template %}
@@ -116,6 +122,7 @@ query get_catalogue_listings(
   </div>
 </div>
 ```
+
 {% endraw %}
 
 ## Example URLs

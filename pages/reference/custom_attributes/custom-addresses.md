@@ -137,61 +137,57 @@ After having this, the way for editing those addresses can be further customized
 
 {% endraw %}
 
-
 ## Using GraphQL to query for `CustomAddress` geolocation
 
-It's possible to use `latitude` and `longitude` field in geolocation queries. 
+It's possible to use `latitude` and `longitude` field in geolocation queries.
 
 ```graphql
 query geolocate_users(
-  $per_page: Int,
-  $page: Int,
-  $query: String,
-  $geo_points: [GeoPoint],
-  $geo_point_in_shape: GeoPoint,
-  $geo_radius: GeoRadius,
-  $geo_box: GeoBox,
-  $geo_box_top_left: GeoPoint,
-  $geo_box_bottom_right: GeoPoint,
-  $geo_box_top_right_bottom_left: GeoBoxTopRightBottomLeft,
-  $customizations_geo_points: [GeoPoint],
+  $per_page: Int
+  $page: Int
+  $query: String
+  $geo_points: [GeoPoint]
+  $geo_point_in_shape: GeoPoint
+  $geo_radius: GeoRadius
+  $geo_box: GeoBox
+  $geo_box_top_left: GeoPoint
+  $geo_box_bottom_right: GeoPoint
+  $geo_box_top_right_bottom_left: GeoBoxTopRightBottomLeft
+  $customizations_geo_points: [GeoPoint]
   $street: String
-)
-{
+) {
   users: people(
-    per_page: $per_page,
-    page: $page,
+    per_page: $per_page
+    page: $page
     user: {
-      profiles: [{
-          profile_type: $profile_type,
-          addresses: [{
-              street: $street,
+      profiles: [
+        {
+          profile_type: $profile_type
+          addresses: [
+            {
+              street: $street
               geo_query: {
-                polygon: {
-                  points: $geo_points
-                },
-                point_in_shape: {
-                  point: $geo_point_in_shape
-                },
-                radius: $geo_radius,
-                box: $geo_box,
+                polygon: { points: $geo_points }
+                point_in_shape: { point: $geo_point_in_shape }
+                radius: $geo_radius
+                box: $geo_box
                 box_top_left_bottom_right: {
-                  top_left: $geo_box_top_left,
+                  top_left: $geo_box_top_left
                   bottom_right: $geo_box_bottom_right
-                },
+                }
                 box_top_right_bottom_left: $geo_box_top_right_bottom_left
               }
-
-            }],
-          customizations: [{
-              addresses: [{
-                  geo_query: {
-                    polygon: {
-                      points: $customizations_geo_points
-                    }
-                  }
-                }]
-            }]
+            }
+          ]
+          customizations: [
+            {
+              addresses: [
+                {
+                  geo_query: { polygon: { points: $customizations_geo_points } }
+                }
+              ]
+            }
+          ]
         }
       ]
     }
@@ -239,14 +235,13 @@ In the example above we see how we can query `CustomAddress` both at the `user_p
 If we wanted to find user profiles in vicinity of (50, 20) geo point, we could do that using those parameters:
 
 ```json
-{ "geo_radius":
-  { 
-    "center":
-    { 
+{
+  "geo_radius": {
+    "center": {
       "lat": 50,
-      "lng": 20 
-    }, 
-    "distance": "25km" 
+      "lng": 20
+    },
+    "distance": "25km"
   }
 }
 ```

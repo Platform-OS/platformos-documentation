@@ -7,11 +7,12 @@ permalink: /contributing
 ## Permalinks
 
 ### Structure
+
 Documentation is separated into following sections:
 
-* *Getting started* - step by step description of setting up a marketplace
-* *Guides* - list of common use patterns
-* *Reference* - list of all APIs, drops, graphql properties etc
+* _Getting started_ - step by step description of setting up a marketplace
+* _Guides_ - list of common use patterns
+* _Reference_ - list of all APIs, drops, graphql properties etc
 
 Based on this structure we create permalinks using folder structure, where each nested level is another folder, e.g
 
@@ -39,10 +40,11 @@ Make sure that every folder contains an`index.html` file, which should be either
 Every page can have meta data set via [YAML Front Matter](https://jekyllrb.com/docs/frontmatter/).
 
 * `title` - HTML title, good title is crucial for improving findability
-* `summary` - This is used in search engines to provide a description of the search result. Make sure it’s short and to the point - *it needs to fit below 70 characters*
+* `summary` - This is used in search engines to provide a description of the search result. Make sure it’s short and to the point - _it needs to fit below 70 characters_
 * `permalink` - Permalink that will be used to display this page
 
 ### Example
+
 ```liquid
 title:     Get access to our platform
 summary:   Get access to our platform description
@@ -90,6 +92,7 @@ To add liquid markup examples, wrap the whole block in <code>{{ "{% raw "}}%}</c
 Tables are easy to create in markdown. Use tables if you are describing tabular data.
 
 ### Table example
+
 <pre class="highlight">
 {% raw %}
 | Unit          | Shortcut                       |

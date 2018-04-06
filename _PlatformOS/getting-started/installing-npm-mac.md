@@ -1,30 +1,32 @@
 ---
 title: Installing NPM on a Mac
-permalink: /get-started/installing-npm-mac 
+permalink: /get-started/installing-npm-mac
 ---
-This guide will help you install NPM (Node.js Package Manager) on a Mac. 
-You will need NPM to install the Platform OS Marketplace Kit, that allows you to easily deploy your configuration files and assets to our platform, and communicate with the Platform OS API. 
 
-NPM is distributed with Node.js: when you install Node.js, you automatically get NPM installed on your computer. 
+This guide will help you install NPM (Node.js Package Manager) on a Mac.
+You will need NPM to install the Platform OS Marketplace Kit, that allows you to easily deploy your configuration files and assets to our platform, and communicate with the Platform OS API.
+
+NPM is distributed with Node.js: when you install Node.js, you automatically get NPM installed on your computer.
 
 ## Requirements
+
 This tutorial describes installing Node.js using the Homebrew package manager for Mac. We recommend using Homebrew because it makes the installation of Node.js (and other packages like Git or Ruby) easier. It doesn't require access to areas of your computer that otherwise would only be accessible to administrators, i.e. it doesn't require the use of the `sudo` command (in contrast to the process of installing NPM directly from the Node.js installer).
 
-So for installing Node.js by following this tutorial, you'll need:  
+So for installing Node.js by following this tutorial, you'll need:
 
 * [XCode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12), Apple's free development software
-* [Homebrew](https://brew.sh/) package manager for Mac 
+* [Homebrew](https://brew.sh/) package manager for Mac
 
-## Steps 
+## Steps
 
 Installing Node.js on a Mac with Homebrew is a two-step process:
 
-1.   Install Node.js via the Terminal 
-2.   Check if Node.js is installed  
+1.  Install Node.js via the Terminal
+2.  Check if Node.js is installed
 
 ### Step 1: Install Node.js via the Terminal
 
-Open the Terminal app, and enter `brew install node`. 
+Open the Terminal app, and enter `brew install node`.
 
 You should see something similar to the messages below while Homebrew installs Node.js:
 
@@ -58,25 +60,26 @@ For compilers to find this software you may need to set:
 Bash completion has been installed to:
   /usr/local/etc/bash_completion.d
 ==> Summary
-🍺  /usr/local/Cellar/node/9.10.0_1: 5,125 files, 49.7MB 
+🍺  /usr/local/Cellar/node/9.10.0_1: 5,125 files, 49.7MB
 ```
 
-### Step 2: Check if Node.js is installed  
+### Step 2: Check if Node.js is installed
 
 To check if Node.js and NPM are installed, enter:
 
 * `node -v` in Terminal to see the version of Node.js installed
 * `npm -v` in Terminal to see the version of NPM installed
 
-The version number of Node.js/NPM will be displayed. 
+The version number of Node.js/NPM will be displayed.
 
-To upgrade to the latest version of Node.js, enter `brew update` (to update the version of Node.js in Homebrew), and `brew upgrade node`(to upgrade Node.js). 
+To upgrade to the latest version of Node.js, enter `brew update` (to update the version of Node.js in Homebrew), and `brew upgrade node`(to upgrade Node.js).
 
 ## Next steps
-Congratulations! You have installed NPM on your Mac. Now you can install the Platform OS Marketplace Kit.  
+
+Congratulations! You have installed NPM on your Mac. Now you can install the Platform OS Marketplace Kit.
 
 * [Installing the Marketplace Kit]()
 
 ## Questions?
 
-We are always happy to help with any questions you may have. Consult our  [documentation](), [contact support](), or  [connect with our sales team](). 
+We are always happy to help with any questions you may have. Consult our [documentation](), [contact support](), or [connect with our sales team]().

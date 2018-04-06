@@ -2,6 +2,7 @@
 title: Pages
 permalink: /getting-started/pages/
 ---
+
 In this section we will explain basic concept about layouts, pages and partials.
 
 After reading this section, you should be able to:

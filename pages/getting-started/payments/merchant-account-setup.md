@@ -12,6 +12,7 @@ Merchant account allow user in a system to get paid. We gonna use Stripe Connect
 To create merchant account for a user we need to build form:
 
 {% raw %}
+
 ```liquid
 ---
 name: user_merchant_account
@@ -48,6 +49,6 @@ configuration:
 
   {% submit 'Save' %}
 {% endform_for %}
-
 ```
+
 {% endraw %}

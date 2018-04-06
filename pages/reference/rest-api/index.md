@@ -44,7 +44,7 @@ permalink: /reference/rest-api/
 * Transactables
   * [POST /api/user/transactables](/reference/rest-api/transactables_post)
   * [PUT /api/user/transactables/1](/reference/rest-api/transactables_put)
-  * [DELETE /api/transactables/1](/reference/rest-api/transactables_delete)* User
+  * [DELETE /api/transactables/1](/reference/rest-api/transactables_delete)\* User
 * Users
   * [POST /api/users](/reference/rest-api/users_post)
   * [PUT /api/users/1](/reference/rest-api/users_put)

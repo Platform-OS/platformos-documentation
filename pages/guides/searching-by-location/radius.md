@@ -6,23 +6,16 @@ permalink: /guides/searching-by-location/radius
 Searching by radius takes two arguments:
 
 * center - GeoPoint - point around you want to search
-* radius - String - ie. `300mi`, `100km`, `1500m` - max distance of users returned from center point 
+* radius - String - ie. `300mi`, `100km`, `1500m` - max distance of users returned from center point
 
 See all available [distance units](/reference/search/distance-units).
 
-## Query 
+## Query
+
 ```graphql
 query search_users {
   people(
-    geo_query: {
-      radius: {
-        center: {
-          lat: 42
-          lng: -71
-        },
-        radius: "300mi"
-      }
-    }
+    geo_query: { radius: { center: { lat: 42, lng: -71 }, radius: "300mi" } }
   ) {
     results {
       current_address {

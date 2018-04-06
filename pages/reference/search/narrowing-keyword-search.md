@@ -9,30 +9,25 @@ In your graphql query you can decide which fields should be search in.
 
 If you leave the `keyword` field empty, it means you are looking for everything, so narrowing by field names will not be applied.
 
-
 ## Operator
 
-Operator allows you to control how the query will be understood by our search engine. 
+Operator allows you to control how the query will be understood by our search engine.
 
 For Example query: `capital of hungary` (subqueries: `capital`, `of`, `Hungary`)
 
-With operator set to `OR`, it will be translated to `capital OR of OR Hungary` and will return results that have *any* of those subqueries.
+With operator set to `OR`, it will be translated to `capital OR of OR Hungary` and will return results that have _any_ of those subqueries.
 
-With operator set to `AND`, it will be translated to `capital AND of AND Hungary` and will return results containing *all* of those subqueries.
+With operator set to `AND`, it will be translated to `capital AND of AND Hungary` and will return results containing _all_ of those subqueries.
 
 Default value is `AND`.
 
 {% include alert/note.html content="Operator is applied only to the keyword query. It does not affect fields behavior." %}
 
 ### AND Example
+
 ```graphql
 query get_owners {
-  people(
-    query: {
-      keyword: "Tanya Rose"
-      operator: "AND"
-    }
-  ) {
+  people(query: { keyword: "Tanya Rose", operator: "AND" }) {
     results {
       first_name
       last_name
@@ -57,14 +52,10 @@ query get_owners {
 ```
 
 ### OR Example
+
 ```graphql
 query get_owners {
-  people(
-    query: {
-      keyword: "Tanya Rose"
-      operator: "OR"
-    }
-  ) {
+  people(query: { keyword: "Tanya Rose", operator: "OR" }) {
     results {
       first_name
       last_name
@@ -92,20 +83,19 @@ query get_owners {
 }
 ```
 
-## Filtered fields 
+## Filtered fields
 
 To learn more about filtered fields see [selecting fields for search](./selecting-fields-for-search) section.
 
 ### OR with filtered fields example
+
 ```graphql
 query get_providers {
   people(
     query: {
       keyword: "Tanya Rose"
-      operator:"OR"
-      fields: [{
-        name:"last_name"
-      }]
+      operator: "OR"
+      fields: [{ name: "last_name" }]
     }
   ) {
     results {
@@ -139,22 +129,19 @@ query get_providers {
         }
       ]
     }
-}
+  }
 }
 ```
 
 ### AND with filtered fields example
+
 ```graphql
 query get_providers {
   people(
     query: {
       keyword: "Tanya Rose"
-      operator:"AND"
-      fields: [{
-        name:"last_name"
-      },{
-        name:"first_name"
-      }]
+      operator: "AND"
+      fields: [{ name: "last_name" }, { name: "first_name" }]
     }
   ) {
     results {
@@ -165,7 +152,7 @@ query get_providers {
 }
 ```
 
-Because above query is asking for users that have "Tanya Rose" in `first_name` or `last_name` results will be empty in this case. 
+Because above query is asking for users that have "Tanya Rose" in `first_name` or `last_name` results will be empty in this case.
 
 ```json
 {

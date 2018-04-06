@@ -11,22 +11,13 @@ Instead of passing both coordinates points you pass only:
 
 * For Left and Right points you pass `lng`
 
-
 Server will automatically determine the corners of bounding box and return appropriate results.
 
-## Query 
+## Query
+
 ```graphql
 query search_users {
-  people(
-    geo_query: {
-      box: {
-        top: 45
-        left: -74
-        bottom: 40
-        right: -71
-      }
-    }
-  ) {
+  people(geo_query: { box: { top: 45, left: -74, bottom: 40, right: -71 } }) {
     results {
       first_name
       current_address {

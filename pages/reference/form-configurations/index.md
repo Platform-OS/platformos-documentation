@@ -24,6 +24,7 @@ flash_alert: "Form Saved!"
 Values for `flash` keys are processed using Liquid parser so can be interpolated in the context of current form:
 
 {% raw %}
+
 ```yml
 ---
 name: lister_general
@@ -31,4 +32,5 @@ resource: User
 flash_notice: "Validation {{ 'error' | capitalize }}, please correct and save again"
 flash_alert: "Form Saved! {{ 'created_successfully' | t: first_name: current_user.first_name }}"
 ```
+
 {% endraw %}

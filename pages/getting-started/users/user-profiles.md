@@ -2,6 +2,7 @@
 title: User Profiles
 permalink: /getting-started/users/user-profiles
 ---
+
 Think of User Profile as a role in the marketplace. Each User Profile can be associated with any number of [Custom Attributes](/reference/custom-attributes/), [Categories](/reference/categories/) and [Custom Model Types](/reference/custom-model-types). All users are assigned a user profile named Default. If you do not want to distinguish one type of users from the other, then you do not need to create any other user profiles. However, for sake of this section and all the following ones, we will assume that we want to build a marketplace which connects Developers, who build marketplaces, with Clients, who want to hire them. In order to display different UI based on their role in the marketplace, we will create two profiles - developer and client.
 
 # Create User Profile
