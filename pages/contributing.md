@@ -1,6 +1,6 @@
 ---
 title: How to contribute to our documentation pages
-summary: Quick introduction to help anyone improve Marketplace Platform documentation.
+summary: Quick introduction to help anyone improve Platform OS documentation.
 permalink: /contributing
 ---
 

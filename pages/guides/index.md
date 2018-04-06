@@ -3,4 +3,4 @@ title: Guides
 permalink: /guides/
 ---
 
-TODO
+Choose guide from the menu.

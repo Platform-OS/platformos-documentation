@@ -15,8 +15,8 @@ It's possible to have values for `flash` messages as part of form configuration,
 ---
 name: lister_general
 resource: User
-flash_notice: "Validation error, please correct and save again"
-flash_alert: "Form Saved!"
+flash_notice: Validation error, please correct and save again
+flash_alert: Form Saved!
 ```
 
 ### Interpolation
@@ -29,8 +29,8 @@ Values for `flash` keys are processed using Liquid parser so can be interpolated
 ---
 name: lister_general
 resource: User
-flash_notice: "Validation {{ 'error' | capitalize }}, please correct and save again"
-flash_alert: "Form Saved! {{ 'created_successfully' | t: first_name: current_user.first_name }}"
+flash_notice: Validation {{ 'error' | capitalize }}, please correct and save again
+flash_alert: Form Saved! {{ 'created_successfully' | t: first_name: current_user.first_name }}
 ```
 
 {% endraw %}
