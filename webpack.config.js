@@ -25,37 +25,24 @@ const commonConfig = merge([
   parts.extractCSS({
     entry: PATHS.styles,
     use: [
+      "cache-loader",
+      "css-loader?minimize=true",
       {
-        loader: "cache-loader"
+        loader: "postcss-loader",
+        options: {
+          plugins: [require("autoprefixer")()]
+        }
       },
-      {
-        loader: "css-loader"
-      },
-      parts.autoprefix(),
-      {
-        loader: "sass-loader"
-      }
+      "sass-loader"
     ]
   }),
   parts.loadJavaScript({ include: path.join(PATHS.app, "js") }),
-  parts.minifyJavaScript(),
-  parts.minifyCSS({
-    options: {
-      // Run cssnano in safe mode to avoid
-      // potentially unsafe transformations.
-      safe: true
-    }
-  })
+  parts.minifyJavaScript()
 ]);
 
 const productionConfig = merge([
   parts.clean(["*.js", "*.css"]),
   {
-    performance: {
-      hints: "warning", // 'error' or false are valid too
-      maxEntrypointSize: 100000, // in bytes
-      maxAssetSize: 450000 // in bytes
-    },
     output: {
       chunkFilename: "[name].[chunkhash:8].js",
       filename: "[name].[chunkhash:8].js"
