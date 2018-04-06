@@ -2,6 +2,7 @@
 title: Managing Transactable
 permalink: /getting-started/transactables/managing-transactable
 ---
+
 Similarly to user profiles, for which we were creates a file in `instance_profile_types` first, before we start building a form for project, we need to create [TransactableType](/reference/transactable-type). It defines the business rules of the transaction associated with this transactable - whether it is time based booking, an offer or something else. This files also will define available property of project.
 
 In the previous section we have defined briefly super high level business rules - a client should be able to create a Project. Developer will be invited to the project by client, and he would need to submit his offer. Project should contain enough information to let Developer decide, whether he is interested in working on it or not. Let's assume, that developers are mainly interested what is the deadline, the budget, whether it is remote or onsite. Each transactable by default have attributes name and description, which we will be able to use. Based on this specification, we create a file named `/transactable_types/project.yml` with the following content:
@@ -20,9 +21,11 @@ custom_attributes:
   attribute_type: float
 ---
 ```
+
 Now we can proceed with building a form to create Transactable.
 
 {% raw %}
+
 ```liquid
 ---
 name: project
@@ -56,25 +59,28 @@ configuration:
   {% submit Save %}
 {% endform %}
 ```
+
 {% endraw %}
 
 The page with embedded form could look like this:
 
 {% raw %}
+
 ```liquid
 ---
 slug: client/projects/new
-format: html
 layout_name: application
 ---
 <h1>Create Project</h1>
 {% render_form project, parent_resource_id: 'project' %}
 ```
+
 {% endraw %}
 
 To display newly created transactable (with pagination), we can inject this code for example on the home page, which re-uses already created `current_user.graphql`:
 
 {% raw %}
+
 ```liquid
 {% query_graph 'current_user', result_name: g %}
 {% if g.current_user.client_profile %}
@@ -103,31 +109,21 @@ To display newly created transactable (with pagination), we can inject this code
   {% endif %}
 {% endif %}
 ```
+
 {% endraw %}
 
-A common issue in liquid are types - most of the time liquid converts everything to string. This is what it is often necessary to do coercion in liquid. In our example, url  parameters are strings, and graphql expects `page` variable to be integer. To solve the problem, we just add a `0`, which casts string to integer:
+A common issue in liquid are types - most of the time liquid converts everything to string. This is what it is often necessary to do coercion in liquid. In our example, url parameters are strings, and graphql expects `page` variable to be integer. To solve the problem, we just add a `0`, which casts string to integer:
 {% raw %}`{% assign page = params.page | default: 1 | plus: 0 %}`{% endraw %}
 
 We also have to add the graph query `graph_queries/client_projects.graphql`:
+
 ```graphql
-query client_projects(
-  $page: Int,
-  $creator_id: ID!
-)
- {
+query client_projects($page: Int, $creator_id: ID!) {
   projects: listings(
-    per_page: 20,
-    page: $page,
-    sort:[
-      {
-        name: "created_at",
-        order: "desc"
-      }
-    ],
-    listing: {
-      creator_id: $creator_id,
-      is_deleted: false,
-   }
+    per_page: 20
+    page: $page
+    sort: [{ name: "created_at", order: "desc" }]
+    listing: { creator_id: $creator_id, is_deleted: false }
   ) {
     total_entries
     has_next_page
@@ -147,10 +143,10 @@ query client_projects(
 Now we can create edit transactable page `pages/client/projects/edit.liquid`:
 
 {% raw %}
+
 ```liquid
 ---
 slug: client/projects/edit
-format: html
 layout_name: application
 ---
 {% query_graph 'current_user', result_name: g %}
@@ -162,20 +158,14 @@ layout_name: application
   <p>Unfortunately we could not find this project.
 {% endif %}
 ```
+
 {% endraw %}
 
 Which would re-use current_user graph query created in previous step, and will require a new `graph_queries/get_project.graphql`:
 
 ```graphql
-query client_projects(
-  $creator_id: ID!
-  $slug: String!
-)
-{
-  project: transactable(
-    creator_id: $creator_id
-    slug: $slug
-  ) {
+query client_projects($creator_id: ID!, $slug: String!) {
+  project: transactable(creator_id: $creator_id, slug: $slug) {
     id
     name
     slug
@@ -186,6 +176,7 @@ query client_projects(
 To complete managing project, one would also need possibility to remove it via `form_configurations/destroy_project.liquid`:
 
 {% raw %}
+
 ```liquid
 ---
 name: destroy_project
@@ -195,11 +186,14 @@ resource: Transactable
   {% submit Delete %}
 {% endform %}
 ```
+
 {% endraw %}
 
 Rendering this form would be very similar to the one from edit:
 {% raw %}
+
 ```liquid
 {% render_form destroy_project, resource_id: @project.id %}
 ```
+
 {% endraw %}

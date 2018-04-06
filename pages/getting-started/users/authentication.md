@@ -19,8 +19,8 @@ name: sign_in
 resource: Session
 ---
 {% form %}
-  {% input email %}
-  {% input password %}
+  {% input 'email' %}
+  {% input 'password' %}
   {% submit 'Log In' %}
 {% endform %}
 ```
@@ -34,11 +34,10 @@ The Session resource is hardcoded - it has email and password fields, and that's
 ```liquid
 ---
 slug: sign-in
-format: html
 layout_name: application
 ---
 <h2>Log in </h2>
-{% render_form sign_in %}
+{% render_form 'sign_in' %}
 <p>New user? Create <a href="/developer/sign-up"> new developer account</a> or <a href="/client/sign-up">new client account</a></p>
 ```
 
@@ -56,7 +55,7 @@ name: log_out
 resource: Session
 ---
 
-{% form method: delete %}
+{% form method: 'delete' %}
   {% submit 'Log Out' %}
 {% endform %}
 ```
@@ -100,8 +99,8 @@ Then we provide a form to allow user to enter his email address `form_configurat
 name: recover_password
 resource: Customization
 resource_owner: anyone
-return_to: /recover-password
-flash_notice: 'If you provided the right email, we will send you reset password instructions.'
+redirect_to: /recover-password
+flash_notice: If you provided the right email, we will send you reset password instructions.
 configuration:
   properties:
     email:
@@ -109,9 +108,9 @@ configuration:
         presence: true
         email: true
 callback_actions: |-
-  {% query_graph generate_user_temporary_token, email: form.properties.email, result: g %}
+  {% query_graph 'generate_user_temporary_token', email: form.properties.email, result: g %}
   {% if g.user %}
-    {% execute_query update_password_token, id: g.user.id, token: g.user.temporary_token %}
+    {% execute_query 'update_password_token', id: g.user.id, token: g.user.temporary_token %}
   {% endif %}
 ---
 {% form %}
@@ -202,7 +201,7 @@ After storing the token, we want to send email to user with password instruction
 ```liquid
 ---
 name: send_recover_password
-to: '{{ form.email }}'
+to: {{ form.email }}
 delay: 0
 enabled: true
 trigger_condition: true
@@ -210,10 +209,10 @@ from: no-reply@example.com
 reply_to: no-reply@example.com
 cc:
 bcc:
-subject: 'Reset password instructions'
+subject: Reset password instructions
 layout_path: mailer
 ---
-{%- query_graph get_user_with_password_token, email: form.email, result: g -%}
+{%- query_graph 'get_user_with_password_token', email: form.email, result: g -%}
 <h1>Hi {{ g.user.first_name }}!</h1>
 
 <p>To reset your password, follow the link: <a href="{{ platform_context.host }}/reset-password?token={{ g.user.default.password_token | url_encode }}&email={{ g.user.email | url_encode }}">reset password!</a></p>
@@ -243,14 +242,13 @@ Finally, let's create entrypoint to the workflow - by creating `pages/recover_pa
 ```liquid
 ---
 slug: recover-password
-format: html
 layout_name: application
 ---
 <h2>Forgotten Password</h2>
 {% if flash.notice != blank %}
   <p>{{ flash.notice }}</p>
 {% endif %}
-{% render_form recover_password, parent_resource_id: reset_password %}
+{% render_form 'recover_password', parent_resource_id: 'reset_password' %}
 ```
 
 {% endraw %}
@@ -262,16 +260,15 @@ The email contains a link to `/reset-password` page, which can look like this:
 ```liquid
 ---
 slug: reset-password
-format: html
 layout_name: application
 ---
-{%- query_graph get_user_with_password_token, email: params.email, result: g -%}
+{%- query_graph 'get_user_with_password_token', email: params.email, result: g -%}
 {% assign token_valid = params.token | is_token_valid: g.user.id %}
 {% if g.user.id == blank or token_valid == false or g.user.default.password_token != params.token %}
   Unfortunately, provided token is not valid anymore. Please request password instructions again.
 {% else %}
   <h2>Reset Password</h2>
-  {% render_form reset_password, resource_id: @g.user.id %}
+  {% render_form 'reset_password', resource_id: @g.user.id %}
 {% endif %}
 ```
 
@@ -288,8 +285,8 @@ On this page we want to embed form to actually reset password, hence we create a
 name: reset_password
 resource: User
 resource_owner: anyone
-return_to: /sign-in
-flash_notice: 'Your password has been updated. You can now log in.'
+redirect_to: /sign-in
+flash_notice: Your password has been updated. You can now log in.
 configuration:
   email:
     property_options:
@@ -306,8 +303,8 @@ authorization_policies:
 {% form %}
   <input name="token" value="{{ params.token }}" type="hidden">
   <input name="email" value="{{ form.email }}" type="hidden">
-  {% input password %}
-  {% input password_confirmation %}
+  {% input 'password' %}
+  {% input 'password_confirmation' %}
   {% submit 'Reset Password' %}
 {% endform %}
 ```
@@ -322,14 +319,14 @@ To be able to re-render previous page if validation for password fails, we forwa
 ---
 name: token_is_valid
 ---
-{%- query_graph get_user_with_password_token, id: params.id, result: g -%}
+{%- query_graph 'get_user_with_password_token', id: params.id, result: g -%}
 {%- assign token_valid = params.token | is_token_valid: params.id -%}
 {% if g.user.id != blank and token_valid == true and g.user.default.password_token == params.token %}true{% endif %}
 ```
 
 {% endraw %}
 
-We are done. If user provides valid password and confirms it, the password will be changed and he will be redirected to `/sign_in page`. If the password is not valid, the system will re-render the form and display message explaining what is wrong. Finally, if the user tries to hijack someone else account by manually change id or providing not valid token, 403 status will be returned and the request will not be processed.
+We are done. If user provides valid password and confirms it, the password will be changed and he will be redirected to `/sign_in` page. If the password is not valid, the system will re-render the form and display message explaining what is wrong. Finally, if the user tries to hijack someone else account by manually change id or providing not valid token, 403 status will be returned and the request will not be processed.
 
 # Accessing authenticated user data
 
@@ -357,9 +354,9 @@ Now on any given page (including layout itself, though be careful with adding qu
 {% raw %}
 
 ```liquid
-  {% query_graph current_user, result_name: g %}
+  {% query_graph 'current_user', result_name: g %}
 ```
 
 {% endraw %}
 
-which fetches information defined in the graphql file for currently logged in user and stores it in variable named `g`. The returned data is a standard hash, so you can even display it via doing {% raw %}{{ g }}{% endraw %}. B
+which fetches information defined in the graphql file for currently logged in user and stores it in variable named `g`. The returned data is a standard hash, so you can even display it via doing {% raw %}{{ g }}{% endraw %}.

@@ -19,7 +19,7 @@ Assuming you have prepared graphql query called `current_user`, example policy f
 
 ```liquid
 ---
-name: 'only_allowed_by_johns'
+name: only_allowed_by_johns
 ---
 {% query_graph 'current_user', result_name: g %}
 {% if g.current_user.first_name == 'John' %}true{% endif %}
@@ -74,7 +74,6 @@ Similarly to `FormConfiguration`, we can also associate policy with a Page. Let'
 ```liquid
 ---
 slug: john-private-page
-name: John Private Page
 layout_name: application
 authorization_policies:
   - only_allowed_by_johns
@@ -98,12 +97,15 @@ You can either send user to a different path or server by default will return em
 
 To redirect user to a page after violation set `redirect_to` key, for example to redirect to page `/login`:
 
+To generate flash alert message on the page that you defined as `redirect_to` use `flash_alert` property.
+
 {% raw %}
 
 ```liquid
 ---
-name: 'only_allowed_by_johns'
+name: only_allowed_by_johns
 redirect_to: /login
+flash_alert: Please login to access this page.
 ---
 ...
 ```

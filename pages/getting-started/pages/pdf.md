@@ -10,7 +10,6 @@ Pages can be rendered in PDF format. First, you will need to define a page with 
 slug: expert/validation/summary_pdf
 format: pdf
 layout_name: pdf
-name: Expert Validation Summary
 ---
 ```
 
