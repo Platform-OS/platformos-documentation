@@ -1,13 +1,13 @@
 ---
-title: Delete Transactable
-permalink: /reference/rest-api/transactables_delete
+title: Delete Relationship User
+permalink: /reference/rest-api/relationship_users_delete
 ---
 
-To remove transactable, send a DELETE request to /api/user/transactables/:transactable_id
+To remove relationship user, send a DELETE request to /api/user/relationship_users/:relationship_user_id
 
 **HTTP request**
 
-DELETE /api/user/transactables/:transactable_id
+DELETE /api/user/relationship_users/:relationship_user_id
 
 **Parameters**
 
@@ -21,7 +21,7 @@ DELETE /api/user/transactables/:transactable_id
 
 ```
 {
-  "form_configuration_name": "reference_rest_api_delete_transactables"
+  "form_configuration_name": "reference_rest_api_relationship_user_delete"
 }
 ```
 

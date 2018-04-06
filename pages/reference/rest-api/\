@@ -1,13 +1,13 @@
 ---
-title: Create a User
-permalink: /reference/rest-api/users_post
+title: Update a User
+permalink: /reference/rest-api/users_put
 ---
 
-To create a user, send a POST request to /api/users
+To update an user, send a PUT request to /api/users/:user_id
 
 **HTTP request**
 
-POST /api/users
+PUT /api/users/:user_id
 
 **Parameters**
 
@@ -26,11 +26,9 @@ POST /api/users
 
 ```
 {
-  "form_configuration_name": "reference_rest_api_create_user",
+  "form_configuration_name": "reference_rest_api_update_user",
   "form": {
-    "first_name": "Example",
-    "email": "example1@platformos.com",
-    "password": "somepassword"
+    "first_name": "Example"
   }
 }
 ```
@@ -44,11 +42,11 @@ POST /api/users
 
 {% include reference/response_headers.md %}
 
-{% include reference/response_post_body.md %}
+{% include reference/response_put_body.md %}
 
 | Element                             | Type                                       | Description                                                    |
 | ----------------------------------- | ------------------------------------------ | -------------------------------------------------------------- |
 | [Element as it appears in response] | [Array, Object, String, Integer, or Float] | [Brief description of what information the element represents] |
 | […]                                 | […]                                        | […]                                                            |
 
-{% include reference/error_and_status_codes_post.md %}
+{% include reference/error_and_status_codes_put.md %}

@@ -1,5 +1,5 @@
 ---
-title: Create a User
+title: Update a User
 permalink: /reference/rest-api/users_put
 ---
 
@@ -42,10 +42,9 @@ PUT /api/users/:user_id
 
 {% include reference/response_headers.md %}
 
-```
-{}
-```
+{% include reference/response_put_body.md %}
 
+>>>>>>> e44e9a9... Prettier for the win!!!
 | Element                             | Type                                       | Description                                                    |
 | ----------------------------------- | ------------------------------------------ | -------------------------------------------------------------- |
 | [Element as it appears in response] | [Array, Object, String, Integer, or Float] | [Brief description of what information the element represents] |
