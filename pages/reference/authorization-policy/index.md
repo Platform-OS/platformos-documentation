@@ -111,3 +111,5 @@ flash_alert: Please login to access this page.
 ```
 
 {% endraw %}
+
+As with normal flash messages, you can access it liquid using `{{ flash }}` variable.
