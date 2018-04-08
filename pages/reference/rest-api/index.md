@@ -5,8 +5,8 @@ permalink: /reference/rest-api/
 
 ## List of endpoints
 
-<!-- * Bank Accounts -->
-<!--   * [POST /api/user/bank_accounts](/reference/rest-api/bank_accounts_post) -->
+* Bank Accounts
+  * [POST /api/user/bank_accounts](/reference/rest-api/bank_accounts_post)
 <!-- * Credit Cards -->
 <!--   * [POST /api/user/credit_cards](/reference/rest-api/credit_cards_post) -->
 * Customizations
