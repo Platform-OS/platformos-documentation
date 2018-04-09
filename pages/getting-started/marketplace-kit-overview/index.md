@@ -39,6 +39,19 @@ Example: `marketplace-kit sync staging`
 
 Enables sync mode - immediately pushes changes made to filesystem to the proper environment. It feels like working on localhost. For obvious reason, it is dangerous to use on production, on a live marketplace - it is recommended to use it only for staging. Please note, that unlike `deploy`, this command will not delete resources when you delete the file.
 
+## Initializing required directory structure
+
+If you need to create new project from scratch you can init directory structure using:
+
+```
+marketplace-kit init
+```
+
+It will download directory structure from official repository and extract it in your current directory.
+
+We will try to keep it up to date and also keep it as useful as possible.
+If you have any feedback for directory structure go to [github](https://github.com/mdyd-dev/directory-structure) and create an issue.
+
 ## Deploying with force flag (`-f` or `--force`)
 
 If you want to deploy the whole `marketplace_builder` directory to environment overriding everything there was, use `-f` flag.
