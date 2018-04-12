@@ -3,6 +3,15 @@ title: Changelog
 permalink: changelog
 ---
 
+# April 11, 2018
+
+## Community feedback
+
+We have added `format: js` to the list of available formats - [see updated docs](/getting-started/pages/page).
+
+This change allows you to create page that will respond with `Content-Type: application/javascript` header, which means it can contain [JSONP](https://www.sitepoint.com/jsonp-examples/) content.
+This is temporary solution to CORS issue, we are working on more user friendly and more flexible solution.
+
 # April 7, 2018
 
 We had a great run on catching small bugs and unifying APIs without breaking changes.
