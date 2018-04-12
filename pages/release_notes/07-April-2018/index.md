@@ -19,7 +19,7 @@ As always we are listening and fixing things that are making your job harder.
 
 {% include alert/note.html content="Renamings were done in a backwards compatible manner, so your old code will still work." %}
 
-### Based on community feedback:
+### Based on community feedback
 
 * **Empty content in views**: content is no longer required for views/pages/form configuration - you can create empty partial
 * **Slug starting with /**: added validation to prevent adding page with slug starting with `/`. marketplace-kit error message will ask to fix it during sync/deploy

@@ -7,7 +7,7 @@ We received signals from developers that it would be nice to have an easy way of
 
 ## What's new
 
-### Based on community feedback:
+### Based on community feedback
 
 * **New format: js**: We have added `format: js` to the list of available formats - [see updated docs](/getting-started/pages/page).
 
