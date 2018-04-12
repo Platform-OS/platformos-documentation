@@ -15,7 +15,7 @@ We received a lot of feedback from our precious Master Partners that worked with
 
 * **Views directory structure**: We moved all views into `views/` directory and divied it into three sub-directories: `pages`, `layouts`, `partials`
 * **Renamed instance_profile_types**: Directory `instance_profile_types` has been renamed to `user_profile_types`
-* **Renamed reservation_types**: Directory `instance_profile_types` has been renamed to `order_types`
+* **Renamed reservation_types**: Directory `reservation_types` has been renamed to `order_types`
 
 Before:
 
