@@ -27,6 +27,12 @@ Start your command-line tool (e.g. Terminal on a Mac, or Git Bash on Windows), a
 npm i -g @platform-os/marketplace-kit
 ```
 
+If your node is installed for all users you might need to use `sudo` to install npm packages globally:
+
+```
+sudo npm i -g @platform-os/marketplace-kit
+```
+
 You can follow the installation process in your command-line (something similar to this will be displayed during installation):
 
 ```
