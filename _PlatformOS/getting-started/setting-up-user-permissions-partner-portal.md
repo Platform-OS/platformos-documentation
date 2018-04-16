@@ -25,9 +25,16 @@ On the User's information page, click on `Manage permissions`. If the User doesn
 
 If the User has permission to create new Partners, you can revoke this permission, by clicking on `Revoke` under `Revoke permission to create new Partners`. 
 
-### Step 2: Grant permissions to access Partners
+### Step 2: Grant permissions to access Partners and the Partner Portal
 
-To grant permissions to access Partners, select the Partners you would like to give the User access to by checking their checkboxes. Select access level (`Read`, `Write` or `Write and deploy`), and click on `Submit`. 
+To grant permissions to access Partners, select the Partners you would like to give the User access to by checking their checkboxes. 
+
+Select access level (`Read`, `Write` or `Write and deploy`) to the Partner Portal:
+* `Read`: The user can see everything on the Partner Portal, but can't modify anything. 
+* `Write`: The user can see and modify anything on the Partner Portal, but can't deploy (`marketplace-kit deploy` command). E.g. non-developer, who needs to set up payment gateways. 
+* `Write and deploy`: The user can see, and modify anything on the Partner Portal, and has the permission to deploy. E.g. developer. 
+
+Once you've selected the permissions, click on `Submit`. 
 
 You can check the User's permissions anytime under `This user has access to following partners` on the User's information page. 
 
