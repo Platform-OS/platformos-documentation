@@ -16,7 +16,9 @@ Inviting a new User to our Partner Portal is a two-step process:
 1.   Create new Partner
 2.   Create new User for the Partner
 
-### Step 1: Create new Partner
+### Step 1: Create new Partner (optional)
+
+{% include alert/note.html content="If you want to invite a new User for a Partner that hasn't been added to the Partner Portal yet (e.g. adding an employee of a company that doesn't have a Partner on the Partner Portal), you first have to create a new Partner. If you want to add a User to an already existing Partner (e.g. an employee of a company that has a Partner on the Partner Portal), skip this step." %} 
 
 Log in to our [Partner Portal](https://portal.apps.near-me.com). You see the list of Partners you have access to. 
 
