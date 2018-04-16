@@ -5,10 +5,10 @@ permalink: /reference/rest-api/
 
 ## List of endpoints
 
-<!-- * Bank Accounts -->
-<!--   * [POST /api/user/bank_accounts](/reference/rest-api/bank_accounts_post) -->
-<!-- * Credit Cards -->
-<!--   * [POST /api/user/credit_cards](/reference/rest-api/credit_cards_post) -->
+* Bank Accounts
+  * [POST /api/user/bank_accounts](/reference/rest-api/bank_accounts_post)
+* Credit Cards
+  * [POST /api/user/credit_cards](/reference/rest-api/credit_cards_post)
 * Customizations
   * [POST /api/user/customizations](/reference/rest-api/customizations_post)
   * [PUT /api/user/customizations/1](/reference/rest-api/customizations_put)
