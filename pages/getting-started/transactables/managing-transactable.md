@@ -100,7 +100,7 @@ To display newly created transactable (with pagination), we can inject this code
     {% if pages > 1 %}
       <div class="pager">
         {% for page in (1..pages) %}
-          <a href="{{ current_path }}?page={{ page }}">{{ page }}</a>
+          <a href="{{ current_full_path }}?page={{ page }}">{{ page }}</a>
         {% endfor %}
       </div>
     {% endif %}
