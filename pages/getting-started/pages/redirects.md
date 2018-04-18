@@ -16,6 +16,6 @@ redirect_code: 302
 
 {% endraw %}
 
-* `slug` - defines the url at which this page will be accessible. In this example, assuming your marketplace domain is https://example.com, you will be able to access the page at https://example.com/about.
+* `slug` - defines the url at which this page will be accessible. In this example, assuming your marketplace domain is `https://example.com`, you will be able to access the page at `https://example.com/about`.
 * `redirect_to` - endpoint to which you want user to be redirected
 * `redirect_code` - specifies the status of redirection. Can be either 301 (Moved Permanently) or 302 (Found)
