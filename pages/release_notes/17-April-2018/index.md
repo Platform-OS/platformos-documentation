@@ -48,7 +48,7 @@ Page:
 
 {% endraw %}
 
-Example output from requesting `context?my-full-name=Pawel+Kowalski`:
+Example output from requesting path `/context?my-full-name=Pawel+Kowalski`:
 
 ### Context
 
