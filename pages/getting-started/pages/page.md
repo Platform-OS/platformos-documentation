@@ -49,7 +49,7 @@ For example you can have both `html`, `pdf` and `txt` version of a page with `He
 
 {% raw %}
 
-### views/pages/hello.html.liquid
+# views/pages/hello.html.liquid
 
 ```liquid
 ---
@@ -62,7 +62,7 @@ Hello world
 
 {% raw %}
 
-### views/pages/hello.pdf.liquid
+# views/pages/hello.pdf.liquid
 
 ```liquid
 ---
@@ -73,7 +73,9 @@ Hello world
 
 {% endraw %}
 
-### views/pages/hello.txt.liquid
+{% raw %}
+
+# views/pages/hello.txt.liquid
 
 ```liquid
 ---
