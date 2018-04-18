@@ -244,9 +244,9 @@ Read more about version control systems here: [https://en.wikipedia.org/wiki/Ver
 
 The usual structure of a webpage with the possibility to use Layouts, Pages and Partials:
 
-* Create a Layout: `marketplace_builder/liquid_views/layouts/application.liquid`
+* Create a Layout: `marketplace_builder/views/layouts/application.liquid`
 * Create Pages with different slugs: `marketplace_builder/pages/about-us.liquid`
-* Create Partials that are used both in Layout and Pages: `marketplace_builder/liquid_views/layouts/shared/_javascripts.liquid`, `marketplace_builder/liquid_views/shared/_contact-form.liquid`
+* Create Partials that are used both in Layout and Pages: `marketplace_builder/views/layouts/shared/_javascripts.liquid`, `marketplace_builder/views/partials/shared/_contact-form.liquid`
 
 Because `_contact-form.liquid` is a Partial it can be used in multiple places, about-us page, contact-us page, and in a configuration form.
 

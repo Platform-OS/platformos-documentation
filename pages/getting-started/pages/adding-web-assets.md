@@ -27,7 +27,7 @@ To access files put into `assets/` use [asset_url](/reference/liquid-filters#ass
 {% raw %}
 
 ```html
-# layouts/application.html
+# views/layouts/application.html
 <html>
   <head>
     <link rel="stylesheet" type="text/css" href="{{ 'app.css' | asset_url }}">

@@ -56,16 +56,13 @@ should be sent.
 ## Using Email Layouts
 
 The next step when working with emails is providing a layout. The concept is the same as with the layout for pages. The
-default layout file for all emails is located at `liquid_views/layouts/mailer.liquid`. It's content is slightly
+default layout file for all emails is located at `views/layouts/mailer.html.liquid`. It's content is slightly
 different though then the layout for pages, because it needs to be marked as email layout. A sample minimal content
 looks like this:
 
 {% raw %}
 
 ```liquid
----
-view_type: mail_layout
----
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <!-- it is good practice for emails to include inline styles rather than css. They can go here. -->
