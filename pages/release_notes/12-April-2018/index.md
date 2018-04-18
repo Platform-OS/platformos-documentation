@@ -7,7 +7,16 @@ We received a lot of feedback from our precious Master Partners that worked with
 
 ## What's new
 
-* **Format in filename**: Format in pages can now be set by using `filename.<format>.liquid` schema. It replaces YML definition (`format: <format>`). Example file names: `users.json.liquid`, `document.pdf.liquid`, `sitemap.xml.liquid`, `site.html.liquid` -- those files have only `slug` defined inside of them.
+* **Format in filename**: Format in pages can now be set by using `filename.<format>.liquid` schema. It replaces YML definition (`format: <format>`).
+
+Example file names:
+
+* `users.json.liquid`
+* `document.pdf.liquid`
+* `sitemap.xml.liquid`
+* `site.html.liquid`
+
+Those files have only `slug` defined inside of them.
 
 {% include alert/note.html content="This allows you to create multiple pages with the same slug, but different formats in the same directory." %}
 
