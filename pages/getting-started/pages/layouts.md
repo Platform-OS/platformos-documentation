@@ -11,6 +11,8 @@ All layouts should be located in `views/layouts` directory. By default, all Page
 
 ## Minimal example
 
+At minimum, the content of the layout would look like this:
+
 {% raw %}
 
 ```liquid
@@ -19,9 +21,12 @@ All layouts should be located in `views/layouts` directory. By default, all Page
 
 {% endraw %}
 
+This layout will just render content of the page and it is equivalent of passing `layout_name: ''` in the page definition.
+
 ## Usual example
 
-At minimum, the content of the layout would look like this:
+Most common use case of layout is to actually place something before and after content of the page:
+
 {% raw %}
 
 ```liquid
