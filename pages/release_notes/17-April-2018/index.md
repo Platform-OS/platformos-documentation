@@ -25,8 +25,8 @@ One use case of using it would be to define two different api keys for both stag
 
 ### Based on community feedback
 
-* **context variable**: access it using `{{ context }}` - equivalent of `this`
-* **page variable**: access it using `{{ page }}`
+* **context variable**: access it using `{% raw %}{{ context }}{% endraw %}` - equivalent of `this`
+* **page variable**: access it using `{% raw %}{{ page }}{% endraw %}`
 
 Example test page:
 
