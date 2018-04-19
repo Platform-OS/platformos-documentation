@@ -19,7 +19,7 @@ Setting up User permissions is a two-step process:
 
 ### Step 1: Grant permission to create new Partner
 
-Log in to our Partner Portal [https://portal.apps.near-me.com](), and click on the Partner that the User belongs to. Locate the User in the list `Users with access to [Partner name]`, and click on its email address. 
+Log in to our [Partner Portal](https://portal.apps.near-me.com). In the [list of Partners](https://portal.apps.near-me.com/partners), locate the Partner the User belongs to, and click on `Users`. To select the User, click on its email address.   
 
 On the User's information page, click on `Manage permissions`. If the User doesn't have permission to create new Partners, you can grant permission by clicking on `Grant` under `Grant permission to create new Partners`. 
 
