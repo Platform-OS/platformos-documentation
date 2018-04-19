@@ -5,7 +5,7 @@ permalink: /reference/form-configurations-static/
 
 Form Configuration is a concept, which gives you full control on both the look&feel of a form, along with behavior.
 
-* [Validations](/reference/form-configurations/validation)
+* [Validations](/reference/form-configurations-static/validation)
 
 ## Setting form notice/alert values through FormConfiguration
 
