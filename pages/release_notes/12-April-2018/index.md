@@ -29,11 +29,11 @@ Those files have only `slug` defined inside of them.
 Before:
 
     marketplace_builder
-      ├── instance_profile_type
+      ├── instance_profile_types
       ├── liquid_views
       │   └── layouts
       ├── pages
-      └── reservation_type
+      └── reservation_types
 
 After:
 
