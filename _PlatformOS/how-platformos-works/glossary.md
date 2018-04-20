@@ -170,9 +170,9 @@ OrderType allows you to specify Custom Attributes for Orders. For example, if yo
 
 ## Page
 
-Pages are the the most essential components of our platform, that define content displayed at a given path.
+Pages are the most essential components of our platform, that define content displayed at a given path.
 
-Pages have to be located in the `marketplace_builder/pages` directory, and their content is rendered in place of `{{ content_for_layout }}` variable in the layout they’re using.
+Pages have to be located in the `views/pages` directory, and their content is rendered in place of `{{ content_for_layout }}` variable in the layout they’re using.
 
 Read more about pages here: [http://documentation.near-me.com/getting-started/pages/page](http://documentation.near-me.com/getting-started/pages/page)
 
