@@ -31,7 +31,7 @@ configuration:
       presence: true
 ---
 
-{% form form, url: '/api/users', method: 'post' %}
+{% form, url: '/api/users', method: 'post' %}
   {% input 'first_name' %}
   {% input 'email' %}
   {% input 'password', as: 'password' %}

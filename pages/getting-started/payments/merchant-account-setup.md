@@ -35,7 +35,7 @@ configuration:
       default: individual
 ---
 
-{% form form, url: '/api/user/merchant_accounts', as: 'merchant_account' %}
+{% form, url: '/api/user/merchant_accounts', as: 'merchant_account' %}
   {% input_field 'account_type', as: 'hidden', value: 'individual' %}
   {% input_field 'currency', as: 'hidden', value: 'CAD' %}
 

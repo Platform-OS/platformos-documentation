@@ -10,7 +10,6 @@ Think of User Profile as a role in the marketplace. Each User Profile can be ass
 To create user profile, one needs to create a yml file in `instance_profiles` directory. Let's start with example profile for developer. We create a file named `instance_profiles/developer.yml` and content:
 
 ```yml
----
 name: developer
 custom_attributes:
 - name: bio
@@ -21,13 +20,12 @@ custom_attributes:
   attribute_type: float
 ```
 
-* name - this is the most important setting. It's [snake case](https://en.wikipedia.org/wiki/Snake_case) version is used in many places like Form Configuration and GraphQL.
-* custom_attributes - this is the heart of user profiles. It allows to specify custom attributes for this user profile. They are used to build customized forms that gather user input during registration for later display. It takes an array of elements that consist of name and type. Please check [full Custom Attribute documentation](/reference/custom-attributes/)
+* `name` - this is the most important setting. It's [snake case](https://en.wikipedia.org/wiki/Snake_case) version is used in many places like Form Configuration and GraphQL.
+* `custom_attributes` - this is the heart of user profiles. It allows to specify custom attributes for this user profile. They are used to build customized forms that gather user input during registration for later display. It takes an array of elements that consist of name and type. Please check [full Custom Attribute documentation](/reference/custom-attributes/)
 
-Similarly, we can create role 'client' by creating `/instance_profiles/client.yml`:
+Similarly, we can create role 'client' by creating `instance_profiles/client.yml`:
 
 ```yml
----
 name: client
 ```
 

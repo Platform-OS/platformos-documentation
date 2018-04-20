@@ -11,5 +11,5 @@ In the next sections we will explain our vision of a user:
 * [Sign up forms](./sign-up-forms)
 * [How to sign in user that have just created an account](./signing-in-after-sign-up)
 * [Authentication](./authentication)
-* [Updating user details](./updating-user-details)
-* [Displaying user attributes](./displaying-profile)
+  <!-- * [Updating user details](./updating-user-details) -->
+    <!-- * [Displaying user attributes](./displaying-profile) -->
