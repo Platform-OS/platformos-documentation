@@ -201,7 +201,7 @@ After storing the token, we want to send email to user with password instruction
 ```liquid
 ---
 name: send_recover_password
-to: {{ form.email }}
+to: "{{ form.email }}"
 delay: 0
 enabled: true
 trigger_condition: true
