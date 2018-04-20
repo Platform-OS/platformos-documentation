@@ -57,7 +57,7 @@ slug: search/users/map
 
 {% endraw %}
 
-{% include alert/note content="Last line is returns results parsed by `json` filter _or_ an empty collection if there are no results to return." %}
+{% include alert/note.html content="Last line is returns results parsed by `json` filter _or_ an empty collection if there are no results to return." %}
 
 ### Results
 
