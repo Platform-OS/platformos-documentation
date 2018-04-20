@@ -37,7 +37,7 @@ CustomAddresses are enabled by adding a CustomAttribute with `attribute_type` se
 
 ## Form configuration
 
-Having this declaration in any of `instance_profile_types/` files will result in 2 CustomAddresses being available in the form configuration, where they can be used for example like this:
+Having this declaration in any of `user_profile_types/` files will result in 2 CustomAddresses being available in the form configuration, where they can be used for example like this:
 
 ```yml
   profiles:

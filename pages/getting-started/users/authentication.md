@@ -133,7 +133,7 @@ query generate_user_temporary_token($email: String) {
 }
 ```
 
-If the user exists, we will store the value of generated token in custom attribute associated with default profile. To create the custom attribute, we will define `instance_profile_types/default.yml` file with content:
+If the user exists, we will store the value of generated token in custom attribute associated with default profile. To create the custom attribute, we will define `user_profile_types/default.yml` file with content:
 
 ```yml
 name: default
