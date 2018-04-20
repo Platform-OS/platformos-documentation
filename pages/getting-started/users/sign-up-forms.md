@@ -147,11 +147,11 @@ The last part is the rendering of nested forms. As explained in the configuratio
 {% raw %}
 
 ```liquid
-  {% fields_for 'profiles' %}
-    {% fields_for 'developer', form: 'profiles' %}
-      {% input 'enabled', as: 'hidden', form: 'developer' %}
-    {% endfields_for %}
+{% fields_for 'profiles' %}
+  {% fields_for 'developer', form: 'profiles' %}
+    {% input 'enabled', as: 'hidden', form: 'developer' %}
   {% endfields_for %}
+{% endfields_for %}
 ```
 
 {% endraw %}
@@ -186,6 +186,7 @@ configuration:
     validation:
       presence: true
 ---
+
 {% form, url: '/api/users', method: 'post' %}
   {% input 'first_name' %}
   {% input 'email' %}
@@ -198,7 +199,6 @@ configuration:
   {% endfields_for %}
 
   {% submit 'Create' %}
-
 {% endform %}
 ```
 

@@ -25,9 +25,9 @@ Above graphql consists of three main sections:
 
 1.  Query arguments - usually passed from the liquid to parametrize your query. In example below, `$query: String`. Defines what will be used in the filters section and what is the data type of passed argument. It is also possible to set default value for any given argument - default value will be used if it is not passed to the execute query tag
 
-2)  Filters - used to filter down the results by given arguments. In above example listings are filtered so they only contain results with `is_deleted` flag set to `false`. If you pass `true` in `$is_deleted` it will do the opposite
+2.  Filters - used to filter down the results by given arguments. In above example listings are filtered so they only contain results with `is_deleted` flag set to `false`. If you pass `true` in `$is_deleted` it will do the opposite
 
-3)  Results - just like in any other query, defines which data you want to receive and in what form
+3.  Results - just like in any other query, defines which data you want to receive and in what form
 
 Query described above can be used to display all transactables that are not deleted. In this case we are going to pull out slug and name of those transactables into the unordered list.
 
@@ -38,12 +38,11 @@ Query described above can be used to display all transactables that are not dele
 ```liquid
 ---
 slug: demo_search
-layout_name: application
 ---
 {% assign query = params.query | default: nil %}
 <form action="/demo_search" method="GET">
   {% query_graph 'demo_search_transactables',
-    result_name: g,
+    result_name: 'g',
     query: query
   %}
   <input name="query" value="{{ query }}" />

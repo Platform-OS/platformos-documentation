@@ -152,7 +152,7 @@ slug: client/projects/edit
 {% query_graph 'get_project', result_name: 'graph_project', slug: params.slugs, creator_id: g.current_user.id %}
 {% if graph_project %}
   <h1>Edit {{ project.name }}</h1>
-  {% render_form project, resource_id: @graph_project.project.id %}
+  {% render_form 'project', resource_id: @graph_project.project.id %}
 {% else %}
   <p>Unfortunately we could not find this project.
 {% endif %}
