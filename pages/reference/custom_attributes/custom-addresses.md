@@ -15,7 +15,7 @@ Each address supports following self-descriptive fields:
 | latitude          | Float  | latitude part of coordinate used for geo searching                                                                                        |
 | longitude         | Float  | longitude part of coordinate used for geo searching                                                                                       |
 | formatted_address | String | formatted address that you want to display on your MP. f.e. you can send `address` to google API and get more complete address to display |
-| apartment         | String | apertment number                                                                                                                          |
+| apartment         | String | apartment number                                                                                                                          |
 | street            | String |
 | suburb            | String |
 | city              | String |
