@@ -11,9 +11,9 @@ PUT /api/user/customizations/:customization_id
 
 **Parameters**
 
-| Parameter               | Type             | Description                                                                       | Required | Notes |
-| ----------------------- | ---------------- | --------------------------------------------------------------------------------- | -------- | ----- |
-| form_configuration_name | String           | Name of the form configuration                                                    | Required |       |
+| Parameter               | Type              | Description                                                                        | Required | Notes |
+| ----------------------- | ----------------- | ---------------------------------------------------------------------------------- | -------- | ----- |
+| form_configuration_name | String            | Name of the form configuration                                                     | Required |       |
 | form                    | CustomizationForm | CustomizationForm parameters that corresponds with FormConfiguration configuration | Required |       |
 
 **Customization Parameters**
@@ -24,7 +24,7 @@ PUT /api/user/customizations/:customization_id
 
 {% include reference/request_headers.md %}
 
-```
+```json
 {
   "form_configuration_name": "reference_rest_api_update_customization",
   "form": {
@@ -35,9 +35,9 @@ PUT /api/user/customizations/:customization_id
 }
 ```
 
-| Element                 | Type             | Description                                                                                | Required? |
-| ----------------------- | ---------------- | ------------------------------------------------------------------------------------------ | --------- |
-| form_configuration_name | String           | Name of the defined FormConfiguration                                                      | Required  |
+| Element                 | Type              | Description                                                                                | Required? |
+| ----------------------- | ----------------- | ------------------------------------------------------------------------------------------ | --------- |
+| form_configuration_name | String            | Name of the defined FormConfiguration                                                      | Required  |
 | form                    | CustomizationForm | Attributes for user, should match configuration defined in corresponding FormConfiguration | Required  |
 
 **Example response**

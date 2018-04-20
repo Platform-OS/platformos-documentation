@@ -5,7 +5,7 @@ permalink: /guides/integration-with-third-party-api/persist-third-party-api-resp
 
 Here is complete example of how to do it. We start by creating a new profile, let's call it `test_profile`. We will also need a custom attribute to store the actual value from the api, let's call it `third_party_api_value`:
 
-```
+```liquid
 # instance_profile_types/default.yml
 ---
 name: test_profile
@@ -18,11 +18,10 @@ Now we will need a test endpoint, which would simulate a third party api json re
 
 {% raw %}
 
-```
-# marketplace_builder/pages/test-endpoint.liquid
+```liquid
+# marketplace_builder/views/pages/test-endpoint.json.liquid
 ---
 slug: test-endpoint
-format: json
 ---
 {
   "third_party_api_id": "id-1"
@@ -33,13 +32,13 @@ format: json
 
 The next step is to create api call notifcation, which should do two things:
 
-1.  send a request to `http(s)://<your_domain>.com/test-endppoint`
+1.  send a request to `http(s)://<your_domain>.com/test-endpoint.json`
 2.  store the value from the response in custom attribute
     This can look like this:
 
 {% raw %}
 
-```
+```liquid
 # marketplace_builder/notifications/api_call_notifications/send_request.liquid
 ---
 name: send_request
@@ -48,7 +47,7 @@ enabled: true
 format: http
 trigger_condition: true
 request_type: GET
-callback: "{%- assign response_json = response.body | to_hash -%}{% execute_query persist_in_custom_attribute, user_id: form.id, third_party_api_id: response_json.third_party_api_id %}"
+callback: "{%- assign response_json = response.body | to_hash -%}{% execute_query 'persist_in_custom_attribute', user_id: form.id, third_party_api_id: response_json.third_party_api_id %}"
 headers: '{
   "Content-Type": "application/json"
 }'
@@ -64,8 +63,9 @@ Please make sure to replace `example.com` with your domain.
 
 In the callback, we use `execute_query` tag, which invokes GraphQL mutation with provided arguments. In our example, the query accept two arguments - the `user_id`, which is the id of the user, which we want to update, and the `third_party_api_id` which is the value which we want to store. The content of graphql mutation file looks like this:
 
-```
+```js
 # marketplace_builder/graph_queries/persist_in_custom_attribute.graphql
+
 mutation persist_in_custom_attribute($user_id: ID!, $third_party_api_id: String!) {
   user_update(
     id: $user_id,
@@ -88,7 +88,7 @@ The mutation itself will pass the arguments to a form we called `callback_persis
 
 {% raw %}
 
-```
+```yml
 # marketplace_builder/form_configurations/callback_persist_in_custom_attribute.liquid
 ---
 name: callback_persist_in_custom_attribute
@@ -108,8 +108,8 @@ Once we have api call notification defined, we should associate it with a form, 
 
 {% raw %}
 
-```
-# marketplace_builder/pages/test-form.liquid
+```liquid
+# views/pages/test-form.liquid
 ---
 slug: test-form
 ---
@@ -123,7 +123,7 @@ Now, let's create the form itself and associate it with our api call notificatio
 
 {% raw %}
 
-```
+```liquid
 # marketplace_builder/form_configurations/test-form.liquid
 ---
 name: test_form
@@ -136,17 +136,18 @@ redirect_to: /test-result
 api_call_notifications:
   - send_request
 ---
-{% assign form_url = "/api/users/" | append: current_user.id  %}
-{% form_for form, url: @form_url, html-class: 'form-a' %}
+{% form, url: "/api/users/{{ current_user.id }}" %}
   {% input 'email' %}
   {% input 'password' %}
-  {% fields_for profiles %}
-    {% fields_for test_profile %}
+  {% fields_for 'profiles' %}
+    {% fields_for 'test_profile' %}
       {% input_field 'enabled', input_html-value: "1", as: 'hidden' %}
     {% endfields_for %}
   {% endfields_for %}
-  <p class="action"> {% submit 'Save', class: 'button-a' %} </p>
-{% endform_for %}
+  <p class="action">
+    {% submit 'Save', class: 'button-a' %}
+  </p>
+{% endform %}
 ```
 
 {% endraw %}
@@ -157,13 +158,12 @@ Now, the last thing we might want to do is to see the actual result In the `test
 
 {% raw %}
 
-```
-# /pages/test-result.liquid
+```liquid
+# views/pages/test-result.liquid
 ---
 slug: test-result
-admin_page: false
 ---
-{% query_graph 'get_current_user_third_party_api_value', result_name: graph_current_user  %}
+{% query_graph 'get_current_user_third_party_api_value', result_name: 'graph_current_user'  %}
 Third Party Api Value: for {{ graph_current_user.current_user.email }}: {{ graph_current_user.current_user.test_profile.third_party_api_value }}
 ```
 

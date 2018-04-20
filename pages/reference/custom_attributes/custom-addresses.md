@@ -106,28 +106,28 @@ After having this, the way for editing those addresses can be further customized
 {% raw %}
 
 ```liquid
-{% fields_for profiles %}
-  {% fields_for seller, form: profiles %}
-    {% fields_for custom_addresses, form: seller %}
+{% fields_for 'profiles' %}
+  {% fields_for 'seller', form: 'profiles' %}
+    {% fields_for 'custom_addresses', form: 'seller' %}
 
-      <h2> Headquaters address </h2>
-      {% fields_for hq_address, form: custom_addresses %}
-        {% input address, form: hq_address %}
-        {% input city, form: hq_address %}
-        {% input street, form: hq_address %}
-        {% input state, form: hq_address %}
-        {% input country, form: hq_address %}
-        {% input postcode, form: hq_address %}
+      <h2>Headquaters address</h2>
+      {% fields_for 'hq_address', form: 'custom_addresses' %}
+        {% input 'address', form: 'hq_address' %}
+        {% input 'city', form: 'hq_address' %}
+        {% input 'street', form: 'hq_address' %}
+        {% input 'state', form: 'hq_address' %}
+        {% input 'country', form: 'hq_address' %}
+        {% input 'postcode', form: 'hq_address' %}
       {% endfields_for %}
 
-      <h2> Correspondence address </h2>
-      {% fields_for correspondence_address, form: custom_addresses %}
-        {% input address, form: correspondence_address %}
-        {% input city, form: correspondence_address %}
-        {% input street, form: correspondence_address %}
-        {% input state, form: correspondence_address %}
-        {% input country, form: correspondence_address %}
-        {% input postcode, form: correspondence_address %}
+      <h2>Correspondence address</h2>
+      {% fields_for 'correspondence_address', form: 'custom_addresses' %}
+        {% input 'address', form: 'correspondence_address' %}
+        {% input 'city', form: 'correspondence_address' %}
+        {% input 'street', form: 'correspondence_address' %}
+        {% input 'state', form: 'correspondence_address' %}
+        {% input 'country', form: 'correspondence_address' %}
+        {% input 'postcode', form: 'correspondence_address' %}
       {% endfields_for %}
 
     {% endfields_for %}
@@ -171,23 +171,12 @@ query geolocate_users(
                 point_in_shape: { point: $geo_point_in_shape }
                 radius: $geo_radius
                 box: $geo_box
-                box_top_left_bottom_right: {
-                  top_left: $geo_box_top_left
-                  bottom_right: $geo_box_bottom_right
-                }
+                box_top_left_bottom_right: { top_left: $geo_box_top_left, bottom_right: $geo_box_bottom_right }
                 box_top_right_bottom_left: $geo_box_top_right_bottom_left
               }
             }
           ]
-          customizations: [
-            {
-              addresses: [
-                {
-                  geo_query: { polygon: { points: $customizations_geo_points } }
-                }
-              ]
-            }
-          ]
+          customizations: [{ addresses: [{ geo_query: { polygon: { points: $customizations_geo_points } } }] }]
         }
       ]
     }

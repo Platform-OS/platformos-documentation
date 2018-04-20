@@ -21,18 +21,8 @@ Points are consisting of GeoPoint type, which is basically an hash with `lat` an
 ### Query
 
 ```graphql
-query search_users_by_bounding_box(
-  $top_right: GeoPoint
-  $bottom_left: GeoPoint
-) {
-  people(
-    geo_query: {
-      box_top_right_bottom_left: {
-        top_right: $top_right
-        bottom_left: $bottom_left
-      }
-    }
-  ) {
+query search_users_by_bounding_box($top_right: GeoPoint, $bottom_left: GeoPoint) {
+  people(geo_query: { box_top_right_bottom_left: { top_right: $top_right, bottom_left: $bottom_left } }) {
     results {
       first_name
       current_address {
@@ -50,13 +40,14 @@ Having query we can execute it with some arguments pulling users that have their
 
 {% raw %}
 
+### views/pages/search/users/map.json.liquid
+
 ```liquid
 ---
 slug: search/users/map
-format: json
 ---
 
-{% query_graph 'search_users_by_bounding_box', result_name: g,
+{% query_graph 'search_users_by_bounding_box', result_name: 'g',
   top_right: params.ne,
   bottom_left: params.sw
 %}
@@ -66,17 +57,14 @@ format: json
 
 {% endraw %}
 
-Couple of notes of whats going on in this page:
-
-1.  `format: json` sets proper content headers and allows browser to understand response type correctly
-2.  Last line is returns results parsed by `json` filter _or_ an empty collection if there are no results to return.
+{% include alert/note content="Last line is returns results parsed by `json` filter _or_ an empty collection if there are no results to return." %}
 
 ### Results
 
 To retrieve data we are going to use get request to ask for the users within the box that is containing west side of the US, including Jacek that is located in San Francisco.
 Slug of the page is `search/users/map` so correct request url is `http://example.com/search/users/map.json`
 
-{% include alert/note.html content="`.json` at the end of the url is dictated by `format: json` in page definition." %}
+{% include alert/note.html content="`.json` at the end of the url is dictated by `format` in filename." %}
 
 #### Browser GET request
 

@@ -24,7 +24,7 @@ PUT /api/user/relationship_transactables/:relationship_transactable_id
 
 {% include reference/request_headers.md %}
 
-```
+```json
 {
   "form_configuration_name": "reference_rest_api_relationship_transactable_update",
   "form": {

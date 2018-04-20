@@ -25,7 +25,7 @@ POST /api/user/transactables
 
 {% include reference/request_headers.md %}
 
-```
+```json
 {
   "form_configuration_name": "reference_rest_api_create_transactable",
   "parent_resource_id": "boat",

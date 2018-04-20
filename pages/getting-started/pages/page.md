@@ -6,7 +6,7 @@ permalink: /getting-started/pages/page
 Page is the fundament of our platform. It allows you to define which content will be shown at given path. All pages have to be located in `views/pages` directory. Each page is represented by a single file with extension liquid. Here is a sample file for configuring home page:
 {% raw %}
 
-## views/pages/home.html.liquid
+### views/pages/home.html.liquid
 
 ```liquid
 ---

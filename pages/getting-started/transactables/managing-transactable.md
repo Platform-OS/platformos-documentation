@@ -47,16 +47,16 @@ configuration:
         presence: true
 ---
 {% form %}
-  {% input name %}
-  {% input description, as: text %}
+  {% input 'name' %}
+  {% input 'description', as: 'text' %}
 
-  {% fields_for properties %}
-    {% input workplace_online, as: boolean, form: properties %}
-    {% input workplace_onsite, as: boolean, form: properties %}
-    {% input budget, form: properties %}
-    {% input deadline, form: properties, placeholder: 'YYYY-mm-dd' %}
+  {% fields_for 'properties' %}
+    {% input 'workplace_online', as: 'boolean', form: 'properties' %}
+    {% input 'workplace_onsite', as: 'boolean', form: 'properties' %}
+    {% input 'budget', form: 'properties' %}
+    {% input 'deadline', form: 'properties', placeholder: 'YYYY-mm-dd' %}
   {% endfields_for %}
-  {% submit Save %}
+  {% submit 'Save' %}
 {% endform %}
 ```
 
@@ -72,7 +72,7 @@ slug: client/projects/new
 layout_name: application
 ---
 <h1>Create Project</h1>
-{% render_form project, parent_resource_id: 'project' %}
+{% render_form 'project', parent_resource_id: 'project' %}
 ```
 
 {% endraw %}
@@ -82,12 +82,12 @@ To display newly created transactable (with pagination), we can inject this code
 {% raw %}
 
 ```liquid
-{% query_graph 'current_user', result_name: g %}
+{% query_graph 'current_user', result_name: 'g' %}
 {% if g.current_user.client_profile %}
   {% assign page = params.page | default: 1 | plus: 0 %}
   <a href="/client/projects/new">Create project</a>
 
-  {% query_graph 'client_projects', result_name: g, creator_id: g.current_user.id, per_page: 20, page: page %}
+  {% query_graph 'client_projects', result_name: 'g', creator_id: g.current_user.id, per_page: 20, page: page %}
 
   {% if g.projects.total_entries > 0 %}
     <ul>
@@ -140,17 +140,16 @@ query client_projects($page: Int, $creator_id: ID!) {
 }
 ```
 
-Now we can create edit transactable page `pages/client/projects/edit.liquid`:
+Now we can create edit transactable page `views/pages/client/projects/edit.liquid`:
 
 {% raw %}
 
 ```liquid
 ---
 slug: client/projects/edit
-layout_name: application
 ---
-{% query_graph 'current_user', result_name: g %}
-{% query_graph 'get_project', result_name: graph_project, slug: params.slugs, creator_id: g.current_user.id %}
+{% query_graph 'current_user', result_name: 'g' %}
+{% query_graph 'get_project', result_name: 'graph_project', slug: params.slugs, creator_id: g.current_user.id %}
 {% if graph_project %}
   <h1>Edit {{ project.name }}</h1>
   {% render_form project, resource_id: @graph_project.project.id %}
@@ -182,8 +181,8 @@ To complete managing project, one would also need possibility to remove it via `
 name: destroy_project
 resource: Transactable
 ---
-{% form method: delete %}
-  {% submit Delete %}
+{% form method: 'delete' %}
+  {% submit 'Delete' %}
 {% endform %}
 ```
 
@@ -193,7 +192,7 @@ Rendering this form would be very similar to the one from edit:
 {% raw %}
 
 ```liquid
-{% render_form destroy_project, resource_id: @project.id %}
+{% render_form 'destroy_project', resource_id: @project.id %}
 ```
 
 {% endraw %}

@@ -54,7 +54,7 @@ You can store queries and use them in liquid with `query_graph` tag.
 {% raw %}
 
 ```liquid
-{% query_graph users_query, result_name: g, slug: 'jane' %}
+{% query_graph 'users_query', result_name: 'g', slug: 'jane' %}
 
 {{ g.user.first_name }} {{ g.user.last_name }} {{ g.user.address.city }}
 ```

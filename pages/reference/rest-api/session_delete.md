@@ -19,7 +19,7 @@ DELETE /api/sessions
 
 {% include reference/request_headers.md %}
 
-```
+```json
 {
   "form_configuration_name": "reference_rest_api_delete_sessions"
 }

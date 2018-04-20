@@ -84,7 +84,7 @@ query get_catalogue_listings(
 {% raw %}
 
 ```liquid
-{% query_graph 'get_catalogue_listings', result_name: g,
+{% query_graph 'get_catalogue_listings', result_name: 'g',
   country: url_params.country,
   city: url_params.city,
   is_deleted: false
@@ -101,10 +101,9 @@ query get_catalogue_listings(
 {% assign url_template = '/catalogue/{country}/{city}' %}
 {% assign url_params = current_full_path | extract_url_params: url_template %}
 
-<div class="">
   <div class="results">
     <form action="." method="GET">
-      {% query_graph 'demo_search_listings', result_name: g,
+      {% query_graph 'demo_search_listings', result_name: 'g',
         country: url_params.country,
         city: url_params.city,
         is_deleted: false
@@ -120,7 +119,6 @@ query get_catalogue_listings(
       </ul>
     </form>
   </div>
-</div>
 ```
 
 {% endraw %}

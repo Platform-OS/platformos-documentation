@@ -25,7 +25,7 @@ POST /api/user/relationship_users
 
 {% include reference/request_headers.md %}
 
-```
+```json
 {
   "form_configuration_name": "reference_rest_api_relationship_user_create",
   "parent_resource_id": "special_group_users",

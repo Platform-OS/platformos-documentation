@@ -86,17 +86,11 @@ If the Marketplace Kit has been installed correctly, running this command displa
 
 In order to correctly communicate with the Platform OS engine and API, your code base should be organized into a specific directory structure. The root directory of your project should contain the `marketplace_builder` directory. All directories other than the `marketplace_builder` will be ignored by the Marketplace Kit when deploying and syncing, so you can keep all your JS and CSS files outside of the `marketplace_builder` directory, and use any pre-processors you want to automatically generate the end result files in a proper path inside `marketplace_builder`.
 
-You can create the required directory structure using the Blank Marketplace Module.
+You can create the required directory structure using the marketplace-kit.
 
-To install the Blank Marketplace Module, enter:
-
-```
-npm i @platform-os/blank-marketplace
-```
+    marketplace-kit init
 
 {% include alert/note.html content="Make sure you invoke this command where you have permissions to create a directory." %}
-
-The installer asks you to enter the name of your marketplace. This information will be used to name the directory where the required directory structure will be installed.
 
 Once you've installed the required directory structure, locate and explore it—this is how your code base for your Platform OS Instances should be organized. To learn more about the required directories and files, see [Platform OS Components]().
 
@@ -104,12 +98,11 @@ Once you've installed the required directory structure, locate and explore it—
 
 In this final step, you'll make a small change on your home page, and deploy it.
 
-Locate the `home.liquid` file inside your marketplace directory (`marketplace_builder/pages/home.liquid`). Open it in a code editor of your choice, and change the text to anything you'd like to, but don't edit the first 4 lines:
+Locate the `home.liquid` file inside your marketplace directory (`marketplace_builder/views/pages/home.liquid`). Open it in a code editor of your choice, and change the text to anything you'd like to, but don't edit the first 3 lines:
 
 ```
 ---
 slug: /
-layout_name: application
 ---
 ```
 
@@ -134,7 +127,7 @@ marketplace-kit deploy <environment>
 For example:
 
 ```
-#deploy changes to staging
+# deploy changes to staging
 marketplace-kit deploy staging
 ```
 

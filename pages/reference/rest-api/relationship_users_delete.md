@@ -19,7 +19,7 @@ DELETE /api/user/relationship_users/:relationship_user_id
 
 {% include reference/request_headers.md %}
 
-```
+```json
 {
   "form_configuration_name": "reference_rest_api_relationship_user_delete"
 }

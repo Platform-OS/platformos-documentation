@@ -24,7 +24,7 @@ PUT /api/users/:user_id
 
 {% include reference/request_headers.md %}
 
-```
+```json
 {
   "form_configuration_name": "reference_rest_api_update_user",
   "form": {
@@ -44,10 +44,10 @@ PUT /api/users/:user_id
 
 {% include reference/response_put_body.md %}
 
->>>>>>> e44e9a9... Prettier for the win!!!
-| Element                             | Type                                       | Description                                                    |
-| ----------------------------------- | ------------------------------------------ | -------------------------------------------------------------- |
-| [Element as it appears in response] | [Array, Object, String, Integer, or Float] | [Brief description of what information the element represents] |
-| […]                                 | […]                                        | […]                                                            |
+> > > > > > > e44e9a9... Prettier for the win!!!
+> > > > > > > | Element | Type | Description |
+> > > > > > > | ----------------------------------- | ------------------------------------------ | -------------------------------------------------------------- |
+> > > > > > > | [Element as it appears in response] | [Array, Object, String, Integer, or Float] | [Brief description of what information the element represents] |
+> > > > > > > | […] | […] | […] |
 
 {% include reference/error_and_status_codes_put.md %}

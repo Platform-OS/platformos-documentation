@@ -21,7 +21,7 @@ Assuming you have prepared graphql query called `current_user`, example policy f
 ---
 name: only_allowed_by_johns
 ---
-{% query_graph 'current_user', result_name: g %}
+{% query_graph 'current_user', result_name: 'g' %}
 {% if g.current_user.first_name == 'John' %}true{% endif %}
 ```
 
@@ -44,10 +44,10 @@ configuration:
     validation:
       presence: {}
 ---
-{% form_for form, url: "/api/users/{{ current_user.id }}" %}
-  {% input last_name, label: 'Last Name' %}
+{% form, url: "/api/users/{{ current_user.id }}" %}
+  {% input 'last_name', label: 'Last Name' %}
   {% submit 'Save' %}
-{% endform_for %}
+{% endform %}
 ```
 
 {% endraw %}
@@ -56,7 +56,7 @@ In order to associate authorization policy, one just needs to add a new key `aut
 
 {% raw %}
 
-```liquid
+```yml
 ---
 name: update_last_name
 resource: User
@@ -74,7 +74,6 @@ Similarly to `FormConfiguration`, we can also associate policy with a Page. Let'
 ```liquid
 ---
 slug: john-private-page
-layout_name: application
 authorization_policies:
   - only_allowed_by_johns
 ---
@@ -101,7 +100,7 @@ To generate flash alert message on the page that you defined as `redirect_to` us
 
 {% raw %}
 
-```liquid
+```yml
 ---
 name: only_allowed_by_johns
 redirect_to: /login
@@ -112,4 +111,4 @@ flash_alert: Please login to access this page.
 
 {% endraw %}
 
-As with normal flash messages, you can access it liquid using `{{ flash }}` variable.
+As with normal flash messages, you can access it liquid using `{{ context.flash }}` variable.

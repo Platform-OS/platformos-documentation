@@ -30,7 +30,7 @@ In your `sign_up` form configuration add `callback_actions` at the end (order do
 ```liquid
 ---
 ...
-callback_actions: "{% execute_query user_session_create, email: @form.email, password: @form.password %}"
+callback_actions: "{% execute_query 'user_session_create', email: @form.email, password: @form.password %}"
 ---
 ```
 

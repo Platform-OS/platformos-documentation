@@ -24,12 +24,12 @@ POST /api/users
 
 {% include reference/request_headers.md %}
 
-```
+```json
 {
   "form_configuration_name": "reference_rest_api_create_user",
   "form": {
     "first_name": "Example",
-    "email": "example1@platformos.com",
+    "email": "example1@example.com",
     "password": "somepassword"
   }
 }
