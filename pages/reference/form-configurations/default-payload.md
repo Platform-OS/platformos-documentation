@@ -26,6 +26,7 @@ Liquid Tempalte syntax is available with three included objects:
 Default payload can help with setting action timestamp, states or modification of request state.
 In the example below we set custom property `cancelled_at` with each from submition:
 
+{% raw %}
 ```yml
 ---
 ...
@@ -43,9 +44,11 @@ default_payload: |-
   }
 ---
 ```
+{% endraw %}
 
 ## Custom Model Example
 
+{% raw %}
 ```yml
 ---
 ...
@@ -62,3 +65,4 @@ default_payload: |-
   }
 ---
 ```
+{% endraw %}

@@ -34,5 +34,5 @@ Values for `flash` keys are processed using Liquid parser so can be interpolated
       validation: { presence: true }
   flash_notice: "Thank you {{ form.first_name }}, you have successfully signed up!"
   flash_alert: "Please fix validation errors"
-  ---
-  ```
+---
+```

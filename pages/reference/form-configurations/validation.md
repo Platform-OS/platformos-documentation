@@ -5,7 +5,7 @@ permalink: /reference/form-configurations-static/validation
 
 ## Example
 
-```
+```yml
 validation:
   presence: true
   unique:
