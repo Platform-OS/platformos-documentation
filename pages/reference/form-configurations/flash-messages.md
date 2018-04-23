@@ -9,13 +9,13 @@ It's possible have values for `flash` messages as part of form configuration, fo
 
 ```yml
 ---
-  name: signup_form
-  resource: User
-  configuration:
-    email:
-    password:
-  flash_notice: 'You have successfully signed up'
-  flash_alert: 'Please fix validation errors'
+name: signup_form
+resource: User
+configuration:
+  email:
+  password:
+flash_notice: You have successfully signed up
+flash_alert: Please fix validation errors
 ---
 ```
 
@@ -25,14 +25,16 @@ Values for `flash` keys are processed using Liquid parser so can be interpolated
 
 ```yml
 ---
-  name: signup_form
-  resource: User
-  configuration:
-    email:
-    password:
-    first_name:
-      validation: { presence: true }
-  flash_notice: "Thank you {{ form.first_name }}, you have successfully signed up!"
-  flash_alert: "Please fix validation errors"
+name: signup_form
+resource: User
+configuration:
+  email:
+  password:
+  first_name:
+    validation: { presence: true }
+flash_notice: 'Thank you {% raw %}{{ form.first_name }}{% endraw %}, you have successfully signed up!'
+flash_alert: Please fix validation errors
 ---
 ```
+
+{% include alert/note.html content="Quotes around the value of flash_notice are required if you interpolate liquid code inside YAML" %}
