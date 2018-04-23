@@ -21,7 +21,7 @@ Read more about our CDN and adding static assets here: [http://documentation.nea
 
 ## Authorization Policies
 
-Authorization policies allow you to restrict access to forms and pages in a flexible way. Each form or page can have multiple policies attached to it.
+Authorization Policies allow you to restrict access to forms and pages in a flexible way. Each form or page can have multiple policies attached to it.
 
 Each policy is parsed using Liquid and the system will check them in order of their appearance in the code.
 
@@ -39,17 +39,17 @@ Read more about CloudFront: [https://docs.aws.amazon.com/AmazonCloudFront/latest
 
 ## content_for and yield
 
-Inject dynamic content into a Layout from a Page or Partial using `content_for` and the `yield` tag. Use these to alter content that is higher from the structural point of view (Layout). It is very often used when setting metadata for a particular page (i.e. title tag contents), loading per-page javascript, per-page stylesheet.
+Inject dynamic content into a layout from a page or partial using `content_for` and the `yield` tag. Use these to alter content that is higher from the structural point of view (layout). It is very often used when setting metadata for a particular page (i.e. title tag contents), loading per-page javascript, per-page stylesheet.
 
 Usage example:
 
-Define what you want to yield in your Page:
+Define what you want to yield in your page:
 
 ```
 {% content_for 'page_title' %}Platform OS Blog{% endcontent_for %}
 ```
 
-Then use yield inside the Layout:
+Then use yield inside the layout:
 
 ```
 <title>{{ yield 'page_title' }}</title>
@@ -112,9 +112,9 @@ The sites created on the Partner Portal are called Instances. Instances have a U
 
 Layout is a special kind of Liquid view that stores code that would normally repeat on a lot of pages and is surrounding page content.
 
-Usual use case for Layouts is storing html doctype, header, footer, javascripts.
+Usual use case for layouts is storing html doctype, header, footer, javascripts.
 
-Read more about Layouts here: [http://documentation.near-me.com/getting-started/pages/layouts](http://documentation.near-me.com/getting-started/pages/layouts)
+Read more about layouts here: [http://documentation.near-me.com/getting-started/pages/layouts](http://documentation.near-me.com/getting-started/pages/layouts)
 
 ## Liquid
 
@@ -127,8 +127,9 @@ Read more about Liquid for designers here: [https://github.com/Shopify/liquid/wi
 ## Marketplace Kit
 
 Marketplace Kit (marketplace-kit) is a tool that helps you quickly:
-develop your application (sync command)
-deploy your application (deploy command)
+
+* develop your application (sync command)
+* deploy your application (deploy command)
 
 Read more about the Node.js version of marketplace-kit here: [https://github.com/mdyd-dev/marketplace-kit/tree/node-version](https://github.com/mdyd-dev/marketplace-kit/tree/node-version)
 
@@ -180,7 +181,7 @@ Read more about pages here: [http://documentation.near-me.com/getting-started/pa
 
 Partial is a piece of code extracted to its own file to maintain readability and rule of DRY—Don’t Repeat Yourself.
 
-Parameterize partials and use them in various places, e.g. Layout, Pages, Authorization Policies, Form Configurations.
+Parameterize partials and use them in various places, e.g. layouts, pages, Authorization Policies, Form Configurations.
 
 Example usage:
 
@@ -242,13 +243,13 @@ Read more about version control systems here: [https://en.wikipedia.org/wiki/Ver
 
 ## Views
 
-The usual structure of a webpage with the possibility to use Layouts, Pages and Partials:
+The usual structure of a webpage with the possibility to use layouts, pages and partials:
 
-* Create a Layout: `marketplace_builder/views/layouts/application.liquid`
-* Create Pages with different slugs: `marketplace_builder/pages/about-us.liquid`
-* Create Partials that are used both in Layout and Pages: `marketplace_builder/views/layouts/shared/_javascripts.liquid`, `marketplace_builder/views/partials/shared/_contact-form.liquid`
+* Create a layout: `marketplace_builder/views/layouts/application.liquid`
+* Create pages with different slugs: `marketplace_builder/pages/about-us.liquid`
+* Create partials that are used both in layout and pages: `marketplace_builder/views/layouts/shared/_javascripts.liquid`, `marketplace_builder/views/partials/shared/_contact-form.liquid`
 
-Because `_contact-form.liquid` is a Partial it can be used in multiple places, about-us page, contact-us page, and in a configuration form.
+Because `_contact-form.liquid` is a partial it can be used in multiple places, about-us page, contact-us page, and in a configuration form.
 
 ## YAML
 
