@@ -2,10 +2,10 @@
 title: Creating a Page
 permalink: /get-started/pages/creating-page
 ---
-This guide will help you create a Page. 
+This guide will help you create a page. 
 
 ## Requirements
-So that you can follow the steps in this tutorial, you have to have a Layout that the Page will use. You should also understand the concepts behind Pages and Layouts. To check what you've created, you'll need to know how to deploy your changes. 
+So that you can follow the steps in this tutorial, you have to have a layout that the page will use. You should also understand the concepts behind pages and layouts. To check what you've created, you'll need to know how to deploy your changes. 
     
 * [Pages]()
 * [Creating a Layout]()
@@ -13,14 +13,14 @@ So that you can follow the steps in this tutorial, you have to have a Layout tha
 
 ## Steps 
 
-Creating a Page is a four-step process:
+Creating a page is a four-step process:
 
-1. Create a directory for Pages
-2. Create a Page file
-3. Edit the Page file 
+1. Create a directory for pages
+2. Create a page file
+3. Edit the page file 
 4. Deploy and check
 
-### Step 1: Create a directory for Pages
+### Step 1: Create a directory for pages
 
 Pages should be placed into the `views/pages` directory inside `marketplace_builder`. 
 
@@ -28,13 +28,13 @@ If you are starting from scratch (without having created the required directory 
 
 If you have already installed the required directory structure, you can skip this step, and just locate your `marketplace_builder/views/pages` directory. 
 
-### Step 2: Create a Page file
+### Step 2: Create a page file
 In the `pages` directory, create a Liquid file called `home.liquid`. 
 
 ### Step 3: Edit the Page file
-Edit the `home.liquid` Page file. 
+Edit the `home.liquid` page file. 
 
-See a sample Page file with explanations below:
+See a sample page file with explanations below:
 
 {% raw %}
 
@@ -55,11 +55,11 @@ Explanation:
 * `---` separate configuration from content. 
 * `/` marks the root page, which is the homepage. 
 
-Save your Page file.
+Save your page file.
 
 ### Step 4: Deploy and check 
 
-Deploy or sync your changes, and check the source code of your homepage. You should see the Layout file with the Page content injected into it, like this:
+Deploy or sync your changes, and check the source code of your homepage. You should see the layout file with the page content injected into it, like this:
 
 {% raw %}
 
@@ -87,7 +87,7 @@ Homepage
 {% endraw %}
 
 ## Next steps
-Congratulations! You have created a Page file. Now you can add new pages at custom URLs. 
+Congratulations! You have created a page file. Now you can add new pages at custom URLs. 
 
 * [Adding New Pages at Custom URLs]()
 
