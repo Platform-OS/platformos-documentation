@@ -3,10 +3,11 @@ title: Pages
 permalink: /getting-started/pages/pages
 ---
 
-**Pages** are the most essential components of our platform, that define content displayed at a given path. All pages have to be located in the `views/pages` directory. Each page is represented by a single file with `liquid` extension. 
+**Pages** are the most essential components of our platform, that define content displayed at a given path. All pages have to be located in the `views/pages` directory. Each page is represented by a single file with `liquid` extension.
 
 ## Page configuration
-See below a sample page configuration file, with explanations for each element:  
+
+See below a sample page configuration file, with explanations for each element:
 
 {% raw %}
 
@@ -23,16 +24,16 @@ layout_name: my_custom_layout
 
 {% endraw %}
 
-
-| Property      | Description                                                                                                                                                                                                                                                                                                | Default     | Example          |
-| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- | ---------------- |
-| `slug`        | Defines the url at which this page will be accessible. Assuming your site domain is https://example.com, you will be able to access the page at https://example.com/`<slug>`. | n/a         | `my-page`          |
-| `layout_name` | Defines which layout from `views/layouts/` you would like to use. If you don't want to use any layout, set it to empty string. It will be equivalent to just rendering page content.                                                                                                                        | application | `my_custom_layout` |
+| Property      | Description                                                                                                                                                                          | Default     | Example            |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------- | ------------------ |
+| `slug`        | Defines the url at which this page will be accessible. Assuming your site domain is https://example.com, you will be able to access the page at https://example.com/`<slug>`.        | n/a         | `my-page`          |
+| `layout_name` | Defines which layout from `views/layouts/` you would like to use. If you don't want to use any layout, set it to empty string. It will be equivalent to just rendering page content. | application | `my_custom_layout` |
 
 Everything after the front matter is the body of the page.
 
 ## Homepage
-The Homepage slug is `/`, which will work for both https://example.com and https://example.com/. See this sample file for configuring the home page:  
+
+The Homepage slug is `/`, which will work for both https://example.com and https://example.com/. See this sample file for configuring the home page:
 
 {% raw %}
 
@@ -48,10 +49,11 @@ slug: /
 
 {% endraw %}
 
-
 ## Formats
 
 To define which format the endpoint will be available for, place `.<format>` before the file extension.
+
+Available formats: `html`, `xml`, `csv`, `json`, `rss`, `css`, `js`, `pdf`, `txt`
 
 Examples:
 
@@ -63,6 +65,7 @@ Examples:
 * datepicker.css.liquid
 * server-constants.js.liquid
 * purchase-order.pdf.liquid
+* notes.txt.liquid
 
 ## Accessing different formats
 
@@ -117,8 +120,7 @@ Those will be accessible under the URLs:
 
 Note that the `html` format is implicit, default, you don't need to specify it in the URL.
 
-
 ## Related topics
+
 * [Layouts]()
 * [Creating a Page]()
-
