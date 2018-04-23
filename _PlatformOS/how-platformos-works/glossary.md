@@ -43,13 +43,13 @@ Inject dynamic content into a Layout from a Page or Partial using `content_for` 
 
 Usage example:
 
-Define what you want to yield in your layout:
+Define what you want to yield in your Page:
 
 ```
 {% content_for 'page_title' %}Platform OS Blog{% endcontent_for %}
 ```
 
-Then use yield inside the layout:
+Then use yield inside the Layout:
 
 ```
 <title>{{ yield 'page_title' }}</title>
