@@ -3,15 +3,15 @@ title: Basic Concepts
 permalink: /how-platformos-works/basic-concepts
 ---
 
-## Pages, Layouts, and Partials 
+## Pages, layouts, and partials 
 
 **Pages** are the the most essential components of our platform, that define content displayed at a given path. Each page is represented by a single file with a liquid extension. 
 
-**Layouts** are Liquid views that store code that would normally repeat on a lot of pages and is surrounding page content (e.g. header, footer). Without Layouts, pages would share a lot of duplicated code, and changing anything would become a very time consuming and error prone process. You can create as many layouts as you need, and decide which page uses which layout. 
+**Layouts** are Liquid views that store code that would normally repeat on a lot of pages and is surrounding page content (e.g. header, footer). Without layouts, pages would share a lot of duplicated code, and changing anything would become a very time consuming and error prone process. You can create as many layouts as you need, and decide which page uses which layout. 
 
-**Partials** (partial templates) allow you to easily organize and reuse your code by extracting pieces of code to their own files. They help you improve code readability and follow the principle of DRY (Don’t Repeat Yourself). You can parameterize Partials and use them in various places, e.g. Layouts, Pages, Authorization Policies, Form Configurations.
+**Partials** (partial templates) allow you to easily organize and reuse your code by extracting pieces of code to their own files. They help you improve code readability and follow the principle of DRY (Don’t Repeat Yourself). You can parameterize partials and use them in various places, e.g. layouts, pages, Authorization Policies, Form Configurations.
 
-[Learn how to use Pages, Layouts and Partials in our Get Started guides]()
+[Learn how to use pages, layouts and partials in our Get Started guides]()
 
 ## Form Configurations
 
@@ -19,7 +19,7 @@ permalink: /how-platformos-works/basic-concepts
 
 They give you full control when defining: 
 
-* which fields for a defined Resource can be persisted 
+* which fields for a defined resource can be persisted 
 * what authorization rules apply to be able to submit the form (i.e. if you want to edit a comment, you might want to specify that only the creator or the administrator is able to do it) 
 * what should happen when the form is submitted successfully (i.e. without validation errors), e.g. send an email/sms notifications or API call to a third party system 
 * where the user should be redirected 
