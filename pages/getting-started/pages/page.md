@@ -29,6 +29,8 @@ Everything after the front matter is the body of the page.
 
 To define for which format the endpoint will be available place the `.<format>` before the file extension.
 
+Available formats: `html`, `xml`, `csv`, `json`, `rss`, `css`, `js`, `pdf`, `txt`
+
 Examples:
 
 * about-us.html.liquid
@@ -39,6 +41,7 @@ Examples:
 * datepicker.css.liquid
 * server-constants.js.liquid
 * purchase-order.pdf.liquid
+* notes.txt.liquid
 
 ## Accessing different formats
 
@@ -87,9 +90,9 @@ Hello world
 
 Those will be accessible under urls:
 
-https://example.com/hello
-https://example.com/hello.pdf
-https://example.com/hello.txt
+* https://example.com/hello
+* https://example.com/hello.pdf
+* https://example.com/hello.txt
 
 Note that html format is implicit, default, you dont need to specify it in the url.
 

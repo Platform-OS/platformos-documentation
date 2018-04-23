@@ -114,9 +114,9 @@ Hello world
 
 Those will be accessible under the URLs:
 
-* https://example.com/hello
-* https://example.com/hello.pdf
-* https://example.com/hello.txt
+* `https://example.com/hello`
+* `https://example.com/hello.pdf`
+* `https://example.com/hello.txt`
 
 Note that the `html` format is implicit, default, you don't need to specify it in the URL.
 
