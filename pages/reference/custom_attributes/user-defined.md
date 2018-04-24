@@ -23,7 +23,7 @@ custom_attributes:
   attribute_type: integer
 ```
 
-Configuration above defines three attributes: "name" of type _string_, "enabled" of type _boolan_ and "age" type _integer_.
+Configuration above adds three custom properties: "name" of type _string_, "enabled" of type _boolan_ and "age" type _integer_.
 
 ## CustomAttribute Types
 
