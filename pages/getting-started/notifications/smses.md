@@ -13,17 +13,12 @@ Analogically to the previous example, we will send sms to the user that signs up
 
 ```liquid
 ---
-...
 configuration:
-...
   mobile_number:
     validation:
       presence: true
-...
 ---
-...
 {% input 'mobile_number', placeholder: 'Please include country code' %}
-...
 ```
 
 {% endraw %}
@@ -53,11 +48,9 @@ Last thing is to add newly created sms notification to the form:
 
 ```liquid
 ---
-...
 sms_notifications:
   - welcome_user
 ---
-...
 ```
 
 {% endraw %}
