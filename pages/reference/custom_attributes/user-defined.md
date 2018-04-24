@@ -5,20 +5,159 @@ permalink: /reference/custom-attributes/user-defined
 
 ## Defining
 
-<!-- TODO YAML-->
+CustomAttributes are defined in YML configuration files for:
 
-### Required
+* [CustomModelTypes](/reference/custom-model-types/)
+* RelationshipTypes
+* TransactableTypes
+* InstanceProfileTypes
+* ReservationTypes
 
-<!-- TODO TABLE -->
+```yml
+custom_attributes:
+- name: name
+  attribute_type: string
+- name: enabled
+  attribute_type: boolean
+- name: age
+  attribute_type: integer
+```
 
-### Optional
+Configuration above defines three attributes: "name" of type _string_, "enabled" of type _boolan_ and "age" type _integer_.
 
-<!-- TODO TABLE -->
+## CustomAttribute Types
 
-## Example
+Each CustomAttribute is described with the type of data that is stored within the database.
+Please note that when processing your CustomAttribute in Liquid, types are automatically converted to those supported by [Liquid Data Types)[https://help.shopify.com/themes/liquid/basics/types]
+The table below list available data types for CustomAttribute configuration, that is used to configure fields on the database:
 
-<!-- TODO YAML + FORM + CRUD -->
+| Type     | Description                                        |
+| -------- | -------------------------------------------------- |
+| address  | See [Custom addresses](./custom-addresses)         |
+| array    | Arrays hold lists of variables of any type.        |
+| boolean  | Booleans are used to represent the truth values    |
+| date     | Stores Date                                        |
+| datetime | Stores DateTime with time zone                     |
+| file     | See [Custom attachments](./custom-attachments)     |
+| float    | Real numbers                                       |
+| integer  | Whole numbers that can be positive, negative, or 0 |
+| photo    | See [Custom Images](./custom-images)               |
+| string   | String limited to 255 characters                   |
+| text     | String limited to 4294967296 characters            |
 
 ## Grouping into models
 
 You can group your custom attributes into [Custom Model](/reference/custom-model-types).
+
+### FormConfiguration
+
+You can configure CustomAttributes settings in FormConfiguration similar to other parameters:
+
+```yml
+...
+configuration:
+  properties:
+    name:
+      validation:
+        presence: true
+    age:
+      validation:
+        presence: true
+```
+
+{% raw %}
+
+```liquid
+{% form %}
+  {% fields_for properties %}
+    {% input_field 'name', form: 'properties' %}
+  {% endfields_for %}
+{% endform %}
+```
+
+{% endraw %}
+
+For more information see [Form Builder](/reference/form-configurations-static/) and [Working with Customizations](/getting-started/customization) articles.
+
+## Fetching CustomAttribute with GraphQL
+
+CustomAttributes depend on their parent objects and are accessible in the query after mapping the name of CustomAttribute with query attribute nane, you can do that with `property` method:
+
+```graphql
+query get_customizations {
+  customizations(name: "customization_name") {
+    results {
+      name: property(name: "name")
+      age: property(name: "age")
+      enabled: property(name: "enabled")
+    }
+  }
+}
+```
+
+## Filtering CustomAttribute with GraphQL
+
+It is possible to filter GraphQL results based on object properties states.
+Each object in the properties array is connected with CustomAttribute through it's name. Additonal options are:
+
+* value - matches the value of given property
+
+```graphql
+query get_all_johns {
+  customizations(
+    is_deleted: false
+    properties: [{name: "name", value: "John"}]
+  ) {
+    results {
+      first_name: property(name: "name")
+    }
+  }
+}
+```
+
+* values - matches array of values with given `values_operator`: `OR` or `AND`.
+
+```graphql
+query get_all_johns_and_annas {
+  customizations(
+    is_deleted: false
+    properties: [{name: "name", values: ["John", "Anna"], values_operator: OR}]
+  ) {
+    results {
+      first_name: property(name: "name")
+    }
+  }
+}
+```
+
+* range - available options for range are: `lt`, `lte`, `gt`, `gte`:
+
+```graphql
+query get_all_adults {
+  customizations(
+    is_deleted: false
+    properties: [{name: "age", range: {gte: $adult_age_treshold}}]
+  ) {
+    results {
+      first_name: property(name: "name")
+    }
+  }
+}
+```
+
+* exists
+
+```graphql
+query get_all_with_name {
+  customizations(
+    is_deleted: false
+    properties: [{name: "name", exists: true}]
+  ) {
+    results {
+      first_name: property(name: "name")
+    }
+  }
+}
+```
+
+Please note the that above examples are only valid for CustomAttributes defined on CustomModelType. Please refer to GraphQL seachma in order to filter CustomAttributes defined on different parents than CustomModelType.

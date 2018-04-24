@@ -11,6 +11,6 @@ Our platform also provides a few custom attributes for you so you don't have to 
 
 * [Custom addresses](./custom-addresses) - Custom addresses are used to add one or many addresses to configuration.
 
-* [Custom addresses](./custom-images) - Custom images are used to add one or many images to configuration.
+* [Custom images](./custom-images) - Custom images are used to add one or many images to configuration.
 
-* [Custom addresses](./custom-attachments) - Custom attachments are used to add one or many files to the configuration.
+* [Custom attachments](./custom-attachments) - Custom attachments are used to add one or many files to the configuration.
