@@ -24,7 +24,10 @@ Deploying and syncing changes is a two-step process:
 
 {% include alert/note.html content="Run all commands discussed in this tutorial in the project root directory, i.e. one level above the `marketplace_builder` directory" %}
 
-To add your environment to the `.marketplace-kit` config file, run the `env add` command, and authenticate with your credentials:
+Authentication is done with your **Partner Portal** account credentials.
+See this [guide](https://github.com/mdyd-dev/nearme-documentation/blob/master/_PlatformOS/getting-started/setup/accessing-partner-portal.md) if you don't have Partner Portal account yet.
+
+To add your environment to a config file, run the `env add` command, and authenticate with your **Partner Portal** credentials:
 
 ```
 marketplace-kit env add <environment> --email <your email> --url <your marketplace url>
