@@ -25,4 +25,4 @@ please provide your _Partner Portal_ credentials (not instance account credentia
 
 You have the same permissions as you can see on your [Partner Portal permissions page](https://portal.apps.near-me.com/me/permissions).
 
-{% include alert/warning content="Keep in mind that marketplace-kit in versions prior to 2.0 will be deprecated at some point in time, so please upgrade as soon as possible." %}
+{% include alert/warning.html content="Keep in mind that marketplace-kit in versions prior to 2.0 will be deprecated at some point in time, so please upgrade as soon as possible." %}
