@@ -31,19 +31,19 @@ Each CustomAttribute is described with the type of data that is stored within th
 Please note that when processing your CustomAttribute in Liquid, types are automatically converted to those supported by [Liquid Data Types)[https://help.shopify.com/themes/liquid/basics/types]
 The table below list available data types for CustomAttribute configuration, that is used to configure fields on the database:
 
-| Type     | Description                                        |
-| -------- | -------------------------------------------------- |
-| address  | See [Custom addresses](./custom-addresses)         |
-| array    | Arrays hold lists of variables of any type.        |
-| boolean  | Booleans are used to represent the truth values    |
-| date     | Stores Date                                        |
-| datetime | Stores DateTime with time zone                     |
-| file     | See [Custom attachments](./custom-attachments)     |
-| float    | Real numbers                                       |
-| integer  | Whole numbers that can be positive, negative, or 0 |
-| photo    | See [Custom Images](./custom-images)               |
-| string   | String limited to 255 characters                   |
-| text     | String limited to 4294967296 characters            |
+| Type     | Description                                        | Example                     |
+| -------- | -------------------------------------------------- | --------------------------- |
+| address  | See [Custom addresses](./custom-addresses)         |                             |
+| array    | Arrays hold lists of variables of any type.        | [1, 2, 3]                   |
+| boolean  | Booleans are used to represent truth/false values  | true                        |
+| date     | Stores Date                                        | "2017-07-07"                |
+| datetime | Stores DateTime with time zone                     | "2017-07-07 14:00:00 +0000" |
+| file     | See [Custom attachments](./custom-attachments)     |                             |
+| float    | Real numbers                                       | 1.0                         |
+| integer  | Whole numbers that can be positive, negative, or 0 | 1                           |
+| photo    | See [Custom Images](./custom-images)               |                             |
+| string   | String limited to 255 characters                   | "Some String"               |
+| text     | String limited to 4294967296 characters            | "Another String"            |
 
 ## Grouping into models
 
@@ -69,7 +69,7 @@ configuration:
 
 ```liquid
 {% form %}
-  {% fields_for properties %}
+  {% fields_for 'properties' %}
     {% input_field 'name', form: 'properties' %}
   {% endfields_for %}
 {% endform %}
@@ -133,10 +133,10 @@ query get_all_johns_and_annas {
 * range - available options for range are: `lt`, `lte`, `gt`, `gte`:
 
 ```graphql
-query get_all_adults {
+query get_all_adults_below_60 {
   customizations(
     is_deleted: false
-    properties: [{name: "age", range: {gte: $adult_age_treshold}}]
+    properties: [{name: "age", range: {gte: $adult_age_treshold, lt: 60}}]
   ) {
     results {
       first_name: property(name: "name")
@@ -160,4 +160,4 @@ query get_all_with_name {
 }
 ```
 
-Please note the that above examples are only valid for CustomAttributes defined on CustomModelType. Please refer to GraphQL seachma in order to filter CustomAttributes defined on different parents than CustomModelType.
+Please note the that above examples are only valid for CustomAttributes defined on CustomModelType. Please refer to GraphQL schema in order to filter CustomAttributes defined on different parents than CustomModelType.
