@@ -24,7 +24,7 @@ configuration:
       city: { validation: { presence: true } }
       state: { validation: { presence: true } }
       postcode: { validation: { presence: true } }
-    attachements:
+    attachments:
       validation:
         length:
           is: 2
@@ -40,7 +40,7 @@ configuration:
   {% input_field 'currency', as: 'hidden', value: 'CAD' %}
 
   {% fields_for 'owners' %}
-    {% fields_for 'attachements', form: 'owners' %}
+    {% fields_for 'attachments', form: 'owners' %}
     {% endfields_for %}
     {% fields_for 'current_address', form: 'owners' %}
     {% endfields_for %}
