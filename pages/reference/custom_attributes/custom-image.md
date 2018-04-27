@@ -3,7 +3,7 @@ title: Custom Images
 permalink: /reference/custom-attributes/custom-images
 ---
 
-Custom images are used to add one or many images to Profile, Order, Customization or Transactable.
+Custom images are used to add one or many images to Profile, Order, Customization, or Transactable.
 
 ## Defining
 
@@ -16,7 +16,7 @@ You can enable CustomImages by adding a CustomAttribute with `attribute_type` se
 
 ## Version defaults
 
-Each custom image upon creation is saved in three version. Each version has different predefined dimension and method used to resize the image.
+Each custom image upon creation is saved in three versions. Each version has a different predefined dimension and method used to resize the image.
 The defaults are:
 
 ```json
@@ -37,7 +37,7 @@ You can alter width, height and transform method for each version with `:version
       transform: :resize_to_fit
 ```
 
-Transform methods comes from [MiniMagic](http://www.rubydoc.info/github/jnicklas/carrierwave/CarrierWave/MiniMagick), available transformations are:
+Transform methods come from [MiniMagic](http://www.rubydoc.info/github/jnicklas/carrierwave/CarrierWave/MiniMagick), available transformations are:
 
 * resize_and_pad - Resize the image to fit within the specified dimensions while retaining the original aspect ratio.
 * resize_to_fill - Resize the image to fit within the specified dimensions while retaining the aspect ratio of the original image.
@@ -46,7 +46,7 @@ Transform methods comes from [MiniMagic](http://www.rubydoc.info/github/jnicklas
 
 ## Form configuration
 
-Custom Image attribute must be defined in form in order to whitelist and validate the form request.
+Custom Image attribute must be defined in a form to whitelist and validate the form request.
 
 ```yml
 ...
@@ -61,7 +61,7 @@ Custom Image attribute must be defined in form in order to whitelist and validat
 
 ## Fields
 
-Each image supports following self-descriptive fields:
+Each image supports the following self-descriptive fields:
 
 | Field name | Type   | Note                                                                 |
 | ---------- | ------ | -------------------------------------------------------------------- |
@@ -69,7 +69,7 @@ Each image supports following self-descriptive fields:
 
 ## Displaying, updating
 
-After having this, the way for editing those images can be further customized in the markup for the forms:
+After setting up images as described above, you can further customize image editing in the markup for the forms:
 
 {% raw %}
 
@@ -87,7 +87,7 @@ After having this, the way for editing those images can be further customized in
 
 {% endraw %}
 
-In the example above we are using predefined image tag
+The example above shows the predefined image tag. 
 
 ## Using GraphQL to query for `CustomImage`
 
