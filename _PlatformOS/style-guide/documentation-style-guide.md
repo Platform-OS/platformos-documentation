@@ -27,9 +27,11 @@ Address these personas when writing documentation.
 ### Language, tone and style
 
 **Language**
+
 Use U.S. English according to the Chicago Manual of Style.
 
 **Present tense**
+
 Use present tense and try to only use future tense when you need to emphasize that something occurs later, from the users' perspective.
 
 Example:
@@ -38,7 +40,8 @@ Example:
 * Avoid: PlatformOS will prompt you to save your changes.
 
 **Second person**
-Talk to the users in the second person, and address the user as “you”. Avoid the use of gender-specific, third-person pronouns such as he, she, his, and hers.
+
+Talk to the users in the second person, and address the user as “you”. Avoid the use of gender-specific, third-person pronouns such as he, she, his, and hers. Avoid the use of we, except when you want to emphasize something that the Platform OS team did. 
 Exception: Use the first-person singular pronoun “I” in the question part of FAQs.
 
 Example:
@@ -47,7 +50,8 @@ Example:
 * Avoid: The user has to click ‘Save’ to save his changes.
 
 **Active voice**
-Write in active voice. Active voice makes the performer of the action (usually the user) the subject of the sentence. \* Active-voice sentences are more direct and easier to understand than passive-voice sentences.
+
+Write in active voice. Active voice makes the performer of the action (usually the user) the subject of the sentence. Active-voice sentences are more direct and easier to understand than passive-voice sentences.
 
 Example:
 
@@ -55,6 +59,7 @@ Example:
 * Avoid: Changes will be saved after clicking the OK button.
 
 **Capitalization**
+
 Title case topic titles (each major word is uppercase). Sentence case headings (only the initial word is uppercase). Don’t use terminal punctuation in titles and headings unless a question mark is required.
 
 Example:
@@ -62,8 +67,11 @@ Example:
 * Use: (title) Creating Your PlatformOS Marketplace
 * Avoid: (title) Creating your PlatformOS marketplace
 
+Capitalize Platform OS-specific terms, like Authorization Policy, Custom Attribute, etc., but don't capitalize generic web development terms such as page, layout, partial. 
+
 **Punctuation**
-Use the serial comma (the comma preceding the “and” before the last element in a list) except in titles, headlines and subheads.
+
+Use the serial comma (the comma preceding the “and” before the last element in a list) except in titles, headlines, and subheads.
 
 Example:
 
@@ -71,6 +79,7 @@ Example:
 * Avoid: List of all APIs, Liquid filters and GraphQL schema
 
 **Lists**
+
 Use numbered lists for sequential task steps, and bullet lists for sets of options, notes, and the like. Only use a list if it has at least two items in it.
 
 Precede an ordered or bulleted list with a sentence or phrase ending in a colon.
@@ -99,7 +108,7 @@ Use `###` (h3) headings as you see fit to improve readability and scannability o
 
 Code examples are probably the most important part of the documentation—the more there are, the better. There is a built-in code highlighter that works for many different programming languages.
 
-Wrap inline snippets of code with `.
+Wrap inline snippets of code with `. 
 
 To add a code sample, use the <code>```</code> block, followed by the syntax highlighter language you want to use:
 
@@ -147,7 +156,12 @@ Use tables to describe tabular data.
 {% endraw %}
 </pre>
 
-If you have trouble remembering the syntax, don't worry, just use a [Markdown Tables Generator](https://www.tablesgenerator.com/markdown_tables) to speed things up.
+If you have trouble remembering the syntax, don't worry, just use a [Markdown Tables Generator](https://www.tablesgenerator.com/markdown_tables) to speed things up. 
+
+### Paths
+
+When referring to files in the required directory structure, always assume that the `marketplace_builder` directory is root. To make this clear to users, write the whole path including the `marketplace_builder` directory at first mention, but omit it at later mentions. E.g. first write `marketplace_builder/views/pages`, later `views/pages` or `pages` directory. 
+
 
 ### Screenshots, images
 
@@ -171,6 +185,7 @@ Don't use screenshots to show:
 ### Videos
 
 **Screencasts**
+
 Upload videos to Youtube, and insert the generated embed code. Uncheck "Show suggested videos when the video finishes.", so that the embed code Youtube generates looks like this:
 
 ```html
@@ -178,11 +193,17 @@ Upload videos to Youtube, and insert the generated embed code. Uncheck "Show sug
 ```
 
 **Terminal sessions**
+
 Record and share your terminal sessions (where applicable) with [asciinema](https://asciinema.org/).
 
 ## Style guides for content types
 
 ### API reference documentation
+
+Our API reference documentation is auto-generated, and follows our API Reference Documentation templates:
+
+* [API Reference Documentation Introduction page template]()
+* [API Reference Documentation Endpoint page template]() 
 
 ### Documentation overview page
 
@@ -198,6 +219,38 @@ Quickstart guides usually have to include information about the domain and intro
 
 ### Tutorials
 
+Tutorials are step-by-step walkthroughs covering specific functionality developers can implement with Platform OS, or tasks Partners can do on our Partner Portal. 
+
+Each walkthrough should be the smallest possible chunk that lets the user finish a task. If a process is too complex, think about breaking it down into smaller chunks. This makes sure that users can get the help they need without going through steps they’re not interested in.
+
+Tutorials teach our users about using Platform OS, so include explanations, and link to glossary items, or other content that helps comprehension. 
+
+All of our tutorials follow the same format (see tutorial template):
+
+* Goal: what the tutorial helps the user do, what the user will accomplish by the end of the tutorial
+* Requirements: what background knowledge or resources the user needs to be able to successfully finish this tutorial
+* Steps: brief overview of steps in this tutorial
+* Step 1, Step 2, etc.: detailed descriptions of steps, with screenshots, code examples, etc. 
+* Next steps: what the user can do next; if the tutorial is part of a series, link to the next tutorial in the series
+* Questions: contact information for support
+
+**[Tutorial template]()**
+
+### Concept topics
+
+Concept topics  provide background information that users must know before they can successfully learn more about or work with a Platform OS feature. Often, a concept is an extended definition of a major abstraction such as Pages or Layouts. Concept topics can include examples, graphics, etc. 
+
+
 ### How-to guides
 
 ### Release notes
+
+Our release notes include the following information about each release:
+
+* new features
+* improvements
+* fixes
+
+Each section lists items in bullet points, and separates in-house development ideas from features, improvements, and fixes suggested by our community. 
+
+**[Release notes template]()**
