@@ -23,19 +23,19 @@ custom_attributes:
   attribute_type: integer
 ```
 
-Configuration above adds three custom properties: "name" of type _string_, "enabled" of type _boolan_ and "age" type _integer_.
+The above configuration adds three custom properties: "name" of type _string_, "enabled" of type _boolan_, and "age" of type _integer_.
 
 ## CustomAttribute Types
 
 Each CustomAttribute is described with the type of data that is stored within the database.
 Please note that when processing your CustomAttribute in Liquid, types are automatically converted to those supported by [Liquid Data Types)[https://help.shopify.com/themes/liquid/basics/types]
-The table below list available data types for CustomAttribute configuration, that is used to configure fields on the database:
+The table below lists available data types for CustomAttribute configuration, that are used to configure fields on the database:
 
 | Type     | Description                                        | Example                     |
 | -------- | -------------------------------------------------- | --------------------------- |
 | address  | See [Custom addresses](./custom-addresses)         |                             |
 | array    | Arrays hold lists of variables of any type.        | [1, 2, 3]                   |
-| boolean  | Booleans are used to represent truth/false values  | true                        |
+| boolean  | Booleans are used to represent true/false values.  | true                        |
 | date     | Stores Date                                        | "2017-07-07"                |
 | datetime | Stores DateTime with time zone                     | "2017-07-07 14:00:00 +0000" |
 | file     | See [Custom attachments](./custom-attachments)     |                             |
@@ -47,11 +47,11 @@ The table below list available data types for CustomAttribute configuration, tha
 
 ## Grouping into models
 
-You can group your custom attributes into [Custom Model](/reference/custom-model-types).
+You can group your custom attributes into [Custom Models](/reference/custom-model-types).
 
 ### FormConfiguration
 
-You can configure CustomAttributes settings in FormConfiguration similar to other parameters:
+You can configure CustomAttributes settings in FormConfiguration similarly to other parameters:
 
 ```yml
 ...
@@ -81,7 +81,7 @@ For more information see [Form Builder](/reference/form-configurations-static/) 
 
 ## Fetching CustomAttribute with GraphQL
 
-CustomAttributes depend on their parent objects and are accessible in the query after mapping the name of CustomAttribute with query attribute nane, you can do that with `property` method:
+CustomAttributes depend on their parent objects and are accessible in the query after mapping the name of CustomAttribute with the query attribute name, you can do that with the `property` method:
 
 ```graphql
 query get_customizations {
@@ -98,7 +98,7 @@ query get_customizations {
 ## Filtering CustomAttribute with GraphQL
 
 It is possible to filter GraphQL results based on object properties states.
-Each object in the properties array is connected with CustomAttribute through it's name. Additonal options are:
+Each object in the properties array is connected with a CustomAttribute through its name. Additonal options are:
 
 * value - matches the value of given property
 
@@ -160,4 +160,4 @@ query get_all_with_name {
 }
 ```
 
-Please note the that above examples are only valid for CustomAttributes defined on CustomModelType. Please refer to GraphQL schema in order to filter CustomAttributes defined on different parents than CustomModelType.
+Please note that the above examples are only valid for CustomAttributes defined on CustomModelType. Please refer to GraphQL schema in order to filter CustomAttributes defined on different parents than CustomModelType.
