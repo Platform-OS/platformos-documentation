@@ -3,11 +3,11 @@ title: Custom Attachments
 permalink: /reference/custom-attributes/custom-attachments
 ---
 
-Custom attachments are used to add one or many attachments to Profile, Order, Customization or Transactable.
+Custom attachments are used to add one or many attachments to Profile, Order, Customization, or Transactable.
 
 ## Defining
 
-You can enable CustomAttachments by adding a CustomAttribute with `attribute_type` set to `file` for example:
+You can enable CustomAttachments by adding a CustomAttribute with `attribute_type` set to `file`, for example:
 
 ```yml
 - name: Agreement
@@ -16,7 +16,7 @@ You can enable CustomAttachments by adding a CustomAttribute with `attribute_typ
 
 ## Form configuration
 
-Custom Attachment attribute must be defined in form in order to whitelist and validate the form request.
+The Custom Attachment attribute must be defined in a form in order to whitelist and validate the form request.
 
 ```yml
 ...
@@ -30,7 +30,7 @@ custom_attachments:
 
 ## Fields
 
-Each attachment supports following self-descriptive fields:
+Each attachment supports the following self-descriptive fields:
 
 | Field name | Type   | Note                                              |
 | ---------- | ------ | ------------------------------------------------- |
@@ -38,7 +38,7 @@ Each attachment supports following self-descriptive fields:
 
 ## Displaying, updating
 
-After having this, the way for editing those attachments can be further customized in the markup for the forms:
+After setting up attachments as described above, you can further customize them in the markup for the forms:
 
 {% raw %}
 
@@ -53,7 +53,7 @@ After having this, the way for editing those attachments can be further customiz
 
 {% endraw %}
 
-In the example above we are using predefined attachment tag
+The example above shows the predefined attachment tag.
 
 ## Using GraphQL to query for `CustomAttachment`
 
