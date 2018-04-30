@@ -7,26 +7,26 @@ Custom addresses are used to add one or many addresses to Profile, Order, Custom
 
 ## Fields
 
-Each address supports following self-descriptive fields:
+Each address supports the following self-descriptive fields:
 
-| Field name        | Type   | Note                                                                                                                                      |
-| ----------------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| address           | String | address that has been sent via form - usually original input from user                                                                    |
-| latitude          | Float  | latitude part of coordinate used for geo searching                                                                                        |
-| longitude         | Float  | longitude part of coordinate used for geo searching                                                                                       |
-| formatted_address | String | formatted address that you want to display on your MP. f.e. you can send `address` to google API and get more complete address to display |
-| apartment         | String | apartment number                                                                                                                          |
+| Field name        | Type   | Note                                                                                                                                          |
+| ----------------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| address           | String | address that has been sent via form—usually original input from user                                                                          |
+| latitude          | Float  | latitude part of coordinate used for geo searching                                                                                            |
+| longitude         | Float  | longitude part of coordinate used for geo searching                                                                                           |
+| formatted_address | String | formatted address that you want to display on your MP. e.g. you can send `address` to the Google API and get more complete address to display |
+| apartment         | String | apartment number                                                                                                                              |
 | street            | String |
 | suburb            | String |
 | city              | String |
 | state             | String |
 | country           | String |
-| iso_country_code  | String | 2 letter [ISO code](http://kirste.userpage.fu-berlin.de/diverse/doc/ISO_3166.html)                                                        |
+| iso_country_code  | String | 2 letter [ISO code](http://kirste.userpage.fu-berlin.de/diverse/doc/ISO_3166.html)                                                            |
 | postcode          | String |
 
 ## Defining
 
-CustomAddresses are enabled by adding a CustomAttribute with `attribute_type` set to `address` for example:
+CustomAddresses are enabled by adding a CustomAttribute with `attribute_type` set to `address`, for example:
 
 ```yml
 - name: hq_address
@@ -37,44 +37,44 @@ CustomAddresses are enabled by adding a CustomAttribute with `attribute_type` se
 
 ## Form configuration
 
-Having this declaration in any of `user_profile_types/` files will result in 2 CustomAddresses being available in the form configuration, where they can be used for example like this:
+Having this declaration in any `user_profile_types/` file will result in 2 CustomAddresses being available in the form configuration, where they can be used for example like this:
 
 ```yml
-  profiles:
+profiles:
+  validation: { presence: true }
+  seller:
     validation: { presence: true }
-    seller:
-      validation: { presence: true }
-      custom_addresses:
-        hq_address:
+    custom_addresses:
+      hq_address:
+        validation: { presence: true }
+        address:
           validation: { presence: true }
-          address:
-            validation: { presence: true }
-          city:
-            validation: {}
-          state:
-            validation: { presence: true }
-          street:
-            validation: {}
-          country:
-            validation: {}
-          postcode:
-            validation: {}
-        correspondence_address:
-          address:
-            validation: { presence: false }
-          city:
-            validation: {}
-          state:
-            validation: {}
-          street:
-            validation: {}
-          country:
-            validation: {}
-          postcode:
-            validation: {}
+        city:
+          validation: {}
+        state:
+          validation: { presence: true }
+        street:
+          validation: {}
+        country:
+          validation: {}
+        postcode:
+          validation: {}
+      correspondence_address:
+        address:
+          validation: { presence: false }
+        city:
+          validation: {}
+        state:
+          validation: {}
+        street:
+          validation: {}
+        country:
+          validation: {}
+        postcode:
+          validation: {}
 ```
 
-Another example: adding CustomAddress for a Customization names "EmergencyContact"
+Another example: adding CustomAddress for a Customization named "EmergencyContact"
 
 ```yml
 customizations:
@@ -101,7 +101,7 @@ customizations:
 
 ## Displaying, updating
 
-After having this, the way for editing those addresses can be further customized in the markup for the forms:
+After setting up addresses as described above, you can further customize them in the markup for the forms:
 
 {% raw %}
 
@@ -139,7 +139,7 @@ After having this, the way for editing those addresses can be further customized
 
 ## Using GraphQL to query for `CustomAddress` geolocation
 
-It's possible to use `latitude` and `longitude` field in geolocation queries.
+It's possible to use `latitude` and `longitude` fields in geolocation queries.
 
 ```graphql
 query geolocate_users(
@@ -220,8 +220,9 @@ query geolocate_users(
 }
 ```
 
-In the example above we see how we can query `CustomAddress` both at the `user_profile` and `customization` levels.
-If we wanted to find user profiles in vicinity of (50, 20) geo point, we could do that using those parameters:
+In the example above you can see how you can query `CustomAddress` both at the `user_profile` and `customization` levels.
+
+If you wanted to find user profiles in vicinity of (50, 20) geo point, you could do that using those parameters:
 
 ```json
 {
