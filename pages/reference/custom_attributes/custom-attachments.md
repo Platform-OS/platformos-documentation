@@ -44,11 +44,11 @@ After having this, the way for editing those attachments can be further customiz
 
 ```liquid
 {% fields_for 'custom_attachments', form: 'vehicles' %}
-    {% fields_for 'agreement', form: 'custom_attachments' %}
-      {% assign attachment_object = form_object_agreement.object %}
-      {% input file, form: 'agreement', as: 'attachment', collection: @attachment_object %}
-    {% endfields_for %}
+  {% fields_for 'agreement', form: 'custom_attachments' %}
+    {% assign attachment_object = form_object_agreement.object %}
+    {% input file, form: 'agreement', as: 'attachment', collection: @attachment_object %}
   {% endfields_for %}
+{% endfields_for %}
 ```
 
 {% endraw %}
