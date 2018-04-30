@@ -40,7 +40,7 @@ In the `styles` directory, create a `page.css` file:
 }
 ```
 
-Here, in a static CSS file, you can't use the `{{ asset_url }}` helper to get the URL of the image on the CDN, so you have to refer to it with its relative path.
+Here, in a static CSS file, you can't use the `asset_url` filter or `{{ asset_url }}` liquid variable to get the URL of the image on the CDN, so you have to refer to it with its relative path.
 
 On your computer, the CSS file is in the `marketplace_builder/assets/styles` directory, so to point to the image file in the `marketplace_builder/assets/images` directory, you have to go two levels up (one level up is noted as: `..`) to the `assets` directory , and then write the path relative to there.
 
