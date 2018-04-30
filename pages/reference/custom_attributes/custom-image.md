@@ -20,11 +20,11 @@ Each custom image upon creation is saved in three versions. Each version has a d
 
 The defaults are:
 
-```json
-  "mini": { "width": 56, "height": 56 },
-  "thumb": { "width": 144, "height": 109 },
-  "normal": { "width": 1280, "height": 960 }
-```
+| Size   | Width (px) | Height (px) |
+| ------ | ---------- | ----------- |
+| mini   | 56         | 56          |
+| thumb  | 144        | 109         |
+| normal | 1280       | 960         |
 
 You can alter width, height for each version with `versions_configuration`:
 
