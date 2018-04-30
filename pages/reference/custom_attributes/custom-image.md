@@ -16,7 +16,7 @@ You can enable CustomImages by adding a CustomAttribute with `attribute_type` se
 
 ## Version defaults
 
-Each custom image upon creation is saved in three versions. Each version has a different predefined dimension and method used to resize the image.
+Each custom image upon creation is saved in three versions.
 
 The defaults are:
 
