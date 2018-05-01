@@ -25,7 +25,7 @@ Location of image asset in code base:
 URL of image asset on CDN:
 `https://dmtyylqvwgyxw.cloudfront.net/instances/163/assets/images/logo.svg`
 
-{% include alert/note.html content="CDN host and instance id will is dynamic and will be specific to your instance and region" %}
+{% include alert/note.html content="CDN host and Instance ID are dynamic and will be specific to your instance and region" %}
 
 ## Accessing assets
 
