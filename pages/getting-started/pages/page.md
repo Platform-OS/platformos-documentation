@@ -99,3 +99,21 @@ Note that html format is implicit, default, you dont need to specify it in the u
 ### Redirects
 
 See [Redirects](./redirects) to redirect user to a different page.
+
+### Metadata
+
+A page can be extended using `metadata` property to store any kind of key-value pairs, for example:
+
+```yaml
+---
+slug: signup
+format: html
+layout_name: application
+metadata:
+  title: "This it the title"
+  description: "A description"
+  tags: ["signup", "choose", "landing"]
+---
+```
+
+See [Metadata](./metadata) for detailed documentation.
