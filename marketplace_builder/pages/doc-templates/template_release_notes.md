@@ -1,4 +1,5 @@
 ---
+converter: markdown
 metadata:
   title: [Month DD, YYYY — Release Notes]
 permalink: [/release-notes/DD-MONTH-YYYY]

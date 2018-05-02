@@ -1,4 +1,5 @@
 ---
+converter: markdown
 metadata:
   title: [TITLE, brief description of what the endpoint does, format: VERB a(n)/all NOUN(s), e.g. Update an Image]
 permalink: [link, e.g. /apis/api1_endpoint1]

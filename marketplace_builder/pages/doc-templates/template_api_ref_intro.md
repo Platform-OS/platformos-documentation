@@ -1,4 +1,5 @@
 ---
+converter: markdown
 metadata:
   title: [API name] Introduction
 permalink: [link, e.g. /apis/api1_introduction]

@@ -1,4 +1,5 @@
 ---
+converter: markdown
 metadata:
   title: [Title of the quickstart guide, recommended format: VERBing the/a(n)/Your NOUN, title-case]
 permalink: [link, e.g. /getting-started/quickstart-guide]

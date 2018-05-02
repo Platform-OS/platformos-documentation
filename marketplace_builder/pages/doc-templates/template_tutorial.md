@@ -1,4 +1,5 @@
 ---
+converter: markdown
 metadata:
   title: [TITLE, format: VERBing a(n)/the NOUN(s)]
 permalink: [link, e.g. /get-started/install-docker]
