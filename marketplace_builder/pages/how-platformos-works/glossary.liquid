@@ -46,15 +46,19 @@ Usage example:
 
 Define what you want to yield in your page:
 
+{% raw %}
 ```
 {% content_for 'page_title' %}Platform OS Blog{% endcontent_for %}
 ```
+{% endraw %}
 
 Then use yield inside the layout:
 
+{% raw %}
 ```
 <title>{{ yield 'page_title' }}</title>
 ```
+{% endraw %}
 
 ## Custom Attributes
 
@@ -186,15 +190,19 @@ Parameterize partials and use them in various places, e.g. layouts, pages, Autho
 
 Example usage:
 
+{% raw %}
 ```
 {% include 'layouts/blog/header' %}
 ```
+{% endraw %}
 
 With variable passed to the partial:
 
+{% raw %}
 ```
 {% include 'layouts/shared/javascripts', include_analytics: false %}
 ```
+{% endraw %}
 
 ## Partner Portal
 
