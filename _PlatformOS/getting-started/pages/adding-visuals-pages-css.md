@@ -62,6 +62,8 @@ This directory structure corresponds to the directory structure on the CDN, so t
 </html>
 ```
 
+{% endraw %}
+
 Sync or deploy. You should see the image displayed on your page.
 
 ## Next steps
