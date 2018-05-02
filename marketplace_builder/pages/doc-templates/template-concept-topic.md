@@ -1,5 +1,6 @@
 ---
-title: [title, NOUN, e.g. Pages]
+metadata:
+  title: [title, NOUN, e.g. Pages]
 permalink: [link, e.g. /getting-started/pages/pages]
 ---
 

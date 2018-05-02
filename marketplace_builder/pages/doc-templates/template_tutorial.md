@@ -1,5 +1,6 @@
 ---
-title: [TITLE, format: VERBing a(n)/the NOUN(s)]
+metadata:
+  title: [TITLE, format: VERBing a(n)/the NOUN(s)]
 permalink: [link, e.g. /get-started/install-docker]
 ---
 
