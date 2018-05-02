@@ -1,0 +1,54 @@
+---
+converter: markdown
+metadata_title: Update a User
+slug: reference/rest-api/users_put
+---
+
+To update an user, send a PUT request to /api/users/:user_id
+
+**HTTP request**
+
+PUT /api/users/:user_id
+
+**Parameters**
+
+| Parameter               | Type     | Description                                                               | Required | Notes |
+| ----------------------- | -------- | ------------------------------------------------------------------------- | -------- | ----- |
+| form_configuration_name | String   | Name of the form configuration                                            | Required |       |
+| form                    | UserForm | UserForm parameters that corresponds with FormConfiguration configuration | Required |       |
+
+**User Parameters**
+
+{% include 'resources/UserForm' %}
+
+**Example request**
+
+{% include 'reference/request_headers' %}
+
+```json
+{
+  "form_configuration_name": "reference_rest_api_update_user",
+  "form": {
+    "first_name": "Example"
+  }
+}
+```
+
+| Element                 | Type     | Description                                                                                | Required? |
+| ----------------------- | -------- | ------------------------------------------------------------------------------------------ | --------- |
+| form_configuration_name | String   | Name of the defined FormConfiguration                                                      | Required  |
+| form                    | UserForm | Attributes for user, should match configuration defined in corresponding FormConfiguration | Required  |
+
+**Example response**
+
+{% include 'reference/response_headers' %}
+
+{% include 'reference/response_put_body' %}
+
+> > > > > > > e44e9a9... Prettier for the win!!!
+> > > > > > > | Element | Type | Description |
+> > > > > > > | ----------------------------------- | ------------------------------------------ | -------------------------------------------------------------- |
+> > > > > > > | [Element as it appears in response] | [Array, Object, String, Integer, or Float] | [Brief description of what information the element represents] |
+> > > > > > > | […] | […] | […] |
+
+{% include 'reference/error_and_status_codes_put' %}
