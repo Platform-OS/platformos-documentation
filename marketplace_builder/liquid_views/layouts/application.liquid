@@ -1,21 +1,26 @@
 <!doctype html>
 <html lang="en">
-<head>
-</head>
+  {% include 'layouts/head' %}
+  <body>
+    <div class="wrapper">
+      {% include 'layouts/header' %}
 
-<body>
-  <header>
-    <h1>platformOS Docs</h1>
-    <hr />
-  </header>
+      <div class="main">
+        <div class="container">
+          <div class="shell">
+            {% include 'layouts/sidebar' %}
+            <div class="content">
+              {% include 'layouts/breadcrumbs' %}
+              <section class="section">
+                {{ content_for_layout }}
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
 
-  <main>
-    {{ content_for_layout }}
-  </main>
-
-  <footer>
-    <hr />
-    © 2018 - PlatformOS
-  </footer>
-</body>
+      {% include 'layouts/footer' %}
+    </div>
+    <script src="{{ 'js/bundle.js' | asset_url }}></script>
+  </body>
 </html>
