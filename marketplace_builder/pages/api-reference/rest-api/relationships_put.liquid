@@ -1,27 +1,26 @@
 ---
 converter: markdown
-converter: markdown
 metadata:
-  title: Create a Bank Account
-slug: reference/rest-api/bank_accounts_post
+  title: Update a Relationship
+slug: api-reference/rest-api/relationships_put
 ---
 
-To create a bank_account send a POST request to /api/user/bank_accounts
+To update a relationship, send a PUT request to /api/user/relationships/:relationship_id
 
 **HTTP request**
 
-POST /api/user/bank_accounts
+PUT /api/user/relationships/:relationship_id
 
 **Parameters**
 
-| Parameter               | Type            | Description                                                                      | Required | Notes       |
-| ----------------------- | --------------- | -------------------------------------------------------------------------------- | -------- | ----------- |
-| form_configuration_name | String          | Name of the form configuration                                                   | Required | underscored |
-| form                    | BankAccountForm | BankAccountForm parameters that corresponds with FormConfiguration configuration | Required |             |
+| Parameter               | Type             | Description                                                                       | Required | Notes |
+| ----------------------- | ---------------- | --------------------------------------------------------------------------------- | -------- | ----- |
+| form_configuration_name | String           | Name of the form configuration                                                    | Required |       |
+| form                    | RelationshipForm | RelationshipForm parameters that corresponds with FormConfiguration configuration | Required |       |
 
-**Bank Account Parameters**
+**Transactable Parameters**
 
-{% include 'resources/BankAccountForm' %}
+{% include 'resources/RelationshipForm' %}
 
 **Example request**
 
@@ -29,11 +28,11 @@ POST /api/user/bank_accounts
 
 ```json
 {
-  "form_configuration_name": "reference_rest_api_bank_account_create",
+  "form_configuration_name": "reference_rest_api_relationship_update",
   "form": {
-    "payment_method_id": 1,
-    "account_id": user.id,
-    "public_token": "1234567"
+    "properties": {
+      "group_name": "Senior Captains"
+    }
   }
 }
 ```
@@ -41,17 +40,17 @@ POST /api/user/bank_accounts
 | Element                 | Type             | Description                                                                                | Required? |
 | ----------------------- | ---------------- | ------------------------------------------------------------------------------------------ | --------- |
 | form_configuration_name | String           | Name of the defined FormConfiguration                                                      | Required  |
-| form                    | Bank AccountForm | Attributes for user, should match configuration defined in corresponding FormConfiguration | Required  |
+| form                    | RelationshipForm | Attributes for user, should match configuration defined in corresponding FormConfiguration | Required  |
 
 **Example response**
 
 {% include 'reference/response_headers' %}
 
-{% include 'reference/response_post_body' %}
+{% include 'reference/response_put_body' %}
 
 | Element                             | Type                                       | Description                                                    |
 | ----------------------------------- | ------------------------------------------ | -------------------------------------------------------------- |
 | [Element as it appears in response] | [Array, Object, String, Integer, or Float] | [Brief description of what information the element represents] |
 | […]                                 | […]                                        | […]                                                            |
 
-{% include 'reference/error_and_status_codes_post' %}
+{% include 'reference/error_and_status_codes_put' %}
