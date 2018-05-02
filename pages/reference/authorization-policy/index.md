@@ -44,7 +44,7 @@ configuration:
     validation:
       presence: {}
 ---
-{% form, url: "/api/users/{{ current_user.id }}" %}
+{% form url: "/api/users/{{ current_user.id }}" %}
   {% input 'last_name', label: 'Last Name' %}
   {% submit 'Save' %}
 {% endform %}
