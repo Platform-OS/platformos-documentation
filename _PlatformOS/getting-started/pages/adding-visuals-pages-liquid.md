@@ -26,25 +26,23 @@ Put an image into the `marketplace_builder/assets/images` directory, e.g. logo.s
 
 ### Step 2: Create page `logo.css.liquid`
 
-Create a page with the format CSS in your `marketplace_builder/pages` directory named `logo.css.liquid`: 
+Create a page with the format CSS in your `marketplace_builder/pages` directory. To define which format the endpoint will be available in (CSS in this case), place .<format> before the file extension, for example name your file `logo.css.liquid`: 
 
 {% raw %}
 
 ```liquid
 ---
 slug: logo
-format: css
 ---
 
 .logo {
    background-image: url({{ 'images/logo.svg' | asset_url }});
-
 }
 ```
 
 {% endraw %}
 
-Because assets are placed on a CDN, you use the `{{ asset_url }}` helper to get the path of the image. You can't use a relative path, because the path would be relative to the URL of your Instance, not the asset URL on the CDN. 
+Use the `{{ asset_url }}` filter: it takes a string as an argument, and returns a string representing the URL to this asset served by our CDN. 
 
 ### Step 3: Link to the `logo.css.liquid` page in your layout
 
@@ -53,13 +51,11 @@ Because assets are placed on a CDN, you use the `{{ asset_url }}` helper to get 
 ```liquid
 <!doctype html>
 <html>
-<body>
    <head>
       <link rel="stylesheet" href="/logo.css"> 
    </head>
-
-<div class="logo"></div>
-
+<body>
+   <div class="logo"></div>
 </body>
 </html>
 
