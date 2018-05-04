@@ -12,11 +12,13 @@ The Platform OS package consists of three components that help you create, updat
 
 * **Marketplace Kit**: The Marketplace Kit is a command line interface that helps you deploy configuration files and assets to your Platform OS site.
 
+* **Your code base**: Your files organized into the required directory structure. 
+
 ## Components in action
 
 The workflow of developing a site using Platform OS starts with a Partner creating a new Instance through the Partner Portal. Besides creating a new Instance, the Partner has the options to update and configure existing Instances, or copy and modify the configuration of one Instance to create another with the same or similar configuration. The Platform OS engine saves the Instance, which—after authorization—becomes available for developers to deploy and sync to.
 
-Developers usually start with downloading the directory structure of the Instance from the Partner Portal, or creating the required directory structure in a local environment. This becomes the framework for the codebase of the Instance.
+Developers usually start with creating the required directory structure in a local environment. This becomes the framework for the codebase of the Instance.
 
 The Marketplace Kit deploys and syncs the codebase to the Instance.
 
