@@ -53,19 +53,17 @@ slug: /
 
 To define which format the endpoint will be available for, place `.<format>` before the file extension.
 
-Available formats: `html`, `xml`, `csv`, `json`, `rss`, `css`, `js`, `pdf`, `txt`
-
-Examples:
-
-* about-us.html.liquid
-* orders.xml.liquid
-* users-report.csv.liquid
-* coordinates.json.liquid
-* feed.rss.liquid
-* datepicker.css.liquid
-* server-constants.js.liquid
-* purchase-order.pdf.liquid
-* notes.txt.liquid
+| Format name | Example filename           |
+| ----------- | -------------------------- |
+| `html`      | about-us.html.liquid       |
+| `xml`       | orders.xml.liquid          |
+| `csv`       | users-report.csv.liquid    |
+| `json`      | coordinates.json.liquid    |
+| `rss`       | feed.rss.liquid            |
+| `css`       | datepicker.css.liquid      |
+| `js`        | server-constants.js.liquid |
+| `pdf`       | purchase-order.pdf.liquid  |
+| `txt`       | notes.txt.liquid           |
 
 ## Accessing different formats
 
