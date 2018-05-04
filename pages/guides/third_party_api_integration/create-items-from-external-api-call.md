@@ -16,14 +16,7 @@ In order to make it we need:
 
 ```
 # transactable_types/flowers.yml
----
 name: Flowers
-default_currency: USD
-enable_photo_required: false
-require_transactable_during_onboarding: false
-skip_location: false
-skip_payment_authorization: false
-slug: flowers
 ```
 
 ## FormConfiguration
