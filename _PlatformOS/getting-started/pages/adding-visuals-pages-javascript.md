@@ -28,9 +28,10 @@ Put an image into the `marketplace_builder/assets/images` directory, e.g. logo.s
 
 Add a piece of script that will console log the image URL. This would normally be your plugin loaded at the end of the page, or on the jQuery ready event after the HTML has loaded. 
 
-You can pass the URL of the asset (image) using the `data` attribute and the `{{ asset_url }}` variable.
+You can pass the URL of the asset (image) using the `data` attribute and the `asset_url` filter, that takes a string as an argument, and returns a string representing the URL to this asset served by our CDN.  
 
-You can also do it inline in `script` placing the image URL into a global variable or object—and of course you can still use the `{{ asset_url }}` variable. 
+You can also do it inline in `script` placing the image URL into a global variable or object—and of course you can still use the `asset_url` filter. 
+
 
 {% raw %}
 
