@@ -13,7 +13,7 @@ const relationshipTransactableCreate = async (I, user, transactable, relationshi
   };
 
   const relationshipCreateResponse = await I.sendPostRequest('/api/user/relationship_transactables', JSON.stringify(payload));
-  return relationshipCreateResponse.body.model;
+  return relationshipCreateResponse.body;
 };
 
 module.exports = relationshipTransactableCreate;

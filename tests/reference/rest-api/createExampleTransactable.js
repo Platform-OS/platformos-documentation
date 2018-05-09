@@ -8,7 +8,7 @@ const createTransactable = async (I, user) => {
     }
   };
   const createTransactableResponse = await I.sendPostRequest('/api/user/transactables', JSON.stringify(createTransactablePayload));
-  return createTransactableResponse.body.model;
+  return createTransactableResponse.body;
 };
 
 module.exports = createTransactable;

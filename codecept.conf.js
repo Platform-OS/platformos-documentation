@@ -1,4 +1,4 @@
-{
+exports.config = {
   "tests": "./tests/**/**_test.js",
   "timeout": 10000,
   "output": "./output",
@@ -9,7 +9,7 @@
     "REST": {
       "endpoint": "http://documentation.lvh.me:3000",
       "defaultHeaders": {
-        "Authorization": "Token token=192a8aee2e9c3bbd20e4e207506926c0",
+        "Authorization": `Token token=${process.env.API_KEY}`,
         "Accept": "application/json",
         "Content-Type": "application/json"
       }
