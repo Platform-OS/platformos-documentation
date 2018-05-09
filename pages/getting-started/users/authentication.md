@@ -80,7 +80,6 @@ We start with creating a CustomModelType in which we will store each request for
 {% raw %}
 
 ```yaml
----
 name: reset_password
 custom_attributes:
 - name: email
@@ -107,7 +106,7 @@ configuration:
         presence: true
         email: true
 callback_actions: |-
-  {% query_graph 'generate_user_temporary_token', email: form.properties.email, result: 'g' %}
+  {% query_graph 'generate_user_temporary_token', email: form.properties.email, result_name: 'g' %}
   {% if g.user %}
     {% execute_query 'update_password_token', id: g.user.id, token: g.user.temporary_token %}
   {% endif %}
@@ -211,7 +210,7 @@ bcc:
 subject: Reset password instructions
 layout_path: mailer
 ---
-{%- query_graph 'get_user_with_password_token', email: form.email, result: 'g' -%}
+{%- query_graph 'get_user_with_password_token', email: form.email, result_name: 'g' -%}
 <h1>Hi {{ g.user.first_name }}!</h1>
 
 <p>To reset your password, follow the link: <a href="{{ platform_context.host }}/reset-password?token={{ g.user.default.password_token | url_encode }}&email={{ g.user.email | url_encode }}">reset password!</a></p>
@@ -259,7 +258,7 @@ The email contains a link to `/reset-password` page, which can look like this:
 ---
 slug: reset-password
 ---
-{%- query_graph 'get_user_with_password_token', email: params.email, result: 'g' -%}
+{%- query_graph 'get_user_with_password_token', email: params.email, result_name: 'g' -%}
 {% assign token_valid = params.token | is_token_valid: g.user.id %}
 {% if g.user.id == blank or token_valid == false or g.user.default.password_token != params.token %}
   Unfortunately, provided token is not valid anymore. Please request password instructions again.
@@ -316,7 +315,7 @@ To be able to re-render previous page if validation for password fails, we forwa
 ---
 name: token_is_valid
 ---
-{%- query_graph 'get_user_with_password_token', id: params.id, result: 'g' -%}
+{%- query_graph 'get_user_with_password_token', id: params.id, result_name: 'g' -%}
 {%- assign token_valid = params.token | is_token_valid: params.id -%}
 {% if g.user.id != blank and token_valid == true and g.user.default.password_token == params.token %}true{% endif %}
 ```
