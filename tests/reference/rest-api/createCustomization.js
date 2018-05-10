@@ -9,7 +9,7 @@ const createCustomization = async (I, user) => {
     }
   };
   const createCustomizationResponse = await I.sendPostRequest('/api/user/customizations', JSON.stringify(createCustomizationPayload));
-  return createCustomizationResponse.body.model;
+  return createCustomizationResponse.body;
 };
 
 module.exports = createCustomization;

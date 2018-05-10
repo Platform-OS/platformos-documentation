@@ -13,7 +13,7 @@ const relationshipUserCreate = async (I, user, otherUser, relationship) => {
   };
 
   const relationshipCreateResponse = await I.sendPostRequest('/api/user/relationship_users', JSON.stringify(payload));
-  return relationshipCreateResponse.body.model;
+  return relationshipCreateResponse.body;
 };
 
 module.exports = relationshipUserCreate;
