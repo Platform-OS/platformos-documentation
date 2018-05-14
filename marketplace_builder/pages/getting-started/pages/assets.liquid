@@ -1,0 +1,61 @@
+---
+converter: markdown
+metadata:
+  title: Assets
+slug: get-started/pages/assets
+---
+
+Assets are files that can be served by an http web server without any backend/server processing. They are usually Javascript files, stylesheets (CSS), documents (html, pdf, doc), fonts, or media (audio, video) files.
+
+## Assets directory
+
+The directory for assets is: `marketplace_builder/assets`
+
+In order to correctly communicate with the Platform OS engine and API, your code base should be organized into a specific directory structure. The root directory of your project should contain the `marketplace_builder` directory, and assets should be placed into the `assets` directory inside `marketplace_builder`.
+
+Although only the `assets` directory is required and you can put your assets there, we recommend you further organize your assets into subdirectories inside the `assets` directory, e.g. `images`, `scripts` for Javascript files, `styles` for CSS files, etc. This is also how the `marketplace-kit init` command will create the required directory structure.
+
+## Content Delivery Network
+
+Assets are uploaded to a Content Delivery Network (CDN). The directory structure on the CDN corresponds to the required directory structure of your code base, except for the beginning of the URL.
+
+**Example**
+
+Location of image asset in code base:
+`marketplace_builder/assets/images/logo.svg`
+
+URL of image asset on CDN:
+`https://dmtyylqvwgyxw.cloudfront.net/instances/163/assets/images/logo.svg`
+
+{% include 'alert/note', content="CDN host and Instance ID are dynamic and will be specific to your instance and region" %}
+
+## Accessing assets
+
+You can access assets through their relative path on the CDN, or with the `asset_url` filter.
+
+**Examples**
+
+Accessing an image from a CSS file located at `assets/styles/page.css`:
+`background: transparent url('../images/logo.svg') top center no-repeat;`
+
+Accessing a Javascript file from a layout:
+`<script src="{{ 'scripts/app.js' | asset_url }}"></script>`
+
+Accessing a CSS file from a layout:
+`<link rel="stylesheet" href="{{ 'styles/app.css' | asset_url }}">`
+
+Accessing an HTML file from a page:
+`<a href="{{ 'test.html' | asset_url }}">Test</a>`
+
+## Syncing and deploying assets
+
+Syncing and deploying without force mode only add files on the CDN, and all the added assets will stay in the database even if you delete them on your computer.
+
+To remove files from the database that you deleted on your computer, use deploy. See [Deploying and Syncing Changes]().
+
+## Related topics
+
+* [Using Static Assets on Your Pages](/get-started/pages/using-static-assets-pages)
+* [Adding Visuals to Your Pages: CSS](/get-started/pages/adding-visuals-pages-css)
+* [Adding Visuals to Your Pages: Liquid](/get-started/pages/adding-visuals-pages-liquid)
+* [Adding Visuals to Your Pages: Javascript](/get-started/pages/adding-visuals-pages-javascript)

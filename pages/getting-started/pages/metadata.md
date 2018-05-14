@@ -8,8 +8,6 @@ A page can be extended using `metadata` property to store any kind of key-value 
 ```yaml
 ---
 slug: signup
-format: html
-layout_name: application
 metadata:
   title: "This it the title"
   description: "A description"

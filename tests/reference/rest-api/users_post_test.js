@@ -12,5 +12,5 @@ Scenario('Create user', async (I) => {
     }
   };
   const response = await I.sendPostRequest('/api/users.json', JSON.stringify(payload));
-  assert.equal(response.status, 201);
+  assert.equal(response.status, 201, response.body);
 });

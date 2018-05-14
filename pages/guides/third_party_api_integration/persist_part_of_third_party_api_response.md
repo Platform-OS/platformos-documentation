@@ -136,7 +136,7 @@ redirect_to: /test-result
 api_call_notifications:
   - send_request
 ---
-{% form, url: "/api/users/{{ current_user.id }}" %}
+{% form url: "/api/users/{{ current_user.id }}" %}
   {% input 'email' %}
   {% input 'password' %}
   {% fields_for 'profiles' %}

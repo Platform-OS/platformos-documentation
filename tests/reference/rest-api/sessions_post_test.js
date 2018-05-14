@@ -9,7 +9,7 @@ Scenario('Login user', async (I) => {
   const payload = {
     "form_configuration_name": "reference_rest_api_create_session",
     "form": {
-      "email": "existing_user@platformos.com",
+      "email": user.email,
       "password": "somepassword"
     }
   };

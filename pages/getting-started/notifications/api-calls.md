@@ -30,7 +30,7 @@ headers: '{
 
 {% endraw %}
 
-This defines a POST request to the endpoint with newly created user's id in it. Please note that we do not store the response - it is fire and forget. In this example the body of the request is JSON, and to notify the endpoint about it, we have set the content-type header to be `application/json`. The very last thing again is connecting this api call notification with the form `form_configurations/developer/sign_up.liquid`:
+This defines a POST request to the endpoint with newly created user's id in it. Please note that we do not store the response - it is fire and forget. In this example the body of the request is JSON, and to notify the endpoint about it, we have set the `Content-Type` header to be `application/json`. The very last thing again is connecting this api call notification with the form `form_configurations/developer/sign_up.liquid`:
 
 {% raw %}
 
@@ -47,7 +47,7 @@ And that's it. Whenever user successfully sign ups, the `https://example.com/end
 
 {% include alert/important.html content="We do not send api calls on staging by default. Please contact us if you want to change this behaviour." %}
 
-## Parsing Api Response
+## Parsing API Response
 
 If you would like to do something a response, for example store part of the response in custom attribute for later reference, you can easily do it using graph mutations in `callback`, since you are able to access response body via `response.body`. Assuming the api returns json like:
 
@@ -103,4 +103,5 @@ to: 'https://example.com/endpoint/{{ form.id }}'
 callback: "{%- assign response_json = response.body | to_hash -%}{% execute_query persist_custom_attribute, id: form.id, third_party_api_id: response_json.third_party_api_id %}"
 ---
 ```
+
 {% endraw %}

@@ -1,0 +1,20 @@
+task default: %w[build]
+
+task :build do
+  require 'graphql-docs'
+
+  GraphQLDocs.build(
+    filename: '../../tmp/schema.graphql',
+    output_dir: '../../marketplace_builder/liquid_views/generated/graphql-docs',
+    landing_pages: GraphQLDocs::Configuration::GRAPHQLDOCS_DEFAULTS[:landing_pages].merge(
+      index: 'landing_pages/index.md'
+    ),
+    templates: GraphQLDocs::Configuration::GRAPHQLDOCS_DEFAULTS[:templates].merge(
+      default: 'layouts/default.html',
+      sidebar: 'layouts/sidebar.html'
+    ),
+    use_default_styles: false,
+    base_url: '/api-reference/graphql/g',
+    delete_output: true,
+  )
+end
