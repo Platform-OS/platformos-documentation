@@ -1,0 +1,79 @@
+---
+converter: markdown
+metadata:
+  title: Creating an API Call Notification
+slug: get-started/notifications/creating-api-call-notification
+---
+
+This guide will help you create an API call notification that pings an API endpoint when a new user signs up. 
+
+## Requirements
+To follow the steps in this tutorial, you should understand the concept of notifications. You'll also use the sign up form you created in a previous tutorial. 
+
+* [Notifications](/get-started/notifications/notifications)
+* [Creating a Sign Up Form](/get-started/users/creating-sign-up-form)
+
+## Steps 
+
+Creating an API call notification is a two-step process:
+
+1. Create API call notification 
+2. Connect notification to sign up form 
+
+### Step 1: Create API call notification
+
+Create an API call notification `notifications/api_call_notifications/ping_example_com_on_user_sign_up.liquid`:
+
+{% raw %}
+
+```liquid
+---
+name: ping_example_com_on_user_sign_up
+to: 'https://example.com/endpoint/{{ form.id }}'
+delay: 0
+enabled: true
+format: http
+trigger_condition: true
+request_type: POST
+headers: '{
+  "Content-Type": "application/json"
+}'
+---
+{
+  "first_name": "{{ form.first_name }}",
+  "id": "{{ form.id }}"
+}
+```
+
+{% endraw %}
+
+This defines a POST request to the endpoint with the newly created user's ID. The response is not stored, it's fire and forget. In this example the body of the request is JSON, and to notify the endpoint about it, you set the `Content-Type` header to `application/json`. 
+
+### Step 2: Connect notification to sign up form
+
+Connect the API call notification you created with the sign up form `form_configurations/developer/sign_up.liquid`:
+
+{% raw %}
+
+```liquid
+---
+api_call_notifications:
+  - ping_example_com_on_user_sign_up
+---
+```
+
+{% endraw %}
+
+Whenever a user successfully sign ups, the `https://example.com/endpoint/{% raw %}{{ form.id }}{% endraw %}` endpoint will be notified.
+
+{% include alert/important.html content="We do not send api calls on staging by default. Please [contact us](/contact-us) if you want to change this behavior." %}
+
+## Next steps
+
+Congratulations! You have created an API call notification. Now you can learn about parsing an API response. 
+ 
+* [Parsing an API Response](/get-started/notifications/parsing-api-response)
+
+## Questions?
+
+We are always happy to help with any questions you may have. Consult our [documentation](), [contact support](), or [connect with our sales team]().
