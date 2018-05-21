@@ -1,0 +1,91 @@
+---
+converter: markdown
+metadata:
+  title: Building a Transactable Creation Form
+slug: get-started/transactables/building-transactable-creation-form
+---
+
+This guide will help you build a form for creating a Transactable. 
+
+_This guide is part of a series that follows a scenario to demonstrate how to manage Transactables. You can find previous and next parts of the series in the Requirements and Next steps sections._
+
+## Requirements
+So that you can follow the steps in this tutorial, you should understand the concept of Transactables. This guide refers to the scenario and Transactable Type discussed in a previous tutorial: 
+
+* [Transactables](/get-started/transactables/creating-transactables)
+* [Creating a Transactable Type](/get-started/transactables/creating-transactable-type) (previous tutorial)
+
+## Steps 
+
+Building a Transactable creation form is a two-step process:
+
+1. Create form
+2. Embed form into a page
+
+### Step 1: Create form
+
+Create a form for Transactable creation: 
+
+{% raw %}
+
+```liquid
+---
+name: project
+resource: Transactable
+configuration:
+  name:
+    validation: { presence: true }
+  description:
+    validation:
+      presence: true
+  properties:
+    deadline:
+      validation:
+        presence: true
+    workplace_onsite:
+    workplace_online:
+    budget:
+      validation:
+        presence: true
+---
+{% form %}
+  {% input 'name' %}
+  {% input 'description', as: 'text' %}
+
+  {% fields_for 'properties' %}
+    {% input 'workplace_online', as: 'boolean', form: 'properties' %}
+    {% input 'workplace_onsite', as: 'boolean', form: 'properties' %}
+    {% input 'budget', form: 'properties' %}
+    {% input 'deadline', form: 'properties', placeholder: 'YYYY-mm-dd' %}
+  {% endfields_for %}
+  {% submit 'Save' %}
+{% endform %}
+```
+
+{% endraw %}
+
+### Step 2: Embed form into a page
+
+The page with the embedded form could look like this:
+
+{% raw %}
+
+```liquid
+---
+slug: client/projects/new
+layout_name: application
+---
+<h1>Create Project</h1>
+{% render_form 'project', parent_resource_id: 'project' %}
+```
+
+{% endraw %}
+
+## Next steps
+Congratulations! You have built a form for creating a Transactable. Now you can display the newly created Transactable:  
+
+* [Displaying a Transactable](/get-started/transactables/displaying-transactable)
+
+## Questions?
+
+We are always happy to help with any questions you may have. Consult our  [documentation](), [contact support](), or  [connect with our sales team](). 
