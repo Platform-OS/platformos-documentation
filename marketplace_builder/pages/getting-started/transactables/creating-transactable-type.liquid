@@ -1,0 +1,65 @@
+---
+converter: markdown
+metadata:
+  title: Creating a Transactable Type
+slug: get-started/transactables/creating-transactable-type
+---
+
+This guide will help you create a Transactable Type. Similarly to user profiles, before you start building a form for a Transactable, you need to create a [TransactableType](/reference/transactable-type) that defines the business rules of the transaction associated with this Transactable. 
+
+## Requirements
+So that you can follow the steps in this tutorial, you should understand the concept of Transactables. 
+
+* [Transactables](/get-started/transactables/creating-transactables)
+
+## Steps 
+
+Creating a Transactable is a two-step process:
+
+1. Define roles
+2. Create the Transactable file 
+
+### Step 1: Define roles  
+
+When defining business rules, it is critical to define which roles will be able to create a Transactable, and what it will represent. 
+
+For the sake of this tutorial, we will assume that you want to build a marketplace which connects Developers (who build marketplaces) with Clients (who want to hire them). Using this example scenario, there are different approaches to choose from, for example:
+
+* **Developer role creates Transactable**: In this scenario, developers create multiple services that can be booked on a time basis (e.g. per hour, day, week, month etc.)—each with a different price, availability, etc. The expected flow would be that clients, who need a developer’s help, would search for them, and when they find the right fit, they book them. During booking the client could provide some details about the project. Developers would have a choice to either confirm or reject the request. 
+
+* **Client role creates Transactable**: In this scenario, the Transactable would be a project that the client describes. The client could search for developers, and when they find the right fit, they invite them to their project and ask for the offer. The developer can reject the request or accept it by sending an offer. Multiple developers can be invited at the same time. Once the client chooses an offer, they accept it, and all others are automatically rejected. 
+
+The two flows described above are similar, but there are important differences: 
+
+* When clients create Transactables, you can guarantee that the client needs to provide information about the project only once. In the previous solution, if the developer rejected the request, the client had to try to book another developer, which means the client had to fill the same information again and again, until finally accepted. 
+* When developers create Transactables, it might be challenging to allow developers to find a project to work on. It is not a problem for the second option though, because you can implement search for projects, which are collected ahead of time, not during booking, so developers can find them, and request to work on them.
+
+In this series of guides you will implement a marketplace in the more complex, but also more powerful and flexible solution: the second option, allowing clients to create Transactables. 
+
+### Step 2: Create Transactable Type 
+ 
+You'll assume that developers are mainly interested in the deadline, the budget, and whether the project is remote or on-site. Each transactable by default has attributes name and description, which you can use. 
+
+Based on this specification, create the file `/transactable_types/project.yml`: 
+
+```yaml
+name: Project
+custom_attributes:
+- name: workplace_onsite
+  attribute_type: boolean
+- name: workplace_online
+  attribute_type: boolean
+- name: deadline
+  attribute_type: date
+- name: budget
+  attribute_type: float
+```
+
+## Next steps
+Congratulations! You have created a Transactable Type. Now you can build a form for creating Transactables:  
+
+* [Building a Transactable Creation Form](/get-started/transactables/building-transactable-creation-form)
+
+## Questions?
+
+We are always happy to help with any questions you may have. Consult our  [documentation](), [contact support](), or  [connect with our sales team](). 
