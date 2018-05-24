@@ -1,0 +1,60 @@
+---
+converter: markdown
+metadata:
+  title: Removing a Transactable
+slug: get-started/transactables/removing-transactable
+---
+
+This guide will help you remove a Transactable. 
+
+_This guide is part of a series that follows a scenario to demonstrate how to manage Transactables, and this tutorial is the last part of the series. You can find the previous part in the Requirements section._
+
+## Requirements
+So that you can follow the steps in this tutorial, you should understand the concept of Transactables. You'll also need to follow the series of tutorials about Transactables until the previous tutorial. 
+
+* [Transactables](/get-started/transactables/creating-transactables)
+* [Creating the Edit Transactable Page](/get-started/transactables/creating-edit-transactable-page) (previous tutorial) 
+
+## Steps 
+
+Removing a Transactable is a two-step process:
+
+1. Create Form Configuration to remove Transactable
+2. Render form 
+
+### Step 1: Create Form Configuration to remove Transactable
+Create `form_configurations/destroy_project.liquid`:
+
+{% raw %}
+
+```liquid
+---
+name: destroy_project
+resource: Transactable
+---
+{% form method: 'delete' %}
+  <input type="submit" value="Delete">
+{% endform %}
+```
+
+{% endraw %}
+
+### Step 2: Render form
+Render this form similarly to the one from the previous tutorial:
+{% raw %}
+
+```liquid
+{% render_form 'destroy_project', resource_id: @project.id %}
+```
+
+{% endraw %}
+
+## Next steps
+Congratulations! You have removed a Transactable, and finished the series of tutorials about managing Transactables. Now you can go on and learn about search:
+
+* [Search](/get-started/search/search)
+
+## Questions?
+
+We are always happy to help with any questions you may have. Consult our  [documentation](), [contact support](), or  [connect with our sales team](). 
+
