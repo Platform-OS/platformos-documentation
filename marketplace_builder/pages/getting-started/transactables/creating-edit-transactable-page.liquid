@@ -1,0 +1,69 @@
+---
+converter: markdown
+metadata:
+  title: Creating the Edit Transactable Page
+slug: get-started/transactables/creating-edit-transactable-page
+---
+
+This guide will help you create an edit page for a Transactable. 
+
+_This guide is part of a series that follows a scenario to demonstrate how to manage Transactables. You can find previous and next parts of the series in the Requirements and Next steps sections._
+
+## Requirements
+So that you can follow the steps in this tutorial, you should understand the concept of Transactables. You'll also need to follow the series of tutorials about Transactables until the previous tutorial. 
+
+* [Transactables](/get-started/transactables/creating-transactables)
+* [Displaying a Transactable](/get-started/transactables/displaying-transactable) (previous tutorial) 
+
+## Steps 
+
+Creating the edit Transactable page is a two-step process:
+
+1. Create page 
+2. Create GraphQL query 
+
+### Step 1: Create page 
+Create the edit Transactable page `views/pages/client/projects/edit.liquid`:
+
+{% raw %}
+
+```liquid
+---
+slug: client/projects/edit
+---
+{% query_graph 'current_user', result_name: 'g' %}
+{% query_graph 'get_project', result_name: 'graph_project', slug: params.slugs, creator_id: g.current_user.id %}
+{% if graph_project %}
+  <h1>Edit {{ project.name }}</h1>
+  {% render_form 'project', resource_id: @graph_project.project.id %}
+{% else %}
+  <p>Unfortunately we could not find this project.
+{% endif %}
+```
+
+{% endraw %}
+
+This code re-uses the current_user GraphQL query created in the previous tutorial. 
+
+### Step 2: Create GraphQL query
+The code you wrote in step 2 requires you to create a new `graph_queries/get_project.graphql`:
+
+```graphql
+query client_projects($creator_id: ID!, $slug: String!) {
+  project: transactable(creator_id: $creator_id, slug: $slug) {
+    id
+    name
+    slug
+  }
+}
+```
+## Next steps
+Congratulations! You have created the edit page for a Transactable. Now you can learn about removing a Transactable:
+
+* [Removing a Transactable](/get-started/transactables/removing-transactable)
+
+## Questions?
+
+We are always happy to help with any questions you may have. Consult our  [documentation](), [contact support](), or  [connect with our sales team](). 
+
+
