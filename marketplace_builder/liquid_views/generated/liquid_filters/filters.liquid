@@ -109,7 +109,7 @@ use negative values to obtain a date in the past</p>
         <span class='name'>date</span>
       
       
-        <span class='type'>(<tt>Date</tt>)</span>
+        <span class='type'>(<tt>String</tt>)</span>
       
       
       
@@ -272,8 +272,7 @@ negative values to obtain a date in the past</p>
     
       
       <pre class="example code"><code>valid/file.jpg -&gt; https://cdn.com/valid/file.jpg
-non_existing_file.jpg -&gt; https://cdn.com
-/search/Sydney/BlueRoad</code></pre>
+non_existing_file.jpg -&gt; https://cdn.com</code></pre>
     
   </div>
 <p class="tag_title">Parameters:</p>
@@ -369,76 +368,6 @@ non_existing_file.jpg -&gt; https://cdn.com
         &mdash;
         <div class='inline'>
 <p>array from which blank values are removed</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div>
-  {% endraw %}
-</div>
-
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="custom_sanitize-instance_method">
-  
-    #<strong>custom_sanitize</strong>(html = &#39;&#39;)  &#x21d2; <tt>String</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns sanitized version of the input string; uses a whitelist based
-approach for allowed elements and their attributes; the sanitization rules
-are not currently editable from the marketplace interface</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>html</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>&#39;&#39;</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>HTML string to be sanitized</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>sanitized version of the input string; uses a whitelist based approach for
-allowed elements and their attributes; the sanitization rules are not
-currently editable from the marketplace interface</p>
 </div>
       
     </li>
@@ -663,7 +592,7 @@ currently editable from the marketplace interface</p>
         <span class='name'>template</span>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt>String</tt>)</span>
       
       
       
@@ -683,6 +612,12 @@ currently editable from the marketplace interface</p>
         <span class='type'>(<tt>Hash</tt>)</span>
       
       
+      
+        &mdash;
+        <div class='inline'><ul><li>
+<p>url data</p>
+</li></ul>
+</div>
       
     </li>
   
@@ -716,7 +651,7 @@ currently editable from the marketplace interface</p>
   {% raw %}
     <h3 class="signature " id="extract_url_params-instance_method">
   
-    #<strong>extract_url_params</strong>(url, template)  &#x21d2; <tt>Hash</tt> 
+    #<strong>extract_url_params</strong>(url, templates)  &#x21d2; <tt>Hash</tt> 
   
 
   
@@ -745,29 +680,28 @@ returns { city: Sydney, street: &#39;BlueRoad&#39;}</code></pre>
   
     <li>
       
-        <span class='name'>template</span>
-      
-      
-        <span class='type'></span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><ul><li>
-<p>url template</p>
-</li></ul>
-</div>
-      
-    </li>
-  
-    <li>
-      
         <span class='name'>url</span>
       
       
         <span class='type'>(<tt>String</tt>)</span>
       
       
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>templates</span>
+      
+      
+        <span class='type'>(<tt>Array&lt;String&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>url templates array</p>
+</div>
       
     </li>
   
@@ -787,6 +721,77 @@ returns { city: Sydney, street: &#39;BlueRoad&#39;}</code></pre>
         <div class='inline'>
 <p>params</p>
 </div>
+      
+    </li>
+  
+</ul>
+
+</div>
+  {% endraw %}
+</div>
+
+    
+      <div class="method_details ">
+  {% raw %}
+    <h3 class="signature " id="fetch-instance_method">
+  
+    #<strong>fetch</strong>(hash, key)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{{ users | first | fetch: &quot;name&quot;}}</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>hash</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>key</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Object</tt>)</span>
+      
+      
       
     </li>
   
@@ -1305,13 +1310,57 @@ second parameter (an array of arrays)</p>
   {% raw %}
     <h3 class="signature " id="is_date_in_past-instance_method">
   
-    #<strong>is_date_in_past</strong>(date)  &#x21d2; <tt>Object</tt> 
+    #<strong>is_date_in_past</strong>(date)  &#x21d2; <tt>Boolean</tt> 
   
 
   
 
   
-</h3>
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns true if date passed is in the past, false otherwise</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>date</span>
+      
+      
+        <span class='type'>(<tt>Date</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>true if date passed is in the past, false otherwise</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
   {% endraw %}
 </div>
 
@@ -1871,7 +1920,7 @@ in the original array</p>
   {% raw %}
     <h3 class="signature " id="matches-instance_method">
   
-    #<strong>matches</strong>(string, regexp)  &#x21d2; <tt>Boolean</tt> 
+    #<strong>matches</strong>(text, regexp)  &#x21d2; <tt>Boolean</tt> 
   
 
   
@@ -1891,7 +1940,7 @@ in the original array</p>
   
     <li>
       
-        <span class='name'>string</span>
+        <span class='name'>text</span>
       
       
         <span class='type'>(<tt>String</tt>)</span>
@@ -1950,11 +1999,15 @@ match the first parameter</p>
     
       <div class="method_details ">
   {% raw %}
-    <h3 class="signature " id="nl2br-instance_method">
+    <h3 class="signature " id="new_line_to_br-instance_method">
   
-    #<strong>nl2br</strong>(html = &#39;&#39;)  &#x21d2; <tt>String</tt> 
+    #<strong>new_line_to_br</strong>(html = &#39;&#39;)  &#x21d2; <tt>String</tt> 
   
 
+  
+    <span class="aliases">Also known as:
+    <span class="names"><span id='nl2br-instance_method'>nl2br</span></span>
+    </span>
   
 
   
@@ -2004,70 +2057,6 @@ tag</p>
         &mdash;
         <div class='inline'>
 <p>replaces newlines in the input string with the &lt;br /&gt; HTML tag</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div>
-  {% endraw %}
-</div>
-
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="number_of_minutes_to_time-instance_method">
-  
-    #<strong>number_of_minutes_to_time</strong>(minutes)  &#x21d2; <tt>String</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns time in string in HH:MM format 24h clock</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>minutes</span>
-      
-      
-        <span class='type'>(<tt>Integer</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>number of minutes</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>time in string in HH:MM format 24h clock</p>
 </div>
       
     </li>
@@ -2404,71 +2393,6 @@ ago&#39; etc.</p>
         <div class='inline'>
 <p>a time object created from parsing the string representation of time given
 as input</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div>
-  {% endraw %}
-</div>
-
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="parse_to_minute-instance_method">
-  
-    #<strong>parse_to_minute</strong>(string)  &#x21d2; <tt>Integer</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns minutes since the start of day for the date parsed from the input
-string</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>string</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>string representing a date/time</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Integer</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>minutes since the start of day for the date parsed from the input string</p>
 </div>
       
     </li>
@@ -2929,7 +2853,7 @@ be visible in the browser</p>
   {% raw %}
     <h3 class="signature " id="regex_matches-instance_method">
   
-    #<strong>regex_matches</strong>(text, regex)  &#x21d2; <tt>Array&lt;Array&lt;String&gt;&gt;</tt> 
+    #<strong>regex_matches</strong>(text, regexp)  &#x21d2; <tt>Array&lt;Array&lt;String&gt;&gt;</tt> 
   
 
   
@@ -2969,7 +2893,18 @@ and the text &#39;abcdef&#39;, the result will look like:</p>
   
     <li>
       
-        <span class='name'>regex</span>
+        <span class='name'>text</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>regexp</span>
       
       
         <span class='type'>(<tt>String</tt>)</span>
@@ -2978,7 +2913,7 @@ and the text &#39;abcdef&#39;, the result will look like:</p>
       
         &mdash;
         <div class='inline'>
-<p>regex to use for matching</p>
+<p>regexp to use for matching</p>
 </div>
       
     </li>
@@ -3289,7 +3224,7 @@ parameter; [1,2,3,4] rotated by 2 gives [3,4,1,2]</p>
         <span class='name'>object</span>
       
       
-        <span class='type'>(<tt>Object</tt>)</span>
+        <span class='type'>(<tt>String</tt>)</span>
       
       
       
@@ -3315,70 +3250,6 @@ parameter; [1,2,3,4] rotated by 2 gives [3,4,1,2]</p>
         &mdash;
         <div class='inline'>
 <p>SHA1 digest of the input object</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div>
-  {% endraw %}
-</div>
-
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="shorten_url-instance_method">
-  
-    #<strong>shorten_url</strong>(url)  &#x21d2; <tt>String</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns url shortened using the Google service</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>url</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>the original url to be shortened</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>url shortened using the Google service</p>
 </div>
       
     </li>
@@ -3447,87 +3318,6 @@ part of a &#39;pretty&#39; URL; e.g. &#39;John arrived_foo&#39; becomes
 <p>replaces special characters in a string so that it may be used as part of a
 &#39;pretty&#39; URL; e.g. &#39;John arrived_foo&#39; becomes
 &#39;john-arrived-foo&#39;</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div>
-  {% endraw %}
-</div>
-
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="soft_concat-instance_method">
-  
-    #<strong>soft_concat</strong>(array, obj)  &#x21d2; <tt>Array</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns result contains all elements from both arrays.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>array</span>
-      
-      
-        <span class='type'>(<tt>Array</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>base array</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>obj</span>
-      
-      
-        <span class='type'>(<tt>Object</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>we will transform object into array and add it to the other. Method is
-called soft, because it will not crash when nil is provided as argument</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Array</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>result contains all elements from both arrays.</p>
 </div>
       
     </li>
@@ -3774,19 +3564,6 @@ will be based on what the format parameter specifies</p>
         <div class='inline'>
 <p>summarised value of array</p>
 </div>
-      
-    </li>
-  
-</ul>
-<p class="tag_title">Raises:</p>
-<ul class="raise">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Liquid::ArgumentError</tt>)</span>
-      
-      
       
     </li>
   
@@ -4066,86 +3843,6 @@ iso2, iso3</p>
         <div class='inline'>
 <p>returns mobile number in E.164 format; recommended for sending sms
 notifications</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div>
-  {% endraw %}
-</div>
-
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="to_money-instance_method">
-  
-    #<strong>to_money</strong>(amount, currency)  &#x21d2; <tt>MoneyDrop</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns a Money object constructed with the given amount and currency</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>amount</span>
-      
-      
-        <span class='type'>(<tt>Float</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>currency amount</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>currency</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>name of the currency</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>MoneyDrop</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>a Money object constructed with the given amount and currency</p>
 </div>
       
     </li>
