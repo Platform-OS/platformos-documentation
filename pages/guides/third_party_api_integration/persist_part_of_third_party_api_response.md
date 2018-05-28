@@ -1,9 +1,9 @@
 ---
-title: Persist part of third party api response
+title: Persist part of third party API response
 permalink: /guides/integration-with-third-party-api/persist-third-party-api-response/
 ---
 
-Here is complete example of how to do it. We start by creating a new profile, let's call it `test_profile`. We will also need a custom attribute to store the actual value from the api, let's call it `third_party_api_value`:
+Here is a complete example of how to do it. We start by creating a new profile, let's call it `test_profile`. We will also need a custom attribute to store the actual value from the API, let's call it `third_party_api_value`:
 
 ```liquid
 # user_profile_types/default.yml
@@ -14,7 +14,7 @@ custom_attributes:
   attribute_type: string
 ```
 
-Now we will need a test endpoint, which would simulate a third party api json response. It could look like this:
+Now we will need a test endpoint, which would simulate a third party API JSON response. It could look like this:
 
 {% raw %}
 
@@ -30,10 +30,10 @@ slug: test-endpoint
 
 {% endraw %}
 
-The next step is to create api call notifcation, which should do two things:
+The next step is to create an API call notification, which should do two things:
 
 1.  send a request to `http(s)://<your_domain>.com/test-endpoint.json`
-2.  store the value from the response in custom attribute
+2.  store the value from the response in a custom attribute
     This can look like this:
 
 {% raw %}
@@ -61,7 +61,7 @@ headers: '{
 
 Please make sure to replace `example.com` with your domain.
 
-In the callback, we use `execute_query` tag, which invokes GraphQL mutation with provided arguments. In our example, the query accept two arguments - the `user_id`, which is the id of the user, which we want to update, and the `third_party_api_id` which is the value which we want to store. The content of graphql mutation file looks like this:
+In the callback, we use `execute_query` tag, which invokes GraphQL mutation with provided arguments. In our example, the query accepts two arguments - the `user_id`, which is the id of the user, which we want to update, and the `third_party_api_id` which is the value which we want to store. The content of GraphQL mutation file looks like this:
 
 ```js
 # marketplace_builder/graph_queries/persist_in_custom_attribute.graphql
@@ -84,7 +84,7 @@ mutation persist_in_custom_attribute($user_id: ID!, $third_party_api_id: String!
 }
 ```
 
-The mutation itself will pass the arguments to a form we called `callback_persist_in_custom_attribute`. We need to make sure that configuration includes the fields we want to persist. Please note: by re-using an idea of `form_configuration` here, you can then easily send additional emails, smses or even another api calls. All we want to do in this example though, is to store the value, so we will not add any extra notifications.
+The mutation itself will pass the arguments to a form we called `callback_persist_in_custom_attribute`. We need to make sure that configuration includes the fields we want to persist. Please note: by re-using an idea of `form_configuration` here, you can then easily send additional emails, SMSes or even another API calls. All we want to do in this example though is to store the value, so we will not add any extra notifications.
 
 {% raw %}
 
@@ -104,7 +104,7 @@ configuration:
 
 {% endraw %}
 
-Once we have api call notification defined, we should associate it with a form, to trigger it. That's why the next step iss creating a page, in which we will embed such form:
+Once we have API call notification defined, we should associate it with a form, to trigger it. That's why the next step is creating a page, in which we will embed such form:
 
 {% raw %}
 
@@ -119,7 +119,7 @@ slug: test-form
 
 {% endraw %}
 
-Now, let's create the form itself and associate it with our api call notification. Let's assume this is sign up form, which creates in the background `test_profile`.
+Now, let's create the form itself and associate it with our API call notification. Let's assume this is a signup form, which creates in the background `test_profile`.
 
 {% raw %}
 
@@ -152,7 +152,7 @@ api_call_notifications:
 
 {% endraw %}
 
-We are done! Once the user fills the sign up form, and there won't be any validation errors, we will proceed to trigger the api call notificaiton. If it is successfull, it will trigger the callback, in which we will have access to server's response via `response` variable. We will be able to access various things, like `response.code`, and the most important thing - `response.body`. The callback will run graphql mutation, which will use `form_configuration` to persist the data.
+We are done! Once the user fills the signup form, and there won't be any validation errors, we will proceed to trigger the API call notification. If it is successful, it will trigger the callback, in which we will have access to server's response via `response` variable. We will be able to access various things, like `response.code`, and the most important thing - `response.body`. The callback will run GraphQL mutation, which will use `form_configuration` to persist the data.
 
 Now, the last thing we might want to do is to see the actual result In the `test_form` we have setup redirection to `/test-result`, so let's create this page and make it display `third_party_api_value`.
 
@@ -169,7 +169,7 @@ Third Party Api Value: for {{ graph_current_user.current_user.email }}: {{ graph
 
 {% endraw %}
 
-which uses the following graphql query:
+which uses the following GraphQL query:
 
 ```
 # marketplace_builder/graph_queries/get_current_user_third_party_api_value.graphql
@@ -183,4 +183,4 @@ query get_current_user_third_party_api_value {
 }
 ```
 
-Done! Now we can go to /test-form page, provide sign up details, click the save button. Initially we will not see the correct value - this is because the api call is triggered in the background, outside of the request lifecycle. This is important to not rely on a third party api availability. However, when you refresh after couple seconds, you will see that the value has been populated.
+Done! Now we can go to /test-form page, provide sign up details, click the save button. Initially, we will not see the correct value - this is because the API call is triggered in the background, outside of the request lifecycle. This is important to not rely on a third party API availability. However, when you refresh after couple seconds, you will see that the value has been populated.

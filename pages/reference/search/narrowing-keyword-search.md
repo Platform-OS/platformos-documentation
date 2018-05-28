@@ -5,7 +5,7 @@ permalink: /reference/search/narrowing-keyword-search
 
 By default keyword search is looking in all fields that are provided to the database.
 
-In your graphql query you can decide which fields should be search in.
+In your GraphQL query you can decide which fields should be search in.
 
 If you leave the `keyword` field empty, it means you are looking for everything, so narrowing by field names will not be applied.
 

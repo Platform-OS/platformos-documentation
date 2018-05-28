@@ -1,9 +1,9 @@
 ---
-title: Create items from external api call
+title: Create items from external API call
 permalink: /guides/integration-with-third-party-api/create-items-from-external-api-call/
 ---
 
-To create transactables from existing data you can make an api call to our service.
+To create transactables from existing data you can make an API call to our service.
 
 In order to make it we need:
 

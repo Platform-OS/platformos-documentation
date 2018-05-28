@@ -3,9 +3,9 @@ title: Managing Transactable
 permalink: /getting-started/transactables/managing-transactable
 ---
 
-Similarly to user profiles, for which we were creates a file in `user_profile_types` first, before we start building a form for project, we need to create [TransactableType](/reference/transactable-type). It defines the business rules of the transaction associated with this transactable - whether it is time based booking, an offer or something else. This files also will define available property of project.
+Similarly to user profiles, for which we initially created a file in `user_profile_types`, when we start building a form for a project we need to create [TransactableType](/reference/transactable-type). It defines the business rules of the transaction associated with this transactable - whether it is time-based booking, an offer or something else. This file will also define the available properties of the project.
 
-In the previous section we have defined briefly super high level business rules - a client should be able to create a Project. Developer will be invited to the project by client, and he would need to submit his offer. Project should contain enough information to let Developer decide, whether he is interested in working on it or not. Let's assume, that developers are mainly interested what is the deadline, the budget, whether it is remote or onsite. Each transactable by default have attributes name and description, which we will be able to use. Based on this specification, we create a file named `/transactable_types/project.yml` with the following content:
+In the previous section, we have defined briefly super high-level business rules - a client should be able to create a Project. A Developer will be invited to the project by a client, and they would need to submit their offer. A Project should contain enough information to let the Developer decide, whether they are interested in working on it or not. Let's assume, that developers are mainly interested in the deadline, the budget and whether it is remote or onsite. Each transactable by default have attributes name and description, which we will be able to use. Based on this specification, we create a file named `/transactable_types/project.yml` with the following content:
 
 ```yaml
 ---
@@ -62,7 +62,7 @@ configuration:
 
 {% endraw %}
 
-The page with embedded form could look like this:
+The page with an embedded form could look like this:
 
 {% raw %}
 
@@ -77,7 +77,7 @@ layout_name: application
 
 {% endraw %}
 
-To display newly created transactable (with pagination), we can inject this code for example on the home page, which re-uses already created `current_user.graphql`:
+To display a newly created transactable (with pagination), we can inject this code for example on the homepage, which re-uses the already created `current_user.graphql`:
 
 {% raw %}
 
@@ -112,7 +112,7 @@ To display newly created transactable (with pagination), we can inject this code
 
 {% endraw %}
 
-A common issue in liquid are types - most of the time liquid converts everything to string. This is what it is often necessary to do coercion in liquid. In our example, url parameters are strings, and graphql expects `page` variable to be integer. To solve the problem, we just add a `0`, which casts string to integer:
+A common issue in liquid are types - most of the time liquid converts everything to string. This is why it is often necessary to do coercion in liquid. In our example, url parameters are strings, and GraphQL expects `page` variables to be integers. To solve the problem, we just add a `0`, which casts string to integer:
 {% raw %}`{% assign page = params.page | default: 1 | plus: 0 %}`{% endraw %}
 
 We also have to add the graph query `graph_queries/client_projects.graphql`:
@@ -160,7 +160,7 @@ slug: client/projects/edit
 
 {% endraw %}
 
-Which would re-use current_user graph query created in previous step, and will require a new `graph_queries/get_project.graphql`:
+Which would re-use the current_user graph query created in the previous step, and will require a new `graph_queries/get_project.graphql`:
 
 ```graphql
 query client_projects($creator_id: ID!, $slug: String!) {
@@ -172,7 +172,7 @@ query client_projects($creator_id: ID!, $slug: String!) {
 }
 ```
 
-To complete managing project, one would also need possibility to remove it via `form_configurations/destroy_project.liquid`:
+To complete managing the project, one would also need the possibility to remove it via `form_configurations/destroy_project.liquid`:
 
 {% raw %}
 

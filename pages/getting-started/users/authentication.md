@@ -121,7 +121,7 @@ callback_actions: |-
 
 {% endraw %}
 
-In a callback we graphql query to check if the provided email address has associated user in DB, and if yes, we generate a temporary token, which we will use to authenticate the request. The query in `graph_queries/generate_user_temporary_token.graphql` can look like this:
+In a callback we GraphQL query to check if the provided email address has associated user in DB, and if yes, we generate a temporary token, which we will use to authenticate the request. The query in `graph_queries/generate_user_temporary_token.graphql` can look like this:
 
 ```
 query generate_user_temporary_token($email: String) {
@@ -141,7 +141,7 @@ custom_attributes:
   attribute_type: string
 ```
 
-Ths way, we will be able to make sure that only the most recent token can be used. To store the actual value, we need to create graphql mutation `graph_queries/update_password_token.graphql`:
+Ths way, we will be able to make sure that only the most recent token can be used. To store the actual value, we need to create GraphQL mutation `graph_queries/update_password_token.graphql`:
 
 ```
 mutation update_password_token(
@@ -169,7 +169,7 @@ mutation update_password_token(
 }
 ```
 
-Each graphql mutation has associated form configuration with it, in this case it's `update_password_token`. Let's create `form_configurations/update_password_token.liquid`:
+Each GraphQL mutation has associated form configuration with it, in this case it's `update_password_token`. Let's create `form_configurations/update_password_token.liquid`:
 
 {% raw %}
 
@@ -218,7 +218,7 @@ layout_path: mailer
 
 {% endraw %}
 
-The email relies on graphql query called `get_user_with_password_token`, to fetch user's first name and the value of the token. Let's create `graph_queries/get_user_with_password_token.graphql` then:
+The email relies on GraphQL query called `get_user_with_password_token`, to fetch user's first name and the value of the token. Let's create `graph_queries/get_user_with_password_token.graphql` then:
 
 ```
 query get_user_with_password_token($email: String, $id: ID) {
@@ -270,7 +270,7 @@ slug: reset-password
 
 {% endraw %}
 
-On this page we check, if the provided token is valid as well as we fetch user's id based on email provided in the parameter. We re-use the graphql query created earlier.
+On this page we check, if the provided token is valid as well as we fetch user's id based on email provided in the parameter. We re-use the GraphQL query created earlier.
 
 On this page we want to embed form to actually reset password, hence we create a file `form_configurations/reset_password.liquid`:
 
@@ -355,4 +355,4 @@ Now on any given page (including layout itself, though be careful with adding qu
 
 {% endraw %}
 
-which fetches information defined in the graphql file for currently logged in user and stores it in variable named `g`. The returned data is a standard hash, so you can even display it via doing {% raw %}{{ g }}{% endraw %}.
+which fetches information defined in the GraphQL file for currently logged in user and stores it in variable named `g`. The returned data is a standard hash, so you can even display it via doing {% raw %}{{ g }}{% endraw %}.

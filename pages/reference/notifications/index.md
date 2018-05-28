@@ -9,7 +9,7 @@ Then, depending what type of the notification you would like to define, you shou
 
 1.  `email_notifications` - contain all email notifications
 2.  `sms_notifications` - contain all sms notifications
-3.  `api_call_notifications` - contain all api call notifiations
+3.  `api_call_notifications` - contain all API call notifiations
 
 {% include alert/note.html content="If for any reason subdirectory you need to use does not exist, just create it." %}
 
