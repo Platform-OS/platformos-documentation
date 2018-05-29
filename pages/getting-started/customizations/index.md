@@ -186,7 +186,7 @@ configuration:
 
 The `redirect_to` configuration option defines where to redirect the user after successful form submission. The predefined `form`, `fields_for` tags allow you to create context for submitted data.
 
-For mor information of advanced form configuration please visit [Form Configuration Documentation](/reference/form-configurations-static/).
+For more information of advanced form configuration please visit [Form Configuration Documentation](/reference/form-configurations-static/).
 
 To display the form on previously created `contacts` page you have to include it with:
 

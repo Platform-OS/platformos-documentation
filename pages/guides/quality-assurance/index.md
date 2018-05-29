@@ -5,7 +5,7 @@ permalink: /guides/quality-assurance/
 
 ## Introduction
 
-Any changes made in the front end of marketplace may affect the functionality, existing features and views of pages. Hence, it is very important to make sure that no damages have been made after releasing changes into the production environment your client. Any defect encountered by the user may be the cause of unpleasant consequences, including: loss of reputation, the user switching to another service, a drop in income. Below is a set of core practices that will save you many unnecessary problems. Thanks to our tips, you will find errors before you make any changes to production environment – that is, at the stage where removal will be at the lowest cost and will not cause any negative impact. Keep in mind that the testing process should begin as early as possible. Early testing allows you to prevent defects from the very beginning in MP's for your clients. Here are the types of tests and a set of practices that you can prepare and execute in a timely manner, in order to build high quality applications.
+Any changes made in the front end of the marketplace may affect the functionality, existing features and views of pages. Hence, it is very important to make sure that no damages have been made after releasing changes into the production environment your client. Any defect encountered by the user may be the cause of unpleasant consequences, including loss of reputation, the user switching to another service, a drop in income. Below is a set of core practices that will save you many unnecessary problems. Thanks to our tips, you will find errors before you make any changes to production environment – that is, at the stage where removal will be at the lowest cost and will not cause any negative impact. Keep in mind that the testing process should begin as early as possible. Early testing allows you to prevent defects from the very beginning in MP's for your clients. Here are the types of tests and a set of practices that you can prepare and execute in a timely manner, in order to build high-quality applications.
 
 ## Areas of application with the highest risk
 
@@ -38,7 +38,7 @@ Smoke tests may be manual and automated tests. It is important, however, that th
 
 ## Sanity Tests
 
-Sanity is a more in-depth method of testing of individual functionalities. These tests answer the question whether the logic of the application complies with the requirements. In case when the sanity test have negative results, the next stages of testing are usually put on hold, until all detected errors are fixed.
+Sanity is a more in-depth method of testing of individual functionalities. These tests answer the question whether the logic of the application complies with the requirements. In cases when the sanity test has negative results, the next stages of testing are usually put on hold, until all detected errors are fixed.
 Both sanity and smoke tests belong to the same test group, which is characterized by:
 
 * A quick execution time
@@ -82,5 +82,5 @@ It is important to keep in mind a few key principles when making new changes to 
 * Depending on the size of the project, develop your own smoke tests, sanity tests and regression tests.
 * Before making any changes to the production environment, perform smoke tests; in case of major changes – apply sanity tests and a regression test package.
 * After uploading changes to the production environment, perform a sanity check to ensure that new and existing functionalities are working properly.
-* For larger applications, it is worth to perform exploratory tests regulary.
+* For larger applications, it is worth it to perform exploratory tests regularly.
 * It is worth it to automatize the smoke and sanity tests, as they are tests that are performed very often. Thanks to automation, we may save a lot of time and obtain quick feedback on the condition of our application.

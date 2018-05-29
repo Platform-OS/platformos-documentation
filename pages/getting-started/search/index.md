@@ -3,9 +3,9 @@ title: Search
 permalink: /getting-started/search/
 ---
 
-Search does not really differ from any other graphql query.
+Search does not really differ from any other GraphQL query.
 
-It is usually more complex, because of many number of additional filters that user can choose, but that's it. You can build search for any object supported in GraphQL - most common choices are Users and Transactables. A minimum example of graphql query to find all not deleted transactables could look like:
+It is usually more complex, because of many number of additional filters that user can choose, but that's it. You can build search for any object supported in GraphQL - most common choices are Users and Transactables. A minimum example of GraphQL query to find all not deleted transactables could look like:
 
 ```graphql
 query demo_search_transactables($query: String, $is_deleted: Boolean = false) {
@@ -21,7 +21,7 @@ query demo_search_transactables($query: String, $is_deleted: Boolean = false) {
 
 {% include alert/note.html content="By default server is not returning deleted records. We just use it as an example of argument that can be overridden." %}
 
-Above graphql consists of three main sections:
+Above GraphQL consists of three main sections:
 
 1.  Query arguments - usually passed from the liquid to parametrize your query. In example below, `$query: String`. Defines what will be used in the filters section and what is the data type of passed argument. It is also possible to set default value for any given argument - default value will be used if it is not passed to the execute query tag
 

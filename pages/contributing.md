@@ -12,7 +12,7 @@ Documentation is separated into following sections:
 
 * _Getting started_ - step by step description of setting up a marketplace
 * _Guides_ - list of common use patterns
-* _Reference_ - list of all APIs, drops, graphql properties etc
+* _Reference_ - list of all APIs, drops, GraphQL properties etc
 
 Based on this structure we create permalinks using folder structure, where each nested level is another folder, e.g
 
