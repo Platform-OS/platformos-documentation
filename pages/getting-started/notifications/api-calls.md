@@ -5,7 +5,7 @@ permalink: /getting-started/notifications/api-calls
 
 ## Creating first API call
 
-The last notification type is api call. The principle is the same as with previous examples. We first create api call notification by adding `notifications/api_call_notifications/ping_example_com_on_user_sign_up.liquid`:
+The last notification type is API call. The principle is the same as with previous examples. We first create API call notification by adding `notifications/api_call_notifications/ping_example_com_on_user_sign_up.liquid`:
 
 {% raw %}
 
@@ -30,7 +30,7 @@ headers: '{
 
 {% endraw %}
 
-This defines a POST request to the endpoint with newly created user's id in it. Please note that we do not store the response - it is fire and forget. In this example the body of the request is JSON, and to notify the endpoint about it, we have set the `Content-Type` header to be `application/json`. The very last thing again is connecting this api call notification with the form `form_configurations/developer/sign_up.liquid`:
+This defines a POST request to the endpoint with newly created user's id in it. Please note that we do not store the response - it is fire and forget. In this example the body of the request is JSON, and to notify the endpoint about it, we have set the `Content-Type` header to be `application/json`. The very last thing again is connecting this API call notification with the form `form_configurations/developer/sign_up.liquid`:
 
 {% raw %}
 
@@ -45,11 +45,11 @@ api_call_notifications:
 
 And that's it. Whenever user successfully sign ups, the `https://example.com/endpoint/{% raw %}{{ form.id }}{% endraw %}` endpoint will be notified.
 
-{% include alert/important.html content="We do not send api calls on staging by default. Please contact us if you want to change this behaviour." %}
+{% include alert/important.html content="We do not send API calls on staging by default. Please contact us if you want to change this behaviour." %}
 
 ## Parsing API Response
 
-If you would like to do something a response, for example store part of the response in custom attribute for later reference, you can easily do it using graph mutations in `callback`, since you are able to access response body via `response.body`. Assuming the api returns json like:
+If you would like to do something a response, for example store part of the response in custom attribute for later reference, you can easily do it using graph mutations in `callback`, since you are able to access response body via `response.body`. Assuming the API returns json like:
 
 ```json
 {
@@ -57,7 +57,7 @@ If you would like to do something a response, for example store part of the resp
 }
 ```
 
-and you want store the `third_party_api_id` value (which is `id-1`), the complete example would look as following. First, you need to create a custom attribute in user profile (we will use `default_profile` in this example). Then, you should add graphql mutation:
+and you want store the `third_party_api_id` value (which is `id-1`), the complete example would look as following. First, you need to create a custom attribute in user profile (we will use `default_profile` in this example). Then, you should add GraphQL mutation:
 
 ```graphql
 ## graphql_queries/store_third_party_api_id.graphql
@@ -91,7 +91,7 @@ configuration:
 ---
 ```
 
-Last, but not least, you need to extend api call notification by adding proper callback, which executes the mutation with the input received form the third party API:
+Last, but not least, you need to extend API call notification by adding proper callback, which executes the mutation with the input received form the third party API:
 
 {% raw %}
 

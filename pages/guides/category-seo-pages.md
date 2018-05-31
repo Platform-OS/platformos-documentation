@@ -13,7 +13,7 @@ layout: page
 published: true
 ---
 
-    Requirements: graphql queries, pages, liquid, html
+    Requirements: GraphQL queries, pages, liquid, html
 
 We want to have listings divided by country, so we will have
 

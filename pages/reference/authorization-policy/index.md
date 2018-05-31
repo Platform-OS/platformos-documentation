@@ -13,7 +13,7 @@ If the content of the policy evaluates to anything other than `true`, policy is 
 
 To add an authorization policy, create a file in `authorization_policies/` directory, for example `only_allowed_by_johns.liquid`. You are allowed to use all liquid features and GraphQL in your authorization policy.
 
-Assuming you have prepared graphql query called `current_user`, example policy file can look like:
+Assuming you have prepared GraphQL query called `current_user`, example policy file can look like:
 
 {% raw %}
 

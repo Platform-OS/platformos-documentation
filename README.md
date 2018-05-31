@@ -40,6 +40,7 @@ Thank you to everyone who help our documentation in the journey to excellence. :
 ## Generators
 
     ./scripts/generate_graphql.sh
+    ./scripts/generate_liquid_filters.sh
     ./scripts/generate_rest_api.sh
 
 ## Testing
