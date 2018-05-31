@@ -1,0 +1,20 @@
+---
+converter: markdown
+metadata:
+  title: Validation in Form Configuration
+  slug: reference/form-configurations/form-configurations/validation
+---
+
+**Validations** in Form Configurations are used to ensure that fields or attributes correspond to the specified rules, e.g. an `email` field can have a validation that ensures uniqueness (no two user can sign up with the same email address), it has to be a valid email, and it can't be blank.  
+
+## Validation example
+
+```yml
+validation:
+  presence: true
+  unique:
+    scope:
+      - customizable_type
+      - properties: customer_slug
+    message: Invitation already sent
+```
