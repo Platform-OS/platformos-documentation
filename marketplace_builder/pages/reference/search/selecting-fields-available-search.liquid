@@ -1,0 +1,38 @@
+---
+converter: markdown
+metadata:
+  title: Selecting Fields Available for Search
+slug: reference/search/selecting-fields-available-search
+---
+
+Some use cases require you to select fields available for search. For example, you want to give your users the ability to search through users but only using their `first_name`.
+
+## Profile fields 
+
+```graphql
+query get_owners {
+  people(query: { keyword: "John", fields: [{ name: "first_name" }] }) {
+    results {
+      first_name
+    }
+  }
+}
+```
+
+Returns users whose `first_name` exactly matches `John`.
+
+## Custom attributes
+
+```graphql
+query get_providers {
+  listings(
+    query: { keyword: "20", fields: [{ name: "properties.service_radius" }] }
+  ) {
+    results {
+      service_radius: property(name: "service_radius")
+    }
+  }
+}
+```
+
+Gets all Transactables where Custom Attribute `service_radius` equals `20`. It is exact search, but not case sensitive.
