@@ -20,7 +20,16 @@
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{% assign array = &#39;a,b,c&#39; | split: &#39;,&#39; %}
+{{ array | add_to_array: &#39;d&#39; }} =&gt; [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;]</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -101,7 +110,15 @@ use negative values to obtain a date in the past</p>
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{{ &#39;2010-01-01&#39; | add_to_date: 1 }} =&gt; 2010-01-02</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -182,7 +199,15 @@ negative values to obtain a date in the past</p>
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{{ | }} =&gt;</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -271,8 +296,7 @@ negative values to obtain a date in the past</p>
     <p class="tag_title">Examples:</p>
     
       
-      <pre class="example code"><code>valid/file.jpg -&gt; https://cdn.com/valid/file.jpg
-non_existing_file.jpg -&gt; https://cdn.com</code></pre>
+      <pre class="example code"><code>{{ &quot;valid/file.jpg&quot; | asset_url }} =&gt; https://cdn-server.com/valid/file.jpg</code></pre>
     
   </div>
 <p class="tag_title">Parameters:</p>
@@ -334,7 +358,16 @@ non_existing_file.jpg -&gt; https://cdn.com</code></pre>
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{{ array }} =&gt; [1,2,null,4]
+{{ array | compact }} =&gt; [1,2,4]</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -381,86 +414,6 @@ non_existing_file.jpg -&gt; https://cdn.com</code></pre>
     
       <div class="method_details ">
   {% raw %}
-    <h3 class="signature " id="date_before-instance_method">
-  
-    #<strong>date_before</strong>(first_date, second_date)  &#x21d2; <tt>Boolean</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns true if first date is lower than second date</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>first_date</span>
-      
-      
-        <span class='type'>(<tt>Time</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>time which will be compared to the second one</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>second_date</span>
-      
-      
-        <span class='type'>(<tt>Time</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>second time, against which we will do comparison</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Boolean</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>returns true if first date is lower than second date</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div>
-  {% endraw %}
-</div>
-
-    
-      <div class="method_details ">
-  {% raw %}
     <h3 class="signature " id="detect-instance_method">
   
     #<strong>detect</strong>(objects, conditions = {})  &#x21d2; <tt>Object</tt> 
@@ -478,7 +431,16 @@ non_existing_file.jpg -&gt; https://cdn.com</code></pre>
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{{ objects }} =&gt; [{&quot;foo&quot;:1,&quot;bar&quot;:&quot;a&quot;},{&quot;foo&quot;:2,&quot;bar&quot;:&quot;b&quot;},{&quot;foo&quot;:3,&quot;bar&quot;:&quot;c&quot;}]
+{{ objects | detect: foo: 2 }} =&gt; [{&quot;foo&quot;:2,&quot;bar&quot;:&quot;b&quot;}]</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -580,8 +542,8 @@ non_existing_file.jpg -&gt; https://cdn.com</code></pre>
     <p class="tag_title">Examples:</p>
     
       
-      <pre class="example code"><code>/search/{city}/{street} + { city: Sydney, street: &#39;BlueRoad&#39;} produces
-/search/Sydney/BlueRoad</code></pre>
+      <pre class="example code"><code>{{ &quot;/search/{city}/{street}&quot; | expand_url_template city: &quot;Sydney&quot;, street: &quot;BlueRoad&quot; }}
+=&gt; /search/Sydney/BlueRoad</code></pre>
     
   </div>
 <p class="tag_title">Parameters:</p>
@@ -671,8 +633,8 @@ non_existing_file.jpg -&gt; https://cdn.com</code></pre>
     <p class="tag_title">Examples:</p>
     
       
-      <pre class="example code"><code>/search/Sydney/BlueRoad + /search/{city}/{street}
-returns { city: Sydney, street: &#39;BlueRoad&#39;}</code></pre>
+      <pre class="example code"><code>{{ &quot;/search/Sydney/BlueRoad&quot; | extract_url_params: &quot;/search/{city}/{street}&quot; }}
+=&gt; {&quot;city&quot;=&gt;&quot;Sydney&quot;, &quot;street&quot;=&gt;&quot;BlueRoad&quot;}</code></pre>
     
   </div>
 <p class="tag_title">Parameters:</p>
@@ -753,7 +715,7 @@ returns { city: Sydney, street: &#39;BlueRoad&#39;}</code></pre>
     <p class="tag_title">Examples:</p>
     
       
-      <pre class="example code"><code>{{ users | first | fetch: &quot;name&quot;}}</code></pre>
+      <pre class="example code"><code>{{ users | first | fetch: &quot;name&quot;}} =&gt; &quot;Jane&quot;</code></pre>
     
   </div>
 <p class="tag_title">Parameters:</p>
@@ -804,74 +766,6 @@ returns { city: Sydney, street: &#39;BlueRoad&#39;}</code></pre>
     
       <div class="method_details ">
   {% raw %}
-    <h3 class="signature " id="filter_text-instance_method">
-  
-    #<strong>filter_text</strong>(text = &#39;&#39;)  &#x21d2; <tt>String</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns filtered version of the input text using the marketplace global
-text filters</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>text</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>&#39;&#39;</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>text to be filtered</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>filtered version of the input text using the marketplace global text
-filters</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div>
-  {% endraw %}
-</div>
-
-    
-      <div class="method_details ">
-  {% raw %}
     <h3 class="signature " id="flatten-instance_method">
   
     #<strong>flatten</strong>(array)  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
@@ -889,7 +783,16 @@ filters</p>
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{{ array_of_arrays }} =&gt; [[1,2], [3,4], [5,6]]
+{{ array_of_arrays | flatten }} =&gt; [1,2,3,4,5,6]</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -954,7 +857,20 @@ parameter</p>
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{{ objects }} =&gt;  [
+  { size: &#39;xl&#39;, color: &#39;red&#39;},
+  { size: &#39;xl&#39;, color: &#39;yellow&#39;},
+  { size: &#39;s&#39;, color: &#39;red&#39;}
+ ]
+{{ objects | group_by: &#39;size&#39; }} =&gt; {&quot;xl&quot;=&gt;[{&quot;size&quot;=&gt;&quot;xl&quot;, &quot;color&quot;=&gt;&quot;red&quot;}, {&quot;size&quot;=&gt;&quot;xl&quot;, &quot;color&quot;=&gt;&quot;yellow&quot;}], &quot;s&quot;=&gt;[{&quot;size&quot;=&gt;&quot;s&quot;, &quot;color&quot;=&gt;&quot;red&quot;}]}</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -1097,7 +1013,15 @@ first word, turns underscores into spaces, and strips a trailing
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{{ &#39;car_model&#39; | humanize }} =&gt; &#39;Car model&#39;</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -1164,7 +1088,16 @@ the second parameter (an array of arrays)</p>
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{% assign elements = &#39;1,2,3,4&#39; | split: &#39;,&#39;
+{{ elements | in_groups_of: 3 }} =&gt; [[1, 2, 3], [4, null, null]]</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -1245,7 +1178,18 @@ second parameter (an array of arrays)</p>
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{% assign array = &#39;1,2,3,4&#39; | split: &#39;,&#39; %}
+{% assign other_array = &#39;3,4,5,6&#39; | split: &#39;,&#39; %}
+
+{{ array | intersection: other_array }} =&gt; [3,4]</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -1308,6 +1252,98 @@ second parameter (an array of arrays)</p>
     
       <div class="method_details ">
   {% raw %}
+    <h3 class="signature " id="is_date_before-instance_method">
+  
+    #<strong>is_date_before</strong>(first_date, second_date)  &#x21d2; <tt>Boolean</tt> 
+  
+
+  
+    <span class="aliases">Also known as:
+    <span class="names"><span id='date_before-instance_method'>date_before</span></span>
+    </span>
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns true if first date is lower than second date</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{{ &#39;2010-01-02&#39; | date_before: &#39;2010-01-03&#39; }} =&gt; true</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>first_date</span>
+      
+      
+        <span class='type'>(<tt>Time</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>time which will be compared to the second one</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>second_date</span>
+      
+      
+        <span class='type'>(<tt>Time</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>second time, against which we will do comparison</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>returns true if first date is lower than second date</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+  {% endraw %}
+</div>
+
+    
+      <div class="method_details ">
+  {% raw %}
     <h3 class="signature " id="is_date_in_past-instance_method">
   
     #<strong>is_date_in_past</strong>(date)  &#x21d2; <tt>Boolean</tt> 
@@ -1325,7 +1361,15 @@ second parameter (an array of arrays)</p>
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{{ &#39;2010-01-01&#39; | is_date_in_past }} =&gt; true</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -1384,7 +1428,16 @@ second parameter (an array of arrays)</p>
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{% assign elements = &#39;a,b,c,d&#39; | split: &#39;,&#39; %}
+{{ elements | is_included_in_array: &#39;c&#39; }} =&gt; true</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -1544,7 +1597,15 @@ second parameter (an array of arrays)</p>
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{{ user | json }} =&gt; {&quot;name&quot;:&quot;Mike&quot;,&quot;email&quot;:&quot;mike@mail.com&quot;}</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -1591,6 +1652,90 @@ second parameter (an array of arrays)</p>
     
       <div class="method_details ">
   {% raw %}
+    <h3 class="signature " id="limit-instance_method">
+  
+    #<strong>limit</strong>(array, count)  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns parameter; [1,2,3,4] limited to 2 elements gives [1,2]</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>items =&gt; [{id: 1, name: &#39;foo&#39;, label: &#39;Foo&#39;}, {id: 2, name: &#39;bar&#39;, label: &#39;Bar&#39;}]
+{{ items | limit: 1 }} =&gt; [{ id: 1, name: &#39;foo&#39;, label: &#39;Foo&#39; }]</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>array</span>
+      
+      
+        <span class='type'>(<tt>Array&lt;Object&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>array to be shrank</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>limit</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array&lt;Object&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>parameter; [1,2,3,4] limited to 2 elements gives [1,2]</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+  {% endraw %}
+</div>
+
+    
+      <div class="method_details ">
+  {% raw %}
     <h3 class="signature " id="localize-instance_method">
   
     #<strong>localize</strong>(datetime, format = &#39;long&#39;)  &#x21d2; <tt>String</tt><sup>?</sup> 
@@ -1612,7 +1757,15 @@ second parameter (an array of arrays)</p>
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{{ &#39;2010-01-01&#39; | localize }} =&gt; &#39;January 01, 2010&#39;</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -1699,7 +1852,16 @@ on each object in the original array</p>
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{% assign objects = &#39;[{&quot;id&quot;:1,&quot;name&quot;:&quot;foo&quot;,&quot;label&quot;:&quot;Foo&quot;},{&quot;id&quot;:2,&quot;name&quot;:&quot;bar&quot;,&quot;label&quot;:&quot;Bar&quot;}]&#39; %}
+{{ objects | map: &#39;name&#39; }} =&gt; [&#39;foo&#39;, &#39;bar&#39;]</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -1871,7 +2033,15 @@ in the original array</p>
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{{ &#39;# Foo&#39; | markdownify }} =&gt; &#39;&lt;h1&gt;Foo&lt;/h1&gt;&#39;</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -1935,7 +2105,15 @@ in the original array</p>
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{{ &#39;foo&#39; | matches: &#39;[a-z]&#39; }} =&gt; true</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -2021,7 +2199,20 @@ tag</p>
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{% capture text}
+  foo
+  bar
+{% endcapture}
+
+{{ text | new_line_to_br }} =&gt; &#39;foo&lt;br /&gt;bar&#39;</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -2087,7 +2278,15 @@ tag</p>
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{{ &#39;foo&#39; | pad_left: 5 }} =&gt; &#39;  foo&#39;</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -2180,14 +2379,21 @@ tag</p>
   <div class="discussion">
     
 <p>Returns replaces special characters in a string so that it may be used as
-part of a &#39;pretty&#39; URL; the default separator used is &#39;-&#39;;
-e.g. &#39;John arrived_foo&#39; becomes &#39;john-arrived_foo&#39;</p>
+part of a &#39;pretty&#39; URL; the default separator used is &#39;-&#39;;</p>
 
 
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{{ &#39;John arrived_foo&#39; | parameterize }} =&gt; &#39;john-arrived_foo&#39;</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -2239,8 +2445,7 @@ e.g. &#39;John arrived_foo&#39; becomes &#39;john-arrived_foo&#39;</p>
         &mdash;
         <div class='inline'>
 <p>replaces special characters in a string so that it may be used as part of a
-&#39;pretty&#39; URL; the default separator used is &#39;-&#39;; e.g.
-&#39;John arrived_foo&#39; becomes &#39;john-arrived_foo&#39;</p>
+&#39;pretty&#39; URL; the default separator used is &#39;-&#39;;</p>
 </div>
       
     </li>
@@ -2272,7 +2477,15 @@ time given as input</p>
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{{ &#39;3 days ago&#39; | parse_time }} =&gt; 2017-04-01 12:00:00</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -2339,7 +2552,15 @@ time given as input</p>
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{{ &#39;2010:01:01&#39; | parse_time_with_format: &#39;%Y:%m:%d&#39; }} =&gt; 2010-01-01 00:00:00</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -2423,7 +2644,15 @@ as input</p>
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{{ &#39;dogs&#39; | pluralize }} =&gt; &#39;dog&#39;</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -2506,7 +2735,15 @@ singularized</p>
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{{ 1 | pricify }} =&gt; &#39;$1 USD&#39;</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -2514,7 +2751,7 @@ singularized</p>
         <span class='name'>amount</span>
       
       
-        <span class='type'>(<tt>Numeric</tt>)</span>
+        <span class='type'>(<tt>Numeric</tt>, <tt>String</tt>)</span>
       
       
       
@@ -2588,7 +2825,15 @@ singularized</p>
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{{ 1 | pricify_cents }} =&gt; &#39;$0.01 USD&#39;</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -2596,7 +2841,7 @@ singularized</p>
         <span class='name'>amount</span>
       
       
-        <span class='type'>(<tt>Numeric</tt>)</span>
+        <span class='type'>(<tt>Numeric</tt>, <tt>String</tt>)</span>
       
       
       
@@ -2664,14 +2909,22 @@ singularized</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns a query string (e.g. “name=Dan&amp;id=1”) from a given Hash (e.g. {
-name: &#39;Dan&#39;, id: 1 })</p>
+<p>Returns a query string</p>
 
 
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{{ hash }} =&gt; { &#39;name&#39; =&gt; &#39;Dan&#39;, &#39;id&#39; =&gt; 1 }
+{{ hash | querify }} =&gt; &#39;name=Dan&amp;id=1&#39;</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -2704,8 +2957,7 @@ name: &#39;Dan&#39;, id: 1 })</p>
       
         &mdash;
         <div class='inline'>
-<p>a query string (e.g. “name=Dan&amp;id=1”) from a given Hash (e.g. { name:
-&#39;Dan&#39;, id: 1 })</p>
+<p>a query string</p>
 </div>
       
     </li>
@@ -2736,7 +2988,15 @@ name: &#39;Dan&#39;, id: 1 })</p>
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{{ 10 | random_string }} =&gt; &#39;6a1ee26292227f64fcbf&#39;</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -2803,7 +3063,15 @@ tags will be visible in the browser</p>
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{{ &#39;foo&lt;b&gt;bar&lt;/b&gt;&#39; | raw_escape_string }} =&gt; &#39;foo&amp;lt;b&amp;gt;bar&amp;lt;/b&amp;gt;&#39;</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -2968,7 +3236,16 @@ conditions</p>
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{{ objects }} =&gt; [{&quot;foo&quot;:1,&quot;bar&quot;:&quot;a&quot;},{&quot;foo&quot;:2,&quot;bar&quot;:&quot;b&quot;},{&quot;foo&quot;:3,&quot;bar&quot;:&quot;c&quot;},{&quot;foo&quot;:2,&quot;bar&quot;:&quot;d&quot;}]
+{{ objects | reject: foo: 2 }} =&gt; [{&quot;foo&quot;:1,&quot;bar&quot;:&quot;a&quot;},{&quot;foo&quot;:3,&quot;bar&quot;:&quot;c&quot;}]</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -3051,7 +3328,16 @@ parameter; [1,2,3,4] rotated by 2 gives [3,4,1,2]</p>
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{% assign numbers = &quot;1,2,3&quot; | split: &quot;,&quot; %}
+{{ numbers | rotate }} =&gt; [3,2,1]</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -3134,7 +3420,16 @@ parameter; [1,2,3,4] rotated by 2 gives [3,4,1,2]</p>
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{{ objects }} =&gt; [{&quot;foo&quot;:1,&quot;bar&quot;:&quot;a&quot;},{&quot;foo&quot;:2,&quot;bar&quot;:&quot;b&quot;},{&quot;foo&quot;:3,&quot;bar&quot;:&quot;c&quot;},{&quot;foo&quot;:2,&quot;bar&quot;:&quot;d&quot;}]
+{{ objects | select: foo: 2 }} =&gt; [{&quot;foo&quot;:2,&quot;bar&quot;:&quot;b&quot;},{&quot;foo&quot;:2,&quot;bar&quot;:&quot;d&quot;}]</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -3216,7 +3511,15 @@ parameter; [1,2,3,4] rotated by 2 gives [3,4,1,2]</p>
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{{ &#39;foo&#39; | sha1 }} =&gt; &#39;0beec7b5ea3f0fdbc95d0dd47f3c5bc275da8a33&#39;</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -3275,14 +3578,21 @@ parameter; [1,2,3,4] rotated by 2 gives [3,4,1,2]</p>
   <div class="discussion">
     
 <p>Returns replaces special characters in a string so that it may be used as
-part of a &#39;pretty&#39; URL; e.g. &#39;John arrived_foo&#39; becomes
-&#39;john-arrived-foo&#39;</p>
+part of a &#39;pretty&#39; URL;</p>
 
 
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{{ &#39;John arrived_foo&#39; | slugify }} =&gt; &#39;john-arrived-foo&#39;</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -3316,8 +3626,7 @@ part of a &#39;pretty&#39; URL; e.g. &#39;John arrived_foo&#39; becomes
         &mdash;
         <div class='inline'>
 <p>replaces special characters in a string so that it may be used as part of a
-&#39;pretty&#39; URL; e.g. &#39;John arrived_foo&#39; becomes
-&#39;john-arrived-foo&#39;</p>
+&#39;pretty&#39; URL;</p>
 </div>
       
     </li>
@@ -3349,7 +3658,15 @@ representation will be based on what the format parameter specifies</p>
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{{ | }} =&gt;</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -3449,7 +3766,18 @@ will be based on what the format parameter specifies</p>
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{% assign array = &#39;1,2&#39; | split: &#39;,&#39; %}
+{% assign other_array = &#39;2&#39; | split: &#39;,&#39; %}
+
+{{ array | intersection: other_array }} =&gt; [1]</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -3529,7 +3857,16 @@ will be based on what the format parameter specifies</p>
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{% assign numbers = &#39;1,2,3&#39; | split: &#39;,&#39; %}
+{{ numbers | sum_array }} =&gt; 6</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -3595,7 +3932,15 @@ output</p>
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{{ &#39;foo bar_zoo-xx&#39; | titleize }} =&gt; &#39;Foo Bar Zoo Xx&#39;</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -3660,7 +4005,15 @@ create a nicer looking title; it is meant for creating pretty output</p>
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{{ &#39;2010-01-01 8:00:00&#39; | to_date }} =&gt; 2010-01-01</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -3724,7 +4077,17 @@ create a nicer looking title; it is meant for creating pretty output</p>
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{% assign text = &#39;{ &quot;name&quot;: &quot;foo&quot;, &quot;bar&quot;: {} }&#39; %}
+{% assign object = text | to_hash %}
+{{ object.name }} =&gt; &#39;foo&#39;</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -3789,7 +4152,15 @@ notifications</p>
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{{ &#39;500 123 999&#39; | to_mobile_number: &#39;PL&#39; }} =&gt; &#39;+48500123999&#39;</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -3871,7 +4242,16 @@ notifications</p>
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{{ &#39;1&#39; | to_positive_integer: 2 }} =&gt; 1
+{{ &#39;&#39; | to_positive_integer: 2 }} =&gt; 2</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -3946,7 +4326,15 @@ notifications</p>
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{{ &#39;2010-01-01 4:0&#39; | to_time: &#39;UTC&#39; }} =&gt; 2010-01-01 04:00:00 UTC</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -4028,7 +4416,17 @@ notifications</p>
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{{ &#39;today&#39; | to_time_from_str }} =&gt; 2017-04-15 15:21:00
+{{ &#39;1 day ago&#39; | to_time_from_str }} =&gt; 2017-04-14 15:21:00
+{{ &#39;5 days from now&#39; | to_time_from_str }} =&gt; 2017-04-14 15:21:00</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -4090,14 +4488,22 @@ notifications</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns translation value taken from translations for the key given as
-parameter</p>
+<p>Returns translation value taken from translations yml file for the key
+given as parameter</p>
 
 
   </div>
 </div>
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{{ &#39;beer&#39; | translate }} =&gt; &#39;cerveza&#39;</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
 <ul class="param">
   
     <li>
@@ -4148,7 +4554,8 @@ parameter</p>
       
         &mdash;
         <div class='inline'>
-<p>translation value taken from translations for the key given as parameter</p>
+<p>translation value taken from translations yml file for the key given as
+parameter</p>
 </div>
       
     </li>
@@ -4173,14 +4580,21 @@ parameter</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>e.g: &#39;/account&#39; | url_for_with_token: current_user generates <a
-href="https://example.com/account?temporary_token=TOKEN_HERE">example.com/account?temporary_token=TOKEN_HERE</a></p>
+<p>Returns a url for the given page slug, which includes user temporary token;</p>
 
 
   </div>
 </div>
 <div class="tags">
   
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{{ &#39;/account&#39; | url_for_with_token: current_user }} =&gt; &#39;https://example.com/account?temporary_token=TOKEN_HERE&#39;</code></pre>
+    
+  </div>
+
 <p class="tag_title">Returns:</p>
 <ul class="return">
   
@@ -4209,13 +4623,71 @@ href="https://example.com/account?temporary_token=TOKEN_HERE">example.com/accoun
   {% raw %}
     <h3 class="signature " id="video_params-instance_method">
   
-    #<strong>video_params</strong>(url)  &#x21d2; <tt>Object</tt> 
+    #<strong>video_params</strong>(url)  &#x21d2; <tt>Hash</tt> 
   
 
   
 
   
-</h3>
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns metadata about video</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{{ &#39;https://www.youtube.com/watch?v=8N_tupPBtWQ&#39; | video_params }}
+=&gt; {&quot;provider&quot;=&gt;&quot;YouTube&quot;, &quot;url&quot;=&gt;&quot;https://www.youtube.com/watch?v=8N_tupPBtWQ&quot;, &quot;video_id&quot;=&gt;&quot;8N_tupPBtWQ&quot;, &quot;embed_url&quot;=&gt;&quot;//www.youtube.com/embed/8N_tupPBtWQ&quot;, &quot;embed_code&quot;=&gt;&quot;&lt;iframe src=\&quot;//www.youtube.com/embed/8N_tupPBtWQ\&quot; frameborder=\&quot;0\&quot; allowfullscreen=\&quot;allowfullscreen\&quot;&gt;&lt;/iframe&gt;&quot;},</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>url</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>url to a video on the internet</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>metadata about video</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
   {% endraw %}
 </div>
 
