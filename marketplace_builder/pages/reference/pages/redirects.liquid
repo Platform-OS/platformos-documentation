@@ -1,0 +1,27 @@
+---
+converter: markdown
+metadata:
+  title: Redirects
+  slug: reference/pages/redirects 
+---
+
+**Redirects** are used to redirect one page to another using an HTTP status code. 
+
+## Example
+Redirecting /my-page to /other-page using the 302 status:
+
+{% raw %}
+
+```yaml
+---
+slug: my-page
+redirect_to: /other-page
+redirect_code: 302
+---
+```
+
+{% endraw %}
+
+* `slug`: defines the URL at which this page will be accessible. In this example, assuming your site's domain is `https://example.com`, you will be able to access the page at `https://example.com/my-page`.
+* `redirect_to`: endpoint which you want the user to be redirected to. 
+* `redirect_code`: specifies the status of redirection. Can be either 301 (Moved Permanently) or 302 (Found). 
