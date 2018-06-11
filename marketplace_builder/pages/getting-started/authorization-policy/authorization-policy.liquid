@@ -1,0 +1,30 @@
+---
+converter: markdown
+metadata:
+  title: Adding an Authorization Policy
+slug: get-started/authorization-policy/authorization-policy
+---
+
+**Authorization Policies** allow you to restrict access to forms and pages in a flexible way. Each form and page can have multiple policies attached to it.
+
+Each policy is parsed using Liquid, and the system checks them in order of their appearance in the `authorization_policies` key.
+
+If the content of the policy evaluates to anything other than `true`, the policy is considered violated and the system will not proceed with executing action (like submitting a form or rendering a page).
+
+## Contextual `object`
+
+Apart from pulling data from GraphQL you also have access to a variable called `object` (be careful not to override it).
+
+Depending on where the Authorization Policy is called from, this object contains:
+
+* `form` object in Form Configuration context
+* `page` object in page context
+
+## Related topics
+
+* [Adding an Authorization Policy](/get-started/authorization-policy/adding-authorization-policy)
+* [Associating an Authorization Policy with Form Configuration](/get-started/authorization-policy/associating-authorization-policy-formconfiguration)
+* [Associating an Authorization Policy with a Page](/get-started/authorization-policy/associating-authorization-policy-page)
+* [Handling a Violated Authorization Policy](/get-started/authorization-policy/handling-violated-authorization-policy)
+
+
