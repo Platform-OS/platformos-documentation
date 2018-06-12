@@ -1,0 +1,141 @@
+---
+converter: markdown
+metadata:
+  title: Creating SEO Friendly URLs
+slug: how-to/seo/creating-seo-friendly-urls
+---
+
+This guide will help you create SEO friendly URLs. The example shows category listings grouped by country, e.g.:
+
+* **/catalogue/Australia/Sydney**
+* **/catalogue/Spain/Seville**
+
+## Requirements
+This is an advanced tutorial. To follow it, you should be familiar with basic Platform OS concepts, HTML, GraphQL queries, Liquid, and the topics in the Get Started section, especially tutorials related to Pages.
+
+* [How Platform OS Works](/how-platformos-works)
+* [Get Started: Pages tutorials](/get-started/pages)
+
+## Steps 
+
+Creating SEO friendly category listings is a three-step process:
+
+1. Setup page
+2. Prepare GraphQL query
+3. Add GraphQL query to page
+
+### Step 1: Setup page 
+
+* Create Search Page with slug `catalogue`
+
+* Define URL template in page:
+
+{% raw %}
+
+```liquid
+{% assign url_template = '/catalogue/{country}/{city}' %}
+```
+
+{% endraw %}
+
+* Decode current_url into params with Liquid filter `extract_url_params`:
+
+{% raw %}
+
+```liquid
+{% assign url_params = current_full_path | extract_url_params: url_template %}
+```
+
+{% endraw %}
+
+### Step 2: Prepare GraphQL query 
+
+Create a GrpahQL query with country and city:
+
+```js
+query get_catalogue_listings(
+  $query: String,
+  $is_deleted: Boolean = false
+  $country: String
+  $city: String
+) {
+  listings(
+    query: $query,
+    listing: {
+      is_deleted: $is_deleted
+      address: {
+        country: $country
+        city: $city
+      }
+    }
+  ) {
+    total_entries
+    results {
+      slug
+      name
+      address{
+        country
+        city
+      }
+    }
+  }
+}
+```
+
+### Step 3: Add GraphQL query to page
+
+Add the GraphQL query you created to your page, and pass extracted params to it: 
+
+{% raw %}
+
+```liquid
+{% query_graph 'get_catalogue_listings', result_name: 'g',
+  country: url_params.country,
+  city: url_params.city,
+  is_deleted: false
+%}
+```
+
+{% endraw %}
+
+## Final Page
+
+{% raw %}
+
+```liquid
+{% assign url_template = '/catalogue/{country}/{city}' %}
+{% assign url_params = current_full_path | extract_url_params: url_template %}
+
+  <div class="results">
+    <form action="." method="GET">
+      {% query_graph 'demo_search_listings', result_name: 'g',
+        country: url_params.country,
+        city: url_params.city,
+        is_deleted: false
+      %}
+
+      <strong>{{ g.listings.total_entries }}</strong>
+      <ul>
+      {% for item in g.listings.results %}
+        <li>
+         {{ item.slug }} - {{ item.name }} - {{ item.address.country }} - {{ item.address.city }}
+        </li>
+      {% endfor %}
+      </ul>
+    </form>
+  </div>
+```
+
+{% endraw %}
+
+## Example URLs
+
+**/catalogue/Australia/Melbourne** - listings from Melbourne, Australia
+
+**/catalogue//Sydney** - listings from Sydney
+
+**/catalogue//** - all listings
+
+## Questions?
+
+We are always happy to help with any questions you may have. Consult our  [documentation](), [contact support](), or  [connect with our sales team](). 
