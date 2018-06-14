@@ -85,62 +85,62 @@ query find_page(
 
 Some examples of using that query from Liquid template to find metadata:
 
-* Find pages WITH word `TITLE` somewhere in metadata (in keys or values)
+- Find pages WITH word `TITLE` somewhere in metadata (in keys or values)
 
 {% raw %}
 
 ```liquid
-{% execute_query 'find_page', page: 1, per_page: 20, metadata: "TITLE", result_name: 'q' %}
+{% query_graph 'find_page', page: 1, per_page: 20, metadata: "TITLE", result_name: 'q' %}
 ```
 
 {% endraw %}
 
-* Find pages WITHOUT word `TITLE` in metadata (in keys or values)
+- Find pages WITHOUT word `TITLE` in metadata (in keys or values)
 
   {% raw %}
 
 ```liquid
-{% execute_query 'find_page', exclude: 'true', metadata: "TITLE", result_name: 'q' %}
+{% query_graph 'find_page', exclude: 'true', metadata: "TITLE", result_name: 'q' %}
 ```
 
 {% endraw %}
 
-* Match pages having top-level key `tags`
+- Match pages having top-level key `tags`
 
 {% raw %}
 
 ```liquid
-{% execute_query 'find_page', has_key: 'tags', result_name: 'q' %}
+{% query_graph 'find_page', has_key: 'tags', result_name: 'q' %}
 ```
 
 {% endraw %}
 
-* Match pages withouth "tags" key
+- Match pages withouth "tags" key
 
 {% raw %}
 
 ```liquid
-{% execute_query 'find_page', exclude: 'true', has_key: 'tags', result_name: 'q' %}
+{% query_graph 'find_page', exclude: 'true', has_key: 'tags', result_name: 'q' %}
 ```
 
 {% endraw %}
 
-* Match pages with key `tags` having (or including) value `bar`
+- Match pages with key `tags` having (or including) value `bar`
 
 {% raw %}
 
 ```liquid
-{% execute_query 'find_page', name: 'tags', value: 'bar', result_name: 'q' %}
+{% query_graph 'find_page', name: 'tags', value: 'bar', result_name: 'q' %}
 ```
 
 {% endraw %}
 
-* Match pages that do not have key `tags` equal (or including) to `bar`
+- Match pages that do not have key `tags` equal (or including) to `bar`
 
 {% raw %}
 
 ```liquid
-{% execute_query 'find_page', exclude: 'true', name: 'tags', value: 'bar', result_name: 'q' %}
+{% query_graph 'find_page', exclude: 'true', name: 'tags', value: 'bar', result_name: 'q' %}
 ```
 
 {% endraw %}
