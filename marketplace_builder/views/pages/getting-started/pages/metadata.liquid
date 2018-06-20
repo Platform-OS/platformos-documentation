@@ -7,7 +7,7 @@ slug: getting-started/pages/metadata
 
 **Metadata** is a property to store any kind of key-value pairs. A page can be extended using `metadata`, for example:
 
-```yaml
+<pre><code class="language-yaml">
 ---
 slug: signup
 metadata:
@@ -15,7 +15,7 @@ metadata:
   description: "A description"
   tags: ["signup", "choose", "landing"]
 ---
-```
+</code></pre>
 
 ## Displaying metadata on the page
 
@@ -23,23 +23,23 @@ Metadata is available through Liquid as `page.metadata`:
 
 {% raw %}
 
-```liquid
-<div>
-  <h1> {{ page.metadata.title }} </h1>
+<pre><code class="language-liquid">
+&lt;div&gt;
+  &lt;h1&gt; {{ page.metadata.title }} &lt;/h1&gt;
 
-  <section>{{ page.metadata.description }}</section>
+  &lt;section&gt;{{ page.metadata.description }}&lt;/section&gt;
 
-  <ul>
+  &lt;ul&gt;
     {% for tag in page.metadata.tags %}
-      <li> {{ tag }} </li>
+      &lt;li&gt; {{ tag }} &lt;/li&gt;
     {% endfor %}
-  </ul>
+  &lt;/ul&gt;
 
-  <strong>
-    {{ page.metadata.tags | join: "," }}
-  </strong>
-</div>
-```
+  &lt;strong&gt;
+    {{ page.metadata.tags | join: &quot;,&quot; }}
+  &lt;/strong&gt;
+&lt;/div&gt;
+</code></pre>
 
 {% endraw %}
 
@@ -49,7 +49,7 @@ You can search for a page using its metadata in GraphQL queries (all support `pa
 
 {% raw %}
 
-```graphql
+<pre><code class="language-graphql">
 query find_page(
   $page: Int
   $per_page: Int
@@ -81,7 +81,7 @@ query find_page(
     }
   }
 }
-```
+</code></pre>
 
 {% endraw %}
 
@@ -91,9 +91,9 @@ Some examples of using the above query from a Liquid template to find metadata:
 
 {% raw %}
 
-```liquid
+<pre><code class="language-liquid">
 {% execute_query 'find_page', page: 1, per_page: 20, metadata: "TITLE", result_name: 'q' %}
-```
+</code></pre>
 
 {% endraw %}
 
@@ -101,9 +101,9 @@ Some examples of using the above query from a Liquid template to find metadata:
 
   {% raw %}
 
-```liquid
+<pre><code class="language-liquid">
 {% execute_query 'find_page', exclude: 'true', metadata: "TITLE", result_name: 'q' %}
-```
+</code></pre>
 
 {% endraw %}
 
@@ -111,9 +111,9 @@ Some examples of using the above query from a Liquid template to find metadata:
 
 {% raw %}
 
-```liquid
+<pre><code class="language-liquid">
 {% execute_query 'find_page', has_key: 'tags', result_name: 'q' %}
-```
+</code></pre>
 
 {% endraw %}
 
@@ -121,9 +121,9 @@ Some examples of using the above query from a Liquid template to find metadata:
 
 {% raw %}
 
-```liquid
+<pre><code class="language-liquid">
 {% execute_query 'find_page', exclude: 'true', has_key: 'tags', result_name: 'q' %}
-```
+</code></pre>
 
 {% endraw %}
 
@@ -131,9 +131,9 @@ Some examples of using the above query from a Liquid template to find metadata:
 
 {% raw %}
 
-```liquid
+<pre><code class="language-liquid">
 {% execute_query 'find_page', name: 'tags', value: 'bar', result_name: 'q' %}
-```
+</code></pre>
 
 {% endraw %}
 
@@ -141,9 +141,9 @@ Some examples of using the above query from a Liquid template to find metadata:
 
 {% raw %}
 
-```liquid
+<pre><code class="language-liquid">
 {% execute_query 'find_page', exclude: 'true', name: 'tags', value: 'bar', result_name: 'q' %}
-```
+</code></pre>
 
 {% endraw %}
 

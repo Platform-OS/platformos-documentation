@@ -31,9 +31,10 @@ See this [guide](get-started/setup/accessing-partner-portal) if you don't have P
 
 To add your environment to a config file, run the `env add` command, and authenticate with your **Partner Portal** credentials:
 
-```
+<pre><code class="language-shell">
+
 marketplace-kit env add <environment> --email <your email> --url <your marketplace url>
-```
+</code></pre>
 
 ### Step 2: Deploy or sync changes
 
@@ -41,16 +42,16 @@ marketplace-kit env add <environment> --email <your email> --url <your marketpla
 
 To deploy all changes, run the `deploy` command:
 
-```
+<pre><code class="language-shell">
+
 marketplace-kit deploy <environment>
-```
+</code></pre>
 
 Example:
 
-```
-#deploy changes to staging
+<pre><code class="language-shell">
 marketplace-kit deploy staging
-```
+</code></pre>
 
 We recommend to first deploy to staging, test, and only then trigger a deployment to production. In practice, deploy creates a zip file that contains all your files, and sends it to the API. It is then processed in the background. We store each zip file, so that you can roll back in case something goes wrong.
 
@@ -58,16 +59,17 @@ We recommend to first deploy to staging, test, and only then trigger a deploymen
 
 To immediately push changes in your code base to the environment, run the `sync` command:
 
-```
+<pre><code class="language-shell">
+
 marketplace-kit sync <environment>
-```
+</code></pre>
 
 Example:
 
-```
-#sync changes to staging
+<pre><code class="language-shell">
+
 marketplace-kit sync staging
-```
+</code></pre>
 
 Using the sync command feels like working on localhost. It is dangerous to use it on production (on a live site)—it is recommended to use it only for staging. Please note, that unlike deploy, this command will not delete resources when you delete the file.
 
@@ -75,16 +77,15 @@ Using the sync command feels like working on localhost. It is dangerous to use i
 
 To deploy the whole `marketplace_builder` directory to environment overriding everything there was, use the `-f` flag. This will also remove files from the server that are not present in your currently deployed source directory.
 
-```
+<pre><code class="language-shell">
 marketplace-kit deploy <environment> -f
-```
+</code></pre>
 
 Example:
 
-```
-#deploy to and override everything on staging
+<pre><code class="language-shell">
 marketplace-kit deploy staging -f
-```
+</code></pre>
 
 ## Next steps
 

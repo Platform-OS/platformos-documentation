@@ -5,13 +5,13 @@ metadata:
 slug: reference/form-configurations/flash-messages
 ---
 
-**Flash messages** are used to create notices and alerts, e.g. on form submission. 
+**Flash messages** are used to create notices and alerts, e.g. on form submission.
 
 ## Setting form notice/alert values through FormConfiguration
 
 You can add values for `flash` messages as part of form configuration, for example:
 
-```yml
+<pre><code class="language-yaml">
 ---
 name: signup_form
 resource: User
@@ -21,13 +21,13 @@ configuration:
 flash_notice: You have successfully signed up
 flash_alert: Please fix validation errors
 ---
-```
+</code></pre>
 
 ### Interpolation
 
 Values for `flash` keys are processed using a Liquid parser, so they can be interpolated in the context of the current form:
 
-```yml
+<pre><code class="language-yaml">
 ---
 name: signup_form
 resource: User
@@ -39,6 +39,6 @@ configuration:
 flash_notice: 'Thank you {% raw %}{{ form.first_name }}{% endraw %}, you have successfully signed up!'
 flash_alert: Please fix validation errors
 ---
-```
+</code></pre>
 
 {% include "alert/note", content: "Quotes around the value of flash_notice are required if you interpolate Liquid code inside YAML" %}

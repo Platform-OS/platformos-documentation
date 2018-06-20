@@ -5,29 +5,29 @@ metadata:
 slug: get-started/transactables/creating-edit-transactable-page
 ---
 
-This guide will help you create an edit page for a Transactable. 
+This guide will help you create an edit page for a Transactable.
 
 _This guide is part of a series that follows a scenario to demonstrate how to manage Transactables. You can find previous and next parts of the series in the Requirements and Next steps sections._
 
 ## Requirements
-So that you can follow the steps in this tutorial, you should understand the concept of Transactables. You'll also need to follow the series of tutorials about Transactables until the previous tutorial. 
+So that you can follow the steps in this tutorial, you should understand the concept of Transactables. You'll also need to follow the series of tutorials about Transactables until the previous tutorial.
 
 * [Transactables](/get-started/transactables/creating-transactables)
-* [Displaying a Transactable](/get-started/transactables/displaying-transactable) (previous tutorial) 
+* [Displaying a Transactable](/get-started/transactables/displaying-transactable) (previous tutorial)
 
-## Steps 
+## Steps
 
 Creating the edit Transactable page is a two-step process:
 
-1. Create page 
-2. Create GraphQL query 
+1. Create page
+2. Create GraphQL query
 
-### Step 1: Create page 
+### Step 1: Create page
 Create the edit Transactable page `views/pages/client/projects/edit.liquid`:
 
 {% raw %}
 
-```liquid
+<pre><code class="language-liquid">
 ---
 slug: client/projects/edit
 ---
@@ -37,18 +37,18 @@ slug: client/projects/edit
   <h1>Edit {{ project.name }}</h1>
   {% render_form 'project', resource_id: @graph_project.project.id %}
 {% else %}
-  <p>Unfortunately we could not find this project.
+  &lt;p&gt;Unfortunately we could not find this project.&lt;/p&gt;
 {% endif %}
-```
+</code></pre>
 
 {% endraw %}
 
-This code re-uses the current_user GraphQL query created in the previous tutorial. 
+This code re-uses the current_user GraphQL query created in the previous tutorial.
 
 ### Step 2: Create GraphQL query
 The code you wrote in step 2 requires you to create a new `graph_queries/get_project.graphql`:
 
-```graphql
+<pre><code class="language-graphql">
 query client_projects($creator_id: ID!, $slug: String!) {
   project: transactable(creator_id: $creator_id, slug: $slug) {
     id
@@ -56,7 +56,7 @@ query client_projects($creator_id: ID!, $slug: String!) {
     slug
   }
 }
-```
+</code></pre>
 ## Next steps
 Congratulations! You have created the edit page for a Transactable. Now you can learn about removing a Transactable:
 
@@ -64,6 +64,6 @@ Congratulations! You have created the edit page for a Transactable. Now you can 
 
 ## Questions?
 
-We are always happy to help with any questions you may have. Consult our  [documentation](), [contact support](), or  [connect with our sales team](). 
+We are always happy to help with any questions you may have. Consult our  [documentation](), [contact support](), or  [connect with our sales team]().
 
 

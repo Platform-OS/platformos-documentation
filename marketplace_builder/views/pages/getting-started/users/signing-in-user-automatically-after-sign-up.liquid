@@ -1,13 +1,13 @@
 ---
 converter: markdown
 metadata:
-  title: Signing In a User Automatically after Sign Up 
+  title: Signing In a User Automatically after Sign Up
 slug: get-started/users/signing-in-user-automatically-after-sign-up
 ---
 
 This guide will help you add automatic sign in to a sign up form, so that a new user will be logged in right after account creation.
 
-## Requirements 
+## Requirements
 
 This tutorial assumes that you already have a working sign up form, where a user can create a new account.
 
@@ -29,12 +29,12 @@ In your `sign_up` form configuration add `callback_actions` at the end (order do
 
 {% raw %}
 
-```liquid
+<pre><code class="language-liquid">
 ---
 ...
 callback_actions: "{% execute_query 'user_session_create', email: @form.email, password: @form.password %}"
 ---
-```
+</code></pre>
 
 {% endraw %}
 
@@ -46,7 +46,7 @@ This mutation takes two obligatory arguments: `email` and `password`—both stri
 
 ##### `graph_queries/user_session_create.graphql`
 
-```graphql
+<pre><code class="language-graphql">
 mutation user_session_create($email: String!, $password: String!) {
   user_session_create(
     form_configuration_name: "session_create_form" # must match with `name` of your form
@@ -56,7 +56,7 @@ mutation user_session_create($email: String!, $password: String!) {
     email
   }
 }
-```
+</code></pre>
 
 This calls the `session_create_form` with the same arguments you received from the `callback_actions`.
 
@@ -66,16 +66,16 @@ SessionForm is supported by the server, so you don't need to define anything—t
 
 ##### `form_configurations/session_create_form`
 
-```yml
+<pre><code class="language-yaml">
 ---
 name: session_create_form
 resource: Session
 ---
-```
+</code></pre>
 
 ## Next steps
 
-Congratulations! You have set up automatic user login after sign up. You can now learn about logging out the user: 
+Congratulations! You have set up automatic user login after sign up. You can now learn about logging out the user:
 
 * [Logging Out an Authenticated User](/get-started/users/logging-out-authenticated-user)
 

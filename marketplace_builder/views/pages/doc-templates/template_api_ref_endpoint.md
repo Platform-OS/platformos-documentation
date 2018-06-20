@@ -24,13 +24,13 @@ To [TITLE, e.g. update an image], [what the user should do, e.g. send a PUT requ
 
 [Example of a complete request for this endpoint, including header and body, followed by a table that lists each element in the example request]
 
-```
+</code></pre>
 [Example: Request headers]
-```
+</code></pre>
 
-```
+</code></pre>
 [Example: Request body]
-```
+</code></pre>
 
 | Element                            | Type                                       | Description                                                                                        | Required?              |
 | ---------------------------------- | ------------------------------------------ | -------------------------------------------------------------------------------------------------- | ---------------------- |
@@ -41,13 +41,13 @@ To [TITLE, e.g. update an image], [what the user should do, e.g. send a PUT requ
 
 [Example of a complete response for this endpoint, followed by a table that lists each element in the example response]
 
-```
+</code></pre>
 [Example: Response headers]
-```
+</code></pre>
 
-```
+</code></pre>
 [Example: Response body]
-```
+</code></pre>
 
 | Element                             | Type                                       | Description                                                    |
 | ----------------------------------- | ------------------------------------------ | -------------------------------------------------------------- |

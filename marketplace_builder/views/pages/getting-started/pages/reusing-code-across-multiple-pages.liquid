@@ -1,52 +1,52 @@
 ---
 converter: markdown
 metadata:
-  title: Reusing Code Across Multiple Pages 
+  title: Reusing Code Across Multiple Pages
 slug: get-started/pages/reusing-code-across-multiple-pages
 ---
-This guide will help you reuse code across multiple pages using partials. 
-Partials are pieces of code extracted to their own files to maintain code readability, and follow the rule of DRY—Don’t Repeat Yourself. 
+This guide will help you reuse code across multiple pages using partials.
+Partials are pieces of code extracted to their own files to maintain code readability, and follow the rule of DRY—Don’t Repeat Yourself.
 
 ## Requirements
-To follow the steps in this tutorial, you should have created a page and a layout before. 
+To follow the steps in this tutorial, you should have created a page and a layout before.
 
 * [Creating a Page](/get-started/pages/creating-page)
 * [Creating a Layout](/get-started/pages/creating-layout)
 
-## Steps 
+## Steps
 
 Reusing code across multiple pages using partials is a two-step process:
 
 1. Create a partial
-2. Include the partial 
+2. Include the partial
 
-### Step 1: Create a partial 
+### Step 1: Create a partial
 
-This tutorial uses the previously created `application.liquid` layout:  
+This tutorial uses the previously created `application.liquid` layout:
 
 {% raw %}
 
-```liquid
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>
+<pre><code class="language-liquid">
+&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+  &lt;title&gt;
   {% yield 'meta_title' %}
-  </title>
-</head>
+  &lt;/title&gt;
+&lt;/head&gt;
 
-<body>
-<h1>Layout</h1>
+&lt;body&gt;
+&lt;h1&gt;Layout&lt;/h1&gt;
 {{ content_for_layout }}
 
-</body>
+&lt;/body&gt;
 
-</html>
+&lt;/html&gt;
 
-```
+</code></pre>
 
 {% endraw %}
 
@@ -54,53 +54,53 @@ Create a partial file `meta_tags.liquid` in the `marketplace_builder/views/parti
 
 {% raw %}
 
-```liquid 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<pre><code class="language-liquid">
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
 
-```
+
+</code></pre>
 
 {% endraw %}
 
 ### Step 2: Include the partial
 
-In the original layout, include the `meta_tags.liquid` partial. Partials resolve from `views/partials`, so in the include you only have to specify the name of the partial in the `views/partials` directory. 
+In the original layout, include the `meta_tags.liquid` partial. Partials resolve from `views/partials`, so in the include you only have to specify the name of the partial in the `views/partials` directory.
 
 {% raw %}
 
-```liquid
-<!doctype html>
-<html lang="en">
-<head>
+<pre><code class="language-liquid">
+&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
 {% include 'meta_tags' %}
-  <title>
+  &lt;title&gt;
   {% yield 'meta_title' %}
-  </title>
-</head>
+  &lt;/title&gt;
+&lt;/head&gt;
 
-<body>
-<h1>Layout</h1>
+&lt;body&gt;
+&lt;h1&gt;Layout&lt;/h1&gt;
 {{ content_for_layout }}
 
-</body>
+&lt;/body&gt;
 
-</html>
-
-```
+&lt;/html&gt;
+</code></pre>
 
 {% endraw %}
 
-Deploy or sync your changes. You can see that pages using the layout are displayed the same. When you check their source code, you can see that the meta tags have been injected into the layout and thus the pages from the partial.  
+Deploy or sync your changes. You can see that pages using the layout are displayed the same. When you check their source code, you can see that the meta tags have been injected into the layout and thus the pages from the partial.
 
-You can use partials with CSS, Javascript, etc. or include `yield`, `content_for` tags, etc.  
+You can use partials with CSS, Javascript, etc. or include `yield`, `content_for` tags, etc.
 
 ## Next steps
-Congratulations! You have reused code across multiple pages using partials. Now you can learn about using assets.   
+Congratulations! You have reused code across multiple pages using partials. Now you can learn about using assets.
 
 * [Using Static Assets on Your Pages](/get-started/pages/using-static-assets-pages)
 
 ## Questions?
 
-We are always happy to help with any questions you may have. Consult our  [documentation](), [contact support](), or  [connect with our sales team](). 
+We are always happy to help with any questions you may have. Consult our  [documentation](), [contact support](), or  [connect with our sales team]().
 

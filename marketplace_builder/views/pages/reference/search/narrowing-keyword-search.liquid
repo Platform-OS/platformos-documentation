@@ -9,13 +9,13 @@ By default, keyword search is looking in all fields of the database.
 
 In your GraphQL query you can decide which fields should be searched in.
 
-If you leave the `keyword` field empty, it means you are looking for everything, so narrowing by field names will not be applied. 
+If you leave the `keyword` field empty, it means you are looking for everything, so narrowing by field names will not be applied.
 
 ## Operator
 
 Operator allows you to control how the query will be understood by our search engine.
 
-For example, the query `capital of hungary` (subqueries: `capital`, `of`, `Hungary`): 
+For example, the query `capital of hungary` (subqueries: `capital`, `of`, `Hungary`):
 
 * With operator set to `OR`, the query will be translated to `capital OR of OR Hungary` and will return results that have _any_ of those subqueries.
 * With operator set to `AND`, the query will be translated to `capital AND of AND Hungary` and will return results containing _all_ of those subqueries.
@@ -26,7 +26,7 @@ Default value is `AND`.
 
 ### AND Example
 
-```graphql
+<pre><code class="language-graphql">
 query get_owners {
   people(query: { keyword: "Tanya Rose", operator: "AND" }) {
     results {
@@ -35,9 +35,9 @@ query get_owners {
     }
   }
 }
-```
+</code></pre>
 
-```json
+<pre><code class="language-json">
 {
   "data": {
     "people": {
@@ -50,11 +50,11 @@ query get_owners {
     }
   }
 }
-```
+</code></pre>
 
 ### OR Example
 
-```graphql
+<pre><code class="language-graphql">
 query get_owners {
   people(query: { keyword: "Tanya Rose", operator: "OR" }) {
     results {
@@ -63,9 +63,9 @@ query get_owners {
     }
   }
 }
-```
+</code></pre>
 
-```json
+<pre><code class="language-json">
 {
   "data": {
     "people": {
@@ -82,7 +82,7 @@ query get_owners {
     }
   }
 }
-```
+</code></pre>
 
 ## Filtered fields
 
@@ -90,7 +90,7 @@ To learn more about filtered fields see the [Selecting Fields for Search](/refer
 
 ### OR with filtered fields example
 
-```graphql
+<pre><code class="language-graphql">
 query get_providers {
   people(
     query: {
@@ -105,9 +105,9 @@ query get_providers {
     }
   }
 }
-```
+</code></pre>
 
-```json
+<pre><code class="language-json">
 {
   "data": {
     "people": {
@@ -132,11 +132,11 @@ query get_providers {
     }
   }
 }
-```
+</code></pre>
 
 ### AND with filtered fields example
 
-```graphql
+<pre><code class="language-graphql">
 query get_providers {
   people(
     query: {
@@ -151,11 +151,11 @@ query get_providers {
     }
   }
 }
-```
+</code></pre>
 
 Because the above query is asking for users that have "Tanya Rose" in `first_name` or `last_name` results will be empty in this case.
 
-```json
+<pre><code class="language-json">
 {
   "data": {
     "people": {
@@ -163,10 +163,10 @@ Because the above query is asking for users that have "Tanya Rose" in `first_nam
     }
   }
 }
-```
+</code></pre>
 
 There are no users with "Tanya Rose" in the `first_name` or `last_name` fields.
 
 ## Priority
 
-While defining which fields should be traversed in keyword search you can also force the priority of each field to make sure they will appear higher in search results (they will have higher `score`). 
+While defining which fields should be traversed in keyword search you can also force the priority of each field to make sure they will appear higher in search results (they will have higher `score`).

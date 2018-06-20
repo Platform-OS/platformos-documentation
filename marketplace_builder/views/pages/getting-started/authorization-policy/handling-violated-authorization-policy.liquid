@@ -2,20 +2,20 @@
 converter: markdown
 metadata:
   title: Handling a Violated Authorization Policy
-  slug: get-started/authorization-policy/handling-violated-authorization-policy 
+  slug: get-started/authorization-policy/handling-violated-authorization-policy
 ---
 
-This guide will help you handle a violated Authorization Policy. 
+This guide will help you handle a violated Authorization Policy.
 
-When an Authorization Policy is violated, the server by default will return an empty page with the `403 Forbidden` status code. You can redirect the user to a different page or display an alert message. 
+When an Authorization Policy is violated, the server by default will return an empty page with the `403 Forbidden` status code. You can redirect the user to a different page or display an alert message.
 
 ## Requirements
-So that you can follow the steps in this tutorial, you should understand the concept of Authorization Policy. This guide refers to an Authorization Policy created in a previous tutorial (`only_allowed_by_johns`).  
+So that you can follow the steps in this tutorial, you should understand the concept of Authorization Policy. This guide refers to an Authorization Policy created in a previous tutorial (`only_allowed_by_johns`).
 
-* [Authorization Policy](/get-started/authorization-policy/authorization-policy) 
+* [Authorization Policy](/get-started/authorization-policy/authorization-policy)
 * [Adding an Authorization Policy](/get-started/authorization-policy/adding-authorization-policy) (previous tutorial)
 
-## Steps 
+## Steps
 
 Handling a violated Authorization Policy is a two-step process:
 
@@ -27,13 +27,14 @@ To redirect user to a page after violation set the `redirect_to` key. For exampl
 
 {% raw %}
 
-```yml
+<pre><code class="language-yaml">
 ---
 name: only_allowed_by_johns
 redirect_to: /login
 ---
 ...
-```
+</code></pre>
+
 
 {% endraw %}
 
@@ -42,24 +43,25 @@ To generate flash alert message on the page that you defined as `redirect_to`, u
 
 {% raw %}
 
-```yml
+<pre><code class="language-yaml">
 ---
 name: only_allowed_by_johns
 redirect_to: /login
 flash_alert: Please login to access this page.
 ---
 ...
-```
+</code></pre>
+
 
 {% endraw %}
 
-As with normal flash messages, you can access it in Liquid using the `{{ context.flash }}` variable. 
+As with normal flash messages, you can access it in Liquid using the `{{ context.flash }}` variable.
 
 ## Next steps
-Congratulations! You know how to handle violated Authorization Policies. Check out our Reference Documentation to learn more about our GraphQL schemas, Liquid filters, API, and Form Configurations:   
+Congratulations! You know how to handle violated Authorization Policies. Check out our Reference Documentation to learn more about our GraphQL schemas, Liquid filters, API, and Form Configurations:
 
-* [Platform OS Reference Documentation](/reference) 
+* [Platform OS Reference Documentation](/reference)
 
 ## Questions?
 
-We are always happy to help with any questions you may have. Consult our  [documentation](), [contact support](), or  [connect with our sales team](). 
+We are always happy to help with any questions you may have. Consult our  [documentation](), [contact support](), or  [connect with our sales team]().

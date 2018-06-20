@@ -4,71 +4,68 @@ metadata:
   title: Creating a Layout
 slug: get-started/pages/creating-layout
 ---
-This guide will help you create a layout.  
+This guide will help you create a layout.
 
 ## Requirements
-So that you can follow the steps in this tutorial, you have to have the Marketplace Kit installed, an environment configured, and the required directory structure set up (or at least have a `marketplace_builder` directory). You should also understand the concept behind layouts. 
+So that you can follow the steps in this tutorial, you have to have the Marketplace Kit installed, an environment configured, and the required directory structure set up (or at least have a `marketplace_builder` directory). You should also understand the concept behind layouts.
 
-* [Quickstart Guide](/get-started/quickstart-guide) or [Setup tutorials](/get-started/setup): help you get access to our platform, set up a site, install the Marketplace Kit, set up the required directory structure, and deploy to your site.    
-* [Layouts](/get-started/pages/layouts): explains what layouts are, and how to use them. 
+* [Quickstart Guide](/get-started/quickstart-guide) or [Setup tutorials](/get-started/setup): help you get access to our platform, set up a site, install the Marketplace Kit, set up the required directory structure, and deploy to your site.
+* [Layouts](/get-started/pages/layouts): explains what layouts are, and how to use them.
 
-## Steps 
+## Steps
 
 Creating a Layout is a three-step process:
 
 1. Create a directory for layouts
 2. Create a layout file
-3. Edit the layout file 
+3. Edit the layout file
 
 ### Step 1: Create a directory for layouts
-In order to correctly communicate with the Platform OS engine and API, your code base should be organized into a specific directory structure. The root directory of your project should contain the `marketplace_builder` directory, and layouts should be placed into the `views/layouts` directory inside `marketplace_builder`. 
+In order to correctly communicate with the Platform OS engine and API, your code base should be organized into a specific directory structure. The root directory of your project should contain the `marketplace_builder` directory, and layouts should be placed into the `views/layouts` directory inside `marketplace_builder`.
 
 If you are starting from scratch (without having created the required directory structure), create a `views` directory inside `marketplace_builder`, then a `layouts` directory inside `views`.
 
-If you have already installed the required directory structure, you can skip this step, and just locate your `marketplace_builder/views/layouts` directory. 
+If you have already installed the required directory structure, you can skip this step, and just locate your `marketplace_builder/views/layouts` directory.
 
 ### Step 2: Create a layout file
-In the `layouts` directory, create a Liquid file called `application.liquid`. 
+In the `layouts` directory, create a Liquid file called `application.liquid`.
 
-### Step 3: Edit the Layout file 
-Edit the `application.liquid` layout file. 
+### Step 3: Edit the Layout file
+Edit the `application.liquid` layout file.
 
 See a sample layout file with explanations below:
 
 {% raw %}
 
-```liquid
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Layout title</title>
-</head>
+<pre><code class="language-liquid">
+&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+  &lt;title&gt;Page title&lt;/title&gt;
+&lt;/head&gt;
 
-<body>
-<h1>Layout</h1>
-{{ content_for_layout }}
-
-</body>
-
-</html>
-
-```
+&lt;body&gt;
+  &lt;h1&gt;Layout&lt;/h1&gt;
+  {{ content_for_layout }}
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
 
 {% endraw %}
 
 
-The special variable `{{ content_for_layout }}` renders the page content at the exact place where it has been included. 
+The special variable `{{ content_for_layout }}` renders the page content at the exact place where it has been included.
 
-Save your layout file. 
+Save your layout file.
 
 ## Next steps
-Congratulations! You have created a layout file. Now you can create a page that uses this layout.  
+Congratulations! You have created a layout file. Now you can create a page that uses this layout.
 
 * [Creating a Page](/get-started/pages/creating-page)
 
 ## Questions?
 
-We are always happy to help with any questions you may have. Consult our  [documentation](), [contact support](), or  [connect with our sales team](). 
+We are always happy to help with any questions you may have. Consult our  [documentation](), [contact support](), or  [connect with our sales team]().

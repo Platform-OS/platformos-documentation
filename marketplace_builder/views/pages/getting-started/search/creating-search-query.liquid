@@ -5,24 +5,24 @@ metadata:
 slug: get-started/search/creating-search-query
 ---
 
-This guide will help you create a search query to find all Transactables that haven't been deleted. This is a minimum example to show you the basics of creating search queries. 
+This guide will help you create a search query to find all Transactables that haven't been deleted. This is a minimum example to show you the basics of creating search queries.
 
 ## Requirements
 So that you can follow the steps in this tutorial, you should understand the concept of Search:
 
 * [Search](/get-started/search/search)
 
-## Steps 
+## Steps
 
 Creating a search query is a two-step process:
 
 1. Create GraphQL query
-2. Display search results 
+2. Display search results
 
 ### Step 1: Create GraphQL query
-Create a GraphQL query to return all Transactables that haven't been deleted. 
+Create a GraphQL query to return all Transactables that haven't been deleted.
 
-```graphql
+<pre><code class="language-graphql">
 query demo_search_transactables($query: String, $is_deleted: Boolean = false) {
   listings(query: $query, listing: { is_deleted: $is_deleted }) {
     total_entries
@@ -32,19 +32,19 @@ query demo_search_transactables($query: String, $is_deleted: Boolean = false) {
     }
   }
 }
-```
+</code></pre>
 
 {% include "alert/note", content: "By default the server does not return deleted records. This guide just uses it as an example of an argument that can be overridden." %}
 
 The above GraphQL query consists of three main sections:
 
-1.  Query arguments: usually passed from the liquid to parameterize your query. In the example below, `$query: String`. Define what will be used in the filters section and what is the data type of passed argument. It is also possible to set a default value for any given argument. The default value will be used if it is not passed to the execute query tag. 
+1.  Query arguments: usually passed from the liquid to parameterize your query. In the example below, `$query: String`. Define what will be used in the filters section and what is the data type of passed argument. It is also possible to set a default value for any given argument. The default value will be used if it is not passed to the execute query tag.
 
-2.  Filters: used to filter down the results by given arguments. In the example above, listings are filtered so they only contain results with `is_deleted` flag set to `false`. If you pass `true` in `$is_deleted` it will do the opposite. 
+2.  Filters: used to filter down the results by given arguments. In the example above, listings are filtered so they only contain results with `is_deleted` flag set to `false`. If you pass `true` in `$is_deleted` it will do the opposite.
 
-3.  Results: just like in any other query, defines which data you want to receive and in what form. 
+3.  Results: just like in any other query, defines which data you want to receive and in what form.
 
-### Step 2: Display search results 
+### Step 2: Display search results
 
 Now pull out slug and name of the resulting Transactables into an unordered list.
 
@@ -52,32 +52,32 @@ Now pull out slug and name of the resulting Transactables into an unordered list
 
 {% raw %}
 
-```liquid
+<pre><code class="language-liquid">
 ---
 slug: demo_search
 ---
 {% assign query = params.query | default: nil %}
-<form action="/demo_search" method="GET">
+&lt;form action=&quot;/demo_search&quot; method=&quot;GET&quot;&gt;
   {% query_graph 'demo_search_transactables',
     result_name: 'g',
     query: query
   %}
-  <input name="query" value="{{ query }}" />
-  <input type="submit" value="Search" />
-</form>
+  &lt;input name=&quot;query&quot; value=&quot;{{ query }}&quot; /&gt;
+  &lt;input type=&quot;submit&quot; value=&quot;Search&quot; /&gt;
+&lt;/form&gt;
 
-<p>Total: <strong>{{ g.listings.total_entries }}</strong></p>
+&lt;p&gt;Total: &lt;strong&gt;{{ g.listings.total_entries }}&lt;/strong&gt;&lt;/p&gt;
 
-<ul>
+&lt;ul&gt;
 {% for listing in g.listings.results %}
-  <li>{{ listing.slug }} - {{ listing.name }}</li>
+  &lt;li&gt;{{ listing.slug }} - {{ listing.name }}&lt;/li&gt;
 {% endfor %}
-</ul>
-```
+&lt;/ul&gt;
+</code></pre>
 
 {% endraw %}
 
-{% include "alert/important", content: "Because you have set the `is_deleted` default value to `false` in the query, passing false is unnecessary." %} 
+{% include "alert/important", content: "Because you have set the `is_deleted` default value to `false` in the query, passing false is unnecessary." %}
 
 ## Next steps
 Congratulations! You have created a search query. Now you can go on and learn about payments:
@@ -86,5 +86,5 @@ Congratulations! You have created a search query. Now you can go on and learn ab
 
 ## Questions?
 
-We are always happy to help with any questions you may have. Consult our  [documentation](), [contact support](), or  [connect with our sales team](). 
+We are always happy to help with any questions you may have. Consult our  [documentation](), [contact support](), or  [connect with our sales team]().
 

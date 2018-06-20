@@ -50,9 +50,9 @@ The status contains the error code, while the body of the response usually conta
 | 500 SERVER ERROR        | The request has failed because of server error. Please try to send the request later.                                                                                                               |
 | 503 SERVICE UNAVAILABLE | The server is temporarily unable to respond to the request. Please try to send the request later.                                                                                                   |
 
-```
+</code></pre>
 [Example error response]
-```
+</code></pre>
 
 **Responses**
 
@@ -62,32 +62,32 @@ When a request is successful, the API sends back a [response object format, e.g.
 
 [Explanation of example response]
 
-```
+</code></pre>
 [Example responses:
 1. Response for a single object
 2. Response for an object collection]
-```
+</code></pre>
 
 **Parameters**
 
 [Describe how to pass parameters in a request with the API, e.g. JSON object key-value pairs, query attributes]
 
-```
+</code></pre>
 [Sample object]
-```
+</code></pre>
 
 **Limits**
 
 [Describe rate limits, e.g. the number of possible API requests with the same OAuth token, rate limiting information in response headers, concurrency rate limiting]
 
-```
+</code></pre>
 [Sample rate limit headers, sample rate exceeded response]
-```
+</code></pre>
 
 **Authentication**
 
 [Describe ways to authenticate][api keys]
 
-```
+</code></pre>
 [Examples: Authenticate with a bearer authorization header, Authenticate with basic authentication]
-```
+</code></pre>

@@ -7,9 +7,9 @@ slug: reference/search/selecting-fields-available-search
 
 Some use cases require you to select fields available for search. For example, you want to give your users the ability to search through users but only using their `first_name`.
 
-## Profile fields 
+## Profile fields
 
-```graphql
+<pre><code class="language-graphql">
 query get_owners {
   people(query: { keyword: "John", fields: [{ name: "first_name" }] }) {
     results {
@@ -17,13 +17,13 @@ query get_owners {
     }
   }
 }
-```
+</code></pre>
 
 Returns users whose `first_name` exactly matches `John`.
 
 ## Custom attributes
 
-```graphql
+<pre><code class="language-graphql">
 query get_providers {
   listings(
     query: { keyword: "20", fields: [{ name: "properties.service_radius" }] }
@@ -33,6 +33,6 @@ query get_providers {
     }
   }
 }
-```
+</code></pre>
 
 Gets all Transactables where Custom Attribute `service_radius` equals `20`. It is exact search, but not case sensitive.

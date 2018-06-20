@@ -5,24 +5,24 @@ metadata:
 slug: get-started/authorization-policy/adding-authorization-policy
 ---
 
-This guide will help you add an Authorization Policy. 
+This guide will help you add an Authorization Policy.
 
 ## Requirements
-So that you can follow the steps in this tutorial, you should be familiar with the required directory structure for your code base, and understand the concept of Authorization Policy. You will also need the GraphQL query `current_user`, created in a previous tutorial. 
+So that you can follow the steps in this tutorial, you should be familiar with the required directory structure for your code base, and understand the concept of Authorization Policy. You will also need the GraphQL query `current_user`, created in a previous tutorial.
 
 * [Required Directory Structure](/how-platformos-works/platformos-components)
-* [Authorization Policy](/get-started/authorization-policy/authorization-policy) 
+* [Authorization Policy](/get-started/authorization-policy/authorization-policy)
 * [GraphQL query `current_user`](get-started/users/accessing-authenticated-user-data) (previous tutorial)
 
-## Steps 
+## Steps
 
 Adding an Authorization Policy is a two-step process:
 
 1. Create Authorization Policy file
 2. Edit Authorization Policy file
 
-### Step 1: Create Authorization Policy file 
-To add an Authorization Policy, create a file in the `marketplace_builder/authorization_policies/` directory, for example `only_allowed_by_johns.liquid`. 
+### Step 1: Create Authorization Policy file
+To add an Authorization Policy, create a file in the `marketplace_builder/authorization_policies/` directory, for example `only_allowed_by_johns.liquid`.
 
 ### Step 2: Edit Authorization Policy file
 You are allowed to use all Liquid features and GraphQL in your Authorization Policy.
@@ -31,23 +31,22 @@ Assuming you have previously prepared the GraphQL query `current_user`, an examp
 
 {% raw %}
 
-```liquid
+<pre><code class="language-liquid">
 ---
 name: only_allowed_by_johns
 ---
 {% query_graph 'current_user', result_name: 'g' %}
 {% if g.current_user.first_name == 'John' %}true{% endif %}
-```
-
+</code></pre>
 {% endraw %}
 
-In this example, only users with the first name `John` will be allowed to perform action with this policy. 
+In this example, only users with the first name `John` will be allowed to perform action with this policy.
 
 ## Next steps
-Congratulations! You know how to add an Authorization Policy. Now you can learn about associating the Authorization Policy with a Form Configuration. 
+Congratulations! You know how to add an Authorization Policy. Now you can learn about associating the Authorization Policy with a Form Configuration.
 
 * [Associating an Authorization Policy with Form Configuration](/get-started/authorization-policy/associating-authorization-policy-formconfiguration)
 
 ## Questions?
 
-We are always happy to help with any questions you may have. Consult our  [documentation](), [contact support](), or  [connect with our sales team](). 
+We are always happy to help with any questions you may have. Consult our  [documentation](), [contact support](), or  [connect with our sales team]().

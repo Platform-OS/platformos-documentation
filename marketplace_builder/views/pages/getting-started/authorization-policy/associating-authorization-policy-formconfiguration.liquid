@@ -5,15 +5,15 @@ metadata:
 slug: get-started/authorization-policy/associating-authorization-policy-formconfiguration
 ---
 
-This guide will help you associate an Authorization Policy with Form Configuration. 
+This guide will help you associate an Authorization Policy with Form Configuration.
 
 ## Requirements
-So that you can follow the steps in this tutorial, you should understand the concept of Authorization Policy, and you should have created an Authorization Policy. 
+So that you can follow the steps in this tutorial, you should understand the concept of Authorization Policy, and you should have created an Authorization Policy.
 
-* [Authorization Policy](/get-started/authorization-policy/authorization-policy) 
+* [Authorization Policy](/get-started/authorization-policy/authorization-policy)
 * [Adding an Authorization Policy](/get-started/authorization-policy/adding-authorization-policy)
 
-## Steps 
+## Steps
 
 Associating an Authorization Policy with Form Configuration is a two-step process:
 
@@ -25,7 +25,7 @@ Assuming you have a simple form that allows to change the user's last name, the 
 
 {% raw %}
 
-```liquid
+<pre><code class="language-liquid">
 ---
 name: update_last_name
 resource: User
@@ -35,36 +35,36 @@ configuration:
       presence: {}
 ---
 ...
-```
+</code></pre>
 
 {% endraw %}
 
 ### Step 2: Add `authorization_policies` key to Form Configuration
-In order to associate the Authorization Policy with the form, add a new `authorization_policies` key, and then specify the array of policy names associated with this form. 
+In order to associate the Authorization Policy with the form, add a new `authorization_policies` key, and then specify the array of policy names associated with this form.
 
 To ensure that only Johns will be able to submit this form, update the configuration to include the policy:
 
 {% raw %}
 
-```yml
+<pre><code class="language-yaml">
 ---
 name: update_last_name
 resource: User
 authorization_policies:
   - only_allowed_by_johns
 ...
-```
+</code></pre>
 
 {% endraw %}
 
 ## Next steps
-Congratulations! You know how to associate an Authorization Policy with Form Configuration. Now you can learn about associating an Authorization Policy with a page. 
+Congratulations! You know how to associate an Authorization Policy with Form Configuration. Now you can learn about associating an Authorization Policy with a page.
 
 * [Associating an Authorization Policy with a Page](/get-started/authorization-policy/associating-authorization-policy-page)
 
 ## Questions?
 
-We are always happy to help with any questions you may have. Consult our  [documentation](), [contact support](), or  [connect with our sales team](). 
+We are always happy to help with any questions you may have. Consult our  [documentation](), [contact support](), or  [connect with our sales team]().
 
 
 

@@ -5,20 +5,20 @@ metadata:
 slug: get-started/notifications/using-email-layouts
 ---
 
-This guide will help you provide a layout for your email notifications. 
+This guide will help you provide a layout for your email notifications.
 
 ## Requirements
-As the concept of an email layout is the same as the concept of a layout for pages, you should understand the concepts of layouts and notifications, and should have created an email notification before. 
+As the concept of an email layout is the same as the concept of a layout for pages, you should understand the concepts of layouts and notifications, and should have created an email notification before.
 
 * [Layouts](/get-started/pages/layouts)
 * [Notifications](/get-started/notifications/notifications)
 * [Creating an Email Notification](/get-started/notifications/creating-email-notification)
 
-## Steps 
+## Steps
 
 Using email layouts is a two-step process:
 
-1. Create email layout file 
+1. Create email layout file
 2. Edit email layout file
 
 ### Step 1: Create email layout file
@@ -27,37 +27,37 @@ The default layout file for all emails should be located in the `views/layouts` 
 
 ### Step 2: Edit email layout file
 
-The content of an email layout is slightly different from the content of a layout for pages, because it needs to be marked as an email layout. 
+The content of an email layout is slightly different from the content of a layout for pages, because it needs to be marked as an email layout.
 
 Add the following to your email layout file `mailer.html.liquid`:
 
 {% raw %}
 
-```liquid
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <!-- it is good practice for emails to include inline styles rather than css. They can go here. -->
-  </head>
-  <body>
+<pre><code class="language-liquid">
+&lt;html xmlns="http://www.w3.org/1999/xhtml"&;gt;
+  &lt;head&;gt;
+    &lt;!-- it is good practice for emails to include inline styles rather than css. They can go here. --&;gt;
+  &lt;/head&;gt;
+  &lt;body&;gt;
     Header
 
     {{ content_for_layout }}
 
     Footer
 
-  </body>
-</html>
-```
+  &lt;/body&;gt;
+&lt;/html&;gt;
+</code></pre>
 
 {% endraw %}
 
-Where {% raw %}`{{ content_for_layout }}`{% endraw %} injects the body defined in the email notification into the layout. Without it, you would be sending a layout without actual content. 
+Where {% raw %}`{{ content_for_layout }}`{% endraw %} injects the body defined in the email notification into the layout. Without it, you would be sending a layout without actual content.
 
 ## Next steps
 
-Congratulations! You know how to use email layouts. Now you can learn about creating an SMS notification. 
- 
-* [Creating an SMS Notification](/get-started/notification/creating-sms-notification) 
+Congratulations! You know how to use email layouts. Now you can learn about creating an SMS notification.
+
+* [Creating an SMS Notification](/get-started/notification/creating-sms-notification)
 
 ## Questions?
 

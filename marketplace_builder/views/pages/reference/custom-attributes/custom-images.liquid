@@ -11,10 +11,10 @@ slug: reference/custom-attributes/custom-images
 
 You can enable CustomImages by adding a CustomAttribute with `attribute_type` set to `photo`, for example:
 
-```yml
+<pre><code class="language-yaml">
 - name: avatar
   attribute_type: photo
-```
+</code></pre>
 
 ## Version defaults
 
@@ -30,20 +30,20 @@ The defaults are:
 
 You can alter the width and height of each version with `versions_configuration`:
 
-```yml
+<pre><code class="language-yaml">
 - name: avatar
   attribute_type: photo
   versions_configuration:
     normal:
       width: 300
       height: 300
-```
+</code></pre>
 
 ## Form configuration
 
 Custom Image attribute must be defined in a form to whitelist and validate the form request.
 
-```yml
+<pre><code class="language-yaml">
 ...
   custom_images:
     avatar:
@@ -52,7 +52,7 @@ Custom Image attribute must be defined in a form to whitelist and validate the f
           file_content_type: { allow: ['image/jpeg', 'image/png', 'image/gif'] }
         }
 ...
-```
+</code></pre>
 
 ## Fields
 
@@ -68,7 +68,7 @@ After setting up images as described above, you can further customize image edit
 
 {% raw %}
 
-```liquid
+<pre><code class="language-liquid">
 {% fields_for 'profiles' %}
   {% fields_for 'seller', form: 'profiles' %}
     {% fields_for 'custom_images', form: 'seller' %}
@@ -78,7 +78,7 @@ After setting up images as described above, you can further customize image edit
     {% endfields_for %}
   {% endfields_for %}
 {% endfields_for %}
-```
+</code></pre>
 
 {% endraw %}
 
@@ -86,7 +86,7 @@ The example above shows the predefined image tag.
 
 ## Using GraphQL to query for `CustomImage`
 
-```graphql
+<pre><code class="language-graphql">
 query test_image_query {
   customizations {
     results {
@@ -98,4 +98,4 @@ query test_image_query {
     }
   }
 }
-```
+</code></pre>

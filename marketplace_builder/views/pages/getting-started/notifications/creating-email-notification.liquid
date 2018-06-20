@@ -5,28 +5,28 @@ metadata:
 slug: get-started/notifications/creating-email-notification
 ---
 
-This guide will help you create an email notification to send a welcome email to a newly signed up user. 
+This guide will help you create an email notification to send a welcome email to a newly signed up user.
 
 ## Requirements
-To follow the steps in this tutorial, you should understand the concept of notifications. You'll also use the sign up form you created in a previous tutorial. 
+To follow the steps in this tutorial, you should understand the concept of notifications. You'll also use the sign up form you created in a previous tutorial.
 
 * [Notifications](/get-started/notifications/notifications)
 * [Creating a Sign Up Form](/get-started/users/creating-sign-up-form)
 
-## Steps 
+## Steps
 
 Creating an email notification is a two-step process:
 
-1. Create email notification 
-2. Add notification to sign up form 
+1. Create email notification
+2. Add notification to sign up form
 
 
-### Step 1: Create email notification 
-Create the notification file `notifications/email_notifications/welcome_user.liquid`: 
+### Step 1: Create email notification
+Create the notification file `notifications/email_notifications/welcome_user.liquid`:
 
 {% raw %}
 
-```liquid
+<pre><code class="language-liquid">
 ---
 name: welcome_user
 to: '{{ form.email }}'
@@ -43,7 +43,8 @@ layout_path: mailer
 <h1>Hi {{ form.first_name }}!</h1>
 
 <p>Welcome in our marketplace!</p>
-```
+</code></pre>
+
 
 {% endraw %}
 
@@ -51,7 +52,7 @@ layout_path: mailer
 ### Step 2: Add notification to sign up form
 Edit the `form_configurations/developer/sign_up.liquid` file to associate this email with it:
 
-```yaml
+<pre><code class="language-yaml">
 ---
 name: developer_sign_up
 resource: User
@@ -60,18 +61,19 @@ email_notifications:
   - welcome_user
 ---
 ...
-```
+</code></pre>
 
-Now, when you submit the form, the newly registered user should receive the email. 
 
-Please note: if you are working on a staging environment, you also need to [configure a test email](/get-started/partner-portal/configuring-test-email), because we intercept all emails on staging to avoid spamming real users during tests. 
+Now, when you submit the form, the newly registered user should receive the email.
+
+Please note: if you are working on a staging environment, you also need to [configure a test email](/get-started/partner-portal/configuring-test-email), because we intercept all emails on staging to avoid spamming real users during tests.
 
 Take a look at our [Notifications reference documentation](/reference/notifications) to get an overview of how to control when a notification should be sent.
 
 ## Next steps
 
-Congratulations! You have created an email notification. Now you can learn about using email layouts. 
- 
+Congratulations! You have created an email notification. Now you can learn about using email layouts.
+
 * [Using Email Layouts](/get-started/notifications/email-layouts)
 
 ## Questions?

@@ -40,28 +40,28 @@ Create a couple of assets.
 
 Create a CSS file `app.css` in the `styles` directory:
 
-```css
+<pre><code class="language-css">
 body {
   background-color: #ccc;
 }
-```
+</code></pre>
 
 Create a Javascript file `app.js` in the `scripts` directory:
 
-```javascript
+<pre><code class="language-javascript">
 console.log("Hello from JS!");
-```
+</code></pre>
 
 Create an HTML file `test.html` in the `assets` directory:
 
-```html
-<!doctype html>
-<html>
-<body>
+<pre><code class="language-html">
+&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;body&gt;
 Hello from test.html
-</body>
-</html>
-```
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
 
 ### Step 3: Check assets
 
@@ -69,9 +69,9 @@ Use `{{ asset_url }}` variable to check your assets. This will list the full URL
 
 {% raw %}
 
-```liquid
+<pre><code class="language-liquid">
 {{ asset_url }}
-```
+</code></pre>
 
 {% endraw %}
 
@@ -81,22 +81,22 @@ To access assets, use the `asset_url` filter in your liquid file, e.g. layout:
 
 {% raw %}
 
-```liquid
-<!doctype html>
-<html>
-<head>
-  <link rel="stylesheet" href="{{ 'styles/app.css' | asset_url }}">
-  <script src="{{ 'scripts/app.js' | asset_url }}"></script>
-</head>
-<body>
+<pre><code class="language-liquid">
+&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;{{ 'styles/app.css' | asset_url }}&quot;&gt;
+  &lt;script src=&quot;{{ 'scripts/app.js' | asset_url }}&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
 
 {{ content_for_layout }}
 
-<a href="{{ 'test.html' | asset_url }}">Test</a>
+&lt;a href=&quot;{{ 'test.html' | asset_url }}&quot;&gt;Test&lt;/a&gt;
 
-</body>
-</html>
-```
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
 
 {% endraw %}
 

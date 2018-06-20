@@ -5,18 +5,18 @@ metadata:
 slug: get-started/transactables/displaying-transactable
 ---
 
-This guide will help you display a newly created Transactable on a page with pagination. 
+This guide will help you display a newly created Transactable on a page with pagination.
 
 _This guide is part of a series that follows a scenario to demonstrate how to manage Transactables. You can find previous and next parts of the series in the Requirements and Next steps sections._
 
 ## Requirements
-So that you can follow the steps in this tutorial, you should understand the concept of Transactables. You'll also reuse some code from another tutorial, and you should have a Transactable you created.  
- 
+So that you can follow the steps in this tutorial, you should understand the concept of Transactables. You'll also reuse some code from another tutorial, and you should have a Transactable you created.
+
 * [Transactables](/get-started/transactables/creating-transactables)
 * [Accessing Authenticated User Data](/get-started/users/accessing-authenticated-user-data) (code re-use)
-* [Building a Transactable Creation Form](/get-started/transactables/building-transactable-creation-form) (previous tutorial) 
- 
-## Steps 
+* [Building a Transactable Creation Form](/get-started/transactables/building-transactable-creation-form) (previous tutorial)
+
+## Steps
 
 Displaying a Transactable is a two-step process:
 
@@ -28,34 +28,34 @@ Inject this code for example on the home page, which re-uses already created `cu
 
 {% raw %}
 
-```liquid
+<pre><code class="language-liquid">
 {% query_graph 'current_user', result_name: 'g' %}
 {% if g.current_user.client_profile %}
   {% assign page = params.page | default: 1 | plus: 0 %}
-  <a href="/client/projects/new">Create project</a>
+  &lt;a href=&quot;/client/projects/new&quot;&gt;Create project&lt;/a&gt;
 
   {% query_graph 'client_projects', result_name: 'g', creator_id: g.current_user.id, per_page: 20, page: page %}
 
-  {% if g.projects.total_entries > 0 %}
-    <ul>
+  {% if g.projects.total_entries &gt; 0 %}
+    &lt;ul&gt;
       {% for project in g.projects.results %}
-        <li>{{ project.name }} ({{ project.state }}) - <a href="/client/projects/edit/{{project.slug}}">edit</a></li>
+        &lt;li&gt;{{ project.name }} ({{ project.state }}) - &lt;a href=&quot;/client/projects/edit/{{project.slug}}&quot;&gt;edit&lt;/a&gt;&lt;/li&gt;
       {% endfor %}
-    </ul>
+    &lt;/ul&gt;
     {% assign pages = g.projects.total_pages %}
     {% assign current_page = g.projects.current_page %}
-    {% if pages > 1 %}
-      <div class="pager">
+    {% if pages &gt; 1 %}
+      &lt;div class=&quot;pager&quot;&gt;
         {% for page in (1..pages) %}
-          <a href="{{ current_full_path }}?page={{ page }}">{{ page }}</a>
+          &lt;a href=&quot;{{ current_full_path }}?page={{ page }}&quot;&gt;{{ page }}&lt;/a&gt;
         {% endfor %}
-      </div>
+      &lt;/div&gt;
     {% endif %}
   {% else %}
-    <p>You have not created any projects yet.</p>
+    &lt;p&gt;You have not created any projects yet.&lt;/p&gt;
   {% endif %}
 {% endif %}
-```
+</code></pre>
 
 {% endraw %}
 
@@ -65,7 +65,7 @@ A common issue in Liquid are types. Most of the time Liquid converts everything 
 ### Step 2: Create GraphQL query for client projects
 Create the GraphQL query `graph_queries/client_projects.graphql`:
 
-```graphql
+<pre><code class="language-graphql">
 query client_projects($page: Int, $creator_id: ID!) {
   projects: listings(
     per_page: 20
@@ -86,7 +86,7 @@ query client_projects($page: Int, $creator_id: ID!) {
     }
   }
 }
-```
+</code></pre>
 
 ## Next steps
 Congratulations! You have displayed a newly created Tranactable on a page with pagination. Now you can create the Edit Transactable page:
@@ -95,5 +95,5 @@ Congratulations! You have displayed a newly created Tranactable on a page with p
 
 ## Questions?
 
-We are always happy to help with any questions you may have. Consult our  [documentation](), [contact support](), or  [connect with our sales team](). 
+We are always happy to help with any questions you may have. Consult our  [documentation](), [contact support](), or  [connect with our sales team]().
 

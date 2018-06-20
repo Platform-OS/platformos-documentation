@@ -48,17 +48,17 @@ Usage example:
 Define what you want to yield in your page:
 
 {% raw %}
-```
-{% content_for 'page_title' %}Platform OS Blog{% endcontent_for %}
-```
+<pre><code class="language-liquid">
+  {% content_for 'page_title' %}Platform OS Blog{% endcontent_for %}
+</code></pre>
 {% endraw %}
 
 Then use yield inside the layout:
 
 {% raw %}
-```
-<title>{{ yield 'page_title' }}</title>
-```
+<pre><code class="language-liquid">
+  <title>{{ yield 'page_title' }}</title>
+</code></pre>
 {% endraw %}
 
 ## Custom Attributes
@@ -67,7 +67,7 @@ Custom Attributes are fields that you attach to a User Profile, Transactable, Re
 
 Some of them are provided by us to jumpstart your development—for example, we have a Custom Model Type called `custom_address` and it has multiple Custom attributes baked in.
 
-[Read more about custom_address in our Reference](/reference/custom-attributes/custom-addresses) 
+[Read more about custom_address in our Reference](/reference/custom-attributes/custom-addresses)
 
 ## Custom Model Types
 
@@ -120,7 +120,7 @@ Layout is a special kind of Liquid view that stores code that would normally rep
 
 Usual use case for layouts is storing html doctype, header, footer, javascripts.
 
-[Learn more about layouts in our Get Started guides](/get-started/pages/layouts) 
+[Learn more about layouts in our Get Started guides](/get-started/pages/layouts)
 
 ## Liquid
 
@@ -134,8 +134,8 @@ Read more about Liquid for designers here: [https://github.com/Shopify/liquid/wi
 
 Marketplace Kit (marketplace-kit) is a tool that helps you quickly:
 
-* develop your application (sync command)
-* deploy your application (deploy command)
+1. develop your application (`sync` command)
+2. deploy your application (`deploy` command)
 
 Read more about the Node.js version of marketplace-kit here: [https://github.com/mdyd-dev/marketplace-kit/tree/node-version](https://github.com/mdyd-dev/marketplace-kit/tree/node-version)
 
@@ -153,7 +153,7 @@ Notifications are messages sent to marketplace users (including admins) when som
 
 They can be delayed, you can use Liquid, GraphQL, and trigger conditions to decide if a Notification should be sent. It is a very powerful mechanism used for example to welcome your new users, and then follow up after they added their first item, or even if they have been inactive for some time.
 
-[Learn more about Notifications in our Reference](/reference/notifications) 
+[Learn more about Notifications in our Reference](/reference/notifications)
 
 ## NPM and NPM scripts
 
@@ -192,17 +192,17 @@ Parameterize partials and use them in various places, e.g. layouts, pages, Autho
 Example usage:
 
 {% raw %}
-```
-{% include 'layouts/blog/header' %}
-```
+<pre><code class="language-liquid">
+  {% include 'layouts/blog/header' %}
+</code></pre>
 {% endraw %}
 
 With variable passed to the partial:
 
 {% raw %}
-```
-{% include 'layouts/shared/javascripts', include_analytics: false %}
-```
+<pre><code class="language-liquid">
+  {% include 'layouts/shared/javascripts', include_analytics: false %}
+</code></pre>
 {% endraw %}
 
 ## Partner Portal
@@ -255,9 +255,9 @@ Read more about version control systems here: [https://en.wikipedia.org/wiki/Ver
 
 The usual structure of a webpage with the possibility to use layouts, pages and partials:
 
-* Create a layout: `marketplace_builder/views/layouts/application.liquid`
-* Create pages with different slugs: `marketplace_builder/pages/about-us.liquid`
-* Create partials that are used both in layout and pages: `marketplace_builder/views/layouts/shared/_javascripts.liquid`, `marketplace_builder/views/partials/shared/_contact-form.liquid`
+1. Create a layout: `marketplace_builder/views/layouts/application.liquid`
+2. Create pages with different slugs: `marketplace_builder/pages/about-us.liquid`
+3. Create partials that are used both in layout and pages: `marketplace_builder/views/layouts/shared/_javascripts.liquid`, `marketplace_builder/views/partials/shared/_contact-form.liquid`
 
 Because `_contact-form.liquid` is a partial it can be used in multiple places, about-us page, contact-us page, and in a configuration form.
 

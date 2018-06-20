@@ -5,7 +5,7 @@ metadata:
 slug: reference/custom-attributes/user-defined
 ---
 
-User-defined Custom Attributes are Custom Attributes you can create on demand. 
+User-defined Custom Attributes are Custom Attributes you can create on demand.
 
 ## Defining user-defined Custom Attributes
 
@@ -17,7 +17,7 @@ CustomAttributes are defined in YML configuration files for:
 * InstanceProfileTypes
 * ReservationTypes
 
-```yml
+<pre><code class="language-yaml">
 custom_attributes:
 - name: name
   attribute_type: string
@@ -25,14 +25,14 @@ custom_attributes:
   attribute_type: boolean
 - name: age
   attribute_type: integer
-```
+</code></pre>
 
 The above configuration adds three custom properties: "name" of type _string_, "enabled" of type _boolan_, and "age" of type _integer_.
 
 ## CustomAttribute Types
 
 Each CustomAttribute is described with the type of data that is stored within the database.
-Please note that when processing your CustomAttribute in Liquid, types are automatically converted to those supported by [Liquid Data Types](https://help.shopify.com/themes/liquid/basics/types). 
+Please note that when processing your CustomAttribute in Liquid, types are automatically converted to those supported by [Liquid Data Types](https://help.shopify.com/themes/liquid/basics/types).
 
 The table below lists available data types for CustomAttribute configuration, that are used to configure fields on the database:
 
@@ -58,7 +58,7 @@ You can group your custom attributes into [Custom Models](/reference/custom-mode
 
 You can configure CustomAttributes settings in FormConfiguration similarly to other parameters:
 
-```yml
+<pre><code class="language-yaml">
 ...
 configuration:
   properties:
@@ -68,17 +68,17 @@ configuration:
     age:
       validation:
         presence: true
-```
+</code></pre>
 
 {% raw %}
 
-```liquid
+<pre><code class="language-liquid">
 {% form %}
   {% fields_for 'properties' %}
     {% input_field 'name', form: 'properties' %}
   {% endfields_for %}
 {% endform %}
-```
+</code></pre>
 
 {% endraw %}
 
@@ -88,7 +88,7 @@ For more information see our [Form Builder Reference](/reference/form-configurat
 
 CustomAttributes depend on their parent objects and are accessible in the query after mapping the name of the CustomAttribute with the query attribute name, you can do that with the `property` method:
 
-```graphql
+<pre><code class="language-graphql">
 query get_customizations {
   customizations(name: "customization_name") {
     results {
@@ -98,7 +98,7 @@ query get_customizations {
     }
   }
 }
-```
+</code></pre>
 
 ## Filtering CustomAttribute with GraphQL
 
@@ -107,7 +107,7 @@ Each object in the properties array is connected with a CustomAttribute through 
 
 * value - matches the value of given property
 
-```graphql
+<pre><code class="language-graphql">
 query get_all_johns {
   customizations(
     is_deleted: false
@@ -118,11 +118,11 @@ query get_all_johns {
     }
   }
 }
-```
+</code></pre>
 
 * values - matches array of values with given `values_operator`: `OR` or `AND`.
 
-```graphql
+<pre><code class="language-graphql">
 query get_all_johns_and_annas {
   customizations(
     is_deleted: false
@@ -133,11 +133,11 @@ query get_all_johns_and_annas {
     }
   }
 }
-```
+</code></pre>
 
 * range - available options for range are: `lt`, `lte`, `gt`, `gte`:
 
-```graphql
+<pre><code class="language-graphql">
 query get_all_adults_below_60 {
   customizations(
     is_deleted: false
@@ -148,11 +148,11 @@ query get_all_adults_below_60 {
     }
   }
 }
-```
+</code></pre>
 
 * exists
 
-```graphql
+<pre><code class="language-graphql">
 query get_all_with_name {
   customizations(
     is_deleted: false
@@ -163,6 +163,6 @@ query get_all_with_name {
     }
   }
 }
-```
+</code></pre>
 
 Please note that the above examples are only valid for CustomAttributes defined on CustomModelType. Please refer to GraphQL schema in order to filter CustomAttributes defined on different parents than CustomModelType.

@@ -5,31 +5,31 @@ metadata:
 slug: get-started/notifications/creating-sms-notification
 ---
 
-This guide will help you create an SMS notification to send a text message to a newly signed up user using our Twilio integration. 
+This guide will help you create an SMS notification to send a text message to a newly signed up user using our Twilio integration.
 
 ## Requirements
-To follow the steps in this tutorial, you should understand the concept of notifications. You'll also use the sign up form you created in a previous tutorial. As you'll use our Twilio integration, you need to ensure that the `to` number is formatted according to Twilio's phone number format guideline. 
+To follow the steps in this tutorial, you should understand the concept of notifications. You'll also use the sign up form you created in a previous tutorial. As you'll use our Twilio integration, you need to ensure that the `to` number is formatted according to Twilio's phone number format guideline.
 
 * [Notifications](/get-started/notifications/notifications)
 * [Creating a Sign Up Form](/get-started/users/creating-sign-up-form)
 * [Twilio's phone number format guideline](https://support.twilio.com/hc/en-us/articles/223183008-Formatting-International-Phone-Numbers)
 
 
-## Steps 
+## Steps
 
 Creating an SMS notification is a three-step process:
 
 1. Extend sign up form with mobile number
-2. Create SMS notification 
+2. Create SMS notification
 3. Add SMS notification to sign up form
 
-### Step 1: Extend sign up form with mobile number 
+### Step 1: Extend sign up form with mobile number
 
 As you haven't collected the mobile phone number in the sign up form yet, as a first step, extend the sign up form `form_configurations/developer/sign_up.liquid`:
 
 {% raw %}
 
-```liquid
+<pre><code class="language-liquid">
 ---
 configuration:
   mobile_number:
@@ -38,19 +38,19 @@ configuration:
       phone_number: true
 ---
 {% input 'mobile_number', placeholder: 'Please include country code' %}
-```
+</code></pre>
 
 {% endraw %}
 
 On the production site, you have to take into consideration that users might not know their country code, or what a country code is. For simplicity in this example though, assume that the user provides correct input.
 
-### Step 2: Create SMS notification 
+### Step 2: Create SMS notification
 
 Create a notification file in `notifications/sms_notifications/welcome_user.liquid`:
 
 {% raw %}
 
-```liquid
+<pre><code class="language-liquid">
 ---
 name: welcome_user
 to: '{{ form.mobile_number }}'
@@ -59,7 +59,7 @@ enabled: true
 trigger_condition: true
 ---
 Hello {{ form.first_name }} via sms.
-```
+</code></pre>
 
 {% endraw %}
 
@@ -69,12 +69,12 @@ Add the SMS notification you created to the sign up form:
 
 {% raw %}
 
-```liquid
+<pre><code class="language-liquid">
 ---
 sms_notifications:
   - welcome_user
 ---
-```
+</code></pre>
 
 {% endraw %}
 
@@ -82,8 +82,8 @@ sms_notifications:
 
 ## Next steps
 
-Congratulations! You have created an SMS notification. Now you can learn about creating an API call notification. 
- 
+Congratulations! You have created an SMS notification. Now you can learn about creating an API call notification.
+
 * [Creating an API Call Notification](/get-started/notifications/creating-api-call-notification)
 
 ## Questions?

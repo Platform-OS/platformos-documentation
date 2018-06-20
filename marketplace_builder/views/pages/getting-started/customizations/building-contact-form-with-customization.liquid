@@ -19,7 +19,7 @@ This guide will help you understand the process of building a contact form backe
 
 Building a Contact Form with Customization is a five-step process:
 
-1.  Define Contact Request—Customization 
+1.  Define Contact Request—Customization
 2.  Define Contact Form—Data Creation
 3.  Fetch saved data with GraphQL
 4.  Build Contact Form with HTML
@@ -31,7 +31,7 @@ To define a new Custom Model Type, use YAML files placed in the `custom_model_ty
 
 Create a file `custom_model_types/contact_request.yml` with the following content:
 
-```yml
+<pre><code class="language-yaml">
 name: Contact Request
 custom_attributes:
 - name: name
@@ -40,19 +40,19 @@ custom_attributes:
   attribute_type: string
 - name: description
   attribute_type: string
-```
+</code></pre>
 
 The basic Configuration of Customization consists of a name and the list of custom attributes. In the example above, you have defined three attributes of type `string`.
 
 For more information on custom attributes please see [Custom Attributes Documentation](/reference/custom-attributes/).
 
-### Step 2: Define Contact Form—Form Object 
+### Step 2: Define Contact Form—Form Object
 
 Now that you have the definition of a `Contact Request` in place, you can create a Form that will configure the server to accept requests with data in the desired format. Data passed through the form will be stored in the database as a Contact Request object.
 
 `form_configurations/contact_form.liquid`
 
-```yml
+<pre><code class="language-yaml">
 ---
 name: contact_form
 resource: Customization
@@ -70,11 +70,11 @@ configuration:
       validation:
         presence: true
 ---
-```
+</code></pre>
 
 The above definition whitelists name, email and description attributes and defines validation for each attribute. You can now use this form, and send requests to [customization create endpoint](/reference/rest-api/customizations_post)
 
-```bash
+<pre><code class="language-shell">
  curl -X POST https://example.com/api/customizations.json \
    -H "Authorization: Token token=a86127dc5c394d1f1d0eb52c3353f1a3" \
    -H "Accept: application/vnd.nearme.v4+json"\
@@ -93,7 +93,7 @@ The above definition whitelists name, email and description attributes and defin
      }
    }
    '
-```
+</code></pre>
 
 * Please note that when you use curl you need to set proper headers. To obtain an API token, go to your site admin panel `/instance_admin/settings/api_keys`, and click on generate token.
 * From the example above you are sending the following parameters in the request:
@@ -105,7 +105,7 @@ The above definition whitelists name, email and description attributes and defin
 
 Now that you have created the ContactRequest in the previous step, you can proceed to fetch this data with GraphQL. To define get_contact_requests query, create file `get_contact_requests.graphql` file in `graph_queries` directory.
 
-```graphql
+<pre><code class="language-graphql">
 query get_contact_requests {
   customizations(name: "contact_request") {
     results {
@@ -115,11 +115,11 @@ query get_contact_requests {
     }
   }
 }
-```
+</code></pre>
 
 To see if the above query works properly, display the results on an html page. Contact list page can be created in the `views/pages` directory as `contacts.liquid` file.
 
-```liquid
+<pre><code class="language-liquid">
 {% raw %}
 ---
 slug: contacts
@@ -128,13 +128,14 @@ layout_name: ''
 
 {%- query_graph 'get_contact_requests', result_name: 'g' -%}
 
-<ul>
+&lt;ul&gt;
   {% for user in g.customizations.results %}
-    <li>{{ user.name }}, {{ user.email }}, {{ user.description }}</li>
+    &lt;li&gt;{{ user.name }}, {{ user.email }}, {{ user.description }}&lt;/li&gt;
   {% endfor %}
-</ul>
+&lt;/ul&gt;
 {% endraw %}
-```
+</code></pre>
+
 
 ### Step 4: Build Contact Form with HTML
 
@@ -142,7 +143,7 @@ In _Step 2: Define Contact Form-Data Creation, you have created a form file call
 
 {% raw %}
 
-```liquid
+<pre><code class="language-liquid">
 ---
 name: contact_form
 resource: Customization
@@ -182,7 +183,7 @@ configuration:
 
   {% submit 'Submit' %}
 {% endform %}
-```
+</code></pre>
 
 {% endraw %}
 
@@ -194,9 +195,9 @@ To display the form on previously created `contacts` page you have to include it
 
 {% raw %}
 
-```liquid
+<pre><code class="language-liquid">
 {% render_form 'contact_form', parent_resource_id: 'contact_request' %}
-```
+</code></pre>
 
 {% endraw %}
 
@@ -210,7 +211,7 @@ File should be located in the `notifications/email_notifications`, name it `cont
 
 {% raw %}
 
-```liquid
+<pre><code class="language-liquid">
 ---
 name: contact_request_notification
 delay: 0
@@ -220,9 +221,9 @@ subject: Contact Request
 to: '{{ form.model.properties.email }}'
 trigger_condition: true
 ---
-<h2>Hi {{ form.model.properties.name }}</h2>
-<p>Thank you for your request, we will contact you shortly!</p>
-```
+&lt;h2&gt;Hi {{ form.model.properties.name }}&lt;/h2&gt;
+&lt;p&gt;Thank you for your request, we will contact you shortly!&lt;/p&gt;
+</code></pre>
 
 {% endraw %}
 
@@ -230,10 +231,10 @@ As you can see, all request parameters are now accessible in `form.model` object
 
 Next step is linking `contact_request_notification` in the `contact_form` by adding
 
-```yml
+<pre><code class="language-yaml">
 email_notifications:
 - contact_request_notification
-```
+</code></pre>
 
 to form configuration inside `form_configurations/contact_form.liquid` file.
 
@@ -242,8 +243,8 @@ to form configuration inside `form_configurations/contact_form.liquid` file.
 Congratulations! You have learned how to build forms with Customization. You can now explore our reference documentation for Custom Attributes and Custom Model Types:
 
 * [Custom Attributes](/reference/custom-attributes/custom-attributes)
-* [Custom Model Types](/reference/custom-model-types/custom-model-types) 
+* [Custom Model Types](/reference/custom-model-types/custom-model-types)
 
 ## Questions?
 
-We are always happy to help with any questions you may have. Consult our  [documentation](), [contact support](), or  [connect with our sales team](). 
+We are always happy to help with any questions you may have. Consult our  [documentation](), [contact support](), or  [connect with our sales team]().

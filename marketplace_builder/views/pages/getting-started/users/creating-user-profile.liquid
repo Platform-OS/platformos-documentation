@@ -5,9 +5,9 @@ metadata:
 slug: get-started/users/creating-user-profile
 ---
 
-This guide will help you create User Profiles for your Platform OS site. 
+This guide will help you create User Profiles for your Platform OS site.
 
-For the sake of the tutorials in this section, we will assume that you want to build a marketplace which connects Developers (who build marketplaces) with Clients (who want to hire them). In order to display a different UI based on their role in the marketplace, you will create two profiles: developer and client. 
+For the sake of the tutorials in this section, we will assume that you want to build a marketplace which connects Developers (who build marketplaces) with Clients (who want to hire them). In order to display a different UI based on their role in the marketplace, you will create two profiles: developer and client.
 
 ## Requirements
 
@@ -16,7 +16,7 @@ To follow the steps in this tutorial, you should be familiar with the required d
 * [Required Directory Structure](/how-platformos-works/platformos-components)
 * [Users](/get-started/users/users)
 
-## Steps 
+## Steps
 
 Creating a User Profile is a two-step process:
 
@@ -25,13 +25,13 @@ Creating a User Profile is a two-step process:
 
 ### Step 1: Create yml file
 
-Create two yml files for the two User Profiles (developer and client) in the `marketplace_builder/user_profile_types` directory. Name the files `developer.yml` and `client.yml`. 
+Create two yml files for the two User Profiles (developer and client) in the `marketplace_builder/user_profile_types` directory. Name the files `developer.yml` and `client.yml`.
 
 ### Step 2: Edit User Profile
 
-Add the following content to the `developer.yml` User Profile: 
+Add the following content to the `developer.yml` User Profile:
 
-```yml
+<pre><code class="language-yaml">
 name: developer
 custom_attributes:
 - name: bio
@@ -40,20 +40,20 @@ custom_attributes:
   attribute_type: integer
 - name: hourly_rate
   attribute_type: float
-```
+</code></pre>
 
-Explanation: 
+Explanation:
 
 * `name`: the most important setting. Its [snake case](https://en.wikipedia.org/wiki/Snake_case) version is used in many places like Form Configuration and GraphQL.
-* `custom_attributes`: the heart of User Profiles, that allow you to specify Custom Attributes for the User Profile. They are used to build customized forms that gather user input during registration for later display. They take an array of elements that consist of name and type. To learn more, check our [full Custom Attributes documentation](/reference/custom-attributes/). 
+* `custom_attributes`: the heart of User Profiles, that allow you to specify Custom Attributes for the User Profile. They are used to build customized forms that gather user input during registration for later display. They take an array of elements that consist of name and type. To learn more, check our [full Custom Attributes documentation](/reference/custom-attributes/).
 
 Similarly, add content to the `client.yml` User Profile:
 
-```yml
+<pre><code class="language-yaml">
 name: client
-```
+</code></pre>
 
-Save your User Profiles. 
+Save your User Profiles.
 
 ## Next steps
 Congratulations! You have created User Profiles. Now you can create a sign up form:
@@ -62,4 +62,4 @@ Congratulations! You have created User Profiles. Now you can create a sign up fo
 
 ## Questions?
 
-We are always happy to help with any questions you may have. Consult our  [documentation](), [contact support](), or  [connect with our sales team](). 
+We are always happy to help with any questions you may have. Consult our  [documentation](), [contact support](), or  [connect with our sales team]().

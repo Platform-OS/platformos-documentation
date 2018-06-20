@@ -5,11 +5,11 @@ metadata:
 slug: get-started/users/creating-sign-up-form
 ---
 
-This guide will help you create sign up forms for users. 
+This guide will help you create sign up forms for users.
 
 ## Requirements
 
-To follow the steps in this tutorial, you should be familiar with the required directory structure for your code base, and understand the concept of users. You'll use the User Profiles created in a previous tutorial. 
+To follow the steps in this tutorial, you should be familiar with the required directory structure for your code base, and understand the concept of users. You'll use the User Profiles created in a previous tutorial.
 
 * [Required Directory Structure](/how-platformos-works/platformos-components)
 * [Users](/get-started/users/users)
@@ -20,23 +20,23 @@ To follow the steps in this tutorial, you should be familiar with the required d
 Creating a sign-up form is a two-step process:
 
 1. Create form file
-2. Configure form 
+2. Configure form
 
-### Step 1: Create form files 
+### Step 1: Create form files
 
-Create a form to sign up developers first. Create a liquid file in the `marketplace_builder/form_configurations/developer/` directory, and name it `developer_sign_up.liquid`. 
+Create a form to sign up developers first. Create a liquid file in the `marketplace_builder/form_configurations/developer/` directory, and name it `developer_sign_up.liquid`.
 
-Then create a liquid file in the `form_configurations/client/client_sign_up.liquid` directory named `client_sign_up.liquid`.  
+Then create a liquid file in the `form_configurations/client/client_sign_up.liquid` directory named `client_sign_up.liquid`.
 
-### Step 2: Configure forms 
+### Step 2: Configure forms
 
-#### Developer form 
+#### Developer form
 
 Add the following content to the `developer_sign_up.liquid` sign up form:
 
 {% raw %}
 
-```liquid
+<pre><code class="language-liquid">
 ---
 name: developer_sign_up
 resource: User
@@ -72,11 +72,11 @@ configuration:
   {% submit 'Create' %}
 
 {% endform %}
-```
+</code></pre>
 
 {% endraw %}
 
-* `name`: the name of the form, written in snake case. It is used to embed the form in a page. 
+* `name`: the name of the form, written in snake case. It is used to embed the form in a page.
 * `resource`: defines what is the root resource in this form. In our example it is naturally User. Please check our [full FormBuilder documentation](/reference/form-builder/) for all options.
 * `redirect_to`: defines the url to which the user will be redirected after success. You can use liquid. In our example, you will redirect the user to /sign-in.
 * `configuration`: defines which fields should be acceptable by the form, and it's possible to define validation of each field. Depending on the `resource`, some fields are available without having to create custom attributes. Some of them have pre-defined validation due to the backend requirements. In this example, such fields are `email`, with validation that ensures uniqueness (no two user can sign up with the same email address), it has to be a valid email, and it can't be blank; and `password`, which has to be minimum 6 characters long.
@@ -84,12 +84,12 @@ configuration:
 #### Configuration
 
 * `first_name`:  marked as required.
-* `profiles`: this is a special abstraction, to easily create the `UserProfile` resource associated with the newly signed up `User`. You'll see a similar concept later on. Within `profiles` you can specify names of the profiles created in `user_profile_types` directory. In our example, you have two choices: `developer` and `client`. Since you created the sign up for developer, this is what you used. Now, the `developer` is a `UserProfile` resource, so you have access to its field. If you take a look at UserProfile resource documentation, you will notice that one of the available fields is `enabled`, this is the field used here. 
+* `profiles`: this is a special abstraction, to easily create the `UserProfile` resource associated with the newly signed up `User`. You'll see a similar concept later on. Within `profiles` you can specify names of the profiles created in `user_profile_types` directory. In our example, you have two choices: `developer` and `client`. Since you created the sign up for developer, this is what you used. Now, the `developer` is a `UserProfile` resource, so you have access to its field. If you take a look at UserProfile resource documentation, you will notice that one of the available fields is `enabled`, this is the field used here.
 * `property_options`: a special construction to add special behavior to the field. Here you used `default`, which provides the default value (i.e. the value that will be used if user does not fill in this field); `readonly` on the other hand ignores the user's input. This combination is useful, if you want to set something in a background, and don't want the user to be able to override it. Because any input by the user will be ignored, the default value will always be used.
 
 All of this might be a bit confusing at first sight, like what really is this `enabled` field. All should be clearer, once you realize that the last part of the configuration, which is
 
-```yml
+<pre><code class="language-yaml">
 developer:
   enabled:
     property_options:
@@ -97,13 +97,13 @@ developer:
       readonly: true
   validation:
     presence: true
-```
+</code></pre>
 
 can be also represented as an independent form, with configuration like this:
 
 {% raw %}
 
-```yml
+<pre><code class="language-yaml">
 ...
 resource: UserProfile
 configuration:
@@ -112,15 +112,15 @@ configuration:
       default: true
       readonly: true
 ...
-```
+</code></pre>
 
 {% endraw %}
 
-In other words, forms are nested in each other—you can access them as 'nested forms'. In this example you want to create a User and a corresponding UserProfile at the same time. This behavior is desired if in your UI you have a page with a button that says "Sign up as a Developer". User provides first name, email, password and that's it-the user registers as a developer. 
+In other words, forms are nested in each other—you can access them as 'nested forms'. In this example you want to create a User and a corresponding UserProfile at the same time. This behavior is desired if in your UI you have a page with a button that says "Sign up as a Developer". User provides first name, email, password and that's it-the user registers as a developer.
 
 Alternatively, the UI can split the process into two separate actions. It can first ask the user to register, so the button would be just 'Sign up', and only ask after registration if the user wants to become a developer or a client. In this scenario, the first form would look like this:
 
-```yml
+<pre><code class="language-yaml">
 ---
 name: generic_sign_up
 resource: User
@@ -131,11 +131,11 @@ configuration:
   first_name:
     validation: { presence: true }
 ---
-```
+</code></pre>
 
 and the second one would be similar to:
 
-```yml
+<pre><code class="language-yaml">
 ---
 name: become_developer_form
 resource: UserProfile
@@ -147,7 +147,7 @@ configuration:
       default: true
       readonly: true
 ---
-```
+</code></pre>
 
 The end result would be the same. The point is, that with Platform OS, you have the power of creating multiple resources within one form submission-which might be more complex in terms of configuration, but it can greatly simplify UX.
 
@@ -163,9 +163,9 @@ The second part of the form is the actual html that will be presented to the use
 
 #### Inputs
 
-Proceeding with rendering proper inputs that the user will be expected to fill: 
+Proceeding with rendering proper inputs that the user will be expected to fill:
 
-* `input`: utility liquid tag that can save quite a bit of work-by default it is configured to generate html that is compatible with bootstrap 3 framework. Moreover, in case of validation errors, it automatically adds 'error' css class to the input and renders a validation error message below the input. If bootstrap 3 is not the framework of your choice, in the How-To Guides  section we explain how to create your own re-usable set of inputs. 
+* `input`: utility liquid tag that can save quite a bit of work-by default it is configured to generate html that is compatible with bootstrap 3 framework. Moreover, in case of validation errors, it automatically adds 'error' css class to the input and renders a validation error message below the input. If bootstrap 3 is not the framework of your choice, in the How-To Guides  section we explain how to create your own re-usable set of inputs.
 
 #### Nested fields
 
@@ -173,17 +173,17 @@ The last part is the rendering of nested forms. As explained in the configuratio
 
 {% raw %}
 
-```liquid
+<pre><code class="language-liquid">
 {% fields_for 'profiles' %}
   {% fields_for 'developer', form: 'profiles' %}
     {% input 'enabled', as: 'hidden', form: 'developer' %}
   {% endfields_for %}
 {% endfields_for %}
-```
+</code></pre>
 
 {% endraw %}
 
-* `fields_for` tag expects the first argument to be a string that represents nested object. 
+* `fields_for` tag expects the first argument to be a string that represents nested object.
 * The second one is a hash, where key is always `form` and value is the name of the parent form. If none provided, it will assume that the parent is the root form. In this example, you create not one level deep nested object, but actually two level deep. You first create `profiles` form the root form, and then `developer` for the `profiles` form. Then you create a hidden input `enabled` for `developer` form. The idea here is that if you wouldn't provide it, then the profile wouldn't be created-the nested configuration is ignored, if you don't send attributes via html. In other words, setting the configuration for UserForm to allow creating `developer` profile is not enough-the configuration just defines what is allowed to be submitted to the API endpoint. To actually create the developer profile along with user, you need to send value for at least one field that belongs to the user profile-in this example, you provide value for the `enabled` field.
 
 #### Client form
@@ -192,7 +192,7 @@ Add the following content to the `client_sign_up.liquid` sign up form:
 
 {% raw %}
 
-```liquid
+<pre><code class="language-liquid">
 ---
 name: client_sign_up
 resource: User
@@ -228,18 +228,18 @@ configuration:
 
   {% submit 'Create' %}
 {% endform %}
-```
+</code></pre>
 
 {% endraw %}
 
 
 ## Next steps
-Congratulations! You now know how to create sign up forms for your users. Now you can embed the sign up form in a page: 
+Congratulations! You now know how to create sign up forms for your users. Now you can embed the sign up form in a page:
 
 * [Embedding a Sign-Up Form in a Page](/get-started/users/embedding-sign-up-form-page)
 
 ## Questions?
 
-We are always happy to help with any questions you may have. Consult our  [documentation](), [contact support](), or  [connect with our sales team](). 
+We are always happy to help with any questions you may have. Consult our  [documentation](), [contact support](), or  [connect with our sales team]().
 
 
