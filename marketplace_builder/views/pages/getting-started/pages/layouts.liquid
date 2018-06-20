@@ -21,9 +21,11 @@ At a minimum, the content of the layout should look like this:
 
 {% raw %}
 
-```liquid
-{{ content_for_layout }}
-```
+<pre>
+  <code class="language-liquid">
+    {{ content_for_layout }}
+  </code>
+</pre>
 
 {% endraw %}
 
@@ -35,26 +37,28 @@ The most common use case of layouts is to place something before and after the c
 
 {% raw %}
 
-```liquid
-<!doctype html>
-<html lang="en">
-<head>
-  <!-- here come things like meta tags, favicon, css etc. -->
-</head>
+<pre>
+  <code class="language-html">
+    &lt;!doctype html&gt;
+    &lt;html lang=&quot;en&quot;&gt;
+    &lt;head&gt;
+      &lt;!-- here come things like meta tags, favicon, css etc. --&gt;
+    &lt;/head&gt;
 
-<body>
-  <header>here usually come header, navbar etc.</header>
+    &lt;body&gt;
+      &lt;header&gt;here usually come header, navbar etc.&lt;/header&gt;
 
-  <main>
-    {{ content_for_layout }}
-  </main>
+      &lt;main&gt;
+        {{ content_for_layout }}
+      &lt;/main&gt;
 
-  <footer>
-    here usually come footer, js etc.
-  </footer>
-</body>
-</html>
-```
+      &lt;footer&gt;
+        here usually come footer, js etc.
+      &lt;/footer&gt;
+    &lt;/body&gt;
+    &lt;/html&gt;
+  </code>
+</pre>
 
 {% endraw %}
 

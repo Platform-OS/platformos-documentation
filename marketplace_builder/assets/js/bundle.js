@@ -10430,7 +10430,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 var widgetNav = function widgetNav() {
-	$('.sub-menu').each(function () {
+	$('.sidebar .sub-menu').each(function () {
 		$(this).parent().addClass('hasSubmenu').append('<i class="fas fa-chevron-up"></i>');
 	});
 
