@@ -16,7 +16,7 @@ This is an advanced tutorial. To follow it, you should be familiar with basic Pl
 * [How Platform OS Works](/how-platformos-works)
 * [Get Started: Pages tutorials](/get-started/pages)
 
-## Steps 
+## Steps
 
 Creating SEO friendly category listings is a three-step process:
 
@@ -24,7 +24,7 @@ Creating SEO friendly category listings is a three-step process:
 2. Prepare GraphQL query
 3. Add GraphQL query to page
 
-### Step 1: Setup page 
+### Step 1: Setup page
 
 * Create Search Page with slug `catalogue`
 
@@ -32,9 +32,9 @@ Creating SEO friendly category listings is a three-step process:
 
 {% raw %}
 
-```liquid
+<pre><code class="language-liquid">
 {% assign url_template = '/catalogue/{country}/{city}' %}
-```
+</pre></code>
 
 {% endraw %}
 
@@ -42,17 +42,17 @@ Creating SEO friendly category listings is a three-step process:
 
 {% raw %}
 
-```liquid
+<pre><code class="language-liquid">
 {% assign url_params = current_full_path | extract_url_params: url_template %}
-```
+</pre></code>
 
 {% endraw %}
 
-### Step 2: Prepare GraphQL query 
+### Step 2: Prepare GraphQL query
 
 Create a GrpahQL query with country and city:
 
-```js
+<pre><code class="language-javascript">
 query get_catalogue_listings(
   $query: String,
   $is_deleted: Boolean = false
@@ -80,21 +80,21 @@ query get_catalogue_listings(
     }
   }
 }
-```
+</pre></code>
 
 ### Step 3: Add GraphQL query to page
 
-Add the GraphQL query you created to your page, and pass extracted params to it: 
+Add the GraphQL query you created to your page, and pass extracted params to it:
 
 {% raw %}
 
-```liquid
+<pre><code class="language-liquid">
 {% query_graph 'get_catalogue_listings', result_name: 'g',
   country: url_params.country,
   city: url_params.city,
   is_deleted: false
 %}
-```
+</pre></code>
 
 {% endraw %}
 
@@ -102,29 +102,29 @@ Add the GraphQL query you created to your page, and pass extracted params to it:
 
 {% raw %}
 
-```liquid
+<pre><code class="language-liquid">
 {% assign url_template = '/catalogue/{country}/{city}' %}
 {% assign url_params = current_full_path | extract_url_params: url_template %}
 
-  <div class="results">
-    <form action="." method="GET">
-      {% query_graph 'demo_search_listings', result_name: 'g',
-        country: url_params.country,
-        city: url_params.city,
-        is_deleted: false
-      %}
+<div class="results">
+  <form action="." method="GET">
+    {% query_graph 'demo_search_listings', result_name: 'g',
+      country: url_params.country,
+      city: url_params.city,
+      is_deleted: false
+    %}
 
-      <strong>{{ g.listings.total_entries }}</strong>
-      <ul>
-      {% for item in g.listings.results %}
-        <li>
-         {{ item.slug }} - {{ item.name }} - {{ item.address.country }} - {{ item.address.city }}
-        </li>
-      {% endfor %}
-      </ul>
-    </form>
-  </div>
-```
+    <strong>{{ g.listings.total_entries }}</strong>
+    <ul>
+    {% for item in g.listings.results %}
+      <li>
+        {{ item.slug }} - {{ item.name }} - {{ item.address.country }} - {{ item.address.city }}
+      </li>
+    {% endfor %}
+    </ul>
+  </form>
+</div>
+</pre></code>
 
 {% endraw %}
 
@@ -138,4 +138,4 @@ Add the GraphQL query you created to your page, and pass extracted params to it:
 
 ## Questions?
 
-We are always happy to help with any questions you may have. Consult our  [documentation](), [contact support](), or  [connect with our sales team](). 
+We are always happy to help with any questions you may have. Consult our  [documentation](), [contact support](), or  [connect with our sales team]().

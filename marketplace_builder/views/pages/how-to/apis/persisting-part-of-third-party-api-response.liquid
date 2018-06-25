@@ -5,7 +5,7 @@ metadata:
 slug: how-to/apis/persisting-part-of-third-party-api-response
 ---
 
-This guide will help you persist part of a third-party API response by walking you through an example. 
+This guide will help you persist part of a third-party API response by walking you through an example.
 
 ## Requirements
 This is an advanced tutorial. To follow it, you should be familiar with basic Platform OS concepts, HTML, GraphQL queries, Liquid, YAML, and the topics in the Get Started section, especially tutorials related to pages, users, and notifications.
@@ -13,17 +13,17 @@ This is an advanced tutorial. To follow it, you should be familiar with basic Pl
 * [How Platform OS Works](/how-platformos-works)
 * [Get Started: Users tutorials](/get-started/pages)
 * [Get Started: Users tutorials](/get-started/users)
-* [Get Started: Notifications](/get-started/notifications) 
+* [Get Started: Notifications](/get-started/notifications)
 
-## Steps 
+## Steps
 
 Persisting part of a third-party API response is a seven-step process:
 
 1. Create user profile and Custom Attribute
 2. Create test endpoint
 3. Create API call notification
-4. Create GraphQL mutation 
-5. Create page to embed form 
+4. Create GraphQL mutation
+5. Create page to embed form
 6. Create and embed form
 7. Display results
 
@@ -32,14 +32,14 @@ Persisting part of a third-party API response is a seven-step process:
 
 Create a new user profile called `test_profile`, and create a Custom Attribute to store the value from the API, called `third_party_api_value`:
 
-```liquid
-# user_profile_types/default.yml
+`user_profile_types/default.yml`
+<pre><code class="language-liquid">
 ---
 name: test_profile
 custom_attributes:
 - name: third_party_api_value
   attribute_type: string
-```
+</pre></code>
 
 ### Step 2: Create test endpoint
 
@@ -47,15 +47,15 @@ Create a test endpoint that simulates a third-party API JSON response:
 
 {% raw %}
 
-```liquid
-# marketplace_builder/views/pages/test-endpoint.json.liquid
+`views/pages/test-endpoint.json.liquid`
+<pre><code class="language-liquid">
 ---
 slug: test-endpoint
 ---
 {
   "third_party_api_id": "id-1"
 }
-```
+</pre></code>
 
 {% endraw %}
 
@@ -63,15 +63,15 @@ slug: test-endpoint
 
 Create an API call notification that should:
 
-1.  send a request to `http(s)://<your_domain>.com/test-endpoint.json`
-2.  store the value from the response in a custom attribute
+1. send a request to `https://<your_domain>.com/test-endpoint.json`
+2. store the value from the response in a custom attribute
 
-Replace `example.com` with your domain: 
+Replace `example.com` with your domain:
 
 {% raw %}
 
-```liquid
-# marketplace_builder/notifications/api_call_notifications/send_request.liquid
+`notifications/api_call_notifications/send_request.liquid`
+<pre><code class="language-liquid">
 ---
 name: send_request
 to: http://example.com/test-endpoint.json
@@ -87,17 +87,16 @@ headers: '{
 {
   "id": "{{ form.id }}"
 }
-```
+</pre></code>
 
 {% endraw %}
 
 ### Step 4: Create GraphQL mutation
 
-In the callback, the `execute_query` tag invokes a GraphQL mutation with the provided arguments. The query accepts two arguments: the `user_id`, the ID of the user we want to update, and the `third_party_api_id` which is the value we want to store. The content of the GraphQL mutation file: 
+In the callback, the `execute_query` tag invokes a GraphQL mutation with the provided arguments. The query accepts two arguments: the `user_id`, the ID of the user we want to update, and the `third_party_api_id` which is the value we want to store. The content of the GraphQL mutation file:
 
-```js
-# marketplace_builder/graph_queries/persist_in_custom_attribute.graphql
-
+`graph_queries/persist_in_custom_attribute.graphql`
+<pre><code class="language-graphql">
 mutation persist_in_custom_attribute($user_id: ID!, $third_party_api_id: String!) {
   user_update(
     id: $user_id,
@@ -114,14 +113,14 @@ mutation persist_in_custom_attribute($user_id: ID!, $third_party_api_id: String!
     id
   }
 }
-```
+</pre></code>
 
 The mutation passes the arguments to a form called `callback_persist_in_custom_attribute`. Make sure that its configuration includes the fields you want to persist. Please note: by re-using an idea of `form_configuration` here, you can easily send additional emails, SMSes, or even other API calls. All you want to do in this example though is to store the value, so you don't have to add any extra notifications.
 
 {% raw %}
 
-```yml
-# marketplace_builder/form_configurations/callback_persist_in_custom_attribute.liquid
+`form_configurations/callback_persist_in_custom_attribute.liquid`
+<pre><code class="language-yml">
 ---
 name: callback_persist_in_custom_attribute
 async_callback_actions:
@@ -132,24 +131,24 @@ configuration:
       properties:
         third_party_api_value:
 ---
-```
+</pre></code>
 
 {% endraw %}
 
-### Step 5: Create page to embed form 
+### Step 5: Create page to embed form
 
-Once you have an API call notification defined, you should associate it with a form to trigger it. Create a page for embedding this form. 
+Once you have an API call notification defined, you should associate it with a form to trigger it. Create a page for embedding this form.
 
 {% raw %}
 
-```liquid
+<pre><code class="language-liquid">
 # views/pages/test-form.liquid
 ---
 slug: test-form
 ---
 <h1>Form</h1>
 {% render_form 'test_form', object_id: @current_user.id, object_class: 'User' %}
-```
+</pre></code>
 
 {% endraw %}
 
@@ -159,8 +158,8 @@ Create the form and associate it with the API call notification. It can be a sig
 
 {% raw %}
 
-```liquid
-# marketplace_builder/form_configurations/test-form.liquid
+`form_configurations/test-form.liquid`
+<pre><code class="language-liquid">
 ---
 name: test_form
 resource: User
@@ -184,11 +183,11 @@ api_call_notifications:
     {% submit 'Save', class: 'button-a' %}
   </p>
 {% endform %}
-```
+</pre></code>
 
 {% endraw %}
 
-Once the user fills the signup form without validation errors, the system will proceed to trigger the API call notification. If it is successful, it will trigger the callback, in which you will have access to the server's response via the `response` variable. You will be able to access various things, like `response.code`, and the most important, `response.body`. The callback will run the GraphQL mutation, which will use `form_configuration` to persist the data. 
+Once the user fills the signup form without validation errors, the system will proceed to trigger the API call notification. If it is successful, it will trigger the callback, in which you will have access to the server's response via the `response` variable. You will be able to access various things, like `response.code`, and the most important, `response.body`. The callback will run the GraphQL mutation, which will use `form_configuration` to persist the data.
 
 ### Step 7: Display results
 
@@ -196,21 +195,21 @@ In the `test_form` you have set up a redirection to `/test-result`, so create th
 
 {% raw %}
 
-```liquid
-# views/pages/test-result.liquid
+`views/pages/test-result.liquid`
+<pre><code class="language-liquid">
 ---
 slug: test-result
 ---
 {% query_graph 'get_current_user_third_party_api_value', result_name: 'graph_current_user'  %}
 Third Party Api Value: for {{ graph_current_user.current_user.email }}: {{ graph_current_user.current_user.test_profile.third_party_api_value }}
-```
+</pre></code>
 
 {% endraw %}
 
 which uses the following GraphQL query:
 
-```
-# marketplace_builder/graph_queries/get_current_user_third_party_api_value.graphql
+`graph_queries/get_current_user_third_party_api_value.graphql`
+<pre><code class="language-graphql">
 query get_current_user_third_party_api_value {
   current_user {
     email
@@ -219,12 +218,12 @@ query get_current_user_third_party_api_value {
     }
   }
 }
-```
+</pre></code>
 
 You can now go to the /test-form page, provide sign up details, and click the Save button. Initially, you will not see the correct value, because the API call is triggered in the background, outside of the request lifecycle. This is important to not rely on a third-party API's availability. However, when you refresh after a couple of seconds, you will see that the value has been populated.
 
 ## Questions?
 
-We are always happy to help with any questions you may have. Consult our  [documentation](), [contact support](), or  [connect with our sales team](). 
+We are always happy to help with any questions you may have. Consult our  [documentation](), [contact support](), or  [connect with our sales team]().
 
 

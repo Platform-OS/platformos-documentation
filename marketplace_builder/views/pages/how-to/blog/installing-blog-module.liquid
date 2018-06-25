@@ -1,0 +1,62 @@
+---
+converter: markdown
+metadata:
+  title: Installing the Blog Module
+  slug: how-to/blog/installing-blog-module
+---
+
+This guide will help you install the Platform OS Blog Module.
+
+_This guide is part of a series that walks you through the process of building a blog on Platform OS. You can find previous and next parts of the series in the Requirements and Next steps sections._
+
+## Requirements
+So that you can follow the steps in this tutorial, you should have set up a Platform OS Instance and your code base, and you should have NPM and the Marketplace Kit installed on your computer. The Get Started: Setup section walks you through all the steps required to start this tutorial. You should also understand the concept of layouts.
+
+* [Get Started: Setup](/get-started/setup)
+* [Layouts](/get-started/pages/layouts)
+
+## Steps
+
+Installing the Blog Module is a three-step process:
+
+1. Install Blog Module
+2. Deploy blog
+3. Enable blog
+
+### Step 1: Install Blog Module
+
+To install the Blog Module, go to the root directory of your codebase (e.g. `marketplace-example`), and enter the following command in the command-line application of your choice:
+
+`npm i  @platform-os/blog --no-save`
+
+The installer starts and asks you the following:
+
+* `? Your blog path:`: Enter the path where you would like to display your blog, for example `blog`. Don't enter the full URL.
+* `? Your blog type is:`: Select the type of your blog with the up and down arrow keys. The **Instance blog** is the main blog of the site, where the Instance owner can create and edit posts. **User blogs** allow any user to create a blog, and the owner of the blog can create and edit posts.
+* `? Please provide name of instance profile type that is allowed to access admin part of the blog:`: Every user has an `instance_profile_type` (user type, e.g. default or admin). Depending on what your site does (e.g. connects experts with lawyers) you can have additional instance profile types (e.g. expert and lawyer). Specify here which users will be able to access the admin interface of the blog by entering their instance profile type. Enter `default` to use the default instance profile type.
+* `? Your blog layout name:`: You can have a layout specific to your blog (e.g. widgets, columns, etc.), specify it here. To use the default blog layout provided by the Blog Module enter `blog-layout`.
+
+The installer runs and the Blog Module is installed.
+
+{% include "alert/note", content: "In this example, you used the default user instance profile, so any user can edit posts on the Instance blog. To prevent unauthorized use, it is recommended to create an admin instance profile type and adjust the blog's <a href="/get-started/authorization-policy/authorization-policy">Authorization Policies</a>." %}
+
+### Step 2: Deploy blog
+
+[Deploy your Instance with the `--force` flag](/get-started/setup/deploying-syncing-changes), for example:
+
+`marketplace-kit deploy staging --force`
+
+### Step 3: Enable blog
+
+Go to [your-Instance-URL]/blog/admin/settings. Enter a title for your blog, and make sure the `Enable` button is turned on. Save your changes.
+
+You can now see your blog at [your-Instance-URL]/blog.
+
+## Next steps
+Congratulations! You have installed the Blog Module. Now you can write your first blog post:
+
+* [Creating a Blog Post](/how-to/blog/creating-blog-post)
+
+## Questions?
+
+We are always happy to help with any questions you may have. Consult our  [documentation](), [contact support](), or  [connect with our sales team]().

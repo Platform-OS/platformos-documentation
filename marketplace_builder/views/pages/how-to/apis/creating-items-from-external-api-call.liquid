@@ -1,20 +1,20 @@
 ---
 converter: markdown
 metadata:
-  title: Creating Items from an External API Call 
+  title: Creating Items from an External API Call
 slug: how-to/apis/creating-items-from-external-api-call
 ---
 
-This guide will help you create items from an external API call. The example shows the steps of creating a Transactable from existing data through an API call to our service. 
+This guide will help you create items from an external API call. The example shows the steps of creating a Transactable from existing data through an API call to our service.
 
 ## Requirements
-This is an advanced tutorial. To follow it, you should be familiar with basic Platform OS concepts, HTML, Liquid, APIs and Form Configurations, and the topics in the Get Started section, especially tutorials related to Transactables. 
+This is an advanced tutorial. To follow it, you should be familiar with basic Platform OS concepts, HTML, Liquid, APIs and Form Configurations, and the topics in the Get Started section, especially tutorials related to Transactables.
 
 * [How Platform OS Works](/how-platformos-works)
 * [APIs and Form Configurations](/api-reference)
 * [Get Started: Transactables tutorials](/get-started/transactables)
 
-## Steps 
+## Steps
 
 Creating items from an external API call is a four-step process:
 
@@ -27,17 +27,18 @@ Creating items from an external API call is a four-step process:
 
 Create the following TransactableType:
 
-```
-# transactable_types/flowers.yml
+`transactable_types/flowers.yml`
+<pre><code class="language-yml">
 name: Flowers
-```
+</pre></code>
 
 ### Step 2: Create FormConfiguration
 
 Define what data you expect, and required validations:
 
-```
-# form_configurations/import_flowers.liquid
+`form_configurations/import_flowers.liquid`
+
+<pre><code class="language-yml">
 ---
 name: import_flowers
 resource: Transactable
@@ -48,11 +49,11 @@ configuration:
   creator_id:
 resource_owner: anyone
 ---
-``` 
+</pre></code>
 
 ### Step 3: Generate API token
 
-Generate API token from instance admin [Settings -> API Keys -> Generate new API Key]. 
+Generate API token from instance admin [Settings -> API Keys -> Generate new API Key].
 
 ### Step 4: Create curl command
 
@@ -61,13 +62,13 @@ Here is an example POST request you need to send. You need to set:
 * token in header
 * data payload in a JSON format
 
-```
-curl https://demo.near-me.com/api/user/transactables
+<pre><code class="language-shell">
+curl https://example.platform-os.com/api/user/transactables
   -H "Authorization: Token token=1dfa2c5df68a82285bc55159982bdd15"
   -H 'Content-Type: application/json'
   --data '{"form":{"name": "Red flowers", "creator_id":"1" }, "form_configuration_name": "import_flowers", "parent_object_class":"TransactableType","parent_object_id":"flowers"}'
-```
+</pre></code>
 
 ## Questions?
 
-We are always happy to help with any questions you may have. Consult our  [documentation](), [contact support](), or  [connect with our sales team](). 
+We are always happy to help with any questions you may have. Consult our  [documentation](), [contact support](), or  [connect with our sales team]().
