@@ -1,0 +1,166 @@
+---
+converter: markdown
+metadata:
+  title: Uploading Assets Directly to Amazon S3
+slug: how-to/assets/uploading-assets-directly-amazons3
+---
+
+This guide will help you use the Amazon S3 direct upload from the front-end by adding the files from `form_builder` that are exposed to you for each file uploader.   
+
+## Requirements
+This is an advanced tutorial. To follow it, you should be familiar with basic Platform OS concepts, HTML, Liquid, Javascript, APIs and Form Configurations, and the topics in the Get Started section. 
+
+* [How Platform OS Works](/how-platformos-works)
+* [Get Started](/get-started)
+* [APIs and Form Configurations](/api-reference)
+* [Form Configurations Reference](/reference/form-configurations/form-configurations)
+
+This guide uses the following form_configuration code: 
+
+{% raw %}
+
+<pre><code class="language-yaml">
+---
+name: edit_user
+resource: User
+configuration:
+  profiles:
+    expert:
+      [...]
+   custom_images:
+        validation:
+          presence: true
+        photo:
+          validation:
+            presence:
+              true
+          image:
+            presence:
+              true
+      custom_attachments:
+        validation:
+          presence: true
+        cv:
+          validation:
+            presence: true
+          file:
+            validation:
+              presence: true
+       [...]
+</code></pre>
+
+{% endraw %}
+
+## Steps 
+
+Uploading content directly to Amazon S3 is a three-step process:
+
+1. Access parameters 
+2. Populate HTML `data*` attributes
+3. Send file to S3
+
+### Step 1: Access parameters  
+Access all parameters required to post data to S3 through the `s3_data` key:
+
+{% raw %}
+
+<pre><code class="language-liquid">
+<h2> CustomImage </h2>
+{{ form_builder.fields.profiles.expert.custom_images.photo.image.s3_upload }}
+
+<h2> CustomAttachment </h2>
+{{ form_builder.fields.profiles.expert.custom_attachments.cv.file.s3_upload }}
+</code></pre>
+
+{% endraw %}
+
+This will produce an output similar to the following:
+ 
+<img src="{{ 'images/how-to/assets/access_parameters_output.png' | asset_url }}" alt="Step 1 output: Accessing parameters">
+
+### Step 2: Populate HTML `data*` attributes
+
+Use `form_builder` to populate HTML `data-*` attributes. You can use it any way you want to, for example, put the fields in HTML `data` attributes, and then handle the upload using JavaScript, so that it sends the request with the provided data as described here: [S3 Presigned Post](https://docs.aws.amazon.com/AmazonS3/latest/dev/PresignedUrlUploadObject.html))
+
+Using this data to fill the `<input />` tag could look like this:
+
+{% raw %}
+
+<pre><code class="language-liquid">
+<input id="zonk" accept="image/gif, image/jpeg, image/jpg, image/png" class="file required" type="file"
+data-s3-form-data={{ form_builder.fields.profiles.expert.custom_images.photo.image.s3_upload.form_data | json }}
+data-s3-upload-url={{ form_builder.fields.profiles.expert.custom_images.photo.image.s3_upload.direct_upload_url  }}
+data-s3-data-host={{ form_builder.fields.profiles.expert.custom_images.photo.image.s3_upload.data_host  }}
+/>
+</code></pre>
+
+{% endraw %}
+
+**Explanation:** 
+
+* data-s3-form-data: information about our standard AWS policy
+* data-s3-upload-url: URL of the endpoint
+* data-s3-data-host: for showing the image later (you will get the relative path) 
+
+**Sample output:**
+
+<img src="{{ 'images/how-to/assets/populating_data.png' | asset_url }}" alt="Step 2 output: Populating HTML data* attributes">
+
+### Step 3: Send file to S3
+Send the file directly to S3 using Javascript, for example, the jquery.fileUpload plugin:
+
+<pre><code class="language-javascript">
+import 'jquery-ui/ui/widget';
+import 'jquery.iframe-transport';
+import 'jquery.fileupload';
+
+import 'jquery-ui/ui/widget';
+import 'jquery.iframe-transport';
+import 'jquery.fileupload';
+
+$(function() {
+  const fileInput    = $("input#zonk");
+  const submitButton = $(fileInput.parents('form:first')).find('input[type="submit"]');
+  fileInput.fileupload({
+    fileInput:       fileInput,
+    url:             fileInput.data('s3UploadUrl'),
+    type:            'POST',
+    autoUpload:       true,
+    formData:         $.extend({ 'x-amz-meta-bazinga': 422 }, fileInput.data('s3FormData')),
+    paramName:        'file',
+    dataType:         'XML',
+    replaceFileInput: false,
+    progressall: function (e, data) {
+      console.log("Uploaded..:",  parseInt(data.loaded / data.total * 100, 10));
+    },
+    start: function (e) {
+      submitButton.prop('disabled', true);
+      console.log("Uploading");
+    },
+    done: function(e, data) {
+      submitButton.prop('disabled', false);
+
+      var key   = $(data.jqXHR.responseXML).find("Key").text();
+      var fullLocation   = $(data.jqXHR.responseXML).find("Location").text();
+      var url   = '//' + fileInput.data('s3DataHost') + '/' + key;
+      console.log("File uploaded to: ", fullLocation);
+    },
+    fail: function(e, data) {
+      submitButton.prop('disabled', false);
+      console.log("Failed: ", data);
+    }
+  });
+});
+</pre></code>
+
+**Explanation:**
+
+* `$.extend({ 'x-amz-meta-bazinga': 422 }`: in the `formData` you can include a couple of `x-amz-meta-*` headers to attach metadata to S3 uploads (can be used with any AWS S3 object). Since Platform OS does presign on the back-end, you have to specify the name of the header that will be included.   
+
+This uploads the file to S3 and gives you the URL. To save the URL in the backend you have to submit it with a form: the name of the field that the URL belongs to is `raw_remote_ORIGINAL_COLUMN_NAME_url` where `ORIGINAL_COLUMN_NAME` would be `image` or `file` for this configuration. 
+
+## Questions?
+
+We are always happy to help with any questions you may have. Consult our  [documentation](), [contact support](), or  [connect with our sales team](). 
+
+
