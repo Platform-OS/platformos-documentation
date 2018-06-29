@@ -8,6 +8,7 @@ metadata:
 **Redirects** are used to redirect one page to another using an HTTP status code.
 
 ## Example
+
 Redirecting /my-page to /other-page using the 302 status:
 
 {% raw %}
@@ -20,14 +21,16 @@ redirect_code: 302
 ---
 </code></pre>
 
-
 {% endraw %}
 
 ## Example 2
+
+Usage params from GET request inside the `redirect_to` option to make SEO friendly redirects from one URL pattern to another.
+
 Redirecting `/cars?maker=honda` to `/category/cars/honda` using the 301 status:
 
-
 {% raw %}
+
 <pre><code class="language-yaml">
 ---
 slug: cars
@@ -35,8 +38,14 @@ redirect_to: '/category/cars/{{ params.maker }}'
 redirect_code: 301
 ---
 </code></pre>
+
 {% endraw %}
 
-* `slug`: defines the URL at which this page will be accessible. In this example, assuming your site's domain is `https://example.com`, you will be able to access the page at `https://example.com/my-page`.
-* `redirect_to`: endpoint which you want the user to be redirected to.
-* `redirect_code`: specifies the status of redirection. Can be either 301 (Moved Permanently) or 302 (Found).
+## Available options
+
+| Name | Description |
+|---|---|
+| `slug` | defines the URL at which this page will be accessible. In this example, assuming your site's domain is `https://example.com`, you will be able to access the page at `https://example.com/my-page`
+| `redirect_to` | endpoint which you want the user to be redirected to
+| `redirect_code` | specifies the status of redirection. Can be either 301 (Moved Permanently) or 302 (Found)
+
