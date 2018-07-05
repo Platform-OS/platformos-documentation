@@ -1,0 +1,167 @@
+---
+converter: markdown
+metadata:
+  title: Building a Blog on Platform OS
+slug: use-cases/building-blog
+---
+
+This use case describes how you can **build a blog on Platform OS using the Blog Module**. We delve into the architecture, discuss different features, and link some tutorials to get you started. 
+
+## Getting started 
+
+### Prerequisites
+
+To be able to install and use the Blog Module, you need a Platform OS Instance and your codebase. This can be an already existing Instance, or you can start with a clean install to build a blog site. 
+
+{% include "alert/tutorial", content: "If you don’t have a Platform OS Instance yet, follow our <a href="/get-started/quickstart-guide">Quickstart Guide</a> to set up your Instance and codebase." %} 
+
+### Installing the Blog Module
+
+The easiest way to add a blog to your Platform OS site is by installing our Blog Module package that adds all the necessary files to your codebase. 
+
+{% include "alert/tutorial", content: "Follow our <a href="/how-to/blog/installing-blog-module">step-by-step tutorial to install the Blog Module</a>." %}  
+
+### Adding your first blog post
+After installing the Blog Module, you can add your first blog post (and edit all your posts later) through our built-in admin interface. 
+
+{% include "alert/tutorial", content: "Follow our <a href="/how-to/blog/installing-blog-module">step-by-step tutorial to add a blog post to your blog</a>." %}  
+
+## Architecture
+The Platform OS Blog is built entirely on Customizations, so its architecture can be easily modified. Not only it is possible to alter core module features—it’s very simple to add new ones. 
+
+The Blog Module enables you to set up two different types of blogs:
+
+* Instance blog: the main blog of an Instance, edited by the site admin (or main editor)
+* User blog: a microblog option to allow for user generated content to be created, moderated, and published. 
+
+### Core Custom Model Types 
+Out of the box, there are two Custom Model Types at the core of the Blog Module: 
+
+* Blog Instance: used to save all blog settings
+* Blog Post: stores information about all blog posts
+
+By editing the generated configuration files, you can easily alter or add Attributes of Custom Model Types. 
+
+{% include "alert/concept", content: "Learn more about <a href="/reference/custom-model-types/custom-model-types">Custom Model Types</a> and <a href="/how-to/blog/blog-custom-model-types">Blog Custom Model Types</a>." %} 
+
+### Settings and posts
+Blog settings and posts are fetched with GraphQL queries. The flexibility of GraphQL helps you implement any search functionality you need. Every custom attribute added to the configuration will be available to add to the installed queries. 
+
+{% include "alert/concept", content: "Learn more about <a href="/how-to/blog/blog-settings-posts">Blog Settings and Posts</a>." %} 
+
+### Data representation
+Data presentation is handled by pages and partials included in proper layouts. The administrative part of Blog Module is guarded with predefined Authorization Policies. Permissions differ based on the type of the blog installed (see `authorization_policies/instance_blog_edition.liquid`):
+
+{% raw %}
+
+<pre><code class="language-liquid">
+---
+name: instance_blog_edition
+redirect_to: '/blog'
+flash_alert: 'Please log in to access this page.'
+---
+{% query_graph "get_blog_user", result_name: g %}
+{% if g.current_user and g.current_user.admin_profile %}true{% endif %}
+</code></pre>
+
+{% endraw %}
+
+The Blog Module installs the “admin” user profile by default. If you wish to use another user profile as your administrator user group, please adjust the above file and the `get_blog_user` GraqhQL query. 
+
+## Blog Module Features
+
+The architecture of the Blog Module (and Platform OS in general) allows for incredible flexibility regarding built-in and extended features. 
+
+### SEO-friendly URLs
+You can create your own URL template that is compatible with the [URI Template standard](https://tools.ietf.org/html/rfc6570).
+
+To access parameters passed in the URL in Liquid markup, use the `extract_url_params` Liquid filter. 
+
+{% raw %}
+
+<pre><code class="language-liquid">
+{% assign example_url = "/cars/honda/crx" %}
+
+{% assign url_template = '/cars/{maker}/{model}' %}
+{% assign url_params = example_url | extract_url_params: url_template %}
+
+{{ url_params }} => {"maker"=>"honda", "model"=>"crx"}
+{{ url_params.maker }} => "honda"
+{{ url_params | json }} => {"maker":"honda","model":"crx"}
+</code></pre>
+
+{% endraw %}
+
+Having the parameters from the request URL, you can retrieve data based on those parameters.
+
+For example you can write a query that will take these parameters and:
+
+1. return only posts from category “honda” and
+2. posts that have tag “crx” and
+3. published in the last 3 months and
+4. are marked as “published” (as opposed to draft) and
+5. sort them by publish date.
+
+In GraphQL you have full control over your search results, so besides filtering posts that you are interested in, you can decide exactly what kind of data the query will return. For example, you might be interested only in the slugs and publish date of posts to create a “Related posts” box—easy to do with GraphQL. 
+
+{% include "alert/tutorial", content: "Follow our tutorial to learn more about <a href="/how-to/seo/creating-seo-friendly-urls">creating SEO-friendly URLs in Platform OS</a> to set up your Instance and codebase." %} 
+
+### Performance
+
+Platform OS places your assets on one of the best content delivery networks, CloudFront. This ensures that your users (and search engines) will load the assets as quickly as possible regardless of their geographic location. Our servers will handle caching by default, but if you want to change it, you can.
+
+You have full control over HTML sent to the browser. This means you will not have any resources loaded by Platform OS itself. Think of a clean slate that you fill, without being forced to load anything. 
+
+### SSL out of the box
+
+All marketplaces are equipped with SSL certificates by default and you can easily switch it to your own if needed. 
+
+### Landing pages
+
+As described, you have full access to your data via GraphQL, and you can parameterize your GraphQL queries using parameters extracted from the URL. Creating dynamic landing pages that pull data from the database based on the URL allows you to make your content easily accessible for users. 
+
+Some of the most commonly used features:
+
+* Blog posts content: show previous/next blog posts in the same category
+* Top X: show the most popular blog posts (e.g. most liked, commented)
+* Featured: highlight a post based on your defined criteria 
+* Related: group and crossmatch groups of posts to make them discoverable to users accessing one of them from one of the landing pages based on metadata that you create. 
+
+### Full control
+
+Liquid markup gives creators full access to the HTML that will be rendered. Because it’s a template engine, and you have access to the database on that level, you can easily control your meta tags.
+
+Having full control over your HTML output is also a big advantage when it comes to promoting your content on social media. Google provides excellent documentation on taking full advantage of [OpenGraph](http://ogp.me/) attributes to create rich media snippets when sharing links to your pages—read more about [Social Discovery on Google](https://developers.google.com/web/fundamentals/discovery/social-discovery/). 
+
+### Google AMP compatibility
+Because an AMP page is just an HTML page inside a required boilerplate and compliant with AMP rules, you can freely develop an AMP site using Platform OS. You can even get any free template from https://www.ampstart.com/getstarted and place it directly into your assets directory, and it will be live immediately. In a couple of minutes you can extract the layout part to a layout, and the content of the pages to Liquid pages. That way your code will be DRY and your life easier should you want to change anything on all pages (e.g. footer, tracking code, navigation).
+
+That said, you still have access to the power of Liquid, GraphQL and the whole backend behind Platform OS, even if you keep your code lean to comply with AMP restrictions.
+
+See some AMP compatible example sites here: 
+
+* [https://amp-demo-ecommerce.oregon.near-me.com/](https://amp-demo-ecommerce.oregon.near-me.com/) 
+* [https://amp-demo-travel.oregon.near-me.com/](https://amp-demo-travel.oregon.near-me.com/) 
+* [https://amp-demo-lune.oregon.near-me.com/](https://amp-demo-lune.oregon.near-me.com/) 
+* [https://amp-demo-gallery.oregon.near-me.com/gallery](https://amp-demo-gallery.oregon.near-me.com/gallery) 
+* [https://amp-demo-blog.oregon.near-me.com/](https://amp-demo-blog.oregon.near-me.com/) 
+
+### Analytics
+
+Having control over all parts of your entity gives you the ability to use any analytics tool that you can think of.
+
+Using Google Analytics is as easy as copying and pasting their HTML snippet into your layout.
+
+Sending additional information about authenticated users of the system is as easy as pulling the data using GraphQL or using the global `context` object and pasting it into the object sent to Google servers. 
+
+#### Custom analytics
+
+Because you can save any data into the database and pull it from GraphQL, you can create custom reports/analytics based on your criteria. You have access to the aggregation engine provided by ElasticSearch on the backend, so it’s blazingly fast. After pulling the data it’s up to you to decide how you want it to be presented. You may want to expose it as a JSON endpoint, render an SVG image with a chart, or do a hybrid—expose JSON endpoint and use it in your favorite charting library.
+
+Analytics for the main blog and user blogs are the same (as they are ultimately the same on the code level) and can be measured using the same metrics.  
+
+### Content migration
+We are working on import scripts for external blog engines. We’ve started with importing blog content from Hubspot, and although it currently works on our servers only, it was a great proof of concept that showed how easily we can import external blog content from various sources. We are going to build a bulk create/update endpoint for Customizations that will enable our Channel Partners to build any import that is needed (e.g. Adobe Business Catalyst, Medium, Wordpress).
+
+## Want to learn more?
+We want to support you all throughout your journey with Platform OS, and are always happy to help with any questions you may have. To learn more, consult our [documentation](https://documentation.platform-os.com) or [get in touch with us](/contact). 
