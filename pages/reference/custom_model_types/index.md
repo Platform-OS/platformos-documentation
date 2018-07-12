@@ -1,6 +1,7 @@
 ---
 title: Custom Model Types
 permalink: /reference/custom-model-types/
+searchable: true
 ---
 
 Custom Model Types have multiple usages.

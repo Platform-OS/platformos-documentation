@@ -1,5 +1,4 @@
 {% include 'shared/nav-links' %}
-
 <nav class="breadcrumbs">
   <ul>
     <li><a href="/">Documentation</a></li>
@@ -24,5 +23,18 @@
         {% endif %}
       </li>
     {% endfor %}
+
+    {% if false %}
+      {% for breadcrumb in page.metadata.breadcrumbs %}
+        <li {% if forloop.last %}class="current" {% endif %}>
+          <i class="fas fa-chevron-right"></i>
+          {% if breadcrumb.path %}
+            <a href="{{ breadcrumb.path }}">{{ breadcrumb.name }}</a>
+          {% else %}
+            <span>{{ breadcrumb.name }}</span>
+          {% endif %}
+        </li>
+      {% endfor %}
+    {% endif %}
   </ul>
 </nav>

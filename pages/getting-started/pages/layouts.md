@@ -1,6 +1,7 @@
 ---
 title: Layouts
 permalink: /getting-started/pages/layouts
+searchable: true
 ---
 Without the layout, each single page would need to share a lot of duplicated code. Changing anything would be very time consuming and error prone. By using layouts, one can extract the common elements of many pages to one place. Usually, layout is the very first thing one wants to develop.
 

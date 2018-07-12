@@ -1,6 +1,7 @@
 ---
 title: Web Assets
 permalink: /getting-started/pages/adding-web-assets
+searchable: true
 ---
 
 What would be a website without static assets like css, images or javascript. In our platform, all assets are connected with abstraction called Custom Theme.
