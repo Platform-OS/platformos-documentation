@@ -1,66 +1,80 @@
 const path = require("path");
-const glob = require("glob");
-const merge = require("webpack-merge");
-const parts = require("./_webpack/webpack.parts");
+
 const webpack = require("webpack");
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const WebpackRequireFrom = require("webpack-require-from");
 
-const PATHS = {
-  app: path.join(__dirname, "src"),
-  build: path.join(__dirname, "assets"),
-  styles: glob.sync(__dirname, "src", "scss", "**/*")
-};
+const BUILD_DIR = path.join(
+  __dirname,
+  process.env.npm_package_config_build_dir
+);
 
-const commonConfig = merge([
-  {
+const isProduction = process.env.NODE_ENV === "production";
+
+const extractCSS = new ExtractTextPlugin("[name].css");
+
+module.exports = () => {
+  const plugins = [];
+
+  plugins.push(
+    extractCSS,
+    new WebpackRequireFrom({
+      methodName: "__cdnUrl"
+    })
+  );
+
+  return {
     entry: {
-      app: path.join(PATHS.app, "js")
+      app: "./src/app"
+      // vendor: "./src/vendor"
     },
     output: {
-      path: PATHS.build,
       filename: "[name].js",
-      publicPath: "/assets/"
-    }
-  },
-  parts.createLoadingHTML(),
-  parts.extractCSS({
-    entry: PATHS.styles,
-    use: [
-      "cache-loader",
-      "css-loader?minimize=true",
-      {
-        loader: "postcss-loader",
-        options: {
-          plugins: [require("autoprefixer")()]
-        }
-      },
-      "sass-loader"
-    ]
-  }),
-  parts.loadJavaScript({ include: path.join(PATHS.app, "js") }),
-  parts.minifyJavaScript()
-]);
-
-const productionConfig = merge([
-  parts.clean(["*.js", "*.css"]),
-  {
-    output: {
-      chunkFilename: "[name].[chunkhash:8].js",
-      filename: "[name].[chunkhash:8].js"
+      chunkFilename: "[name].[chunkhash:3].js",
+      publicPath: "",
+      path: BUILD_DIR
     },
-    plugins: [new webpack.HashedModuleIdsPlugin()]
-  },
-  parts.extractBundles([
-    {
-      name: "vendor",
-      minChunks: ({ resource }) => resource && resource.indexOf("node_modules") >= 0 && resource.match(/\.js$/)
-    }
-  ])
-]);
-
-module.exports = env => {
-  if (env === "production") {
-    return merge(commonConfig, productionConfig);
-  }
-
-  return merge(commonConfig, {});
+    devtool: false,
+    bail: true,
+    stats: {
+      modules: false,
+      hash: false,
+      assetsSort: "!size",
+      children: false
+    },
+    externals: {
+      jquery: "window.jQuery",
+      $: "window.jQuery"
+    },
+    module: {
+      rules: [
+        {
+          test: /\.js$/,
+          loader: "babel-loader?retainLines=true&cacheDirectory"
+        },
+        {
+          test: /(\.css|\.scss)$/,
+          use: extractCSS.extract({
+            fallback: "style-loader",
+            use: [
+              "cache-loader",
+              "css-loader?url=false",
+              "postcss-loader",
+              "sass-loader"
+            ]
+          })
+        },
+        {
+          test: /\.gif$/,
+          use: ["file-loader?name=[name].gif"]
+        },
+        {
+          test: /\.(eot|ttf|otf|svg|woff(2))?$/,
+          loader: "file-loader?name=fonts/[name].[ext]"
+        }
+      ]
+    },
+    plugins: plugins,
+    mode: isProduction ? "production" : "development"
+  };
 };

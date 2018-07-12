@@ -1,0 +1,47 @@
+/* ------------------------------------------------------------ *\
+	Button
+\* ------------------------------------------------------------ */
+
+.btn { display: inline-block; vertical-align: middle; text-align: center; cursor: pointer; text-decoration: none; appearance: none; transition: color .3s; }
+.btn:hover { color: #fff; }
+
+/* Button Block  */
+
+.btn--block { display: block; padding-left: 0; padding-right: 0; }
+
+/* Btn Expand */
+
+.btn-expand { color: $blue; text-decoration: none; font-size: 14px; font-weight: 400; font-family: $ff-base; }
+.btn-expand:before { content: 'Expand'; display: inline-block; }
+
+/* Btn Menu */
+
+.btn-menu { display: inline-block; text-transform: uppercase; text-decoration: none; font-size: 16px; text-align: left; z-index: 20; line-height: 0; padding-top: 6px; vertical-align: middle; }
+.btn-menu span { position: relative; display: inline-block; vertical-align: -webkit-baseline-middle; width: 22px; height: 9px; border-top: 2px solid #000; }
+
+.btn-menu span:before,
+.btn-menu span:after { position: absolute; width: 100%; height: 2px; background: #000; content: ''; }
+
+.btn-menu span:before { top: -9px; }
+.btn-menu span:after { top: 5px; }
+
+.btn-menu span:before,
+.btn-menu span:after,
+.btn-menu span {
+    -webkit-transition: all .3s linear;
+            transition: all .3s linear;
+ }
+
+.btn-menu.active span { border-color: transparent; }
+.btn-menu.active span:before,
+.btn-menu.active span:after { background: #000; }
+
+.btn-menu.active span:before {
+-webkit-transform: rotate(45deg) translate(5.5px, 4px);
+        transform: rotate(45deg) translate(5.5px, 4px);
+
+}
+.btn-menu.active span:after {
+-webkit-transform: rotate(-45deg) translate(6px, -5px);
+        transform: rotate(-45deg) translate(6px, -5px);
+}
