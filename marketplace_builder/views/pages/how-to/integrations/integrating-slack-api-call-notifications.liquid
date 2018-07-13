@@ -22,34 +22,25 @@ Integrating Slack using API call notifications is a two-step process:
 
 ### Step 1: Create API call notification
 
-Create an API call notification using the webhook URL:
+Your webhook URL looks similar to this: `https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX`.
+Create an API call notification using your own webhook URL (replace placeholder):
 
 {% raw %}
 
 <pre><code class="language-liquid">
 ---
 name: { name of your file here }
-delay: '0'
+delay: 0
 enabled: true
 format: http
 headers: '{ "Content-Type": "application/json" }'
 request_type: POST
-to: { add your webhook URL here }
+to: { https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX }
 trigger_condition: t
 ---
 {
-	{ add your JSON payload here }
+	"text": "New Contact on Platform.OS.com!\nName: {{ form.properties.first_name }} {{ form.properties.last_name }}\nEmail: {{ form.properties.email }}\nPhone: {{ form.properties.phone }}\nComments: {{ form.properties.description }}"
 }
-</code></pre>
-
-{% endraw %}
-
-The payload used in this example: 
-
-{% raw %}
-
-<pre><code class="language-javascript">
-"text": "New Contact on Platform.OS.com!\nName: {{ form.properties.first_name }} {{ form.properties.last_name }}\nEmail: {{ form.properties.email }}\nPhone: {{ form.properties.phone }}\nComments: {{ form.properties.description }}"
 </code></pre>
 
 {% endraw %}
@@ -64,7 +55,7 @@ Add the following to the front matter on your form:
 
 <pre><code class="language-liquid">
 api_call_notifications:
-- { name of your file here }
+- { slack_sales_request }
 </code></pre>
 
 {% endraw %}
@@ -79,7 +70,7 @@ name: enquirer_signup
 async_callback_actions:
   delay: 
   content: 
-base_form: UserSignup::EnquirerUserSignup
+resource: User
 configuration:
   name:
     validation:
@@ -89,8 +80,6 @@ default_payload: "{}"
 resource_owner: self
 api_call_notifications:
  - slack_sales_request
-email_notifications:
- - new_user_signup
 ---
 </code></pre>
 
