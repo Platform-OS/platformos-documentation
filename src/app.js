@@ -1,8 +1,5 @@
 import "./app.scss";
 
-const $win = $(window);
-const $doc = $(document);
-
 import btnMenu from "./js/btnMenu";
 import widgetNav from "./js/widgetNav";
 import tables from "./js/tables";
