@@ -5,6 +5,7 @@ import widgetNav from "./js/widgetNav";
 import tables from "./js/tables";
 import tabs from "./js/tabs";
 import scrollTo from "./js/scrollTo";
+
 import Prism from "prismjs";
 // Languages
 import "prismjs/components/prism-markup";
