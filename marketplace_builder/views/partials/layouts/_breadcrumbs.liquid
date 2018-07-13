@@ -1,14 +1,30 @@
+{% include 'shared/nav-links' %}
+
 <nav class="breadcrumbs">
   <ul>
     <li>
-      <a href="#">Home</a>
-
-      <i class="fas fa-chevron-right"></i>
+      <a href="/">Documentation</a>
     </li>
-    <li class="current">
-      <a href="#">Documentation</a>
 
-      <i class="fas fa-chevron-right"></i>
-    </li>
+    {% assign slug_parts = page.slug | split: "/" %}
+    {% assign new_slug = '' %}
+    {% for slug_part in slug_parts %}
+      {% assign new_slug = new_slug | append: "/" | append: slug_part %}
+      {% for link in navLinks %}
+        {% if link.href == new_slug %}
+          {% assign link_item = link %}
+          {% assign navLinks = link.children %}
+        {% endif %}
+      {% endfor %}
+
+      <li>
+        <i class="fas fa-chevron-right"></i>
+        {% if forloop.last %}
+          <a href="{{ page.slug }}">{{ page.metadata.title }}</a>
+        {% else %}
+          <span>{{ link_item.name }}</span>
+        {% endif %}
+      </li>
+    {% endfor %}
   </ul>
 </nav><!-- /.breadcrumbs -->
