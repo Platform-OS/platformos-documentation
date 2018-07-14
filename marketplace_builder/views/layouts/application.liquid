@@ -4,33 +4,21 @@
   <body>
     {% include 'layouts/header' %}
 
-      <main class="main">
-        <div class="container">
-          <div class="shell">
+    <main class="main">
+      <div class="container">
+        <div class="row">
+          <aside class="sidebar col-4 col-xs-12">
             {% include 'layouts/sidebar' %}
-            <div class="content">
-              {% include 'layouts/breadcrumbs' %}
+          </aside>
 
-              <h1>{{ page.metadata.title }}</h1>
-
-              <section class="section">
-                {{ content_for_layout }}
-              </section>
-            </div>
-          </div>
+          <section class="content col-8 col-xs-12">
+            {% include 'layouts/content' %}
+          </section>
         </div>
       </div>
-
     </main>
 
     {% include 'layouts/footer' %}
-
-    <script type="text/javascript">
-      /* Set output.publicPath on runtime, to avoid hardcoding paths in env's or views */
-      window.__cdnUrl = function() { return "{{ '' | asset_url }}" };
-    </script>
-
     {% include 'layouts/javascripts' %}
-
   </body>
 </html>

@@ -1,25 +1,23 @@
-<div class="sidebar">
-  <ul class="widgets">
-    <li class="widget widget--search">
-      <form action="/search" class="search-form" method="get" role="search">
-        <label>
-          <span class="screen-reader-text hidden">Search for:</span>
-          <input type="search" title="Search for:" name="query" value="{{ params.query }}" placeholder="Search …" class="search__field">
-        </label>
-        <button type="submit" value="Search" class="search__btn screen-reader-text">
-          <i class="fas fa-search"></i>
-        </button>
-      </form>
-    </li><!-- /.widget widget_search -->
+<ul class="widgets">
+  <li class="widget widget--search">
+    <form action="/search" class="search-form" method="get" role="search">
+      <label>
+        <span class="screen-reader-text hidden">Search for:</span>
+        <input type="search" title="Search for:" name="query" value="{{ params.query }}" placeholder="Search …" class="search__field">
+      </label>
+      <button type="submit" value="Search" class="search__btn screen-reader-text">
+        <i class="fas fa-search"></i>
+      </button>
+    </form>
+  </li>
 
-    <li class="widget widget--nav">
-      <ul>
-        <li>
-          <a href="/">Documentation</a>
-        </li>
-        {% include 'shared/nav-links' %}
-        {% include 'shared/navigation', links: navLinks %}
-      </ul>
-    </li>
-  </ul><!-- /.widgets -->
-</div><!-- /.sidebar -->
+  <li class="widget widget--nav">
+    <ul>
+      <li>
+        <a href="/">Documentation</a>
+      </li>
+      {% include 'shared/nav-links' %}
+      {% include 'shared/navigation', links: navLinks %}
+    </ul>
+  </li>
+</ul>

@@ -1,5 +1,5 @@
 const widgetNav = () => {
-  $(".sub-menu").each(function() {
+  $(".sidebar .sub-menu").each(function() {
     $(this)
       .parent()
       .addClass("hasSubmenu")
@@ -28,5 +28,5 @@ const expandMenu = function(e) {
       .children(".sub-menu")
       .slideUp();
   }
- }
+};
 export default widgetNav;
