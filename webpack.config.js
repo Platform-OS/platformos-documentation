@@ -4,10 +4,7 @@ const webpack = require("webpack");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const WebpackRequireFrom = require("webpack-require-from");
 
-const BUILD_DIR = path.join(
-  __dirname,
-  process.env.npm_package_config_build_dir
-);
+const BUILD_DIR = path.join(__dirname, process.env.npm_package_config_build_dir);
 
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -25,8 +22,8 @@ module.exports = () => {
 
   return {
     entry: {
-      app: "./src/app"
-      // vendor: "./src/vendor"
+      app: "./src/app",
+      vendor: "./src/vendor"
     },
     output: {
       filename: "[name].js",
@@ -56,12 +53,7 @@ module.exports = () => {
           test: /(\.css|\.scss)$/,
           use: extractCSS.extract({
             fallback: "style-loader",
-            use: [
-              "cache-loader",
-              "css-loader?url=false",
-              "postcss-loader",
-              "sass-loader"
-            ]
+            use: ["cache-loader", "css-loader?url=false", "postcss-loader", "sass-loader"]
           })
         },
         {
