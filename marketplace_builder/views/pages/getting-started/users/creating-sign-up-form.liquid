@@ -36,7 +36,7 @@ Add the following content to the `developer_sign_up.liquid` sign up form:
 
 {% raw %}
 
-<pre><code class="language-liquid">
+<pre><code class="language-yaml">
 ---
 name: developer_sign_up
 resource: User
@@ -57,7 +57,9 @@ configuration:
     validation:
       presence: true
 ---
-
+</code>
+<br/>
+<code class="language-liquid">
 {% form url: '/api/users', method: 'post' %}
   {% input 'first_name' %}
   {% input 'email' %}

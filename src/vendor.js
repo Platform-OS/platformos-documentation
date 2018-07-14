@@ -5,7 +5,12 @@ import(/* webpackChunkName: "prism" */ "prismjs/components/prism-markup");
 import(/* webpackChunkName: "prism" */ "prismjs/components/prism-clike");
 import(/* webpackChunkName: "prism" */ "prismjs/components/prism-ruby");
 import(/* webpackChunkName: "prism" */ "prismjs/components/prism-git");
-import(/* webpackChunkName: "prism" */ "prismjs/components/prism-liquid");
+import(/* webpackChunkName: "prism" */ "prismjs/components/prism-liquid").then(
+  () => {
+    // Add our custom tags to liquid language definition
+    Prism.languages.liquid.keyword = /\b(?:comment|endcomment|if|elsif|else|endif|unless|endunless|for|endfor|case|endcase|when|in|break|assign|continue|limit|offset|range|reversed|raw|endraw|capture|endcapture|tablerow|endtablerow|form|endform|render_form|graph_query|execute_query|content_for|endcontent_for|yield|input)\b/;
+  }
+);
 import(/* webpackChunkName: "prism" */ "prismjs/components/prism-scss");
 import(/* webpackChunkName: "prism" */ "prismjs/components/prism-sass");
 import(/* webpackChunkName: "prism" */ "prismjs/components/prism-markdown");
