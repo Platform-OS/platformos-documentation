@@ -16,6 +16,9 @@ btnMenu();
 WebFont.load({
   google: {
     families: ["Roboto:300,500,700"],
+    active: function() {
+      sessionStorage.fonts = true;
+    },
     text:
       'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!?.;,-_+={}[]"><@#~`$%^&*()'
   },

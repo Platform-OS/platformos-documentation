@@ -4,10 +4,17 @@
 
   <title>Platform-OS Docs</title>
 
+  {% comment %} Try to minimize FOUT {% endcomment %}
+  <script>
+    (function() {
+      if (sessionStorage.fonts) {
+        document.documentElement.classList.add('wf-active');
+      }
+    })();
+  </script>
+
   {% include 'layouts/prefetch' %}
   {% include 'layouts/preload' %}
   {% include 'layouts/stylesheets' %}
-  {%- include 'layouts/favicon' -%}
-
-
+  {% include 'layouts/favicon' %}
 </head>
