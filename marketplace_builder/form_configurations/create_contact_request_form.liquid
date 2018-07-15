@@ -5,14 +5,11 @@ resource_owner: anyone
 configuration:
   properties:
     name:
-      validation:
-        presence: true
+      validation: { presence: true }
     email:
-      validation:
-        presence: true
+      validation: { presence: true }
     message:
-      validation:
-        presence: true
+      validation: { presence: true }
     topic:
       validation:
         presence: true
@@ -23,12 +20,10 @@ configuration:
             - Product
             - Pricing
     company:
-      validation:
-        presence: true
+      validation: { presence: true }
 email_notifications:
   - new_contact_request
 flash_notice: Thank you for your request. We will contact you shortly.
-
 ---
   {% form html-class: 'contact-form' %}
     {% fields_for properties %}
@@ -62,10 +57,6 @@ flash_notice: Thank you for your request. We will contact you shortly.
         </div>
     {% endfields_for %}
 
-    {% comment %} <div class="row"> {% endcomment %}
-      {% comment %} <div class="col"> {% endcomment %}
-        <button class="btn btn-primary float-right" type="submit">Send</button>
-      {% comment %} </div> {% endcomment %}
-    {% comment %} </div> {% endcomment %}
+    <button class="btn btn-primary float-right">Send</button>
   {% endform %}
 
