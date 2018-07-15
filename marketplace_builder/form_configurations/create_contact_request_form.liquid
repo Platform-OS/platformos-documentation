@@ -27,45 +27,45 @@ configuration:
         presence: true
 email_notifications:
   - new_contact_request
-flash_notice: "Thank you for your request. We will contact you shortly."
-          
+flash_notice: Thank you for your request. We will contact you shortly.
+
 ---
   {% form html-class: 'contact-form' %}
     {% fields_for properties %}
         {% include 'forms/shared/errors-notification' %}
-        <div class="row pb-2">
+
+        <div class="row mb-3">
           <div class="col-6">
-            {% include 'forms/inputs/text', field_name: 'email', form_name: 'properties', placeholder: 'Email', label: false  %}
+            {% include 'forms/inputs/text', field_name: 'email', form_name: 'properties', placeholder: 'Email', label: false %}
           </div>
 
           <div class="col-6">
-            {% include 'forms/inputs/text', field_name: 'name', form_name: 'properties', placeholder: 'Name', label: false  %}
+            {% include 'forms/inputs/text', field_name: 'name', form_name: 'properties', placeholder: 'Name', label: false %}
           </div>
         </div>
-        <div class="row">
-        <div class="col-6">
-          {% assign topics = '-- Select Topic --|Documentation|Community|Product|Pricing' | split: "|" %}
-          {% include 'forms/inputs/select2', field_name: 'topic', form_name: 'properties', input_collection: topics, label: false, placeholder: "Please Select"  %}
+
+        <div class="row mb-3">
+          <div class="col-6">
+            {% assign topics = '-- Select Topic --|Documentation|Community|Product|Pricing' | split: "|" %}
+            {% include 'forms/inputs/select2', field_name: 'topic', form_name: 'properties', input_collection: topics, label: false, placeholder: "Please Select" %}
+          </div>
+
+          <div class="col-6">
+            {% include 'forms/inputs/text', field_name: 'company', form_name: 'properties', placeholder: "Company", label: false %}
+          </div>
         </div>
 
-        <div class="col-6">
-          {% include 'forms/inputs/text', field_name: 'company', form_name: 'properties', placeholder: "Company", label: false  %}
-        </div>
-
-        </div>
-        <div class="clear"></div>
-        <div class="row">
-        <div class="col-12">
-          {% include 'forms/inputs/text', type: 'text', field_name: 'message', form_name: 'properties' %}
-        </div>
-
+        <div class="row mb-3">
+          <div class="col-12">
+            {% include 'forms/inputs/text', type: 'text', field_name: 'message', form_name: 'properties' %}
+          </div>
         </div>
     {% endfields_for %}
 
-    <div class="col_full">
-      <button class="button button-3d nomargin" type="submit" id="template-contactform-submit" name="template-contactform-submit" value="submit">
-      Send
-      </button>
-    </div>
+    {% comment %} <div class="row"> {% endcomment %}
+      {% comment %} <div class="col"> {% endcomment %}
+        <button class="btn btn-primary float-right" type="submit">Send</button>
+      {% comment %} </div> {% endcomment %}
+    {% comment %} </div> {% endcomment %}
   {% endform %}
 

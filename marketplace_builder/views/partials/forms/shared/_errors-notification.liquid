@@ -1,17 +1,12 @@
 {% if form.errors != blank %}
-  <div class="row">
-    <div class="alert alert-warning col mt-3 mb-3">
-      {{ form_error_intro }}
+  <div class="alert alert-warning mb-3">
+    {{ form_error_intro }}
 
-      <ul>
-        {% for error in form.errors %}
-          {% assign default_label = error[0] | split: '.' | last | titleize %}
-          {% if error[0] == 'profiles.expert.custom_images' %}
-            {% assign default_label = 'Profile photo' %}
-          {% endif %}
-          <li>{{ error[0] | t: default: default_label }} {{ error[1] }}</li>
-        {% endfor %}
-      </ul>
-    </div>
+    <ul class="mx-1 pl-3">
+      {% for error in form.errors %}
+        {% assign default_label = error[0] | split: '.' | last | titleize %}
+        <li>{{ error[0] | t: default: default_label }} {{ error[1] }}</li>
+      {% endfor %}
+    </ul>
   </div>
 {% endif %}
