@@ -9,7 +9,7 @@ if ($("code[class*=language]").length > 0) {
   import(/* webpackChunkName: "prism" */ "prismjs/components/prism-liquid").then(
     () => {
       // Add our custom tags to liquid language definition
-      Prism.languages.liquid.keyword = /\b(?:comment|endcomment|if|elsif|else|endif|unless|endunless|for|endfor|case|endcase|when|in|break|assign|continue|limit|offset|range|reversed|raw|endraw|capture|endcapture|tablerow|endtablerow|form|endform|render_form|graph_query|execute_query|content_for|endcontent_for|yield|input)\b/;
+      Prism.languages.liquid.keyword = /\b(?:comment|endcomment|if|elsif|else|endif|unless|endunless|for|endfor|case|endcase|when|in|break|assign|continue|limit|offset|range|reversed|raw|endraw|capture|endcapture|tablerow|endtablerow|include|form|endform|render_form|query_graph|execute_query|content_for|endcontent_for|yield|input)\b/;
     }
   );
   import(/* webpackChunkName: "prism" */ "prismjs/components/prism-scss");
