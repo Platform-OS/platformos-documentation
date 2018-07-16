@@ -1,8 +1,8 @@
-{% include 'shared/nav-links' %}
 
 <nav class="breadcrumbs">
   <ul>
     <li><a href="/">Documentation</a></li>
+    {% include 'shared/nav-links' %}
 
     {% assign slug_parts = page.slug | split: "/" %}
     {% assign new_slug = '' %}
@@ -18,7 +18,7 @@
       <li>
         <i class="fas fa-chevron-right"></i>
         {% if forloop.last %}
-          <a href="/{{ page.slug }}">{{ page.metadata.title }} OK</a>
+          <a href="/{{ page.slug }}">{{ page.metadata.title }}</a>
         {% else %}
           <span>{{ link_item.name }}</span>
         {% endif %}
