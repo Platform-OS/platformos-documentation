@@ -27,7 +27,7 @@ module.exports = () => {
       vendor: "./src/vendor"
     },
     output: {
-      filename: "[name].[contenthash:3].js",
+      filename: "[name].js",
       chunkFilename: "[name].[chunkhash:3].js",
       publicPath: "",
       path: BUILD_DIR
