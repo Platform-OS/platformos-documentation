@@ -8,7 +8,7 @@
     "start": "npx webpack-cli -w",
     "clean": "git clean -Xfq $npm_package_config_build_dir/*.{css,js}",
     "build": "NODE_ENV=production npx webpack-cli",
-    "predeploy": "npm run build",
+    "predeploy": "npm run clean && npm run build",
     "deploy": "marketplace-kit deploy -f",
     "test": "codeceptjs run --steps"
   },
