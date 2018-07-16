@@ -35,12 +35,11 @@ enabled: true
 format: http
 headers: '{ "Content-Type": "application/json" }'
 request_type: POST
-to: { https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX }
+to: { your webhook URL, e.g. https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX }
 trigger_condition: t
 ---
 {
-	"text": "New Contact on Platform.OS.com!\nName: {{ form.properties.first_name }} {{ form.properties.last_name }}\nEmail: {{ form.properties.email }}\nPhone: {{ form.properties.phone }}\nComments: {{ form.properties.description }}"
-}
+	"text": "New Contact on Platform.OS.com!
 </code></pre>
 
 {% endraw %}
@@ -67,19 +66,12 @@ The front matter of the form we used in this example:
 <pre><code class="language-liquid">
 ---
 name: enquirer_signup
-async_callback_actions:
-  delay: 
-  content: 
 resource: User
 configuration:
-  name:
-    validation:
-      presence: {}
-  password: {}
-default_payload: "{}"
-resource_owner: self
+  email:
+  password:
 api_call_notifications:
- - slack_sales_request
+  - slack_sales_request
 ---
 </code></pre>
 
