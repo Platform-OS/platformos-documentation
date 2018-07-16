@@ -1,20 +1,21 @@
 const path = require("path");
 
 const webpack = require("webpack");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const WebpackRequireFrom = require("webpack-require-from");
 
 const BUILD_DIR = path.join(__dirname, process.env.npm_package_config_build_dir);
 
 const isProduction = process.env.NODE_ENV === "production";
 
-const extractCSS = new ExtractTextPlugin("[name].css");
-
 module.exports = () => {
   const plugins = [];
 
   plugins.push(
-    extractCSS,
+    new MiniCssExtractPlugin({
+      filename: "[name].[contenthash:3].css",
+      chunkFilename: "[name].[contenthash:3].css"
+    }),
     new WebpackRequireFrom({
       methodName: "__cdnUrl"
     })
@@ -26,7 +27,7 @@ module.exports = () => {
       vendor: "./src/vendor"
     },
     output: {
-      filename: "[name].js",
+      filename: "[name].[contenthash:3].js",
       chunkFilename: "[name].[chunkhash:3].js",
       publicPath: "",
       path: BUILD_DIR
@@ -51,10 +52,14 @@ module.exports = () => {
         },
         {
           test: /(\.css|\.scss)$/,
-          use: extractCSS.extract({
-            fallback: "style-loader",
-            use: ["cache-loader", "css-loader?url=false", "postcss-loader", "sass-loader"]
-          })
+          use: [
+            {
+              loader: MiniCssExtractPlugin.loader
+            },
+            "css-loader",
+            "postcss-loader",
+            "sass-loader"
+          ]
         },
         {
           test: /\.gif$/,
