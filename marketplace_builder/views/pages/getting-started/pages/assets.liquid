@@ -27,7 +27,7 @@ Location of image asset in code base:
 URL of image asset on CDN:
 `https://dmtyylqvwgyxw.cloudfront.net/instances/163/assets/images/logo.svg`
 
-{% include 'alert/note', content="CDN host and Instance ID are dynamic and will be specific to your instance and region" %}
+{% include 'alert/note', content: "CDN host and Instance ID are dynamic and will be specific to your instance and region" %}
 
 ## Accessing assets
 
@@ -39,13 +39,25 @@ Accessing an image from a CSS file located at `assets/styles/page.css`:
 `background: transparent url('../images/logo.svg') top center no-repeat;`
 
 Accessing a Javascript file from a layout:
-`<script src="{{ 'scripts/app.js' | asset_url }}"></script>`
+{% raw %}
+<pre><code class="language-html">
+&lt;script src=&quot;{{ 'scripts/app.js' | asset_url }}&quot;&gt;&lt;/script&gt;
+</code></pre>
+{% endraw %}
 
 Accessing a CSS file from a layout:
-`<link rel="stylesheet" href="{{ 'styles/app.css' | asset_url }}">`
+{% raw %}
+<pre><code class="language-html">
+&lt;link rel=&quot;stylesheet&quot; href=&quot;{{ 'styles/app.css' | asset_url }}&quot;&gt;
+</code></pre>
+{% endraw %}
 
 Accessing an HTML file from a page:
-`<a href="{{ 'test.html' | asset_url }}">Test</a>`
+{% raw %}
+<pre><code class="language-html">
+&lt;a href=&quot;{{ 'test.html' | asset_url }}&quot;&gt;Test&lt;/a&gt;
+</code></pre>
+{% endraw %}
 
 ## Syncing and deploying assets
 
