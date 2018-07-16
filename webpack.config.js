@@ -13,8 +13,8 @@ module.exports = () => {
 
   plugins.push(
     new MiniCssExtractPlugin({
-      filename: "[name].[contenthash:3].css",
-      chunkFilename: "[name].[contenthash:3].css"
+      filename: "[name].css",
+      chunkFilename: "[name].css"
     }),
     new WebpackRequireFrom({
       methodName: "__cdnUrl"
