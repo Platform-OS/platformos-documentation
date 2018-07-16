@@ -32,9 +32,9 @@ Persisting part of a third-party API response is a seven-step process:
 
 Create a new user profile called `test_profile`, and create a Custom Attribute to store the value from the API, called `third_party_api_value`:
 
-`user_profile_types/default.yml`
-<pre><code class="language-liquid">
----
+### user_profile_types/default.yml
+
+<pre><code class="language-yaml">
 name: test_profile
 custom_attributes:
 - name: third_party_api_value
@@ -45,19 +45,18 @@ custom_attributes:
 
 Create a test endpoint that simulates a third-party API JSON response:
 
-{% raw %}
+### views/pages/test-endpoint.json.liquid
 
-`views/pages/test-endpoint.json.liquid`
 <pre><code class="language-liquid">
+{% raw %}
 ---
 slug: test-endpoint
 ---
 {
   "third_party_api_id": "id-1"
 }
-</pre></code>
-
 {% endraw %}
+</pre></code>
 
 ### Step 3: Create API call notification
 
@@ -68,10 +67,11 @@ Create an API call notification that should:
 
 Replace `example.com` with your domain:
 
-{% raw %}
 
-`notifications/api_call_notifications/send_request.liquid`
+### notifications/api_call_notifications/send_request.liquid
+
 <pre><code class="language-liquid">
+{% raw %}
 ---
 name: send_request
 to: http://example.com/test-endpoint.json
@@ -87,15 +87,16 @@ headers: '{
 {
   "id": "{{ form.id }}"
 }
+{% endraw %}
 </pre></code>
 
-{% endraw %}
 
 ### Step 4: Create GraphQL mutation
 
 In the callback, the `execute_query` tag invokes a GraphQL mutation with the provided arguments. The query accepts two arguments: the `user_id`, the ID of the user we want to update, and the `third_party_api_id` which is the value we want to store. The content of the GraphQL mutation file:
 
-`graph_queries/persist_in_custom_attribute.graphql`
+### graph_queries/persist_in_custom_attribute.graphql
+
 <pre><code class="language-graphql">
 mutation persist_in_custom_attribute($user_id: ID!, $third_party_api_id: String!) {
   user_update(
@@ -117,10 +118,11 @@ mutation persist_in_custom_attribute($user_id: ID!, $third_party_api_id: String!
 
 The mutation passes the arguments to a form called `callback_persist_in_custom_attribute`. Make sure that its configuration includes the fields you want to persist. Please note: by re-using an idea of `form_configuration` here, you can easily send additional emails, SMSes, or even other API calls. All you want to do in this example though is to store the value, so you don't have to add any extra notifications.
 
-{% raw %}
 
-`form_configurations/callback_persist_in_custom_attribute.liquid`
-<pre><code class="language-yml">
+### form_configurations/callback_persist_in_custom_attribute.liquid
+
+<pre><code class="language-yaml">
+{% raw %}
 ---
 name: callback_persist_in_custom_attribute
 async_callback_actions:
@@ -131,35 +133,37 @@ configuration:
       properties:
         third_party_api_value:
 ---
+{% endraw %}
 </pre></code>
 
-{% endraw %}
 
 ### Step 5: Create page to embed form
 
 Once you have an API call notification defined, you should associate it with a form to trigger it. Create a page for embedding this form.
 
-{% raw %}
+### views/pages/test-form.liquid
 
 <pre><code class="language-liquid">
-# views/pages/test-form.liquid
+{% raw %}
 ---
 slug: test-form
 ---
-<h1>Form</h1>
+&gt;h1&lt;Form&gt;/h1&lt;
 {% render_form 'test_form', object_id: @current_user.id, object_class: 'User' %}
-</pre></code>
 
 {% endraw %}
+</pre></code>
+
 
 ### Step 6: Create and embed form
 
 Create the form and associate it with the API call notification. It can be a signup form, that creates the `test_profile` in the background:
 
-{% raw %}
 
-`form_configurations/test-form.liquid`
+### form_configurations/test-form.liquid
+
 <pre><code class="language-liquid">
+{% raw %}
 ---
 name: test_form
 resource: User
@@ -183,9 +187,9 @@ api_call_notifications:
     {% submit 'Save', class: 'button-a' %}
   </p>
 {% endform %}
+{% endraw %}
 </pre></code>
 
-{% endraw %}
 
 Once the user fills the signup form without validation errors, the system will proceed to trigger the API call notification. If it is successful, it will trigger the callback, in which you will have access to the server's response via the `response` variable. You will be able to access various things, like `response.code`, and the most important, `response.body`. The callback will run the GraphQL mutation, which will use `form_configuration` to persist the data.
 
@@ -193,22 +197,24 @@ Once the user fills the signup form without validation errors, the system will p
 
 In the `test_form` you have set up a redirection to `/test-result`, so create this page and make it display the `third_party_api_value`:
 
-{% raw %}
 
-`views/pages/test-result.liquid`
+### views/pages/test-result.liquid
+
 <pre><code class="language-liquid">
+{% raw %}
 ---
 slug: test-result
 ---
 {% query_graph 'get_current_user_third_party_api_value', result_name: 'graph_current_user'  %}
 Third Party Api Value: for {{ graph_current_user.current_user.email }}: {{ graph_current_user.current_user.test_profile.third_party_api_value }}
+{% endraw %}
 </pre></code>
 
-{% endraw %}
 
 which uses the following GraphQL query:
 
-`graph_queries/get_current_user_third_party_api_value.graphql`
+### graph_queries/get_current_user_third_party_api_value.graphql
+
 <pre><code class="language-graphql">
 query get_current_user_third_party_api_value {
   current_user {
