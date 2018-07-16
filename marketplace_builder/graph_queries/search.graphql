@@ -3,8 +3,8 @@ query search($query: String, $per_page: Int, $page: Int) {
     per_page: $per_page
     page: $page
     filter: {
-      content_rendered: {
-        pattern: $query
+      content: {
+        contains: $query
       }
     }
   ) {
