@@ -6,7 +6,7 @@ const widgetNav = () => {
       .append('<i class="fas fa-chevron-up"></i>');
   });
 
-  $(".widget--nav li").on("click", "a", expandMenu);
+  $(".widget--nav li").on("click", "a:first", expandMenu);
 };
 
 const expandMenu = function(e) {
@@ -14,13 +14,23 @@ const expandMenu = function(e) {
   var $parent = $menu_el.parent();
   var $sub_menu = $parent.children(".sub-menu");
 
-  if ($sub_menu.length && !$sub_menu.is(":visible")) {
+
+  if ($sub_menu.length) {
     e.preventDefault();
 
-    $parent
-      .toggleClass("expanded")
-      .children(".sub-menu")
-      .slideDown();
+    if ($sub_menu.is(":visible")) {
+      $parent
+        .removeClass("expanded")
+        .children(".sub-menu")
+        .slideUp();
+
+     } else {
+
+      $parent
+        .addClass("expanded")
+        .children(".sub-menu")
+        .slideDown();
+    }
 
     $parent
       .siblings()
