@@ -67,12 +67,16 @@ configuration:
 
 {% raw %}
 
-```liquid
-{% form %}
-  {% fields_for 'properties' %}
-    {% input_field 'name', form: 'properties' %}
-  {% endfields_for %}
-{% endform %}
+```html
+<div>
+  <label for="name"><abbr title="required">*</abbr> Name</label>
+  <div>
+    <input name="{{ form_builder.fields.properties.name.name }}" value="{{ form_builder.fields.properties.name.value }}" id="name" type="text">
+    {% if form_builder.errors['properties.name'] %}
+      <p>{{ form_builder.errors['properties.name'] }}</p>
+    {% endif %}
+  </div>
+</div>
 ```
 
 {% endraw %}

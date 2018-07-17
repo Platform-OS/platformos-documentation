@@ -74,9 +74,15 @@ configuration:
 
 <pre><code class="language-liquid">
 {% form %}
-  {% fields_for 'properties' %}
-    {% input_field 'name', form: 'properties' %}
-  {% endfields_for %}
+  &lt;div&gt;
+    &lt;label for="name"&gt;&lt;abbr title="required"&gt;*&lt;/abbr&gt; Name&lt;/label&gt;
+    &lt;div&gt;
+      &lt;input value="{{ form_builder.fields.properties.name.value }}" name="{{ form_builder.fields.properties.name.name }}" id="name" type="text"&gt;
+      {% if form_builder.errors['properties.name'] %}
+        &lt;p&gt;{{ form_builder.errors['properties.name'] }}&lt;/p&gt;
+      {% endif %}
+    &lt;/div&gt;
+  &lt;/div&gt;
 {% endform %}
 </code></pre>
 

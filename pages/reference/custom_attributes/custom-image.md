@@ -66,16 +66,20 @@ After setting up images as described above, you can further customize image edit
 
 {% raw %}
 
-```liquid
-{% fields_for 'profiles' %}
-  {% fields_for 'seller', form: 'profiles' %}
-    {% fields_for 'custom_images', form: 'seller' %}
-      {% fields_for 'avatar', form: 'custom_images' %}
-        {% input 'image', as: 'image', form: 'avatar' %}
-      {% endfields_for %}
-    {% endfields_for %}
-  {% endfields_for %}
-{% endfields_for %}
+```html
+{% if form_builder.fields.profiles.seller.custom_images.avatar.image.value %}
+  <div class="preview">
+    <figure><a href="{{ form_builder.fields.profiles.seller.custom_images.avatar.image.value }}"><img src="{{ form_builder.fields.profiles.seller.custom_images.avatar.image.value }}"></a></figure>
+  </div>
+{% endif %}
+
+<div>
+  <label><span>Select a new image...</span><span>or drag photo here to upload</span>
+  <input accept="image/gif, image/jpeg, image/jpg, image/png" name="{{ form_builder.fields.profiles.seller.custom_images.avatar.image.name }}" type="file"></label>
+  {% if form_builder.errors['profiles.seller.custom_images.avatar.image'] %}
+    <p>{{ form_builder.errors['profiles.seller.custom_images.avatar.image'] }}</p>
+  {% endif %}
+</div>
 ```
 
 {% endraw %}

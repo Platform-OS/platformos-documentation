@@ -39,7 +39,7 @@ name: test_profile
 custom_attributes:
 - name: third_party_api_value
   attribute_type: string
-</pre></code>
+</code></pre>
 
 ### Step 2: Create test endpoint
 
@@ -55,7 +55,7 @@ slug: test-endpoint
 {
   "third_party_api_id": "id-1"
 }
-</pre></code>
+</code></pre>
 
 {% endraw %}
 
@@ -87,7 +87,7 @@ headers: '{
 {
   "id": "{{ form.id }}"
 }
-</pre></code>
+</code></pre>
 
 {% endraw %}
 
@@ -113,7 +113,7 @@ mutation persist_in_custom_attribute($user_id: ID!, $third_party_api_id: String!
     id
   }
 }
-</pre></code>
+</code></pre>
 
 The mutation passes the arguments to a form called `callback_persist_in_custom_attribute`. Make sure that its configuration includes the fields you want to persist. Please note: by re-using an idea of `form_configuration` here, you can easily send additional emails, SMSes, or even other API calls. All you want to do in this example though is to store the value, so you don't have to add any extra notifications.
 
@@ -131,7 +131,7 @@ configuration:
       properties:
         third_party_api_value:
 ---
-</pre></code>
+</code></pre>
 
 {% endraw %}
 
@@ -148,7 +148,7 @@ slug: test-form
 ---
 <h1>Form</h1>
 {% render_form 'test_form', object_id: @current_user.id, object_class: 'User' %}
-</pre></code>
+</code></pre>
 
 {% endraw %}
 
@@ -159,11 +159,13 @@ Create the form and associate it with the API call notification. It can be a sig
 {% raw %}
 
 `form_configurations/test-form.liquid`
-<pre><code class="language-liquid">
+<pre><code class="language-html">
 ---
 name: test_form
 resource: User
 configuration:
+  email:
+  password:
   profiles:
     test_profile:
       enabled:
@@ -172,18 +174,30 @@ api_call_notifications:
   - send_request
 ---
 {% form url: "/api/users/{{ current_user.id }}" %}
-  {% input 'email' %}
-  {% input 'password' %}
-  {% fields_for 'profiles' %}
-    {% fields_for 'test_profile' %}
-      {% input_field 'enabled', input_html-value: "1", as: 'hidden' %}
-    {% endfields_for %}
-  {% endfields_for %}
-  <p class="action">
+  &lt;div&gt;
+    &lt;label for="email"&gt;&lt;abbr title="required"&gt;*&lt;/abbr&gt; Email&lt;/label&gt;
+    &lt;div&gt;
+      &lt;input name="{{ form_builder.fields.email.name }}" value="{{ form_builder.fields.email.value}}" id="email" type="email"&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div&gt;
+    &lt;label for="password"&gt;&lt;abbr title="required"&gt;*&lt;/abbr&gt; Password&lt;/label&gt;
+    &lt;div&gt;
+      &lt;input name="{{ form_builder.fields.password.name }}" id="password" type="password"&gt;
+      {% if form_builder.errors.password %}
+        &lt;p&gt;{{ form_builder.errors.password }}&lt;/p&gt;
+      {% endif %}
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;input name="{{ form_builder.fields.profiles.test_profile.enabled.name }}" value="1" type="hidden"&gt;
+
+  &lt;p class="action"&gt;
     {% submit 'Save', class: 'button-a' %}
-  </p>
+  &lt;/p&gt;
 {% endform %}
-</pre></code>
+</code></pre>
 
 {% endraw %}
 
@@ -202,7 +216,7 @@ slug: test-result
 ---
 {% query_graph 'get_current_user_third_party_api_value', result_name: 'graph_current_user'  %}
 Third Party Api Value: for {{ graph_current_user.current_user.email }}: {{ graph_current_user.current_user.test_profile.third_party_api_value }}
-</pre></code>
+</code></pre>
 
 {% endraw %}
 
@@ -218,7 +232,7 @@ query get_current_user_third_party_api_value {
     }
   }
 }
-</pre></code>
+</code></pre>
 
 You can now go to the /test-form page, provide sign up details, and click the Save button. Initially, you will not see the correct value, because the API call is triggered in the background, outside of the request lifecycle. This is important to not rely on a third-party API's availability. However, when you refresh after a couple of seconds, you will see that the value has been populated.
 

@@ -37,7 +37,15 @@ configuration:
       presence: true
       phone_number: true
 ---
-{% input 'mobile_number', placeholder: 'Please include country code' %}
+  &lt;div&gt;
+    &lt;label for="mobile_number"&gt;&lt;abbr title="required"&gt;*&lt;/abbr&gt; Mobile number&lt;/label&gt;
+    &lt;div&gt;
+      &lt;input placeholder="Please include country code" name="{{ form_builder.fields.mobile_number.name }}" value="{{ form_builder.fields.mobile_number.value }}" id="mobile_number" type="text"&gt;
+      {% if form_builder.errors.mobile_number %}
+        &lt;p&gt;{{ form_builder.errors.mobile_number }}&lt;/p&gt;
+      {% endif %}
+    &lt;/div&gt;
+  &lt;/div&gt;
 </code></pre>
 
 {% endraw %}

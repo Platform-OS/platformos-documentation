@@ -163,23 +163,35 @@ configuration:
         presence: true
 ---
 {% form %}
-  {% fields_for 'properties' %}
-    <div>
-      {% label 'name' %}
-      {% input_field 'name', form: 'properties' %}
-      {{ form_object.object.errors['properties.name'] }}
-    </div>
-    <div>
-      {% label 'email' %}
-      {% input_field 'email', form: 'properties' %}
-      {{ form_object.object.errors['properties.email'] }}
-    </div>
-    <div>
-      {% label 'description' %}
-      {% input_field 'description', form: 'properties' %}
-      {{ form_object.object.errors['properties.description'] }}
-    </div>
-  {% endfields_for %}
+  &lt;div&gt;
+    &lt;label for="name"&gt;&lt;abbr title="required"&gt;*&lt;/abbr&gt; Name&lt;/label&gt;
+    &lt;div&gt;
+      &lt;input name="{{ form_builder.fields.properties.name.name }}" value="{{ form_builder.fields.properties.name.value }}" id="name" type="text"&gt;
+      {% if form_builder.errors['properties.name'] %}
+        &lt;p&gt;{{ form_builder.errors['properties.name'] }}&lt;/p&gt;
+      {% endif %}
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div&gt;
+    &lt;label for="email"&gt;&lt;abbr title="required"&gt;*&lt;/abbr&gt; Email&lt;/label&gt;
+    &lt;div&gt;
+      &lt;input name="{{ form_builder.fields.properties.email.name }}" value="{{ form_builder.fields.properties.email.value }}" id="email" type="email"&gt;
+      {% if form_builder.errors['properties.email'] %}
+        &lt;p&gt;{{ form_builder.errors['properties.email'] }}&lt;/p&gt;
+      {% endif %}
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div&gt;  
+    &lt;label for="description"&gt;&lt;abbr title="required"&gt;*&lt;/abbr&gt; Description&lt;/label&gt;
+    &lt;div&gt;
+      &lt;textarea name="{{ form_builder.fields.properties.description.name }}" id="description"&gt;{{ form_builder.fields.properties.description.value }}&lt;/textarea&gt;
+      {% if form_builder.errors['properties.description'] %}
+        &lt;p&gt;{{ form_builder.errors['properties.description'] }}&lt;/p&gt;
+      {% endif %}
+    &lt;/div&gt;
+  &lt;/div&gt;
 
   {% submit 'Submit' %}
 {% endform %}

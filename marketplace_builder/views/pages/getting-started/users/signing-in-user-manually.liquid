@@ -32,17 +32,34 @@ Create a form `sign_in.liquid` in the `marketplace_builder/form_configurations/`
 ---
 name: sign_in
 resource: Session
+configuration:
+  email:
+  password:
 ---
 {% form %}
-  {% input 'email' %}
-  {% input 'password' %}
+  &lt;div&gt;
+    &lt;label for="email"&gt;&lt;abbr title="required"&gt;*&lt;/abbr&gt; Email&lt;/label&gt;
+    &lt;div&gt;
+      &lt;input name="{{ form_builder.fields.email.name }}" value="{{ form_builder.fields.email.value}}" id="email" type="email"&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div&gt;
+    &lt;label for="password"&gt;&lt;abbr title="required"&gt;*&lt;/abbr&gt; Password&lt;/label&gt;
+    &lt;div&gt;
+      &lt;input name="{{ form_builder.fields.password.name }}" id="password" type="password"&gt;
+      {% if form_builder.errors.password %}
+        &lt;p&gt;{{ form_builder.errors.password }}&lt;/p&gt;
+      {% endif %}
+    &lt;/div&gt;
+  &lt;/div&gt;
+
   {% submit 'Log In' %}
+}
 {% endform %}
 </code></pre>
 
 {% endraw %}
-
-The Session resource is hardcoded with email and password fields, this is why you don't even need to add configuration.
 
 ### Step 2: Create sign in page
 

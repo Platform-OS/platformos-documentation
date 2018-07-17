@@ -59,17 +59,40 @@ configuration:
 ---
 
 {% form url: '/api/users', method: 'post' %}
-  {% input 'first_name' %}
-  {% input 'email' %}
-  {% input 'password', as: 'password' %}
+  &lt;div&gt;
+    &lt;label for="first_name"&gt;&lt;abbr title="required"&gt;*&lt;/abbr&gt; First name&lt;/label&gt;
+    &lt;div&gt;
+      &lt;input name="{{ form_builder.fields.first_name.name }}" value="{{ form_builder.fields.first_name.value }}" id="first_name" type="text"&gt;
+      {% if form_builder.errors.first_name %}
+        &lt;p&gt;{{ form_builder.errors.first_name }}&lt;/p&gt;
+      {% endif %}
+    &lt;/div&gt;
+  &lt;/div&gt;
 
-  {% fields_for 'profiles' %}
-    {% fields_for 'developer', form: 'profiles' %}
-      {% input 'enabled', as: 'hidden', form: 'client' %}
-    {% endfields_for %}
-  {% endfields_for %}
+  &lt;div&gt;
+    &lt;label for="email"&gt;&lt;abbr title="required"&gt;*&lt;/abbr&gt; Email&lt;/label&gt;
+    &lt;div&gt;
+      &lt;input name="{{ form_builder.fields.email.name }}" value="{{ form_builder.fields.email.value }}" id="email" type="email"&gt;
+      {% if form_builder.errors.email %}
+        &lt;p&gt;{{ form_builder.errors.email }}&lt;/p&gt;
+      {% endif %}
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div&gt;
+    &lt;label for="password"&gt;Password&lt;/label&gt;
+    &lt;div&gt;
+      &lt;input name="{{ form_builder.fields.password.name }}" id="password" type="password"&gt;
+      {% if form_builder.errors.password %}
+        &lt;p&gt;{{ form_builder.errors.password }}&lt;/p&gt;
+      {% endif %}
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;input value="{{ form_builder.fields.profiles.developer.enabled.value }}" name="{{ form_builder.fields.profiles.developer.enabled.name }}" type="hidden"&gt;
 
   {% submit 'Create' %}
+}
 
 {% endform %}
 </code></pre>
@@ -169,16 +192,12 @@ Proceeding with rendering proper inputs that the user will be expected to fill:
 
 #### Nested fields
 
-The last part is the rendering of nested forms. As explained in the configuration section, this form creates a User with properties defined above, and at the same time it also creates UserProfile and associates it with the newly created User. It is possible to manually build inputs in standard HTML to achieve the same result, but it is difficult, and it might change in the future. This is why we recommend using the following syntax for this type of tasks:
+The last part is the rendering of nested forms. As explained in the configuration section, this form creates a User with properties defined above, and at the same time it also creates UserProfile and associates it with the newly created User. This is the syntax for this type of tasks:
 
 {% raw %}
 
 <pre><code class="language-liquid">
-{% fields_for 'profiles' %}
-  {% fields_for 'developer', form: 'profiles' %}
-    {% input 'enabled', as: 'hidden', form: 'developer' %}
-  {% endfields_for %}
-{% endfields_for %}
+  &lt;input value="{{ form_builder.fields.profiles.developer.enabled.value }}" name="{{ form_builder.fields.profiles.developer.enabled.name }}" type="hidden">
 </code></pre>
 
 {% endraw %}
@@ -216,15 +235,37 @@ configuration:
 ---
 
 {% form url: '/api/users', method: 'post' %}
-  {% input 'first_name' %}
-  {% input 'email' %}
-  {% input 'password', as: 'password' %}
+  &lt;div&gt;
+    &lt;label for="first_name"&gt;&lt;abbr title="required"&gt;*&lt;/abbr&gt; First name&lt;/label&gt;
+    &lt;div&gt;
+      &lt;input name="{{ form_builder.fields.first_name.name }}" value="{{ form_builder.fields.first_name.value }}" id="first_name" type="text"&gt;
+      {% if form_builder.errors.first_name %}
+        &lt;p&gt;{{ form_builder.errors.first_name }}&lt;/p&gt;
+      {% endif %}
+    &lt;/div&gt;
+  &lt;/div&gt;
 
-  {% fields_for 'profiles' %}
-    {% fields_for 'client', form: 'profiles' %}
-      {% input 'enabled', as: 'hidden', form: 'client' %}
-    {% endfields_for %}
-  {% endfields_for %}
+  &lt;div&gt;
+    &lt;label for="email"&gt;&lt;abbr title="required"&gt;*&lt;/abbr&gt; Email&lt;/label&gt;
+    &lt;div&gt;
+      &lt;input name="{{ form_builder.fields.email.name }}" value="{{ form_builder.fields.email.value }}" id="email" type="email"&gt;
+      {% if form_builder.errors.email %}
+        &lt;p&gt;{{ form_builder.errors.email }}&lt;/p&gt;
+      {% endif %}
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div&gt;
+    &lt;label for="password"&gt;Password&lt;/label&gt;
+    &lt;div&gt;
+      &lt;input name="{{ form_builder.fields.password.name }}" id="password" type="password"&gt;
+      {% if form_builder.errors.password %}
+        &lt;p&gt;{{ form_builder.errors.password }}&lt;/p&gt;
+      {% endif %}
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;input value="{{ form_builder.fields.profiles.client.enabled.value }}" name="{{ form_builder.fields.profiles.client.enabled.name }}" type="hidden"&gt;
 
   {% submit 'Create' %}
 {% endform %}
