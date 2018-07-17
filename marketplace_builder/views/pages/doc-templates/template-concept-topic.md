@@ -2,7 +2,7 @@
 converter: markdown
 metadata:
   title: [title, NOUN, e.g. Pages]
-  description: [short description of the topic, can reuse first sentence]
+  description: [short description of the topic, can reuse first sentence, max 300 characters]
 slug: [page slug, e.g. get-started/pages/pages]
 searchable: true
 ---
