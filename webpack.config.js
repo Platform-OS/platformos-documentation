@@ -1,26 +1,15 @@
 const path = require("path");
-
-const webpack = require("webpack");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const WebpackRequireFrom = require("webpack-require-from");
 
-const BUILD_DIR = path.join(__dirname, process.env.npm_package_config_build_dir);
+const BUILD_DIR = path.join(
+  __dirname,
+  process.env.npm_package_config_build_dir
+);
 
 const isProduction = process.env.NODE_ENV === "production";
 
 module.exports = () => {
-  const plugins = [];
-
-  plugins.push(
-    new MiniCssExtractPlugin({
-      filename: "[name].css",
-      chunkFilename: "[name].css"
-    }),
-    new WebpackRequireFrom({
-      methodName: "__cdnUrl"
-    })
-  );
-
   return {
     entry: {
       app: "./src/app",
@@ -71,7 +60,15 @@ module.exports = () => {
         }
       ]
     },
-    plugins: plugins,
+    plugins: [
+      new MiniCssExtractPlugin({
+        filename: "[name].css",
+        chunkFilename: "[name].css"
+      }),
+      new WebpackRequireFrom({
+        methodName: "__cdnUrl"
+      })
+    ],
     mode: isProduction ? "production" : "development"
   };
 };

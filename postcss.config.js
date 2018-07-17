@@ -8,6 +8,7 @@ const csso = require("postcss-csso");
 
 module.exports = ({ env }) => {
   if (!env) {
+    console.log("PostCSS: Env not passed, not doing any transformations.");
     return {};
   }
 
