@@ -2,7 +2,9 @@
 converter: markdown
 metadata:
   title: [title, NOUN, e.g. Pages]
-permalink: [link, e.g. /getting-started/pages/pages]
+  description: [short description of the topic, can reuse first sentence]
+slug: [link, e.g. /getting-started/pages/pages]
+searchable: true
 ---
 
 [Definition of the concept topic, preferably starting with the title, which answers the question "What is/are [title]?", e.g. "What are pages?". + Brief description related to the concept topic, if applicable.]
