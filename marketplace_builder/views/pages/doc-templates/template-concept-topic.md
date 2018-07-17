@@ -3,7 +3,7 @@ converter: markdown
 metadata:
   title: [title, NOUN, e.g. Pages]
   description: [short description of the topic, can reuse first sentence]
-slug: [link, e.g. /getting-started/pages/pages]
+slug: [page slug, e.g. get-started/pages/pages]
 searchable: true
 ---
 
