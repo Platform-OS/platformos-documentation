@@ -1,6 +1,7 @@
 ---
 title: Pages
 permalink: /getting-started/pages/
+searchable: true
 ---
 
 In this section we will explain basic concept about layouts, pages and partials.

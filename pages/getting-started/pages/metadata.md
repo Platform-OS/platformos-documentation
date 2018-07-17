@@ -1,6 +1,7 @@
 ---
 title: Metadata
 permalink: /getting-started/pages/metadata
+searchable: true
 ---
 
 A page can be extended using `metadata` property to store any kind of key-value pairs, for example:

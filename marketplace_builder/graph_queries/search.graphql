@@ -1,0 +1,21 @@
+query search($query: String, $per_page: Int, $page: Int) {
+  pages(
+    per_page: $per_page
+    page: $page
+    filter: {
+      content: {
+        contains: $query
+      }
+    }
+  ) {
+    total_entries
+    total_pages
+    results {
+      id
+      slug
+      title
+      content
+      metadata 
+    }
+  }
+}

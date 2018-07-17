@@ -2,7 +2,9 @@
 converter: markdown
 metadata:
   title: [TITLE, format: VERBing a(n)/the NOUN(s)]
-permalink: [link, e.g. /get-started/install-docker]
+  description: [short description of the topic, can reuse first sentence, max 300 characters]
+slug: [page slug, e.g. get-started/install-docker]
+searchable: true
 ---
 
 This guide will help you [describe what the user will achieve by the end of the guide]. [Explain goal, domain-related background information, any information that helps understand the purpose or terminology of the tutorial.]

@@ -10,16 +10,16 @@ Go to the file you think is wrong, [click edit and commit changes](https://help.
 
 ## Normal way
 
-* [Fork the repository](https://guides.github.com/activities/forking/)
-* install dependencies
-* change something
-* create pull request
+- [Fork the repository](https://guides.github.com/activities/forking/)
+- install dependencies
+- change something
+- create pull request
 
 ## Code contributions
 
 ### Dependencies
 
-ruby 2.x, nodejs 8.x, npm 5.x
+ruby 2.x, nodejs 8.x, npm 6.x
 
 ### Development
 

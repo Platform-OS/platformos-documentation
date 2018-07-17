@@ -2,27 +2,24 @@
 <html lang="en">
   {% include 'layouts/head' %}
   <body>
-    <div class="wrapper">
-      {% include 'layouts/header' %}
+    {% include 'layouts/header' %}
 
-      <div class="main">
-        <div class="container">
-          <div class="shell">
+    <main class="main">
+      <div class="container">
+        <div class="row">
+          <aside class="sidebar col-12 col-md-4">
             {% include 'layouts/sidebar' %}
-            <div class="content">
-              {% include 'layouts/breadcrumbs' %}
-              <section class="section">
-                {{ content_for_layout }}
-              </section>
-            </div>
-          </div>
+          </aside>
+
+          <section class="content col-12 col-md-8">
+            {% include 'shared/flash-messages' %}
+            {% include 'layouts/content' %}
+          </section>
         </div>
       </div>
+    </main>
 
-      {% include 'layouts/footer' %}
-    </div>
-    <script src="{{ 'js/bundle.js' | asset_url }}"></script>
-    <script src="{{ 'js/prismjs.js' | asset_url }}"></script>
-    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/all.js" integrity="sha384-xymdQtn1n3lH2wcu0qhcdaOpQwyoarkgLVxC/wZ5q7h9gHtxICrpcaSUfygqZGOe" crossorigin="anonymous"></script>
+    {% include 'layouts/footer' %}
+    {% include 'layouts/javascripts' %}
   </body>
 </html>

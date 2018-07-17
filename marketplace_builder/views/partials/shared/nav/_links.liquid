@@ -1,0 +1,10 @@
+<ul class="{{ class }}">
+  {% for link in navLinks %}
+    <li class="">
+      <a href="{{ link.href }}">{{ link.name }}</a>
+      {% if link.children != null %}
+        {% include 'shared/nav/links', links: link.children, class: "sub-menu" %}
+      {% endif %}
+    </li>
+  {% endfor %}
+</ul>

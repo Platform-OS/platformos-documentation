@@ -1,20 +1,32 @@
 # -*- http -*-
-POST http://documentation.lvh.me:3000/api/users.json
-Authorization: Token token=192a8aee2e9c3bbd20e4e207506926c0
+PUT https://partner-template.staging-oregon.near-me.com/api/user/transactables/20297
+Authorization: Token token=8e164104a090926fb84f822b6c27afb1a825b497
 Accept: application/json
 Content-Type: application/json
 
 {
-  "form_configuration_name": "reference_rest_api_create_user",
+  "form_configuration_name": "team",
   "form": {
-    "first_name": "Example",
-    "email": "example3@platformos.com",
-    "password": "somepassword"
+    "name": "Example1"
+  }
+}
+
+# -*- http -*-
+PUT http://documentation.lvh.me:3000/api/user/transactables/19583
+Authorization: Token token=f54a9fd5b3c05d785a48b20e1e978e75a57283d5
+Accept: application/json
+Content-Type: application/json
+
+{
+  "form_configuration_name": "reference_rest_api_transactable_update",
+  "form":
+    "name": "Example"
   }
 }
 
 
 
+# -*- http -*-
 POST http://documentation.lvh.me:3000/api/sessions
 Authorization: Token token=192a8aee2e9c3bbd20e4e207506926c0
 Accept: application/json
@@ -29,6 +41,7 @@ Content-Type: application/json
 }
 
 
+# -*- http -*-
 DELETE http://documentation.lvh.me:3000/api/sessions
 Authorization: Token token=192a8aee2e9c3bbd20e4e207506926c0
 Accept: application/json
@@ -39,6 +52,7 @@ Content-Type: application/json
 }
 
 
+# -*- http -*-
 POST http://documentation.lvh.me:3000/api/user/transactables
 Authorization: Token token=192a8aee2e9c3bbd20e4e207506926c0
 Accept: application/json

@@ -1,0 +1,16 @@
+{% for link in links %}
+  <li class="">
+    {% if link.children != null or link.include_children != null %}
+      <a href="#">{{ link.name }}</a>
+      <ul class="sub-menu {% if context.location.href contains link.href %}expanded{% endif %}">
+        {% if link.include_children != null %}
+          {% include link.include_children %}
+        {% else %}
+          {% include "shared/navigation", links: link.children %}
+        {% endif %}
+      </ul>
+    {% else %}
+      <a href="{{ link.href }}" {% if link.href == context.location.href %}class="current"{% endif %} >{{ link.name }}</a>
+    {% endif %}
+  </li>
+{% endfor %}

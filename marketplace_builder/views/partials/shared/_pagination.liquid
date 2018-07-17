@@ -1,0 +1,48 @@
+{% if total_entries > per_page %}
+  {% assign per_page_default = per_page_default | default: 10 %}
+  {% if per_page != per_page_default %}
+    {% assign per_page_param = "&per_page=" | append: per_page %}
+  {% endif %}
+  <div class="container page__list_cases">
+    <div class="row">
+      <div class="col">
+        <nav aria-label="...">
+          <ul class="pagination float-right">
+            {% if page > 1 %}
+              <li class="page-item">
+                <a class="page-link" href="{{ context.location.pathname }}?page={{ page | minus: 1 }}{{ per_page_param }}">Previous</a>
+              </li>
+            {% else %}
+              <li class="page-item disabled">
+                <span class="page-link">Previous</span>
+              </li>
+            {% endif %}
+            {% for i in (1..total_pages) %}
+              {% if i == page %}
+                <li class="page-item active ">
+                  <span class="page-link">
+                    {{ i }}
+                    <span class="sr-only">(current)</span>
+                  </span>
+                </li>
+              {% else %}
+                <li class="page-item">
+                  <a class="page-link" href="{{ context.location.pathname }}?page={{ i }}{{ per_page_param }}">{{ i }}</a>
+                </li>
+              {% endif %}
+            {% endfor %}
+            {% if total_pages > page %}
+              <li class="page-item">
+                <a class="page-link" href="{{ context.location.pathname }}?page={{ page | plus: 1 }}{{ per_page_param }}">Next</a>
+              </li>
+            {% else %}
+              <li class="page-item disabled">
+                <span class="page-link">Next</span>
+              </li>
+            {% endif %}
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+{% endif %}

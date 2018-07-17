@@ -2,12 +2,14 @@
 converter: markdown
 metadata:
   title: Parsing an API Response
+  description: This guide will help you parse an API response. In this example, you will store part of the response in a Custom Attribute for later reference using GraphQL mutations.
 slug: get-started/notifications/parsing-api-response
+searchable: true
 ---
 
 This guide will help you parse an API response.
 
-For this example, you will store part of the response in a Custom Attribute for later reference using GraphQL mutations in `callback`, since you are able to access response body via `response.body`.
+In this example, you will store part of the response in a Custom Attribute for later reference using GraphQL mutations in `callback`, since you are able to access response body via `response.body`.
 
 The tutorial assumes the API returns JSON like:
 
@@ -44,6 +46,7 @@ As a first step, create a Custom Attribute in the user profile. In this example,
 Add GraphQL mutation:
 
 ## graph_queries/store_third_party_api_id.graphql
+
 <pre><code class="language-graphql">
 mutation store_third_party_api_id($user_id: ID!, $third_party_api_id: String!) {
   user_update(
@@ -64,6 +67,7 @@ mutation store_third_party_api_id($user_id: ID!, $third_party_api_id: String!) {
 The mutation you created provides input for the Form Configuration called `callback_third_party_api_id`, so create this Form Configuration:
 
 ### form_configurations/callback_third_party_api_id.liquid
+
 <pre><code class="language-yaml">
 ---
 name: callback_third_party_api_id

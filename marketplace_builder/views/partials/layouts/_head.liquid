@@ -2,10 +2,20 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Platform-OS Docs</title>
+  {% include 'layouts/page-title' %}
+  {% include 'layouts/page-description' %}
 
-  {% comment %} <link rel="shortcut icon" type="image/x-icon" href="{{ 'images/favicon.ico' | asset_url }}" /> {% endcomment %}
-  <link rel="stylesheet" type="text/css" href="{{ 'css/bundle.css' | asset_url }}" />
-  <link rel="stylesheet" type="text/css" href="{{ 'css/prismjs.css' | asset_url }}" />
-  {% comment %} <link rel="stylesheet" type="text/css" href="{{ 'css/fa.min.css' | asset_url }}" /> {% endcomment %}
+  {% comment %} Try to minimize FOUT {% endcomment %}
+  <script>
+    (function() {
+      if (sessionStorage.fonts) {
+        document.documentElement.classList.add('wf-active');
+      }
+    })();
+  </script>
+
+  {% include 'layouts/prefetch' %}
+  {% include 'layouts/preload' %}
+  {% include 'layouts/stylesheets' %}
+  {% include 'layouts/favicon' %}
 </head>
