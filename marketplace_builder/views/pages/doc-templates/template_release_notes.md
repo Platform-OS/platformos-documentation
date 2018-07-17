@@ -2,7 +2,9 @@
 converter: markdown
 metadata:
   title: [Month DD, YYYY — Release Notes]
-permalink: [/release-notes/DD-MONTH-YYYY]
+  description: [short description, max 300 characters]
+slug: [release-notes/DD-MONTH-YYYY]
+searchable: true
 ---
 
 [Short introduction, main ares of focus, etc.]
