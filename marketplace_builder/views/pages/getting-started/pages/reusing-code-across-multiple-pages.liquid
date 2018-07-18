@@ -27,41 +27,25 @@ Reusing code across multiple pages using partials is a two-step process:
 This tutorial uses the previously created `application.liquid` layout:
 
 {% raw %}
-
 <pre><code class="language-liquid">
-<!doctype html>
-<html lang="en">
-<head>
+...
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>
-  {% yield 'meta_title' %}
-  </title>
-</head>
-
-<body>
+...
 <h1>Layout</h1>
 {{ content_for_layout }}
-
-</body>
-
-</html>
-
 </code></pre>
-
 {% endraw %}
 
 Create a partial file `meta_tags.liquid` in the `marketplace_builder/views/partials` directory. The content of the partial is the extracted meta tags from the layout:
 
 {% raw %}
 
-<pre><code class="language-liquid">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-
+<pre><code class="language-html">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 </code></pre>
 
 {% endraw %}
@@ -73,22 +57,11 @@ In the original layout, include the `meta_tags.liquid` partial. Partials resolve
 {% raw %}
 
 <pre><code class="language-liquid">
-<!doctype html>
-<html lang="en">
-<head>
-{% include 'meta_tags' %}
-  <title>
-  {% yield 'meta_title' %}
-  </title>
-</head>
-
-<body>
+...
+  {% include 'meta_tags' %}
+...
 <h1>Layout</h1>
 {{ content_for_layout }}
-
-</body>
-
-</html>
 </code></pre>
 
 {% endraw %}

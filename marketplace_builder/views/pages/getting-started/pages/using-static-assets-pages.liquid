@@ -57,25 +57,19 @@ console.log("Hello from JS!");
 Create an HTML file `test.html` in the `assets` directory:
 
 <pre><code class="language-html">
-<!doctype html>
-<html>
-<body>
 Hello from test.html
-</body>
-</html>
 </code></pre>
 
 ### Step 3: Check assets
 
-Use `{{ asset_url }}` variable to check your assets. This will list the full URL of your assets on our content delivery network, including the time of the latest update (used for caching).
+Use {% raw %}`{{ asset_url }}`{% endraw %} variable to check your assets. This will list the full URL of your assets on our content delivery network, including the time of the latest update (used for caching).
 
-{% raw %}
+Example for this documentation site:
 
 <pre><code class="language-liquid">
-{{ asset_url }}
+{{ asset_url | json }}
 </code></pre>
 
-{% endraw %}
 
 ### Step 4: Access assets
 
@@ -84,20 +78,13 @@ To access assets, use the `asset_url` filter in your liquid file, e.g. layout:
 {% raw %}
 
 <pre><code class="language-liquid">
-<!doctype html>
-<html>
-<head>
+...
   <link rel="stylesheet" href="{{ 'styles/app.css' | asset_url }}">
   <script src="{{ 'scripts/app.js' | asset_url }}"></script>
-</head>
-<body>
-
+...
 {{ content_for_layout }}
 
 <a href="{{ 'test.html' | asset_url }}">Test</a>
-
-</body>
-</html>
 </code></pre>
 
 {% endraw %}

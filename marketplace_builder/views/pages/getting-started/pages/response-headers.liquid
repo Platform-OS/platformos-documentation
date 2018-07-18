@@ -10,15 +10,14 @@ searchable: true
 **Response Headers** is a property to define your own custom response headers for the page. To do so, pass a JSON key-value pairs to `response_headers` property, for example:
 
 ### views/pages/xml-data.html.liquid
+
 <pre><code class="language-yaml">
----
 slug: xml-data
 response_headers: >
   {
     "Content-Type": "text/xml",
     "Some-Header": "value"
   }
----
 </code></pre>
 
 In example above, endpoint `/xml-data` will return it's content as XML, even though file was saved as `html` format. This allows you to have a full control over returned headers. Liquid syntax is supported.

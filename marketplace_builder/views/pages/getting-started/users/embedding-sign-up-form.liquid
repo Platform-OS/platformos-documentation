@@ -30,39 +30,38 @@ Create a new page in the  `marketplace_builder/views/pages/developer` directory 
 
 ### Step 2: Embed form
 
-Add `{% render_form 'developer_sign_up' %}` to embed the previously created sign up forms into the sign up pages.
+Add `{% raw %}{% render_form 'developer_sign_up' %}{% endraw %}` to embed the previously created sign up forms into the sign up pages.
 
 #### views/pages/developer/sign-up.liquid:
 
-{% raw %}
 
 <pre><code class="language-liquid">
+{% raw %}
 ---
 slug: developer/sign-up
 ---
 <h1>Create a Developer Account</h1>
 
 {% render_form 'developer_sign_up' %}
+{% endraw %}
 </code></pre>
 
-{% endraw %}
 
 This will display the form you created previously at https://[your-domain]/developer/sign-up.
 
 #### views/pages/client/sign-up.liquid:
 
-{% raw %}
-
 <pre><code class="language-liquid">
+{% raw %}
 ---
 slug: client/sign-up
 ---
 <h1>Create a Client Account</h1>
 
 {% render_form 'client_sign_up' %}
+{% endraw %}
 </code></pre>
 
-{% endraw %}
 
 
 This will display the form you created previously at https://[your-domain]/client/sign-up.
