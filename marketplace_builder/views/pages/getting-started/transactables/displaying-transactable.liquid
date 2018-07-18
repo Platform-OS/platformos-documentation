@@ -28,38 +28,39 @@ Displaying a Transactable is a two-step process:
 ### Step 1: Inject GraphQL query into page with pagination
 Inject this code for example on the home page, which re-uses already created `current_user.graphql` from the tutorial [Accessing Authenticated User Data](/get-started/users/accessing-authenticated-user-data):
 
-{% raw %}
 
 <pre><code class="language-liquid">
+{% raw %}
 {% query_graph 'current_user', result_name: 'g' %}
 {% if g.current_user.client_profile %}
+
   {% assign page = params.page | default: 1 | plus: 0 %}
-  &lt;a href=&quot;/client/projects/new&quot;&gt;Create project&lt;/a&gt;
+  <a href="/client/projects/new">Create project</a>
 
   {% query_graph 'client_projects', result_name: 'g', creator_id: g.current_user.id, per_page: 20, page: page %}
 
-  {% if g.projects.total_entries &gt; 0 %}
-    &lt;ul&gt;
+  {% if g.projects.total_entries > 0 %}
+    <ul>
       {% for project in g.projects.results %}
-        &lt;li&gt;{{ project.name }} ({{ project.state }}) - &lt;a href=&quot;/client/projects/edit/{{project.slug}}&quot;&gt;edit&lt;/a&gt;&lt;/li&gt;
+        <li>{{ project.name }} ({{ project.state }}) - <a href="/client/projects/edit/{{ project.slug }}">edit</a></li>
       {% endfor %}
-    &lt;/ul&gt;
+    </ul>
     {% assign pages = g.projects.total_pages %}
     {% assign current_page = g.projects.current_page %}
-    {% if pages &gt; 1 %}
-      &lt;div class=&quot;pager&quot;&gt;
+    {% if pages > 1 %}
+      <div class="pager">
         {% for page in (1..pages) %}
-          &lt;a href=&quot;{{ current_full_path }}?page={{ page }}&quot;&gt;{{ page }}&lt;/a&gt;
+          <a href="{{ current_full_path }}?page={{ page }}">{{ page }}</a>
         {% endfor %}
-      &lt;/div&gt;
+      </div>
     {% endif %}
   {% else %}
-    &lt;p&gt;You have not created any projects yet.&lt;/p&gt;
+    <p>You have not created any projects yet.</p>
   {% endif %}
 {% endif %}
+{% endraw %}
 </code></pre>
 
-{% endraw %}
 
 A common issue in Liquid are types. Most of the time Liquid converts everything to a string, so it is often necessary to do coercion. In this example, URL parameters are strings, and GraphQL expects the `page` variable to be an integer. To solve the problem,  add a `0`, which casts string to integer:
 {% raw %}`{% assign page = params.page | default: 1 | plus: 0 %}`{% endraw %}

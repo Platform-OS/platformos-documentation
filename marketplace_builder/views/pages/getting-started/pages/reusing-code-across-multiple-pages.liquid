@@ -29,24 +29,24 @@ This tutorial uses the previously created `application.liquid` layout:
 {% raw %}
 
 <pre><code class="language-liquid">
-&lt;!doctype html&gt;
-&lt;html lang=&quot;en&quot;&gt;
-&lt;head&gt;
-  &lt;meta charset=&quot;UTF-8&quot;&gt;
-  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
-  &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
-  &lt;title&gt;
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>
   {% yield 'meta_title' %}
-  &lt;/title&gt;
-&lt;/head&gt;
+  </title>
+</head>
 
-&lt;body&gt;
-&lt;h1&gt;Layout&lt;/h1&gt;
+<body>
+<h1>Layout</h1>
 {{ content_for_layout }}
 
-&lt;/body&gt;
+</body>
 
-&lt;/html&gt;
+</html>
 
 </code></pre>
 
@@ -57,9 +57,9 @@ Create a partial file `meta_tags.liquid` in the `marketplace_builder/views/parti
 {% raw %}
 
 <pre><code class="language-liquid">
-&lt;meta charset=&quot;UTF-8&quot;&gt;
-&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
-&lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 
 
 </code></pre>
@@ -73,22 +73,22 @@ In the original layout, include the `meta_tags.liquid` partial. Partials resolve
 {% raw %}
 
 <pre><code class="language-liquid">
-&lt;!doctype html&gt;
-&lt;html lang=&quot;en&quot;&gt;
-&lt;head&gt;
+<!doctype html>
+<html lang="en">
+<head>
 {% include 'meta_tags' %}
-  &lt;title&gt;
+  <title>
   {% yield 'meta_title' %}
-  &lt;/title&gt;
-&lt;/head&gt;
+  </title>
+</head>
 
-&lt;body&gt;
-&lt;h1&gt;Layout&lt;/h1&gt;
+<body>
+<h1>Layout</h1>
 {{ content_for_layout }}
 
-&lt;/body&gt;
+</body>
 
-&lt;/html&gt;
+</html>
 </code></pre>
 
 {% endraw %}

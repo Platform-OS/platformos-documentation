@@ -2,7 +2,7 @@
 converter: markdown
 metadata:
   title: Metadata
-  description: Metadata is a property to store any kind of key-value pairs. A page can be extended using metadata. 
+  description: Metadata is a property to store any kind of key-value pairs. A page can be extended using metadata.
 slug: get-started/pages/metadata
 searchable: true
 ---
@@ -26,21 +26,21 @@ Metadata is available through Liquid as `page.metadata`:
 {% raw %}
 
 <pre><code class="language-liquid">
-&lt;div&gt;
-  &lt;h1&gt; {{ page.metadata.title }} &lt;/h1&gt;
+<div>
+  <h1> {{ page.metadata.title }} </h1>
 
-  &lt;section&gt;{{ page.metadata.description }}&lt;/section&gt;
+  <section>{{ page.metadata.description }}</section>
 
-  &lt;ul&gt;
+  <ul>
     {% for tag in page.metadata.tags %}
-      &lt;li&gt; {{ tag }} &lt;/li&gt;
+      <li> {{ tag }} </li>
     {% endfor %}
-  &lt;/ul&gt;
+  </ul>
 
-  &lt;strong&gt;
-    {{ page.metadata.tags | join: &quot;,&quot; }}
-  &lt;/strong&gt;
-&lt;/div&gt;
+  <strong>
+    {{ page.metadata.tags | join: "," }}
+  </strong>
+</div>
 </code></pre>
 
 {% endraw %}

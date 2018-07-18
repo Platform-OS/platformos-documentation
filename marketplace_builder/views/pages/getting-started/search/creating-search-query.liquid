@@ -59,22 +59,22 @@ Now pull out slug and name of the resulting Transactables into an unordered list
 slug: demo_search
 ---
 {% assign query = params.query | default: nil %}
-&lt;form action=&quot;/demo_search&quot; method=&quot;GET&quot;&gt;
+<form action="/demo_search" method="GET">
   {% query_graph 'demo_search_transactables',
     result_name: 'g',
     query: query
   %}
-  &lt;input name=&quot;query&quot; value=&quot;{{ query }}&quot; /&gt;
-  &lt;input type=&quot;submit&quot; value=&quot;Search&quot; /&gt;
-&lt;/form&gt;
+  <input name="query" value="{{ query }}" />
+  <input type="submit" value="Search" />
+</form>
 
-&lt;p&gt;Total: &lt;strong&gt;{{ g.listings.total_entries }}&lt;/strong&gt;&lt;/p&gt;
+<p>Total: <strong>{{ g.listings.total_entries }}</strong></p>
 
-&lt;ul&gt;
+<ul>
 {% for listing in g.listings.results %}
-  &lt;li&gt;{{ listing.slug }} - {{ listing.name }}&lt;/li&gt;
+  <li>{{ listing.slug }} - {{ listing.name }}</li>
 {% endfor %}
-&lt;/ul&gt;
+</ul>
 </code></pre>
 
 {% endraw %}

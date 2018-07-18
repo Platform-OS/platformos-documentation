@@ -2,7 +2,7 @@
 converter: markdown
 metadata:
   title: Building a Contact Form with Customization
-  description: This guide will help you understand the process of building a contact form backed up with Customization. 
+  description: This guide will help you understand the process of building a contact form backed up with Customization.
 slug: get-started/customizations/building-contact-form-with-customization
 searchable: true
 ---
@@ -129,11 +129,11 @@ slug: contacts
 
 {%- query_graph 'get_contact_requests', result_name: 'g' -%}
 
-&lt;ul&gt;
+<ul>
   {% for user in g.customizations.results %}
-    &lt;li&gt;{{ user.name }}, {{ user.email }}, {{ user.description }}&lt;/li&gt;
+    <li>{{ user.name }}, {{ user.email }}, {{ user.description }}</li>
   {% endfor %}
-&lt;/ul&gt;
+</ul>
 {% endraw %}
 </code></pre>
 
@@ -234,8 +234,8 @@ subject: Contact Request
 to: '{{ form.model.properties.email }}'
 trigger_condition: true
 ---
-&lt;h2&gt;Hi {{ form.model.properties.name }}&lt;/h2&gt;
-&lt;p&gt;Thank you for your request, we will contact you shortly!&lt;/p&gt;
+<h2>Hi {{ form.model.properties.name }}</h2>
+<p>Thank you for your request, we will contact you shortly!</p>
 </code></pre>
 
 {% endraw %}

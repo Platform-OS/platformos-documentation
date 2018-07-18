@@ -57,12 +57,12 @@ console.log("Hello from JS!");
 Create an HTML file `test.html` in the `assets` directory:
 
 <pre><code class="language-html">
-&lt;!doctype html&gt;
-&lt;html&gt;
-&lt;body&gt;
+<!doctype html>
+<html>
+<body>
 Hello from test.html
-&lt;/body&gt;
-&lt;/html&gt;
+</body>
+</html>
 </code></pre>
 
 ### Step 3: Check assets
@@ -84,20 +84,20 @@ To access assets, use the `asset_url` filter in your liquid file, e.g. layout:
 {% raw %}
 
 <pre><code class="language-liquid">
-&lt;!doctype html&gt;
-&lt;html&gt;
-&lt;head&gt;
-  &lt;link rel=&quot;stylesheet&quot; href=&quot;{{ 'styles/app.css' | asset_url }}&quot;&gt;
-  &lt;script src=&quot;{{ 'scripts/app.js' | asset_url }}&quot;&gt;&lt;/script&gt;
-&lt;/head&gt;
-&lt;body&gt;
+<!doctype html>
+<html>
+<head>
+  <link rel="stylesheet" href="{{ 'styles/app.css' | asset_url }}">
+  <script src="{{ 'scripts/app.js' | asset_url }}"></script>
+</head>
+<body>
 
 {{ content_for_layout }}
 
-&lt;a href=&quot;{{ 'test.html' | asset_url }}&quot;&gt;Test&lt;/a&gt;
+<a href="{{ 'test.html' | asset_url }}">Test</a>
 
-&lt;/body&gt;
-&lt;/html&gt;
+</body>
+</html>
 </code></pre>
 
 {% endraw %}
