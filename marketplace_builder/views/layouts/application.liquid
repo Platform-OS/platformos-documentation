@@ -7,11 +7,14 @@
     <main class="main">
       <div class="container">
         <div class="row">
-          <aside class="sidebar col-12 col-md-4">
-            {% include 'layouts/sidebar' %}
-          </aside>
-
-          <section class="content col-12 col-md-8">
+          {% if page.metadata.hide_sidebar != true %}
+            <aside class="sidebar col-12 col-md-4">
+              {% include 'layouts/sidebar' %}
+            </aside>
+            <section class="content col-12 col-md-8">
+          {% else %}
+            <section class="content col-12 col-md-12">
+          {% endif %}
             {% include 'shared/flash-messages' %}
             {% include 'layouts/content' %}
           </section>
