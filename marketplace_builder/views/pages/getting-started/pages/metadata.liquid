@@ -62,13 +62,19 @@ query find_page(
   $value: String
 ) {
   pages: pages(
-    metadata: $metadata
     page: $page
     per_page: $per_page
-    exclude: $exclude
-    has_key: $has_key
-    name: $name
-    value: $value
+    filter: {
+      metadata: {
+        contains: $metadata,
+        has_key: $has_key,
+        attribute: {
+          key: $name,
+          value: $value
+        },
+        exclude: $exclude
+      }
+    }
   ) {
     total_entries
 
