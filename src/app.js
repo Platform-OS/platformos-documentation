@@ -2,6 +2,7 @@ import "./app.scss";
 
 import btnMenu from "./js/btnMenu";
 import widgetNav from "./js/widgetNav";
+import githubContributors from "./js/githubContributors";
 import tables from "./js/tables";
 import tabs from "./js/tabs";
 import scrollTo from "./js/scrollTo";
@@ -12,6 +13,7 @@ tabs();
 tables();
 widgetNav();
 btnMenu();
+githubContributors();
 
 WebFont.load({
   google: {
