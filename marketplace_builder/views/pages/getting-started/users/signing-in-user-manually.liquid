@@ -39,22 +39,22 @@ configuration:
   password:
 ---
 {% form %}
-  &lt;div&gt;
-    &lt;label for="email"&gt;&lt;abbr title="required"&gt;*&lt;/abbr&gt; Email&lt;/label&gt;
-    &lt;div&gt;
-      &lt;input name="{{ form_builder.fields.email.name }}" value="{{ form_builder.fields.email.value}}" id="email" type="email"&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
+  <div>
+    <label for="email"><abbr title="required">*</abbr> Email</label>
+    <div>
+      <input name="{{ form_builder.fields.email.name }}" value="{{ form_builder.fields.email.value}}" id="email" type="email">
+    </div>
+  </div>
 
-  &lt;div&gt;
-    &lt;label for="password"&gt;&lt;abbr title="required"&gt;*&lt;/abbr&gt; Password&lt;/label&gt;
-    &lt;div&gt;
-      &lt;input name="{{ form_builder.fields.password.name }}" id="password" type="password"&gt;
+  <div>
+    <label for="password"><abbr title="required">*</abbr> Password</label>
+    <div>
+      <input name="{{ form_builder.fields.password.name }}" id="password" type="password">
       {% if form_builder.errors.password %}
-        &lt;p&gt;{{ form_builder.errors.password }}&lt;/p&gt;
+        <p>{{ form_builder.errors.password }}</p>
       {% endif %}
-    &lt;/div&gt;
-  &lt;/div&gt;
+    </div>
+  </div>
 
   {% submit 'Log In' %}
 }

@@ -164,35 +164,35 @@ configuration:
         presence: true
 ---
 {% form %}
-  &lt;div&gt;
-    &lt;label for="name"&gt;&lt;abbr title="required"&gt;*&lt;/abbr&gt; Name&lt;/label&gt;
-    &lt;div&gt;
-      &lt;input name="{{ form_builder.fields.properties.name.name }}" value="{{ form_builder.fields.properties.name.value }}" id="name" type="text"&gt;
+  <div>
+    <label for="name"><abbr title="required">*</abbr> Name</label>
+    <div>
+      <input name="{{ form_builder.fields.properties.name.name }}" value="{{ form_builder.fields.properties.name.value }}" id="name" type="text">
       {% if form_builder.errors['properties.name'] %}
-        &lt;p&gt;{{ form_builder.errors['properties.name'] }}&lt;/p&gt;
+        <p>{{ form_builder.errors['properties.name'] }}</p>
       {% endif %}
-    &lt;/div&gt;
-  &lt;/div&gt;
+    </div>
+  </div>
 
-  &lt;div&gt;
-    &lt;label for="email"&gt;&lt;abbr title="required"&gt;*&lt;/abbr&gt; Email&lt;/label&gt;
-    &lt;div&gt;
-      &lt;input name="{{ form_builder.fields.properties.email.name }}" value="{{ form_builder.fields.properties.email.value }}" id="email" type="email"&gt;
+  <div>
+    <label for="email"><abbr title="required">*</abbr> Email</label>
+    <div>
+      <input name="{{ form_builder.fields.properties.email.name }}" value="{{ form_builder.fields.properties.email.value }}" id="email" type="email">
       {% if form_builder.errors['properties.email'] %}
-        &lt;p&gt;{{ form_builder.errors['properties.email'] }}&lt;/p&gt;
+        <p>{{ form_builder.errors['properties.email'] }}</p>
       {% endif %}
-    &lt;/div&gt;
-  &lt;/div&gt;
+    </div>
+  </div>
 
-  &lt;div&gt;
-    &lt;label for="description"&gt;&lt;abbr title="required"&gt;*&lt;/abbr&gt; Description&lt;/label&gt;
-    &lt;div&gt;
-      &lt;textarea name="{{ form_builder.fields.properties.description.name }}" id="description"&gt;{{ form_builder.fields.properties.description.value }}&lt;/textarea&gt;
+  <div>
+    <label for="description"><abbr title="required">*</abbr> Description</label>
+    <div>
+      <textarea name="{{ form_builder.fields.properties.description.name }}" id="description">{{ form_builder.fields.properties.description.value }}</textarea>
       {% if form_builder.errors['properties.description'] %}
-        &lt;p&gt;{{ form_builder.errors['properties.description'] }}&lt;/p&gt;
+        <p>{{ form_builder.errors['properties.description'] }}</p>
       {% endif %}
-    &lt;/div&gt;
-  &lt;/div&gt;
+    </div>
+  </div>
 
   {% submit 'Submit' %}
 {% endform %}

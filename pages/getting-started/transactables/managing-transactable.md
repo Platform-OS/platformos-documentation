@@ -26,7 +26,7 @@ Now we can proceed with building a form to create Transactable.
 
 {% raw %}
 
-```liquid
+```html
 ---
 name: project
 resource: Transactable
@@ -47,15 +47,59 @@ configuration:
         presence: true
 ---
 {% form %}
-  {% input 'name' %}
-  {% input 'description', as: 'text' %}
+  <div>
+    <label for="name"><abbr title="required">*</abbr> Name</label>
+    <div>
+      <input name="{{ form_builder.fields.name.name }}" value="{{ form_builder.fields.name.value }}" id="name" type="text">
+      {% if form_builder.errors.name %}
+        <p>{{ form_builder.errors.name }}</p>
+      {% endif %}
+    </div>
+  </div>
 
-  {% fields_for 'properties' %}
-    {% input 'workplace_online', as: 'boolean', form: 'properties' %}
-    {% input 'workplace_onsite', as: 'boolean', form: 'properties' %}
-    {% input 'budget', form: 'properties' %}
-    {% input 'deadline', form: 'properties', placeholder: 'YYYY-mm-dd' %}
-  {% endfields_for %}
+  <div>
+    <label for="description"><abbr title="required">*</abbr> Description</label>
+    <div>
+      <textarea name="{{ form_builder.fields.description.name }}" id="description">{{ form_builder.fields.description.value }}</textarea>
+      {% if form_builder.errors.description %}
+        <p>{{ form_builder.errors.description }}</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <div>
+    <label for="workplace_online">Workplace online</label>
+    <div>
+      <input value="0" name="{{ form_builder.fields.properties.workplace_online.name }}" type="hidden">
+      <input value="1" name="{{ form_builder.fields.properties.workplace_online.name }}" id="workplace_online" type="checkbox" {% if form_builder.fields.properties.workplace_online.value %}checked{% endif %}>
+    </div>
+  </div>
+
+  <div>
+    <label for="workplace_onsite">Workplace onsite</label>
+    <div>
+      <input value="0" name="{{ form_builder.fields.properties.workplace_onsite.name }}" type="hidden">
+      <input value="1" name="{{ form_builder.fields.properties.workplace_onsite.name }}" id="workplace_onsite" type="checkbox" {% if form_builder.fields.properties.workplace_onsite.value %}checked{% endif %}>
+    </div>
+  </div>
+
+  <div>
+    <label for="budget"><abbr title="required">*</abbr> Budget</label>
+    <div>
+      <input name="{{ form_builder.fields.properties.budget.name }}" value="{{ form_builder.fields.properties.budget.value }}" id="budget" type="text">
+    </div>
+  </div>
+
+  <div>
+    <label for="deadline"><abbr title="required">*</abbr> Deadline</label>
+    <div>
+      <input placeholder="YYYY-mm-dd" name="{{ form_builder.fields.properties.deadline.name }}" value="{{ form_builder.fields.properties.deadline.value }}" id="deadline" type="text">
+      {% if form_builder.errors['properties.deadline'] %}
+        <p>{{ form_builder.errors['properties.deadline'] }}</p>
+      {% endif %}
+    </div>
+  </div>
+
   {% submit 'Save' %}
 {% endform %}
 ```

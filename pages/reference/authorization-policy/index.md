@@ -35,7 +35,7 @@ Let's assume we have a very simple form, which the only thing it allow is changi
 
 {% raw %}
 
-```liquid
+```html
 ---
 name: update_last_name
 resource: User
@@ -45,7 +45,16 @@ configuration:
       presence: {}
 ---
 {% form url: "/api/users/{{ current_user.id }}" %}
-  {% input 'last_name', label: 'Last Name' %}
+  <div>
+    <label for="last_name"><abbr title="required">*</abbr> Last Name</label>
+    <div>
+      <input name="{{ form_builder.fields.last_name.name }}" value="{{ form_builder.fields.last_name.value }}" id="last_name" type="text">
+      {% if form_builder.errors.last_name %}
+        <p>{{ form_builder.errors.last_name }}</p>
+      {% endif %}
+    </div>
+  </div>
+
   {% submit 'Save' %}
 {% endform %}
 ```
