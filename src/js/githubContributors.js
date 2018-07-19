@@ -22,7 +22,7 @@ const getContributors = () => {
      $(".contributors").append(pageLastUpdated) 
      // $(".contributors").append(" &#8226; ");
      // $(".contributors").append("1 minute to read");
-     $(".contributors").append(" &#8226; Contributors: ");
+     $(".contributors").append(" &#8226; Contributors:  ");
      $(".contributors").append(avatars);
     }
   });
@@ -51,8 +51,8 @@ const contributorImage = (contributor) => {
 
   var img = document.createElement("IMG");
   img.src = contributor.avatar_url
-  img.height = 25;
-  img.width = 25;
+  img.height = 20;
+  img.width = 20;
   img.alt = contributor.login;
 
   return img 
