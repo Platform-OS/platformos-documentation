@@ -13,20 +13,21 @@ searchable: true
 
 See below a sample page configuration file, with explanations for each element:
 
-{% raw %}
+
 
 ### views/pages/my-page.html.liquid
 
-<pre><code class="language-liquid">
+<pre><code class="language-yaml">
 ---
 slug: my-page
 layout_name: my_custom_layout
 ---
+</code>
+<br>
+<code class="language-liquid">
 <h1>Welcome to My Page</h1>
 <p>A paragraph explaining what I do.</p>
 </code></pre>
-
-{% endraw %}
 
 | Property      | Description                                                                                                                                                                          | Default     | Example            |
 | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------- | ------------------ |
@@ -39,19 +40,20 @@ Everything after the front matter is the body of the page.
 
 The Homepage slug is `/`, which will work for both https://example.com and https://example.com/. See this sample file for configuring the home page:
 
-{% raw %}
 
 ### views/pages/home.html.liquid
 
-<pre><code class="language-liquid">
+<pre>
+<code class="language-yaml">
 ---
 slug: /
 ---
+</code>
+<br/>
+<code class="language-liquid">
 <h1>Welcome to my home page</h1>
 <p>A paragraph explaining what we do</p>
 </code></pre>
-
-{% endraw %}
 
 ## Formats
 
@@ -75,44 +77,43 @@ You can have multiple pages with the same slug, but with different formats, and 
 
 For example you can have both `html`, `pdf` and `txt` version of a page with `Hello world`:
 
-{% raw %}
-
 ### views/pages/hello.html.liquid
 
-<pre><code class="language-liquid">
+<pre><code class="language-yaml">
 ---
 slug: hello
 ---
+</code>
+<br>
+<code class="language-liquid">
 Hello world
 </code></pre>
-
-{% endraw %}
-
-{% raw %}
 
 ### views/pages/hello.pdf.liquid
 
-<pre><code class="language-liquid">
+<pre><code class="language-yaml">
 ---
 slug: hello
 ---
+</code>
+<br>
+<code class="language-liquid">
 Hello world
 </code></pre>
 
-{% endraw %}
-
-{% raw %}
 
 ### views/pages/hello.txt.liquid
 
-<pre><code class="language-liquid">
+<pre><code class="language-yaml">
 ---
 slug: hello
 ---
+</code>
+<br>
+<code class="language-liquid">
 Hello world
 </code></pre>
 
-{% endraw %}
 
 Those will be accessible under the URLs:
 
