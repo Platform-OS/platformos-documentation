@@ -14,7 +14,7 @@ This is an advanced tutorial. To follow it, you should be familiar with basic Pl
 
 * [How Platform OS Works](/how-platformos-works)
 * [APIs and Form Configurations](/api-reference)
-* [Get Started: Transactables tutorials](/get-started/transactables)
+* [Get Started: Transactables tutorials](/get-started/transactables/transactables)
 
 ## Steps
 
@@ -41,8 +41,7 @@ Define what data you expect, and required validations:
 
 ### form_configurations/import_flowers.liquid
 
-<pre><code class="language-yaml">
----
+<pre><code class="language-yaml">---
 name: import_flowers
 resource: Transactable
 configuration:
@@ -51,8 +50,7 @@ configuration:
       presence: true
   creator_id:
 resource_owner: anyone
----
-</pre></code>
+---</pre></code>
 
 ### Step 3: Generate API token
 
@@ -72,6 +70,6 @@ curl https://example.platform-os.com/api/user/transactables
   --data '{"form":{"name": "Red flowers", "creator_id":"1" }, "form_configuration_name": "import_flowers", "parent_object_class":"TransactableType","parent_object_id":"flowers"}'
 </pre></code>
 
-## Questions?
+{% include 'shared/questions_section' %}
 
-We are always happy to help with any questions you may have. Consult our  [documentation](), [contact support](), or  [connect with our sales team]().
+

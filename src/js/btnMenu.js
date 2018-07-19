@@ -4,7 +4,7 @@ const btnMenu = () => {
 
     $(this).toggleClass("active");
 
-    $(".nav").slideToggle();
+    $(".nav").slideToggle(100);
   });
 };
 

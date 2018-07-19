@@ -15,7 +15,7 @@
         {% endif %}
       {% endfor %}
 
-      <li>
+      <li {% if forloop.last %} class="current" {% endif %}>
         <i class="fas fa-chevron-right"></i>
         {% if forloop.last %}
           <a href="/{{ page.slug }}">{{ page.metadata.title }}</a>

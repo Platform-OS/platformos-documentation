@@ -23,27 +23,25 @@ metadata:
 
 Metadata is available through Liquid as `page.metadata`:
 
-{% raw %}
 
 <pre><code class="language-liquid">
+{% raw %}
 <div>
-  <h1> {{ page.metadata.title }} </h1>
+  <h1>{{ page.metadata.title }}</h1>
 
   <section>{{ page.metadata.description }}</section>
 
   <ul>
     {% for tag in page.metadata.tags %}
-      <li> {{ tag }} </li>
+      <li>{{ tag }}</li>
     {% endfor %}
   </ul>
 
-  <strong>
-    {{ page.metadata.tags | join: "," }}
-  </strong>
+  <strong>{{ page.metadata.tags | join: "," }}</strong>
 </div>
+{% endraw %}
 </code></pre>
 
-{% endraw %}
 
 ## Searching for a page using its metadata
 

@@ -4,7 +4,7 @@ metadata:
   title: User-Defined Custom Attributes
   description: User-defined Custom Attributes are Custom Attributes you can create on demand.
 slug: reference/custom-attributes/user-defined
-searchable: true 
+searchable: true
 ---
 
 User-defined Custom Attributes are Custom Attributes you can create on demand.
@@ -70,21 +70,20 @@ configuration:
     age:
       validation:
         presence: true
-</code></pre>
-
+</code>
+<br>
+<code class="language-liquid">
 {% raw %}
-
-<pre><code class="language-liquid">
 {% form %}
-  &lt;div&gt;
-    &lt;label for="name"&gt;&lt;abbr title="required"&gt;*&lt;/abbr&gt; Name&lt;/label&gt;
-    &lt;div&gt;
-      &lt;input value="{{ form_builder.fields.properties.name.value }}" name="{{ form_builder.fields.properties.name.name }}" id="name" type="text"&gt;
+  <div>
+    <label for="name"><abbr title="required">*</abbr> Name</label>
+    <div>
+      <input value="{{ form_builder.fields.properties.name.value }}" name="{{ form_builder.fields.properties.name.name }}" id="name" type="text">
       {% if form_builder.errors['properties.name'] %}
-        &lt;p&gt;{{ form_builder.errors['properties.name'] }}&lt;/p&gt;
+        <p>{{ form_builder.errors['properties.name'] }}</p>
       {% endif %}
-    &lt;/div&gt;
-  &lt;/div&gt;
+    </div>
+  </div>
 {% endform %}
 </code></pre>
 

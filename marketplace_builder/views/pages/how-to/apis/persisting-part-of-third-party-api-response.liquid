@@ -13,9 +13,9 @@ This guide will help you persist part of a third-party API response by walking y
 This is an advanced tutorial. To follow it, you should be familiar with basic Platform OS concepts, HTML, GraphQL queries, Liquid, YAML, and the topics in the Get Started section, especially tutorials related to pages, users, and notifications.
 
 * [How Platform OS Works](/how-platformos-works)
-* [Get Started: Users tutorials](/get-started/pages)
-* [Get Started: Users tutorials](/get-started/users)
-* [Get Started: Notifications](/get-started/notifications)
+* [Get Started: Pages tutorials](/get-started/pages/pages)
+* [Get Started: Users tutorials](/get-started/users/users)
+* [Get Started: Notifications](/get-started/notifications/notifications)
 
 ## Steps
 
@@ -143,12 +143,14 @@ Once you have an API call notification defined, you should associate it with a f
 
 ### views/pages/test-form.liquid
 
-<pre><code class="language-liquid">
-{% raw %}
+<pre><code class="language-yaml">
 ---
 slug: test-form
 ---
->h1<Form>/h1<
+</code>
+</br>
+<code class="language-liquid">
+{% raw %}
 {% render_form 'test_form', object_id: @current_user.id, object_class: 'User' %}
 {% endraw %}
 </code></pre>
@@ -160,8 +162,7 @@ Create the form and associate it with the API call notification. It can be a sig
 
 ### form_configurations/test-form.liquid
 
-<pre><code class="language-liquid">
-{% raw %}
+<pre><code class="language-yaml">
 ---
 name: test_form
 resource: User
@@ -175,29 +176,33 @@ redirect_to: /test-result
 api_call_notifications:
   - send_request
 ---
+</code>
+<br>
+<code class="language-liquid">
+{% raw %}
 {% form url: "/api/users/{{ current_user.id }}" %}
-  &lt;div&gt;
-    &lt;label for="email"&gt;&lt;abbr title="required"&gt;*&lt;/abbr&gt; Email&lt;/label&gt;
-    &lt;div&gt;
-      &lt;input name="{{ form_builder.fields.email.name }}" value="{{ form_builder.fields.email.value}}" id="email" type="email"&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
+  <div>
+    <label for="email"><abbr title="required">*</abbr> Email</label>
+    <div>
+      <input name="{{ form_builder.fields.email.name }}" value="{{ form_builder.fields.email.value}}" id="email" type="email">
+    </div>
+  </div>
 
-  &lt;div&gt;
-    &lt;label for="password"&gt;&lt;abbr title="required"&gt;*&lt;/abbr&gt; Password&lt;/label&gt;
-    &lt;div&gt;
-      &lt;input name="{{ form_builder.fields.password.name }}" id="password" type="password"&gt;
+  <div>
+    <label for="password"><abbr title="required">*</abbr> Password</label>
+    <div>
+      <input name="{{ form_builder.fields.password.name }}" id="password" type="password">
       {% if form_builder.errors.password %}
-        &lt;p&gt;{{ form_builder.errors.password }}&lt;/p&gt;
+        <p>{{ form_builder.errors.password }}</p>
       {% endif %}
-    &lt;/div&gt;
-  &lt;/div&gt;
+    </div>
+  </div>
 
-  &lt;input name="{{ form_builder.fields.profiles.test_profile.enabled.name }}" value="1" type="hidden"&gt;
+  <input name="{{ form_builder.fields.profiles.test_profile.enabled.name }}" value="1" type="hidden">
 
-  &lt;p class="action"&gt;
+  <p class="action">
     {% submit 'Save', class: 'button-a' %}
-  &lt;/p&gt;
+  </p>
 {% endform %}
 {% endraw %}
 </code></pre>
@@ -211,11 +216,15 @@ In the `test_form` you have set up a redirection to `/test-result`, so create th
 
 ### views/pages/test-result.liquid
 
-<pre><code class="language-liquid">
-{% raw %}
+<pre>
+<code class="language-yaml">
 ---
 slug: test-result
 ---
+</code>
+<br>
+<code class="language-liquid">
+{% raw %}
 {% query_graph 'get_current_user_third_party_api_value', result_name: 'graph_current_user'  %}
 Third Party Api Value: for {{ graph_current_user.current_user.email }}: {{ graph_current_user.current_user.test_profile.third_party_api_value }}
 {% endraw %}
@@ -238,8 +247,8 @@ query get_current_user_third_party_api_value {
 
 You can now go to the /test-form page, provide sign up details, and click the Save button. Initially, you will not see the correct value, because the API call is triggered in the background, outside of the request lifecycle. This is important to not rely on a third-party API's availability. However, when you refresh after a couple of seconds, you will see that the value has been populated.
 
-## Questions?
+{% include 'shared/questions_section' %}
 
-We are always happy to help with any questions you may have. Consult our  [documentation](), [contact support](), or  [connect with our sales team]().
+
 
 
