@@ -6,23 +6,25 @@ const getContributors = () => {
   var pageUrl = host + path + params;
 
   $.get(pageUrl, function( data ) {
-    pageLastUpdated = getLastUpdateTime(data[0].commit);
-    var parsedAuthors = new Set();
-    var avatars = data.map(function(commit) {
-      var authorId = commit.author.id;
+    if (data[0] != undefined ) {
+      pageLastUpdated = getLastUpdateTime(data[0].commit);
+      var parsedAuthors = new Set();
+      var avatars = data.map(function(commit) {
+        var authorId = commit.author.id;
 
-      if (!parsedAuthors.has(authorId)) {
-        parsedAuthors.add(authorId);
-        return contributorHtml(commit.author);
-      }
-    });
+        if (!parsedAuthors.has(authorId)) {
+          parsedAuthors.add(authorId);
+          return contributorHtml(commit.author);
+        }
+      });
 
-   $(".contributors").html("Last edit: ");
-   $(".contributors").append(pageLastUpdated) 
-   // $(".contributors").append(" &#8226; ");
-   // $(".contributors").append("1 minute to read");
-   $(".contributors").append(" &#8226; Contributors: ");
-   $(".contributors").append(avatars);
+     $(".contributors").html("Last edit: ");
+     $(".contributors").append(pageLastUpdated) 
+     // $(".contributors").append(" &#8226; ");
+     // $(".contributors").append("1 minute to read");
+     $(".contributors").append(" &#8226; Contributors: ");
+     $(".contributors").append(avatars);
+    }
   });
 
 };
