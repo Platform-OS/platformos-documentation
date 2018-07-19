@@ -64,20 +64,23 @@ Uploading content directly to Amazon S3 is a three-step process:
 ### Step 1: Access parameters
 Access all parameters required to post data to S3 through the `s3_data` key:
 
-{% raw %}
 
+CustomImage
 <pre><code class="language-liquid">
-<h2> CustomImage </h2>
+{% raw %}
 {{ form_builder.fields.profiles.expert.custom_images.photo.image.s3_upload }}
-
-<h2> CustomAttachment </h2>
-{{ form_builder.fields.profiles.expert.custom_attachments.cv.file.s3_upload }}
+{% endraw %}
 </code></pre>
 
+CustomAttachment
+<pre><code class="language-liquid">
+{% raw %}
+{{ form_builder.fields.profiles.expert.custom_attachments.cv.file.s3_upload }}
 {% endraw %}
+</code></pre>
+
 
 This will produce an output similar to the following:
-
 <img src="{{ 'images/how-to/assets/access_parameters_output.png' | asset_url }}" alt="Step 1 output: Accessing parameters">
 
 ### Step 2: Populate HTML `data*` attributes
@@ -86,17 +89,20 @@ Use `form_builder` to populate HTML `data-*` attributes. You can use it any way 
 
 Using this data to fill the `<input />` tag could look like this:
 
-{% raw %}
 
 <pre><code class="language-liquid">
-<input id="zonk" accept="image/gif, image/jpeg, image/jpg, image/png" class="file required" type="file"
-data-s3-form-data={{ form_builder.fields.profiles.expert.custom_images.photo.image.s3_upload.form_data | json }}
-data-s3-upload-url={{ form_builder.fields.profiles.expert.custom_images.photo.image.s3_upload.direct_upload_url  }}
-data-s3-data-host={{ form_builder.fields.profiles.expert.custom_images.photo.image.s3_upload.data_host  }}
+{% raw %}
+<input
+  id="zonk"
+  accept="image/gif, image/jpeg, image/jpg, image/png"
+  type="file"
+  data-s3-form-data="{{ form_builder.fields.profiles.expert.custom_images.photo.image.s3_upload.form_data | json }}"
+  data-s3-upload-url="{{ form_builder.fields.profiles.expert.custom_images.photo.image.s3_upload.direct_upload_url  }}"
+  data-s3-data-host="{{ form_builder.fields.profiles.expert.custom_images.photo.image.s3_upload.data_host  }}"
 />
+{% endraw %}
 </code></pre>
 
-{% endraw %}
 
 **Explanation:**
 

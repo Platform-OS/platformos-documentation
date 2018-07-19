@@ -68,25 +68,33 @@ Each image supports the following self-descriptive fields:
 
 After setting up images as described above, you can further customize image editing in the markup for the forms:
 
-{% raw %}
 
 <pre><code class="language-liquid">
-  {% if form_builder.fields.profiles.seller.custom_images.avatar.image.value %}
-    &lt;div class="preview"&gt;
-      &lt;figure&gt;&lt;a href="{{ form_builder.fields.profiles.seller.custom_images.avatar.image.value }}"&gt;&lt;img src="{{ form_builder.fields.profiles.seller.custom_images.avatar.image.value }}"&gt;&lt;/a&gt;&lt;/figure&gt;
-    &lt;/div&gt;
-  {% endif %}
+{% raw %}
+{% if form_builder.fields.profiles.seller.custom_images.avatar.image.value %}
+  <div class="preview">
+    <figure>
+      <a href="{{ form_builder.fields.profiles.seller.custom_images.avatar.image.value }}">
+        <img src="{{ form_builder.fields.profiles.seller.custom_images.avatar.image.value }}">
+      </a>
+    </figure>
+  </div>
+{% endif %}
 
-  &lt;div&gt;
-    &lt;label&gt;&lt;span&gt;Select a new image...&lt;/span&gt;&lt;span&gt;or drag photo here to upload&lt;/span&gt;
-    &lt;input accept="image/gif, image/jpeg, image/jpg, image/png" name="{{ form_builder.fields.profiles.seller.custom_images.avatar.image.name }}" type="file"&gt;&lt;/label&gt;
-    {% if form_builder.errors['profiles.seller.custom_images.avatar.image'] %}
-      &lt;p&gt;{{ form_builder.errors['profiles.seller.custom_images.avatar.image'] }}&lt;/p&gt;
-    {% endif %}
-  &lt;/div&gt;
+<div>
+  <label>
+    <span>Select a new image...</span>
+    <span>or drag photo here to upload</span>
+    <input accept="image/gif, image/jpeg, image/jpg, image/png" name="{{ form_builder.fields.profiles.seller.custom_images.avatar.image.name }}" type="file">
+  </label>
+
+  {% if form_builder.errors['profiles.seller.custom_images.avatar.image'] %}
+    <p>{{ form_builder.errors['profiles.seller.custom_images.avatar.image'] }}</p>
+  {% endif %}
+</div>
+{% endraw %}
 </code></pre>
 
-{% endraw %}
 
 The example above shows the predefined image tag.
 
