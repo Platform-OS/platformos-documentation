@@ -8,7 +8,7 @@ metadata:
 {% query_graph "search", query: params.query, per_page: @per_page, page: page %}
 
 <h2>
-  {{ g.pages.total_entries }} result{% if  g.pages.total_entries > 1 %}s{% endif %} for: {{ params.query }}
+  {{ g.pages.total_entries }} result{% if g.pages.total_entries != 1 %}s{% endif %} for: {{ params.query }}
 </h2>
 
 <ul class="search-results">

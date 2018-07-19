@@ -1,5 +1,8 @@
 {% if total_entries > per_page %}
   {% assign per_page_default = per_page_default | default: 10 %}
+  {% if params.query %}
+    {% assign query_param = "query=" | append: params.query | append: '&' %}
+  {% endif %}
   {% if per_page != per_page_default %}
     {% assign per_page_param = "&per_page=" | append: per_page %}
   {% endif %}
@@ -10,7 +13,7 @@
           <ul class="pagination float-right">
             {% if page > 1 %}
               <li class="page-item">
-                <a class="page-link" href="{{ context.location.pathname }}?page={{ page | minus: 1 }}{{ per_page_param }}">Previous</a>
+                <a class="page-link" href="{{ context.location.pathname }}?{{ query_param }}page={{ page | minus: 1 }}{{ per_page_param }}">Previous</a>
               </li>
             {% else %}
               <li class="page-item disabled">
@@ -27,13 +30,13 @@
                 </li>
               {% else %}
                 <li class="page-item">
-                  <a class="page-link" href="{{ context.location.pathname }}?page={{ i }}{{ per_page_param }}">{{ i }}</a>
+                  <a class="page-link" href="{{ context.location.pathname }}?{{ query_param }}page={{ i }}{{ per_page_param }}">{{ i }}</a>
                 </li>
               {% endif %}
             {% endfor %}
             {% if total_pages > page %}
               <li class="page-item">
-                <a class="page-link" href="{{ context.location.pathname }}?page={{ page | plus: 1 }}{{ per_page_param }}">Next</a>
+                <a class="page-link" href="{{ context.location.pathname }}?{{ query_param }}page={{ page | plus: 1 }}{{ per_page_param }}">Next</a>
               </li>
             {% else %}
               <li class="page-item disabled">
