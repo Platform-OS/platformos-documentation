@@ -1,0 +1,82 @@
+---
+converter: markdown
+metadata:
+  title: Integrating Slack Using API Call Notifications 
+slug: how-to/integrations/integrating-slack-api-call-notifications
+---
+
+This guide will help you create a Slack integration for Platform OS using API Call Notifications. 
+
+## Requirements
+To follow this tutorial, you should be familiar with creating API call notifications. You also have to have access to a Slack workspace, have enabled webhooks, and created an incoming webhook. You will need the webhook URL for creating the API call notification.  
+
+* [Creating an API Call Notification](/get-started/notifications/creating-api-call-notification)
+* [Creating an Incoming Webhook (Slack Documentation)](https://api.slack.com/incoming-webhooks#getting-started)
+
+## Steps
+
+Integrating Slack using API call notifications is a two-step process:
+
+1. Create API call notification
+2. Add API call notification to form
+
+### Step 1: Create API call notification
+
+Your webhook URL looks similar to this: `https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX`.
+Create an API call notification using your own webhook URL (replace placeholder):
+
+{% raw %}
+
+<pre><code class="language-liquid">
+---
+name: { name of your file here }
+delay: 0
+enabled: true
+format: http
+headers: '{ "Content-Type": "application/json" }'
+request_type: POST
+to: { your webhook URL, e.g. https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX }
+trigger_condition: true
+---
+{
+	"text": "New Contact on Platform.OS.com!}
+</code></pre>
+
+{% endraw %}
+
+{% include "alert/note", content: "You can customize your message in Slack quite a bit. Learn more about that on the page that provided you your webhook URL or on <a href='https://api.slack.com/incoming-webhooks'>api.slack.com/incoming webhooks</a>" %}
+
+### Step 2: Add API call notification to form 
+
+Add the following to the front matter on your form:
+
+{% raw %}
+
+<pre><code class="language-liquid">
+api_call_notifications:
+- { slack_sales_request }
+</code></pre>
+
+{% endraw %}
+
+The front matter of the form we used in this example:
+
+{% raw %}
+
+<pre><code class="language-liquid">
+---
+name: enquirer_signup
+resource: User
+configuration:
+  email:
+  password:
+api_call_notifications:
+  - slack_sales_request
+---
+</code></pre>
+
+{% endraw %}
+
+## Questions?
+
+We are always happy to help with any questions you may have. Consult our  [documentation](), [contact support](), or  [connect with our sales team](). 
