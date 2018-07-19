@@ -17,18 +17,15 @@ if ($("[class^=language]").length > 0) {
   [...document.querySelectorAll("code[class*=language]")].map(cleanupHtml);
 
   import(/* webpackChunkName: "prism" */ "prismjs");
-  import(/* webpackChunkName: "prism" */ "prismjs/components/prism-markup");
-  import(/* webpackChunkName: "prism" */ "prismjs/components/prism-clike");
   import(/* webpackChunkName: "prism" */ "prismjs/components/prism-ruby");
-  import(/* webpackChunkName: "prism" */ "prismjs/components/prism-git");
   import(/* webpackChunkName: "prism" */ "prismjs/components/prism-scss");
   import(/* webpackChunkName: "prism" */ "prismjs/components/prism-sass");
   import(/* webpackChunkName: "prism" */ "prismjs/components/prism-markdown");
   import(/* webpackChunkName: "prism" */ "prismjs/components/prism-haml");
   import(/* webpackChunkName: "prism" */ "prismjs/components/prism-css");
   import(/* webpackChunkName: "prism" */ "prismjs/components/prism-css-extras");
+  import(/* webpackChunkName: "prism" */ "prismjs/components/prism-json");
   import(/* webpackChunkName: "prism" */ "prismjs/components/prism-javascript");
-  import(/* webpackChunkName: "prism" */ "prismjs/components/prism-haml");
   import(/* webpackChunkName: "prism" */ "prismjs/components/prism-yaml");
   import(/* webpackChunkName: "prism" */ "prismjs/components/prism-graphql");
   import(/* webpackChunkName: "prism" */ "prismjs/components/prism-liquid").then(
