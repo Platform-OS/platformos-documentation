@@ -1,61 +1,50 @@
-const getContributors = () => {
-  var host = "https://api.github.com",
-    path = "/repos/mdyd-dev/nearme-documentation/commits",
-    params = "?path=marketplace_builder/views/pages/" + window.location.pathname + ".liquid",
-    pageLastUpdated;
-  var pageUrl = host + path + params;
+const API_ENDPOINT = "https://api.github.com/repos/mdyd-dev/nearme-documentation/commits";
+const params = `?path=marketplace_builder/views/pages/${window.location.pathname}.liquid`;
 
-  $.get(pageUrl, function(data) {
-    if (data[0] != undefined) {
-      pageLastUpdated = getLastUpdateTime(data[0].commit);
-      var parsedAuthors = new Set();
-      var avatars = data.map(function(commit) {
-        var authorId = commit.author.id;
-
-        if (!parsedAuthors.has(authorId)) {
-          parsedAuthors.add(authorId);
-          return contributorHtml(commit.author);
-        }
-      });
-
-      $(".contributors")
-        .html("Last edit: ")
-        .append(pageLastUpdated)
-        .append("Contributors: ")
-        .append(avatars);
+const initialize = () => {
+  $.get(`${API_ENDPOINT}${params}`, data => {
+    if (data[0]) {
+      $("[data-contributors]").html(getHTML(data));
     }
   });
 };
 
-const getLastUpdateTime = commit => {
-  var updatedAt = document.createElement("span"),
-    dateOptions = { day: "numeric", month: "short", year: "numeric" };
-  var parsedDate = new Date(commit.committer.date).toLocaleString(
-    "en-ENG",
-    dateOptions
-  );
-
-  updatedAt.innerText = parsedDate + "";
-  return updatedAt.outerHTML;
+const getHTML = data => {
+  return `
+    <p class="mb-0 d-flex align-items-center">
+      <span>Last edit:</span>&nbsp; ${getLastUpdateTime(data)}
+    </p>
+    <p class="mb-0 d-flex align-items-center">
+      <span>Contributors:</span>&nbsp; ${getContributors(data)}
+    </p>
+  `;
 };
 
-const contributorHtml = contributor => {
-  var link = document.createElement("a");
-  link.innerHTML = contributorImage(contributor).outerHTML;
-  link.href = contributor.html_url;
-  link.target = "_blank";
+const getLastUpdateTime = data => {
+  const commitDate = new Date(data[0].commit.committer.date);
 
-  return link.outerHTML;
+  // prettier-ignore
+  return commitDate.toLocaleString("en-ENG", { day: "numeric", month: "short", year: "numeric" });
 };
 
-const contributorImage = contributor => {
-  var img = document.createElement("IMG");
-  img.src = contributor.avatar_url;
-  img.height = 20;
-  img.width = 20;
-  img.alt = contributor.login;
+const getContributors = data => {
+  const uniqueAuthors = [];
 
-  return img;
+  return data
+    .map(item => {
+      if (uniqueAuthors.indexOf(item.author.id) < 0) {
+        uniqueAuthors.push(item.author.id);
+        return getContributor({ author: item.author, item: item });
+      }
+    })
+    .join("");
 };
 
-export default getContributors;
+const getContributor = ({ author, item }) => {
+  const authorName = item.commit.author.name;
+  return `<a href="${author.html_url}" target="_blank">
+    <img src="${author.avatar_url}" width="20" height="20" alt="${authorName} (${author.login})" />
+  </a>`;
+};
+
+export default initialize;
