@@ -29,10 +29,28 @@ layout_name: my_custom_layout
 <p>A paragraph explaining what I do.</p>
 </code></pre>
 
-| Property      | Description                                                                                                                                                                          | Default     | Example            |
-| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------- | ------------------ |
-| `slug`        | Defines the url at which this page will be accessible. Assuming your site domain is https://example.com, you will be able to access the page at https://example.com/`<slug>`.        | n/a         | `my-page`          |
-| `layout_name` | Defines which layout from `views/layouts/` you would like to use. If you don't want to use any layout, set it to empty string. It will be equivalent to just rendering page content. | application | `my_custom_layout` |
+| Property                    | Description                                                  | Options                                                | Default       | Example            | Required |
+| --------------------------- | ------------------------------------------------------------ | ------------------------------------------------------ | ------------- | ------------------ | -------- |
+| `authorization_policies`    |                                                              |                                                        |               |                    | No       |
+| `cache_for`                 |                                                              |                                                        |               |                    | No       |
+| `content`                   |                                                              |                                                        |               |                    | No       |
+| `converter`                 |                                                              |                                                        |               |                    | No       |
+| `format`                    |                                                              | `html` `xml` `csv` `json` `rss` `css` `js` `pdf` `txt` | `html`        |                    | No       |
+| `handler`                   |                                                              |                                                        |               |                    | No       |
+| `layout_name`               | Defines which layout from `views/layouts/` you would like to use. <br /><br />If you don't want to use any layout, set it to empty string. It will be equivalent to just rendering page content.<br /><br />Note: Currently, excluding this property altogether will cause the page to use the layout last used for the current page. If no layout has been used, it will use the default `application` layout. |                                                        | `application` | `my_custom_layout` | No       |
+| `max_deep_level`            |                                                              |                                                        |               |                    | No       |
+| `metadata`                  |                                                              |                                                        |               |                    | No       |
+| `metadata_canonical_url`    |                                                              |                                                        |               |                    | No       |
+| `metadata_meta_description` |                                                              |                                                        |               |                    | No       |
+| `metadata_title`            |                                                              |                                                        |               |                    | No       |
+| `method`                    |                                                              | `get` `post` `put` `delete`                            | `get`         |                    | No       |
+| `redirect_code`             |                                                              |                                                        |               |                    | No       |
+| `redirect_to`               |                                                              |                                                        |               |                    | No       |
+| `redirect_url`              |                                                              |                                                        |               |                    | No       |
+| `require_verified_user`     |                                                              |                                                        |               |                    | No       |
+| `response_headers`          |                                                              |                                                        |               |                    | No       |
+| `searchable`                |                                                              |                                                        |               |                    | No       |
+| `slug`                      | Defines the url at which this page will be accessible. Assuming your site domain is https://example.com, you will be able to access the page at https://example.com/`<slug>`. |                                                        | n/a           | `my-page`          | Yes      |
 
 Everything after the front matter is the body of the page.
 
