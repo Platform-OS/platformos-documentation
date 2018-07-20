@@ -105,34 +105,100 @@ After setting up addresses as described above, you can further customize them in
 
 {% raw %}
 
-```liquid
-{% fields_for 'profiles' %}
-  {% fields_for 'seller', form: 'profiles' %}
-    {% fields_for 'custom_addresses', form: 'seller' %}
+```html
+<h2>Headquarters address</h2>
+<div>
+  <label for="hq_address"><abbr title="required">*</abbr> Address</label>
+  <div>
+    <input value="{{ form_builder.fields.profiles.seller.custom_addresses.hq_address.address.value }}" name="{{ form_builder.fields.profiles.seller.custom_addresses.hq_address.address.name }}" id="hq_address" type="text">
+    {% if form_builder.errors['profiles.seller.custom_addresses.hq_address.address'] %}
+      <p>{{ form_builder.errors['profiles.seller.custom_addresses.hq_address.address'] }}</p>
+    {% endif %}
+  </div>
+</div>
 
-      <h2>Headquaters address</h2>
-      {% fields_for 'hq_address', form: 'custom_addresses' %}
-        {% input 'address', form: 'hq_address' %}
-        {% input 'city', form: 'hq_address' %}
-        {% input 'street', form: 'hq_address' %}
-        {% input 'state', form: 'hq_address' %}
-        {% input 'country', form: 'hq_address' %}
-        {% input 'postcode', form: 'hq_address' %}
-      {% endfields_for %}
+<div>
+  <label for="hq_city">City</label>
+  <div>
+    <input value="{{ form_builder.fields.profiles.seller.custom_addresses.hq_address.city.value }}" name="{{ form_builder.fields.profiles.seller.custom_addresses.hq_address.city.name }}" id="hq_city" type="text">
+  </div>
+</div>
 
-      <h2>Correspondence address</h2>
-      {% fields_for 'correspondence_address', form: 'custom_addresses' %}
-        {% input 'address', form: 'correspondence_address' %}
-        {% input 'city', form: 'correspondence_address' %}
-        {% input 'street', form: 'correspondence_address' %}
-        {% input 'state', form: 'correspondence_address' %}
-        {% input 'country', form: 'correspondence_address' %}
-        {% input 'postcode', form: 'correspondence_address' %}
-      {% endfields_for %}
+<div>
+  <label for="hq_street">Street</label>
+  <div>
+    <input value="{{ form_builder.fields.profiles.seller.custom_addresses.hq_address.street.value }}" name="{{ form_builder.fields.profiles.seller.custom_addresses.hq_address.street.name }}" id="hq_street" type="text">
+  </div>
+</div>
 
-    {% endfields_for %}
-  {% endfields_for %}
-{% endfields_for %}
+<div>
+  <label for="hq_state"><abbr title="required">*</abbr> State</label>
+  <div>
+    <input value="{{ form_builder.fields.profiles.seller.custom_addresses.hq_address.state.value }}" name="{{ form_builder.fields.profiles.seller.custom_addresses.hq_address.state.name }}" id="hq_state" type="text">
+    {% if form_builder.errors['profiles.seller.custom_addresses.hq_address.state'] %}
+      <p>{{ form_builder.errors['profiles.seller.custom_addresses.hq_address.state'] }}</p>
+    {% endif %}
+  </div>
+</div>
+
+<div>
+  <label for="hq_country">Country</label>
+  <div>
+    <input value="{{ form_builder.fields.profiles.seller.custom_addresses.hq_address.country.value }}" name="{{ form_builder.fields.profiles.seller.custom_addresses.hq_address.country.name }}" id="hq_country" type="text">
+  </div>
+</div>
+
+<div>
+  <label for="hq_postcode">Postcode</label>
+  <div>
+    <input value="{{ form_builder.fields.profiles.seller.custom_addresses.hq_address.postcode.value }}" name="{{ form_builder.fields.profiles.seller.custom_addresses.hq_address.postcode.name }}" id="hq_postcode" type="text">
+  </div>
+</div>
+
+
+
+<h2>Correspondence address</h2>
+<div>
+  <label for="correspondence_address">Address</label>
+  <div>
+    <input value="{{ form_builder.fields.profiles.seller.custom_addresses.correspondence_address.address.value }}" name="{{ form_builder.fields.profiles.seller.custom_addresses.correspondence_address.address.name }}" id="correspondence_address" type="text">
+  </div>
+</div>
+
+<div>
+  <label for="correspondence_city">City</label>
+  <div>
+    <input value="{{ form_builder.fields.profiles.seller.custom_addresses.correspondence_address.city.value }}" name="{{ form_builder.fields.profiles.seller.custom_addresses.correspondence_address.city.name }}" id="correspondence_city" type="text">
+  </div>
+</div>
+
+<div>
+  <label for="correspondence_street">Street</label>
+  <div>
+    <input value="{{ form_builder.fields.profiles.seller.custom_addresses.correspondence_address.street.value }}" name="{{ form_builder.fields.profiles.seller.custom_addresses.correspondence_address.street.name }}" id="correspondence_street" type="text">
+  </div>
+</div>
+
+<div>
+  <label for="correspondence_state">State</label>
+  <div>
+    <input value="{{ form_builder.fields.profiles.seller.custom_addresses.correspondence_address.state.value }}" name="{{ form_builder.fields.profiles.seller.custom_addresses.correspondence_address.state.name }}" id="correspondence_state" type="text">
+  </div>
+</div>
+
+<div>
+  <label for="correspondence_country">Country</label>
+  <div>
+    <input value="{{ form_builder.fields.profiles.seller.custom_addresses.correspondence_address.country.value }}" name="{{ form_builder.fields.profiles.seller.custom_addresses.correspondence_address.country.name }}" id="correspondence_country" type="text">
+  </div>
+</div>
+
+<div>
+  <label for="correspondence_postcode">Postcode</label>
+  <div>
+    <input value="{{ form_builder.fields.profiles.seller.custom_addresses.correspondence_address.postcode.value }}" name="{{ form_builder.fields.profiles.seller.custom_addresses.correspondence_address.postcode.name }}" id="correspondence_postcode" type="text">
+  </div>
+</div>
 ```
 
 {% endraw %}

@@ -140,7 +140,7 @@ In [Step 2: Contact Form - Data Creation](#step_2) you have created a form file 
 
 {% raw %}
 
-```liquid
+```html
 ---
 name: contact_form
 resource: Customization
@@ -160,23 +160,35 @@ configuration:
         presence: true
 ---
 {% form %}
-  {% fields_for 'properties' %}
+  <div>
+    <label for="name"><abbr title="required">*</abbr> Name</label>
     <div>
-      {% label 'name' %}
-      {% input_field 'name', form: 'properties' %}
-      {{ form_object.object.errors['properties.name'] }}
+      <input name="{{ form_builder.fields.properties.name.name }}" value="{{ form_builder.fields.properties.name.value }}" id="name" type="text">
+      {% if form_builder.errors.name %}
+        <p>{{ form_builder.errors.name }}</p>
+      {% endif %}
     </div>
+  </div>
+
+  <div>
+    <label for="email"><abbr title="required">*</abbr> Email</label>
     <div>
-      {% label 'email' %}
-      {% input_field 'email', form: 'properties' %}
-      {{ form_object.object.errors['properties.email'] }}
+      <input class="string email required" name="{{ form_builder.fields.properties.email.name }}" value="{{ form_builder.fields.properties.email.value }}" id="email" type="email">
+      {% if form_builder.errors.email %}
+        <p>{{ form_builder.errors.email }}</p>
+      {% endif %}
     </div>
+  </div>
+
+  <div>
+    <label for="description"><abbr title="required">*</abbr> Description</label>
     <div>
-      {% label 'description' %}
-      {% input_field 'description', form: 'properties' %}
-      {{ form_object.object.errors['properties.description'] }}
+      <textarea name="{{ form_builder.fields.properties.description.name }}" id="description">{{ form_builder.fields.properties.description.value }}</textarea>
+      {% if form_builder.errors.description %}
+        <p>{{ form_builder.errors.description }}</p>
+      {% endif %}
     </div>
-  {% endfields_for %}
+  </div>
 
   {% submit 'Submit' %}
 {% endform %}

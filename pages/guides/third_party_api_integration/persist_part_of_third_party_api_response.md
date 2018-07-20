@@ -123,7 +123,7 @@ Now, let's create the form itself and associate it with our API call notificatio
 
 {% raw %}
 
-```liquid
+```html
 # marketplace_builder/form_configurations/test-form.liquid
 ---
 name: test_form
@@ -137,13 +137,25 @@ api_call_notifications:
   - send_request
 ---
 {% form url: "/api/users/{{ current_user.id }}" %}
-  {% input 'email' %}
-  {% input 'password' %}
-  {% fields_for 'profiles' %}
-    {% fields_for 'test_profile' %}
-      {% input_field 'enabled', input_html-value: "1", as: 'hidden' %}
-    {% endfields_for %}
-  {% endfields_for %}
+  <div>
+    <label for="email"><abbr title="required">*</abbr> Email</label>
+    <div>
+      <input name="{{ form_builder.fields.email.name }}" value="{{ form_builder.fields.email.value}}" id="email" type="email">
+    </div>
+  </div>
+
+  <div>
+    <label for="password"><abbr title="required">*</abbr> Password</label>
+    <div>
+      <input name="{{ form_builder.fields.password.name }}" id="password" type="password">
+      {% if form_builder.errors.password %}
+        <p>{{ form_builder.errors.password }}</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <input name="{{ form_builder.fields.profiles.test_profile.enabled.name }}" value="1" type="hidden">
+
   <p class="action">
     {% submit 'Save', class: 'button-a' %}
   </p>

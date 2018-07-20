@@ -11,14 +11,22 @@ Analogically to the previous example, we will send sms to the user that signs up
 
 {% raw %}
 
-```liquid
+```html
 ---
 configuration:
   mobile_number:
     validation:
       presence: true
 ---
-{% input 'mobile_number', placeholder: 'Please include country code' %}
+<div>
+  <label for="mobile_number"><abbr title="required">*</abbr> Mobile number</label>
+  <div>
+    <input class="string required" placeholder="Please include country code" name="{{ form_builder.fields.mobile_number.name }}" value="{{ form_builder.fields.mobile_number.value }}" id="mobile_number" type="text">
+    {% if form_builder.errors.mobile_number %}
+      <p>{{ form_builder.errors.mobile_number }}</p>
+    {% endif %}
+  </div>
+</div>
 ```
 
 {% endraw %}

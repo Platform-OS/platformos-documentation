@@ -51,58 +51,58 @@ configuration:
         presence: true
 ---
 {% form %}
-  &lt;div&gt;
-    &lt;label for="name"&gt;&lt;abbr title="required"&gt;*&lt;/abbr&gt; Name&lt;/label&gt;
-    &lt;div&gt;
-      &lt;input name="{{ form_builder.fields.name.name }}" value="{{ form_builder.fields.name.value }}" id="name" type="text"&gt;
+  <div>
+    <label for="name"><abbr title="required">*</abbr> Name</label>
+    <div>
+      <input name="{{ form_builder.fields.name.name }}" value="{{ form_builder.fields.name.value }}" id="name" type="text">
       {% if form_builder.errors.name %}
-        &lt;p&gt;{{ form_builder.errors.name }}&lt;/p&gt;
+        <p>{{ form_builder.errors.name }}</p>
       {% endif %}
-    &lt;/div&gt;
-  &lt;/div&gt;
+    </div>
+  </div>
 
-  &lt;div&gt;
-    &lt;label for="description"&gt;&lt;abbr title="required"&gt;*&lt;/abbr&gt; Description&lt;/label&gt;
-    &lt;div&gt;
-      &lt;textarea name="{{ form_builder.fields.description.name }}" id="description"&gt;{{ form_builder.fields.description.value }}&lt;/textarea&gt;
+  <div>
+    <label for="description"><abbr title="required">*</abbr> Description</label>
+    <div>
+      <textarea name="{{ form_builder.fields.description.name }}" id="description">{{ form_builder.fields.description.value }}</textarea>
       {% if form_builder.errors.description %}
-        &lt;p&gt;{{ form_builder.errors.description }}&lt;/p&gt;
+        <p>{{ form_builder.errors.description }}</p>
       {% endif %}
-    &lt;/div&gt;
-  &lt;/div&gt;
+    </div>
+  </div>
 
-  &lt;div&gt;
-    &lt;label for="workplace_online"&gt;Workplace online&lt;/label&gt;
-    &lt;div&gt;
-      &lt;input value="0" name="{{ form_builder.fields.properties.workplace_online.name }}" type="hidden"&gt;
-      &lt;input value="1" name="{{ form_builder.fields.properties.workplace_online.name }}" id="workplace_online" type="checkbox" {% if form_builder.fields.properties.workplace_online.value %}checked{% endif %}&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
+  <div>
+    <label for="workplace_online">Workplace online</label>
+    <div>
+      <input value="0" name="{{ form_builder.fields.properties.workplace_online.name }}" type="hidden">
+      <input value="1" name="{{ form_builder.fields.properties.workplace_online.name }}" id="workplace_online" type="checkbox" {% if form_builder.fields.properties.workplace_online.value %}checked{% endif %}>
+    </div>
+  </div>
 
-  &lt;div&gt;
-    &lt;label for="workplace_onsite"&gt;Workplace onsite&lt;/label&gt;
-    &lt;div&gt;
-      &lt;input value="0" name="{{ form_builder.fields.properties.workplace_onsite.name }}" type="hidden"&gt;
-      &lt;input value="1" name="{{ form_builder.fields.properties.workplace_onsite.name }}" id="workplace_onsite" type="checkbox" {% if form_builder.fields.properties.workplace_onsite.value %}checked{% endif %}&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
+  <div>
+    <label for="workplace_onsite">Workplace onsite</label>
+    <div>
+      <input value="0" name="{{ form_builder.fields.properties.workplace_onsite.name }}" type="hidden">
+      <input value="1" name="{{ form_builder.fields.properties.workplace_onsite.name }}" id="workplace_onsite" type="checkbox" {% if form_builder.fields.properties.workplace_onsite.value %}checked{% endif %}>
+    </div>
+  </div>
 
-  &lt;div&gt;
-    &lt;label for="budget"&gt;&lt;abbr title="required"&gt;*&lt;/abbr&gt; Budget&lt;/label&gt;
-    &lt;div&gt;
-      &lt;input name="{{ form_builder.fields.properties.budget.name }}" value="{{ form_builder.fields.properties.budget.value }}" id="budget" type="text"&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
+  <div>
+    <label for="budget"><abbr title="required">*</abbr> Budget</label>
+    <div>
+      <input name="{{ form_builder.fields.properties.budget.name }}" value="{{ form_builder.fields.properties.budget.value }}" id="budget" type="text">
+    </div>
+  </div>
 
-  &lt;div&gt;
-    &lt;label for="deadline"&gt;&lt;abbr title="required"&gt;*&lt;/abbr&gt; Deadline&lt;/label&gt;
-    &lt;div&gt;
-      &lt;input placeholder="YYYY-mm-dd" name="{{ form_builder.fields.properties.deadline.name }}" value="{{ form_builder.fields.properties.deadline.value }}" id="deadline" type="text"&gt;
+  <div>
+    <label for="deadline"><abbr title="required">*</abbr> Deadline</label>
+    <div>
+      <input placeholder="YYYY-mm-dd" name="{{ form_builder.fields.properties.deadline.name }}" value="{{ form_builder.fields.properties.deadline.value }}" id="deadline" type="text">
       {% if form_builder.errors['properties.deadline'] %}
-        &lt;p&gt;{{ form_builder.errors['properties.deadline'] }}&lt;/p&gt;
+        <p>{{ form_builder.errors['properties.deadline'] }}</p>
       {% endif %}
-    &lt;/div&gt;
-  &lt;/div&gt;
+    </div>
+  </div>
 
   {% submit 'Save' %}
 {% endform %}

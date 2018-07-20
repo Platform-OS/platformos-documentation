@@ -42,13 +42,14 @@ After setting up attachments as described above, you can further customize them 
 
 {% raw %}
 
-```liquid
-{% fields_for 'custom_attachments', form: 'vehicles' %}
-  {% fields_for 'agreement', form: 'custom_attachments' %}
-    {% assign attachment_object = form_object_agreement.object %}
-    {% input file, form: 'agreement', as: 'attachment', collection: @attachment_object %}
-  {% endfields_for %}
-{% endfields_for %}
+```html
+<div>
+  <label><span>Select file...</span>
+  <input accept=".pdf,.jpg,.jpeg,.png" name="{{ form_builder.fields.custom_attachments.agreement.file.name }}" type="file"></label>
+  {% if form_builder.errors['custom_attachments.agreement.file'] %}
+    <p>{{ form_builder.errors['custom_attachments.agreement.file'] }}</p>
+  {% endif %}
+</div>
 ```
 
 {% endraw %}

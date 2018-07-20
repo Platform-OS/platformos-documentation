@@ -9,7 +9,7 @@ All forms should be located in `form_configuration` directory. Let's create form
 
 {% raw %}
 
-```liquid
+```html
 ---
 name: developer_sign_up
 resource: User
@@ -32,15 +32,37 @@ configuration:
 ---
 
 {% form url: '/api/users', method: 'post' %}
-  {% input 'first_name' %}
-  {% input 'email' %}
-  {% input 'password', as: 'password' %}
+  <div>
+    <label for="first_name"><abbr title="required">*</abbr> First name</label>
+    <div>
+      <input name="{{ form_builder.fields.first_name.name }}" value="{{ form_builder.fields.first_name.value }}" id="first_name" type="text">
+      {% if form_builder.errors.first_name %}
+        <p>{{ form_builder.errors.first_name }}</p>
+      {% endif %}
+    </div>
+  </div>
 
-  {% fields_for 'profiles' %}
-    {% fields_for 'developer', form: 'profiles' %}
-      {% input 'enabled', as: 'hidden', form: 'client' %}
-    {% endfields_for %}
-  {% endfields_for %}
+  <div>
+    <label for="email"><abbr title="required">*</abbr> Email</label>
+    <div>
+      <input name="{{ form_builder.fields.email.name }}" value="{{ form_builder.fields.email.value }}" id="email" type="email">
+      {% if form_builder.errors.email %}
+        <p>{{ form_builder.errors.email }}</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <div>
+    <label for="password">Password</label>
+    <div>
+      <input name="{{ form_builder.fields.password.name }}" id="password" type="password">
+      {% if form_builder.errors.password %}
+        <p>{{ form_builder.errors.password }}</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <input value="{{ form_builder.fields.profiles.developer.enabled.value }}" name="{{ form_builder.fields.profiles.developer.enabled.name }}" type="hidden">
 
   {% submit 'Create' %}
 
@@ -146,12 +168,8 @@ The last part is the rendering of nested forms. As explained in the configuratio
 
 {% raw %}
 
-```liquid
-{% fields_for 'profiles' %}
-  {% fields_for 'developer', form: 'profiles' %}
-    {% input 'enabled', as: 'hidden', form: 'developer' %}
-  {% endfields_for %}
-{% endfields_for %}
+```html
+<input value="{{ form_builder.fields.profiles.developer.enabled.value }}" name="{{ form_builder.fields.profiles.developer.enabled.name }}" type="hidden">
 ```
 
 {% endraw %}
@@ -164,7 +182,7 @@ After the explanation, creating sign up form for client should be trivial. We ca
 
 {% raw %}
 
-```liquid
+```html
 ---
 name: client_sign_up
 resource: User
@@ -188,15 +206,37 @@ configuration:
 ---
 
 {% form url: '/api/users', method: 'post' %}
-  {% input 'first_name' %}
-  {% input 'email' %}
-  {% input 'password', as: 'password' %}
+  <div>
+    <label for="first_name"><abbr title="required">*</abbr> First name</label>
+    <div>
+      <input name="{{ form_builder.fields.first_name.name }}" value="{{ form_builder.fields.first_name.value }}" id="first_name" type="text">
+      {% if form_builder.errors.first_name %}
+        <p>{{ form_builder.errors.first_name }}</p>
+      {% endif %}
+    </div>
+  </div>
 
-  {% fields_for 'profiles' %}
-    {% fields_for 'client', form: 'profiles' %}
-      {% input 'enabled', as: 'hidden', form: 'client' %}
-    {% endfields_for %}
-  {% endfields_for %}
+  <div>
+    <label for="email"><abbr title="required">*</abbr> Email</label>
+    <div>
+      <input name="{{ form_builder.fields.email.name }}" value="{{ form_builder.fields.email.value }}" id="email" type="email">
+      {% if form_builder.errors.email %}
+        <p>{{ form_builder.errors.email }}</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <div>
+    <label for="password">Password</label>
+    <div>
+      <input name="{{ form_builder.fields.password.name }}" id="password" type="password">
+      {% if form_builder.errors.password %}
+        <p>{{ form_builder.errors.password }}</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <input value="{{ form_builder.fields.profiles.client.enabled.value }}" name="{{ form_builder.fields.profiles.client.enabled.name }}" type="hidden">
 
   {% submit 'Create' %}
 {% endform %}

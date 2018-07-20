@@ -13,21 +13,39 @@ Usually you do not need anything more fancy than:
 
 {% raw %}
 
-```liquid
+```html
 ---
 name: sign_in
 resource: Session
+configuration:
+  email:
+  password:
 ---
 {% form %}
-  {% input 'email' %}
-  {% input 'password' %}
+  <div>
+    <label for="email"><abbr title="required">*</abbr> Email</label>
+    <div>
+      <input name="{{ form_builder.fields.email.name }}" value="{{ form_builder.fields.email.value}}" id="email" type="email">
+    </div>
+  </div>
+
+  <div>
+    <label for="password"><abbr title="required">*</abbr> Password</label>
+    <div>
+      <input name="{{ form_builder.fields.password.name }}" id="password" type="password">
+      {% if form_builder.errors.password %}
+        <p>{{ form_builder.errors.password }}</p>
+      {% endif %}
+    </div>
+  </div>
+
   {% submit 'Log In' %}
 {% endform %}
 ```
 
 {% endraw %}
 
-The Session resource is hardcoded - it has email and password fields, and that's it. This is why you do not even need to add configuration. To make the sign in available at `/sign-in`, you will want to create a page similar to:
+To make the sign in available at `/sign-in`, you will want to create a page similar to:
 
 {% raw %}
 
@@ -92,7 +110,7 @@ Then we provide a form to allow user to enter his email address `form_configurat
 
 {% raw %}
 
-```liquid
+```html
 ---
 name: recover_password
 resource: Customization
@@ -112,9 +130,16 @@ callback_actions: |-
   {% endif %}
 ---
 {% form %}
-  {% fields_for 'properties' %}
-    {% input 'email', form: 'properties' %}
-  {% endfields_for %}
+  <div>
+    <label for="email"><abbr title="required">*</abbr> Email</label>
+    <div>
+      <input name="{{ form_builder.fields.properties.email.name }}" value="{{ form_builder.fields.properties.email.value }}" id="email" type="email">
+      {% if form_builder.errors['properties.email'] %}
+        <p>{{ form_builder.errors['properties.email'] }}</p>
+      {% endif %}
+    </div>
+  </div>
+
   {% submit 'Recover Password' %}
 {% endform %}
 ```
@@ -276,7 +301,7 @@ On this page we want to embed form to actually reset password, hence we create a
 
 {% raw %}
 
-```liquid
+```html
 ---
 name: reset_password
 resource: User
@@ -299,8 +324,24 @@ authorization_policies:
 {% form %}
   <input name="token" value="{{ params.token }}" type="hidden">
   <input name="email" value="{{ form.email }}" type="hidden">
-  {% input 'password' %}
-  {% input 'password_confirmation' %}
+
+  <div>
+    <label for="password">Password</label>
+    <div>
+      <input name="{{ form_builder.fields.password.name }}" id="password" type="password">
+    </div>
+  </div>
+
+  <div>
+    <label for="password_confirmation">Password confirmation</label>
+    <div>
+      <input name="{{ form_builder.fields.password_confirmation.name }}" id="password_confirmation" type="password">
+      {% if form_builder.errors.password_confirmation %}
+        <p>{{ form_builder.errors.password_confirmation }}</p>
+      {% endif %}
+    </div>
+  </div>
+
   {% submit 'Reset Password' %}
 {% endform %}
 ```
