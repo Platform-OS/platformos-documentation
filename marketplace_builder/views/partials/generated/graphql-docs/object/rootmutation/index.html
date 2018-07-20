@@ -3,6 +3,140 @@
 <h2>
 <a id="fields" class="anchor" href="#fields" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Fields</h2>
 <div class="field-entry ">
+  <span id="activity_create" class="field-name anchored">activity_create (<code><a href="/api-reference/graphql/g/object/activity">Activity</a></code>)</span>
+  <div class="description-wrapper">
+  <p>Creates an Activity</p>
+   <table class="arguments">
+  <thead>
+  <tr>
+    <th>Argument</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td><code class="anchored">payload</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/scalar/activitypayload">ActivityPayload!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  </tbody>
+</table>
+  </div>
+</div>
+<div class="field-entry ">
+  <span id="activity_publish" class="field-name anchored">activity_publish (<code><a href="/api-reference/graphql/g/scalar/jsondate">JSONDate</a></code>)</span>
+  <div class="description-wrapper">
+  <p>add activity to feeds</p>
+   <table class="arguments">
+  <thead>
+  <tr>
+    <th>Argument</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td><code class="anchored">feed_type</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/scalar/string">String!</a></code>
+  </td>
+  <td>
+    <p>e.i. User, UserPrivate, AuditLog, Images, Posts</p>
+   </td>
+  </tr>
+  <tr>
+  <td><code class="anchored">ids</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/scalar/id">[ID]!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  <tr>
+  <td><code class="anchored">uuid</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/scalar/id">ID!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  </tbody>
+</table>
+  </div>
+</div>
+<div class="field-entry ">
+  <span id="api_call_send" class="field-name anchored">api_call_send (<code><a href="/api-reference/graphql/g/object/apicallsendpayload">ApiCallSendPayload</a></code>)</span>
+  <div class="description-wrapper">
+   <table class="arguments">
+  <thead>
+  <tr>
+    <th>Argument</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td><code class="anchored">data</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/scalar/hashobject">HashObject</a></code>
+  </td>
+  <td>
+    <p>Variables that will be accesible in liquild</p>
+   </td>
+  </tr>
+  <tr>
+  <td><code class="anchored">template</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/input_object/notificationtemplateinput">NotificationTemplateInput</a></code>
+  </td>
+  <td>
+    <p>Template defined in marketplace_builder/notifications/api_call_notifications</p>
+   </td>
+  </tr>
+  </tbody>
+</table>
+  </div>
+</div>
+<div class="field-entry ">
+  <span id="credit_card_create" class="field-name anchored">credit_card_create (<code><a href="/api-reference/graphql/g/object/creditcard">CreditCard</a></code>)</span>
+  <div class="description-wrapper">
+  <p>Creates credit card</p>
+   <table class="arguments">
+  <thead>
+  <tr>
+    <th>Argument</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td><code class="anchored">credit_card</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/input_object/creditcardinputtype">CreditCardInputType!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  <tr>
+  <td><code class="anchored">form_configuration_name</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/scalar/string">String!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  </tbody>
+</table>
+  </div>
+</div>
+<div class="field-entry ">
   <span id="credit_card_delete" class="field-name anchored">credit_card_delete (<code><a href="/api-reference/graphql/g/object/creditcard">CreditCard</a></code>)</span>
   <div class="description-wrapper">
   <p>destroys credit card</p>
@@ -60,6 +194,121 @@
   <td><code class="anchored">form_configuration_name</code></td>
   <td>
     <code><a href="/api-reference/graphql/g/scalar/string">String!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  </tbody>
+</table>
+  </div>
+</div>
+<div class="field-entry ">
+  <span id="custom_attachment_update" class="field-name anchored">custom_attachment_update (<code><a href="/api-reference/graphql/g/object/customattachment">CustomAttachment</a></code>)</span>
+  <div class="description-wrapper">
+  <p>Updates a CustomAttachment</p>
+   <table class="arguments">
+  <thead>
+  <tr>
+    <th>Argument</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td><code class="anchored">custom_attachment</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/input_object/updatecustomattachmentinputtype">UpdateCustomAttachmentInputType!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  <tr>
+  <td><code class="anchored">form_configuration_name</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/scalar/string">String!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  <tr>
+  <td><code class="anchored">id</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/scalar/id">ID!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  </tbody>
+</table>
+  </div>
+</div>
+<div class="field-entry ">
+  <span id="custom_image_create" class="field-name anchored">custom_image_create (<code><a href="/api-reference/graphql/g/object/customimage">CustomImage</a></code>)</span>
+  <div class="description-wrapper">
+  <p>Creates a CustomImage</p>
+   <table class="arguments">
+  <thead>
+  <tr>
+    <th>Argument</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td><code class="anchored">custom_image</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/input_object/newcustomimageinputtype">NewCustomImageInputType!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  <tr>
+  <td><code class="anchored">form_configuration_name</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/scalar/string">String!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  </tbody>
+</table>
+  </div>
+</div>
+<div class="field-entry ">
+  <span id="custom_image_update" class="field-name anchored">custom_image_update (<code><a href="/api-reference/graphql/g/object/customimage">CustomImage</a></code>)</span>
+  <div class="description-wrapper">
+  <p>Updates a CustomImage</p>
+   <table class="arguments">
+  <thead>
+  <tr>
+    <th>Argument</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td><code class="anchored">custom_image</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/input_object/customimageinputtype">CustomImageInputType!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  <tr>
+  <td><code class="anchored">form_configuration_name</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/scalar/string">String!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  <tr>
+  <td><code class="anchored">id</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/scalar/id">ID!</a></code>
   </td>
   <td>
    </td>
@@ -176,6 +425,66 @@
   </div>
 </div>
 <div class="field-entry ">
+  <span id="customizations_delete_all" class="field-name anchored">customizations_delete_all (<code><a href="/api-reference/graphql/g/object/user">User</a></code>)</span>
+  <div class="description-wrapper">
+  <p>Remove all customizations</p>
+   <table class="arguments">
+  <thead>
+  <tr>
+    <th>Argument</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td><code class="anchored">custom_model_type_name</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/scalar/string">String</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  </tbody>
+</table>
+  </div>
+</div>
+<div class="field-entry ">
+  <span id="email_send" class="field-name anchored">email_send (<code><a href="/api-reference/graphql/g/object/notificationsendemailpayload">NotificationSendEmailPayload</a></code>)</span>
+  <div class="description-wrapper">
+  <p>Email will be queued to sending</p>
+   <table class="arguments">
+  <thead>
+  <tr>
+    <th>Argument</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td><code class="anchored">data</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/scalar/hashobject">HashObject</a></code>
+  </td>
+  <td>
+    <p>Variables that will be accesible in liquild</p>
+   </td>
+  </tr>
+  <tr>
+  <td><code class="anchored">template</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/input_object/notificationtemplateinput">NotificationTemplateInput</a></code>
+  </td>
+  <td>
+    <p>Template defined in marketplace_builder/notifications/email_notifications</p>
+   </td>
+  </tr>
+  </tbody>
+</table>
+  </div>
+</div>
+<div class="field-entry ">
   <span id="log" class="field-name anchored">log (<code><a href="/api-reference/graphql/g/object/logentry">LogEntry</a></code>)</span>
   <div class="description-wrapper">
   <p>Creates a MarketplaceLogEntryMutation</p>
@@ -191,7 +500,7 @@
   <tr>
   <td><code class="anchored">message</code></td>
   <td>
-    <code><a href="/api-reference/graphql/g/scalar/string">String!</a></code>
+    <code><a href="/api-reference/graphql/g/scalar/any">Any!</a></code>
   </td>
   <td>
    </td>
@@ -357,9 +666,9 @@
   </div>
 </div>
 <div class="field-entry ">
-  <span id="payment_create" class="field-name anchored">payment_create (<code><a href="/api-reference/graphql/g/object/payment">Payment</a></code>)</span>
+  <span id="payment_create" class="field-name anchored">payment_create (<code><a href="/api-reference/graphql/g/object/paymentmutationresult">PaymentMutationResult</a></code>)</span>
   <div class="description-wrapper">
-  <p>Creates payment based on payment subscription</p>
+  <p>Creates payment</p>
    <table class="arguments">
   <thead>
   <tr>
@@ -380,15 +689,7 @@
   <tr>
   <td><code class="anchored">payment</code></td>
   <td>
-    <code><a href="/api-reference/graphql/g/input_object/paymentinputtype">PaymentInputType</a></code>
-  </td>
-  <td>
-   </td>
-  </tr>
-  <tr>
-  <td><code class="anchored">payment_subscription_id</code></td>
-  <td>
-    <code><a href="/api-reference/graphql/g/scalar/id">ID!</a></code>
+    <code><a href="/api-reference/graphql/g/input_object/paymentinputtype">PaymentInputType!</a></code>
   </td>
   <td>
    </td>
@@ -431,9 +732,9 @@
   </div>
 </div>
 <div class="field-entry ">
-  <span id="payment_update" class="field-name anchored">payment_update (<code><a href="/api-reference/graphql/g/object/payment">Payment</a></code>)</span>
+  <span id="payment_refund" class="field-name anchored">payment_refund (<code><a href="/api-reference/graphql/g/object/paymentmutationresult">PaymentMutationResult</a></code>)</span>
   <div class="description-wrapper">
-  <p>Updates payment based on payment subscription</p>
+  <p>Refunds payment</p>
    <table class="arguments">
   <thead>
   <tr>
@@ -462,7 +763,460 @@
   <tr>
   <td><code class="anchored">payment</code></td>
   <td>
-    <code><a href="/api-reference/graphql/g/input_object/paymentinputtype">PaymentInputType</a></code>
+    <code><a href="/api-reference/graphql/g/input_object/refundpaymentinputtype">RefundPaymentInputType!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  </tbody>
+</table>
+  </div>
+</div>
+<div class="field-entry ">
+  <span id="payment_transfer_create" class="field-name anchored">payment_transfer_create (<code><a href="/api-reference/graphql/g/object/paymenttransfermutationresult">PaymentTransferMutationResult</a></code>)</span>
+  <div class="description-wrapper">
+  <p>Creates payment transfer for payment</p>
+   <table class="arguments">
+  <thead>
+  <tr>
+    <th>Argument</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td><code class="anchored">form_configuration_name</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/scalar/string">String!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  <tr>
+  <td><code class="anchored">payment_transfer</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/input_object/paymenttransferinputtype">PaymentTransferInputType!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  </tbody>
+</table>
+  </div>
+</div>
+<div class="field-entry ">
+  <span id="payment_transfer_payout" class="field-name anchored">payment_transfer_payout (<code><a href="/api-reference/graphql/g/object/paymenttransfermutationresult">PaymentTransferMutationResult</a></code>)</span>
+  <div class="description-wrapper">
+  <p>Payout transfer to external bank account</p>
+   <table class="arguments">
+  <thead>
+  <tr>
+    <th>Argument</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td><code class="anchored">form_configuration_name</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/scalar/string">String!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  <tr>
+  <td><code class="anchored">id</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/scalar/id">ID!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  </tbody>
+</table>
+  </div>
+</div>
+<div class="field-entry ">
+  <span id="payment_transfer_process" class="field-name anchored">payment_transfer_process (<code><a href="/api-reference/graphql/g/object/paymenttransfermutationresult">PaymentTransferMutationResult</a></code>)</span>
+  <div class="description-wrapper">
+  <p>Process payment transfer in payment gateway</p>
+   <table class="arguments">
+  <thead>
+  <tr>
+    <th>Argument</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td><code class="anchored">form_configuration_name</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/scalar/string">String!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  <tr>
+  <td><code class="anchored">id</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/scalar/id">ID!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  </tbody>
+</table>
+  </div>
+</div>
+<div class="field-entry ">
+  <span id="payment_transfer_update" class="field-name anchored">payment_transfer_update (<code><a href="/api-reference/graphql/g/object/paymenttransfermutationresult">PaymentTransferMutationResult</a></code>)</span>
+  <div class="description-wrapper">
+  <p>Updates payment transfer</p>
+   <table class="arguments">
+  <thead>
+  <tr>
+    <th>Argument</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td><code class="anchored">form_configuration_name</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/scalar/string">String!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  <tr>
+  <td><code class="anchored">id</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/scalar/id">ID!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  <tr>
+  <td><code class="anchored">payment_transfer</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/input_object/paymenttransferinputtype">PaymentTransferInputType!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  </tbody>
+</table>
+  </div>
+</div>
+<div class="field-entry ">
+  <span id="payment_update" class="field-name anchored">payment_update (<code><a href="/api-reference/graphql/g/object/payment">Payment</a></code>)</span>
+  <div class="description-wrapper">
+  <p>Updates payment</p>
+   <table class="arguments">
+  <thead>
+  <tr>
+    <th>Argument</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td><code class="anchored">form_configuration_name</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/scalar/string">String!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  <tr>
+  <td><code class="anchored">id</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/scalar/id">ID!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  <tr>
+  <td><code class="anchored">payment</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/input_object/updatepaymentinputtype">UpdatePaymentInputType</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  </tbody>
+</table>
+  </div>
+</div>
+<div class="field-entry ">
+  <span id="relationship_create" class="field-name anchored">relationship_create (<code><a href="/api-reference/graphql/g/object/relationship">Relationship</a></code>)</span>
+  <div class="description-wrapper">
+  <p>Creates an relationship</p>
+   <table class="arguments">
+  <thead>
+  <tr>
+    <th>Argument</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td><code class="anchored">form_configuration_name</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/scalar/string">String!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  <tr>
+  <td><code class="anchored">relationship</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/input_object/relationshipinputtype">RelationshipInputType!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  </tbody>
+</table>
+  </div>
+</div>
+<div class="field-entry ">
+  <span id="relationship_delete" class="field-name anchored">relationship_delete (<code><a href="/api-reference/graphql/g/object/relationship">Relationship</a></code>)</span>
+  <div class="description-wrapper">
+  <p>Deletes a relationship</p>
+   <table class="arguments">
+  <thead>
+  <tr>
+    <th>Argument</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td><code class="anchored">form_configuration_name</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/scalar/string">String!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  <tr>
+  <td><code class="anchored">id</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/scalar/id">ID!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  </tbody>
+</table>
+  </div>
+</div>
+<div class="field-entry ">
+  <span id="relationship_update" class="field-name anchored">relationship_update (<code><a href="/api-reference/graphql/g/object/relationship">Relationship</a></code>)</span>
+  <div class="description-wrapper">
+  <p>Updates an relationship</p>
+   <table class="arguments">
+  <thead>
+  <tr>
+    <th>Argument</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td><code class="anchored">form_configuration_name</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/scalar/string">String!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  <tr>
+  <td><code class="anchored">id</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/scalar/id">ID!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  <tr>
+  <td><code class="anchored">relationship</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/input_object/relationshipinputtype">RelationshipInputType!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  </tbody>
+</table>
+  </div>
+</div>
+<div class="field-entry ">
+  <span id="relationship_user_create" class="field-name anchored">relationship_user_create (<code><a href="/api-reference/graphql/g/object/relationshipuser">RelationshipUser</a></code>)</span>
+  <div class="description-wrapper">
+  <p>Creates an relationship</p>
+   <table class="arguments">
+  <thead>
+  <tr>
+    <th>Argument</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td><code class="anchored">form_configuration_name</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/scalar/string">String!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  <tr>
+  <td><code class="anchored">relationship_user</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/input_object/relationshipuserinputtype">RelationshipUserInputType!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  </tbody>
+</table>
+  </div>
+</div>
+<div class="field-entry ">
+  <span id="relationship_user_delete" class="field-name anchored">relationship_user_delete (<code><a href="/api-reference/graphql/g/object/relationshipuser">RelationshipUser</a></code>)</span>
+  <div class="description-wrapper">
+  <p>Deletes a relationship</p>
+   <table class="arguments">
+  <thead>
+  <tr>
+    <th>Argument</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td><code class="anchored">form_configuration_name</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/scalar/string">String!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  <tr>
+  <td><code class="anchored">id</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/scalar/id">ID!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  </tbody>
+</table>
+  </div>
+</div>
+<div class="field-entry ">
+  <span id="relationship_user_update" class="field-name anchored">relationship_user_update (<code><a href="/api-reference/graphql/g/object/relationshipuser">RelationshipUser</a></code>)</span>
+  <div class="description-wrapper">
+  <p>Updates an relationship</p>
+   <table class="arguments">
+  <thead>
+  <tr>
+    <th>Argument</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td><code class="anchored">form_configuration_name</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/scalar/string">String!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  <tr>
+  <td><code class="anchored">id</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/scalar/id">ID!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  <tr>
+  <td><code class="anchored">relationship_user</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/input_object/relationshipuserinputtype">RelationshipUserInputType!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  </tbody>
+</table>
+  </div>
+</div>
+<div class="field-entry ">
+  <span id="session_create_field" class="field-name anchored">session_create_field (<code><a href="/api-reference/graphql/g/scalar/hashobject">HashObject</a></code>)</span>
+  <div class="description-wrapper">
+  <p>Adds a field to session</p>
+   <table class="arguments">
+  <thead>
+  <tr>
+    <th>Argument</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td><code class="anchored">name</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/scalar/string">String!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  <tr>
+  <td><code class="anchored">value</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/scalar/any">Any!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  </tbody>
+</table>
+  </div>
+</div>
+<div class="field-entry ">
+  <span id="session_delete_field" class="field-name anchored">session_delete_field (<code><a href="/api-reference/graphql/g/scalar/hashobject">HashObject</a></code>)</span>
+  <div class="description-wrapper">
+  <p>Adds a field to session</p>
+   <table class="arguments">
+  <thead>
+  <tr>
+    <th>Argument</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td><code class="anchored">name</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/scalar/string">String!</a></code>
   </td>
   <td>
    </td>
@@ -551,6 +1305,14 @@
   </thead>
   <tbody>
   <tr>
+  <td><code class="anchored">form_configuration_name</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/scalar/string">String!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  <tr>
   <td><code class="anchored">id</code></td>
   <td>
     <code><a href="/api-reference/graphql/g/scalar/id">ID!</a></code>
@@ -595,6 +1357,163 @@
   <td><code class="anchored">transactable</code></td>
   <td>
     <code><a href="/api-reference/graphql/g/input_object/transactableinputtype">TransactableInputType!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  </tbody>
+</table>
+  </div>
+</div>
+<div class="field-entry ">
+  <span id="transactables_delete_all" class="field-name anchored">transactables_delete_all (<code><a href="/api-reference/graphql/g/object/user">User</a></code>)</span>
+  <div class="description-wrapper">
+  <p>Remove all transactables</p>
+   <table class="arguments">
+  <thead>
+  <tr>
+    <th>Argument</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td><code class="anchored">transactable_type_name</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/scalar/string">String</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  </tbody>
+</table>
+  </div>
+</div>
+<div class="field-entry ">
+  <span id="user_message_create" class="field-name anchored">user_message_create (<code><a href="/api-reference/graphql/g/object/message">Message</a></code>)</span>
+  <div class="description-wrapper">
+  <p>Updates user message</p>
+   <table class="arguments">
+  <thead>
+  <tr>
+    <th>Argument</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td><code class="anchored">form_configuration_name</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/scalar/string">String!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  <tr>
+  <td><code class="anchored">user_message</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/input_object/usermessageinputtype">UserMessageInputType</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  </tbody>
+</table>
+  </div>
+</div>
+<div class="field-entry ">
+  <span id="user_message_delete" class="field-name anchored">user_message_delete (<code><a href="/api-reference/graphql/g/object/message">Message</a></code>)</span>
+  <div class="description-wrapper">
+  <p>Deletes user message</p>
+   <table class="arguments">
+  <thead>
+  <tr>
+    <th>Argument</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td><code class="anchored">form_configuration_name</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/scalar/string">String!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  <tr>
+  <td><code class="anchored">id</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/scalar/id">ID!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  </tbody>
+</table>
+  </div>
+</div>
+<div class="field-entry ">
+  <span id="user_message_update" class="field-name anchored">user_message_update (<code><a href="/api-reference/graphql/g/object/message">Message</a></code>)</span>
+  <div class="description-wrapper">
+  <p>Updates user message</p>
+   <table class="arguments">
+  <thead>
+  <tr>
+    <th>Argument</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td><code class="anchored">form_configuration_name</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/scalar/string">String!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  <tr>
+  <td><code class="anchored">id</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/scalar/id">ID!</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  <tr>
+  <td><code class="anchored">user_message</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/input_object/usermessageinputtype">UserMessageInputType</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  </tbody>
+</table>
+  </div>
+</div>
+<div class="field-entry ">
+  <span id="user_profile_delete_all" class="field-name anchored">user_profile_delete_all (<code><a href="/api-reference/graphql/g/object/user">User</a></code>)</span>
+  <div class="description-wrapper">
+  <p>Remove all user profiles</p>
+   <table class="arguments">
+  <thead>
+  <tr>
+    <th>Argument</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td><code class="anchored">user_profile_type_name</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/scalar/string">String</a></code>
   </td>
   <td>
    </td>
@@ -654,7 +1573,7 @@
   </div>
 </div>
 <div class="field-entry ">
-  <span id="user_session_destroy" class="field-name anchored">user_session_destroy (<code><a href="/api-reference/graphql/g/object/session">Session</a></code>)</span>
+  <span id="user_session_destroy" class="field-name anchored">user_session_destroy (<code><a href="/api-reference/graphql/g/scalar/hashobject">HashObject</a></code>)</span>
   <div class="description-wrapper">
   <p>Sign Out User</p>
    <table class="arguments">

@@ -1,6 +1,11 @@
 <h1>
 <a id="userlisting" class="anchor" href="#userlisting" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>UserListing</h1>
 <h2>
+<a id="implements" class="anchor" href="#implements" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Implements</h2>
+<ul>
+   <li><code><a href="/api-reference/graphql/g/interface/listingsmetadata">ListingsMetadata</a></code></li>
+</ul>
+<h2>
 <a id="fields" class="anchor" href="#fields" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Fields</h2>
 <div class="field-entry ">
   <span id="authentications" class="field-name anchored">authentications (<code><a href="/api-reference/graphql/g/object/authentication">[Authentication]</a></code>)</span>
@@ -8,7 +13,7 @@
   </div>
 </div>
 <div class="field-entry ">
-  <span id="avatar" class="field-name anchored">avatar (<code><a href="/api-reference/graphql/g/object/esimage">EsImage</a></code>)</span>
+  <span id="avatar" class="field-name anchored">avatar (<code><a href="/api-reference/graphql/g/object/listingimage">ListingImage</a></code>)</span>
   <div class="description-wrapper">
   </div>
 </div>
@@ -23,6 +28,11 @@
   </div>
 </div>
 <div class="field-entry ">
+  <span id="communication" class="field-name anchored">communication (<code><a href="/api-reference/graphql/g/object/listingscommunication">ListingsCommunication</a></code>)</span>
+  <div class="description-wrapper">
+  </div>
+</div>
+<div class="field-entry ">
   <span id="counters" class="field-name anchored">counters (<code><a href="/api-reference/graphql/g/object/usercounters">UserCounters</a></code>)</span>
   <div class="description-wrapper">
   </div>
@@ -33,12 +43,12 @@
   </div>
 </div>
 <div class="field-entry ">
-  <span id="current_address" class="field-name anchored">current_address (<code><a href="/api-reference/graphql/g/object/address">Address</a></code>)</span>
+  <span id="current_address" class="field-name anchored">current_address (<code><a href="/api-reference/graphql/g/object/listingaddress">ListingAddress</a></code>)</span>
   <div class="description-wrapper">
   </div>
 </div>
 <div class="field-entry ">
-  <span id="customizations" class="field-name anchored">customizations (<code><a href="/api-reference/graphql/g/object/customization">[Customization]</a></code>)</span>
+  <span id="customizations" class="field-name anchored">customizations (<code><a href="/api-reference/graphql/g/object/listingscustomization">[ListingsCustomization]</a></code>)</span>
   <div class="description-wrapper">
    <table class="arguments">
   <thead>
@@ -58,12 +68,19 @@
    </td>
   </tr>
   <tr>
+  <td><code class="anchored">properties</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/input_object/querycustomattribute">[QueryCustomAttribute]</a></code>
+  </td>
+  <td>
+   </td>
+  </tr>
+  <tr>
   <td><code class="anchored">user_id</code></td>
   <td>
     <code><a href="/api-reference/graphql/g/scalar/id">ID</a></code>
   </td>
   <td>
-    <p>ID of user that created customization</p>
    </td>
   </tr>
   </tbody>
@@ -126,7 +143,7 @@
   </div>
 </div>
 <div class="field-entry ">
-  <span id="profile" class="field-name anchored">profile (<code><a href="/api-reference/graphql/g/object/profile">Profile</a></code>)</span>
+  <span id="profile" class="field-name anchored">profile (<code><a href="/api-reference/graphql/g/object/listinguserprofile">ListingUserProfile</a></code>)</span>
   <div class="description-wrapper">
    <table class="arguments">
   <thead>
@@ -169,8 +186,39 @@
   </div>
 </div>
 <div class="field-entry ">
+  <span id="sort_score" class="field-name anchored">sort_score (<code><a href="/api-reference/graphql/g/scalar/int">[Int]</a></code>)</span>
+  <div class="description-wrapper">
+  <p>when sorting by distance - field contains distance to target location</p>
+  </div>
+</div>
+<div class="field-entry ">
   <span id="tag_list" class="field-name anchored">tag_list (<code><a href="/api-reference/graphql/g/object/tag">[Tag]</a></code>)</span>
   <div class="description-wrapper">
+  </div>
+</div>
+<div class="field-entry ">
+  <span id="temporary_token" class="field-name anchored">temporary_token (<code><a href="/api-reference/graphql/g/scalar/string">String</a></code>)</span>
+  <div class="description-wrapper">
+   <table class="arguments">
+  <thead>
+  <tr>
+    <th>Argument</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td><code class="anchored">valid_for</code></td>
+  <td>
+    <code><a href="/api-reference/graphql/g/scalar/int">Int</a></code>
+  </td>
+  <td>
+    <p>Number of hours before the token expires</p>
+   </td>
+  </tr>
+  </tbody>
+</table>
   </div>
 </div>
 <div class="field-entry ">
