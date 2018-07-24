@@ -45,7 +45,7 @@ As a first step, create a Custom Attribute in the user profile. In this example,
 ### Step 2: Add GraphQL mutation
 Add GraphQL mutation:
 
-## graph_queries/store_third_party_api_id.graphql
+#### graph_queries/store_third_party_api_id.graphql
 
 <pre><code class="language-graphql">
 mutation store_third_party_api_id($user_id: ID!, $third_party_api_id: String!) {
@@ -66,7 +66,7 @@ mutation store_third_party_api_id($user_id: ID!, $third_party_api_id: String!) {
 ### Step 3: Create Form Configuration
 The mutation you created provides input for the Form Configuration called `callback_third_party_api_id`, so create this Form Configuration:
 
-### form_configurations/callback_third_party_api_id.liquid
+#### form_configurations/callback_third_party_api_id.liquid
 
 <pre><code class="language-yaml">
 ---
@@ -83,18 +83,19 @@ configuration:
 ### Step 4: Extend API call notification with callback
 Extend the API call notification by adding the proper callback, which executes the mutation with the input received form the third party API:
 
-{% raw %}
+
+#### notifications/api_call_notifications/ping_example_com_on_user_sign_up.liquid
 
 <pre><code class="language-liquid">
-## notifications/api_call_notifications/ping_example_com_on_user_sign_up.liquid
+{% raw %}
 ---
 name: ping_example_com_on_user_sign_up
 to: 'https://example.com/endpoint/{{ form.id }}'
 callback: "{%- assign response_json = response.body | to_hash -%}{% execute_query 'persist_custom_attribute', id: form.id, third_party_api_id: response_json.third_party_api_id %}"
 ---
+{% endraw %}
 </code></pre>
 
-{% endraw %}
 
 ## Next steps
 

@@ -1,13 +1,13 @@
 <!doctype html>
 <html lang="en">
   {% include 'layouts/head' %}
-  <body>
+  <body class="{{ context.page.metadata.body_css_class}}">
     {% include 'layouts/header' %}
 
     <main class="main">
       <div class="container">
         <div class="row">
-          {% if page.metadata.hide_sidebar != true %}
+          {% if context.page.metadata.hide_sidebar != true %}
             <aside class="sidebar col-12 col-md-4">
               {% include 'layouts/sidebar' %}
             </aside>

@@ -32,4 +32,5 @@ if ($("[class^=language]").length > 0) {
   );
   import(/* webpackChunkName: "prism" */ "prismjs/plugins/line-numbers/prism-line-numbers");
   import(/* webpackChunkName: "prism" */ "prismjs/plugins/normalize-whitespace/prism-normalize-whitespace");
+  import(/* webpackChunkName: "prism" */ "prismjs/plugins/command-line/prism-command-line");
 }

@@ -25,9 +25,7 @@ Associating an Authorization Policy with Form Configuration is a two-step proces
 ### Step 1: Create Form Configuration
 Assuming you have a simple form that allows to change the user's last name, the configuration file can look like this:
 
-{% raw %}
-
-<pre><code class="language-liquid">
+<pre><code class="language-yaml">
 ---
 name: update_last_name
 resource: User
@@ -39,14 +37,10 @@ configuration:
 ...
 </code></pre>
 
-{% endraw %}
-
 ### Step 2: Add `authorization_policies` key to Form Configuration
 In order to associate the Authorization Policy with the form, add a new `authorization_policies` key, and then specify the array of policy names associated with this form.
 
 To ensure that only Johns will be able to submit this form, update the configuration to include the policy:
-
-{% raw %}
 
 <pre><code class="language-yaml">
 ---
@@ -56,8 +50,6 @@ authorization_policies:
   - only_allowed_by_johns
 ...
 </code></pre>
-
-{% endraw %}
 
 ## Next steps
 Congratulations! You know how to associate an Authorization Policy with Form Configuration. Now you can learn about associating an Authorization Policy with a page.

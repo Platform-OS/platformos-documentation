@@ -29,9 +29,8 @@ Creating an SMS notification is a three-step process:
 
 As you haven't collected the mobile phone number in the sign up form yet, as a first step, extend the sign up form `form_configurations/developer/sign_up.liquid`:
 
-{% raw %}
 
-<pre><code class="language-liquid">
+<pre><code class="language-yaml">
 ---
 configuration:
   mobile_number:
@@ -39,18 +38,22 @@ configuration:
       presence: true
       phone_number: true
 ---
+</code>
+<br>
+<code class="language-liquid">
+{% raw %}
+<div>
+  <label for="mobile_number"><abbr title="required">*</abbr> Mobile number</label>
   <div>
-    <label for="mobile_number"><abbr title="required">*</abbr> Mobile number</label>
-    <div>
-      <input placeholder="Please include country code" name="{{ form_builder.fields.mobile_number.name }}" value="{{ form_builder.fields.mobile_number.value }}" id="mobile_number" type="text">
-      {% if form_builder.errors.mobile_number %}
-        <p>{{ form_builder.errors.mobile_number }}</p>
-      {% endif %}
-    </div>
+    <input placeholder="Please include country code" name="{{ form_builder.fields.mobile_number.name }}" value="{{ form_builder.fields.mobile_number.value }}" id="mobile_number" type="text">
+    {% if form_builder.errors.mobile_number %}
+      <p>{{ form_builder.errors.mobile_number }}</p>
+    {% endif %}
   </div>
+</div>
+{% endraw %}
 </code></pre>
 
-{% endraw %}
 
 On the production site, you have to take into consideration that users might not know their country code, or what a country code is. For simplicity in this example though, assume that the user provides correct input.
 
@@ -79,7 +82,7 @@ Add the SMS notification you created to the sign up form:
 
 {% raw %}
 
-<pre><code class="language-liquid">
+<pre><code class="language-yaml">
 ---
 sms_notifications:
   - welcome_user
