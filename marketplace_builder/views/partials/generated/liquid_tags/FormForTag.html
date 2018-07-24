@@ -2,26 +2,35 @@
   {% raw %}
     <div class="docstring">
   <div class="discussion">
-    <p>Usage example:</p>
+    <h2>form</h2>
 
-<pre class="code ruby"><code class="ruby"> {% form %}
-   {% input first_name, hint: &#39;this is a hint&#39;, label: &#39;this is a label&#39;, required: false  %}
-   {% input last_name, required: false  %}
+<p>Used to generate a html form element for an resource. Use within <code>form configuration</code>.
+Inside the tag you can use <code>form_builder</code> variable.</p>
 
-   {% input avatar %}
-   {% submit Save  %}
+<p>Arguments:</p>
 
- {% endform_for %}
-</code></pre>
-
-<p>Used to generate a form for an object (in the example above, a user). Inside the tag, the object
-is available as &quot;form_object&quot;.</p>
+<ul>
+<li><strong>html-id</strong> [String] set id attribute in <code>&lt;form id=&quot;&quot;&gt;</code> element</li>
+<li><strong>html-novalidate</strong> [String] add <code>novalidate</code> attribute to <code>&lt;form novalidate&gt;</code> element</li>
+<li><strong>html-class</strong> [String] add css class <code>&lt;form class=&quot;&quot;&gt;</code> element</li>
+<li><strong>html-multipart</strong> [Boolean] add <code>enctype=&quot;multipart/form-data&quot;</code> attribute to <code>&lt;form enctype=&quot;multipart/form-data&quot;&gt;</code> element</li>
+</ul>
 
 
   </div>
 </div>
 <div class="tags">
   
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>{% form %}
+  {{ form_builder }}
+{% endform %}</code></pre>
+    
+  </div>
+
 
 </div>
   {% endraw %}
