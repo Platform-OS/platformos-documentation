@@ -33,7 +33,7 @@ Create the following TransactableType:
 
 <pre><code class="language-yaml">
 name: Flowers
-</pre></code>
+</code></pre>
 
 ### Step 2: Create FormConfiguration
 
@@ -41,7 +41,8 @@ Define what data you expect, and required validations:
 
 #### form_configurations/import_flowers.liquid
 
-<pre><code class="language-yaml">---
+<pre><code class="language-yaml">
+---
 name: import_flowers
 resource: Transactable
 configuration:
@@ -50,7 +51,8 @@ configuration:
       presence: true
   creator_id:
 resource_owner: anyone
----</pre></code>
+---
+</code></pre>
 
 ### Step 3: Generate API token
 
@@ -68,7 +70,7 @@ curl https://example.platform-os.com/api/user/transactables
   -H "Authorization: Token token=1dfa2c5df68a82285bc55159982bdd15"
   -H 'Content-Type: application/json'
   --data '{"form":{"name": "Red flowers", "creator_id":"1" }, "form_configuration_name": "import_flowers", "parent_object_class":"TransactableType","parent_object_id":"flowers"}'
-</pre></code>
+</code></pre>
 
 {% include 'shared/questions_section' %}
 
