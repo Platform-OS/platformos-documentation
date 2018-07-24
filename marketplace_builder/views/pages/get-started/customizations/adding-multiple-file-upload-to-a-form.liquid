@@ -9,10 +9,10 @@ searchable: true
 
 This guide will help you build a form that will allow your users to upload multiple files into one Customization. For example, you might want to allow the user to upload all certificates required for a job or images of a car from the inside and outside.
 
-In this example, the user uploads multiple files for a bug report, and the files will be attached to a profile named `developer`. 
+In this example, the user uploads multiple files for a bug report, and the files will be attached to a profile named `developer`.
 
 ## Requirements
-To follow this tutorial, you should know how to create a user profile and embed a sign up form in a page. You should also have basic knowledge of Form Configurations and Javascript (ES2015). 
+To follow this tutorial, you should know how to create a user profile and embed a sign up form in a page. You should also have basic knowledge of Form Configurations and Javascript (ES2015).
 
 * [Creating User Profiles](/get-started/users/creating-user-profile)
 * [Embedding a Sign Up Form in a Page](/get-started/users/embedding-sign-up-form)
@@ -30,7 +30,7 @@ Adding the possibility to upload multiple files into a Customization is a four-s
 
 ### Step 1: Define Custom Model Type
 
-Define custom model with one Custom Attribute named `bug_report` and type `file` to be able to use it in your form. 
+Define custom model with one Custom Attribute named `bug_report` and type `file` to be able to use it in your form.
 
 #### marketplace_builder/custom_model_types/application_files.yml
 
@@ -43,7 +43,7 @@ custom_attributes:
     attribute_type: file
 </code></pre>
 
-### Step 2: Create Form Configuration 
+### Step 2: Create Form Configuration
 
 #### marketplace_builder/form_configurations/upload_application.liquid
 
@@ -120,7 +120,7 @@ slug: upload_application
 {% raw %}
 <div class="row">
   <div class="col-6">
-    {% render_form 'upload_application', resource_id: @context.current_user.id %}
+    {% include_form 'upload_application', resource_id: context.current_user.id %}
   </div>
 </div>
 {% endraw %}

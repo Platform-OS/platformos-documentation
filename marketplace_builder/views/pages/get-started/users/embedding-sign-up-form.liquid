@@ -30,7 +30,7 @@ Create a new page in the  `marketplace_builder/views/pages/developer` directory 
 
 ### Step 2: Embed form
 
-Add `{% raw %}{% render_form 'developer_sign_up' %}{% endraw %}` to embed the previously created sign up forms into the sign up pages.
+Add `{% raw %}{% include_form 'developer_sign_up' %}{% endraw %}` to embed the previously created sign up forms into the sign up pages.
 
 #### views/pages/developer/sign-up.liquid:
 
@@ -42,7 +42,7 @@ slug: developer/sign-up
 ---
 <h1>Create a Developer Account</h1>
 
-{% render_form 'developer_sign_up' %}
+{% include_form 'developer_sign_up' %}
 {% endraw %}
 </code></pre>
 
@@ -58,7 +58,7 @@ slug: client/sign-up
 ---
 <h1>Create a Client Account</h1>
 
-{% render_form 'client_sign_up' %}
+{% include_form 'client_sign_up' %}
 {% endraw %}
 </code></pre>
 
@@ -72,6 +72,3 @@ Congratulations! You know how to embed a sign up form in a page. Now you can lea
 * [Singing In a User Manually](/get-started/users/signing-in-user-manually)
 
 {% include 'shared/questions_section' %}
-
-
-
