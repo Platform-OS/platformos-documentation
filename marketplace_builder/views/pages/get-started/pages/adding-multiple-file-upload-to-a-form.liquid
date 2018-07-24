@@ -2,38 +2,35 @@
 converter: markdown
 metadata:
   title: Adding Multiple File Uploads to a Form
-  description: This guide explains how to upload multiple files using customization.
-slug: get-started/pages/adding-multiple-file-upload-to-a-form
+  description: This guide explains how to upload multiple files using Customization.
+slug: get-started/get-started/customizations/adding-multiple-file-uploads-form
 searchable: true
 ---
 
-This guide will help you build a form that will allow your users to upload multiple files into one customization.
-You might want to allow user to upload all certificates required for a job or images of a car from inside and outside.
+This guide will help you build a form that will allow your users to upload multiple files into one Customization. For example, you might want to allow the user to upload all certificates required for a job or images of a car from the inside and outside.
 
-In this example user will upload multiple files for a bug report. Those files will be attached to a profile named `developer`.
+In this example, the user uploads multiple files for a bug report, and the files will be attached to a profile named `developer`. 
 
 ## Requirements
+To follow this tutorial, you should know how to create a user profile and embed a sign up form in a page. You should also have basic knowledge of Form Configurations and Javascript (ES2015). 
 
-[Creating User Profiles](/get-started/users/creating-user-profile)
-[Embedding a Sign Up Form in a Page](/get-started/users/embedding-sign-up-form)
-
-### Basic knowledge of
-
-* Form configuration
+* [Creating User Profiles](/get-started/users/creating-user-profile)
+* [Embedding a Sign Up Form in a Page](/get-started/users/embedding-sign-up-form)
+* [Form Configurations](/reference/form-configurations/form-configurations)
 * Javascript (ES2015)
 
 ## Steps
 
-Adding possibility to upload multiple files into a customization is a four-step process:
+Adding the possibility to upload multiple files into a Customization is a four-step process:
 
-1. Define custom model type
-2. Create form configuration
-3. Render it on a page
+1. Define Custom Model Type
+2. Create Form Configuration
+3. Render form on a page
 4. Add javascript that will handle adding more than one file and remove files
 
 ### Step 1: Define Custom Model Type
 
-Define custom model with one custom attribute named `bug_report` and type `file`.
+Define custom model with one Custom Attribute named `bug_report` and type `file` to be able to use it in your form. 
 
 #### marketplace_builder/custom_model_types/application_files.yml
 
@@ -46,11 +43,7 @@ custom_attributes:
     attribute_type: file
 </code></pre>
 
-After that step we can use use it in our form.
-
-### Step 2: Create form configuration and render it on a page
-
-Create form configuration.
+### Step 2: Create Form Configuration 
 
 #### marketplace_builder/form_configurations/upload_application.liquid
 
@@ -135,15 +128,15 @@ slug: upload_application
 
 #### Notes:
 
-* MultipleFilesUpload file is responsible for adding new rows, removing rows and updating labels
-* Couple lines of CSS are helping to keep things more UX friendly
+* MultipleFilesUpload file is responsible for adding new rows, removing rows, and updating labels
+* Couple lines of CSS help to keep things more user friendly
 
 ### Step 4: Add javascript that will handle adding more than one file and remove files
 
 Javascript is needed to:
 
-1. Dynamically add rows when user decides to add more than one file
-2. Remove visually row when user wants to delete file
+1. Dynamically add rows when the user decides to add more than one file
+2. Remove row visually when the user wants to delete a file
 3. Update value of hidden input responsible for removing files
 4. Update label after file has been selected
 
@@ -212,8 +205,8 @@ initialize();
 
 Congratulations! Your users can now upload multiple files when submitting the form.
 
-You can play with [this example](https://nearme-example.staging-oregon.near-me.com/upload-application) online and take look at [source code](https://github.com/mdyd-dev/marketplace-nearme-example) at github.
+You can play with [this example](https://nearme-example.staging-oregon.near-me.com/upload-application) online and take look at [source code](https://github.com/mdyd-dev/marketplace-nearme-example) at GitHub.
 
-* [Uploading files directly to AWS S3 bucket](/how-to/assets/uploading-assets-directly-amazons3)
+* [Uploading Assets Directly to Amazon S3](/how-to/assets/uploading-assets-directly-amazons3)
 
 {% include 'shared/questions_section' %}
