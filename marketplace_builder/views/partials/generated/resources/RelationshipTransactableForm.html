@@ -1,6 +1,6 @@
 <div><!--
 <h1>
-  Class: CustomImageForm
+  Class: RelationshipTransactableForm
   
   
   
@@ -19,16 +19,15 @@
     </thead>
     <tbody>
       
-        
-<tr>
+        <tr>
   <td>
-    custom_attribute_id
+    custom_attachments
   </td>
   <td>
-    Integer
+    CustomAttachmentsForm
   </td>
   <td>
-    numeric identifier for custom attribute
+    associated custom attachments
   </td>
   <td>
     Optional
@@ -40,8 +39,27 @@
 </tr>
 
       
-        
-<tr>
+        <tr>
+  <td>
+    custom_images
+  </td>
+  <td>
+    CustomImagesForm
+  </td>
+  <td>
+    associated custom images
+  </td>
+  <td>
+    Optional
+  </td>
+  <td>
+    
+    
+  </td>
+</tr>
+
+      
+        <tr>
   <td>
     id
   </td>
@@ -49,49 +67,7 @@
     Integer
   </td>
   <td>
-    numeric identifier for the custom image
-  </td>
-  <td>
-    Optional
-  </td>
-  <td>
-    Readonly
     
-  </td>
-</tr>
-
-      
-        
-<tr>
-  <td>
-    image
-  </td>
-  <td>
-    File
-  </td>
-  <td>
-    image object associated with the custom image
-  </td>
-  <td>
-    true
-  </td>
-  <td>
-    
-    
-  </td>
-</tr>
-
-      
-        
-<tr>
-  <td>
-    image_transformation_data
-  </td>
-  <td>
-    Object
-  </td>
-  <td>
-    Contains hash { crop: { x: number, y: number, w: number, h: number }, rotate: number }
   </td>
   <td>
     Optional
@@ -103,43 +79,41 @@
 </tr>
 
       
-        
-<tr>
+        <tr>
   <td>
-    remote_image_url
+    properties
+  </td>
+  <td>
+    PropertiesForm
+  </td>
+  <td>
+    Custom properties
+  </td>
+  <td>
+    Optional
+  </td>
+  <td>
+    
+    
+  </td>
+</tr>
+
+      
+        <tr>
+  <td>
+    relationship_transactable_type_name
   </td>
   <td>
     String
   </td>
   <td>
-    url for remote image
+    name (in snake case) of the associated RelationshipTransactableType
   </td>
   <td>
     Optional
   </td>
   <td>
-    Readonly
     
-  </td>
-</tr>
-
-      
-        
-<tr>
-  <td>
-    url
-  </td>
-  <td>
-    String
-  </td>
-  <td>
-    url for the associated image
-  </td>
-  <td>
-    Optional
-  </td>
-  <td>
-    Readonly
     
   </td>
 </tr>
