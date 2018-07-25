@@ -1,6 +1,6 @@
 <div><!--
 <h1>
-  Class: CustomizationForm
+  Class: TransactableForm
   
   
   
@@ -19,8 +19,47 @@
     </thead>
     <tbody>
       
-        
-<tr>
+        <tr>
+  <td>
+    creator_id
+  </td>
+  <td>
+    Int
+  </td>
+  <td>
+    User that created transactable
+  </td>
+  <td>
+    Required
+  </td>
+  <td>
+    In html format it is taken from current_user
+    
+  </td>
+</tr>
+
+      
+        <tr>
+  <td>
+    currency
+  </td>
+  <td>
+    String
+  </td>
+  <td>
+    Currency used for this Transactable's pricings, ex. USD CAD. Default: USD
+  </td>
+  <td>
+    Required
+  </td>
+  <td>
+    Currency in ISO format
+    
+  </td>
+</tr>
+
+      
+        <tr>
   <td>
     custom_addresses
   </td>
@@ -40,8 +79,7 @@
 </tr>
 
       
-        
-<tr>
+        <tr>
   <td>
     custom_attachments
   </td>
@@ -61,8 +99,7 @@
 </tr>
 
       
-        
-<tr>
+        <tr>
   <td>
     custom_images
   </td>
@@ -82,17 +119,15 @@
 </tr>
 
       
-        
-<tr>
+        <tr>
   <td>
-    custom_model_type_id
+    customizations
   </td>
   <td>
-    Integer
+    CustomizationsForm
   </td>
   <td>
-    Numeric identifier of the associated
-  CustomModelType
+    Customizations for this resource
   </td>
   <td>
     Optional
@@ -104,16 +139,15 @@
 </tr>
 
       
-        
-<tr>
+        <tr>
   <td>
-    custom_model_type_name
+    description
   </td>
   <td>
     String
   </td>
   <td>
-    Name (in snake case) of the associated CustomModelType
+    Longer description of the transactable
   </td>
   <td>
     Optional
@@ -125,16 +159,15 @@
 </tr>
 
       
-        
-<tr>
+        <tr>
   <td>
-    customizable_id
+    enabled
   </td>
   <td>
-    Integer
+    Boolean
   </td>
   <td>
-    Numeric identifier for the object to which the customization is attached
+    Whether the Transactable is enabled
   </td>
   <td>
     Optional
@@ -146,37 +179,55 @@
 </tr>
 
       
-        
-<tr>
+        <tr>
   <td>
-    customizable_type
+    location
+  </td>
+  <td>
+    LocationForm
+  </td>
+  <td>
+    
+  </td>
+  <td>
+    Optional
+  </td>
+  <td>
+    
+    
+  </td>
+</tr>
+
+      
+        <tr>
+  <td>
+    name
   </td>
   <td>
     String
   </td>
   <td>
-    Type of the object to which the customization is attached. Valid values: User UserProfile Transactable Offer Order Instance Reservation Relationship
+    Name of the transactable
   </td>
   <td>
     Optional
   </td>
   <td>
-    used in conjunction with customizable_id
+    Will be used to generate slug
     
   </td>
 </tr>
 
       
-        
-<tr>
+        <tr>
   <td>
-    id
+    properties
   </td>
   <td>
-    Integer
+    PropertiesForm
   </td>
   <td>
-    Numeric identifier of the associated object
+    Custom properties
   </td>
   <td>
     Optional
@@ -188,16 +239,15 @@
 </tr>
 
       
-        
-<tr>
+        <tr>
   <td>
-    user_id
+    transactable_type
   </td>
   <td>
-    Integer
+    TransactableType
   </td>
   <td>
-    Numeric identifier for the object to which the customization is attached
+    TransactableType to which this Transactable belongs
   </td>
   <td>
     Optional
