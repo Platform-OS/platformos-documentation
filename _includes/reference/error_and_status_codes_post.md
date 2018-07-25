@@ -1,8 +1,0 @@
-**Error and Status Codes**
-
-| Code | Message              | Meaning                               |
-| ---- | -------------------- | ------------------------------------- |
-| 201  | Created              | Resource was created                  |
-| 401  | Unathorized          | Invalid Authentication                |
-| 406  | Not Acceptable       | Wrong parameters passed               |
-| 422  | Unprocessable Entity | Wrong values, not matched validations |
