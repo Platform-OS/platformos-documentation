@@ -4,7 +4,7 @@
   <div class="discussion">
     <h2>form</h2>
 
-<p>Used to generate a html form element for an resource. Use within <code>form configuration</code>.
+<p>Used to generate a html form element for a resource. Use within <code>form configuration</code>.
 Inside the tag you can use <code>form_builder</code> variable.</p>
 
 <p>Arguments:</p>
@@ -13,7 +13,9 @@ Inside the tag you can use <code>form_builder</code> variable.</p>
 <li><strong>html-id</strong> [String] set id attribute in <code>&lt;form id=&quot;&quot;&gt;</code> element</li>
 <li><strong>html-novalidate</strong> [String] add <code>novalidate</code> attribute to <code>&lt;form novalidate&gt;</code> element</li>
 <li><strong>html-class</strong> [String] add css class <code>&lt;form class=&quot;&quot;&gt;</code> element</li>
-<li><strong>html-multipart</strong> [Boolean] add <code>enctype=&quot;multipart/form-data&quot;</code> attribute to <code>&lt;form enctype=&quot;multipart/form-data&quot;&gt;</code> element</li>
+<li><strong>html-multipart</strong> [Boolean] add <code>enctype=&quot;multipart/form-data&quot;</code> attribute to <code>&lt;form enctype=&quot;multipart/form-data&quot;&gt;</code> element.
+Multipart is enabled by default</li>
+<li><strong>html-data-[attr]</strong> [String] add data attribute to <code>&lt;form data-[attr]=&quot;&quot;&gt;</code> element</li>
 </ul>
 
 
@@ -27,6 +29,9 @@ Inside the tag you can use <code>form_builder</code> variable.</p>
       
       <pre class="example code"><code>{% form %}
   {{ form_builder }}
+{% endform %}
+
+{% form html-id: &#39;someid&#39;, html-novalidate: true, html-class: &#39;big-form green-form&#39;, html-data-user-id: &#39;12345&#39;, html-multipart: false %}
 {% endform %}</code></pre>
     
   </div>
