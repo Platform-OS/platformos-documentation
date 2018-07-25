@@ -3,7 +3,7 @@
     <%= @item.name %>
   </td>
   <td>
-    <%= @item.tag(:return).types.first %>
+    <%= @item.tag(:return).types.first.gsub(/\w+Form/, '<a href="/api-reference/forms/\0">\0</a>') %>
   </td>
   <td>
     <%= @item.docstring %>

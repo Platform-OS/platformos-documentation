@@ -1,6 +1,6 @@
 <div><!--
 <h1>
-  Class: CustomAddressForm
+  Class: AddressForm
   
   
   
@@ -19,8 +19,7 @@
     </thead>
     <tbody>
       
-        
-<tr>
+        <tr>
   <td>
     address
   </td>
@@ -28,7 +27,7 @@
     String
   </td>
   <td>
-    
+    Formatted full address for the address object
   </td>
   <td>
     Optional
@@ -40,8 +39,29 @@
 </tr>
 
       
-        
-<tr>
+        <tr>
+  <td>
+    address_components
+  </td>
+  <td>
+    Array[Hash[String => String]]
+  </td>
+  <td>
+    array of components for the address
+  keys are mostly long_name (e.g. California), short name (e.g. CA)
+  and types (e.g. administrative_area_level_1, political)
+  </td>
+  <td>
+    Optional
+  </td>
+  <td>
+    
+    
+  </td>
+</tr>
+
+      
+        <tr>
   <td>
     city
   </td>
@@ -49,7 +69,7 @@
     String
   </td>
   <td>
-    
+    city name for the address object
   </td>
   <td>
     Optional
@@ -61,8 +81,7 @@
 </tr>
 
       
-        
-<tr>
+        <tr>
   <td>
     country
   </td>
@@ -70,7 +89,7 @@
     String
   </td>
   <td>
-    
+    country name for the address object
   </td>
   <td>
     Optional
@@ -82,29 +101,7 @@
 </tr>
 
       
-        
-<tr>
-  <td>
-    custom_attribute_id
-  </td>
-  <td>
-    Integer
-  </td>
-  <td>
-    
-  </td>
-  <td>
-    Optional
-  </td>
-  <td>
-    
-    
-  </td>
-</tr>
-
-      
-        
-<tr>
+        <tr>
   <td>
     formatted_address
   </td>
@@ -112,7 +109,7 @@
     String
   </td>
   <td>
-    
+    formatted full address for the address object
   </td>
   <td>
     Optional
@@ -124,29 +121,7 @@
 </tr>
 
       
-        
-<tr>
-  <td>
-    id
-  </td>
-  <td>
-    Integer
-  </td>
-  <td>
-    
-  </td>
-  <td>
-    Optional
-  </td>
-  <td>
-    
-    
-  </td>
-</tr>
-
-      
-        
-<tr>
+        <tr>
   <td>
     iso_country_code
   </td>
@@ -154,7 +129,7 @@
     String
   </td>
   <td>
-    
+    ISO country code
   </td>
   <td>
     Optional
@@ -166,8 +141,7 @@
 </tr>
 
       
-        
-<tr>
+        <tr>
   <td>
     latitude
   </td>
@@ -175,7 +149,7 @@
     Float
   </td>
   <td>
-    
+    latitude for the address object
   </td>
   <td>
     Optional
@@ -187,8 +161,7 @@
 </tr>
 
       
-        
-<tr>
+        <tr>
   <td>
     longitude
   </td>
@@ -196,7 +169,7 @@
     Float
   </td>
   <td>
-    
+    longitude for the address object
   </td>
   <td>
     Optional
@@ -208,8 +181,7 @@
 </tr>
 
       
-        
-<tr>
+        <tr>
   <td>
     postcode
   </td>
@@ -217,7 +189,7 @@
     String
   </td>
   <td>
-    
+    postcode for the address object
   </td>
   <td>
     Optional
@@ -229,16 +201,15 @@
 </tr>
 
       
-        
-<tr>
+        <tr>
   <td>
-    service_radius
+    raw_address
   </td>
   <td>
-    String
+    Boolean
   </td>
   <td>
-    
+    tell if we should take address form postcode, city, street etc
   </td>
   <td>
     Optional
@@ -250,8 +221,27 @@
 </tr>
 
       
-        
-<tr>
+        <tr>
+  <td>
+    should_check_address
+  </td>
+  <td>
+    Boolean
+  </td>
+  <td>
+    Whether the system should check for the presence of an accurate address including postcode, city, state, street
+  </td>
+  <td>
+    Optional
+  </td>
+  <td>
+    virtual property
+    
+  </td>
+</tr>
+
+      
+        <tr>
   <td>
     state
   </td>
@@ -259,7 +249,7 @@
     String
   </td>
   <td>
-    
+    state name for the address object
   </td>
   <td>
     Optional
@@ -271,8 +261,7 @@
 </tr>
 
       
-        
-<tr>
+        <tr>
   <td>
     street
   </td>
@@ -280,7 +269,7 @@
     String
   </td>
   <td>
-    
+    street name for the address object
   </td>
   <td>
     Optional
@@ -292,29 +281,7 @@
 </tr>
 
       
-        
-<tr>
-  <td>
-    street_number
-  </td>
-  <td>
-    String
-  </td>
-  <td>
-    
-  </td>
-  <td>
-    Optional
-  </td>
-  <td>
-    
-    
-  </td>
-</tr>
-
-      
-        
-<tr>
+        <tr>
   <td>
     suburb
   </td>
@@ -322,7 +289,7 @@
     String
   </td>
   <td>
-    
+    suburb name for the address object
   </td>
   <td>
     Optional
