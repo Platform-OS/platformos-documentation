@@ -1,0 +1,63 @@
+---
+converter: markdown
+metadata:
+  title: Creating Marketplace Kit Logs
+  description: This guide will help you create your own Marketplace Kit logs using the `log` Liquid tag.
+slug: how-to/qa/creating-marketplace-kit-logs
+searchable: true
+---
+
+This guide will help you create your own Marketplace Kit logs using the `log` Liquid tag. This tag allows you to print any information to Marketplace Kit logs as type info, debug, or error, and list them in your console next to your sync. 
+
+You can use the `log` Liquid in any file that accepts Liquid, so you can use them in pages, layouts, partials, Authorization Policies, async callbacks, etc.
+
+## Requirements
+So that you can follow the steps in this tutorial, you have to have the Marketplace Kit installed, an environment configured, and the required directory structure set up. You should be familiar with Pages, and the technologies behind Platform OS, especially Liquid. 
+
+* [Quickstart Guide](/get-started/quickstart-guide) or [Setup tutorials](/get-started/setup): help you get access to our platform, set up a site, install the Marketplace Kit, set up the required directory structure, and deploy to your site. 
+* [Technologies](/how-platformos-works/technologies)
+
+## Steps
+
+Creating your own Marketplace Kit logs is a two-step process:
+
+1. Use `log` Liquid tag
+2. Start logging 
+
+### Step 1: Use `log` Liquid tag
+Create a page using the `log` Liquid tag, and sync it. 
+
+<pre><code class="language-liquid">
+---
+slug: log-test
+---
+
+{% log 'This is a message' %}
+{% log params %}
+{% log user.id, type: 'debug' %} %}
+</code></pre>
+
+#### Notes:
+You can print any object to the logs that can be printed. 
+You can use parameters (e.g. take parameters from the URL and include them in the message). 
+The `type` of the log entry can be: `info`, `debug`, or `error`. 
+
+### Step 2: Start logging
+In your command line, enter the command to start live logging:
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+marketplace-kit logs staging
+</code></pre>
+
+This pulls the logs from the server every couple of seconds and displays them in your command line. 
+
+{% include 'shared/questions_section' %} 
+  
+
+ 
+
+ 
+
+
+
+
