@@ -29,7 +29,7 @@ configuration:
   profiles:
     expert:
       [...]
-   custom_images:
+      custom_images:
         validation:
           presence: true
         photo:
@@ -122,38 +122,34 @@ import 'jquery-ui/ui/widget';
 import 'jquery.iframe-transport';
 import 'jquery.fileupload';
 
-import 'jquery-ui/ui/widget';
-import 'jquery.iframe-transport';
-import 'jquery.fileupload';
-
-$(function() {
-  const fileInput    = $("input#zonk");
+$(function () {
+  const fileInput = $("input#zonk");
   const submitButton = $(fileInput.parents('form:first')).find('input[type="submit"]');
   fileInput.fileupload({
-    fileInput:       fileInput,
-    url:             fileInput.data('s3UploadUrl'),
-    type:            'POST',
-    autoUpload:       true,
-    formData:         $.extend({ 'x-amz-meta-bazinga': 422 }, fileInput.data('s3FormData')),
-    paramName:        'file',
-    dataType:         'XML',
+    fileInput: fileInput,
+    url: fileInput.data('s3UploadUrl'),
+    type: 'POST',
+    autoUpload: true,
+    formData: $.extend({ 'x-amz-meta-bazinga': 422 }, fileInput.data('s3FormData')),
+    paramName: 'file',
+    dataType: 'XML',
     replaceFileInput: false,
     progressall: function (e, data) {
-      console.log("Uploaded..:",  parseInt(data.loaded / data.total * 100, 10));
+      console.log("Uploaded..:", parseInt(data.loaded / data.total * 100, 10));
     },
     start: function (e) {
       submitButton.prop('disabled', true);
       console.log("Uploading");
     },
-    done: function(e, data) {
+    done: function (e, data) {
       submitButton.prop('disabled', false);
 
-      var key   = $(data.jqXHR.responseXML).find("Key").text();
-      var fullLocation   = $(data.jqXHR.responseXML).find("Location").text();
-      var url   = '//' + fileInput.data('s3DataHost') + '/' + key;
+      var key = $(data.jqXHR.responseXML).find("Key").text();
+      var fullLocation = $(data.jqXHR.responseXML).find("Location").text();
+      var url = '//' + fileInput.data('s3DataHost') + '/' + key;
       console.log("File uploaded to: ", fullLocation);
     },
-    fail: function(e, data) {
+    fail: function (e, data) {
       submitButton.prop('disabled', false);
       console.log("Failed: ", data);
     }
