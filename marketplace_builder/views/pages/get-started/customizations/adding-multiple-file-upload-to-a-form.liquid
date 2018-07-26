@@ -14,10 +14,10 @@ In this example, the user uploads multiple files for a bug report, and the files
 ## Requirements
 To follow this tutorial, you should know how to create a user profile and embed a sign up form in a page. You should also have basic knowledge of Form Configurations and Javascript (ES2015).
 
-* [Creating User Profiles](/get-started/users/creating-user-profile) 
-* [Embedding a Sign Up Form in a Page](/get-started/users/embedding-sign-up-form) 
-* [Form Configurations](/reference/form-configurations/form-configurations) 
-* Javascript (ES2015) 
+* [Creating User Profiles](/get-started/users/creating-user-profile)
+* [Embedding a Sign Up Form in a Page](/get-started/users/embedding-sign-up-form)
+* [Form Configurations](/reference/form-configurations/form-configurations)
+* Javascript (ES2015)
 
 ## Steps
 
@@ -69,7 +69,7 @@ configuration:
 {% raw %}
 {% assign customizations = form_builder.fields.profiles.developer.customizations %}
 
-{% form html-multipart: true %}
+{% form %}
   <h4>Upload Documents</h4>
 
   <div data-multiple-files>
@@ -89,7 +89,6 @@ configuration:
 
 * for styling we assume [Twitter Bootstrap 4](https://getbootstrap.com/docs/4.1/getting-started/introduction/) loaded to make it prettier for example purposes
 * `prepopulate: 1` tells the system to render at least one field in case no files are saved for this user
-* `html-multipart: true` attribute in form tag tells the system to render [`enctype="multipart/form-data"`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/enctype) attribute in html form tag. It allows file attachments in the form.
 
 ### Step 3: Render form on a page
 
