@@ -1,0 +1,38 @@
+---
+converter: markdown
+metadata:
+  title: 2018 07 30 — Release Notes
+  description: 2018-07-30 - New liquid tags, deprecate render_form tag, deprecate log graphql mutation
+slug: release-notes/2018-07-30
+searchable: true
+---
+### {{ page.metadata.description }}
+
+## Improvements
+
+* **include_form tag**: new tag allows you to use normal liquid syntax to pass variables. `render_form` tag is now deprecated.
+
+  {% raw %}
+  ```
+  {% render_form 'edit_user', resource_id: @user.id %}
+  ```
+  {% endraw %}
+
+  now can be written with
+
+  {% raw %}
+  ```
+  {% include_form 'edit_user', resource_id: user.id %}
+  ```
+  {% endraw %}
+
+
+* **log tag**: use log tag to print something to logs
+
+  {% raw %}
+  ```
+  {% log "hello world" %}
+  {% log params %}
+  {% log params, type: 'error' %}
+  ```
+  {% endraw %}
