@@ -1,6 +1,6 @@
 <div><!--
 <h1>
-  Class: OrderForm
+  Class: RelationshipUserForm
   
   
   
@@ -21,33 +21,13 @@
       
         <tr>
   <td>
-    order_items
+    custom_attachments
   </td>
   <td>
-    Array[<a href="/api-reference/forms/OrderItemForm">OrderItemForm</a>]
+    Hash[String=><a href="/api-reference/forms/CustomAttachmentForm">CustomAttachmentForm</a>]
   </td>
   <td>
-    array of {OrderItemForm} encapsulating the order items for this order
-  </td>
-  <td>
-    Optional
-  </td>
-  <td>
-    
-    
-  </td>
-</tr>
-
-      
-        <tr>
-  <td>
-    payment
-  </td>
-  <td>
-    <a href="/api-reference/forms/PaymentForm">PaymentForm</a>
-  </td>
-  <td>
-    {PaymentForm} encapsulating the Payment for this order
+    associated custom attachments
   </td>
   <td>
     Optional
@@ -61,14 +41,33 @@
       
         <tr>
   <td>
-    payment_subscription
+    custom_images
   </td>
   <td>
-    <a href="/api-reference/forms/PaymentSubscriptionForm">PaymentSubscriptionForm</a>
+    Hash[String=><a href="/api-reference/forms/CustomImageForm">CustomImageForm</a>]
   </td>
   <td>
-    {PaymentSubscriptionForm} encapsulating the PaymentSubscription
-  for this order
+    associated custom images
+  </td>
+  <td>
+    Optional
+  </td>
+  <td>
+    
+    
+  </td>
+</tr>
+
+      
+        <tr>
+  <td>
+    id
+  </td>
+  <td>
+    ID
+  </td>
+  <td>
+    numeric identifier of the associated object
   </td>
   <td>
     Optional
@@ -85,7 +84,7 @@
     properties
   </td>
   <td>
-    <a href="/api-reference/forms/PropertiesForm">PropertiesForm</a>
+    Hash[String=>Any]
   </td>
   <td>
     Custom properties
@@ -102,33 +101,13 @@
       
         <tr>
   <td>
-    quantity
+    relationship_name
   </td>
   <td>
-    Integer
+    String
   </td>
   <td>
-    
-  </td>
-  <td>
-    Optional
-  </td>
-  <td>
-    
-    
-  </td>
-</tr>
-
-      
-        <tr>
-  <td>
-    reservations
-  </td>
-  <td>
-    Array[<a href="/api-reference/forms/ReservationForm">ReservationForm</a>]
-  </td>
-  <td>
-    reservation forms for actual reservations associated with this form
+    name (in snake case) of the associated RelationshipType
   </td>
   <td>
     Optional
@@ -142,13 +121,13 @@
       
         <tr>
   <td>
-    transactable_id
+    relationship_user_type_name
   </td>
   <td>
-    Integer
+    String
   </td>
   <td>
-    
+    name (in snake case) of the associated RelationshipUserType
   </td>
   <td>
     Optional
