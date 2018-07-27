@@ -16,7 +16,7 @@ New tag allows you to use normal liquid syntax to pass variables. `render_form` 
 
 <pre><code class="language-liquid">
 {% raw %}
-{% render_form 'edit_user', resource_id: @user.id %}
+{% render_form edit_user, resource_id: @user.id %}
 {% endraw %}
 </code></pre>
 
@@ -28,12 +28,12 @@ now should be written with
 {% endraw %}
 </code></pre>
 
-{% include 'alert/warning', content: 'You have to quote form name and you do not include @ when passing variable' %}
+{% include 'alert/warning', content: 'You have to quote form name and you do not include "@" when passing variable.' %}
 
 
 ### log tag
 
-Use log tag to print something to logs
+Use log tag to print something to logs.
 
 <pre><code class="language-liquid">
 {% raw %}
@@ -42,4 +42,6 @@ Use log tag to print something to logs
 {% log params, type: 'error' %}
 {% endraw %}
 </code></pre>
+
+{% include 'alert/info', content: 'Default type is info.' %}
 
