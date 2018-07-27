@@ -10,29 +10,36 @@ searchable: true
 
 ## Improvements
 
-* **include_form tag**: new tag allows you to use normal liquid syntax to pass variables. `render_form` tag is now deprecated.
+### include_form tag
 
-  {% raw %}
-  ```
-  {% render_form 'edit_user', resource_id: @user.id %}
-  ```
-  {% endraw %}
+New tag allows you to use normal liquid syntax to pass variables. `render_form` tag is now deprecated.
 
-  now can be written with
+<pre><code class="language-liquid">
+{% raw %}
+{% render_form 'edit_user', resource_id: @user.id %}
+{% endraw %}
+</code></pre>
 
-  {% raw %}
-  ```
-  {% include_form 'edit_user', resource_id: user.id %}
-  ```
-  {% endraw %}
+now should be written with
+
+<pre><code class="language-liquid">
+{% raw %}
+{% include_form 'edit_user', resource_id: user.id %}
+{% endraw %}
+</code></pre>
+
+{% include 'alert/warning', content: 'You have to quote form name and you do not include @ when passing variable' %}
 
 
-* **log tag**: use log tag to print something to logs
+### log tag
 
-  {% raw %}
-  ```
-  {% log "hello world" %}
-  {% log params %}
-  {% log params, type: 'error' %}
-  ```
-  {% endraw %}
+Use log tag to print something to logs
+
+<pre><code class="language-liquid">
+{% raw %}
+{% log "hello world" %}
+{% log params %}
+{% log params, type: 'error' %}
+{% endraw %}
+</code></pre>
+
