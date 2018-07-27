@@ -1,0 +1,19 @@
+---
+converter: markdown
+metadata:
+  title: Release Notes
+  description: New features and changes in platform
+slug: release-notes
+searchable: true
+---
+<h3>{{ page.metadata.description }}</h3>
+
+{% execute_query 'release_notes' %}
+
+<ul>
+  {% for page in g.pages.results %}
+    <li>
+      <a href="/{{ page.slug }}">{{ page.metadata.description }}</a>
+    </li>
+  {% endfor %}
+ </ul>
