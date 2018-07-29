@@ -17,151 +17,195 @@ This is an advanced tutorial. To follow it, you should be familiar with basic Pl
 * [APIs and Form Configurations](/api-reference)
 * [Form Configurations Reference](/reference/form-configurations/form-configurations)
 
-This guide uses the following form_configuration code:
+This guide uses the following form configuration code:
 
-{% raw %}
+#### marketplace_builder/form_configurations/developer/update_profile.liquid
 
 <pre><code class="language-yaml">
+{% raw %}
 ---
-name: edit_user
+name: update_profile
 resource: User
 configuration:
   profiles:
-    expert:
-      [...]
+    developer:
       custom_images:
-        validation:
-          presence: true
         photo:
-          validation:
-            presence:
-              true
           image:
-            presence:
-              true
-      custom_attachments:
-        validation:
-          presence: true
-        cv:
-          validation:
-            presence: true
-          file:
-            validation:
-              presence: true
-       [...]
+[...]
+{% endraw %}
 </code></pre>
 
+
+It is uploading image to a developer profile which is defined as such:
+
+#### marketplace_builder/user_profile_types/developer.yml
+
+<pre><code class="language-yaml">
+name: developer
+custom_attributes:
+[...]
+- name: avatar
+  attribute_type: image
+</code></pre>
+
+Page rendering the form is just a simple page:
+
+<pre><code class="language-yaml">
+{% raw %}
+---
+slug: update_profile
+---
+</code>
+<br>
+<code class="language-liquid">
+{% include_form 'update_profile', resource_id: context.current_user.id %}
 {% endraw %}
+</code></pre>
 
 ## Steps
 
 Uploading content directly to Amazon S3 is a three-step process:
 
-1. Access parameters
-2. Populate HTML `data*` attributes
-3. Send file to S3
-
-### Step 1: Access parameters
-Access all parameters required to post data to S3 through the `s3_data` key:
+1. Obtain required metadata from the server using `form_builder` object
+2. Prepare html form with fields including required metadata
+3. Submit form with metdata + file
 
 
-CustomImage
+### Presigned metadata
+
+Access all parameters required to post data to S3 through the `s3_data` key.
+
+Example object converted to JSON:
+
+<pre><code class="language-json">
+{
+   "form_data": {
+      "key": "uploads/d123dc4d-f134-41bc-b984-3abdaf89fe8d/${filename}",
+      "success_action_status": "201",
+      "acl": "public-read",
+      "x-amz-meta-original-filename": "${filename}",
+      "policy": "eyJleHBpcmF0aW9uIjoiMjAxOC0wNy0yOVQxMzowODozN1oiLCJjb25kaXRpb25zIjpbeyJidWNrZXQiOiJuZWFyLW1lLW9yZWdvbi1zdGFnaW5nIn0sWyJzdGFydHMtd2l0aCIsIiRrZXkiLCJ1cGxvYWRzL2QxMjNkYzRkLWYxMzQtNDFiYy1iOTg0LTNhYmRhZjg5ZmU4ZC8iXSx7InN1Y2Nlc3NfYWN0aW9uX3N0YXR1cyI6IjIwMSJ9LHsiYWNsIjoicHVibGljLXJlYWQifSxbInN0YXJ0cy13aXRoIiwiJHgtYW16LW1ldGEtb3JpZ2luYWwtZmlsZW5hbWUiLCIiXSxbInN0YXJ0cy13aXRoIiwiJHgtYW16LW1ldGEtd2lkdGgiLCIiXSxbInN0YXJ0cy13aXRoIiwiJHgtYW16LW1ldGEtaGVpZ2h0IiwiIl0seyJ4LWFtei1jcmVkZW50aWFsIjoiQUtJQUpDMzdaNlhDT0NSMjQ1WUEvMjAxODA3MjkvdXMtd2VzdC0yL3MzL2F3czRfcmVxdWVzdCJ9LHsieC1hbXotYWxnb3JpdGhtIjoiQVdTNC1ITUFDLVNIQTI1NiJ9LHsieC1hbXotZGF0ZSI6IjIwMTgwNzI5VDEyMDgzN1oifV19",
+      "x-amz-credential": "AKIAJC37Z6XCOCR245YA/20180729/us-west-2/s3/aws4_request",
+      "x-amz-algorithm": "AWS4-HMAC-SHA256",
+      "x-amz-date": "20180729T120837Z",
+      "x-amz-signature": "d6763dcae2c01c87859ed9735dfea319178e548420c3773c4a3bd348a98b671d"
+   },
+   "direct_upload_url": "https://near-me-oregon-staging.s3-us-west-2.amazonaws.com",
+   "data_host": "near-me-oregon-staging.s3-us-west-2.amazonaws.com"
+}
+</code></pre>
+
+
+
+### Step 1: Obtain required metadata from the server
+Access all metadata required to post data to S3 through the field's `s3_data`.
+
+Example for custom attribute of image type:
+
 <pre><code class="language-liquid">
 {% raw %}
 {{ form_builder.fields.profiles.expert.custom_images.photo.image.s3_upload }}
 {% endraw %}
 </code></pre>
 
-CustomAttachment
+Example for custom attribute of custom attachment type:
 <pre><code class="language-liquid">
 {% raw %}
 {{ form_builder.fields.profiles.expert.custom_attachments.cv.file.s3_upload }}
 {% endraw %}
 </code></pre>
 
+{% include 'alert/note', content: 'In image type there is **image** just before s3_upload, its **file** for custom attachment' %}
 
-This will produce an output similar to the following:
-<img src="{{ 'images/how-to/assets/access_parameters_output.png' | asset_url }}" alt="Step 1 output: Accessing parameters">
 
-### Step 2: Populate HTML `data*` attributes
+### Step 2: Prepare html form with fields including required metadata
 
-Use `form_builder` to populate HTML `data-*` attributes. You can use it any way you want to, for example, put the fields in HTML `data` attributes, and then handle the upload using JavaScript, so that it sends the request with the provided data as described here: [S3 Presigned Post](https://docs.aws.amazon.com/AmazonS3/latest/dev/PresignedUrlUploadObject.html))
+#### marketplace_builder/form_configurations/developer/update_profile.liquid
 
-Using this data to fill the `<input />` tag could look like this:
-
+Create variables for quicker access later on
 
 <pre><code class="language-liquid">
 {% raw %}
-<input
-  id="zonk"
-  accept="image/gif, image/jpeg, image/jpg, image/png"
-  type="file"
-  data-s3-form-data={{ form_builder.fields.profiles.expert.custom_images.photo.image.s3_upload.form_data | json }}
-  data-s3-upload-url="{{ form_builder.fields.profiles.expert.custom_images.photo.image.s3_upload.direct_upload_url }}"
-  data-s3-data-host="{{ form_builder.fields.profiles.expert.custom_images.photo.image.s3_upload.data_host }}"
-/>
+{% assign profile = form_builder.fields.profiles.developer %}
+{% assign image_s3_upload = form_builder.fields.profiles.developer.custom_images.avatar.image.s3_upload %}
 {% endraw %}
 </code></pre>
 
+Set up action and all required data in hidden inputs
 
-**Explanation:**
+<pre><code class="language-liquid">
+{% raw %}
+<form action="{{ image_s3_upload.direct_upload_url }}" accept-charset="UTF-8" method="post" enctype="multipart/form-data">
 
-* data-s3-form-data: information about our standard AWS policy
-* data-s3-upload-url: URL of the endpoint
-* data-s3-data-host: for showing the image later (you will get the relative path)
+  {% comment %} Loop over all form_data keys and create hidden inputs in the form to send the data to S3 {% endcomment %}
 
-**Sample output:**
+  {% for input in image_s3_upload.form_data %}
+    <input type="hidden" name="{{ input[0] }}" value="{{ input[1] }}">
+  {% endfor %}
 
-<img src="{{ 'images/how-to/assets/populating_data.png' | asset_url }}" alt="Step 2 output: Populating HTML data* attributes">
+  <h4>Upload your image</h4>
+  {% include 'inputs/direct_image', field: profile.custom_images.avatar %}
 
-### Step 3: Send file to S3
-Send the file directly to S3 using Javascript, for example, the jquery.fileUpload plugin:
-
-<pre><code class="language-javascript">
-import 'jquery-ui/ui/widget';
-import 'jquery.iframe-transport';
-import 'jquery.fileupload';
-
-$(function () {
-  const fileInput = $("input#zonk");
-  const submitButton = $(fileInput.parents('form:first')).find('input[type="submit"]');
-  fileInput.fileupload({
-    fileInput: fileInput,
-    url: fileInput.data('s3UploadUrl'),
-    type: 'POST',
-    autoUpload: true,
-    formData: $.extend({ 'x-amz-meta-bazinga': 422 }, fileInput.data('s3FormData')),
-    paramName: 'file',
-    dataType: 'XML',
-    replaceFileInput: false,
-    progressall: function (e, data) {
-      console.log("Uploaded..:", parseInt(data.loaded / data.total * 100, 10));
-    },
-    start: function (e) {
-      submitButton.prop('disabled', true);
-      console.log("Uploading");
-    },
-    done: function (e, data) {
-      submitButton.prop('disabled', false);
-
-      var key = $(data.jqXHR.responseXML).find("Key").text();
-      var fullLocation = $(data.jqXHR.responseXML).find("Location").text();
-      var url = '//' + fileInput.data('s3DataHost') + '/' + key;
-      console.log("File uploaded to: ", fullLocation);
-    },
-    fail: function (e, data) {
-      submitButton.prop('disabled', false);
-      console.log("Failed: ", data);
-    }
-  });
-});
+  <button class="btn btn-primary">Submit image</button>
+</form>
+{% endraw %}
 </code></pre>
 
-**Explanation:**
+#### marketplace_builder/views/partials/inputs/direct_image.liquid
 
-* `$.extend({ 'x-amz-meta-bazinga': 422 }`: in the `formData` you can include a couple of `x-amz-meta-*` headers to attach metadata to S3 uploads (can be used with any AWS S3 object). Since Platform OS does presign on the back-end, you have to specify the name of the header that will be included.
+<pre><code class="language-liquid">
+{% raw %}
+<div class="form-group">
+  <div class="custom-file">
+    <input name="file" type="file" class="custom-file-input">
+  </div>
+</div>
+{% endraw %}
+</code></pre>
 
-This uploads the file to S3 and gives you the URL. To save the URL in the backend you have to submit it with a form: the name of the field that the URL belongs to is `raw_remote_ORIGINAL_COLUMN_NAME_url` where `ORIGINAL_COLUMN_NAME` would be `image` or `file` for this configuration.
+{% include 'alert/note', content: 'File input has to have name **file**' %}
+
+### Step 3: Submit form with metdata + file
+
+This uploads the file to S3 and gives you the URL in the response. Response is in XML and URL you are interested in is named `Location`.
+
+Example S3 response:
+
+<pre><code class="language-html">
+<PostResponse>
+   <Location>https://near-me-oregon-staging.s3-us-west-2.amazonaws.com/uploads%2F9e8d2647-0057-43b6-b422-7aa8dda33181%2Ftest.1.jpg</Location>
+   <Bucket>near-me-oregon-staging</Bucket>
+   <Key>uploads/9e8d2647-0057-43b6-b422-7aa8dda33181/test.1.jpg</Key>
+   <ETag>"ef6af0efd437d68085cf841d5c668b20"</ETag>
+</PostResponse>
+</code></pre>
+
+{% comment %}
+  TODO: Need example
+{% endcomment %}
+
+To save the URL in the backend you have to submit it with a form: the name of the field that the URL belongs to is `raw_remote_ORIGINAL_COLUMN_NAME_url` where `ORIGINAL_COLUMN_NAME` would be `image` or `file` for this configuration.
+
+{% comment %}
+TODO: Write this section when it has an use case
+
+### Additional metadata
+
+You can include your custom metadata `x-amz-meta-*` headers to attach metadata to S3 uploads. Since Platform OS does presign on the back-end, you have to specify the name of the header that will be included.
+{% endcomment %}
+
+### Live example and source code
+
+To play with live example create developer account at [https://nearme-example.oregon.near-me.com](https://nearme-example.oregon.near-me.com) and go to [update_profile](https://nearme-example.oregon.near-me.com/update_profile) page.
+
+[Source code](https://github.com/mdyd-dev/marketplace-nearme-example) can be found at github.
+
+### Additional resources
+
+* [Example: Browser-Based Upload using HTTP POST (Using AWS Signature Version 4)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-post-example.html)
+* [Creating an HTML Form (Using AWS Signature Version 4)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-HTTPPOSTForms.html)
+* [Upload a file with $.ajax to AWS S3 with a pre-signed url](https://gist.github.com/guumaster/9f18204aca2bd6c71a24)
 
 {% include 'shared/questions_section' %}
 
