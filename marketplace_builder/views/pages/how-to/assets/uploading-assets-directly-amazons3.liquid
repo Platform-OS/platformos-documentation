@@ -9,6 +9,15 @@ searchable: true
 
 This guide will help you use the Amazon S3 direct upload from the front-end by adding the files from `form_builder` that are exposed to you for each file uploader.
 
+It is a low-tech demonstration without any javascript, using only standard html form and our system to show you what exactly needs to be present in the request to be able to do direct s3 upload.
+
+In most cases you will want to do it using AJAX because doing it like below has some limitations:
+
+* Only one file can be sent per form
+* Standard submit redirects user to a response page, which in this case is on AWS domain
+* You cannot submit any data to our system using a form that is sending data to AWS
+* URL with uploaded file needs to be sent to our system to inform where the file lies, without javascript its very hard/impossible
+
 ## Requirements
 This is an advanced tutorial. To follow it, you should be familiar with basic Platform OS concepts, HTML, Liquid, Javascript, APIs and Form Configurations, and the topics in the Get Started section.
 
@@ -194,6 +203,15 @@ TODO: Write this section when it has an use case
 
 You can include your custom metadata `x-amz-meta-*` headers to attach metadata to S3 uploads. Since Platform OS does presign on the back-end, you have to specify the name of the header that will be included.
 {% endcomment %}
+
+### Important notes / troubleshooting
+
+* Remember to set your file input name to `file`
+* Make sure file input is sent last in the form
+* Make sure your form is using POST method
+* Make sure your form is sending data as `enctype="multipart/form-data"`
+
+All above are AWS requirements - [read more](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-HTTPPOSTForms.html).
 
 ### Live example and source code
 
