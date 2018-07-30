@@ -1,9 +1,9 @@
 ---
 converter: markdown
 metadata:
-  title: Uploading Assets Directly to Amazon S3
-  description: This guide will help you use the Amazon S3 direct upload from the front-end by adding the files from `form_builder` that are exposed to you for each file uploader.
-slug: how-to/assets/uploading-assets-directly-amazons3
+  title: Uploading Files Directly to Amazon S3 using HTML form
+  description: This guide will help you use the Amazon S3 direct upload from the front-end by adding the files from `form_builder` that are exposed to you for each file/image custom attribute.
+slug: how-to/user-uploads/uploading-files-directly-amazons3-using-html-form
 searchable: true
 ---
 
@@ -145,28 +145,24 @@ Set up action and all required data in hidden inputs:
 <form action="{{ image_s3_upload.direct_upload_url }}" accept-charset="UTF-8" method="post" enctype="multipart/form-data">
 
   {% comment %} Loop over all form_data keys and create hidden inputs in the form to send the data to S3 {% endcomment %}
-
   {% for input in image_s3_upload.form_data %}
     <input type="hidden" name="{{ input[0] }}" value="{{ input[1] }}">
   {% endfor %}
 
+  {% comment %} Obligatory metadata key, even though not used in this case {% endcomment %}
+  <input type="hidden" name="x-amz-meta-metadata" value="{}">
+
+  {% comment %} Partial with  {% endcomment %}
   <h4>Upload your image</h4>
-  {% include 'inputs/direct_image', field: profile.custom_images.avatar %}
+
+  <div class="form-group">
+    <div class="custom-file">
+      <input name="file" type="file" class="custom-file-input">
+    </div>
+  </div>
 
   <button class="btn btn-primary">Submit image</button>
 </form>
-{% endraw %}
-</code></pre>
-
-#### marketplace_builder/views/partials/inputs/direct_image.liquid
-
-<pre><code class="language-liquid">
-{% raw %}
-<div class="form-group">
-  <div class="custom-file">
-    <input name="file" type="file" class="custom-file-input">
-  </div>
-</div>
 {% endraw %}
 </code></pre>
 
@@ -180,9 +176,9 @@ Example S3 response:
 
 <pre><code class="language-html">
 <PostResponse>
-   <Location>https://near-me-oregon-staging.s3-us-west-2.amazonaws.com/uploads%2F9e8d2647-0057-43b6-b422-7aa8dda33181%2Ftest.1.jpg</Location>
+   <Location>https://near-me-oregon-staging.s3-us-west-2.amazonaws.com/uploads%2F9e8d2647-0057-43b6-b422-7aa8dda33181%2Ftest.jpg</Location>
    <Bucket>near-me-oregon-staging</Bucket>
-   <Key>uploads/9e8d2647-0057-43b6-b422-7aa8dda33181/test.1.jpg</Key>
+   <Key>uploads/9e8d2647-0057-43b6-b422-7aa8dda33181/test.jpg</Key>
    <ETag>"ef6af0efd437d68085cf841d5c668b20"</ETag>
 </PostResponse>
 </code></pre>
