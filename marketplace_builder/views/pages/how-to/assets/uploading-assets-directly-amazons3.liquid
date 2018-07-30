@@ -187,26 +187,38 @@ Example S3 response:
 </PostResponse>
 </code></pre>
 
-{% comment %}
-  TODO: Need example and rephrase
-{% endcomment %}
-
-To save the URL into our database you have to submit it with a form: the name of the field that the URL belongs to is `raw_remote_ORIGINAL_COLUMN_NAME_url` where `ORIGINAL_COLUMN_NAME` would be `image` or `file` for this configuration.
 
 {% comment %}
-TODO: Write this section when it has a use case
+
+<!-- Uncomment when this section becomes relevant -->
 
 ### Additional metadata
 
-You can include your custom metadata `x-amz-meta-*` headers to attach metadata to S3 uploads. Since Platform OS does presign on the back-end, you have to specify the name of the header that will be included.
+You can include your custom metadata inside `x-amz-metadata` field to attach metadata to S3 uploads. Since Platform OS does presign on the back-end.
+It should be a json formatted string which can contain configuration options of different kinds.
+
+Example:
+
+<pre><code class="language-liquid">
+{% raw %}
+  {% capture options %}
+  {
+    "user_id": "1337"
+  }
+  {% endcapture %}
+
+  <input type="hidden" name="x-amz-metadata" value='{{ options | to_hash | json }}' />
+{% endraw %}
+</code></pre>
 {% endcomment %}
 
 ### Important notes / troubleshooting
 
-* Remember to set your file input name to `file`
-* Make sure file input is sent last in the form
 * Make sure your form is using POST method
 * Make sure your form is sending data as `enctype="multipart/form-data"`
+* Make sure file input is sent last in the form
+* Remember to set your file input name to `file`
+* Make sure you included `x-amz-metadata` field even if it is empty (`{}`), lack of it will throw a validation error because AWS S3 is expecting it to be present.
 
 All above are AWS requirements - [read more](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-HTTPPOSTForms.html).
 
