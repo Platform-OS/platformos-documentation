@@ -17,7 +17,6 @@ CustomAttributes are defined in YML configuration files for:
 * RelationshipTypes
 * TransactableTypes
 * UserProfileTypes
-* ReservationTypes
 
 <pre><code class="language-yaml">
 custom_attributes:
@@ -58,7 +57,7 @@ You can group your custom attributes into [Custom Models](/reference/custom-mode
 
 ### FormConfiguration
 
-You can configure CustomAttributes settings in FormConfiguration similarly to other parameters:
+You can configure Custom Attributes settings in Form Configuration similarly to other parameters:
 
 <pre><code class="language-yaml">
 ...
@@ -75,19 +74,15 @@ configuration:
 <code class="language-liquid">
 {% raw %}
 {% form %}
-  <div>
-    <label for="name"><abbr title="required">*</abbr> Name</label>
-    <div>
-      <input value="{{ form_builder.fields.properties.name.value }}" name="{{ form_builder.fields.properties.name.name }}" id="name" type="text">
-      {% if form_builder.errors['properties.name'] %}
-        <p>{{ form_builder.errors['properties.name'] }}</p>
-      {% endif %}
-    </div>
-  </div>
+  <label for="name"><abbr title="required">*</abbr> Name</label>
+  <input value="{{ form_builder.fields.properties.name.value }}" name="{{ form_builder.fields.properties.name.name }}" id="name" type="text">
+  {% if form_builder.errors['properties.name'] %}
+    <p>{{ form_builder.errors['properties.name'] }}</p>
+  {% endif %}
 {% endform %}
+{% endraw %}
 </code></pre>
 
-{% endraw %}
 
 For more information see our [Form Builder Reference](/reference/form-configurations) and our [Building a Contact Form with Customization](/get-started/customizations/building-contact-form-with-customization) tutorial.
 
@@ -112,13 +107,13 @@ query get_customizations {
 You can filter GraphQL results based on object properties states.
 Each object in the properties array is connected with a CustomAttribute through its name. Additional options are:
 
-* value - matches the value of given property
+### value - matches the value of given property
 
 <pre><code class="language-graphql">
 query get_all_johns {
   customizations(
     is_deleted: false
-    properties: [{name: "name", value: "John"}]
+    properties: [{ name: "name", value: "John" }]
   ) {
     results {
       first_name: property(name: "name")
@@ -127,13 +122,13 @@ query get_all_johns {
 }
 </code></pre>
 
-* values - matches array of values with given `values_operator`: `OR` or `AND`.
+### values - matches array of values with given `values_operator`: `OR` or `AND`.
 
 <pre><code class="language-graphql">
 query get_all_johns_and_annas {
   customizations(
     is_deleted: false
-    properties: [{name: "name", values: ["John", "Anna"], values_operator: OR}]
+    properties: [{ name: "name", values: ["John", "Anna"], values_operator: OR }]
   ) {
     results {
       first_name: property(name: "name")
@@ -142,13 +137,13 @@ query get_all_johns_and_annas {
 }
 </code></pre>
 
-* range - available options for range are: `lt`, `lte`, `gt`, `gte`:
+### range - available options for range are: `lt`, `lte`, `gt`, `gte`:
 
 <pre><code class="language-graphql">
 query get_all_adults_below_60 {
   customizations(
     is_deleted: false
-    properties: [{name: "age", range: {gte: $adult_age_treshold, lt: 60}}]
+    properties: [{ name: "age", range: { gte: $adult_age_treshold, lt: 60 } }]
   ) {
     results {
       first_name: property(name: "name")
@@ -157,13 +152,13 @@ query get_all_adults_below_60 {
 }
 </code></pre>
 
-* exists
+### exists
 
 <pre><code class="language-graphql">
 query get_all_with_name {
   customizations(
     is_deleted: false
-    properties: [{name: "name", exists: true}]
+    properties: [{ name: "name", exists: true }]
   ) {
     results {
       first_name: property(name: "name")
