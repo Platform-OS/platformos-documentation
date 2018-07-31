@@ -19,15 +19,15 @@ Go to the file you think is wrong, [click edit and commit changes](https://help.
 
 ### Dependencies
 
-ruby 2.x, nodejs 8.x, npm 6.x
+nodejs 8.x, npm 6.x
 
 ### Development
 
-    bundle install && npm install
+    npm install
 
     npm start
 
-### Build assets after changing CSS/JS
+### Build production assets
 
     npm run build
 
