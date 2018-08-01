@@ -34,10 +34,10 @@ From the HTML page, copy the content into a separate Liquid page, e.g. `views/pa
 * Add a title to your page to make it dynamic. 
 
 <pre><code class="language-liquid">
+{% raw %}
 ---
 slug: blog
 ---
-
 {% content_for 'meta_title' %}Blog{% endcontent_for %}
 
 <main id="content" role="main" class="">
@@ -47,6 +47,7 @@ slug: blog
   </ul></section>
       </section></article>
     </main>
+{% endraw %}
 </code></pre>
 
 ### Step 2: Edit layout 
@@ -56,14 +57,17 @@ Edit your layout `views/layouts/application.liquid`:
 * Replace or add the `title`. 
 * `content_for_layout` will be populated by the `blog.liquid` page content.
 * Cut the footer part of the HTML page and add it to the bottom of your layout. 
+* Add the AMP symbol `⚡` to the `html` tag. 
+* Replace CURRENT_PAGE_URL with a link to your page. 
 
 <pre><code class="language-liquid">
-<!doctype html>
+{% raw %}
+<!doctype html ⚡>
 ...
 <head>
   <meta charset="utf-8">
   <title>The Recipe Blog</title>
-  <link rel="canonical" href="https://www.ampstart.com/templates/blog.amp">
+  <link rel="canonical" href="CURRENT_PAGE_URL">
   <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
 
   <script async="" src="https://cdn.ampproject.org/v0.js"></script>
@@ -73,17 +77,14 @@ Edit your layout `views/layouts/application.liquid`:
   </title> 
 ...
 </amp-sidebar>
-<!-- End Sidebar -->
-  <!-- End Navbar -->
 
 {{ content_for_layout }}
 
-<!-- Start Footer -->
   <footer class="ampstart-footer flex flex-column items-center px3 ">
 ...
-<!-- End Footer -->
   </body>
 </html>
+{% endraw %}
 </code></pre>
 
 Now, if you sync and check the page, you can see that it's working and it's still a valid AMP page. However, images aren't displayed, because their relative path has changed. 
@@ -98,7 +99,9 @@ Change the path of images using the `asset_url` filter. Modify each image path f
 to 
 
 <pre><code class="language-liquid">
+{% raw %}
 <amp-img src="{{ 'img/blog/spritzer.jpg' | asset_url }}" width="1280" height="853" layout="responsive" alt="The final spritzer" class="mb4 mx3"></amp-img>
+{% endraw %}
 </code></pre>
 
 Sync, and see images displayed. 
@@ -107,7 +110,7 @@ Sync, and see images displayed.
 
 Congratulations! You have converted an HTML template into Platform OS pages and layouts. This means that you can now use all the capabilities of the platform, for example, you can feed data to the pages with GraphQL:
 
-* [Feeding data into AMP Pages with GraphQL](how-to/amp/feeding-data-amp-pages-graphql)
+* [Feeding data into AMP Pages with GraphQL](/how-to/amp/feeding-data-amp-pages-graphql)
 
 {% include 'shared/questions_section' %}
 
