@@ -18,7 +18,7 @@ In most cases you will want to do the upload using AJAX, because doing it like i
 * The URL with uploaded file needs to be sent to our system to inform it where the file lies. Without JavaScript, this is very difficult/impossible.
 
 ## Requirements
-This is an advanced tutorial. To follow it, you should be familiar with basic Platform OS concepts, HTML, Liquid, Javascript, APIs and Form Configurations, and the topics in the Get Started section.
+This is an advanced tutorial. To follow it, you should be familiar with basic Platform OS concepts, HTML, Liquid, APIs and Form Configurations, and the topics in the Get Started section.
 
 * [How Platform OS Works](/how-platformos-works)
 * [Get Started](/get-started)
@@ -73,27 +73,11 @@ slug: update_profile
 
 ### Presigned metadata
 
-Access all parameters required to post data to S3 through the `s3_data` key.
+Access all metadata required to post data to S3 through the field's `s3_upload` key.
 
 Example object converted to JSON:
 
-<pre><code class="language-json">
-{
-   "form_data": {
-      "key": "uploads/d123dc4d-f134-41bc-b984-3abdaf89fe8d/${filename}",
-      "success_action_status": "201",
-      "acl": "public-read",
-      "x-amz-meta-original-filename": "${filename}",
-      "policy": "eyJleHBpcmF0aW9uIjoiMjAxOC0wNy0yOVQxMzowODozN1oiLCJjb25kaXRpb25zIjpbeyJidWNrZXQiOiJuZWFyLW1lLW9yZWdvbi1zdGFnaW5nIn0sWyJzdGFydHMtd2l0aCIsIiRrZXkiLCJ1cGxvYWRzL2QxMjNkYzRkLWYxMzQtNDFiYy1iOTg0LTNhYmRhZjg5ZmU4ZC8iXSx7InN1Y2Nlc3NfYWN0aW9uX3N0YXR1cyI6IjIwMSJ9LHsiYWNsIjoicHVibGljLXJlYWQifSxbInN0YXJ0cy13aXRoIiwiJHgtYW16LW1ldGEtb3JpZ2luYWwtZmlsZW5hbWUiLCIiXSxbInN0YXJ0cy13aXRoIiwiJHgtYW16LW1ldGEtd2lkdGgiLCIiXSxbInN0YXJ0cy13aXRoIiwiJHgtYW16LW1ldGEtaGVpZ2h0IiwiIl0seyJ4LWFtei1jcmVkZW50aWFsIjoiQUtJQUpDMzdaNlhDT0NSMjQ1WUEvMjAxODA3MjkvdXMtd2VzdC0yL3MzL2F3czRfcmVxdWVzdCJ9LHsieC1hbXotYWxnb3JpdGhtIjoiQVdTNC1ITUFDLVNIQTI1NiJ9LHsieC1hbXotZGF0ZSI6IjIwMTgwNzI5VDEyMDgzN1oifV19",
-      "x-amz-credential": "AKIAJC37Z6XCOCR245YA/20180729/us-west-2/s3/aws4_request",
-      "x-amz-algorithm": "AWS4-HMAC-SHA256",
-      "x-amz-date": "20180729T120837Z",
-      "x-amz-signature": "d6763dcae2c01c87859ed9735dfea319178e548420c3773c4a3bd348a98b671d"
-   },
-   "direct_upload_url": "https://near-me-oregon-staging.s3-us-west-2.amazonaws.com",
-   "data_host": "near-me-oregon-staging.s3-us-west-2.amazonaws.com"
-}
-</code></pre>
+{% include 'how-to/user-uploads/example-presigned-json' %}
 
 ## Steps
 
@@ -125,18 +109,22 @@ Example for custom attribute of custom attachment type:
 
 ### Step 2: Prepare HTML form with fields including required metadata
 
-#### marketplace_builder/form_configurations/developer/update_profile.liquid
 
 Create variables for quicker access later on:
+
+#### marketplace_builder/form_configurations/developer/update_profile.liquid
 
 <pre><code class="language-liquid">
 {% raw %}
 {% assign profile = form_builder.fields.profiles.developer %}
-{% assign image_s3_upload = form_builder.fields.profiles.developer.custom_images.avatar.image.s3_upload %}
+{% assign avatar = profile.custom_images.avatar %}
+{% assign image_s3_upload = avatar.image.s3_upload %}
 {% endraw %}
 </code></pre>
 
 Set up action and all required data in hidden inputs:
+
+#### marketplace_builder/form_configurations/developer/update_profile.liquid
 
 <pre><code class="language-liquid">
 {% raw %}
@@ -167,61 +155,23 @@ This uploads the file to S3 and gives you the URL in the response. Response is i
 
 Example S3 response:
 
-<pre><code class="language-html">
-<PostResponse>
-   <Location>https://near-me-oregon-staging.s3-us-west-2.amazonaws.com/uploads%2F9e8d2647-0057-43b6-b422-7aa8dda33181%2Ftest.jpg</Location>
-   <Bucket>near-me-oregon-staging</Bucket>
-   <Key>uploads/9e8d2647-0057-43b6-b422-7aa8dda33181/test.jpg</Key>
-   <ETag>"ef6af0efd437d68085cf841d5c668b20"</ETag>
-</PostResponse>
-</code></pre>
+{% include 'how-to/user-uploads/example-s3-response' %}
 
+## Important notes / troubleshooting
 
-{% comment %}
-
-<!-- Uncomment when this section becomes relevant -->
-
-### Additional metadata
-
-You can include your custom metadata inside `x-amz-meta-metadata` field to attach metadata to S3 uploads.
-It should be a json formatted string which can contain configuration options of different kinds.
-
-Example:
-
-<pre><code class="language-liquid">
-{% raw %}
-  {% capture options %}
-  {
-    "user_id": "1337"
-  }
-  {% endcapture %}
-
-  <input type="hidden" name="x-amz-meta-metadata" value='{{ options | to_hash | json }}' />
-{% endraw %}
-</code></pre>
-{% endcomment %}
-
-### Important notes / troubleshooting
-
-* Make sure your form is using POST method
-* Make sure your form is sending data as `enctype="multipart/form-data"`
-* Make sure file input is sent last in the form
-* Remember to set your file input name to `file`
-* Make sure you included `x-amz-meta-metadata` field even if it is an empty object (`{}`), lack of it will throw a validation error because AWS S3 is expecting it to be present.
-
-All above are AWS requirements - [read more](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-HTTPPOSTForms.html).
+{% include 'how-to/user-uploads/aws-request-requirements' %}
 
 ## Live example and source code
 
-To play with live example create developer account at [https://nearme-example.staging-oregon.near-me.com](https://nearme-example.staging-oregon.near-me.com) and go to [update_profile](https://nearme-example.staging-oregon.near-me.com/update_profile) page.
-
-[Source code](https://github.com/mdyd-dev/marketplace-nearme-example) can be found at GitHub.
+{% include 'how-to/user-uploads/live-example-and-source-code' %}
 
 ## Additional resources
 
-* [Example: Browser-Based Upload using HTTP POST (Using AWS Signature Version 4)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-post-example.html)
-* [Creating an HTML Form (Using AWS Signature Version 4)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-HTTPPOSTForms.html)
-* [Upload a file with $.ajax to AWS S3 with a pre-signed url](https://gist.github.com/guumaster/9f18204aca2bd6c71a24)
+<ul>
+  <li><a href="https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-post-example.html" target="_blank">Example: Browser-Based Upload using HTTP POST (Using AWS Signature Version 4)</a></li>
+  <li><a href="https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-HTTPPOSTForms.html" target="_blank">Creating an HTML Form (Using AWS Signature Version 4)</a></li>
+  <li><a href="https://gist.github.com/guumaster/9f18204aca2bd6c71a24" target="_blank">Upload a file with $.ajax to AWS S3 with a pre-signed url</a></li>
+</ul>
 
 {% include 'shared/questions_section' %}
 

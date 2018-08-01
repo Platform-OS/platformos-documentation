@@ -1,0 +1,115 @@
+---
+converter: markdown
+metadata:
+  title: Uploading Files Directly to Amazon S3 Using AJAX
+  description: This guide will help you use the Amazon S3 direct upload from the browser using AJAX
+slug: how-to/user-uploads/uploading-files-directly-amazons3-using-ajax
+searchable: true
+---
+
+This guide will help you use the Amazon S3 direct upload from the front-end by adding the files from `form_builder` that are exposed to you for each file uploader.
+
+This guide presents a different approach to uploading a file directly to AWS S3 bucket using AJAX.
+
+## Requirements
+This is an advanced tutorial. To follow it, you should be familiar with basic Platform OS concepts, HTML, Liquid, APIs and Form Configurations, and the topics in the Get Started section.
+
+This guide uses the same form configuration, profile and page as [Uploading Files Directly to Amazon S3 Using HTML Form](/how-to/user-uploads/uploading-files-directly-amazons3-using-html-form).
+It is recommended to read it through before proceeding with this guide.
+
+* [How Platform OS Works](/how-platformos-works)
+* [Get Started](/get-started)
+* [APIs and Form Configurations](/api-reference)
+* [Form Configurations Reference](/reference/form-configurations/form-configurations)
+
+## Steps
+
+Uploading content directly to Amazon S3 is a two-step process:
+
+1. Prepare HTML form with fields including required metadata
+2. Submit file using AJAX
+
+### Step 1: Prepare HTML form with fields including required metadata
+
+#### marketplace_builder/form_configurations/developer/update_profile.liquid
+
+Create variables for quicker access later on:
+
+<pre><code class="language-liquid">
+{% raw %}
+{% assign profile = form_builder.fields.profiles.developer %}
+{% assign avatar = profile.custom_images.avatar %}
+{% assign image_s3_upload = avatar.image.s3_upload %}
+{% endraw %}
+</code></pre>
+
+Load required javascript file that is containing code responsible for making AJAX request
+
+<pre><code class="language-liquid">
+{% raw %}
+<script src="{{ 'DirectUpload.js' | asset_url }}" defer></script>
+{% endraw %}
+</code></pre>
+
+Create form, set up all required data in hidden inputs (those will be read by javascript later):
+
+<pre><code class="language-liquid">
+{% raw %}
+<form action="{{ image_s3_upload.direct_upload_url }}"
+  data-direct-upload-ajax="form">
+
+  {% for input in image_s3_upload.form_data %}
+    <input type="hidden" name="{{ input[0] }}" value="{{ input[1] }}">
+  {% endfor %}
+  <input type="hidden" name="x-amz-meta-metadata" value="{}">
+
+  <input type="file" name="file" id="{{ avatar.image.name }}" data-direct-upload-ajax="file">
+</form>
+{% endraw %}
+</code></pre>
+
+{% include 'alert/note', content: 'File input has to have the name **file**' %}
+
+### Step 2: Submit file using AJAX
+
+`DirectUpload.js` file contains all necessary javascript needed to handle sending file, error, showing preview.
+
+#### marketplace_builder/assets/DirectUpload.js
+
+<pre><code class="language-javascript">
+const $form = $('[data-direct-upload-ajax="form"]');
+
+$('[data-direct-upload-ajax="file"]').on("change", () => {
+  $.ajax({
+    type: "post",
+    url: $form.attr("action"), // get url from form tag
+    contentType: false, // guess Content-Type header (it has to be multipart/form-data)
+    processData: false, // do not try to process binary data
+    data: new FormData($form[0]) // create FormData object and populate it with form element passed into constructor
+  });
+});
+</code></pre>
+
+{% include 'alert/note', content: 'Code above is stripped from non-essential parts. Source code and live example are more complete with error handling, image previews and couple more.' %}
+
+## Important notes / troubleshooting
+
+{% include 'how-to/user-uploads/aws-request-requirements' %}
+
+## Live example and source code
+
+{% include 'how-to/user-uploads/live-example-and-source-code' %}
+
+## Additional resources
+
+<ul>
+  <li><a href="https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-post-example.html" target="_blank">Example: Browser-Based Upload using HTTP POST (Using AWS Signature Version 4)</a></li>
+  <li><a href="https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-HTTPPOSTForms.html" target="_blank">Creating an HTML Form (Using AWS Signature Version 4)</a></li>
+  <li><a href="https://gist.github.com/guumaster/9f18204aca2bd6c71a24" target="_blank">Upload a file with $.ajax to AWS S3 with a pre-signed url</a></li>
+</ul>
+
+{% include 'shared/questions_section' %}
+
+
+
+
