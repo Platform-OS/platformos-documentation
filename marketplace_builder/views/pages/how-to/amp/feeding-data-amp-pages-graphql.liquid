@@ -37,24 +37,13 @@ format: html
 layout_name: application
 ---
 <!-- AMP dependencies -->
-<script custom-element="amp-list" src="https://cdn.ampproject.org/v0/amp-list-0.1.js" async=""></script>
-<script custom-element="amp-bind" src="https://cdn.ampproject.org/v0/amp-bind-0.1.js" async=""></script>
-<script custom-template="amp-mustache" src="https://cdn.ampproject.org/v0/amp-mustache-0.1.js" async=""></script>
+{% content_for 'amp-dependencies' %}
+  <script custom-element="amp-list" src="https://cdn.ampproject.org/v0/amp-list-0.1.js" async=""></script>
+  <script custom-element="amp-bind" src="https://cdn.ampproject.org/v0/amp-bind-0.1.js" async=""></script>
+  <script custom-template="amp-mustache" src="https://cdn.ampproject.org/v0/amp-mustache-0.1.js" async=""></script>
+{% endcontent_for %}
 ..........
-  <amp-state id="products">
-    <script type="application/json">
-      {
-        "order": "desc"
-      }
-    </script>
-  </amp-state>
-
-  <select on="change: AMP.setState({products: {order: event.value}})">
-    <option value="desc">Price: High-Low</option>
-    <option value="asc">Price: Low-High</option>
-  </select>
-
-  <amp-list [src]="'api/products-' + products.order + '.json'" src="api/products-desc.json" layout="responsive">
+  <amp-list src="api/products.json" layout="responsive">
     <template type="amp-mustache">
       <a href="/product-details/{% raw %}{{ slug }}{% endraw %}">
         <div>
@@ -69,17 +58,24 @@ layout_name: application
 {% endraw %}
 </code></pre>
 
+Include the AMP dependencies in the layout file `marketplace_builder/views/layouts/application.liquid`:
+
+<pre><code class="language-liquid">
+{% raw %}
+..........
+  {% yield 'amp-dependencies' %}
+..........
+{% endraw %}
+</code></pre>
+
 #### Notes: 
-* This page declares the AMP state variable `products` with a JSON data structure format. 
-* `"order": "desc"` is the default sort order.
-* `<select>` changes the sort order stored in the state variable
-* The data source for `<amp-list>` is either `products-asc.json` or `products-desc.json` and is chosen based on the state variable `products.order`.
+* The data source for `<amp-list>` is `products.json`.
 * `amp-mustache` enables the 'mustache' (double curly braces) templating syntax.
 * The `{% raw %}` tag instructs the liquid preprocessor not to interpret the `{{}}` tags, and leaves them to AMP/mustache to process. 
 
 
 ### Step 2: Create JSON endpoint 
-Create the JSON endpoint, a dynamically generated JSON document from which AMP fetches the data that it displays `mviews/pages/api/products-asc.json.liquid`: 
+Create the JSON endpoint, a dynamically generated JSON document from which AMP fetches the data that it displays `marketplace_builder/views/pages/api/products.json.liquid`: 
 
 <pre><code class="language-liquid">
 {% raw %}
@@ -88,7 +84,7 @@ slug: api/products
 format: json
 ---
 {% query_graph 'get_listings', result_name: g %}
-{% assign results = g.listings.results | sort: 'price' %}
+{% assign results = g.listings.results %}
 
 {
   "items": [
@@ -109,7 +105,7 @@ format: json
 #### Notes:
 * The GraphQL query is not given any argument, thus it retrieves all the listings (products) which are then sorted by price in ascending order with the `sort:` liquid filter.
 * Then the `for` loop populates the `"items"` list with JSON data that contains the info for each product.
-* The listing puts a comma after each element except for the last in the list. 
+* The loop puts a comma after each element except for the last in the list. 
 
 ### Step 3: Fetch listing data 
 Create the GraphQL query that fetches listing data `marketplace_builder/graph_queries/get_listings.graphql`:
