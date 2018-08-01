@@ -30,6 +30,7 @@ Feeding data into AMP pages with GraphQL, in this case, displaying products on a
 Create the main page, HTML extended with AMP tags and objects `marketplace_builder/views/pages/product-list.liquid`:
 
 <pre><code class="language-liquid">
+{% raw %}
 ---
 slug: product-list
 format: html
@@ -65,6 +66,7 @@ layout_name: application
       </a>
     </template>
   </amp-list>
+{% endraw %}
 </code></pre>
 
 #### Notes: 
@@ -80,6 +82,7 @@ layout_name: application
 Create the JSON endpoint, a dynamically generated JSON document from which AMP fetches the data that it displays `mviews/pages/api/products-asc.json.liquid`: 
 
 <pre><code class="language-liquid">
+{% raw %}
 ---
 slug: api/products
 format: json
@@ -100,6 +103,7 @@ format: json
 {% endfor %}
   ]
 }
+{% endraw %}
 </code></pre>
 
 #### Notes:
@@ -155,6 +159,7 @@ custom_attributes:
 Create the `/product-details` page that loads when visitors click on a product from `/product-list` above `views/pages/product-details.liquid`:
 
 <pre><code class="language-liquid">
+{% raw %}
 ---
 slug: product-details
 format: html
@@ -167,6 +172,7 @@ layout_name: application
 <amp-img src="{{ p.photos[0].url }}" layout="responsive"></amp-img>
 <div>${{ p.price }}</div>
 <div>{{ p.description }}</div>
+{% endraw %}
 </code></pre>
 
 #### Notes: 
