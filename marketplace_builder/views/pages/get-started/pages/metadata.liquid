@@ -26,19 +26,17 @@ Metadata is available through Liquid as `page.metadata`:
 
 <pre><code class="language-liquid">
 {% raw %}
-<div>
-  <h1>{{ page.metadata.title }}</h1>
+<h1>{{ page.metadata.title }}</h1>
 
-  <section>{{ page.metadata.description }}</section>
+<section>{{ page.metadata.description }}</section>
 
-  <ul>
-    {% for tag in page.metadata.tags %}
-      <li>{{ tag }}</li>
-    {% endfor %}
-  </ul>
+<ul>
+  {% for tag in page.metadata.tags %}
+    <li>{{ tag }}</li>
+  {% endfor %}
+</ul>
 
-  <strong>{{ page.metadata.tags | join: "," }}</strong>
-</div>
+<strong>{{ page.metadata.tags | join: "," }}</strong>
 {% endraw %}
 </code></pre>
 
@@ -46,8 +44,6 @@ Metadata is available through Liquid as `page.metadata`:
 ## Searching for a page using its metadata
 
 You can search for a page using its metadata in GraphQL queries (all support `page` and `per_page` pagination arguments). Here's an example of a GraphQL query with all possible parameters.
-
-{% raw %}
 
 <pre><code class="language-graphql">
 query find_page(
@@ -61,9 +57,6 @@ query find_page(
 ) {
   pages: pages(
     page: $page
-    filter: {
-
-    }
     per_page: $per_page
     filter: {
       metadata: {
@@ -92,11 +85,9 @@ query find_page(
 }
 </code></pre>
 
-{% endraw %}
-
 Some examples of using the above query from a Liquid template to find metadata:
 
-* Find pages WITH word `TITLE` somewhere in metadata (in keys or values)
+### Find pages WITH word `TITLE` somewhere in metadata (in keys or values)
 
 {% raw %}
 
@@ -106,7 +97,7 @@ Some examples of using the above query from a Liquid template to find metadata:
 
 {% endraw %}
 
-* Find pages WITHOUT word `TITLE` in metadata (in keys or values)
+### Find pages WITHOUT word `TITLE` in metadata (in keys or values)
 
   {% raw %}
 
@@ -116,7 +107,7 @@ Some examples of using the above query from a Liquid template to find metadata:
 
 {% endraw %}
 
-* Match pages having top-level key `tags`
+### Match pages having top-level key `tags`
 
 {% raw %}
 
@@ -126,7 +117,7 @@ Some examples of using the above query from a Liquid template to find metadata:
 
 {% endraw %}
 
-* Match pages without "tags" key
+### Match pages without "tags" key
 
 {% raw %}
 
@@ -136,7 +127,7 @@ Some examples of using the above query from a Liquid template to find metadata:
 
 {% endraw %}
 
-* Match pages with key `tags` having (or including) value `bar`
+### Match pages with key `tags` having (or including) value `bar`
 
 {% raw %}
 
@@ -146,7 +137,7 @@ Some examples of using the above query from a Liquid template to find metadata:
 
 {% endraw %}
 
-* Match pages that do not have key `tags` equal (or including) to `bar`
+### Match pages that do not have key `tags` equal (or including) to `bar`
 
 {% raw %}
 
