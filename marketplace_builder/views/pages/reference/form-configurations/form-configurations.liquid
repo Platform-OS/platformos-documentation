@@ -9,6 +9,26 @@ searchable: true
 
 **Form Configurations** give you full control over both the look and feel of a form and its behavior.
 
+## Configuration Properties
+
+| Property                 | Description                                                  | Options                                                      | Default | Required |
+| ------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------- | -------- |
+| `name`                   | The name this form will be referenced by in other configurations or tags. |                                                              |         | Yes      |
+| `resource`               | Specify which type of database table will store the form data. | `BankAccount`<br/>`CreditCard`<br/>`CustomAttachment`<br/>`CustomImage`<br/>`CustomAddress`<br/>`Customization`<br/>`MerchantAccount`<br/>`Payment`<br/>`PaymentTransfer`<br/>`Session`<br/>`Transactable`<br/>`User` |         | Yes      |
+| `api_call_notifications` |                                                              |                                                              |         | No       |
+| `async_callback_actions` |                                                              |                                                              |         | No       |
+| `authorization_policies` |                                                              |                                                              |         | No       |
+| `callback_actions`       |                                                              |                                                              |         | No       |
+| `configuration`          | Determines the fields this form will create. The available fields depends on the `resource` you specified. |                                                              |         | No       |
+| `default_payload`        |                                                              |                                                              |         | No       |
+| `email_notifications`    |                                                              |                                                              |         | No       |
+| `flash_alert`            | A custom message for when the form contains any errors. The message can be rendered on the page as `{{flash.alert}}`. |                                                              |         | No       |
+| `flash_notice`           | A custom message for when the form submits successfully. The message can be rendered on the `redirect_to` page as `{{flash.notice}}`. |                                                              |         | No       |
+| `redirect_to`            | The page a user is redirected to after a successful form submission. |                                                              |         | No       |
+| `resource_owner`         | Specify whether the form data will be associated with the current user (`self`). | `self`<br />`anyone`                                         | `self`  | No       |
+| `sms_notifications`      |                                                              |                                                              |         | No       |
+| `spam_protection`        |                                                              |                                                              |         | No       |
+
 * [Validation](/reference/form-configurations/validation)
 * [Flash Messages](/reference/form-configurations/flash-messages)
 * [Default Payload](/reference/form-configurations/default-payload)
