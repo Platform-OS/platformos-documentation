@@ -9,8 +9,6 @@ const widgetNav = () => {
   $(".widget--nav li").on("click", "a:first", expandMenu);
 };
 
-const ANIMATION_SPEED = 200;
-
 const expandMenu = function(e) {
   var $menu_el = $(this);
   var $parent = $menu_el.parent();
@@ -23,19 +21,19 @@ const expandMenu = function(e) {
       $parent
         .removeClass("expanded")
         .children(".sub-menu")
-        .slideUp(ANIMATION_SPEED);
+        .hide();
     } else {
       $parent
         .addClass("expanded")
         .children(".sub-menu")
-        .slideDown(ANIMATION_SPEED);
+        .show();
     }
 
     $parent
       .siblings()
       .removeClass("expanded")
       .children(".sub-menu")
-      .slideUp(ANIMATION_SPEED);
+      .hide();
   }
 };
 export default widgetNav;
