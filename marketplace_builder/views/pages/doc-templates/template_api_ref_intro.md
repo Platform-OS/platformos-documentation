@@ -50,7 +50,7 @@ The status contains the error code, while the body of the response usually conta
 | 500 SERVER ERROR        | The request has failed because of server error. Please try to send the request later.                                                                                                               |
 | 503 SERVICE UNAVAILABLE | The server is temporarily unable to respond to the request. Please try to send the request later.                                                                                                   |
 
-</code></pre>
+<pre><code>
 [Example error response]
 </code></pre>
 
@@ -62,7 +62,7 @@ When a request is successful, the API sends back a [response object format, e.g.
 
 [Explanation of example response]
 
-</code></pre>
+<pre><code>
 [Example responses:
 1. Response for a single object
 2. Response for an object collection]
@@ -72,7 +72,7 @@ When a request is successful, the API sends back a [response object format, e.g.
 
 [Describe how to pass parameters in a request with the API, e.g. JSON object key-value pairs, query attributes]
 
-</code></pre>
+<pre><code>
 [Sample object]
 </code></pre>
 
@@ -80,7 +80,7 @@ When a request is successful, the API sends back a [response object format, e.g.
 
 [Describe rate limits, e.g. the number of possible API requests with the same OAuth token, rate limiting information in response headers, concurrency rate limiting]
 
-</code></pre>
+<pre><code>
 [Sample rate limit headers, sample rate exceeded response]
 </code></pre>
 
@@ -88,6 +88,6 @@ When a request is successful, the API sends back a [response object format, e.g.
 
 [Describe ways to authenticate][api keys]
 
-</code></pre>
+<pre><code>
 [Examples: Authenticate with a bearer authorization header, Authenticate with basic authentication]
 </code></pre>
