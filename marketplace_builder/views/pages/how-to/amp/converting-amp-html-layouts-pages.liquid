@@ -59,31 +59,29 @@ Edit your layout `views/layouts/application.liquid`:
 * Replace or add the `title`.
 * `content_for_layout` will be populated by the `blog.liquid` page content.
 * Cut the footer part of the HTML page and add it to the bottom of your layout.
-* Add the AMP symbol `⚡` to the `html` tag.
+* Add the AMP symbol <code>&#9889;</code> to the `html` tag.
 
 {% include 'alert/note', content: 'Read more about <a href="https://www.ampproject.org/docs/fundamentals/spec" target="_blank">AMP HTML Specification</a>' %}
 
 <pre><code class="language-liquid">
 {% raw %}
-<!doctype html ⚡>
-<head>
+&lt;!doctype html  &#9889;>
+&lt;head>
   <meta charset="utf-8">
   <title>The Recipe Blog</title>
   <link rel="canonical" href="https://{{ context.location.host }}/{{ context.page.slug }}">
   <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
 
-  <script async src="https://cdn.ampproject.org/v0.js"></script>
+  &lt;script async src="https://cdn.ampproject.org/v0.js">&lt;/script>
 
   <title>
     {% yield 'meta_title' %}
   </title>
-</head>
-  <body>
+&lt;/head>
+  &lt;body>
     {{ content_for_layout }}
-
-    <footer class="ampstart-footer flex flex-column items-center px3">
-  </body>
-</html>
+  &lt;/body>
+&lt;/html>
 {% endraw %}
 </code></pre>
 
