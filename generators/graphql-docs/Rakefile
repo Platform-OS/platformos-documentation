@@ -1,8 +1,17 @@
+require 'graphql-docs'
+
+# module GraphQLDocs
+#   module Helpers
+#     def graphql_object_types
+#       require 'pry'; binding.pry
+#       @parsed_schema[:object_types] || []
+#     end
+#   end
+# end
+
 task default: %w[build]
 
 task :build do
-  require 'graphql-docs'
-
   GraphQLDocs.build(
     filename: '../../tmp/schema.graphql',
     output_dir: '../../marketplace_builder/views/partials/generated/graphql-docs',
@@ -10,8 +19,10 @@ task :build do
       index: 'landing_pages/index.md'
     ),
     templates: GraphQLDocs::Configuration::GRAPHQLDOCS_DEFAULTS[:templates].merge(
+      includes: 'layouts/includes',
       default: 'layouts/default.html',
-      sidebar: 'layouts/sidebar.html'
+      sidebar: 'layouts/sidebar.html',
+      operations: 'layouts/graphql_operations.html'
     ),
     use_default_styles: false,
     base_url: '/api-reference/graphql/g',
