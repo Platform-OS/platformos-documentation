@@ -27,27 +27,24 @@ Add the yield tag to the previously created `application.liquid` layout file, e.
 
 {% raw %}
 
-<pre><code class="language-liquid">
+```twig
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>
-  {% yield 'meta_title' %}
-  </title>
-</head>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>
+    {% yield 'meta_title' %}
+    </title>
+  </head>
 
-<body>
-<h1>Layout</h1>
-{{ content_for_layout }}
-
-</body>
-
+  <body>
+    <h1>Layout</h1>
+    {{ content_for_layout }}
+  </body>
 </html>
-
-</code></pre>
+```
 
 {% endraw %}
 
@@ -80,5 +77,3 @@ Congratulations! You have injected dynamic content into a layout. Now you can le
 * [Reusing Code Across Multiple Pages](/get-started/pages/reusing-code-across-multiple-pages)
 
 {% include 'shared/questions_section' %}
-
-

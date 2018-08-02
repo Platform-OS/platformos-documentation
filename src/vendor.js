@@ -24,9 +24,11 @@ if ($("[class^=language]").length > 0) {
   import(/* webpackChunkName: "prism" */ "prismjs/components/prism-javascript");
   import(/* webpackChunkName: "prism" */ "prismjs/components/prism-json");
   import(/* webpackChunkName: "prism" */ "prismjs/components/prism-markdown");
+  import(/* webpackChunkName: "prism" */ "prismjs/components/prism-markup");
   import(/* webpackChunkName: "prism" */ "prismjs/components/prism-sass");
   import(/* webpackChunkName: "prism" */ "prismjs/components/prism-scss");
   import(/* webpackChunkName: "prism" */ "prismjs/components/prism-yaml");
+  import(/* webpackChunkName: "prism" */ "prismjs/components/prism-twig");
   import(/* webpackChunkName: "prism" */ "prismjs/components/prism-liquid").then(
     () => (Prism.languages.liquid.keyword = liquidKeywords) // Add our custom tags to liquid language definition
   );
