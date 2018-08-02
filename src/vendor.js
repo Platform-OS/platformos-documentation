@@ -24,6 +24,7 @@ if ($("[class^=language]").length > 0) {
   import(/* webpackChunkName: "prism" */ "prismjs/components/prism-javascript");
   import(/* webpackChunkName: "prism" */ "prismjs/components/prism-json");
   import(/* webpackChunkName: "prism" */ "prismjs/components/prism-markdown");
+  import(/* webpackChunkName: "prism" */ "prismjs/components/prism-markup");
   import(/* webpackChunkName: "prism" */ "prismjs/components/prism-sass");
   import(/* webpackChunkName: "prism" */ "prismjs/components/prism-scss");
   import(/* webpackChunkName: "prism" */ "prismjs/components/prism-yaml");
