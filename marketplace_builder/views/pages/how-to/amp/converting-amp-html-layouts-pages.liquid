@@ -61,7 +61,7 @@ Edit your layout `views/layouts/application.liquid`:
 * Cut the footer part of the HTML page and add it to the bottom of your layout.
 * Add the AMP symbol `⚡` to the `html` tag.
 
-{% include 'alert/note', content: 'Read more about <a href="https://www.ampproject.org/docs/fundamentals/spec" target="_blank" rel="external">AMP HTML Specification</a>' %}
+{% include 'alert/note', content: 'Read more about <a href="https://www.ampproject.org/docs/fundamentals/spec" target="_blank">AMP HTML Specification</a>' %}
 
 <pre><code class="language-liquid">
 {% raw %}
@@ -72,7 +72,7 @@ Edit your layout `views/layouts/application.liquid`:
   <link rel="canonical" href="https://{{ context.location.host }}/{{ context.page.slug }}">
   <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
 
-  <script async="" src="https://cdn.ampproject.org/v0.js"></script>
+  <script async src="https://cdn.ampproject.org/v0.js"></script>
 
   <title>
     {% yield 'meta_title' %}
@@ -99,7 +99,9 @@ Change the path of images using the `asset_url` filter. Modify each image path f
 to
 
 <pre><code class="language-html">
-<amp-img src="{% raw %}{{ 'img/blog/spritzer.jpg' | asset_url }}{% endraw %}" width="1280" height="853" layout="responsive" alt="The final spritzer" class="mb4 mx3"></amp-img>
+{% raw %}
+<amp-img src="{{ 'img/blog/spritzer.jpg' | asset_url }}" width="1280" height="853" layout="responsive" alt="The final spritzer" class="mb4 mx3"></amp-img>
+{% endraw %}
 </code></pre>
 
 
