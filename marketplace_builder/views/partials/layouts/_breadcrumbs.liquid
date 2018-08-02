@@ -20,7 +20,11 @@
         {% if forloop.last %}
           <a href="/{{ page.slug }}">{{ page.metadata.title }}</a>
         {% else %}
-          <span>{{ link_item.name }}</span>
+          {% if link_item == blank %}
+            {{ slug_part | capitalize | replace: "_", " " }}
+          {% else %}
+            <span>{{ link_item.name }}</span>
+          {% endif %}
         {% endif %}
       </li>
     {% endfor %}
