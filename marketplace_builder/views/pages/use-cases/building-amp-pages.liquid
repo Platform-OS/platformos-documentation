@@ -1,0 +1,69 @@
+---
+converter: markdown
+metadata:
+  title: Building AMP Pages on Platform OS 
+  description: Use case of building AMP pages on Platform OS: standard, benefits, and tutorials to get you started.
+slug: use-cases/building-amp-pages
+searchable: true
+---
+
+This use case describes how you can **build Accelerated Mobile Pages (AMP) on Platform OS**. We explore the benefits of AMP pages, discuss the standard, and link some tutorials to get you started.
+
+## The AMP standard and its benefits 
+Google’s initiative, [AMP](https://www.ampproject.org/learn/overview/) is an open-source library for creating web pages that load almost instantly. Their reduced load time improves user experience, and lowers the bounce rate. Page load time is a factor in search engine optimization, so building AMP pages has a positive effect on search rankings as well. AMP is built to enhance the usability of images and banners, so it can contribute to higher ad viewability rates.   
+
+The AMP standard describes three main aspects:
+
+* **AMP HTML** is HTML extended with custom AMP properties, e.g. some HTML tags are replaced with AMP-specific tags.  
+* **AMP JavaScript** is optimized for performance, for example, it uses external resources asynchronously, sandboxes all iframes, pre-calculates every element on the page before loading resources, and disables slow CSS selectors. 
+* **AMP Cache** fetches AMP HTML pages, caches them, and improves page performance automatically. 
+
+Many [platforms](https://www.ampproject.org/support/faqs/supported-platforms) (including Platform OS), and all major [browsers](https://www.ampproject.org/support/faqs/supported-browsers) support AMP (with AMP working on other browsers as well without official support). 
+
+Tip: To verify that you have a valid AMP page, use the [AMP Validator](https://github.com/ampproject/amphtml/tree/master/validator). It’s also available as a [Chrome extension](https://github.com/ampproject/amphtml/blob/master/validator/chromeextension/README.md). 
+
+## AMP on Platform OS
+
+Platform OS is fully AMP-compatible. Because an AMP page is just an HTML page inside a required boilerplate and compliant with AMP rules, you can freely develop an AMP site using our platform. You can even get any free template from [AMP Start](https://www.ampstart.com/getstarted) and place it directly into your assets directory, and it will be live immediately. In a couple of minutes you can extract the layout part to a layout, and the content of the pages to Liquid pages to have access to the power of Liquid, GraphQL, and the whole backend behind Platform OS, while keeping your code lean to comply with AMP restrictions.
+
+We built a couple of AMP examples on Platform OS for you to check out:
+
+* [https://amp-demo-ecommerce.oregon.near-me.com/](https://amp-demo-ecommerce.oregon.near-me.com/)
+* [https://amp-demo-travel.oregon.near-me.com/](https://amp-demo-travel.oregon.near-me.com/)
+* [https://amp-demo-lune.oregon.near-me.com/](https://amp-demo-lune.oregon.near-me.com/)
+* [https://amp-demo-gallery.oregon.near-me.com/gallery](https://amp-demo-gallery.oregon.near-me.com/gallery)
+* [https://amp-demo-blog.oregon.near-me.com/](https://amp-demo-blog.oregon.near-me.com/)
+
+You can find the source code of both templates and Instances in our GitHub repository: [https://github.com/mdyd-dev/amp-demo-pages](https://github.com/mdyd-dev/amp-demo-pages)
+
+## Building AMP pages on Platform OS from a template
+
+You can build AMP pages on Platform OS from scratch, but you can also turn an AMP template into layouts, pages, and partials. 
+
+### Prerequisites
+
+To be able to build AMP pages on Platform OS,  you need a Platform OS Instance and your codebase. This can be an already existing Instance, or you can start with a clean install. 
+
+{% include "alert/tutorial", content: "If you don’t have a Platform OS Instance yet, follow our <a href='/get-started/quickstart-guide'>Quickstart Guide</a> to set up your Instance and codebase." %}
+
+### Downloading and using a template
+
+You can download an AMP template and use it without any modifications on your Platform OS site by adding it to your codebase. 
+
+{% include "alert/tutorial", content: "Follow our <a href='/how-to/amp/using-static-amp-template'>step-by-step tutorial for downloading and using a template</a>." %}
+
+### Converting a template into a Platform OS site
+
+To be able to use Platform OS features (like GraphQL queries) on your AMP pages, turn them into Liquid layouts, pages, and partials.  
+
+{% include "alert/tutorial", content: "<a href='/how-to/amp/converting-amp-html-layouts-pages'>Convert your static template into Liquid layouts and pages</a> to be used as Platform OS components." %}
+
+### Leveraging the Platform OS backend
+
+Make use of all Platform OS features while keeping your site AMP-compatible. We wrote a step-by-step tutorial about feeding data into your AMP pages with GraphQL, but you can use all features on AMP pages that are otherwise available. 
+
+{% include "alert/tutorial", content: "<a href='/how-to/amp/feeding-data-amp-pages-graphql'>Check out our guide</a> that explains feeding data into your AMP pages through a real-life example of displaying products of an online store." %}
+
+## Want to learn more?
+
+We want to support you all throughout your journey with Platform OS, and are always happy to help with any questions you may have. To learn more, consult our [documentation](https://documentation.platform-os.com) or [get in touch with us](/contact).
