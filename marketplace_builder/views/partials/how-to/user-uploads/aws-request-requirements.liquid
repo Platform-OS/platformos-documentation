@@ -1,6 +1,7 @@
 <ul>
   <li>Make sure your form is using POST method</li>
   <li>Make sure your form is sending data as <code>enctype="multipart/form-data"</code></li>
+  <li>Do not include any fields that are not listed in the <code>s3_upload</code> key, otherwise AWS will return error 403 with message <code>Invalid according to Policy: Extra input fields: xxx</code></li>
   <li>Make sure file input is sent last in the form</li>
   <li>Remember to set your file input name to <code>file</code></li>
   <li>Make sure you included <code>x-amz-meta-metadata</code> field even if it is an empty object (<code>{}</code>), lack of it will throw a validation error because AWS S3 is expecting it to be present.</li>
