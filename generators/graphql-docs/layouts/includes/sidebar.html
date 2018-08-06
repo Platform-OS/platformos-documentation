@@ -27,7 +27,7 @@
     <li>
       <a href="<%= base_url %>/object">Objects</a>
     </li>
-    <% graphql_object_types.().each do |type| %>
+    <% graphql_object_types.().reject { |t| t[:description] == 'Deprecated' }.each do |type| %>
       <% @name = type[:name] %>
     <li>
       <a href="<%= base_url %>/object/<%= @name.downcase %>/">
