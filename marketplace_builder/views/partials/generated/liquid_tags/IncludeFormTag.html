@@ -1,35 +1,23 @@
+---
+converter: markdown
+---
 <div>
-  {% raw %}
-    <div class="docstring">
-  <div class="discussion">
-    <h2>include_form</h2>
 
-<p>This tag should be used to render forms defined in marketplace_builder/form_configurations</p>
+{% raw %}
+  ## include_form
+This tag should be used to render forms defined in marketplace_builder/form_configurations
 
-<p>Arguments:</p>
+### Arguments:
+- **form_name** [String] name of the form configuration from marketplace_builder/form_configurations
+- **resource_id** [ID] id of the resource you want to edit
+- **parent_resource_id** [String] name of the resource type, ex. name of custom_model_type, transactable_type, user_profile_type
 
-<ul>
-<li><strong>form_name</strong> [String] name of the form configuration from marketplace_builder/form_configurations</li>
-<li><strong>resource_id</strong> [ID] id of the resource you want to edit</li>
-<li><strong>parent_resource_id</strong> [String] name of the resource type, ex. name of custom_model_type, transactable_type, user_profile_type</li>
-</ul>
+### Examples:
+```liquid
+  {% include_form 'signup_form' %}
+  {% include_form 'edit_user', resource_id: user.id %}
+  {% include_form 'manager_invite_to_interview', parent_resource_id: 'invitation', user: g.user %}
+```
+{% endraw %}
 
-
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{% include_form &#39;signup_form&#39; %}
-{% include_form &#39;edit_user&#39;, resource_id: user.id %}
-{% include_form &#39;manager_invite_to_interview&#39;, parent_resource_id: &#39;invitation&#39;, user: g.user %}</code></pre>
-    
-  </div>
-
-
-</div>
-  {% endraw %}
 </div>

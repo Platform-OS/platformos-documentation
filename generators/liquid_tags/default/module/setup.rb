@@ -3,5 +3,9 @@
 include Helpers::ModuleHelper
 
 def init
-  sections T('docstring')
+  sections :raw_docstring
+end
+
+def raw_docstring
+  object.docstring
 end

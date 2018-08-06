@@ -1,42 +1,30 @@
+---
+converter: markdown
+---
 <div>
-  {% raw %}
-    <div class="docstring">
-  <div class="discussion">
-    <h2>form</h2>
 
-<p>Used to generate a html form element for a resource. Use within <code>form configuration</code>.
-Inside the tag you can use <code>form_builder</code> variable.</p>
+{% raw %}
+  ## form
+Used to generate a html form element for a resource. Use within `form configuration`.
+Inside the tag you can use `form_builder` variable.
 
-<p>Arguments:</p>
+### Arguments:
+- **html-id** [String]: set id attribute in `<form id="">` element
+- **html-novalidate** [String]: add `novalidate` attribute to `<form novalidate>` element
+- **html-class** [String]: add css class `<form class="">` element
+- **html-multipart** [Boolean]: add `enctype="multipart/form-data"` attribute to `<form enctype="multipart/form-data">` element.
+  Multipart is enabled by default
+- **html-data-[attr]** [String]: add data attribute to `<form data-[attr]="">` element
 
-<ul>
-<li><strong>html-id</strong> [String] set id attribute in <code>&lt;form id=&quot;&quot;&gt;</code> element</li>
-<li><strong>html-novalidate</strong> [String] add <code>novalidate</code> attribute to <code>&lt;form novalidate&gt;</code> element</li>
-<li><strong>html-class</strong> [String] add css class <code>&lt;form class=&quot;&quot;&gt;</code> element</li>
-<li><strong>html-multipart</strong> [Boolean] add <code>enctype=&quot;multipart/form-data&quot;</code> attribute to <code>&lt;form enctype=&quot;multipart/form-data&quot;&gt;</code> element.
-Multipart is enabled by default</li>
-<li><strong>html-data-[attr]</strong> [String] add data attribute to <code>&lt;form data-[attr]=&quot;&quot;&gt;</code> element</li>
-</ul>
+### Examples:
+```liquid
+ {% form %}
+   {{ form_builder }}
+ {% endform %}
 
+ {% form html-id: 'someid', html-novalidate: true, html-class: 'big-form green-form', html-data-user-id: '12345', html-multipart: false %}
+ {% endform %}
+```
+{% endraw %}
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{% form %}
-  {{ form_builder }}
-{% endform %}
-
-{% form html-id: &#39;someid&#39;, html-novalidate: true, html-class: &#39;big-form green-form&#39;, html-data-user-id: &#39;12345&#39;, html-multipart: false %}
-{% endform %}</code></pre>
-    
-  </div>
-
-
-</div>
-  {% endraw %}
 </div>

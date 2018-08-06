@@ -1,36 +1,23 @@
+---
+converter: markdown
+---
 <div>
-  {% raw %}
-    <div class="docstring">
-  <div class="discussion">
-    <h2>yield</h2>
 
-<p>Execute code wrapped inside content_for</p>
+{% raw %}
+  ## yield
+Execute code wrapped inside content_for
 
-<p>Arguments:</p>
+### Arguments:
+- **content_for_symbol** [String]: name of content_for block
 
-<ul>
-<li><strong>content_for_symbol</strong> [String]: name of content_for block</li>
-</ul>
+### Examples:
+Use this in a liquid view first. Then you can use yield inside the layout (for example) or another subsequently rendered view, like below:
+```liquid
+  {% content_for 'content_for_name' %}Hello world{% endcontent_for %}
 
+  # another_file.liquid
+  {% yield 'content_for_name' %}
+```
+{% endraw %}
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-        <p class="example_title"><div class='inline'><p>Use this in a liquid view first. Then you can use yield inside the layout (for example) or another subsequently rendered view, like below:</p>
-</div></p>
-      
-      <pre class="example code"><code>{% content_for &#39;content_for_name&#39; %}Hello world{% endcontent_for %}
-# another_file.liquid
-{% yield &#39;content_for_name&#39; %}</code></pre>
-    
-  </div>
-
-
-</div>
-  {% endraw %}
 </div>
