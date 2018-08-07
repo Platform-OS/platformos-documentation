@@ -1,4767 +1,2132 @@
+---
+converter: markdown
+---
 <div>
-  <div id="instance_method_details" class="method_details_list">
-    
-      <div class="method_details first">
-  {% raw %}
-    <h3 class="signature first" id="add_to_array-instance_method">
-  
-    #<strong>add_to_array</strong>(array, item)  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns array to which we add the item given as the second parameter</p>
+{% raw %}
 
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{% assign array = &#39;a,b,c&#39; | split: &#39;,&#39; %}
-{{ array | add_to_array: &#39;d&#39; }} =&gt; [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;]</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>array</span>
-      
-      
-        <span class='type'>(<tt>Array&lt;Object&gt;</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>array to which we add a new element</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>item</span>
-      
-      
-        <span class='type'>(<tt>Object</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>item we add to the array</p>
-</div>
-      
-    </li>
-  
-</ul>
 
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Array&lt;Object&gt;</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>array to which we add the item given as the second parameter</p>
-</div>
-      
-    </li>
-  
-</ul>
+<div>
+<h2 class="signature first" id="add_to_array-instance_method">
+
+#<strong>add_to_array</strong>(array, item)  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
+
+
+
+</h2>
+
+
+### Returns:
+
+(<tt>Array&lt;Object&gt;</tt>) - array to which we add the item given as the second parameter
+
+
+
+
+### Params:
+
+
+* array (<tt>Array&lt;Object&gt;</tt>) - array to which we add a new element 
+
+* item (<tt>Object</tt>) - item we add to the array 
+
+
+
+
+### Examples:
+```liquid
+{% assign array = 'a,b,c' | split: ',' %}
+{{ array | add_to_array: 'd' }} => ['a', 'b', 'c', 'd']
+```
+
+
 
 </div>
-  {% endraw %}
-</div>
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="add_to_date-instance_method">
-  
-    #<strong>add_to_date</strong>(date, number_of_days)  &#x21d2; <tt>Date</tt> 
-  
+<div>
+<h2 class="signature " id="add_to_date-instance_method">
 
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns input date/time to which the number_of_days days have been added;
-use negative values to obtain a date in the past</p>
+#<strong>add_to_date</strong>(date, number_of_days)  &#x21d2; <tt>Date</tt> 
 
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{{ &#39;2010-01-01&#39; | add_to_date: 1 }} =&gt; 2010-01-02</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>date</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>date to which we add number_of_days</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>number_of_days</span>
-      
-      
-        <span class='type'>(<tt>Integer</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>number of days to add to the input date</p>
-</div>
-      
-    </li>
-  
-</ul>
 
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Date</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>input date/time to which the number_of_days days have been added; use
-negative values to obtain a date in the past</p>
-</div>
-      
-    </li>
-  
-</ul>
+</h2>
+
+
+### Returns:
+
+(<tt>Date</tt>) - input date/time to which the number_of_days days have been added; use negative values to obtain
+a date in the past
+
+
+
+
+### Params:
+
+
+* date (<tt>Date</tt>, <tt>String</tt>, <tt>Time</tt>) - date to which we add number_of_days 
+
+* number_of_days (<tt>Integer</tt>) - number of days to add to the input date 
+
+
+
+
+### Examples:
+```liquid
+{{ '2010-01-01' | add_to_date: 1 }} => 2010-01-02
+```
+
+
 
 </div>
-  {% endraw %}
-</div>
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="any-instance_method">
-  
-    #<strong>any</strong>(arr = [], query = &#39;true&#39;)  &#x21d2; <tt>Boolean</tt> 
-  
+<div>
+<h2 class="signature " id="advanced_format-instance_method">
 
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns checks if given array contains at least one queried string/number</p>
+#<strong>advanced_format</strong>(argument_to_format, format)  &#x21d2; <tt>String</tt> 
 
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{{ | }} =&gt;</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>arr</span>
-      
-      
-        <span class='type'>(<tt>Array</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>[]</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>array to search through</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>query</span>
-      
-      
-        <span class='type'>(<tt>String</tt>, <tt>Number</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>&#39;true&#39;</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>String/Number compared to each item in the given array</p>
-</div>
-      
-    </li>
-  
-</ul>
 
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Boolean</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>checks if given array contains at least one queried string/number</p>
-</div>
-      
-    </li>
-  
-</ul>
+</h2>
+
+
+### Returns:
+
+(<tt>String</tt>) - formatted string
+
+
+
+
+### Params:
+
+
+* argument_to_format (<tt>Object</tt>) - object you want to format 
+
+* format (<tt>String</tt>) - should look like: %[flags][width][.precision]type. More examples and information could be taken from: https://ruby-doc.org/core-2.5.1/Kernel.html#method-i-sprintf 
+
+
+
+
+### Examples:
+```liquid
+{{ 3.124 | advanced_format: '%.2f' }} => 3.12
+{{ 3 | advanced_format: '%.2f' }} => 3.00
+In the example above flags is not present, width is not present (refers to the total final
+length of the string), precision ".2" means 2 digits after the decimal point,
+type "f" means floating point
+```
+
+
 
 </div>
-  {% endraw %}
-</div>
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="asset_url-instance_method">
-  
-    #<strong>asset_url</strong>(file_path, **_options)  &#x21d2; <tt>String</tt> 
-  
+<div>
+<h2 class="signature " id="any-instance_method">
 
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns url to the physical file if existing, root asset url otherwise</p>
+#<strong>any</strong>(array = [], query = &#39;true&#39;)  &#x21d2; <tt>Boolean</tt> 
 
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{{ &quot;valid/file.jpg&quot; | asset_url }} =&gt; https://cdn-server.com/valid/file.jpg</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>file_path</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
 
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>url to the physical file if existing, root asset url otherwise</p>
-</div>
-      
-    </li>
-  
-</ul>
+</h2>
+
+
+### Returns:
+
+(<tt>Boolean</tt>) - checks if given array contains at least one queried string/number
+
+
+
+
+### Params:
+
+
+* array (<tt>Array</tt>) - array to search through  <em class="default">(defaults to: <tt>[]</tt>)</em> 
+
+* query (<tt>String</tt>, <tt>Number</tt>) - String/Number compared to each item in the given array  <em class="default">(defaults to: <tt>&#39;true&#39;</tt>)</em> 
+
+
+
+
+### Examples:
+```liquid
+{% assign elements = 'foo,bar' | split: ',' %}
+{{ elements | any: 'foo' }} => true
+```
+
+
 
 </div>
-  {% endraw %}
-</div>
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="compact-instance_method">
-  
-    #<strong>compact</strong>(array)  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
-  
+<div>
+<h2 class="signature " id="asset_url-instance_method">
 
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns array from which blank values are removed</p>
+#<strong>asset_url</strong>(file_path, **_options)  &#x21d2; <tt>String</tt> 
 
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{{ array }} =&gt; [1,2,null,4]
-{{ array | compact }} =&gt; [1,2,4]</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>array</span>
-      
-      
-        <span class='type'>(<tt>Array&lt;Object&gt;</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>array without blank values</p>
-</div>
-      
-    </li>
-  
-</ul>
 
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Array&lt;Object&gt;</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>array from which blank values are removed</p>
-</div>
-      
-    </li>
-  
-</ul>
+</h2>
+
+
+### Returns:
+
+(<tt>String</tt>) - url to the physical file if existing, root asset url otherwise
+
+
+
+
+### Params:
+
+
+* file_path (<tt>String</tt>) -  
+
+
+
+
+### Examples:
+```liquid
+{{ "valid/file.jpg" | asset_url }} => https://cdn-server.com/valid/file.jpg
+```
+
+
 
 </div>
-  {% endraw %}
-</div>
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="detect-instance_method">
-  
-    #<strong>detect</strong>(objects, conditions = {})  &#x21d2; <tt>Object</tt> 
-  
+<div>
+<h2 class="signature " id="compact-instance_method">
 
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns with first object from collection that matches provided conditions</p>
+#<strong>compact</strong>(array)  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
 
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{{ objects }} =&gt; [{&quot;foo&quot;:1,&quot;bar&quot;:&quot;a&quot;},{&quot;foo&quot;:2,&quot;bar&quot;:&quot;b&quot;},{&quot;foo&quot;:3,&quot;bar&quot;:&quot;c&quot;}]
-{{ objects | detect: foo: 2 }} =&gt; [{&quot;foo&quot;:2,&quot;bar&quot;:&quot;b&quot;}]</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>objects</span>
-      
-      
-        <span class='type'>(<tt>Array&lt;Object&gt;</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>array of objects to be processed</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>conditions</span>
-      
-      
-        <span class='type'>(<tt>Hash</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>{}</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>hash with conditions { field_name: value }</p>
-</div>
-      
-    </li>
-  
-</ul>
 
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Object</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>with first object from collection that matches provided conditions</p>
-</div>
-      
-    </li>
-  
-</ul>
+</h2>
+
+
+### Returns:
+
+(<tt>Array&lt;Object&gt;</tt>) - array from which blank values are removed
+
+
+
+
+### Params:
+
+
+* array (<tt>Array&lt;Object&gt;</tt>) - array with some blank values 
+
+
+
+
+### Examples:
+```liquid
+{{ array }} => [1,2,null,4]
+{{ array | compact }} => [1,2,4]
+```
+
+
 
 </div>
-  {% endraw %}
-</div>
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="escape_javascript-instance_method">
-  
-    #<strong>escape_javascript</strong>(text)  &#x21d2; <tt>Object</tt> 
-  
+<div>
+<h2 class="signature " id="compute_hmac-instance_method">
 
-  
-
-  
-</h3>
-  {% endraw %}
-</div>
-
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="expand_url_template-instance_method">
-  
-    #<strong>expand_url_template</strong>(template, params)  &#x21d2; <tt>String</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns url</p>
+#<strong>compute_hmac</strong>(data, secret, algorithm = &#39;sha256&#39;)  &#x21d2; <tt>String</tt> 
 
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{{ &quot;/search/{city}/{street}&quot; | expand_url_template city: &quot;Sydney&quot;, street: &quot;BlueRoad&quot; }}
-=&gt; /search/Sydney/BlueRoad</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>template</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><ul><li>
-<p>url template</p>
-</li></ul>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>params</span>
-      
-      
-        <span class='type'>(<tt>Hash</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><ul><li>
-<p>url data</p>
-</li></ul>
-</div>
-      
-    </li>
-  
-</ul>
 
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>url</p>
-</div>
-      
-    </li>
-  
-</ul>
+</h2>
+
+
+### Returns:
+
+(<tt>String</tt>) - Keyed-hash message authentication code (HMAC), that can
+be used to authenticate requests from third
+party apps, for ex. Stripe webhooks requests
+
+
+
+
+### Params:
+
+
+* data (<tt>String</tt>) - message to be authenticated 
+
+* secret (<tt>String</tt>) - secret key 
+
+* algorithm (<tt>String</tt>) - defaults to SHA256. Supported algorithms are:
+SHA, SHA1, SHA224, SHA256, SHA384, SHA512, MD4, MDC2, MD5, RIPEMD160, DSS1  <em class="default">(defaults to: <tt>&#39;sha256&#39;</tt>)</em> 
+
+
+
+
+### Examples:
+```liquid
+{{ 'some_data' | compute_hmac: 'some_secret', 'MD4' }} => 'cabff538af5f97ccc27d481942616492'
+```
+
+
 
 </div>
-  {% endraw %}
-</div>
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="extract_url_params-instance_method">
-  
-    #<strong>extract_url_params</strong>(url, templates)  &#x21d2; <tt>Hash</tt> 
-  
+<div>
+<h2 class="signature " id="detect-instance_method">
 
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns params</p>
+#<strong>detect</strong>(objects, conditions = {})  &#x21d2; <tt>Object</tt> 
 
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{{ &quot;/search/Sydney/BlueRoad&quot; | extract_url_params: &quot;/search/{city}/{street}&quot; }}
-=&gt; {&quot;city&quot;=&gt;&quot;Sydney&quot;, &quot;street&quot;=&gt;&quot;BlueRoad&quot;}</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>url</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>templates</span>
-      
-      
-        <span class='type'>(<tt>Array&lt;String&gt;</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>url templates array</p>
-</div>
-      
-    </li>
-  
-</ul>
 
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Hash</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>params</p>
-</div>
-      
-    </li>
-  
-</ul>
+</h2>
+
+
+### Returns:
+
+(<tt>Object</tt>) - with first object from collection that matches provided conditions
+
+
+
+
+### Params:
+
+
+* objects (<tt>Array&lt;Object&gt;</tt>) - array of objects to be processed 
+
+* conditions (<tt>Hash</tt>) - hash with conditions { field_name: value }  <em class="default">(defaults to: <tt>{}</tt>)</em> 
+
+
+
+
+### Examples:
+```liquid
+{{ objects }} => [{"foo":1,"bar":"a"},{"foo":2,"bar":"b"},{"foo":3,"bar":"c"}]
+{{ objects | detect: foo: 2 }} => [{"foo":2,"bar":"b"}]
+```
+
+
 
 </div>
-  {% endraw %}
-</div>
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="fetch-instance_method">
-  
-    #<strong>fetch</strong>(hash, key)  &#x21d2; <tt>Object</tt> 
-  
+<div>
+<h2 class="signature " id="escape_javascript-instance_method">
 
-  
+#<strong>escape_javascript</strong>(text)  &#x21d2; <tt>String</tt> 
 
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{{ users | first | fetch: &quot;name&quot;}} =&gt; &quot;Jane&quot;</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>hash</span>
-      
-      
-        <span class='type'>(<tt>Hash</tt>)</span>
-      
-      
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>key</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
 
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Object</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
+</h2>
+
+
+### Returns:
+
+(<tt>String</tt>) - 
+
+
+
+
+### Params:
+
+
+* text (<tt>String</tt>) - text to be escaped 
+
+
+
+
 
 </div>
-  {% endraw %}
-</div>
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="flatten-instance_method">
-  
-    #<strong>flatten</strong>(array)  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
-  
+<div>
+<h2 class="signature " id="expand_url_template-instance_method">
 
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns with objects</p>
+#<strong>expand_url_template</strong>(template, params)  &#x21d2; <tt>String</tt> 
 
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{{ array_of_arrays }} =&gt; [[1,2], [3,4], [5,6]]
-{{ array_of_arrays | flatten }} =&gt; [1,2,3,4,5,6]</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>array</span>
-      
-      
-        <span class='type'>(<tt>Array&lt;Array&gt;</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>array of arrays to be processed</p>
-</div>
-      
-    </li>
-  
-</ul>
 
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Array&lt;Object&gt;</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>with objects</p>
-</div>
-      
-    </li>
-  
-</ul>
+</h2>
+
+
+### Returns:
+
+(<tt>String</tt>) - url
+
+
+
+
+### Params:
+
+
+* template (<tt>String</tt>) - - url template 
+
+* params (<tt>Hash</tt>) - - url data 
+
+
+
+
+### Examples:
+```liquid
+{{ "/search/{city}/{street}" | expand_url_template city: "Sydney", street: "BlueRoad" }}
+=> /search/Sydney/BlueRoad
+```
+
+
 
 </div>
-  {% endraw %}
+
+<div>
+<h2 class="signature " id="extract_url_params-instance_method">
+
+#<strong>extract_url_params</strong>(url, templates)  &#x21d2; <tt>Hash</tt> 
+
+
+
+</h2>
+
+
+### Returns:
+
+(<tt>Hash</tt>) - params
+
+
+
+
+### Params:
+
+
+* url (<tt>String</tt>) -  
+
+* templates (<tt>String</tt>, <tt>Array&lt;String&gt;</tt>) - url templates array 
+
+
+
+
+### Examples:
+```liquid
+{{ "/search/Sydney/BlueRoad" | extract_url_params: "/search/{city}/{street}" }}
+=> {"city"=>"Sydney", "street"=>"BlueRoad"}
+```
+
+
+
 </div>
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="group_by-instance_method">
-  
-    #<strong>group_by</strong>(objects, method_name)  &#x21d2; <tt>Hash&lt;MethodResult =&gt; Array&lt;Object&gt;&gt;</tt> 
-  
+<div>
+<h2 class="signature " id="fetch-instance_method">
 
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns the original array grouped by method specified by the second
-parameter</p>
+#<strong>fetch</strong>(hash, key)  &#x21d2; <tt>Object</tt> 
 
 
-  </div>
+
+</h2>
+
+
+### Returns:
+
+(<tt>Object</tt>) - 
+
+
+
+
+### Params:
+
+
+* hash (<tt>Hash</tt>) -  
+
+* key (<tt>String</tt>) -  
+
+
+
+
+### Examples:
+```liquid
+{{ users | first | fetch: "name"}} => "Jane"
+```
+
+
+
 </div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{{ objects }} =&gt;  [
-  { size: &#39;xl&#39;, color: &#39;red&#39;},
-  { size: &#39;xl&#39;, color: &#39;yellow&#39;},
-  { size: &#39;s&#39;, color: &#39;red&#39;}
+
+<div>
+<h2 class="signature " id="flatten-instance_method">
+
+#<strong>flatten</strong>(array)  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
+
+
+
+</h2>
+
+
+### Returns:
+
+(<tt>Array&lt;Object&gt;</tt>) - with objects
+
+
+
+
+### Params:
+
+
+* array (<tt>Array&lt;Array&gt;</tt>) - array of arrays to be processed 
+
+
+
+
+### Examples:
+```liquid
+{{ array_of_arrays }} => [[1,2], [3,4], [5,6]]
+{{ array_of_arrays | flatten }} => [1,2,3,4,5,6]
+```
+
+
+
+</div>
+
+<div>
+<h2 class="signature " id="group_by-instance_method">
+
+#<strong>group_by</strong>(objects, method_name)  &#x21d2; <tt>Hash&lt;MethodResult =&gt; Array&lt;Object&gt;&gt;</tt> 
+
+
+
+</h2>
+
+
+### Returns:
+
+(<tt>Hash&lt;MethodResult =&gt; Array&lt;Object&gt;&gt;</tt>) - the original array grouped by method
+specified by the second parameter
+
+
+
+
+### Params:
+
+
+* objects (<tt>Array&lt;Object&gt;</tt>) - array to be grouped 
+
+* method_name (<tt>String</tt>) - method name to be used to group Objects 
+
+
+
+
+### Examples:
+```liquid
+{{ objects }} =>  [
+  { size: 'xl', color: 'red'},
+  { size: 'xl', color: 'yellow'},
+  { size: 's', color: 'red'}
  ]
-{{ objects | group_by: &#39;size&#39; }} =&gt; {&quot;xl&quot;=&gt;[{&quot;size&quot;=&gt;&quot;xl&quot;, &quot;color&quot;=&gt;&quot;red&quot;}, {&quot;size&quot;=&gt;&quot;xl&quot;, &quot;color&quot;=&gt;&quot;yellow&quot;}], &quot;s&quot;=&gt;[{&quot;size&quot;=&gt;&quot;s&quot;, &quot;color&quot;=&gt;&quot;red&quot;}]}</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>objects</span>
-      
-      
-        <span class='type'>(<tt>Array&lt;Object&gt;</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>array to be grouped</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>method_name</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>method name to be used to group Objects</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Hash&lt;MethodResult =&gt; Array&lt;Object&gt;&gt;</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>the original array grouped by method specified by the second parameter</p>
-</div>
-      
-    </li>
-  
-</ul>
+{{ objects | group_by: 'size' }} => {"xl"=>[{"size"=>"xl", "color"=>"red"}, {"size"=>"xl", "color"=>"yellow"}], "s"=>[{"size"=>"s", "color"=>"red"}]}
+```
 
-</div>
-  {% endraw %}
+
+
 </div>
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="html_safe-instance_method">
-  
-    #<strong>html_safe</strong>(text)  &#x21d2; <tt>String</tt> 
-  
+<div>
+<h2 class="signature " id="html_safe-instance_method">
 
-  
+#<strong>html_safe</strong>(text)  &#x21d2; <tt>String</tt> 
 
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns string that can be rendered with all html tags by default all
-variables are striped from danger html tags</p>
 
 
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>text</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>returns string that can be rendered with all html tags by default all
-variables are striped from danger html tags</p>
-</div>
-      
-    </li>
-  
-</ul>
+</h2>
 
-</div>
-  {% endraw %}
-</div>
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="humanize-instance_method">
-  
-    #<strong>humanize</strong>(key)  &#x21d2; <tt>String</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns a human readable string derived from the input; capitalizes the
-first word, turns underscores into spaces, and strips a trailing
-&#39;_id&#39; if present. Meant for creating pretty output.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{{ &#39;car_model&#39; | humanize }} =&gt; &#39;Car model&#39;</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>key</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>input string to be transformed</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>a human readable string derived from the input; capitalizes the first word,
-turns underscores into spaces, and strips a trailing &#39;_id&#39; if
-present. Meant for creating pretty output.</p>
-</div>
-      
-    </li>
-  
-</ul>
+### Returns:
 
-</div>
-  {% endraw %}
-</div>
+(<tt>String</tt>) - returns string that can be rendered with all html tags
+by default all variables are striped from danger html tags
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="in_groups_of-instance_method">
-  
-    #<strong>in_groups_of</strong>(array, integer)  &#x21d2; <tt>Array&lt;Array&lt;Object&gt;&gt;</tt> 
-  
 
-  
 
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns the original array split into groups having the size specified by
-the second parameter (an array of arrays)</p>
 
+### Params:
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{% assign elements = &#39;1,2,3,4&#39; | split: &#39;,&#39;
-{{ elements | in_groups_of: 3 }} =&gt; [[1, 2, 3], [4, null, null]]</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>array</span>
-      
-      
-        <span class='type'>(<tt>Array&lt;Object&gt;</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>array to be split into groups</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>integer</span>
-      
-      
-        <span class='type'>(<tt>Integer</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>the size of each group the array is to be split into</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Array&lt;Array&lt;Object&gt;&gt;</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>the original array split into groups having the size specified by the
-second parameter (an array of arrays)</p>
-</div>
-      
-    </li>
-  
-</ul>
 
-</div>
-  {% endraw %}
-</div>
+* text (<tt>String</tt>) -  
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="intersection-instance_method">
-  
-    #<strong>intersection</strong>(array, other_array)  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
-  
 
-  
 
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns that exists in both arrays</p>
 
 
-  </div>
 </div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{% assign array = &#39;1,2,3,4&#39; | split: &#39;,&#39; %}
-{% assign other_array = &#39;3,4,5,6&#39; | split: &#39;,&#39; %}
-
-{{ array | intersection: other_array }} =&gt; [3,4]</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>array</span>
-      
-      
-        <span class='type'>(<tt>Array&lt;Object&gt;</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>array of objects to be processed</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>other_array</span>
-      
-      
-        <span class='type'>(<tt>Array&lt;Object&gt;</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>array of objects to be processed</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Array&lt;Object&gt;</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>that exists in both arrays</p>
-</div>
-      
-    </li>
-  
-</ul>
 
-</div>
-  {% endraw %}
-</div>
+<div>
+<h2 class="signature " id="humanize-instance_method">
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="is_date_before-instance_method">
-  
-    #<strong>is_date_before</strong>(first_date, second_date)  &#x21d2; <tt>Boolean</tt> 
-  
-
-  
-    <span class="aliases">Also known as:
-    <span class="names"><span id='date_before-instance_method'>date_before</span></span>
-    </span>
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns true if first date is lower than second date</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{{ &#39;2010-01-02&#39; | date_before: &#39;2010-01-03&#39; }} =&gt; true</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>first_date</span>
-      
-      
-        <span class='type'>(<tt>Time</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>time which will be compared to the second one</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>second_date</span>
-      
-      
-        <span class='type'>(<tt>Time</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>second time, against which we will do comparison</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Boolean</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>returns true if first date is lower than second date</p>
-</div>
-      
-    </li>
-  
-</ul>
+#<strong>humanize</strong>(key)  &#x21d2; <tt>String</tt> 
 
-</div>
-  {% endraw %}
-</div>
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="is_date_in_past-instance_method">
-  
-    #<strong>is_date_in_past</strong>(date)  &#x21d2; <tt>Boolean</tt> 
-  
 
-  
+</h2>
 
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns true if date passed is in the past, false otherwise</p>
 
+### Returns:
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{{ &#39;2010-01-01&#39; | is_date_in_past }} =&gt; true</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>date</span>
-      
-      
-        <span class='type'>(<tt>Date</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Boolean</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>true if date passed is in the past, false otherwise</p>
-</div>
-      
-    </li>
-  
-</ul>
+(<tt>String</tt>) - a human readable string derived from the input; capitalizes the first word, turns
+underscores into spaces, and strips a trailing '_id' if present. Meant for creating pretty output.
 
-</div>
-  {% endraw %}
-</div>
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="is_included_in_array-instance_method">
-  
-    #<strong>is_included_in_array</strong>(array, el)  &#x21d2; <tt>Boolean</tt> 
-  
 
-  
 
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns whether the array includes the element given</p>
+### Params:
 
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{% assign elements = &#39;a,b,c,d&#39; | split: &#39;,&#39; %}
-{{ elements | is_included_in_array: &#39;c&#39; }} =&gt; true</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>array</span>
-      
-      
-        <span class='type'>(<tt>Array</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>array of elements where we look into</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>el</span>
-      
-      
-        <span class='type'>(<tt>Object</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>we will look for this element inside the array</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Boolean</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>whether the array includes the element given</p>
-</div>
-      
-    </li>
-  
-</ul>
+* key (<tt>String</tt>) - input string to be transformed 
 
-</div>
-  {% endraw %}
-</div>
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="is_token_valid-instance_method">
-  
-    #<strong>is_token_valid</strong>(token, user_id)  &#x21d2; <tt>Boolean</tt> 
-  
 
-  
 
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>false otherwise</p>
+### Examples:
+```liquid
+{{ 'car_model' | humanize }} => 'Car model'
+```
 
 
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>token</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>encrypted token generated via temporary_token GraphQL property</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>user_id</span>
-      
-      
-        <span class='type'>(<tt>Integer</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>id of the user who generated token</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Boolean</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>returns true if the token has not expired and was generated for given user</p>
-</div>
-      
-    </li>
-  
-</ul>
 
-</div>
-  {% endraw %}
 </div>
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="json-instance_method">
-  
-    #<strong>json</strong>(object)  &#x21d2; <tt>String</tt> 
-  
+<div>
+<h2 class="signature " id="in_groups_of-instance_method">
 
-  
+#<strong>in_groups_of</strong>(array, integer)  &#x21d2; <tt>Array&lt;Array&lt;Object&gt;&gt;</tt> 
 
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns JSON formatted string containing a representation of object</p>
 
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{{ user | json }} =&gt; {&quot;name&quot;:&quot;Mike&quot;,&quot;email&quot;:&quot;mike@mail.com&quot;}</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>object</span>
-      
-      
-        <span class='type'>(<tt>Object</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>object we want a JSON representation of</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>JSON formatted string containing a representation of object</p>
-</div>
-      
-    </li>
-  
-</ul>
+</h2>
 
-</div>
-  {% endraw %}
-</div>
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="limit-instance_method">
-  
-    #<strong>limit</strong>(array, count)  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
-  
+### Returns:
 
-  
+(<tt>Array&lt;Array&lt;Object&gt;&gt;</tt>) - the original array split into groups having the size
+specified by the second parameter (an array of arrays)
 
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns parameter; [1,2,3,4] limited to 2 elements gives [1,2]</p>
 
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>items =&gt; [{id: 1, name: &#39;foo&#39;, label: &#39;Foo&#39;}, {id: 2, name: &#39;bar&#39;, label: &#39;Bar&#39;}]
-{{ items | limit: 1 }} =&gt; [{ id: 1, name: &#39;foo&#39;, label: &#39;Foo&#39; }]</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>array</span>
-      
-      
-        <span class='type'>(<tt>Array&lt;Object&gt;</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>array to be shrank</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>limit</span>
-      
-      
-        <span class='type'>(<tt>Integer</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Array&lt;Object&gt;</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>parameter; [1,2,3,4] limited to 2 elements gives [1,2]</p>
-</div>
-      
-    </li>
-  
-</ul>
 
-</div>
-  {% endraw %}
-</div>
+### Params:
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="localize-instance_method">
-  
-    #<strong>localize</strong>(datetime, format = &#39;long&#39;)  &#x21d2; <tt>String</tt><sup>?</sup> 
-  
-
-  
-    <span class="aliases">Also known as:
-    <span class="names"><span id='l-instance_method'>l</span></span>
-    </span>
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns formatted representation of the passed in DateTime object</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{{ &#39;2010-01-01&#39; | localize }} =&gt; &#39;January 01, 2010&#39;</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>datetime</span>
-      
-      
-        <span class='type'>(<tt>String</tt>, <tt>DateTime</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>DateTime object to be formatted; can be a string and it will be converted
-to a date</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>format</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>&#39;long&#39;</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>the format to be used for formatting the date; default is &#39;long&#39;;
-other values can be used: they are taken from translations, keys are of the
-form &#39;time.formats.#{format_name}&#39;</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>, <tt>nil</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>formatted representation of the passed in DateTime object</p>
-</div>
-      
-    </li>
-  
-</ul>
 
-</div>
-  {% endraw %}
-</div>
+* array (<tt>Array&lt;Object&gt;</tt>) - array to be split into groups 
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="map-instance_method">
-  
-    #<strong>map</strong>(object, method)  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns array of objects obtained from the original array of objects
-(passed in as the object parameter) by calling the method &#39;method&#39;
-on each object in the original array</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{% assign objects = &#39;[{&quot;id&quot;:1,&quot;name&quot;:&quot;foo&quot;,&quot;label&quot;:&quot;Foo&quot;},{&quot;id&quot;:2,&quot;name&quot;:&quot;bar&quot;,&quot;label&quot;:&quot;Bar&quot;}]&#39; %}
-{{ objects | map: &#39;name&#39; }} =&gt; [&#39;foo&#39;, &#39;bar&#39;]</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>object</span>
-      
-      
-        <span class='type'>(<tt>Array&lt;Object&gt;</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>array of objects to be processed</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>method</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>method name to be called on each of the objects in the passed in array of
-objects</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Array&lt;Object&gt;</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>array of objects obtained from the original array of objects (passed in as
-the object parameter) by calling the method &#39;method&#39; on each object
-in the original array</p>
-</div>
-      
-    </li>
-  
-</ul>
+* integer (<tt>Integer</tt>) - the size of each group the array is to be split into 
 
-</div>
-  {% endraw %}
-</div>
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="map_attributes-instance_method">
-  
-    #<strong>map_attributes</strong>(array, *attributes)  &#x21d2; <tt>Array&lt;Array&gt;</tt> 
-  
 
-  
 
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns array of arrays with values for given keys</p>
+### Examples:
+```liquid
+{% assign elements = '1,2,3,4' | split: ','
+{{ elements | in_groups_of: 3 }} => [[1, 2, 3], [4, null, null]]
+```
 
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>items =&gt; [{id: 1, name: &#39;foo&#39;, label: &#39;Foo&#39;}, {id: 2, name: &#39;bar&#39;, label: &#39;Bar&#39;}]
-{{ items | map_attributes: &#39;id&#39;, &#39;name&#39; }} =&gt; [[1, &#39;foo&#39;], [2, &#39;bar&#39;]]</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>array</span>
-      
-      
-        <span class='type'>(<tt>Array&lt;Object&gt;</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>array of objects to be processed</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>attributes</span>
-      
-      
-        <span class='type'>(<tt>Array&lt;String&gt;</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>array of keys to be extracted</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Array&lt;Array&gt;</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>array of arrays with values for given keys</p>
-</div>
-      
-    </li>
-  
-</ul>
 
-</div>
-  {% endraw %}
 </div>
+
+<div>
+<h2 class="signature " id="intersection-instance_method">
+
+#<strong>intersection</strong>(array, other_array)  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
+
+
+
+</h2>
+
+
+### Returns:
+
+(<tt>Array&lt;Object&gt;</tt>) - that exists in both arrays
+
+
+
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="markdownify-instance_method">
-  
-    #<strong>markdownify</strong>(text)  &#x21d2; <tt>String</tt> 
-  
+### Params:
 
-  
 
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns processed text with markdown syntax changed to HTML</p>
+* array (<tt>Array&lt;Object&gt;</tt>) - array of objects to be processed 
 
+* other_array (<tt>Array&lt;Object&gt;</tt>) - array of objects to be processed 
 
-  </div>
+
+
+
+### Examples:
+```liquid
+{% assign array = '1,2,3,4' | split: ',' %}
+{% assign other_array = '3,4,5,6' | split: ',' %}
+
+{{ array | intersection: other_array }} => [3,4]
+```
+
+
+
 </div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{{ &#39;# Foo&#39; | markdownify }} =&gt; &#39;&lt;h1&gt;Foo&lt;/h1&gt;&#39;</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>text</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>text using markdown syntax</p>
+
+<div>
+<h2 class="signature " id="is_date_before-instance_method">
+
+#<strong>is_date_before</strong>(first_date, second_date)  &#x21d2; <tt>Boolean</tt> 
+
+
+
+<span class="aliases">Also known as:
+<span class="names"><span id='date_before-instance_method'>date_before</span></span>
+</span>
+
+</h2>
+
+
+### Returns:
+
+(<tt>Boolean</tt>) - returns true if first date is lower than second date
+
+
+
+
+### Params:
+
+
+* first_date (<tt>DateTime</tt>) - time which will be compared to the second one 
+
+* second_date (<tt>DateTime</tt>) - second time, against which we will do comparison 
+
+
+
+
+### Examples:
+```liquid
+{{ '2010-01-02' | date_before: '2010-01-03' }} => true
+```
+
+
+
 </div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>processed text with markdown syntax changed to HTML</p>
+
+<div>
+<h2 class="signature " id="is_date_in_past-instance_method">
+
+#<strong>is_date_in_past</strong>(date)  &#x21d2; <tt>Boolean</tt> 
+
+
+
+</h2>
+
+
+### Returns:
+
+(<tt>Boolean</tt>) - true if date passed is in the past, false otherwise
+
+
+
+
+### Params:
+
+
+* date (<tt>Date</tt>, <tt>String</tt>, <tt>Time</tt>) - date object, can be also a string 
+
+
+
+
+### Examples:
+```liquid
+{{ '2010-01-01' | is_date_in_past }} => true
+```
+
+
+
 </div>
-      
-    </li>
-  
-</ul>
+
+<div>
+<h2 class="signature " id="is_included_in_array-instance_method">
+
+#<strong>is_included_in_array</strong>(array, el)  &#x21d2; <tt>Boolean</tt> 
+
+
+
+</h2>
+
+
+### Returns:
+
+(<tt>Boolean</tt>) - whether the array includes the element given
+
+
+
+
+### Params:
+
 
+* array (<tt>Array</tt>) - array of elements where we look into 
+
+* el (<tt>Object</tt>) - we will look for this element inside the array 
+
+
+
+
+### Examples:
+```liquid
+{% assign elements = 'a,b,c,d' | split: ',' %}
+{{ elements | is_included_in_array: 'c' }} => true
+```
+
+
+
 </div>
-  {% endraw %}
+
+<div>
+<h2 class="signature " id="is_token_valid-instance_method">
+
+#<strong>is_token_valid</strong>(token, user_id)  &#x21d2; <tt>Boolean</tt> 
+
+
+
+</h2>
+
+
+### Returns:
+
+(<tt>Boolean</tt>) - returns true if the token has not expired and was generated for given user
+
+
+
+
+### Params:
+
+
+* token (<tt>String</tt>) - encrypted token generated via temporary_token graphql property 
+
+* user_id (<tt>Integer</tt>) - id of the user who generated token 
+
+
+
+
+
 </div>
+
+<div>
+<h2 class="signature " id="json-instance_method">
+
+#<strong>json</strong>(object)  &#x21d2; <tt>String</tt> 
+
+
+
+<span class="aliases">Also known as:
+<span class="names"><span id='to_json-instance_method'>to_json</span></span>
+</span>
+
+</h2>
+
+
+### Returns:
+
+(<tt>String</tt>) - JSON formatted string containing a representation of object
+
+
+
+
+### Params:
+
+
+* object (<tt>Object</tt>) - object we want a JSON representation of 
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="matches-instance_method">
-  
-    #<strong>matches</strong>(text, regexp)  &#x21d2; <tt>Boolean</tt> 
-  
 
-  
 
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns whether the given string matches the given regular expression</p>
 
+### Examples:
+```liquid
+{{ user | json }} => {"name":"Mike","email":"mike@mail.com"}
+```
 
-  </div>
+
+
 </div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{{ &#39;foo&#39; | matches: &#39;[a-z]&#39; }} =&gt; true</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>text</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>string we check against the regular expression</p>
+
+<div>
+<h2 class="signature " id="limit-instance_method">
+
+#<strong>limit</strong>(array, limit)  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
+
+
+
+</h2>
+
+
+### Returns:
+
+(<tt>Array&lt;Object&gt;</tt>) - parameter; [1,2,3,4] limited to 2 elements gives [1,2]
+
+
+
+
+### Params:
+
+
+* array (<tt>Array&lt;Object&gt;</tt>) - array to be shrank 
+
+* limit (<tt>Integer</tt>) - number of elements to be returned 
+
+
+
+
+### Examples:
+```liquid
+items => [{id: 1, name: 'foo', label: 'Foo'}, {id: 2, name: 'bar', label: 'Bar'}]
+{{ items | limit: 1 }} => [{ id: 1, name: 'foo', label: 'Foo' }]
+```
+
+
+
 </div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>regexp</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>string representing a regular expression pattern against which we try to
-match the first parameter</p>
+
+<div>
+<h2 class="signature " id="localize-instance_method">
+
+#<strong>localize</strong>(datetime, format = &#39;long&#39;)  &#x21d2; <tt>String</tt><sup>?</sup> 
+
+
+
+<span class="aliases">Also known as:
+<span class="names"><span id='l-instance_method'>l</span></span>
+</span>
+
+</h2>
+
+
+### Returns:
+
+(<tt>String</tt>, <tt>nil</tt>) - formatted representation of the passed in DateTime object
+
+
+
+
+### Params:
+
+
+* datetime (<tt>String</tt>, <tt>DateTime</tt>) - DateTime object to be formatted; can be a string and it will be converted
+to a date 
+
+* format (<tt>String</tt>) - the format to be used for formatting the date; default is 'long'; other values can be used:
+they are taken from translations, keys are of the form 'time.formats.#!{format_name}'  <em class="default">(defaults to: <tt>&#39;long&#39;</tt>)</em> 
+
+
+
+
+### Examples:
+```liquid
+{{ '2010-01-01' | localize }} => 'January 01, 2010'
+```
+
+
+
 </div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Boolean</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>whether the given string matches the given regular expression</p>
+
+<div>
+<h2 class="signature " id="map-instance_method">
+
+#<strong>map</strong>(object, method)  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
+
+
+
+</h2>
+
+
+### Returns:
+
+(<tt>Array&lt;Object&gt;</tt>) - array of objects obtained from the original array of objects
+(passed in as the object parameter) by calling the method 'method' on each object
+in the original array
+
+
+
+
+### Params:
+
+
+* object (<tt>Array&lt;Object&gt;</tt>) - array of objects to be processed 
+
+* method (<tt>String</tt>) - method name to be called on each of the objects in the passed
+in array of objects 
+
+
+
+
+### Examples:
+```liquid
+{% assign objects = '[{"id":1,"name":"foo","label":"Foo"},{"id":2,"name":"bar","label":"Bar"}]' %}
+{{ objects | map: 'name' }} => ['foo', 'bar']
+```
+
+
+
 </div>
-      
-    </li>
-  
-</ul>
+
+<div>
+<h2 class="signature " id="map_attributes-instance_method">
+
+#<strong>map_attributes</strong>(array, *attributes)  &#x21d2; <tt>Array&lt;Array&gt;</tt> 
+
+
+
+</h2>
+
+
+### Returns:
+
+(<tt>Array&lt;Array&gt;</tt>) - array of arrays with values for given keys
+
+
+
+
+### Params:
+
+
+* array (<tt>Array&lt;Object&gt;</tt>) - array of objects to be processed 
+
+* attributes (<tt>Array&lt;String&gt;</tt>) - array of keys to be extracted 
+
+
 
+
+### Examples:
+```liquid
+items => [{id: 1, name: 'foo', label: 'Foo'}, {id: 2, name: 'bar', label: 'Bar'}]
+{{ items | map_attributes: 'id', 'name' }} => [[1, 'foo'], [2, 'bar']]
+```
+
+
+
 </div>
-  {% endraw %}
+
+<div>
+<h2 class="signature " id="markdownify-instance_method">
+
+#<strong>markdownify</strong>(text)  &#x21d2; <tt>String</tt> 
+
+
+
+</h2>
+
+
+### Returns:
+
+(<tt>String</tt>) - processed text with markdown syntax changed to HTML
+
+
+
+
+### Params:
+
+
+* text (<tt>String</tt>) - text using markdown syntax 
+
+
+
+
+### Examples:
+```liquid
+{{ '# Foo' | markdownify }} => '<h1>Foo</h1>'
+```
+
+
+
 </div>
+
+<div>
+<h2 class="signature " id="matches-instance_method">
+
+#<strong>matches</strong>(text, regexp)  &#x21d2; <tt>Boolean</tt> 
+
+
+
+</h2>
+
+
+### Returns:
+
+(<tt>Boolean</tt>) - whether the given string matches the given regular expression
+
+
+
+
+### Params:
+
+
+* text (<tt>String</tt>) - string we check against the regular expression 
+
+* regexp (<tt>String</tt>) - string representing a regular expression pattern against which
+we try to match the first parameter 
+
+
+
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="new_line_to_br-instance_method">
-  
-    #<strong>new_line_to_br</strong>(html = &#39;&#39;)  &#x21d2; <tt>String</tt> 
-  
-
-  
-    <span class="aliases">Also known as:
-    <span class="names"><span id='nl2br-instance_method'>nl2br</span></span>
-    </span>
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns replaces newlines in the input string with the &lt;br /&gt; HTML
-tag</p>
-
-
-  </div>
+### Examples:
+```liquid
+{{ 'foo' | matches: '[a-z]' }} => true
+```
+
+
+
 </div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{% capture text}
+
+<div>
+<h2 class="signature " id="new_line_to_br-instance_method">
+
+#<strong>new_line_to_br</strong>(html = &#39;&#39;)  &#x21d2; <tt>String</tt> 
+
+
+
+<span class="aliases">Also known as:
+<span class="names"><span id='nl2br-instance_method'>nl2br</span></span>
+</span>
+
+</h2>
+
+
+### Returns:
+
+(<tt>String</tt>) - replaces newlines in the input string with the <br /> HTML tag
+
+
+
+
+### Params:
+
+
+* html (<tt>String</tt>) - HTML string to be processed  <em class="default">(defaults to: <tt>&#39;&#39;</tt>)</em> 
+
+
+
+
+### Examples:
+```liquid
+{% capture text %}
   foo
   bar
-{% endcapture}
+{% endcapture %}
 
-{{ text | new_line_to_br }} =&gt; &#39;foo&lt;br /&gt;bar&#39;</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>html</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>&#39;&#39;</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>HTML string to be processed</p>
-</div>
-      
-    </li>
-  
-</ul>
+{{ text | new_line_to_br }} => 'foo<br />bar'
+```
 
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>replaces newlines in the input string with the &lt;br /&gt; HTML tag</p>
-</div>
-      
-    </li>
-  
-</ul>
+
 
 </div>
-  {% endraw %}
-</div>
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="pad_left-instance_method">
-  
-    #<strong>pad_left</strong>(str, count, symbol = &#39; &#39;)  &#x21d2; <tt>String</tt> 
-  
+<div>
+<h2 class="signature " id="number_of_minutes_until-instance_method">
 
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns string padded from left to length of count with symbol character</p>
+#<strong>number_of_minutes_until</strong>(end_time, start_time = Time.zone.now)  &#x21d2; <tt>Integer</tt> 
 
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{{ &#39;foo&#39; | pad_left: 5 }} =&gt; &#39;  foo&#39;</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>str</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>string to pad</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>count</span>
-      
-      
-        <span class='type'>(<tt>Integer</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>minimum length of output string</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>symbol</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>&#39; &#39;</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>string to pad with</p>
-</div>
-      
-    </li>
-  
-</ul>
 
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>returns string padded from left to length of count with symbol character</p>
-</div>
-      
-    </li>
-  
-</ul>
+</h2>
+
+
+### Returns:
+
+(<tt>Integer</tt>) - number of minutes
+
+
+
+
+### Params:
+
+
+* end_time (<tt>DateTime</tt>) - a date time object, must be after start_time 
+
+* start_time (<tt>DateTime</tt>) - defaults to current time  <em class="default">(defaults to: <tt>Time.zone.now</tt>)</em> 
+
+
+
+
+### Examples:
+```liquid
+assuming it's 9:30am CET
+{{ 'today 10am' | to_time: '', 'CET' | number_of_minutes_until }} => 30
+{{ 'today 8am' | to_time: '', 'CET' | number_of_minutes_until }} => -90
+```
+
+
 
 </div>
-  {% endraw %}
-</div>
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="parameterize-instance_method">
-  
-    #<strong>parameterize</strong>(text, separator = &#39;-&#39;)  &#x21d2; <tt>String</tt> 
-  
+<div>
+<h2 class="signature " id="pad_left-instance_method">
 
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns replaces special characters in a string so that it may be used as
-part of a &#39;pretty&#39; URL; the default separator used is &#39;-&#39;;</p>
+#<strong>pad_left</strong>(str, count, symbol = &#39; &#39;)  &#x21d2; <tt>String</tt> 
 
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{{ &#39;John arrived_foo&#39; | parameterize }} =&gt; &#39;john-arrived_foo&#39;</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>text</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>input string to be &#39;parameterized&#39;</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>separator</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>&#39;-&#39;</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>string to be used as separator in the output string; default is &#39;-&#39;</p>
-</div>
-      
-    </li>
-  
-</ul>
 
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>replaces special characters in a string so that it may be used as part of a
-&#39;pretty&#39; URL; the default separator used is &#39;-&#39;;</p>
-</div>
-      
-    </li>
-  
-</ul>
+</h2>
+
+
+### Returns:
+
+(<tt>String</tt>) - returns string padded from left to length of count with symbol character
+
+
+
+
+### Params:
+
+
+* str (<tt>String</tt>) - string to pad 
+
+* count (<tt>Integer</tt>) - minimum length of output string 
+
+* symbol (<tt>String</tt>) - string to pad with  <em class="default">(defaults to: <tt>&#39; &#39;</tt>)</em> 
+
+
+
+
+### Examples:
+```liquid
+{{ 'foo' | pad_left: 5 }} => '  foo'
+```
+
+
 
 </div>
-  {% endraw %}
-</div>
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="parse_time-instance_method">
-  
-    #<strong>parse_time</strong>(time, format = nil)  &#x21d2; <tt>Time</tt> 
-  
+<div>
+<h2 class="signature " id="parameterize-instance_method">
 
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns a time object created from parsing the string representation of
-time given as input</p>
+#<strong>parameterize</strong>(text, separator = &#39;-&#39;)  &#x21d2; <tt>String</tt> 
 
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{{ &#39;3 days ago&#39; | parse_time }} =&gt; 2017-04-01 12:00:00</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>time</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>a string representation of time for example &#39;today&#39;, &#39;3 days
-ago&#39; etc.</p>
-</div>
-      
-    </li>
-  
-</ul>
 
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Time</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>a time object created from parsing the string representation of time given
-as input</p>
-</div>
-      
-    </li>
-  
-</ul>
+</h2>
+
+
+### Returns:
+
+(<tt>String</tt>) - replaces special characters in a string so that it may be used as part of a 'pretty' URL;
+the default separator used is '-';
+
+
+
+
+### Params:
+
+
+* text (<tt>String</tt>) - input string to be 'parameterized' 
+
+* separator (<tt>String</tt>) - string to be used as separator in the output string; default is '-'  <em class="default">(defaults to: <tt>&#39;-&#39;</tt>)</em> 
+
+
+
+
+### Examples:
+```liquid
+{{ 'John arrived_foo' | parameterize }} => 'john-arrived_foo'
+```
+
+
 
 </div>
-  {% endraw %}
-</div>
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="parse_time_with_format-instance_method">
-  
-    #<strong>parse_time_with_format</strong>(time, format = nil)  &#x21d2; <tt>Time</tt> 
-  
+<div>
+<h2 class="signature " id="pluralize-instance_method">
 
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns a time object created from parsing the string representation of
-time given as input</p>
+#<strong>pluralize</strong>(string, count = 2)  &#x21d2; <tt>String</tt> 
 
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{{ &#39;2010:01:01&#39; | parse_time_with_format: &#39;%Y:%m:%d&#39; }} =&gt; 2010-01-01 00:00:00</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>time</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>a string representation of time for example &#39;today&#39;, &#39;3 days
-ago&#39; etc.</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>format</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>nil</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>format of the input string</p>
-</div>
-      
-    </li>
-  
-</ul>
 
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Time</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>a time object created from parsing the string representation of time given
-as input</p>
-</div>
-      
-    </li>
-  
-</ul>
+</h2>
+
+
+### Returns:
+
+(<tt>String</tt>) - pluralized version of the input string
+
+
+
+
+### Params:
+
+
+* string (<tt>String</tt>) - string to be pluralized 
+
+* count (<tt>Number</tt>) - optional count number based on which string will be pluralized or singularized  <em class="default">(defaults to: <tt>2</tt>)</em> 
+
+
+
+
+### Examples:
+```liquid
+{{ 'dogs' | pluralize }} => 'dog'
+```
+
+
 
 </div>
-  {% endraw %}
-</div>
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="pluralize-instance_method">
-  
-    #<strong>pluralize</strong>(string, count = 2)  &#x21d2; <tt>String</tt> 
-  
+<div>
+<h2 class="signature " id="pricify-instance_method">
 
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns pluralized version of the input string</p>
+#<strong>pricify</strong>(amount, currency = &#39;USD&#39;, options = {})  &#x21d2; <tt>String</tt> 
 
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{{ &#39;dogs&#39; | pluralize }} =&gt; &#39;dog&#39;</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>string</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>string to be pluralized</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>count</span>
-      
-      
-        <span class='type'>(<tt>Number</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>2</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>optional count number based on which string will be pluralized or
-singularized</p>
-</div>
-      
-    </li>
-  
-</ul>
 
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>pluralized version of the input string</p>
-</div>
-      
-    </li>
-  
-</ul>
+</h2>
+
+
+### Returns:
+
+(<tt>String</tt>) - formatted price using the global price formatting rules
+
+
+
+
+### Params:
+
+
+* amount (<tt>Numeric</tt>, <tt>String</tt>) - amount to be formatted 
+
+* currency (<tt>String</tt>) - currency to be used for formatting  <em class="default">(defaults to: <tt>&#39;USD&#39;</tt>)</em> 
+
+
+
+
+### Examples:
+```liquid
+{{ 1 | pricify }} => '$1 USD'
+```
+
+
 
 </div>
-  {% endraw %}
-</div>
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="pricify-instance_method">
-  
-    #<strong>pricify</strong>(amount, currency = &#39;USD&#39;, options = {})  &#x21d2; <tt>String</tt> 
-  
+<div>
+<h2 class="signature " id="pricify_cents-instance_method">
 
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns formatted price using the global price formatting rules</p>
+#<strong>pricify_cents</strong>(amount, currency = &#39;USD&#39;, options = {})  &#x21d2; <tt>String</tt> 
 
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{{ 1 | pricify }} =&gt; &#39;$1 USD&#39;</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>amount</span>
-      
-      
-        <span class='type'>(<tt>Numeric</tt>, <tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>amount to be formatted</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>currency</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>&#39;USD&#39;</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>currency to be used for formatting</p>
-</div>
-      
-    </li>
-  
-</ul>
 
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>formatted price using the global price formatting rules</p>
-</div>
-      
-    </li>
-  
-</ul>
+</h2>
+
+
+### Returns:
+
+(<tt>String</tt>) - formatted price using the global price formatting rules
+
+
+
+
+### Params:
+
+
+* amount (<tt>Numeric</tt>, <tt>String</tt>) - amount in cents to be formatted 
+
+* currency (<tt>String</tt>) - currency to be used for formatting  <em class="default">(defaults to: <tt>&#39;USD&#39;</tt>)</em> 
+
+
+
+
+### Examples:
+```liquid
+{{ 1 | pricify_cents }} => '$0.01 USD'
+```
+
+
 
 </div>
-  {% endraw %}
-</div>
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="pricify_cents-instance_method">
-  
-    #<strong>pricify_cents</strong>(amount, currency = &#39;USD&#39;, options = {})  &#x21d2; <tt>String</tt> 
-  
+<div>
+<h2 class="signature " id="querify-instance_method">
 
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns formatted price using the global price formatting rules</p>
+#<strong>querify</strong>(hash)  &#x21d2; <tt>String</tt> 
 
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{{ 1 | pricify_cents }} =&gt; &#39;$0.01 USD&#39;</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>amount</span>
-      
-      
-        <span class='type'>(<tt>Numeric</tt>, <tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>amount in cents to be formatted</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>currency</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>&#39;USD&#39;</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>currency to be used for formatting</p>
-</div>
-      
-    </li>
-  
-</ul>
 
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>formatted price using the global price formatting rules</p>
-</div>
-      
-    </li>
-  
-</ul>
+</h2>
+
+
+### Returns:
+
+(<tt>String</tt>) - a query string
+
+
+
+
+### Params:
+
+
+* hash (<tt>Hash{Object =&gt; Object}</tt>) - hash to be "querified" 
+
+
+
+
+### Examples:
+```liquid
+{{ hash }} => { 'name' => 'Dan', 'id' => 1 }
+{{ hash | querify }} => 'name=Dan&id=1'
+```
+
+
 
 </div>
-  {% endraw %}
-</div>
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="querify-instance_method">
-  
-    #<strong>querify</strong>(hash)  &#x21d2; <tt>String</tt> 
-  
+<div>
+<h2 class="signature " id="random_string-instance_method">
 
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns a query string</p>
+#<strong>random_string</strong>(length = 12)  &#x21d2; <tt>String</tt> 
 
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{{ hash }} =&gt; { &#39;name&#39; =&gt; &#39;Dan&#39;, &#39;id&#39; =&gt; 1 }
-{{ hash | querify }} =&gt; &#39;name=Dan&amp;id=1&#39;</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>hash</span>
-      
-      
-        <span class='type'>(<tt>Hash{Object =&gt; Object}</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>hash to be “querified”</p>
-</div>
-      
-    </li>
-  
-</ul>
 
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>a query string</p>
-</div>
-      
-    </li>
-  
-</ul>
+</h2>
+
+
+### Returns:
+
+(<tt>String</tt>) - returns a random alphanumeric string of given length;
+
+
+
+
+### Params:
+
+
+* length (<tt>Int</tt>) - how many random characters should be included. Default 12  <em class="default">(defaults to: <tt>12</tt>)</em> 
+
+
+
+
+### Examples:
+```liquid
+{{ 10 | random_string }} => '6a1ee26292227f64fcbf'
+```
+
+
 
 </div>
-  {% endraw %}
-</div>
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="random_string-instance_method">
-  
-    #<strong>random_string</strong>(length = 12)  &#x21d2; <tt>String</tt> 
-  
+<div>
+<h2 class="signature " id="raw_escape_string-instance_method">
 
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns a random alphanumeric string of given length;</p>
+#<strong>raw_escape_string</strong>(value)  &#x21d2; <tt>String</tt> 
 
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{{ 10 | random_string }} =&gt; &#39;6a1ee26292227f64fcbf&#39;</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>length</span>
-      
-      
-        <span class='type'>(<tt>Int</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>12</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>how many random characters should be included. Default 12</p>
-</div>
-      
-    </li>
-  
-</ul>
 
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>returns a random alphanumeric string of given length;</p>
-</div>
-      
-    </li>
-  
-</ul>
+</h2>
+
+
+### Returns:
+
+(<tt>String</tt>) - input string HTML-escaped; this will return a string whose HTML tags will be visible in
+the browser
+
+
+
+
+### Params:
+
+
+* value (<tt>String</tt>) - input string to be HTML-escaped 
+
+
+
+
+### Examples:
+```liquid
+{{ 'foo<b>bar</b>' | raw_escape_string }} => 'foo&lt;b&gt;bar&lt;/b&gt;'
+```
+
+
 
 </div>
-  {% endraw %}
-</div>
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="raw_escape_string-instance_method">
-  
-    #<strong>raw_escape_string</strong>(value)  &#x21d2; <tt>String</tt> 
-  
+<div>
+<h2 class="signature " id="regex_matches-instance_method">
 
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns input string HTML-escaped; this will return a string whose HTML
-tags will be visible in the browser</p>
+#<strong>regex_matches</strong>(text, regexp)  &#x21d2; <tt>Array&lt;Array&lt;String&gt;&gt;</tt> 
 
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{{ &#39;foo&lt;b&gt;bar&lt;/b&gt;&#39; | raw_escape_string }} =&gt; &#39;foo&amp;lt;b&amp;gt;bar&amp;lt;/b&amp;gt;&#39;</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>value</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>input string to be HTML-escaped</p>
-</div>
-      
-    </li>
-  
-</ul>
 
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>input string HTML-escaped; this will return a string whose HTML tags will
-be visible in the browser</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div>
-  {% endraw %}
-</div>
-
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="regex_matches-instance_method">
-  
-    #<strong>regex_matches</strong>(text, regexp)  &#x21d2; <tt>Array&lt;Array&lt;String&gt;&gt;</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns matches for the expression in the string; each item in the array is
-an array containing all groups matches; for example for the regex (.)(.)
-and the text &#39;abcdef&#39;, the result will look like:</p>
-<dl class="rdoc-list label-list"><dt>[“a”, “b”], [“c”, “d”], [“e”, “f”]
-<dd></dd></dl>
+</h2>
 
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>To retrieve the URL from a meta tag see the example below:
-{% assign text = &#39;&lt;html&gt;&lt;head&gt;&lt;meta property=&quot;og:image&quot; content=&quot;http://somehost.com/someimage.jpg&quot; /&gt;&lt;/head&gt;&lt;body&gt;content&lt;/body&gt;&lt;/html&gt;&#39; | html_safe %}
+### Returns:
 
-{% assign matches = text | regex_matches: &#39;&lt;meta\s+property=&quot;og:image&quot;\s+content=&quot;([^&quot;]+)&quot;&#39; %}
+(<tt>Array&lt;Array&lt;String&gt;&gt;</tt>) - matches for the expression in the string;
+each item in the array is an array containing all groups matches; for example
+for the regex (.)(.) and the text 'abcdef', the result will look like:
+[["a", "b"], ["c", "d"], ["e", "f"]]
 
-{% if matches.size &gt; 0 %}
+
+
+
+### Params:
+
+
+* text (<tt>String</tt>) -  
+
+* regexp (<tt>String</tt>) - regexp to use for matching 
+
+
+
+
+### Examples:
+```liquid
+To retrieve the URL from a meta tag see the example below:
+{% assign text = '<html><head><meta property="og:image" content="http://somehost.com/someimage.jpg" /></head><body>content</body></html>' | html_safe %}
+
+{% assign matches = text | regex_matches: '<meta\s+property="og:image"\s+content="([^"]+)"' %}
+
+{% if matches.size > 0 %}
   {% assign image_path = matches[0][0] %}
   {{ image_path }}
-{% endif %}</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>text</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>regexp</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>regexp to use for matching</p>
-</div>
-      
-    </li>
-  
-</ul>
+{% endif %}
+```
 
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Array&lt;Array&lt;String&gt;&gt;</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>matches for the expression in the string; each item in the array is an
-array containing all groups matches; for example for the regex (.)(.) and
-the text &#39;abcdef&#39;, the result will look like:</p>
-<dl class="rdoc-list label-list"><dt>[“a”, “b”], [“c”, “d”], [“e”, “f”]
-<dd></dd></dl>
-</div>
-      
-    </li>
-  
-</ul>
+
 
 </div>
-  {% endraw %}
-</div>
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="reject-instance_method">
-  
-    #<strong>reject</strong>(objects, conditions = {})  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
-  
+<div>
+<h2 class="signature " id="reject-instance_method">
 
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns with objects from collection that don&#39;t match provided
-conditions</p>
+#<strong>reject</strong>(objects, conditions = {})  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
 
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{{ objects }} =&gt; [{&quot;foo&quot;:1,&quot;bar&quot;:&quot;a&quot;},{&quot;foo&quot;:2,&quot;bar&quot;:&quot;b&quot;},{&quot;foo&quot;:3,&quot;bar&quot;:&quot;c&quot;},{&quot;foo&quot;:2,&quot;bar&quot;:&quot;d&quot;}]
-{{ objects | reject: foo: 2 }} =&gt; [{&quot;foo&quot;:1,&quot;bar&quot;:&quot;a&quot;},{&quot;foo&quot;:3,&quot;bar&quot;:&quot;c&quot;}]</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>objects</span>
-      
-      
-        <span class='type'>(<tt>Array&lt;Object&gt;</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>array of objects to be processed</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>conditions</span>
-      
-      
-        <span class='type'>(<tt>Hash</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>{}</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>hash with conditions { field_name: value }</p>
-</div>
-      
-    </li>
-  
-</ul>
 
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Array&lt;Object&gt;</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>with objects from collection that don&#39;t match provided conditions</p>
-</div>
-      
-    </li>
-  
-</ul>
+</h2>
+
+
+### Returns:
+
+(<tt>Array&lt;Object&gt;</tt>) - with objects from collection that don't match provided conditions
+
+
+
+
+### Params:
+
+
+* objects (<tt>Array&lt;Object&gt;</tt>) - array of objects to be processed 
+
+* conditions (<tt>Hash</tt>) - hash with conditions { field_name: value }  <em class="default">(defaults to: <tt>{}</tt>)</em> 
+
+
+
+
+### Examples:
+```liquid
+{{ objects }} => [{"foo":1,"bar":"a"},{"foo":2,"bar":"b"},{"foo":3,"bar":"c"},{"foo":2,"bar":"d"}]
+{{ objects | reject: foo: 2 }} => [{"foo":1,"bar":"a"},{"foo":3,"bar":"c"}]
+```
+
+
 
 </div>
-  {% endraw %}
-</div>
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="rotate-instance_method">
-  
-    #<strong>rotate</strong>(array, count = 1)  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
-  
+<div>
+<h2 class="signature " id="rotate-instance_method">
 
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns the input array rotated by a number of times given as the second
-parameter; [1,2,3,4] rotated by 2 gives [3,4,1,2]</p>
+#<strong>rotate</strong>(array, count = 1)  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
 
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{% assign numbers = &quot;1,2,3&quot; | split: &quot;,&quot; %}
-{{ numbers | rotate }} =&gt; [3,2,1]</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>array</span>
-      
-      
-        <span class='type'>(<tt>Array&lt;Object&gt;</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>array to be rotated</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>count</span>
-      
-      
-        <span class='type'>(<tt>Integer</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>1</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>number of times to rotate the input array</p>
-</div>
-      
-    </li>
-  
-</ul>
 
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Array&lt;Object&gt;</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>the input array rotated by a number of times given as the second parameter;
-[1,2,3,4] rotated by 2 gives [3,4,1,2]</p>
-</div>
-      
-    </li>
-  
-</ul>
+</h2>
+
+
+### Returns:
+
+(<tt>Array&lt;Object&gt;</tt>) - the input array rotated by a number of times given as the second
+parameter; [1,2,3,4] rotated by 2 gives [3,4,1,2]
+
+
+
+
+### Params:
+
+
+* array (<tt>Array&lt;Object&gt;</tt>) - array to be rotated 
+
+* count (<tt>Integer</tt>) - number of times to rotate the input array  <em class="default">(defaults to: <tt>1</tt>)</em> 
+
+
+
+
+### Examples:
+```liquid
+{% assign numbers = "1,2,3" | split: "," %}
+{{ numbers | rotate }} => [3,2,1]
+```
+
+
 
 </div>
-  {% endraw %}
-</div>
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="select-instance_method">
-  
-    #<strong>select</strong>(objects, conditions = {})  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
-  
+<div>
+<h2 class="signature " id="select-instance_method">
 
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns with objects from collection that matches provided conditions</p>
+#<strong>select</strong>(objects, conditions = {})  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
 
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{{ objects }} =&gt; [{&quot;foo&quot;:1,&quot;bar&quot;:&quot;a&quot;},{&quot;foo&quot;:2,&quot;bar&quot;:&quot;b&quot;},{&quot;foo&quot;:3,&quot;bar&quot;:&quot;c&quot;},{&quot;foo&quot;:2,&quot;bar&quot;:&quot;d&quot;}]
-{{ objects | select: foo: 2 }} =&gt; [{&quot;foo&quot;:2,&quot;bar&quot;:&quot;b&quot;},{&quot;foo&quot;:2,&quot;bar&quot;:&quot;d&quot;}]</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>objects</span>
-      
-      
-        <span class='type'>(<tt>Array&lt;Object&gt;</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>array of objects to be processed</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>conditions</span>
-      
-      
-        <span class='type'>(<tt>Hash</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>{}</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>hash with conditions { field_name: value }</p>
-</div>
-      
-    </li>
-  
-</ul>
 
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Array&lt;Object&gt;</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>with objects from collection that matches provided conditions</p>
-</div>
-      
-    </li>
-  
-</ul>
+</h2>
+
+
+### Returns:
+
+(<tt>Array&lt;Object&gt;</tt>) - with objects from collection that matches provided conditions
+
+
+
+
+### Params:
+
+
+* objects (<tt>Array&lt;Object&gt;</tt>) - array of objects to be processed 
+
+* conditions (<tt>Hash</tt>) - hash with conditions { field_name: value }  <em class="default">(defaults to: <tt>{}</tt>)</em> 
+
+
+
+
+### Examples:
+```liquid
+{{ objects }} => [{"foo":1,"bar":"a"},{"foo":2,"bar":"b"},{"foo":3,"bar":"c"},{"foo":2,"bar":"d"}]
+{{ objects | select: foo: 2 }} => [{"foo":2,"bar":"b"},{"foo":2,"bar":"d"}]
+```
+
+
 
 </div>
-  {% endraw %}
-</div>
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="sha1-instance_method">
-  
-    #<strong>sha1</strong>(object)  &#x21d2; <tt>String</tt> 
-  
+<div>
+<h2 class="signature " id="sha1-instance_method">
 
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns SHA1 digest of the input object</p>
+#<strong>sha1</strong>(object)  &#x21d2; <tt>String</tt> 
 
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{{ &#39;foo&#39; | sha1 }} =&gt; &#39;0beec7b5ea3f0fdbc95d0dd47f3c5bc275da8a33&#39;</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>object</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>input object whose digest we want to obtain</p>
-</div>
-      
-    </li>
-  
-</ul>
 
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>SHA1 digest of the input object</p>
-</div>
-      
-    </li>
-  
-</ul>
+</h2>
+
+
+### Returns:
+
+(<tt>String</tt>) - SHA1 digest of the input object
+
+
+
+
+### Params:
+
+
+* object (<tt>String</tt>) - input object whose digest we want to obtain 
+
+
+
+
+### Examples:
+```liquid
+{{ 'foo' | sha1 }} => '0beec7b5ea3f0fdbc95d0dd47f3c5bc275da8a33'
+```
+
+
 
 </div>
-  {% endraw %}
-</div>
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="slugify-instance_method">
-  
-    #<strong>slugify</strong>(text)  &#x21d2; <tt>String</tt> 
-  
+<div>
+<h2 class="signature " id="slugify-instance_method">
 
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns replaces special characters in a string so that it may be used as
-part of a &#39;pretty&#39; URL;</p>
+#<strong>slugify</strong>(text)  &#x21d2; <tt>String</tt> 
 
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{{ &#39;John arrived_foo&#39; | slugify }} =&gt; &#39;john-arrived-foo&#39;</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>text</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>input string to be &#39;slugified&#39;</p>
-</div>
-      
-    </li>
-  
-</ul>
 
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>replaces special characters in a string so that it may be used as part of a
-&#39;pretty&#39; URL;</p>
-</div>
-      
-    </li>
-  
-</ul>
+</h2>
+
+
+### Returns:
+
+(<tt>String</tt>) - replaces special characters in a string so that it may be used as part of a 'pretty' URL;
+
+
+
+
+### Params:
+
+
+* text (<tt>String</tt>) - input string to be 'slugified' 
+
+
+
+
+### Examples:
+```liquid
+{{ 'John arrived_foo' | slugify }} => 'john-arrived-foo'
+```
+
+
 
 </div>
-  {% endraw %}
-</div>
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="strftime-instance_method">
-  
-    #<strong>strftime</strong>(date, format, zone = nil)  &#x21d2; <tt>String</tt> 
-  
+<div>
+<h2 class="signature " id="strftime-instance_method">
 
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns formatted representation of the date object; the formatted
-representation will be based on what the format parameter specifies</p>
+#<strong>strftime</strong>(date, format, zone = nil)  &#x21d2; <tt>String</tt> 
 
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{{ | }} =&gt;</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>date</span>
-      
-      
-        <span class='type'>(<tt>Date</tt>, <tt>Time</tt>, <tt>DateTime</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>date object</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>format</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>string representing the desired output format</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>zone</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>nil</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>string representing the time zone e.g. &#39;%Y-%m-%d&#39; will result in
-something like &#39;2020-12-12&#39;</p>
-</div>
-      
-    </li>
-  
-</ul>
 
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>formatted representation of the date object; the formatted representation
-will be based on what the format parameter specifies</p>
-</div>
-      
-    </li>
-  
-</ul>
+</h2>
+
+
+### Returns:
+
+(<tt>String</tt>) - formatted representation of the date object; the formatted representation
+will be based on what the format parameter specifies
+
+
+
+
+### Params:
+
+
+* date (<tt>Date</tt>, <tt>Time</tt>, <tt>DateTime</tt>) - date object 
+
+* format (<tt>String</tt>) - string representing the desired output format 
+
+* zone (<tt>String</tt>) - string representing the time zone
+e.g. '%Y-%m-%d' will result in something like '2020-12-12'  <em class="default">(defaults to: <tt>nil</tt>)</em> 
+
+
+
+
+### Examples:
+```liquid
+{{ '2018-05-30T09:12:34.000-07:00' | strftime: '%Y-%m-%d %H:%M' }} => 2018-05-30 09:12
+
+{% assign time = '2010-01-01 08:00' | to_time_from_str %}
+{{ time | strftime: "%Y-%m-%d" }} => '2010-01-01'
+```
+
+
 
 </div>
-  {% endraw %}
-</div>
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="subtract_array-instance_method">
-  
-    #<strong>subtract_array</strong>(array, other_array)  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
-  
+<div>
+<h2 class="signature " id="subtract_array-instance_method">
 
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns that is a difference between two arrays</p>
+#<strong>subtract_array</strong>(array, other_array)  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
 
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{% assign array = &#39;1,2&#39; | split: &#39;,&#39; %}
-{% assign other_array = &#39;2&#39; | split: &#39;,&#39; %}
 
-{{ array | intersection: other_array }} =&gt; [1]</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>array</span>
-      
-      
-        <span class='type'>(<tt>Array&lt;Object&gt;</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>array of objects to be processed</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>other_array</span>
-      
-      
-        <span class='type'>(<tt>Array&lt;Object&gt;</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>array of objects to be processed</p>
-</div>
-      
-    </li>
-  
-</ul>
+</h2>
 
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Array&lt;Object&gt;</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>that is a difference between two arrays</p>
-</div>
-      
-    </li>
-  
-</ul>
+
+### Returns:
+
+(<tt>Array&lt;Object&gt;</tt>) - that is a difference between two arrays
+
+
+
+
+### Params:
+
+
+* array (<tt>Array&lt;Object&gt;</tt>) - array of objects to be processed 
+
+* other_array (<tt>Array&lt;Object&gt;</tt>) - array of objects to be processed 
+
+
+
+
+### Examples:
+```liquid
+{% assign array = '1,2' | split: ',' %}
+{% assign other_array = '2' | split: ',' %}
+
+{{ array | subtract_array: other_array }} => [1]
+```
+
+
 
 </div>
-  {% endraw %}
-</div>
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="sum_array-instance_method">
-  
-    #<strong>sum_array</strong>(array)  &#x21d2; <tt>Numeric</tt> 
-  
+<div>
+<h2 class="signature " id="sum_array-instance_method">
 
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns summarised value of array</p>
+#<strong>sum_array</strong>(array)  &#x21d2; <tt>Numeric</tt> 
 
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{% assign numbers = &#39;1,2,3&#39; | split: &#39;,&#39; %}
-{{ numbers | sum_array }} =&gt; 6</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>array</span>
-      
-      
-        <span class='type'>(<tt>Array&lt;Numeric&gt;</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>array with values to be summarised</p>
-</div>
-      
-    </li>
-  
-</ul>
 
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Numeric</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>summarised value of array</p>
-</div>
-      
-    </li>
-  
-</ul>
+</h2>
+
+
+### Returns:
+
+(<tt>Numeric</tt>) - summarised value of array
+
+
+
+
+### Params:
+
+
+* array (<tt>Array&lt;Numeric&gt;</tt>) - array with values to be summarised 
+
+
+
+
+### Examples:
+```liquid
+{% assign numbers = '1,2,3' | split: ',' %}
+{{ numbers | sum_array }} => 6
+```
+
+
 
 </div>
-  {% endraw %}
-</div>
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="titleize-instance_method">
-  
-    #<strong>titleize</strong>(text)  &#x21d2; <tt>String</tt> 
-  
+<div>
+<h2 class="signature " id="titleize-instance_method">
 
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns capitalizes all the words and replaces some characters in the
-string to create a nicer looking title; it is meant for creating pretty
-output</p>
+#<strong>titleize</strong>(text)  &#x21d2; <tt>String</tt> 
 
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{{ &#39;foo bar_zoo-xx&#39; | titleize }} =&gt; &#39;Foo Bar Zoo Xx&#39;</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>text</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>string to be processed</p>
-</div>
-      
-    </li>
-  
-</ul>
 
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>capitalizes all the words and replaces some characters in the string to
-create a nicer looking title; it is meant for creating pretty output</p>
-</div>
-      
-    </li>
-  
-</ul>
+</h2>
+
+
+### Returns:
+
+(<tt>String</tt>) - capitalizes all the words and replaces some characters in the string to create
+a nicer looking title; it is meant for creating pretty output
+
+
+
+
+### Params:
+
+
+* text (<tt>String</tt>) - string to be processed 
+
+
+
+
+### Examples:
+```liquid
+{{ 'foo bar_zoo-xx' | titleize }} => 'Foo Bar Zoo Xx'
+```
+
+
 
 </div>
-  {% endraw %}
-</div>
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="to_date-instance_method">
-  
-    #<strong>to_date</strong>(datetime)  &#x21d2; <tt>Date</tt> 
-  
+<div>
+<h2 class="signature " id="to_date-instance_method">
 
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns a Date object obtained/parsed from the input object</p>
+#<strong>to_date</strong>(datetime)  &#x21d2; <tt>Date</tt> 
 
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{{ &#39;2010-01-01 8:00:00&#39; | to_date }} =&gt; 2010-01-01</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>datetime</span>
-      
-      
-        <span class='type'>(<tt>Date</tt>, <tt>String</tt>, <tt>Object</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>object from which we try to obtain/parse a date object</p>
-</div>
-      
-    </li>
-  
-</ul>
 
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Date</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>a Date object obtained/parsed from the input object</p>
-</div>
-      
-    </li>
-  
-</ul>
+</h2>
+
+
+### Returns:
+
+(<tt>Date</tt>) - a Date object obtained/parsed from the input object
+
+
+
+
+### Params:
+
+
+* datetime (<tt>Date</tt>, <tt>String</tt>, <tt>Object</tt>) - object from which we try to obtain/parse a date object 
+
+
+
+
+### Examples:
+```liquid
+{{ '2010-01-01 8:00:00' | to_date }} => 2010-01-01
+```
+
+
 
 </div>
-  {% endraw %}
-</div>
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="to_hash-instance_method">
-  
-    #<strong>to_hash</strong>(object)  &#x21d2; <tt>Hash</tt> 
-  
+<div>
+<h2 class="signature " id="to_hash-instance_method">
 
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns Hash created based on JSON</p>
+#<strong>to_hash</strong>(object)  &#x21d2; <tt>Hash</tt> 
 
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{% assign text = &#39;{ &quot;name&quot;: &quot;foo&quot;, &quot;bar&quot;: {} }&#39; %}
+
+</h2>
+
+
+### Returns:
+
+(<tt>Hash</tt>) - Hash created based on JSON
+
+
+
+
+### Params:
+
+
+* object (<tt>Object</tt>) - String containing valid JSON 
+
+
+
+
+### Examples:
+```liquid
+{% assign text = '{ "name": "foo", "bar": {} }' %}
 {% assign object = text | to_hash %}
-{{ object.name }} =&gt; &#39;foo&#39;</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>object</span>
-      
-      
-        <span class='type'>(<tt>Object</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>String containing valid JSON</p>
-</div>
-      
-    </li>
-  
-</ul>
+{{ object.name }} => 'foo'
+```
 
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Hash</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Hash created based on JSON</p>
-</div>
-      
-    </li>
-  
-</ul>
+
 
 </div>
-  {% endraw %}
-</div>
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="to_mobile_number-instance_method">
-  
-    #<strong>to_mobile_number</strong>(number, country = nil)  &#x21d2; <tt>String</tt> 
-  
+<div>
+<h2 class="signature " id="to_mobile_number-instance_method">
 
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns mobile number in E.164 format; recommended for sending sms
-notifications</p>
+#<strong>to_mobile_number</strong>(number, country = nil)  &#x21d2; <tt>String</tt> 
 
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{{ &#39;500 123 999&#39; | to_mobile_number: &#39;PL&#39; }} =&gt; &#39;+48500123999&#39;</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>number</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>the base part of mobile number</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>country</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>nil</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>country for which country code should be used. Can be anything - full name,
-iso2, iso3</p>
-</div>
-      
-    </li>
-  
-</ul>
 
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>returns mobile number in E.164 format; recommended for sending sms
-notifications</p>
-</div>
-      
-    </li>
-  
-</ul>
+</h2>
+
+
+### Returns:
+
+(<tt>String</tt>) - returns mobile number in E.164 format; recommended for sending sms notifications
+
+
+
+
+### Params:
+
+
+* number (<tt>String</tt>) - the base part of mobile number 
+
+* country (<tt>String</tt>) - country for which country code should be used. Can be anything - full name, iso2, iso3  <em class="default">(defaults to: <tt>nil</tt>)</em> 
+
+
+
+
+### Examples:
+```liquid
+{{ '500 123 999' | to_mobile_number: 'PL' }} => '+48500123999'
+```
+
+
 
 </div>
-  {% endraw %}
-</div>
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="to_positive_integer-instance_method">
-  
-    #<strong>to_positive_integer</strong>(param, default)  &#x21d2; <tt>Integer</tt> 
-  
+<div>
+<h2 class="signature " id="to_positive_integer-instance_method">
 
-  
+#<strong>to_positive_integer</strong>(param, default)  &#x21d2; <tt>Integer</tt> 
 
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{{ &#39;1&#39; | to_positive_integer: 2 }} =&gt; 1
-{{ &#39;&#39; | to_positive_integer: 2 }} =&gt; 2</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>param</span>
-      
-      
-        <span class='type'>(<tt>Object</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>value to be coerced to posivite integer</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>default</span>
-      
-      
-        <span class='type'>(<tt>Integer</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>default value in case param is not valid positive integer</p>
-</div>
-      
-    </li>
-  
-</ul>
 
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Integer</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
+</h2>
+
+
+### Returns:
+
+(<tt>Integer</tt>) - 
+
+
+
+
+### Params:
+
+
+* param (<tt>Object</tt>) - value to be coerced to posivite integer 
+
+* default (<tt>Integer</tt>) - default value in case param is not valid positive integer 
+
+
+
+
+### Examples:
+```liquid
+{{ '1' | to_positive_integer: 2 }} => 1
+{{ '' | to_positive_integer: 2 }} => 2
+```
+
+
 
 </div>
-  {% endraw %}
-</div>
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="to_time-instance_method">
-  
-    #<strong>to_time</strong>(time, zone = nil)  &#x21d2; <tt>Time</tt> 
-  
+<div>
+<h2 class="signature " id="to_time-instance_method">
 
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>16:3 -&gt; 16:03 etc</p>
+#<strong>to_time</strong>(time, zone = nil, format = nil)  &#x21d2; <tt>DateTime</tt> 
 
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{{ &#39;2010-01-01 4:0&#39; | to_time: &#39;UTC&#39; }} =&gt; 2010-01-01 04:00:00 UTC</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>time</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>a string representation of time in hours and minutes, like 4:0 -&gt; 4:00</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>zone</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>nil</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>string representing the time zone</p>
-</div>
-      
-    </li>
-  
-</ul>
 
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Time</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>a time object created from time in string</p>
-</div>
-      
-    </li>
-  
-</ul>
+</h2>
+
+
+### Returns:
+
+(<tt>DateTime</tt>) - a time object created from parsing the string representation of time given as input
+
+
+
+
+### Params:
+
+
+* time (<tt>String</tt>, <tt>Integer</tt>) - a string representation of time for example 'today', '3 days ago' etc. a integer in unix time format 
+
+
+
+
+### Examples:
+```liquid
+{{ 'today' | to_time }} => 2017-04-15 15:21:00
+{{ 'today' | to_time '', 'UTC' }} => 2017-04-15 15:21:00
+{{ '1 day ago' | to_time }} => 2017-04-14 15:21:00
+{{ '5 days from now' | to_time }} => 2017-04-14 15:21:00
+{{ '2010:01:01' | to_time: '%Y:%m:%d' }} => 2010-01-01 00:00:00
+```
+
+
 
 </div>
-  {% endraw %}
-</div>
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="to_time_from_str-instance_method">
-  
-    #<strong>to_time_from_str</strong>(string)  &#x21d2; <tt>Time</tt> 
-  
+<div>
+<h2 class="signature " id="translate-instance_method">
 
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns a Time object obtained/parsed from the input object</p>
+#<strong>translate</strong>(key, options = {})  &#x21d2; <tt>String</tt> 
 
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{{ &#39;today&#39; | to_time_from_str }} =&gt; 2017-04-15 15:21:00
-{{ &#39;1 day ago&#39; | to_time_from_str }} =&gt; 2017-04-14 15:21:00
-{{ &#39;5 days from now&#39; | to_time_from_str }} =&gt; 2017-04-14 15:21:00</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>string</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>object from which we try to obtain/parse a date object</p>
-</div>
-      
-    </li>
-  
-</ul>
 
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Time</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>a Time object obtained/parsed from the input object</p>
-</div>
-      
-    </li>
-  
-</ul>
+<span class="aliases">Also known as:
+<span class="names"><span id='t-instance_method'>t</span></span>
+</span>
+
+</h2>
+
+
+### Returns:
+
+(<tt>String</tt>) - translation value taken from translations yml file for the key given as parameter
+
+
+
+
+### Params:
+
+
+* key (<tt>String</tt>) - translation key 
+
+* options (<tt>Hash{String =&gt; String}</tt>) - values passed to translation string  <em class="default">(defaults to: <tt>{}</tt>)</em> 
+
+
+
+
+### Examples:
+```liquid
+{{ 'beer' | translate }} => 'cerveza'
+```
+
+
 
 </div>
-  {% endraw %}
-</div>
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="translate-instance_method">
-  
-    #<strong>translate</strong>(key, options = {})  &#x21d2; <tt>String</tt> 
-  
+<div>
+<h2 class="signature " id="url_for_path_with_token-instance_method">
 
-  
-    <span class="aliases">Also known as:
-    <span class="names"><span id='t-instance_method'>t</span></span>
-    </span>
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns translation value taken from translations yml file for the key
-given as parameter</p>
+#<strong>url_for_path_with_token</strong>(path, user)  &#x21d2; <tt>String</tt> 
 
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{{ &#39;beer&#39; | translate }} =&gt; &#39;cerveza&#39;</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>key</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>translation key</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>options</span>
-      
-      
-        <span class='type'>(<tt>Hash{String =&gt; String}</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>{}</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>values passed to translation string</p>
-</div>
-      
-    </li>
-  
-</ul>
 
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>translation value taken from translations yml file for the key given as
-parameter</p>
-</div>
-      
-    </li>
-  
-</ul>
+</h2>
+
+
+### Returns:
+
+(<tt>String</tt>) - returns a url for the given page slug, which includes user temporary token;
+
+
+
+
+
+### Examples:
+```liquid
+{{ '/account' | url_for_with_token: current_user }} => 'https://example.com/account?temporary_token=TOKEN_HERE'
+```
+
+
 
 </div>
-  {% endraw %}
-</div>
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="url_for_path_with_token-instance_method">
-  
-    #<strong>url_for_path_with_token</strong>(path, user)  &#x21d2; <tt>String</tt> 
-  
+<div>
+<h2 class="signature " id="video_params-instance_method">
 
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns a url for the given page slug, which includes user temporary token;</p>
+#<strong>video_params</strong>(url)  &#x21d2; <tt>Hash</tt> 
 
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{{ &#39;/account&#39; | url_for_with_token: current_user }} =&gt; &#39;https://example.com/account?temporary_token=TOKEN_HERE&#39;</code></pre>
-    
-  </div>
 
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>returns a url for the given page slug, which includes user temporary token;</p>
-</div>
-      
-    </li>
-  
-</ul>
+</h2>
+
+
+### Returns:
+
+(<tt>Hash</tt>) - metadata about video
+
+
+
+
+### Params:
+
+
+* url (<tt>String</tt>) - url to a video on the internet 
+
+
+
+
+### Examples:
+```liquid
+{{ 'https://www.youtube.com/watch?v=8N_tupPBtWQ' | video_params }}
+=> {"provider"=>"YouTube", "url"=>"https://www.youtube.com/watch?v=8N_tupPBtWQ", "video_id"=>"8N_tupPBtWQ", "embed_url"=>"//www.youtube.com/embed/8N_tupPBtWQ", "embed_code"=>"<iframe src=\"//www.youtube.com/embed/8N_tupPBtWQ\" frameborder=\"0\" allowfullscreen=\"allowfullscreen\"></iframe>"},
+```
+
+
 
 </div>
-  {% endraw %}
-</div>
 
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="video_params-instance_method">
-  
-    #<strong>video_params</strong>(url)  &#x21d2; <tt>Hash</tt> 
-  
+<div>
+<h2 class="signature " id="videoify-instance_method">
 
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns metadata about video</p>
+#<strong>videoify</strong>(url = &#39;&#39;, options = {})  &#x21d2; <tt>String</tt> 
 
 
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{{ &#39;https://www.youtube.com/watch?v=8N_tupPBtWQ&#39; | video_params }}
-=&gt; {&quot;provider&quot;=&gt;&quot;YouTube&quot;, &quot;url&quot;=&gt;&quot;https://www.youtube.com/watch?v=8N_tupPBtWQ&quot;, &quot;video_id&quot;=&gt;&quot;8N_tupPBtWQ&quot;, &quot;embed_url&quot;=&gt;&quot;//www.youtube.com/embed/8N_tupPBtWQ&quot;, &quot;embed_code&quot;=&gt;&quot;&lt;iframe src=\&quot;//www.youtube.com/embed/8N_tupPBtWQ\&quot; frameborder=\&quot;0\&quot; allowfullscreen=\&quot;allowfullscreen\&quot;&gt;&lt;/iframe&gt;&quot;},</code></pre>
-    
-  </div>
-<p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>url</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>url to a video on the internet</p>
-</div>
-      
-    </li>
-  
-</ul>
 
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Hash</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>metadata about video</p>
-</div>
-      
-    </li>
-  
-</ul>
+</h2>
+
+
+### Returns:
+
+(<tt>String</tt>) - if the given url is supported, an HTML formatted string containing a video player (inside an iframe)
+which will play the video at the given url; otherwise an empty string is returned
+
+
+
+
+### Params:
+
+
+* url (<tt>String</tt>) - url to a video on the internet  <em class="default">(defaults to: <tt>&#39;&#39;</tt>)</em> 
+
+
+
+
 
 </div>
-  {% endraw %}
-</div>
-
-    
-      <div class="method_details ">
-  {% raw %}
-    <h3 class="signature " id="videoify-instance_method">
-  
-    #<strong>videoify</strong>(url = &#39;&#39;, options = {})  &#x21d2; <tt>String</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns if the given url is supported, an HTML formatted string containing
-a video player (inside an iframe) which will play the video at the given
-url; otherwise an empty string is returned</p>
 
 
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>url</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>&#39;&#39;</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>url to a video on the internet</p>
-</div>
-      
-    </li>
-  
-</ul>
 
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>if the given url is supported, an HTML formatted string containing a video
-player (inside an iframe) which will play the video at the given url;
-otherwise an empty string is returned</p>
-</div>
-      
-    </li>
-  
-</ul>
 
-</div>
-  {% endraw %}
-</div>
-
-    
-  </div>
-
+{% endraw %}
 </div>
