@@ -15,7 +15,7 @@ Each address supports the following self-descriptive fields:
 
 | Field name        | Type   | Note                                                                                                                                          |
 | ----------------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| address           | String | Address that has been sent via form—usually original input from user                                                                          |
+| address           | String | Address that has been sent via form &ndash; usually original input from user                                                                          |
 | latitude          | Float  | Latitude part of coordinate used for geo searching                                                                                            |
 | longitude         | Float  | Longitude part of coordinate used for geo searching                                                                                           |
 | formatted_address | String | Formatted address that you want to display on your site. E.g. you can send `address` to the Google API and get a more complete address to display. |
@@ -32,18 +32,18 @@ Each address supports the following self-descriptive fields:
 
 Enable CustomAddresses by adding a CustomAttribute with `attribute_type` set to `address`, for example:
 
-<pre><code class="language-yaml">
+```yaml
 - name: hq_address
   attribute_type: address
 - name: correspondence_address
   attribute_type: address
-</code></pre>
+```
 
 ## Form configuration
 
 Having this declaration in any `user_profile_types/` file will result in 2 CustomAddresses being available in the form configuration, where they can be used for example like this:
 
-<pre><code class="language-yaml">
+```yaml
 profiles:
   validation: { presence: true }
   seller:
@@ -76,11 +76,11 @@ profiles:
           validation: {}
         postcode:
           validation: {}
-</code></pre>
+```
 
 Another example, adding CustomAddress for a Customization named "EmergencyContact":
 
-<pre><code class="language-yaml">
+```yaml
 customizations:
   emergency_contacts:
     custom_addresses:
@@ -101,109 +101,109 @@ customizations:
         validation:
           presence: {}
       contact_address:
-</code></pre>
+```
 
 ## Displaying, updating
 
 After setting up addresses as described above, you can further customize them in the markup for the forms:
 
+
+```liquid
 {% raw %}
-
-<pre><code class="language-liquid">
-  <h2>Headquarters address</h2>
+<h2>Headquarters address</h2>
+<div>
+  <label for="hq_address"><abbr title="required">*</abbr> Address</label>
   <div>
-    <label for="hq_address"><abbr title="required">*</abbr> Address</label>
-    <div>
-      <input value="{{ form_builder.fields.profiles.seller.custom_addresses.hq_address.address.value }}" name="{{ form_builder.fields.profiles.seller.custom_addresses.hq_address.address.name }}" id="hq_address" type="text">
-      {% if form_builder.errors['profiles.seller.custom_addresses.hq_address.address'] %}
-        <p>{{ form_builder.errors['profiles.seller.custom_addresses.hq_address.address'] }}</p>
-      {% endif %}
-    </div>
+    <input value="{{ form_builder.fields.profiles.seller.custom_addresses.hq_address.address.value }}" name="{{ form_builder.fields.profiles.seller.custom_addresses.hq_address.address.name }}" id="hq_address" type="text">
+    {% if form_builder.errors['profiles.seller.custom_addresses.hq_address.address'] %}
+      <p>{{ form_builder.errors['profiles.seller.custom_addresses.hq_address.address'] }}</p>
+    {% endif %}
   </div>
+</div>
 
+<div>
+  <label for="hq_city">City</label>
   <div>
-    <label for="hq_city">City</label>
-    <div>
-      <input value="{{ form_builder.fields.profiles.seller.custom_addresses.hq_address.city.value }}" name="{{ form_builder.fields.profiles.seller.custom_addresses.hq_address.city.name }}" id="hq_city" type="text">
-    </div>
+    <input value="{{ form_builder.fields.profiles.seller.custom_addresses.hq_address.city.value }}" name="{{ form_builder.fields.profiles.seller.custom_addresses.hq_address.city.name }}" id="hq_city" type="text">
   </div>
+</div>
 
+<div>
+  <label for="hq_street">Street</label>
   <div>
-    <label for="hq_street">Street</label>
-    <div>
-      <input value="{{ form_builder.fields.profiles.seller.custom_addresses.hq_address.street.value }}" name="{{ form_builder.fields.profiles.seller.custom_addresses.hq_address.street.name }}" id="hq_street" type="text">
-    </div>
+    <input value="{{ form_builder.fields.profiles.seller.custom_addresses.hq_address.street.value }}" name="{{ form_builder.fields.profiles.seller.custom_addresses.hq_address.street.name }}" id="hq_street" type="text">
   </div>
+</div>
 
+<div>
+  <label for="hq_state"><abbr title="required">*</abbr> State</label>
   <div>
-    <label for="hq_state"><abbr title="required">*</abbr> State</label>
-    <div>
-      <input value="{{ form_builder.fields.profiles.seller.custom_addresses.hq_address.state.value }}" name="{{ form_builder.fields.profiles.seller.custom_addresses.hq_address.state.name }}" id="hq_state" type="text">
-      {% if form_builder.errors['profiles.seller.custom_addresses.hq_address.state'] %}
-        <p>{{ form_builder.errors['profiles.seller.custom_addresses.hq_address.state'] }}</p>
-      {% endif %}
-    </div>
+    <input value="{{ form_builder.fields.profiles.seller.custom_addresses.hq_address.state.value }}" name="{{ form_builder.fields.profiles.seller.custom_addresses.hq_address.state.name }}" id="hq_state" type="text">
+    {% if form_builder.errors['profiles.seller.custom_addresses.hq_address.state'] %}
+      <p>{{ form_builder.errors['profiles.seller.custom_addresses.hq_address.state'] }}</p>
+    {% endif %}
   </div>
+</div>
 
+<div>
+  <label for="hq_country">Country</label>
   <div>
-    <label for="hq_country">Country</label>
-    <div>
-      <input value="{{ form_builder.fields.profiles.seller.custom_addresses.hq_address.country.value }}" name="{{ form_builder.fields.profiles.seller.custom_addresses.hq_address.country.name }}" id="hq_country" type="text">
-    </div>
+    <input value="{{ form_builder.fields.profiles.seller.custom_addresses.hq_address.country.value }}" name="{{ form_builder.fields.profiles.seller.custom_addresses.hq_address.country.name }}" id="hq_country" type="text">
   </div>
+</div>
 
+<div>
+  <label for="hq_postcode">Postcode</label>
   <div>
-    <label for="hq_postcode">Postcode</label>
-    <div>
-      <input value="{{ form_builder.fields.profiles.seller.custom_addresses.hq_address.postcode.value }}" name="{{ form_builder.fields.profiles.seller.custom_addresses.hq_address.postcode.name }}" id="hq_postcode" type="text">
-    </div>
+    <input value="{{ form_builder.fields.profiles.seller.custom_addresses.hq_address.postcode.value }}" name="{{ form_builder.fields.profiles.seller.custom_addresses.hq_address.postcode.name }}" id="hq_postcode" type="text">
   </div>
+</div>
 
 
 
-  <h2>Correspondence address</h2>
+<h2>Correspondence address</h2>
+<div>
+  <label for="correspondence_address">Address</label>
   <div>
-    <label for="correspondence_address">Address</label>
-    <div>
-      <input value="{{ form_builder.fields.profiles.seller.custom_addresses.correspondence_address.address.value }}" name="{{ form_builder.fields.profiles.seller.custom_addresses.correspondence_address.address.name }}" id="correspondence_address" type="text">
-    </div>
+    <input value="{{ form_builder.fields.profiles.seller.custom_addresses.correspondence_address.address.value }}" name="{{ form_builder.fields.profiles.seller.custom_addresses.correspondence_address.address.name }}" id="correspondence_address" type="text">
   </div>
+</div>
 
+<div>
+  <label for="correspondence_city">City</label>
   <div>
-    <label for="correspondence_city">City</label>
-    <div>
-      <input value="{{ form_builder.fields.profiles.seller.custom_addresses.correspondence_address.city.value }}" name="{{ form_builder.fields.profiles.seller.custom_addresses.correspondence_address.city.name }}" id="correspondence_city" type="text">
-    </div>
+    <input value="{{ form_builder.fields.profiles.seller.custom_addresses.correspondence_address.city.value }}" name="{{ form_builder.fields.profiles.seller.custom_addresses.correspondence_address.city.name }}" id="correspondence_city" type="text">
   </div>
+</div>
 
+<div>
+  <label for="correspondence_street">Street</label>
   <div>
-    <label for="correspondence_street">Street</label>
-    <div>
-      <input value="{{ form_builder.fields.profiles.seller.custom_addresses.correspondence_address.street.value }}" name="{{ form_builder.fields.profiles.seller.custom_addresses.correspondence_address.street.name }}" id="correspondence_street" type="text">
-    </div>
+    <input value="{{ form_builder.fields.profiles.seller.custom_addresses.correspondence_address.street.value }}" name="{{ form_builder.fields.profiles.seller.custom_addresses.correspondence_address.street.name }}" id="correspondence_street" type="text">
   </div>
+</div>
 
+<div>
+  <label for="correspondence_state">State</label>
   <div>
-    <label for="correspondence_state">State</label>
-    <div>
-      <input value="{{ form_builder.fields.profiles.seller.custom_addresses.correspondence_address.state.value }}" name="{{ form_builder.fields.profiles.seller.custom_addresses.correspondence_address.state.name }}" id="correspondence_state" type="text">
-    </div>
+    <input value="{{ form_builder.fields.profiles.seller.custom_addresses.correspondence_address.state.value }}" name="{{ form_builder.fields.profiles.seller.custom_addresses.correspondence_address.state.name }}" id="correspondence_state" type="text">
   </div>
+</div>
 
+<div>
+  <label for="correspondence_country">Country</label>
   <div>
-    <label for="correspondence_country">Country</label>
-    <div>
-      <input value="{{ form_builder.fields.profiles.seller.custom_addresses.correspondence_address.country.value }}" name="{{ form_builder.fields.profiles.seller.custom_addresses.correspondence_address.country.name }}" id="correspondence_country" type="text">
-    </div>
+    <input value="{{ form_builder.fields.profiles.seller.custom_addresses.correspondence_address.country.value }}" name="{{ form_builder.fields.profiles.seller.custom_addresses.correspondence_address.country.name }}" id="correspondence_country" type="text">
   </div>
+</div>
 
+<div>
+  <label for="correspondence_postcode">Postcode</label>
   <div>
-    <label for="correspondence_postcode">Postcode</label>
-    <div>
-      <input value="{{ form_builder.fields.profiles.seller.custom_addresses.correspondence_address.postcode.value }}" name="{{ form_builder.fields.profiles.seller.custom_addresses.correspondence_address.postcode.name }}" id="correspondence_postcode" type="text">
-    </div>
+    <input value="{{ form_builder.fields.profiles.seller.custom_addresses.correspondence_address.postcode.value }}" name="{{ form_builder.fields.profiles.seller.custom_addresses.correspondence_address.postcode.name }}" id="correspondence_postcode" type="text">
   </div>
-</code></pre>
+</div>
+```
 
 {% endraw %}
 
@@ -211,7 +211,7 @@ After setting up addresses as described above, you can further customize them in
 
 Use `latitude` and `longitude` fields in geolocation queries:
 
-<pre><code class="language-graphql">
+```graphql
 query geolocate_users(
   $per_page: Int
   $page: Int
@@ -288,13 +288,13 @@ query geolocate_users(
     }
   }
 }
-</code></pre>
+```
 
 In the example above, you can see how you can query `CustomAddress` both at the `user_profile` and `customization` levels.
 
 If you wanted to find user profiles in the vicinity of (50, 20) geo point, you could do that using those parameters:
 
-<pre><code class="language-json">
+```json
 {
   "geo_radius": {
     "center": {
@@ -304,4 +304,4 @@ If you wanted to find user profiles in the vicinity of (50, 20) geo point, you c
     "distance": "25km"
   }
 }
-</code></pre>
+```

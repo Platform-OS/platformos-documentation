@@ -27,7 +27,7 @@ When defining business rules, it is critical to define which roles will be able 
 
 For the sake of this tutorial, we will assume that you want to build a marketplace which connects Developers (who build marketplaces) with Clients (who want to hire them). Using this example scenario, there are different approaches to choose from, for example:
 
-* **Developer role creates Transactable**: In this scenario, developers create multiple services that can be booked on a time basis (e.g. per hour, day, week, month etc.)—each with a different price, availability, etc. The expected flow would be that clients, who need a developer’s help, would search for them, and when they find the right fit, they book them. During booking the client could provide some details about the project. Developers would have a choice to either confirm or reject the request.
+* **Developer role creates Transactable**: In this scenario, developers create multiple services that can be booked on a time basis (e.g. per hour, day, week, month etc.) &ndash; each with a different price, availability, etc. The expected flow would be that clients, who need a developer’s help, would search for them, and when they find the right fit, they book them. During booking the client could provide some details about the project. Developers would have a choice to either confirm or reject the request.
 
 * **Client role creates Transactable**: In this scenario, the Transactable would be a project that the client describes. The client could search for developers, and when they find the right fit, they invite them to their project and ask for the offer. The developer can reject the request or accept it by sending an offer. Multiple developers can be invited at the same time. Once the client chooses an offer, they accept it, and all others are automatically rejected.
 
@@ -44,7 +44,7 @@ You'll assume that developers are mainly interested in the deadline, the budget,
 
 Based on this specification, create the file `/transactable_types/project.yml`:
 
-<pre><code class="language-yaml">
+```yaml
 name: Project
 custom_attributes:
 - name: workplace_onsite
@@ -55,7 +55,7 @@ custom_attributes:
   attribute_type: date
 - name: budget
   attribute_type: float
-</code></pre>
+```
 
 ## Next steps
 Congratulations! You have created a Transactable Type. Now you can build a form for creating Transactables:
@@ -63,5 +63,3 @@ Congratulations! You have created a Transactable Type. Now you can build a form 
 * [Building a Transactable Creation Form](/get-started/transactables/building-transactable-creation-form)
 
 {% include 'shared/questions_section' %}
-
-

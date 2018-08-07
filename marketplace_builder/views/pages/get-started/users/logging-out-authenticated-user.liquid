@@ -28,9 +28,8 @@ Logging out an authenticated user is a two-step process:
 
 Create a form `log_out.liquid` in the `marketplace_builder/form_configurations` directory:
 
+```liquid
 {% raw %}
-
-<pre><code class="language-liquid">
 ---
 name: log_out
 resource: Session
@@ -39,9 +38,8 @@ resource: Session
 {% form method: 'delete' %}
   <input type="submit" value="Log Out" />
 {% endform %}
-</code></pre>
-
 {% endraw %}
+```
 
 The difference from logging in, is that you want to destroy the session. You have to send a DELETE request by providing the `method: delete` attribute to the `form` tag.
 
@@ -49,18 +47,15 @@ The difference from logging in, is that you want to destroy the session. You hav
 
 Create a page `log_out.liquid` in the `views/pages` directory to make the log out available at `/log-out`:
 
+```liquid
 {% raw %}
-
-<pre><code class="language-liquid">
 ---
 slug: log-out
 ---
 <h2>Log out</h2>
 {% include_form 'log_out' %}
-</code></pre>
-
 {% endraw %}
-
+```
 
 ## Next steps
 Congratulations! You created a log out for authenticated users. Now you can learn about resetting a user's password:

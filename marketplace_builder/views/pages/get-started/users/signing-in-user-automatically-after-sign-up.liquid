@@ -19,9 +19,9 @@ This tutorial assumes that you already have a working sign up form, where a user
 
 Automatic sign in after sign up is a three-step process:
 
-1.  Add `callback_actions` key to sign up form
-2.  Create `user_session_create` GraphQL mutation
-3.  Create `session_create_form` form
+1. Add `callback_actions` key to sign up form
+2. Create `user_session_create` GraphQL mutation
+3. Create `session_create_form` form
 
 ### Step 1: Add `callback_actions` key to Sign up form
 
@@ -29,26 +29,24 @@ In your `sign_up` form configuration add `callback_actions` at the end (order do
 
 ##### `form_configurations/sign_up.liquid`
 
+```liquid
 {% raw %}
-
-<pre><code class="language-liquid">
 ---
 ...
 callback_actions: "{% execute_query 'user_session_create', email: @form.email, password: @form.password %}"
 ---
-</code></pre>
-
 {% endraw %}
+```
 
 This code snippet executes the `user_session_create` query, so you have to create it.
 
 ### Step 2: Create `user_session_create` GraphQL mutation
 
-This mutation takes two obligatory arguments: `email` and `password`—both strings.
+This mutation takes two obligatory arguments: `email` and `password` &ndash; both strings.
 
 ##### `graph_queries/user_session_create.graphql`
 
-<pre><code class="language-graphql">
+```graphql
 mutation user_session_create($email: String!, $password: String!) {
   user_session_create(
     form_configuration_name: "session_create_form" # must match with `name` of your form
@@ -58,22 +56,22 @@ mutation user_session_create($email: String!, $password: String!) {
     email
   }
 }
-</code></pre>
+```
 
 This calls the `session_create_form` with the same arguments you received from the `callback_actions`.
 
 ### Step 3: Create `session_create_form` form
 
-SessionForm is supported by the server, so you don't need to define anything—the server will take care of handling user credentials and authenticating the user.
+SessionForm is supported by the server, so you don't need to define anything &ndash; the server will take care of handling user credentials and authenticating the user.
 
 ##### `form_configurations/session_create_form`
 
-<pre><code class="language-yaml">
+```yaml
 ---
 name: session_create_form
 resource: Session
 ---
-</code></pre>
+```
 
 ## Next steps
 

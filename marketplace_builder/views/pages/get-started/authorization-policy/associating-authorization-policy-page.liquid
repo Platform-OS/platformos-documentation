@@ -28,25 +28,25 @@ Associating an Authorization Policy with a page is a two-step process:
 ### Step 1: Edit page configuration
 Create a custom page that you only want users with the first name `John` to be able to access:
 
-<pre><code class="language-liquid">
+```liquid
 ---
 slug: john-private-page
 ---
 <h1>Hello John!</h1>
-</code></pre>
+```
 
 ### Step 2: Add `authorization_policies` key to page configuration
 Add the `authorization_policies` key to page configuration
 and specify the Authorization Policy for the page:
 
-<pre><code class="language-yaml">
+```yaml
 ---
 slug: john-private-page
 authorization_policies:
   - only_allowed_by_johns
 ---
 <h1>Hello John!</h1>
-</code></pre>
+```
 
 ## Next steps
 Congratulations! You know how to associate an Authorization Policy with a page. Now you can learn about handling violated Authorization Policies:

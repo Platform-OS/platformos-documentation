@@ -27,9 +27,7 @@ Integrating Slack using API call notifications is a two-step process:
 Your webhook URL looks similar to this: `https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX`.
 Create an API call notification using your own webhook URL (replace placeholder):
 
-{% raw %}
-
-<pre><code class="language-yaml">
+```yaml
 ---
 name: { name of your file here }
 delay: 0
@@ -41,31 +39,24 @@ to: { your webhook URL, e.g. https://hooks.slack.com/services/T00000000/B0000000
 trigger_condition: true
 ---
 {
-	"text": "New Contact on Platform.OS.com!}
-</code></pre>
+	"text": "New Contact on Platform.OS.com!"
+}
+```
 
-{% endraw %}
-
-{% include "alert/note", content: "You can customize your message in Slack quite a bit. Learn more about that on the page that provided you your webhook URL or on <a href='https://api.slack.com/incoming-webhooks'>api.slack.com/incoming webhooks</a>" %}
+{% include 'alert/note', content: 'You can customize your message in Slack quite a bit. Learn more about that on the page that provided you your webhook URL or on <a href="https://api.slack.com/incoming-webhooks" target="_blank" rel="noopener">api.slack.com/incoming webhooks</a>' %}
 
 ### Step 2: Add API call notification to form
 
 Add the following to the front matter on your form:
 
-{% raw %}
-
-<pre><code class="language-yaml">
+```yaml
 api_call_notifications:
 - { slack_sales_request }
-</code></pre>
-
-{% endraw %}
+```
 
 The front matter of the form we used in this example:
 
-{% raw %}
-
-<pre><code class="language-yaml">
+```yaml
 ---
 name: enquirer_signup
 resource: User
@@ -75,10 +66,6 @@ configuration:
 api_call_notifications:
   - slack_sales_request
 ---
-</code></pre>
-
-{% endraw %}
+```
 
 {% include 'shared/questions_section' %}
-
-

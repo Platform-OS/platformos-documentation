@@ -27,32 +27,32 @@ Handling a violated Authorization Policy is a two-step process:
 ### Step 1: Redirect user to a page
 To redirect user to a page after violation set the `redirect_to` key. For example, to redirect to page `/login`:
 
-{% raw %}
 
-<pre><code class="language-yaml">
+```yaml
+{% raw %}
 ---
 name: only_allowed_by_johns
 redirect_to: /login
 ---
 ...
-</code></pre>
-
-
 {% endraw %}
+```
+
+
 
 ### Step 2: Display alert message
 To generate flash alert message on the page that you defined as `redirect_to`, use the `flash_alert` property:
 
 {% raw %}
 
-<pre><code class="language-yaml">
+```yaml
 ---
 name: only_allowed_by_johns
 redirect_to: /login
 flash_alert: Please login to access this page.
 ---
 ...
-</code></pre>
+```
 
 
 {% endraw %}

@@ -29,14 +29,13 @@ Feeding data into AMP pages with GraphQL, in this case, displaying products on a
 
 Create the main page, HTML extended with AMP tags and objects `marketplace_builder/views/pages/product-list.liquid`:
 
-<pre><code class="language-yaml">
+```yaml
 ---
 slug: product-list
 layout_name: application
 ---
-</code>
-<br/>
-<code class="language-liquid">
+```
+```liquid
 {% raw %}
 {% content_for 'amp-dependencies' %}
   <script custom-element="amp-list" src="https://cdn.ampproject.org/v0/amp-list-0.1.js" async=""></script>
@@ -57,17 +56,17 @@ layout_name: application
     </a>
   </template>
 </amp-list>
-</code></pre>
+```
 
 Include the AMP dependencies in the layout file `marketplace_builder/views/layouts/application.liquid`:
 
-<pre><code class="language-liquid">
+```liquid
 {% raw %}
 [...]
 {% yield 'amp-dependencies' %}
 [...]
 {% endraw %}
-</code></pre>
+```
 
 #### Notes:
 * The data source for `<amp-list>` is `products.json`.
@@ -78,15 +77,14 @@ Include the AMP dependencies in the layout file `marketplace_builder/views/layou
 ### Step 2: Create JSON endpoint
 Create the JSON endpoint, a dynamically generated JSON document from which AMP fetches the data that it displays `marketplace_builder/views/pages/api/products.json.liquid`:
 
-<pre><code class="language-yaml">
+```yaml
 {% raw %}
 ---
 slug: api/products
 format: json
 ---
-</code>
-<br/>
-<code class="language-liquid">
+```
+```liquid
 {% query_graph 'get_listings', result_name: g %}
 {% assign results = g.listings.results %}
 
@@ -104,7 +102,7 @@ format: json
   ]
 }
 {% endraw %}
-</code></pre>
+```
 
 #### Notes:
 
@@ -115,7 +113,7 @@ format: json
 ### Step 3: Fetch listing data
 Create the GraphQL query that fetches listing data `marketplace_builder/graph_queries/get_listings.graphql`:
 
-<pre><code class="language-graphql">
+```graphql
 query get_listings($slug: String) {
   listings(
     listing: {
@@ -133,40 +131,39 @@ query get_listings($slug: String) {
     }
   }
 }
-</code></pre>
+```
 
 #### Notes:
 * If the optional slug argument is omitted, then it returns all listings.
 * `price` is a custom attribute defined in the Transactable Type's .yml file, which is found in the `transactable_types` directory:
 
-<pre><code class="language-yaml">
+```yaml
 [...]
 custom_attributes:
 - name: price
   attribute_type: float
-</code></pre>
+```
 
 ### Step 3: Display product details
 Create the `/product-details` page that loads when visitors click on a product from `/product-list` above `views/pages/product-details.liquid`:
 
-<pre><code class="language-yml">
+```yml
 {% raw %}
 ---
 slug: product-details
 layout_name: application
 ---
-</code>
-<br/>
-<code class="language-liquid">
+```
+```liquid
 {% query_graph 'get_listings', result_name: g, slug: params.slug2 %}
 {% assign p = g.listings.results.first %}
 
 <h1>{{ p.name }}</h1>
 <amp-img src="{{ p.photos[0].url }}" layout="responsive"></amp-img>
-<div>${{ p.price }}</div>
-<div>{{ p.description }}</div>
+<p>${{ p.price }}</p>
+<p>{{ p.description }}</p>
 {% endraw %}
-</code></pre>
+```
 
 #### Notes:
 
@@ -175,4 +172,3 @@ layout_name: application
 * This is the same GraphQL query that you used in the other page to retrieve all listings, but this time you call it with the listing slug to find just one listing.
 
 {% include 'shared/questions_section' %}
-

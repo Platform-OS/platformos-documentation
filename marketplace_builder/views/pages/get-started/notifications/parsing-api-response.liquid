@@ -13,11 +13,11 @@ In this example, you will store part of the response in a Custom Attribute for l
 
 The tutorial assumes the API returns JSON like:
 
-<pre><code class="language-json">
+```json
 {
   "third_party_api_id": "id-1"
 }
-</code></pre>
+```
 
 and you want store the `third_party_api_id` value (which is `id-1`).
 
@@ -47,7 +47,7 @@ Add GraphQL mutation:
 
 #### graph_queries/store_third_party_api_id.graphql
 
-<pre><code class="language-graphql">
+```graphql
 mutation store_third_party_api_id($user_id: ID!, $third_party_api_id: String!) {
   user_update(
     id: $user_id
@@ -61,14 +61,14 @@ mutation store_third_party_api_id($user_id: ID!, $third_party_api_id: String!) {
     id
   }
 }
-</code></pre>
+```
 
 ### Step 3: Create Form Configuration
 The mutation you created provides input for the Form Configuration called `callback_third_party_api_id`, so create this Form Configuration:
 
 #### form_configurations/callback_third_party_api_id.liquid
 
-<pre><code class="language-yaml">
+```yaml
 ---
 name: callback_third_party_api_id
 resource: User
@@ -78,15 +78,14 @@ configuration:
       properties:
         third_party_api_id:
 ---
-</code></pre>
+```
 
 ### Step 4: Extend API call notification with callback
 Extend the API call notification by adding the proper callback, which executes the mutation with the input received form the third party API:
 
-
 #### notifications/api_call_notifications/ping_example_com_on_user_sign_up.liquid
 
-<pre><code class="language-liquid">
+```liquid
 {% raw %}
 ---
 name: ping_example_com_on_user_sign_up
@@ -94,7 +93,7 @@ to: 'https://example.com/endpoint/{{ form.id }}'
 callback: "{%- assign response_json = response.body | to_hash -%}{% execute_query 'persist_custom_attribute', id: form.id, third_party_api_id: response_json.third_party_api_id %}"
 ---
 {% endraw %}
-</code></pre>
+```
 
 
 ## Next steps
@@ -104,5 +103,3 @@ Congratulations! You know how to parse an API response. Now you can learn about 
 * [Transactables](/get-started/transactables/transactables)
 
 {% include 'shared/questions_section' %}
-
-

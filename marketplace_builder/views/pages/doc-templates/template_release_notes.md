@@ -1,7 +1,7 @@
 ---
 converter: markdown
 metadata:
-  title: [Month DD, YYYY — Release Notes]
+  title: [Month DD, YYYY  &ndash;  Release Notes]
   description: [short description, max 300 characters]
 slug: [release-notes/DD-MONTH-YYYY]
 searchable: true

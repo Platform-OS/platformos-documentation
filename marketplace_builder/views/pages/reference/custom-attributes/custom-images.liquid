@@ -13,10 +13,10 @@ searchable: true
 
 You can enable CustomImages by adding a CustomAttribute with `attribute_type` set to `photo`, for example:
 
-<pre><code class="language-yaml">
+```yaml
 - name: avatar
   attribute_type: photo
-</code></pre>
+```
 
 ## Version defaults
 
@@ -32,20 +32,20 @@ The defaults are:
 
 You can alter the width and height of each version with `versions_configuration`:
 
-<pre><code class="language-yaml">
+```yaml
 - name: avatar
   attribute_type: photo
   versions_configuration:
     normal:
       width: 300
       height: 300
-</code></pre>
+```
 
 ## Form configuration
 
 Custom Image attribute must be defined in a form to whitelist and validate the form request.
 
-<pre><code class="language-yaml">
+```yaml
 ...
   custom_images:
     avatar:
@@ -54,7 +54,7 @@ Custom Image attribute must be defined in a form to whitelist and validate the f
           file_content_type: { allow: ['image/jpeg', 'image/png', 'image/gif'] }
         }
 ...
-</code></pre>
+```
 
 ## Fields
 
@@ -69,7 +69,7 @@ Each image supports the following self-descriptive fields:
 After setting up images as described above, you can further customize image editing in the markup for the forms:
 
 
-<pre><code class="language-liquid">
+```liquid
 {% raw %}
 {% if form_builder.fields.profiles.seller.custom_images.avatar.image.value %}
   <div class="preview">
@@ -93,14 +93,14 @@ After setting up images as described above, you can further customize image edit
   {% endif %}
 </div>
 {% endraw %}
-</code></pre>
+```
 
 
 The example above shows the predefined image tag.
 
 ## Using GraphQL to query for `CustomImage`
 
-<pre><code class="language-graphql">
+```graphql
 query test_image_query {
   customizations {
     results {
@@ -112,4 +112,4 @@ query test_image_query {
     }
   }
 }
-</code></pre>
+```

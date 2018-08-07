@@ -11,18 +11,20 @@ Takes a string as an argument and returns a string representing the URL to this 
 
 ## Example 1: file found
 
+
+```liquid
 {% raw %}
-
-<pre><code class="language-liquid">
 {{ 'images/logo.svg' | asset_url }}
-</code></pre>
-
 {% endraw %}
+```
 
-It will return absolute url to the asset `<CDN URL>/instances/123/assets/images/logo.svg?uploaded=xxxxxxx`
 
-{% include "alert/note", content: "We add a timestamp as a query parameter to the
-filename. This timestamp is regenerated every time the file content has changed and uploaded to your storage. When accessing the file, you don't have to add it, you can just as well request the file without the `uploaded` parameter. If you add the `uploaded` parameter, the CDN is guaranteed to serve the most current file uploaded to your storage." %}
+It will return absolute url to the asset: `<CDN URL>/instances/123/assets/images/logo.svg?uploaded=xxxxxxx`
+
+{% include 'alert/note', content: 'We add a timestamp as a query parameter to the filename.
+This timestamp is regenerated every time the file content has changed and uploaded to your storage.
+When accessing the file, you don&apos;t have to add it, you can just as well request the file without the `uploaded` parameter.
+If you add the `uploaded` parameter, the CDN is guaranteed to serve the most current file uploaded to your storage.' %}
 
 You can nest assets in any number of directories.
 
@@ -30,12 +32,12 @@ In the example above the file `images/logo.svg` would be placed in `assets/image
 
 ## Example 2: file not found
 
+
+```liquid
 {% raw %}
-
-<pre><code class="language-liquid">
 {{ 'fonts/missing.woff' | asset_url }}
-</code></pre>
-
 {% endraw %}
+```
+
 
 It will return the root directory of the CDN: `<CDN URL>/instances/123/assets/`

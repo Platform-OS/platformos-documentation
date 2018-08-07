@@ -19,13 +19,13 @@ After reading this reference, you will know:
 
 Simple validation example:
 
-<pre><code class="language-yaml">
+```yaml
 configuration:
   properties:
     title:
       validation:
         presence: true
-</code></pre>
+```
 
 A form with the above configuration will not be valid without title property passed with the request unless it's already set on the object passed to the form.
 
@@ -34,13 +34,13 @@ A form with the above configuration will not be valid without title property pas
 You can use the following validation types:
 
 ### presence
-<pre><code class="language-yaml">
+```yaml
 title:
   validation:
     presence: true
-</code></pre>
+```
 ### unique
-<pre><code class="language-yaml">
+```yaml
 configuration:
   properties:
     slug:
@@ -50,24 +50,24 @@ configuration:
           scope:
             - other_property
           message: Must be uniq
-</code></pre>
+```
 ### confirmation
-<pre><code class="language-yaml">
+```yaml
 email:
   validation:
     confirmation: true
-</code></pre>
+```
 ### inclustion / exclusion
-<pre><code class="language-yaml">
+```yaml
    malpractice_history:
       validation:
         inclusion:
           in: [true, false]
           message: disclosure is required
-</code></pre>
+```
 
 ### format
-<pre><code class="language-yaml">
+```yaml
 phone:
   validation:
     presence: true
@@ -75,10 +75,10 @@ phone:
       with: !ruby/regexp /\A[+]?[\d \-()]+\z/
       allow_blank: true
       message: This seems to be an invalid phone number. Please try using numbers only
-</code></pre>
+```
 
 ### file_content_type
-<pre><code class="language-yaml">
+```yaml
 file:
   validation:
     presence: true
@@ -91,16 +91,16 @@ file:
       - application/vnd.openxmlformats-officedocument.wordprocessingml.document
       - application/vnd.ms-excel
       - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
-</code></pre>
+```
 
 ### length
-<pre><code class="language-yaml">
+```yaml
 attachments:
   validation:
     length:
       is: 2
       message: You need to include Front side and Back side Photo ID
-</code></pre>
+```
 
 The possible length constraint options are:
 
@@ -109,17 +109,15 @@ The possible length constraint options are:
 * in (or within) - The attribute length must be included in a given interval. The value for this option must be a range.
 * is - The attribute length must be equal to the given value.
 
-
 ### numericality
 
-<pre><code class="language-yaml">
+```yaml
 rate_amount:
   validation:
     presence: true
     numericality:
       greater_than_or_equal_to: 0
-</code></pre>
-
+```
 Available options are:
 
 * only_integer
@@ -134,29 +132,28 @@ Available options are:
 
 ## Conditional Validation
 
-It is possible to validate attributes based on the state of other attributes from the form. 
+It is possible to validate attributes based on the state of other attributes from the form.
 {% raw %}
-<pre><code class="language-yaml">
+```yaml
 expiry_year:
   validation:
     presence:
       if: '{% if form.expires %}true{% endif %}'
-</code></pre>
+```
 {% endraw %}
-
 
 ## Common Validation Options
 
 ### message
 It is possible to overwrite the default message with additional configuration:
 
-<pre><code class="language-yaml">
+```yaml
 customizations:
   expertise:
     validation:
       presence:
         message: record is required.
-</code></pre>
+```
 
 ### allow_nil
 The `allow_nil` option skips the validation when the value being validated is nil.
@@ -166,27 +163,26 @@ Allows to pass an empty string.
 
 ### Validation Errors
 
-When form validation is raised, error message is added to `form.errors` object that contains all attribute - error information. 
+When form validation is raised, error message is added to `form.errors` object that contains all attribute - error information.
 In your liquid view you can itterate over that object as in the example below:
 {% raw %}
-<pre><code class="language-liquid">
+```liquid
 {% for error in form.errors %}
   {{ error[0] }} {{ error[1] }}
 {% endfor %}
-</code></pre>
+```
 {% endraw %}
 
 Errors can be fetched through the form_object as well, this is very useful if you want to display errors next to the input field:
-<pre><code class="language-liquid">
+```liquid
 form_object.object.errors[field_name]
-</code></pre>
+```
 
+### Translation
 
-### Translation 
-
-Each error message can be translated with the Platform OS transalation mechanism. 
+Each error message can be translated with the Platform OS transalation mechanism.
 The default error messages are:
-<pre><code class="language-yaml">
+```yaml
 en:
   errors:
     # The default format to use in full error messages.
@@ -222,4 +218,4 @@ en:
       other_than: "must be other than %{count}"
       odd: "must be odd"
       even: "must be even"
-</code></pre>
+```

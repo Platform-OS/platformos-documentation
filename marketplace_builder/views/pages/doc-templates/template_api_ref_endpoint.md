@@ -9,11 +9,11 @@ To [TITLE, e.g. update an image], [what the user should do, e.g. send a PUT requ
 
 **HTTP request**
 
-[GET, PUT, POST, or DELETE and URL—e.g., PUT [base URL]/v2/images/$IMAGE_ID.]
+[GET, PUT, POST, or DELETE and URL &ndash; e.g., PUT [base URL]/v2/images/$IMAGE_ID.]
 
 **Parameters**
 
-[Table that lists all query and path parameters for the endpoint. If this endpoint has query and path parameters, consider listing them in separate tables—one for path parameters, one for query parameters. If there aren’t any parameters for this endpoint, replace the table with “None”]
+[Table that lists all query and path parameters for the endpoint. If this endpoint has query and path parameters, consider listing them in separate tables &ndash; one for path parameters, one for query parameters. If there aren’t any parameters for this endpoint, replace the table with “None”]
 
 | Parameter           | Type                                                               | Description                                                 | Required               | Notes                                       |
 | ------------------- | ------------------------------------------------------------------ | ----------------------------------------------------------- | ---------------------- | ------------------------------------------- |
@@ -24,13 +24,13 @@ To [TITLE, e.g. update an image], [what the user should do, e.g. send a PUT requ
 
 [Example of a complete request for this endpoint, including header and body, followed by a table that lists each element in the example request]
 
-<pre><code>
+```
 [Example: Request headers]
-</code></pre>
+```
 
-<pre><code>
+```
 [Example: Request body]
-</code></pre>
+```
 
 | Element                            | Type                                       | Description                                                                                        | Required?              |
 | ---------------------------------- | ------------------------------------------ | -------------------------------------------------------------------------------------------------- | ---------------------- |
@@ -41,13 +41,13 @@ To [TITLE, e.g. update an image], [what the user should do, e.g. send a PUT requ
 
 [Example of a complete response for this endpoint, followed by a table that lists each element in the example response]
 
-<pre><code>
+```
 [Example: Response headers]
-</code></pre>
+```
 
-<pre><code>
+```
 [Example: Response body]
-</code></pre>
+```
 
 | Element                             | Type                                       | Description                                                    |
 | ----------------------------------- | ------------------------------------------ | -------------------------------------------------------------- |

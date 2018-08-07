@@ -15,21 +15,21 @@ This use case describes how you can **build a blog on Platform OS using the Blog
 
 To be able to install and use the Blog Module, you need a Platform OS Instance and your codebase. This can be an already existing Instance, or you can start with a clean install to build a blog site.
 
-{% include "alert/tutorial", content: "If you don’t have a Platform OS Instance yet, follow our <a href='/get-started/quickstart-guide'>Quickstart Guide</a> to set up your Instance and codebase." %}
+{% include 'alert/tutorial', content: 'If you don’t have a Platform OS Instance yet, follow our <a href="/get-started/quickstart-guide">Quickstart Guide</a> to set up your Instance and codebase.' %}
 
 ### Installing the Blog Module
 
 The easiest way to add a blog to your Platform OS site is by installing our Blog Module package that adds all the necessary files to your codebase.
 
-{% include "alert/tutorial", content: "Follow our <a href='/how-to/blog/installing-blog-module'>step-by-step tutorial to install the Blog Module</a>." %}
+{% include 'alert/tutorial', content: 'Follow our <a href="/how-to/blog/installing-blog-module">step-by-step tutorial to install the Blog Module</a>.' %}
 
 ### Adding your first blog post
 After installing the Blog Module, you can add your first blog post (and edit all your posts later) through our built-in admin interface.
 
-{% include "alert/tutorial", content: "Follow our <a href='/how-to/blog/adding-blog-post'>step-by-step tutorial to add a blog post to your blog</a>." %}
+{% include 'alert/tutorial', content: 'Follow our <a href="/how-to/blog/adding-blog-post">step-by-step tutorial to add a blog post to your blog</a>.' %}
 
 ## Architecture
-The Platform OS Blog is built entirely on Customizations, so its architecture can be easily modified. Not only is it possible to alter core module features—it’s very simple to add new ones.
+The Platform OS Blog is built entirely on Customizations, so its architecture can be easily modified. Not only is it possible to alter core module features &ndash; it’s very simple to add new ones.
 
 The Blog Module enables you to set up two different types of blogs:
 
@@ -44,19 +44,19 @@ Out of the box, there are two Custom Model Types at the core of the Blog Module:
 
 By editing the generated configuration files, you can easily alter or add Attributes of Custom Model Types.
 
-{% include "alert/concept", content: "Learn more about <a href='/reference/custom-model-types/custom-model-types'>Custom Model Types</a> and <a href='/how-to/blog/blog-custom-model-types'>Blog Custom Model Types</a>." %}
+{% include 'alert/concept', content: 'Learn more about <a href="/reference/custom-model-types/custom-model-types">Custom Model Types</a> and <a href="/how-to/blog/blog-custom-model-types">Blog Custom Model Types</a>.' %}
 
 ### Settings and posts
 Blog settings and posts are fetched with GraphQL queries. The flexibility of GraphQL helps you implement any search functionality you need. Every custom attribute added to the configuration will be available to add to the installed queries.
 
-{% include "alert/concept", content: "Learn more about <a href='/how-to/blog/blog-settings-posts'>Blog Settings and Posts</a>." %}
+{% include 'alert/concept', content: 'Learn more about <a href="/how-to/blog/blog-settings-posts">Blog Settings and Posts</a>.' %}
 
 ### Data representation
 Data presentation is handled by pages and partials included in proper layouts. The administrative part of Blog Module is guarded with predefined Authorization Policies. Permissions differ based on the type of the blog installed (see `authorization_policies/instance_blog_edition.liquid`):
 
-{% raw %}
 
-<pre><code class="language-liquid">
+```liquid
+{% raw %}
 ---
 name: instance_blog_edition
 redirect_to: /blog
@@ -64,11 +64,10 @@ flash_alert: Please log in to access this page.
 ---
 {% query_graph "get_blog_user", result_name: g %}
 {% if g.current_user and g.current_user.admin_profile %}true{% endif %}
-</code></pre>
-
 {% endraw %}
+```
 
-The Blog Module installs the “admin” user profile by default. If you wish to use another user profile as your administrator user group, please adjust the above file and the `get_blog_user` GraqhQL query.
+The Blog Module installs the `admin` user profile by default. If you wish to use another user profile as your administrator user group, please adjust the above file and the `get_blog_user` GraqhQL query.
 
 ## Blog Module Features
 
@@ -79,9 +78,9 @@ You can create your own URL template that is compatible with the [URI Template s
 
 To access parameters passed in the URL in Liquid markup, use the `extract_url_params` Liquid filter.
 
-{% raw %}
 
-<pre><code class="language-liquid">
+```liquid
+{% raw %}
 {% assign example_url = "/cars/honda/crx" %}
 
 {% assign url_template = '/cars/{maker}/{model}' %}
@@ -90,23 +89,23 @@ To access parameters passed in the URL in Liquid markup, use the `extract_url_pa
 {{ url_params }} => {"maker"=>"honda", "model"=>"crx"}
 {{ url_params.maker }} => "honda"
 {{ url_params | json }} => {"maker":"honda","model":"crx"}
-</code></pre>
-
 {% endraw %}
+```
+
 
 Having the parameters from the request URL, you can retrieve data based on those parameters.
 
 For example you can write a query that will take these parameters and:
 
-1. return only posts from category “honda” and
-2. posts that have tag “crx” and
+1. return only posts from category `honda` and
+2. posts that have tag `crx` and
 3. published in the last 3 months and
-4. are marked as “published” (as opposed to draft) and
+4. are marked as `published` (as opposed to draft) and
 5. sort them by publish date.
 
-In GraphQL you have full control over your search results, so besides filtering posts that you are interested in, you can decide exactly what kind of data the query will return. For example, you might be interested only in the slugs and publish date of posts to create a “Related posts” box—easy to do with GraphQL.
+In GraphQL you have full control over your search results, so besides filtering posts that you are interested in, you can decide exactly what kind of data the query will return. For example, you might be interested only in the slugs and publish date of posts to create a `Related posts` box &ndash; easy to do with GraphQL.
 
-{% include "alert/tutorial", content: "Follow our tutorial to learn more about <a href='/how-to/seo/creating-seo-friendly-urls'>creating SEO-friendly URLs in Platform OS</a> to set up your Instance and codebase." %}
+{% include 'alert/tutorial', content: 'Follow our tutorial to learn more about <a href="/how-to/seo/creating-seo-friendly-urls">creating SEO-friendly URLs in Platform OS</a> to set up your Instance and codebase.' %}
 
 ### Performance
 
@@ -133,7 +132,7 @@ Some of the most commonly used features:
 
 Liquid markup gives creators full access to the HTML that will be rendered. Because it’s a template engine, and you have access to the database on that level, you can easily control your meta tags.
 
-Having full control over your HTML output is also a big advantage when it comes to promoting your content on social media. Google provides excellent documentation on taking full advantage of [OpenGraph](http://ogp.me/) attributes to create rich media snippets when sharing links to your pages—read more about [Social Discovery on Google](https://developers.google.com/web/fundamentals/discovery/social-discovery/).
+Having full control over your HTML output is also a big advantage when it comes to promoting your content on social media. Google provides excellent documentation on taking full advantage of [OpenGraph](http://ogp.me/) attributes to create rich media snippets when sharing links to your pages &ndash; read more about [Social Discovery on Google](https://developers.google.com/web/fundamentals/discovery/social-discovery/).
 
 ### Google AMP compatibility
 Because an AMP page is just an HTML page inside a required boilerplate and compliant with AMP rules, you can freely develop an AMP site using Platform OS. You can even get any free template from https://www.ampstart.com/getstarted and place it directly into your assets directory, and it will be live immediately. In a couple of minutes you can extract the layout part to a layout, and the content of the pages to Liquid pages. That way your code will be DRY and your life easier should you want to change anything on all pages (e.g. footer, tracking code, navigation).
@@ -158,7 +157,7 @@ Sending additional information about authenticated users of the system is as eas
 
 #### Custom analytics
 
-Because you can save any data into the database and pull it from GraphQL, you can create custom reports/analytics based on your criteria. You have access to the aggregation engine provided by ElasticSearch on the backend, so it’s blazingly fast. After pulling the data it’s up to you to decide how you want it to be presented. You may want to expose it as a JSON endpoint, render an SVG image with a chart, or do a hybrid—expose JSON endpoint and use it in your favorite charting library.
+Because you can save any data into the database and pull it from GraphQL, you can create custom reports/analytics based on your criteria. You have access to the aggregation engine provided by ElasticSearch on the backend, so it’s blazingly fast. After pulling the data it’s up to you to decide how you want it to be presented. You may want to expose it as a JSON endpoint, render an SVG image with a chart, or do a hybrid &ndash; expose JSON endpoint and use it in your favorite charting library.
 
 Analytics for the main blog and user blogs are the same (as they are ultimately the same on the code level) and can be measured using the same metrics.
 

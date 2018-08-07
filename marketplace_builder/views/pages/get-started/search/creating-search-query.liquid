@@ -24,7 +24,7 @@ Creating a search query is a two-step process:
 ### Step 1: Create GraphQL query
 Create a GraphQL query to return all Transactables that haven't been deleted.
 
-<pre><code class="language-graphql">
+```graphql
 query demo_search_transactables($query: String, $is_deleted: Boolean = false) {
   listings(query: $query, listing: { is_deleted: $is_deleted }) {
     total_entries
@@ -34,27 +34,24 @@ query demo_search_transactables($query: String, $is_deleted: Boolean = false) {
     }
   }
 }
-</code></pre>
+```
 
-{% include "alert/note", content: "By default the server does not return deleted records. This guide just uses it as an example of an argument that can be overridden." %}
+{% include 'alert/note', content: 'By default the server does not return deleted records. This guide just uses it as an example of an argument that can be overridden.' %}
 
 The above GraphQL query consists of three main sections:
 
-1.  Query arguments: usually passed from the liquid to parameterize your query. In the example below, `$query: String`. Define what will be used in the filters section and what is the data type of passed argument. It is also possible to set a default value for any given argument. The default value will be used if it is not passed to the execute query tag.
-
-2.  Filters: used to filter down the results by given arguments. In the example above, listings are filtered so they only contain results with `is_deleted` flag set to `false`. If you pass `true` in `$is_deleted` it will do the opposite.
-
-3.  Results: just like in any other query, defines which data you want to receive and in what form.
+1. Query arguments: usually passed from the liquid to parameterize your query. In the example below, `$query: String`. Define what will be used in the filters section and what is the data type of passed argument. It is also possible to set a default value for any given argument. The default value will be used if it is not passed to the execute query tag.
+2. Filters: used to filter down the results by given arguments. In the example above, listings are filtered so they only contain results with `is_deleted` flag set to `false`. If you pass `true` in `$is_deleted` it will do the opposite.
+3. Results: just like in any other query, defines which data you want to receive and in what form.
 
 ### Step 2: Display search results
 
 Now pull out slug and name of the resulting Transactables into an unordered list.
 
-{% include "alert/important", content: "`$query` that is passed through the form to the server will be passed to the GraphQL. It is a fuzzysearch and by default it will filter results by every attribute there is." %}
+{% include 'alert/important', content: '`$query` that is passed through the form to the server will be passed to the GraphQL. It is a fuzzysearch and by default it will filter results by every attribute there is.' %}
 
+```liquid
 {% raw %}
-
-<pre><code class="language-liquid">
 ---
 slug: demo_search
 ---
@@ -75,11 +72,10 @@ slug: demo_search
   <li>{{ listing.slug }} - {{ listing.name }}</li>
 {% endfor %}
 </ul>
-</code></pre>
-
 {% endraw %}
+```
 
-{% include "alert/important", content: "Because you have set the `is_deleted` default value to `false` in the query, passing false is unnecessary." %}
+{% include 'alert/important', content: 'Because you have set the `is_deleted` default value to `false` in the query, passing false is unnecessary.' %}
 
 ## Next steps
 Congratulations! You have created a search query. Now you can go on and learn about payments:
@@ -87,6 +83,3 @@ Congratulations! You have created a search query. Now you can go on and learn ab
 * [Payments](/get-started/payments/payments)
 
 {% include 'shared/questions_section' %}
-
-
-

@@ -28,9 +28,8 @@ Signing in a user manually is a two-step process:
 
 Create a form `sign_in.liquid` in the `marketplace_builder/form_configurations/` directory:
 
+```liquid
 {% raw %}
-
-<pre><code class="language-liquid">
 ---
 name: sign_in
 resource: Session
@@ -59,26 +58,23 @@ configuration:
   {% submit 'Log In' %}
 }
 {% endform %}
-</code></pre>
-
 {% endraw %}
+```
 
 ### Step 2: Create sign in page
 
 Create a page `sign_in.liquid` in the `views/pages` directory to make the sign in available at `/sign-in`:
 
+```liquid
 {% raw %}
-
-<pre><code class="language-liquid">
 ---
 slug: sign-in
 ---
 <h2>Sign in </h2>
 {% include_form 'sign_in' %}
 <p>New user? Create <a href="/developer/sign-up"> new developer account</a> or <a href="/client/sign-up">new client account</a></p>
-</code></pre>
-
 {% endraw %}
+```
 
 ## Next steps
 Congratulations! You created a sign in page for users to sign in manually. Now you can learn about signing in a user automatically after sign up:

@@ -29,7 +29,7 @@ Displaying a Transactable is a two-step process:
 Inject this code for example on the home page, which re-uses already created `current_user.graphql` from the tutorial [Accessing Authenticated User Data](/get-started/users/accessing-authenticated-user-data):
 
 
-<pre><code class="language-liquid">
+```liquid
 {% raw %}
 {% query_graph 'current_user', result_name: 'g' %}
 {% if g.current_user.client_profile %}
@@ -59,7 +59,7 @@ Inject this code for example on the home page, which re-uses already created `cu
   {% endif %}
 {% endif %}
 {% endraw %}
-</code></pre>
+```
 
 
 A common issue in Liquid are types. Most of the time Liquid converts everything to a string, so it is often necessary to do coercion. In this example, URL parameters are strings, and GraphQL expects the `page` variable to be an integer. To solve the problem,  add a `0`, which casts string to integer:
@@ -68,7 +68,7 @@ A common issue in Liquid are types. Most of the time Liquid converts everything 
 ### Step 2: Create GraphQL query for client projects
 Create the GraphQL query `graph_queries/client_projects.graphql`:
 
-<pre><code class="language-graphql">
+```graphql
 query client_projects($page: Int, $creator_id: ID!) {
   projects: listings(
     per_page: 20
@@ -89,7 +89,7 @@ query client_projects($page: Int, $creator_id: ID!) {
     }
   }
 }
-</code></pre>
+```
 
 ## Next steps
 Congratulations! You have displayed a newly created Tranactable on a page with pagination. Now you can create the Edit Transactable page:
@@ -97,6 +97,3 @@ Congratulations! You have displayed a newly created Tranactable on a page with p
 * [Creating the Edit Transactable Page](/get-started/transactables/creating-edit-transactable-page)
 
 {% include 'shared/questions_section' %}
-
-
-

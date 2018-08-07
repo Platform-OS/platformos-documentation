@@ -7,7 +7,7 @@ slug: get-started/pages/reusing-code-across-multiple-pages
 searchable: true
 ---
 This guide will help you reuse code across multiple pages using partials.
-Partials are pieces of code extracted to their own files to maintain code readability, and follow the rule of DRY—Don’t Repeat Yourself.
+Partials are pieces of code extracted to their own files to maintain code readability, and follow the rule of DRY &ndash; Don’t Repeat Yourself.
 
 ## Requirements
 To follow the steps in this tutorial, you should have created a page and a layout before.
@@ -26,8 +26,8 @@ Reusing code across multiple pages using partials is a two-step process:
 
 This tutorial uses the previously created `application.liquid` layout:
 
+```liquid
 {% raw %}
-<pre><code class="language-liquid">
 ...
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -35,36 +35,32 @@ This tutorial uses the previously created `application.liquid` layout:
 ...
 <h1>Layout</h1>
 {{ content_for_layout }}
-</code></pre>
 {% endraw %}
+```
 
 Create a partial file `meta_tags.liquid` in the `marketplace_builder/views/partials` directory. The content of the partial is the extracted meta tags from the layout:
 
+```html
 {% raw %}
-
-<pre><code class="language-html">
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-</code></pre>
-
 {% endraw %}
+```
 
 ### Step 2: Include the partial
 
 In the original layout, include the `meta_tags.liquid` partial. Partials resolve from `views/partials`, so in the include you only have to specify the name of the partial in the `views/partials` directory.
 
+```liquid
 {% raw %}
-
-<pre><code class="language-liquid">
 ...
   {% include 'meta_tags' %}
 ...
 <h1>Layout</h1>
 {{ content_for_layout }}
-</code></pre>
-
 {% endraw %}
+```
 
 Deploy or sync your changes. You can see that pages using the layout are displayed the same. When you check their source code, you can see that the meta tags have been injected into the layout and thus the pages from the partial.
 
@@ -76,6 +72,3 @@ Congratulations! You have reused code across multiple pages using partials. Now 
 * [Using Static Assets on Your Pages](/get-started/assets/using-static-assets-pages)
 
 {% include 'shared/questions_section' %}
-
-
-

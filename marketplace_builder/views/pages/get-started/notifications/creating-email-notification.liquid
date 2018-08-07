@@ -22,13 +22,12 @@ Creating an email notification is a two-step process:
 1. Create email notification
 2. Add notification to sign up form
 
-
 ### Step 1: Create email notification
 Create the notification file `notifications/email_notifications/welcome_user.liquid`:
 
-{% raw %}
 
-<pre><code class="language-liquid">
+```liquid
+{% raw %}
 ---
 name: welcome_user
 to: '{{ form.email }}'
@@ -45,16 +44,13 @@ layout_path: mailer
 <h1>Hi {{ form.first_name }}!</h1>
 
 <p>Welcome in our marketplace!</p>
-</code></pre>
-
-
 {% endraw %}
-
+```
 
 ### Step 2: Add notification to sign up form
 Edit the `form_configurations/developer/sign_up.liquid` file to associate this email with it:
 
-<pre><code class="language-yaml">
+```yaml
 ---
 name: developer_sign_up
 resource: User
@@ -63,8 +59,7 @@ email_notifications:
   - welcome_user
 ---
 ...
-</code></pre>
-
+```
 
 Now, when you submit the form, the newly registered user should receive the email.
 
@@ -77,5 +72,3 @@ Congratulations! You have created an email notification. Now you can learn about
 * [Using Email Layouts](/get-started/notifications/using-email-layouts)
 
 {% include 'shared/questions_section' %}
-
-

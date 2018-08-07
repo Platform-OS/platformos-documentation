@@ -13,7 +13,7 @@ searchable: true
 
 You can add values for `flash` messages as part of form configuration, for example:
 
-<pre><code class="language-yaml">
+```yaml
 ---
 name: signup_form
 resource: User
@@ -23,13 +23,13 @@ configuration:
 flash_notice: You have successfully signed up
 flash_alert: Please fix validation errors
 ---
-</code></pre>
+```
 
 ### Interpolation
 
 Values for `flash` keys are processed using a Liquid parser, so they can be interpolated in the context of the current form:
 
-<pre><code class="language-yaml">
+```yaml
 ---
 name: signup_form
 resource: User
@@ -41,6 +41,6 @@ configuration:
 flash_notice: 'Thank you {% raw %}{{ form.first_name }}{% endraw %}, you have successfully signed up!'
 flash_alert: Please fix validation errors
 ---
-</code></pre>
+```
 
-{% include "alert/note", content: "Quotes around the value of flash_notice are required if you interpolate Liquid code inside YAML" %}
+{% include 'alert/note', content: 'Quotes around the value of flash_notice are required if you interpolate Liquid code inside YAML' %}

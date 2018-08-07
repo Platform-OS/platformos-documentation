@@ -13,16 +13,16 @@ searchable: true
 
 You can enable CustomAttachments by adding a CustomAttribute with `attribute_type` set to `file`, for example:
 
-<pre><code class="language-yaml">
+```yaml
 - name: Agreement
   attribute_type: file
-</code></pre>
+```
 
 ## Form configuration
 
 The Custom Attachment attribute must be defined in a form in order to whitelist and validate the form request.
 
-<pre><code class="language-yaml">
+```yaml">
 ...
 custom_attachments:
   agreement:
@@ -30,7 +30,7 @@ custom_attachments:
       validation:
         file_content_type: { allow: ['image/jpeg', 'image/png', 'application/pdf'] }
 ...
-</code></pre>
+```
 
 ## Fields
 
@@ -44,25 +44,26 @@ Each attachment supports the following self-descriptive fields:
 
 After setting up attachments as described above, you can further customize them in the markup for the forms:
 
+
+```liquid
 {% raw %}
+<label>
+  <span>Select file...</span>
+  <input accept=".pdf,.jpg,.jpeg,.png" name="{{ form_builder.fields.custom_attachments.agreement.file.name }}" type="file">
+</label>
 
-<pre><code class="language-liquid">
-  <div>
-    <label><span>Select file...</span>
-    <input accept=".pdf,.jpg,.jpeg,.png" name="{{ form_builder.fields.custom_attachments.agreement.file.name }}" type="file"></label>
-    {% if form_builder.errors['custom_attachments.agreement.file'] %}
-      <p>{{ form_builder.errors['custom_attachments.agreement.file'] }}</p>
-    {% endif %}
-  </div>
-</code></pre>
-
+{% if form_builder.errors['custom_attachments.agreement.file'] %}
+  <p>{{ form_builder.errors['custom_attachments.agreement.file'] }}</p>
+{% endif %}
 {% endraw %}
+```
+
 
 The example above shows the predefined attachment tag.
 
 ## Using GraphQL to query for `CustomAttachment`
 
-<pre><code class="language-graphql">
+```graphql
 query test_attachment_query {
   customizations {
     results {
@@ -73,4 +74,4 @@ query test_attachment_query {
     }
   }
 }
-</code></pre>
+```

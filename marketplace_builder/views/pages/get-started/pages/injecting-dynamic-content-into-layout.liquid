@@ -25,18 +25,15 @@ Injecting dynamic content into a layout is a two-step process:
 
 Add the yield tag to the previously created `application.liquid` layout file, e.g. switch the layout title to dynamic content with the `yield` tag:
 
+```liquid
 {% raw %}
-
-```twig
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>
-    {% yield 'meta_title' %}
-    </title>
+    <title>{% yield 'meta_title' %}</title>
   </head>
 
   <body>
@@ -44,28 +41,23 @@ Add the yield tag to the previously created `application.liquid` layout file, e.
     {{ content_for_layout }}
   </body>
 </html>
-```
-
 {% endraw %}
-
+```
 
 ### Step 2: Use `content_for` in page
 
 Add the `content_for` tag in the previously created `home.liquid` page. The positioning of this line doesn't matter as long as it's in the content part of the page.
 
+```liquid
 {% raw %}
-
-<pre><code class="language-liquid">
 ---
 slug: /
 ---
 
 {% content_for 'meta_title' %}Homepage title{% endcontent_for %}
-
 Homepage
-</code></pre>
-
 {% endraw %}
+```
 
 Sync or deploy. You can now see that the Homepage title is displayed in your browser's title bar or tab.
 

@@ -31,16 +31,16 @@ You are allowed to use all Liquid features and GraphQL in your Authorization Pol
 
 Assuming you have previously prepared the GraphQL query `current_user`, an example of a policy file can look like this:
 
-{% raw %}
 
-<pre><code class="language-liquid">
+```liquid
+{% raw %}
 ---
 name: only_allowed_by_johns
 ---
 {% query_graph 'current_user', result_name: 'g' %}
 {% if g.current_user.first_name == 'John' %}true{% endif %}
-</code></pre>
 {% endraw %}
+```
 
 In this example, only users with the first name `John` will be allowed to perform action with this policy.
 

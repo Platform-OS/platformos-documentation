@@ -29,7 +29,7 @@ Accessing authenticated user data is a two-step process:
 
 Create GraphQL query `graph_queries/current_user.graphql`:
 
-<pre><code class="language-graphql">
+```graphql
 {
   current_user {
     id
@@ -44,19 +44,17 @@ Create GraphQL query `graph_queries/current_user.graphql`:
     }
   }
 }
-</code></pre>
+```
 
 ### Step 2: Fetch information from GraphQL file
 
 On any given page (including layout itself, but be careful with adding queries to the layout), you can add this liquid tag:
 
+```liquid
 {% raw %}
-
-<pre><code class="language-liquid">
-  {% query_graph 'current_user', result_name: 'g' %}
-</code></pre>
-
+{% query_graph 'current_user', result_name: 'g' %}
 {% endraw %}
+```
 
 This tag fetches information defined in the GraphQL file for the currently logged in user and stores it in a variable named `g`. The returned data is a standard hash, so you can even display it via {% raw %}{{ g }}{% endraw %}.
 
@@ -66,5 +64,3 @@ Congratulations! You know how to access information of authenticated users. Now 
 * [Sending an Email Notification](/get-started/notifications/sending-email-notification)
 
 {% include 'shared/questions_section' %}
-
-

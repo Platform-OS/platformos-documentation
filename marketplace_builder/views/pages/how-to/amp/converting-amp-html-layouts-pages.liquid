@@ -33,13 +33,12 @@ From the HTML page, copy the content into a separate Liquid page, e.g. `views/pa
 * The page will use the default layout, so you don't have to specify it.
 * Add a title to your page to make it dynamic.
 
-<pre><code class="language-yaml">
+```yaml
 ---
 slug: blog
 ---
-</code>
-<br>
-<code class="language-liquid">
+```
+```liquid
 {% raw %}
 {% content_for 'meta_title' %}Blog{% endcontent_for %}
 
@@ -50,7 +49,7 @@ slug: blog
   </article>
 </main>
 {% endraw %}
-</code></pre>
+```
 
 ### Step 2: Edit layout
 Edit your layout `views/layouts/application.liquid`:
@@ -59,49 +58,48 @@ Edit your layout `views/layouts/application.liquid`:
 * Replace or add the `title`.
 * `content_for_layout` will be populated by the `blog.liquid` page content.
 * Cut the footer part of the HTML page and add it to the bottom of your layout.
-* Add the AMP symbol <code>&#9889;</code> to the `html` tag.
+* Add `amp` to the `html` tag.
 
 {% include 'alert/note', content: 'Read more about <a href="https://www.ampproject.org/docs/fundamentals/spec" target="_blank">AMP HTML Specification</a>' %}
 
-<pre><code class="language-liquid">
+```liquid
 {% raw %}
-&lt;!doctype html  &#9889;>
-&lt;head>
+<!doctype html amp>
+<head>
   <meta charset="utf-8">
   <title>The Recipe Blog</title>
   <link rel="canonical" href="https://{{ context.location.host }}/{{ context.page.slug }}">
   <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
 
-  &lt;script async src="https://cdn.ampproject.org/v0.js">&lt;/script>
+  <script async src="https://cdn.ampproject.org/v0.js"></script>
 
   <title>
     {% yield 'meta_title' %}
   </title>
-&lt;/head>
-  &lt;body>
+</head>
+  <body>
     {{ content_for_layout }}
-  &lt;/body>
-&lt;/html>
+  </body>
+</html>
 {% endraw %}
-</code></pre>
+```
 
 Now, if you sync and check the page, you can see that it's working and it's still a valid AMP page. However, images aren't displayed, because their relative path has changed.
 
 ### Step 3: Adjust image paths
 Change the path of images using the `asset_url` filter. Modify each image path from
 
-<pre><code class="language-liquid">
+```html
 <amp-img src="../img/blog/spritzer.jpg" width="1280" height="853" layout="responsive" alt="The final spritzer" class="mb4 mx3"></amp-img>
-</code></pre>
+```
 
 to
 
-<pre><code class="language-liquid">
+```html
 {% raw %}
 <amp-img src="{{ 'img/blog/spritzer.jpg' | asset_url }}" width="1280" height="853" layout="responsive" alt="The final spritzer" class="mb4 mx3"></amp-img>
 {% endraw %}
-</code></pre>
-
+```
 
 Sync, and see images displayed.
 

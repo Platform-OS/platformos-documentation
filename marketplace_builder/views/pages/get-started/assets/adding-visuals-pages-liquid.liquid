@@ -33,7 +33,7 @@ Put an image into the `marketplace_builder/assets/images` directory, e.g. logo.s
 Create a page with the format CSS in your `marketplace_builder/pages` directory. To define which format the endpoint will be available in (CSS in this case), place .<format> before the file extension, for example name your file `logo.css.liquid`:
 
 
-<pre><code class="language-liquid">
+```html
 {% raw %}
 ---
 slug: logo
@@ -43,22 +43,22 @@ slug: logo
    background-image: url({{ 'images/logo.svg' | asset_url }});
 }
 {% endraw %}
-</code></pre>
+```
 
 
 Use the {% raw %}`{{ asset_url }}`{% endraw %} filter: it takes a string as an argument, and returns a string representing the URL to this asset served by our CDN.
 
 ### Step 3: Link to the `logo.css.liquid` page in your layout
 
-
-<pre><code class="language-liquid">
+```html
 {% raw %}
-...
-  <link rel="stylesheet" href="/logo.css">
+  <head>
+    <link rel="stylesheet" href="/logo.css">
+  </head>
 ...
   <div class="logo"></div>
 {% endraw %}
-</code></pre>
+```
 
 
 Sync or deploy. You should see the image displayed on your page.

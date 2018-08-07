@@ -34,9 +34,9 @@ Then create a liquid file in the `form_configurations/client/client_sign_up.liqu
 
 Add the following content to the `developer_sign_up.liquid` sign up form:
 
-{% raw %}
 
-<pre><code class="language-yaml">
+```yaml
+{% raw %}
 ---
 name: developer_sign_up
 resource: User
@@ -57,10 +57,9 @@ configuration:
     validation:
       presence: true
 ---
-</code>
-<br/>
-<code class="language-liquid">
-{% form url: '/api/users', method: 'post' %}
+```
+```liquid
+{% form %}
   <div>
     <label for="first_name"><abbr title="required">*</abbr> First name</label>
     <div>
@@ -93,13 +92,10 @@ configuration:
 
   <input value="{{ form_builder.fields.profiles.developer.enabled.value }}" name="{{ form_builder.fields.profiles.developer.enabled.name }}" type="hidden">
 
-  {% submit 'Create' %}
-}
-
+  <button>Create</button>
 {% endform %}
-</code></pre>
-
 {% endraw %}
+```
 
 * `name`: the name of the form, written in snake case. It is used to embed the form in a page.
 * `resource`: defines what is the root resource in this form. In our example it is naturally User. Please check our [full FormBuilder documentation](/reference/form-builder/) for all options.
@@ -114,7 +110,7 @@ configuration:
 
 All of this might be a bit confusing at first sight, like what really is this `enabled` field. All should be clearer, once you realize that the last part of the configuration, which is
 
-<pre><code class="language-yaml">
+```yaml
 developer:
   enabled:
     property_options:
@@ -122,13 +118,11 @@ developer:
       readonly: true
   validation:
     presence: true
-</code></pre>
+```
 
 can be also represented as an independent form, with configuration like this:
 
-{% raw %}
-
-<pre><code class="language-yaml">
+```yaml
 ...
 resource: UserProfile
 configuration:
@@ -137,15 +131,13 @@ configuration:
       default: true
       readonly: true
 ...
-</code></pre>
+```
 
-{% endraw %}
-
-In other words, forms are nested in each other—you can access them as 'nested forms'. In this example you want to create a User and a corresponding UserProfile at the same time. This behavior is desired if in your UI you have a page with a button that says "Sign up as a Developer". User provides first name, email, password and that's it-the user registers as a developer.
+In other words, forms are nested in each other &ndash; you can access them as 'nested forms'. In this example you want to create a User and a corresponding UserProfile at the same time. This behavior is desired if in your UI you have a page with a button that says "Sign up as a Developer". User provides first name, email, password and that's it-the user registers as a developer.
 
 Alternatively, the UI can split the process into two separate actions. It can first ask the user to register, so the button would be just 'Sign up', and only ask after registration if the user wants to become a developer or a client. In this scenario, the first form would look like this:
 
-<pre><code class="language-yaml">
+```yaml
 ---
 name: generic_sign_up
 resource: User
@@ -156,11 +148,11 @@ configuration:
   first_name:
     validation: { presence: true }
 ---
-</code></pre>
+```
 
 and the second one would be similar to:
 
-<pre><code class="language-yaml">
+```yaml
 ---
 name: become_developer_form
 resource: UserProfile
@@ -172,7 +164,7 @@ configuration:
       default: true
       readonly: true
 ---
-</code></pre>
+```
 
 The end result would be the same. The point is, that with Platform OS, you have the power of creating multiple resources within one form submission-which might be more complex in terms of configuration, but it can greatly simplify UX.
 
@@ -196,13 +188,13 @@ Proceeding with rendering proper inputs that the user will be expected to fill:
 
 The last part is the rendering of nested forms. As explained in the configuration section, this form creates a User with properties defined above, and at the same time it also creates UserProfile and associates it with the newly created User. This is the syntax for this type of tasks:
 
+
+```liquid
 {% raw %}
-
-<pre><code class="language-liquid">
-  &lt;input value="{{ form_builder.fields.profiles.developer.enabled.value }}" name="{{ form_builder.fields.profiles.developer.enabled.name }}" type="hidden">
-</code></pre>
-
+<input value="{{ form_builder.fields.profiles.developer.enabled.value }}" name="{{ form_builder.fields.profiles.developer.enabled.name }}" type="hidden">
 {% endraw %}
+```
+
 
 * `fields_for` tag expects the first argument to be a string that represents nested object.
 * The second one is a hash, where key is always `form` and value is the name of the parent form. If none provided, it will assume that the parent is the root form. In this example, you create not one level deep nested object, but actually two level deep. You first create `profiles` form the root form, and then `developer` for the `profiles` form. Then you create a hidden input `enabled` for `developer` form. The idea here is that if you wouldn't provide it, then the profile wouldn't be created-the nested configuration is ignored, if you don't send attributes via html. In other words, setting the configuration for UserForm to allow creating `developer` profile is not enough-the configuration just defines what is allowed to be submitted to the API endpoint. To actually create the developer profile along with user, you need to send value for at least one field that belongs to the user profile-in this example, you provide value for the `enabled` field.
@@ -211,9 +203,8 @@ The last part is the rendering of nested forms. As explained in the configuratio
 
 Add the following content to the `client_sign_up.liquid` sign up form:
 
+```liquid
 {% raw %}
-
-<pre><code class="language-liquid">
 ---
 name: client_sign_up
 resource: User
@@ -236,7 +227,7 @@ configuration:
       presence: true
 ---
 
-{% form url: '/api/users', method: 'post' %}
+{% form %}
   <div>
     <label for="first_name"><abbr title="required">*</abbr> First name</label>
     <div>
@@ -271,10 +262,8 @@ configuration:
 
   {% submit 'Create' %}
 {% endform %}
-</code></pre>
-
 {% endraw %}
-
+```
 
 ## Next steps
 Congratulations! You now know how to create sign up forms for your users. Now you can embed the sign up form in a page:

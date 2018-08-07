@@ -21,15 +21,11 @@ All layouts should be located in the `views/layouts` directory. By default, all 
 
 At a minimum, the content of the layout should look like this:
 
+```liquid
 {% raw %}
-
-<pre>
-  <code class="language-liquid">
-    {{ content_for_layout }}
-  </code>
-</pre>
-
+  {{ content_for_layout }}
 {% endraw %}
+```
 
 This layout only renders the content of the page, and is equivalent of passing `layout_name: ''` in the page definition.
 
@@ -37,32 +33,29 @@ This layout only renders the content of the page, and is equivalent of passing `
 
 The most common use case of layouts is to place something before and after the content of the page:
 
+
+```html
 {% raw %}
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- here come things like meta tags, favicon, css etc. -->
+</head>
 
-<pre>
-  <code class="language-html">
-    <!doctype html>
-    <html lang="en">
-    <head>
-      <!-- here come things like meta tags, favicon, css etc. -->
-    </head>
+<body>
+  <header>here usually come header, navbar etc.</header>
 
-    <body>
-      <header>here usually come header, navbar etc.</header>
+  <main>
+    {{ content_for_layout }}
+  </main>
 
-      <main>
-        {{ content_for_layout }}
-      </main>
-
-      <footer>
-        here usually come footer, js etc.
-      </footer>
-    </body>
-    </html>
-  </code>
-</pre>
-
+  <footer>
+    here usually come footer, js etc.
+  </footer>
+</body>
+</html>
 {% endraw %}
+```
 
 ### Layouts for different formats
 
@@ -80,7 +73,7 @@ In the page `my-example-page.pdf.liquid` you will put `layout_name: document` an
 
 ### Rendering page content in layout
 
-The most important part in every layout file is the {%raw%}`{{ content_for_layout }}`{%endraw%} line: it injects the content of the page into the layout.
+The most important part in every layout file is the {% raw %}`{{ content_for_layout }}`{% endraw %} line: it injects the content of the page into the layout.
 
 ## Related topics
 * [Pages](/get-started/pages/pages)

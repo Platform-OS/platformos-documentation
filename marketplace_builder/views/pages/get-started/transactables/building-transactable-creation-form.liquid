@@ -28,9 +28,9 @@ Building a Transactable creation form is a two-step process:
 
 Create a form for Transactable creation:
 
-{% raw %}
 
-<pre><code class="language-liquid">
+```liquid
+{% raw %}
 ---
 name: project
 resource: Transactable
@@ -106,26 +106,23 @@ configuration:
 
   {% submit 'Save' %}
 {% endform %}
-</code></pre>
-
 {% endraw %}
+```
 
 ### Step 2: Embed form into a page
 
 The page with the embedded form could look like this:
 
+```liquid
 {% raw %}
-
-<pre><code class="language-liquid">
 ---
 slug: client/projects/new
 layout_name: application
 ---
 <h1>Create Project</h1>
 {% include_form 'project', parent_resource_id: 'project' %}
-</code></pre>
-
 {% endraw %}
+```
 
 ## Next steps
 Congratulations! You have built a form for creating a Transactable. Now you can display the newly created Transactable:

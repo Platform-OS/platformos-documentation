@@ -33,17 +33,17 @@ The content of an email layout is slightly different from the content of a layou
 
 Add the following to your email layout file `mailer.html.liquid`:
 
-{% raw %}
 
-<pre><code class="language-liquid">
+```liquid
+{% raw %}
   Header
 
   {{ content_for_layout }}
 
   Footer
-</code></pre>
-
 {% endraw %}
+```
+
 
 Where {% raw %}`{{ content_for_layout }}`{% endraw %} injects the body defined in the email notification into the layout. Without it, you would be sending a layout without actual content.
 
@@ -54,8 +54,3 @@ Congratulations! You know how to use email layouts. Now you can learn about crea
 * [Creating an SMS Notification](/get-started/notifications/creating-sms-notification)
 
 {% include 'shared/questions_section' %}
-
-
-
-
-

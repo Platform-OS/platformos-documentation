@@ -18,7 +18,7 @@ CustomAttributes are defined in YML configuration files for:
 * TransactableTypes
 * UserProfileTypes
 
-<pre><code class="language-yaml">
+```yaml
 custom_attributes:
 - name: name
   attribute_type: string
@@ -26,7 +26,7 @@ custom_attributes:
   attribute_type: boolean
 - name: age
   attribute_type: integer
-</code></pre>
+```
 
 The above configuration adds three custom properties: "name" of type _string_, "enabled" of type _boolan_, and "age" of type _integer_.
 
@@ -59,7 +59,7 @@ You can group your custom attributes into [Custom Models](/reference/custom-mode
 
 You can configure Custom Attributes settings in Form Configuration similarly to other parameters:
 
-<pre><code class="language-yaml">
+```yaml
 ...
 configuration:
   properties:
@@ -69,9 +69,8 @@ configuration:
     age:
       validation:
         presence: true
-</code>
-<br>
-<code class="language-liquid">
+```
+```liquid
 {% raw %}
 {% form %}
   <label for="name"><abbr title="required">*</abbr> Name</label>
@@ -81,7 +80,7 @@ configuration:
   {% endif %}
 {% endform %}
 {% endraw %}
-</code></pre>
+```
 
 
 For more information see our [Form Builder Reference](/reference/form-configurations) and our [Building a Contact Form with Customization](/get-started/customizations/building-contact-form-with-customization) tutorial.
@@ -90,7 +89,7 @@ For more information see our [Form Builder Reference](/reference/form-configurat
 
 CustomAttributes depend on their parent objects and are accessible in the query after mapping the name of the CustomAttribute with the query attribute name, you can do that with the `property` method:
 
-<pre><code class="language-graphql">
+```graphql
 query get_customizations {
   customizations(name: "customization_name") {
     results {
@@ -100,7 +99,7 @@ query get_customizations {
     }
   }
 }
-</code></pre>
+```
 
 ## Filtering CustomAttribute with GraphQL
 
@@ -109,7 +108,7 @@ Each object in the properties array is connected with a CustomAttribute through 
 
 ### value - matches the value of given property
 
-<pre><code class="language-graphql">
+```graphql
 query get_all_johns {
   customizations(
     is_deleted: false
@@ -120,11 +119,11 @@ query get_all_johns {
     }
   }
 }
-</code></pre>
+```
 
 ### values - matches array of values with given `values_operator`: `OR` or `AND`.
 
-<pre><code class="language-graphql">
+```graphql
 query get_all_johns_and_annas {
   customizations(
     is_deleted: false
@@ -135,11 +134,11 @@ query get_all_johns_and_annas {
     }
   }
 }
-</code></pre>
+```
 
 ### range - available options for range are: `lt`, `lte`, `gt`, `gte`:
 
-<pre><code class="language-graphql">
+```graphql
 query get_all_adults_below_60 {
   customizations(
     is_deleted: false
@@ -150,11 +149,11 @@ query get_all_adults_below_60 {
     }
   }
 }
-</code></pre>
+```
 
 ### exists
 
-<pre><code class="language-graphql">
+```graphql
 query get_all_with_name {
   customizations(
     is_deleted: false
@@ -165,6 +164,6 @@ query get_all_with_name {
     }
   }
 }
-</code></pre>
+```
 
 Please note that the above examples are only valid for CustomAttributes defined on CustomModelType. Please refer to GraphQL schema in order to filter CustomAttributes defined on different parents than CustomModelType.

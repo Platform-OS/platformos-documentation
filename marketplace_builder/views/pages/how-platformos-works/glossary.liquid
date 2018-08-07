@@ -37,7 +37,7 @@ We provide one of the best Content Delivery Networks in the world: CloudFront.
 
 Everything you place in the `assets/` directory will be served by this performant CDN. You can nest directories however you want, the directory structure will be kept.
 
-You access files using either the `asset_url` filter, `asset_url` hash, or composing the path yourself, since it is deterministic—it consists of cdnPath + path/to/asset.
+You access files using either the `asset_url` filter, `asset_url` hash, or composing the path yourself, since it is deterministic &ndash; it consists of cdnPath + path/to/asset.
 
 Read more about CloudFront: [https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html)
 
@@ -49,25 +49,25 @@ Usage example:
 
 Define what you want to yield in your page:
 
+```liquid
 {% raw %}
-<pre><code class="language-liquid">
-  {% content_for 'page_title' %}Platform OS Blog{% endcontent_for %}
-</code></pre>
+{% content_for 'page_title' %}Platform OS Blog{% endcontent_for %}
 {% endraw %}
+```
 
 Then use yield inside the layout:
 
+```liquid
 {% raw %}
-<pre><code class="language-liquid">
-  <title>{{ yield 'page_title' }}</title>
-</code></pre>
+<title>{{ yield 'page_title' }}</title>
 {% endraw %}
+```
 
 ## Custom Attributes
 
 Custom Attributes are fields that you attach to a User Profile, Transactable, Relationship, Custom Model Type, etc.
 
-Some of them are provided by us to jumpstart your development—for example, we have a Custom Model Type called `custom_address` and it has multiple Custom attributes baked in.
+Some of them are provided by us to jumpstart your development &ndash; for example, we have a Custom Model Type called `custom_address` and it has multiple Custom attributes baked in.
 
 [Read more about custom_address in our Reference](/reference/custom-attributes/custom-addresses)
 
@@ -86,7 +86,7 @@ Custom address, for example, is a Custom Model with Custom Attributes attached t
 
 Each marketplace has at least two environments: staging and production.
 
-Staging is used to develop and test your application before it goes live—it is a place to catch and fix bugs.
+Staging is used to develop and test your application before it goes live &ndash; it is a place to catch and fix bugs.
 
 If you are a Partner, you most likely will want to use a sandbox environment to develop your application and then use staging to show the client the progress, and get final sign-off before promoting changes to production.
 
@@ -179,25 +179,25 @@ Pages have to be located in the `views/pages` directory, and their content is re
 
 ## Partial
 
-Partial is a piece of code extracted to its own file to maintain readability and rule of DRY—Don’t Repeat Yourself.
+Partial is a piece of code extracted to its own file to maintain readability and rule of DRY &ndash; Don’t Repeat Yourself.
 
 Parameterize partials and use them in various places, e.g. layouts, pages, Authorization Policies, Form Configurations.
 
 Example usage:
 
+```liquid
 {% raw %}
-<pre><code class="language-liquid">
-  {% include 'layouts/blog/header' %}
-</code></pre>
+{% include 'layouts/blog/header' %}
 {% endraw %}
+```
 
 With variable passed to the partial:
 
+```liquid
 {% raw %}
-<pre><code class="language-liquid">
-  {% include 'layouts/shared/javascripts', include_analytics: false %}
-</code></pre>
+{% include 'layouts/shared/javascripts', include_analytics: false %}
 {% endraw %}
+```
 
 ## Partner Portal
 
@@ -215,14 +215,14 @@ A special case of deploy is a deploy with a `--force` (or `-f`) flag. It means i
 
 ## Sync
 
-Syncing to any environment means that marketplace-kit is watching your filesystem for changes. Whenever you change a file, it automatically picks it up and sends it to the server. If this operation fails, you will see a message in your console—we have some validations on the server side to prevent you from deploying corrupted code and breaking your marketplace.
+Syncing to any environment means that marketplace-kit is watching your filesystem for changes. Whenever you change a file, it automatically picks it up and sends it to the server. If this operation fails, you will see a message in your console &ndash; we have some validations on the server side to prevent you from deploying corrupted code and breaking your marketplace.
 
 ## Transactable
 
 Transactable is the core concept in our platform, it represents a resource around which any transaction is made. This model should be used to represent for example:
 
 * Product: If you want to build a marketplace matching people who want to sell or rent something with the ones who want to borrow or buy it, then the product is a Transactable.
-* Service: If you want to build a marketplace matching people who provide services with those who want to hire them, the services are Transactables. Technically speaking, the system does not really allow to hire people per se (Users or UserProfiles)—you’ll always need a Transactable object, even if it's invisible from the UI level.
+* Service: If you want to build a marketplace matching people who provide services with those who want to hire them, the services are Transactables. Technically speaking, the system does not really allow to hire people per se (Users or UserProfiles) &ndash; you’ll always need a Transactable object, even if it's invisible from the UI level.
 * Project: If you want to build a marketplace for users with a particular idea or task, who would like to get offers from experts, and then choose one expert, then they have to describe the task/job/project they want to have completed. This task/job/project is a Transactable.
 
 ## Transactables, Transactable Type

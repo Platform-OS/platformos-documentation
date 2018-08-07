@@ -34,20 +34,20 @@ Define custom model with one Custom Attribute named `application_files` and type
 
 #### marketplace_builder/custom_model_types/application_files.yml
 
-<pre><code class="language-yaml">
+```yaml
 name: application_files
 instance_profile_types:
   - developer
 custom_attributes:
   - name: application_file
     attribute_type: file
-</code></pre>
+```
 
 ### Step 2: Create Form Configuration
 
 #### marketplace_builder/form_configurations/upload_application.liquid
 
-<pre><code class="language-yaml">
+```yaml
 ---
 name: upload_application
 resource: User
@@ -63,9 +63,9 @@ configuration:
             application_file:
               file:
 ---
-</code>
-<br/>
-<code class="language-liquid">
+```
+
+```liquid
 {% raw %}
 {% assign customizations = form_builder.fields.profiles.developer.customizations %}
 
@@ -83,7 +83,7 @@ configuration:
   <button class="btn btn-primary mt-5">Save</button>
 {% endform %}
 {% endraw %}
-</code></pre>
+```
 
 #### Notes:
 
@@ -94,13 +94,12 @@ configuration:
 
 #### marketplace_builder/views/pages/upload_application.liquid
 
-<pre><code class="language-liquid">
+```liquid
+{% raw %}
 ---
 slug: upload_application
 ---
-{% raw %}
 <script src="{{ 'MultipleFilesUpload.js' | asset_url }}" defer></script>
-{% endraw %}
 
 <style>
   .custom-file-label {
@@ -116,14 +115,13 @@ slug: upload_application
   }
 </style>
 
-{% raw %}
 <div class="row">
   <div class="col-6">
     {% include_form 'upload_application', resource_id: context.current_user.id %}
   </div>
 </div>
 {% endraw %}
-</code></pre>
+```
 
 #### Notes:
 
@@ -141,7 +139,7 @@ Javascript is needed to:
 
 #### marketplace_builder/assets/MultipleFilesUpload.js
 
-<pre><code class="language-javascript">
+```javascript
 const SELECTOR = '[data-multiple-files]';
 const SELECTOR_FILE_CONTAINER = '[data-multiple-files-item]';
 const SELECTOR_INPUT_ID = '[data-multiple-files-input="id"]';
@@ -193,7 +191,7 @@ const initialize = () => {
 };
 
 initialize();
-</code></pre>
+```
 
 #### Notes:
 

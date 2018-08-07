@@ -24,11 +24,11 @@ For example, the query `capital of hungary` (subqueries: `capital`, `of`, `Hunga
 
 Default value is `AND`.
 
-{% include "alert/note", content: "Operator is applied only to the keyword query. It does not affect fields behavior." %}
+{% include 'alert/note', content: 'Operator is applied only to the keyword query. It does not affect fields behavior.' %}
 
 ### AND Example
 
-<pre><code class="language-graphql">
+```graphql
 query get_owners {
   people(query: { keyword: "Tanya Rose", operator: "AND" }) {
     results {
@@ -37,9 +37,9 @@ query get_owners {
     }
   }
 }
-</code></pre>
+```
 
-<pre><code class="language-json">
+```json
 {
   "data": {
     "people": {
@@ -52,11 +52,11 @@ query get_owners {
     }
   }
 }
-</code></pre>
+```
 
 ### OR Example
 
-<pre><code class="language-graphql">
+```graphql
 query get_owners {
   people(query: { keyword: "Tanya Rose", operator: "OR" }) {
     results {
@@ -65,9 +65,9 @@ query get_owners {
     }
   }
 }
-</code></pre>
+```
 
-<pre><code class="language-json">
+```json
 {
   "data": {
     "people": {
@@ -84,7 +84,7 @@ query get_owners {
     }
   }
 }
-</code></pre>
+```
 
 ## Filtered fields
 
@@ -92,7 +92,7 @@ To learn more about filtered fields see the [Selecting Fields for Search](/refer
 
 ### OR with filtered fields example
 
-<pre><code class="language-graphql">
+```graphql
 query get_providers {
   people(
     query: {
@@ -107,9 +107,9 @@ query get_providers {
     }
   }
 }
-</code></pre>
+```
 
-<pre><code class="language-json">
+```json
 {
   "data": {
     "people": {
@@ -134,11 +134,11 @@ query get_providers {
     }
   }
 }
-</code></pre>
+```
 
 ### AND with filtered fields example
 
-<pre><code class="language-graphql">
+```graphql
 query get_providers {
   people(
     query: {
@@ -153,11 +153,11 @@ query get_providers {
     }
   }
 }
-</code></pre>
+```
 
 Because the above query is asking for users that have "Tanya Rose" in `first_name` or `last_name` results will be empty in this case.
 
-<pre><code class="language-json">
+```json
 {
   "data": {
     "people": {
@@ -165,7 +165,7 @@ Because the above query is asking for users that have "Tanya Rose" in `first_nam
     }
   }
 }
-</code></pre>
+```
 
 There are no users with "Tanya Rose" in the `first_name` or `last_name` fields.
 

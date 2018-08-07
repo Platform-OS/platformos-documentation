@@ -24,9 +24,9 @@ Adding a new page at a custom URL is a two-step process:
 
 Add a link to the previously created `home.liquid` page, that links to the About page:
 
-{% raw %}
 
-<pre><code class="language-liquid">
+```liquid
+{% raw %}
 ---
 slug: /
 ---
@@ -34,9 +34,8 @@ slug: /
 <a href="/about">About</a>
 
 Homepage
-</code></pre>
-
 {% endraw %}
+```
 
 Sync or deploy. You should see the About link appear on your Homepage.
 
@@ -44,9 +43,8 @@ Sync or deploy. You should see the About link appear on your Homepage.
 
 Create the `about.liquid` page in the `marketplace_builder/views/pages` directory. Add a short description ("About"), that shows you this is the About page, and also a link back to the Homepage.
 
+```liquid
 {% raw %}
-
-<pre><code class="language-liquid">
 ---
 slug: about
 ---
@@ -54,9 +52,8 @@ slug: about
 About page
 
 <a href="/">Home</a>
-</code></pre>
-
 {% endraw %}
+```
 
 Sync or deploy. You should see that the About link on your Homepage now links to the newly created About page. The Home link on your About page links to your Homepage, so you can switch back and forth between the two pages.
 
@@ -66,5 +63,3 @@ Congratulations! You have created a new page at a custom URL. Now you can learn 
 * [Injecting Dynamic Content into a Layout](/get-started/pages/injecting-dynamic-content-into-layout)
 
 {% include 'shared/questions_section' %}
-
-

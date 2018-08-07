@@ -29,7 +29,7 @@ Location of image asset in code base:
 URL of image asset on CDN:
 `https://dmtyylqvwgyxw.cloudfront.net/instances/163/assets/images/logo.svg`
 
-{% include 'alert/note', content: "CDN host and Instance ID are dynamic and will be specific to your instance and region" %}
+{% include 'alert/note', content: 'CDN host and Instance ID are dynamic and will be specific to your instance and region' %}
 
 ## Accessing assets
 
@@ -41,25 +41,28 @@ Accessing an image from a CSS file located at `assets/styles/page.css`:
 `background: transparent url('../images/logo.svg') top center no-repeat;`
 
 Accessing a Javascript file from a layout:
-<pre><code class="language-liquid">
+
+```html
 {% raw %}
 <script src="{{ 'scripts/app.js' | asset_url }}"></script>
 {% endraw %}
-</code></pre>
+```
 
 Accessing a CSS file from a layout:
-<pre><code class="language-liquid">
+
+```html
 {% raw %}
 <link rel="stylesheet" href="{{ 'styles/app.css' | asset_url }}">
 {% endraw %}
-</code></pre>
+```
 
 Accessing an HTML file from a page:
-<pre><code class="language-liquid">
+
+```html
 {% raw %}
 <a href="{{ 'test.html' | asset_url }}">Test</a>
 {% endraw %}
-</code></pre>
+```
 
 ## Syncing and deploying assets
 

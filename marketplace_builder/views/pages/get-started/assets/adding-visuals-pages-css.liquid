@@ -38,11 +38,11 @@ Put an image in the images directory (e.g. `logo.svg`).
 
 In the `styles` directory, create a `page.css` file:
 
-<pre><code class="language-css">
+```css
 .logo {
   background: transparent url("../images/logo.svg") top center no-repeat;
 }
-</code></pre>
+```
 
 Here, in a static CSS file, you can't use the `asset_url` filter or {% raw %}`{{ asset_url }}`{% endraw %} liquid variable to get the URL of the image on the CDN, so you have to refer to it with its relative path.
 
@@ -53,11 +53,11 @@ This directory structure corresponds to the directory structure on the CDN, so t
 ### Step 3: Link to the CSS file in your layout
 
 
+```html
 {% raw %}
-<pre><code class="language-liquid">
-&lt;link rel="stylesheet" href="{{ 'styles/page.css' | asset_url }}"&gt;
-</code></pre>
+<link rel="stylesheet" href="{{ 'styles/page.css' | asset_url }}">
 {% endraw %}
+```
 
 
 Sync or deploy. You should see the image displayed on your page.

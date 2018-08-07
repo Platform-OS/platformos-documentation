@@ -32,29 +32,29 @@ Creating SEO friendly category listings is a three-step process:
 
 * Define URL template in page:
 
+
+```liquid
 {% raw %}
-
-<pre><code class="language-liquid">
 {% assign url_template = '/catalogue/{country}/{city}' %}
-</code></pre>
-
 {% endraw %}
+```
+
 
 * Decode current_url into params with Liquid filter `extract_url_params`:
 
+
+```liquid
 {% raw %}
-
-<pre><code class="language-liquid">
 {% assign url_params = current_full_path | extract_url_params: url_template %}
-</code></pre>
-
 {% endraw %}
+```
+
 
 ### Step 2: Prepare GraphQL query
 
 Create a GrpahQL query with country and city:
 
-<pre><code class="language-graphql">
+```graphql
 query get_catalogue_listings(
   $query: String,
   $is_deleted: Boolean = false
@@ -82,29 +82,28 @@ query get_catalogue_listings(
     }
   }
 }
-</code></pre>
+```
 
 ### Step 3: Add GraphQL query to page
 
 Add the GraphQL query you created to your page, and pass extracted params to it:
 
+```liquid
 {% raw %}
-
-<pre><code class="language-liquid">
 {% query_graph 'get_catalogue_listings', result_name: 'g',
   country: url_params.country,
   city: url_params.city,
   is_deleted: false
 %}
-</code></pre>
-
 {% endraw %}
+```
+
 
 ## Final Page
 
-{% raw %}
 
-<pre><code class="language-liquid">
+```liquid
+{% raw %}
 {% assign url_template = '/catalogue/{country}/{city}' %}
 {% assign url_params = current_full_path | extract_url_params: url_template %}
 
@@ -126,9 +125,9 @@ Add the GraphQL query you created to your page, and pass extracted params to it:
     </ul>
   </form>
 </div>
-</code></pre>
-
 {% endraw %}
+```
+
 
 ## Example URLs
 
@@ -139,5 +138,3 @@ Add the GraphQL query you created to your page, and pass extracted params to it:
 **/catalogue//** - all listings
 
 {% include 'shared/questions_section' %}
-
-

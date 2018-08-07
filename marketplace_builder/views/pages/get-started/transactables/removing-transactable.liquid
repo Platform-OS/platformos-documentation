@@ -27,9 +27,9 @@ Removing a Transactable is a two-step process:
 ### Step 1: Create Form Configuration to remove Transactable
 Create `form_configurations/destroy_project.liquid`:
 
-{% raw %}
 
-<pre><code class="language-liquid">
+```liquid
+{% raw %}
 ---
 name: destroy_project
 resource: Transactable
@@ -37,17 +37,17 @@ resource: Transactable
 {% form method: 'delete' %}
   <input type="submit" value="Delete">
 {% endform %}
-</code></pre>
-
 {% endraw %}
+```
+
 
 ### Step 2: Render form
 Render this form similarly to the one from the previous tutorial:
 {% raw %}
 
-<pre><code class="language-liquid">
+```liquid
 {% include_form 'destroy_project', resource_id: project.id %}
-</code></pre>
+```
 
 {% endraw %}
 

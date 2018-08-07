@@ -26,9 +26,9 @@ Creating an API call notification is a two-step process:
 
 Create an API call notification `notifications/api_call_notifications/ping_example_com_on_user_sign_up.liquid`:
 
-{% raw %}
 
-<pre><code class="language-liquid">
+```liquid
+{% raw %}
 ---
 name: ping_example_com_on_user_sign_up
 to: 'https://example.com/endpoint/{{ form.id }}'
@@ -45,9 +45,9 @@ headers: '{
   "first_name": "{{ form.first_name }}",
   "id": "{{ form.id }}"
 }
-</code></pre>
-
 {% endraw %}
+```
+
 
 This defines a POST request to the endpoint with the newly created user's ID. The response is not stored, it's fire and forget. In this example the body of the request is JSON, and to notify the endpoint about it, you set the `Content-Type` header to `application/json`.
 
@@ -55,20 +55,17 @@ This defines a POST request to the endpoint with the newly created user's ID. Th
 
 Connect the API call notification you created with the sign up form `form_configurations/developer/sign_up.liquid`:
 
-{% raw %}
 
-<pre><code class="language-yaml">
+```yaml
 ---
 api_call_notifications:
   - ping_example_com_on_user_sign_up
 ---
-</code></pre>
-
-{% endraw %}
+```
 
 Whenever a user successfully sign ups, the `https://example.com/endpoint/{% raw %}{{ form.id }}{% endraw %}` endpoint will be notified.
 
-{% include "alert/important", content: "We do not send API calls on staging by default. Please <a href='/contact'>contact us</a> if you want to change this behavior." %}
+{% include 'alert/important', content: 'We do not send API calls on staging by default. Please <a href="/contact">contact us</a> if you want to change this behavior.' %}
 
 ## Next steps
 
@@ -77,5 +74,3 @@ Congratulations! You have created an API call notification. Now you can learn ab
 * [Parsing an API Response](/get-started/notifications/parsing-api-response)
 
 {% include 'shared/questions_section' %}
-
-

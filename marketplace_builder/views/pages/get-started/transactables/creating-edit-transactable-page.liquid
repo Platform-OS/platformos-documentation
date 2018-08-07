@@ -27,9 +27,8 @@ Creating the edit Transactable page is a two-step process:
 ### Step 1: Create page
 Create the edit Transactable page `views/pages/client/projects/edit.liquid`:
 
+```liquid
 {% raw %}
-
-<pre><code class="language-liquid">
 ---
 slug: client/projects/edit
 ---
@@ -41,16 +40,15 @@ slug: client/projects/edit
 {% else %}
   <p>Unfortunately we could not find this project.</p>
 {% endif %}
-</code></pre>
-
 {% endraw %}
+```
 
 This code re-uses the current_user GraphQL query created in the previous tutorial.
 
 ### Step 2: Create GraphQL query
 The code you wrote in step 2 requires you to create a new `graph_queries/get_project.graphql`:
 
-<pre><code class="language-graphql">
+```graphql
 query client_projects($creator_id: ID!, $slug: String!) {
   project: transactable(creator_id: $creator_id, slug: $slug) {
     id
@@ -58,7 +56,7 @@ query client_projects($creator_id: ID!, $slug: String!) {
     slug
   }
 }
-</code></pre>
+```
 ## Next steps
 Congratulations! You have created the edit page for a Transactable. Now you can learn about removing a Transactable:
 
