@@ -30,25 +30,25 @@ Uploading content directly to Amazon S3 is a two-step process:
 
 Create variables for quicker access later on:
 
-<pre><code class="language-liquid">
+```liquid
 {% raw %}
 {% assign profile = form_builder.fields.profiles.developer %}
 {% assign avatar = profile.custom_images.avatar %}
 {% assign image_s3_upload = avatar.image.s3_upload %}
 {% endraw %}
-</code></pre>
+```
 
 Load required javascript file that contains code responsible for making the AJAX request:
 
-<pre><code class="language-liquid">
+```html
 {% raw %}
 <script src="{{ 'DirectUpload.js' | asset_url }}" defer></script>
 {% endraw %}
-</code></pre>
+```
 
 Create form, and set up all required data in hidden inputs (those will be read by JavaScript later):
 
-<pre><code class="language-liquid">
+```liquid
 {% raw %}
 <form action="{{ image_s3_upload.direct_upload_url }}"
   data-direct-upload-ajax="form">
@@ -61,7 +61,7 @@ Create form, and set up all required data in hidden inputs (those will be read b
   <input type="file" name="file" id="{{ avatar.image.name }}" data-direct-upload-ajax="file">
 </form>
 {% endraw %}
-</code></pre>
+```
 
 {% include 'alert/note', content: 'File input has to have the name **file**.' %}
 
@@ -71,7 +71,7 @@ Create form, and set up all required data in hidden inputs (those will be read b
 
 #### marketplace_builder/assets/DirectUpload.js
 
-<pre><code class="language-javascript">
+```javascript
 const $form = $('[data-direct-upload-ajax="form"]');
 
 $('[data-direct-upload-ajax="file"]').on("change", () => {
@@ -83,7 +83,7 @@ $('[data-direct-upload-ajax="file"]').on("change", () => {
     data: new FormData($form[0]) // create FormData object and populate it with form element passed into constructor
   });
 });
-</code></pre>
+```
 
 {% include 'alert/note', content: 'Code above is stripped from non-essential parts. Source code and live example are more complete with error handling, image previews, and more.' %}
 

@@ -29,7 +29,7 @@ This guide uses the following form configuration code:
 
 #### marketplace_builder/form_configurations/developer/update_profile.liquid
 
-<pre><code class="language-yaml">
+```yaml
 {% raw %}
 ---
 name: update_profile
@@ -42,24 +42,24 @@ configuration:
           image:
 [...]
 {% endraw %}
-</code></pre>
+```
 
 
 It is uploading image to a developer profile which is defined as such:
 
 #### marketplace_builder/user_profile_types/developer.yml
 
-<pre><code class="language-yaml">
+```yaml
 name: developer
 custom_attributes:
 [...]
 - name: avatar
   attribute_type: image
-</code></pre>
+```
 
 A simple page renders the form:
 
-```twig
+```liquid
 {% raw %}
 ---
 slug: update_profile
@@ -89,20 +89,21 @@ Access all metadata required to post data to S3 through the field's `s3_upload` 
 
 Example for custom attribute of image type:
 
-<pre><code class="language-liquid">
+```liquid
 {% raw %}
 {{ form_builder.fields.profiles.expert.custom_images.photo.image.s3_upload }}
 {% endraw %}
-</code></pre>
+```
 
 Example for custom attribute of custom attachment type:
-<pre><code class="language-liquid">
+
+```liquid
 {% raw %}
 {{ form_builder.fields.profiles.expert.custom_attachments.cv.file.s3_upload }}
 {% endraw %}
-</code></pre>
+```
 
-{% include 'alert/note', content: "In image type there is **image** just before s3_upload, for custom attachment, it's **file**" %}
+{% include 'alert/note', content: 'In image type there is **image** just before s3_upload, for custom attachment, it is **file**' %}
 
 ### Step 2: Prepare HTML form with fields including required metadata
 
@@ -111,19 +112,19 @@ Create variables for quicker access later on:
 
 #### marketplace_builder/form_configurations/developer/update_profile.liquid
 
-<pre><code class="language-liquid">
+```liquid
 {% raw %}
 {% assign profile = form_builder.fields.profiles.developer %}
 {% assign avatar = profile.custom_images.avatar %}
 {% assign image_s3_upload = avatar.image.s3_upload %}
 {% endraw %}
-</code></pre>
+```
 
 Set up action and all required data in hidden inputs:
 
 #### marketplace_builder/form_configurations/developer/update_profile.liquid
 
-<pre><code class="language-liquid">
+```liquid
 {% raw %}
 <form action="{{ image_s3_upload.direct_upload_url }}" accept-charset="UTF-8" method="post" enctype="multipart/form-data">
 
@@ -142,7 +143,7 @@ Set up action and all required data in hidden inputs:
   <button class="btn btn-primary">Submit image</button>
 </form>
 {% endraw %}
-</code></pre>
+```
 
 {% include 'alert/note', content: 'File input has to have the name **file**' %}
 
