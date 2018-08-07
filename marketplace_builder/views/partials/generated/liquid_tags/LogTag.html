@@ -1,34 +1,22 @@
+---
+converter: markdown
+---
 <div>
-  {% raw %}
-    <div class="docstring">
-  <div class="discussion">
-    <h2>log</h2>
 
-<p>Print any information to marketplace logs</p>
+{% raw %}
+  ## log
+Print any information to marketplace logs
 
-<p>Arguments:</p>
+### Arguments:
+- **message** [Any] Any object that can be printed
+- **type** [String] type of log entry. One of the: 'error', 'info', 'debug'
 
-<ul>
-<li><strong>message</strong> [Any] Any object that can be printed</li>
-<li><strong>type</strong> [String] type of log entry. One of the: &#39;error&#39;, &#39;info&#39;, &#39;debug&#39;</li>
-</ul>
+### Examples:
+```liquid
+  {% log 'hello world' %}
+  {% log params %}
+  {% log user.id, type: 'debug' %}
+```
+{% endraw %}
 
-
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{% log &#39;hello world&#39; %}
-{% log params %}
-{% log user.id, type: &#39;debug&#39; %}</code></pre>
-    
-  </div>
-
-
-</div>
-  {% endraw %}
 </div>

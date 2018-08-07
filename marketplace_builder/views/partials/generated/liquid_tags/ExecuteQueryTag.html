@@ -1,32 +1,20 @@
+---
+converter: markdown
+---
 <div>
-  {% raw %}
-    <div class="docstring">
-  <div class="discussion">
-    <h2>execute_query</h2>
 
-<p>Use to execute defined graph query. Will raise an exception when query return errors.</p>
+{% raw %}
+  ## execute_query
+Use to execute defined graph query. Will raise an exception when query return errors.
 
-<p>Arguments:</p>
+### Arguments:
+- **query_name** [String]: name of the graphql query defined in marketplace_builder/graphql_queries
+- **result_name** [String]: name of the variable where results will be strored, default: 'g'
 
-<ul>
-<li><strong>query_name</strong> [String]: name of the graphql query defined in marketplace_builder/graphql_queries</li>
-<li><strong>result_name</strong> [String]: name of the variable where results will be strored, default: &#39;g&#39;</li>
-</ul>
+### Examples:
+```liquid
+ {% execute_query "users_query", result_name: "g", current_user: current_user %}
+```
+{% endraw %}
 
-
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-      <pre class="example code"><code>{% execute_query &quot;users_query&quot;, result_name: &quot;g&quot;, current_user: current_user %}</code></pre>
-    
-  </div>
-
-
-</div>
-  {% endraw %}
 </div>
