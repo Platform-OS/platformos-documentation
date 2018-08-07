@@ -1,6 +1,4 @@
 import "./vendor.scss";
-import cleanupHtml from "./js/cleanupHtml";
-
 // WIP
 // FA - load individual icons to not rely on tree shaking
 // import { library } from "@fortawesome/fontawesome-svg-core";
@@ -14,7 +12,6 @@ import cleanupHtml from "./js/cleanupHtml";
 if ($("[class^=language]").length > 0) {
   const liquidKeywords = /\b(?:comment|endcomment|if|elsif|else|endif|unless|endunless|for|endfor|case|endcase|when|in|break|assign|continue|limit|offset|range|reversed|raw|endraw|capture|endcapture|tablerow|endtablerow|include|form|endform|render_form|query_graph|execute_query|content_for|endcontent_for|yield|input|include_form|endinclude_form)\b/;
 
-  [...document.querySelectorAll("code[class*=language]")].map(cleanupHtml);
 
   import(/* webpackChunkName: "prism" */ "prismjs");
   import(/* webpackChunkName: "prism" */ "prismjs/components/prism-bash");
@@ -28,9 +25,12 @@ if ($("[class^=language]").length > 0) {
   import(/* webpackChunkName: "prism" */ "prismjs/components/prism-sass");
   import(/* webpackChunkName: "prism" */ "prismjs/components/prism-scss");
   import(/* webpackChunkName: "prism" */ "prismjs/components/prism-yaml");
-  import(/* webpackChunkName: "prism" */ "prismjs/components/prism-twig");
-  import(/* webpackChunkName: "prism" */ "prismjs/components/prism-liquid").then(
-    () => (Prism.languages.liquid.keyword = liquidKeywords) // Add our custom tags to liquid language definition
+  import(/* webpackChunkName: "prism" */ "prismjs/components/prism-liquid");
+  import(/* webpackChunkName: "prism" */ "prismjs/components/prism-twig").then(
+    () => {
+      Prism.languages.twig = Prism.languages.liquid;
+      Prism.languages.liquid.keyword = liquidKeywords;
+    }
   );
   import(/* webpackChunkName: "prism" */ "prismjs/plugins/line-numbers/prism-line-numbers");
   import(/* webpackChunkName: "prism" */ "prismjs/plugins/normalize-whitespace/prism-normalize-whitespace");
