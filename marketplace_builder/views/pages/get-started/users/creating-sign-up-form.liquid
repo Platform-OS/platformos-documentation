@@ -40,6 +40,7 @@ Add the following content to the `developer_sign_up.liquid` sign up form:
 ---
 name: developer_sign_up
 resource: User
+resource_owner: anyone
 redirect_to: /sign-in
 configuration:
   email:
@@ -60,35 +61,23 @@ configuration:
 ```
 ```liquid
 {% form %}
-  <div>
-    <label for="first_name"><abbr title="required">*</abbr> First name</label>
-    <div>
-      <input name="{{ form_builder.fields.first_name.name }}" value="{{ form_builder.fields.first_name.value }}" id="first_name" type="text">
-      {% if form_builder.errors.first_name %}
-        <p>{{ form_builder.errors.first_name }}</p>
-      {% endif %}
-    </div>
-  </div>
+  <label for="first_name">First name</label>
+  <input name="{{ form_builder.fields.first_name.name }}" value="{{ form_builder.fields.first_name.value }}" id="first_name" type="text">
+  {% if form_builder.errors.first_name %}
+    <p>{{ form_builder.errors.first_name }}</p>
+  {% endif %}
 
-  <div>
-    <label for="email"><abbr title="required">*</abbr> Email</label>
-    <div>
-      <input name="{{ form_builder.fields.email.name }}" value="{{ form_builder.fields.email.value }}" id="email" type="email">
-      {% if form_builder.errors.email %}
-        <p>{{ form_builder.errors.email }}</p>
-      {% endif %}
-    </div>
-  </div>
+  <label for="email">Email</label>
+  <input name="{{ form_builder.fields.email.name }}" value="{{ form_builder.fields.email.value }}" id="email" type="email">
+  {% if form_builder.errors.email %}
+    <p>{{ form_builder.errors.email }}</p>
+  {% endif %}
 
-  <div>
-    <label for="password">Password</label>
-    <div>
-      <input name="{{ form_builder.fields.password.name }}" id="password" type="password">
-      {% if form_builder.errors.password %}
-        <p>{{ form_builder.errors.password }}</p>
-      {% endif %}
-    </div>
-  </div>
+  <label for="password">Password</label>
+  <input name="{{ form_builder.fields.password.name }}" id="password" type="password">
+  {% if form_builder.errors.password %}
+    <p>{{ form_builder.errors.password }}</p>
+  {% endif %}
 
   <input value="{{ form_builder.fields.profiles.developer.enabled.value }}" name="{{ form_builder.fields.profiles.developer.enabled.name }}" type="hidden">
 
@@ -141,6 +130,7 @@ Alternatively, the UI can split the process into two separate actions. It can fi
 ---
 name: generic_sign_up
 resource: User
+resource_owner: anyone
 redirect_to: /
 configuration:
   email:
@@ -208,6 +198,7 @@ Add the following content to the `client_sign_up.liquid` sign up form:
 ---
 name: client_sign_up
 resource: User
+resource_owner: anyone
 redirect_to: /sign-in
 configuration:
   email:
@@ -228,39 +219,27 @@ configuration:
 ---
 
 {% form %}
-  <div>
-    <label for="first_name"><abbr title="required">*</abbr> First name</label>
-    <div>
-      <input name="{{ form_builder.fields.first_name.name }}" value="{{ form_builder.fields.first_name.value }}" id="first_name" type="text">
-      {% if form_builder.errors.first_name %}
-        <p>{{ form_builder.errors.first_name }}</p>
-      {% endif %}
-    </div>
-  </div>
+  <label for="first_name">First name</label>
+  <input name="{{ form_builder.fields.first_name.name }}" value="{{ form_builder.fields.first_name.value }}" id="first_name" type="text">
+  {% if form_builder.errors.first_name %}
+    <p>{{ form_builder.errors.first_name }}</p>
+  {% endif %}
 
-  <div>
-    <label for="email"><abbr title="required">*</abbr> Email</label>
-    <div>
-      <input name="{{ form_builder.fields.email.name }}" value="{{ form_builder.fields.email.value }}" id="email" type="email">
-      {% if form_builder.errors.email %}
-        <p>{{ form_builder.errors.email }}</p>
-      {% endif %}
-    </div>
-  </div>
+  <label for="email">Email</label>
+  <input name="{{ form_builder.fields.email.name }}" value="{{ form_builder.fields.email.value }}" id="email" type="email">
+  {% if form_builder.errors.email %}
+    <p>{{ form_builder.errors.email }}</p>
+  {% endif %}
 
-  <div>
-    <label for="password">Password</label>
-    <div>
-      <input name="{{ form_builder.fields.password.name }}" id="password" type="password">
-      {% if form_builder.errors.password %}
-        <p>{{ form_builder.errors.password }}</p>
-      {% endif %}
-    </div>
-  </div>
+  <label for="password">Password</label>
+  <input name="{{ form_builder.fields.password.name }}" id="password" type="password">
+  {% if form_builder.errors.password %}
+    <p>{{ form_builder.errors.password }}</p>
+  {% endif %}
 
   <input value="{{ form_builder.fields.profiles.client.enabled.value }}" name="{{ form_builder.fields.profiles.client.enabled.name }}" type="hidden">
 
-  {% submit 'Create' %}
+  <button>Create</button>
 {% endform %}
 {% endraw %}
 ```
