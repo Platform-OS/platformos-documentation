@@ -38,25 +38,16 @@ configuration:
   password:
 ---
 {% form %}
-  <div>
-    <label for="email"><abbr title="required">*</abbr> Email</label>
-    <div>
-      <input name="{{ form_builder.fields.email.name }}" value="{{ form_builder.fields.email.value}}" id="email" type="email">
-    </div>
-  </div>
+  <label for="email">Email</label>
+  <input name="{{ form_builder.fields.email.name }}" value="{{ form_builder.fields.email.value }}" id="email" type="email">
 
-  <div>
-    <label for="password"><abbr title="required">*</abbr> Password</label>
-    <div>
-      <input name="{{ form_builder.fields.password.name }}" id="password" type="password">
-      {% if form_builder.errors.password %}
-        <p>{{ form_builder.errors.password }}</p>
-      {% endif %}
-    </div>
-  </div>
+  <label for="password">Password</label>
+  <input name="{{ form_builder.fields.password.name }}" id="password" type="password">
+  {% if form_builder.errors.password %}
+    <p>{{ form_builder.errors.password }}</p>
+  {% endif %}
 
-  {% submit 'Log In' %}
-}
+  <button>Log In</button>
 {% endform %}
 {% endraw %}
 ```

@@ -168,41 +168,28 @@ configuration:
 ```liquid
 {% raw %}
 {% form %}
-  <div>
-    <label for="name"><abbr title="required">*</abbr> Name</label>
-    <div>
-      <input name="{{ form_builder.fields.properties.name.name }}" value="{{ form_builder.fields.properties.name.value }}" id="name" type="text">
-      {% if form_builder.errors['properties.name'] %}
-        <p>{{ form_builder.errors['properties.name'] }}</p>
-      {% endif %}
-    </div>
-  </div>
+  <label for="name">Name</label>
+  <input name="{{ form_builder.fields.properties.name.name }}" value="{{ form_builder.fields.properties.name.value }}" id="name" type="text">
+  {% if form_builder.errors['properties.name'] %}
+    <p>{{ form_builder.errors['properties.name'] }}</p>
+  {% endif %}
 
-  <div>
-    <label for="email"><abbr title="required">*</abbr> Email</label>
-    <div>
-      <input name="{{ form_builder.fields.properties.email.name }}" value="{{ form_builder.fields.properties.email.value }}" id="email" type="email">
-      {% if form_builder.errors['properties.email'] %}
-        <p>{{ form_builder.errors['properties.email'] }}</p>
-      {% endif %}
-    </div>
-  </div>
+  <label for="email">Email</label>
+  <input name="{{ form_builder.fields.properties.email.name }}" value="{{ form_builder.fields.properties.email.value }}" id="email" type="email">
+  {% if form_builder.errors['properties.email'] %}
+    <p>{{ form_builder.errors['properties.email'] }}</p>
+  {% endif %}
 
-  <div>
-    <label for="description"><abbr title="required">*</abbr> Description</label>
-    <div>
-      <textarea name="{{ form_builder.fields.properties.description.name }}" id="description">{{ form_builder.fields.properties.description.value }}</textarea>
-      {% if form_builder.errors['properties.description'] %}
-        <p>{{ form_builder.errors['properties.description'] }}</p>
-      {% endif %}
-    </div>
-  </div>
+  <label for="description">Description</label>
+  <textarea name="{{ form_builder.fields.properties.description.name }}" id="description">{{ form_builder.fields.properties.description.value }}</textarea>
+  {% if form_builder.errors['properties.description'] %}
+    <p>{{ form_builder.errors['properties.description'] }}</p>
+  {% endif %}
 
-  {% submit 'Submit' %}
+  <button>Submit</button>
 {% endform %}
 {% endraw %}
 ```
-
 
 The `redirect_to` configuration option defines where to redirect the user after successful form submission. The predefined `form` tag allow you to create context for submitted data.
 
@@ -210,13 +197,11 @@ For more information of advanced form configuration please visit [Form Configura
 
 To display the form on previously created `contacts` page you have to include it with:
 
-
 ```liquid
 {% raw %}
 {% include_form 'contact_form', parent_resource_id: 'contact_request' %}
 {% endraw %}
 ```
-
 
 Similarly to the `cURL` request in step 2, you have to pass the Custom Model Type parameterized name as parent_resource_id, and point to the name of the form to include it properly in the page. As a result you should be able to create Customization objects, called Contact Request with simple form submission, and list them after fetching with GraphQL. You are not setting up headers and API keys with this approach, as those are included automagically with the `form` tag.
 
@@ -226,9 +211,9 @@ To send an email notification to the email that was sent with form submition, cr
 
 File should be located in the `notifications/email_notifications`, name it `contact_request_notification.liquid`:
 
-{% raw %}
 
 ```liquid
+{% raw %}
 ---
 name: contact_request_notification
 delay: 0
@@ -240,9 +225,8 @@ trigger_condition: true
 ---
 <h2>Hi {{ form.model.properties.name }}</h2>
 <p>Thank you for your request, we will contact you shortly!</p>
-```
-
 {% endraw %}
+```
 
 As you can see, all request parameters are now accessible in `form.model` object, so you can simply compose any email you want.
 
