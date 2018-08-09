@@ -13,7 +13,8 @@ module.exports = () => {
   return {
     entry: {
       app: "./src/app",
-      vendor: "./src/vendor"
+      vendor: "./src/vendor",
+      webfonts: "./src/webfonts"
     },
     output: {
       filename: "[name].js",
