@@ -1,14 +1,6 @@
 const API_ENDPOINT = "https://api.github.com/repos/mdyd-dev/nearme-documentation/commits";
 const params = `?path=marketplace_builder/views/pages/${window.location.pathname}.liquid`;
 
-const initialize = () => {
-  $.get(`${API_ENDPOINT}${params}`, data => {
-    if (data[0]) {
-      $("[data-contributors]").html(getHTML(data));
-    }
-  });
-};
-
 const getHTML = data => {
   return `
     <p class="mb-0 d-flex align-items-center">
@@ -47,4 +39,15 @@ const getContributor = ({ author, item }) => {
   </a>`;
 };
 
-export default initialize;
+
+const initialize = () => {
+  $.get(`${API_ENDPOINT}${params}`, data => {
+    if (data[0]) {
+      $("[data-contributors]").html(getHTML(data));
+    }
+  });
+};
+
+if ($("[data-contributors]").length > 0) {
+  initialize();
+}

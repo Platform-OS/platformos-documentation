@@ -1,7 +1,7 @@
 import "./app.scss";
 
-import widgetNav from "./js/widgetNav";
-import githubContributors from "./js/githubContributors";
+import 'expose-loader?$!jquery';
 
-widgetNav();
-githubContributors();
+import "./js/widgetNav";
+import "./js/githubContributors";
+import "./js/syntaxHighlighting";

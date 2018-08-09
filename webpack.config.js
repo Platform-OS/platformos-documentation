@@ -13,7 +13,6 @@ module.exports = () => {
   return {
     entry: {
       app: "./src/app",
-      vendor: "./src/vendor",
       webfonts: "./src/webfonts"
     },
     output: {
@@ -29,10 +28,6 @@ module.exports = () => {
       hash: false,
       assetsSort: "!size",
       children: false
-    },
-    externals: {
-      jquery: "window.jQuery",
-      $: "window.jQuery"
     },
     module: {
       rules: [

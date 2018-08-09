@@ -1,9 +1,6 @@
 const widgetNav = () => {
   $(".sidebar .sub-menu").each(function() {
-    $(this)
-      .parent()
-      .addClass("hasSubmenu")
-      .append('<i class="fas fa-chevron-right"></i>');
+    $(this).parent().addClass("hasSubmenu").append('<i class="fas fa-chevron-right"></i>');
   });
 
   $(".widget--nav li").on("click", "a:first", expandMenu);
@@ -18,22 +15,13 @@ const expandMenu = function(e) {
     e.preventDefault();
 
     if ($sub_menu.is(":visible")) {
-      $parent
-        .removeClass("expanded")
-        .children(".sub-menu")
-        .hide();
+      $parent.removeClass("expanded").children(".sub-menu").hide();
     } else {
-      $parent
-        .addClass("expanded")
-        .children(".sub-menu")
-        .show();
+      $parent.addClass("expanded").children(".sub-menu").show();
     }
 
-    $parent
-      .siblings()
-      .removeClass("expanded")
-      .children(".sub-menu")
-      .hide();
+    $parent.siblings().removeClass("expanded").children(".sub-menu").hide();
   }
 };
-export default widgetNav;
+
+widgetNav();
