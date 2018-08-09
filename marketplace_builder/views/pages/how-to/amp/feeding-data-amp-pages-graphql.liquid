@@ -35,12 +35,12 @@ slug: product-list
 layout_name: application
 ---
 ```
-```liquid
+```html
 {% raw %}
 {% content_for 'amp-dependencies' %}
-  <script custom-element="amp-list" src="https://cdn.ampproject.org/v0/amp-list-0.1.js" async=""></script>
-  <script custom-element="amp-bind" src="https://cdn.ampproject.org/v0/amp-bind-0.1.js" async=""></script>
-  <script custom-template="amp-mustache" src="https://cdn.ampproject.org/v0/amp-mustache-0.1.js" async=""></script>
+  <script custom-element="amp-list" src="https://cdn.ampproject.org/v0/amp-list-0.1.js" async></script>
+  <script custom-element="amp-bind" src="https://cdn.ampproject.org/v0/amp-bind-0.1.js" async></script>
+  <script custom-template="amp-mustache" src="https://cdn.ampproject.org/v0/amp-mustache-0.1.js" async></script>
 {% endcontent_for %}
 {% endraw %}
 [...]
@@ -48,7 +48,7 @@ layout_name: application
   <template type="amp-mustache">
     <a href="/product-details{{ "/{% raw" }} %}{% raw %}{{ slug }}{% endraw %}{{ "{% endraw" }} %}">
       <div>
-        <amp-img src="{{ "{% raw" }} %}{% raw %}{{ image }}{% endraw %}{{ "{% endraw" }} %}" width="300" layout="responsive" noloading=""></amp-img>
+        <amp-img src="{{ "{% raw" }} %}{% raw %}{{ image }}{% endraw %}{{ "{% endraw" }} %}" width="300" layout="responsive" noloading></amp-img>
         <h2>{{ "{% raw" }} %}{% raw %}{{ name }}{% endraw %}{{ "{% endraw" }} %}</h2>
         {{ "{% raw" }} %}{% raw %}{{ description }}{% endraw %}{{ "{% endraw" }} %}
       </div>
@@ -62,9 +62,7 @@ Include the AMP dependencies in the layout file `marketplace_builder/views/layou
 
 ```liquid
 {% raw %}
-[...]
 {% yield 'amp-dependencies' %}
-[...]
 {% endraw %}
 ```
 
@@ -78,13 +76,13 @@ Include the AMP dependencies in the layout file `marketplace_builder/views/layou
 Create the JSON endpoint, a dynamically generated JSON document from which AMP fetches the data that it displays `marketplace_builder/views/pages/api/products.json.liquid`:
 
 ```yaml
-{% raw %}
 ---
 slug: api/products
 format: json
 ---
 ```
 ```liquid
+{% raw %}
 {% query_graph 'get_listings', result_name: g %}
 {% assign results = g.listings.results %}
 
@@ -147,21 +145,21 @@ custom_attributes:
 ### Step 3: Display product details
 Create the `/product-details` page that loads when visitors click on a product from `/product-list` above `views/pages/product-details.liquid`:
 
-```yml
-{% raw %}
+```yaml
 ---
 slug: product-details
 layout_name: application
 ---
 ```
 ```liquid
+{% raw %}
 {% query_graph 'get_listings', result_name: g, slug: params.slug2 %}
-{% assign p = g.listings.results.first %}
+{% assign product = g.listings.results.first %}
 
-<h1>{{ p.name }}</h1>
-<amp-img src="{{ p.photos[0].url }}" layout="responsive"></amp-img>
-<p>${{ p.price }}</p>
-<p>{{ p.description }}</p>
+<h1>{{ product.name }}</h1>
+<amp-img src="{{ product.photos[0].url }}" layout="responsive"></amp-img>
+<p>${{ product.price }}</p>
+<p>{{ product.description }}</p>
 {% endraw %}
 ```
 

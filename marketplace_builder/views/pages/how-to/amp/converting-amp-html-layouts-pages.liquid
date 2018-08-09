@@ -30,7 +30,7 @@ From the HTML page, copy the content into a separate Liquid page, e.g. `views/pa
 
 * Tip: The `main` tag is usually a good indicator of where the content is starting and ending.
 * Add a slug to your page.
-* The page will use the default layout, so you don't have to specify it.
+* The page will use layout named `application` by default, so you don't have to specify it because it will be named `application`.
 * Add a title to your page to make it dynamic.
 
 ```yaml
@@ -62,21 +62,22 @@ Edit your layout `views/layouts/application.liquid`:
 
 {% include 'alert/note', content: 'Read more about <a href="https://www.ampproject.org/docs/fundamentals/spec" target="_blank">AMP HTML Specification</a>' %}
 
-```liquid
+```html
 {% raw %}
-<!doctype html amp>
-<head>
-  <meta charset="utf-8">
-  <title>The Recipe Blog</title>
-  <link rel="canonical" href="https://{{ context.location.host }}/{{ context.page.slug }}">
-  <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+<!doctype html>
+<html amp>
+  <head>
+    <meta charset="utf-8">
+    <title>The Recipe Blog</title>
+    <link rel="canonical" href="https://{{ context.location.host }}/{{ context.page.slug }}">
+    <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
 
-  <script async src="https://cdn.ampproject.org/v0.js"></script>
+    <script async src="https://cdn.ampproject.org/v0.js"></script>
 
-  <title>
-    {% yield 'meta_title' %}
-  </title>
-</head>
+    <title>
+      {% yield 'meta_title' %}
+    </title>
+  </head>
   <body>
     {{ content_for_layout }}
   </body>
