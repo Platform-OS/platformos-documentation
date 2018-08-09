@@ -42,7 +42,7 @@ const getContributors = data => {
 
 const getContributor = ({ author, item }) => {
   const authorName = item.commit.author.name;
-  return `<a href="${author.html_url}" target="_blank">
+  return `<a href="${author.html_url}" target="_blank" rel="noopener">
     <img src="${author.avatar_url}" width="20" height="20" alt="${authorName} (${author.login})" />
   </a>`;
 };
