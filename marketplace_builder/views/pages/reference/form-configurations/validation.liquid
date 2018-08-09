@@ -163,19 +163,21 @@ Allows to pass an empty string.
 
 ### Validation Errors
 
-When form validation is raised, error message is added to `form.errors` object that contains all attribute - error information.
-In your liquid view you can itterate over that object as in the example below:
-{% raw %}
-```liquid
-{% for error in form.errors %}
-  {{ error[0] }} {{ error[1] }}
-{% endfor %}
-```
-{% endraw %}
+When form validation is raised, error message is added to `form_builder.errors` object that contains errors corresponding to fields.
 
-Errors can be fetched through the form_object as well, this is very useful if you want to display errors next to the input field:
+If you need errors for particular field, access them through:
+
 ```liquid
-form_object.object.errors[field_name]
+{% raw %}
+{{ form_object.errors.<field_name> }}
+{% endraw %}
+```
+
+Example:
+```liquid
+{% raw %}
+{{ form_object.errors.name }}
+{% endraw %}
 ```
 
 ### Translation
