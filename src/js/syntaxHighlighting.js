@@ -24,6 +24,6 @@ const initialize = () => {
   });
 };
 
-if ($("code[class^=language]").length > 0) {
+if (document.querySelector("[class^=language]")) {
   initialize();
 }

@@ -1,3 +1,4 @@
+// TODO: Rewrite
 const widgetNav = () => {
   $(".sidebar .sub-menu").each(function() {
     $(this).parent().addClass("hasSubmenu").append('<i class="fas fa-chevron-right"></i>');
