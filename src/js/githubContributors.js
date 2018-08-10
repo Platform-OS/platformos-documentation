@@ -20,10 +20,12 @@ const getContributors = data => {
   const uniqueAuthors = [];
 
   return data
-    .filter(item => item && item.author && uniqueAuthors.indexOf(item.author.id) < 0)
+    .filter(item => item && item.author)
     .map(item => {
-      uniqueAuthors.push(item.author.id);
-      return getContributorHtml({ author: item.author, item: item });
+      if (uniqueAuthors.indexOf(item.author.id) < 0) {
+        uniqueAuthors.push(item.author.id);
+        return getContributorHtml({ author: item.author, item: item });
+      }
     }).join("");
 };
 
