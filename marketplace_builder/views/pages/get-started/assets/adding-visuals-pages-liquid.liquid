@@ -33,14 +33,15 @@ Put an image into the `marketplace_builder/assets/images` directory, e.g. logo.s
 Create a page with the format CSS in your `marketplace_builder/pages` directory. To define which format the endpoint will be available in (CSS in this case), place .<format> before the file extension, for example name your file `logo.css.liquid`:
 
 
-```html
-{% raw %}
+```yaml
 ---
 slug: logo
 ---
-
+```
+```css
+{% raw %}
 .logo {
-   background-image: url({{ 'images/logo.svg' | asset_url }});
+  background-image: url({{ 'images/logo.svg' | asset_url }});
 }
 {% endraw %}
 ```
@@ -52,11 +53,11 @@ Use the {% raw %}`{{ asset_url }}`{% endraw %} filter: it takes a string as an a
 
 ```html
 {% raw %}
-  <head>
-    <link rel="stylesheet" href="/logo.css">
-  </head>
+<head>
+  <link rel="stylesheet" href="/logo.css">
+</head>
 ...
-  <div class="logo"></div>
+<div class="logo"></div>
 {% endraw %}
 ```
 
