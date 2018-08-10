@@ -26,7 +26,8 @@ const getContributors = data => {
         uniqueAuthors.push(item.author.id);
         return getContributorHtml({ author: item.author, item: item });
       }
-    }).join("");
+    })
+    .join("");
 };
 
 const getHTML = data => {
@@ -40,15 +41,19 @@ const getHTML = data => {
   `;
 };
 
-const updateContributorsHtml = data => contributorsContainer.innerHTML = (getHTML(data));
+const updateContributorsHtml = data => {
+  if (data.length) {
+    contributorsContainer.innerHTML = getHTML(data);
+  }
+};
 
 const initialize = () => {
   fetch(`${API_ENDPOINT}${params}`, {
-    method: 'get'
+    method: "get"
   })
-  .then(response => response.json())
-  .then(updateContributorsHtml)
-  .catch(console.error);
+    .then(response => response.json())
+    .then(updateContributorsHtml)
+    .catch(console.error);
 };
 
 if (contributorsContainer) {
