@@ -131,16 +131,19 @@ document.write('attack');
 </script>
 ```
 
-To add liquid markup examples, wrap the whole block in the <code>{{ "{% raw "}}%}</code> tag:
+To add liquid markup examples, wrap the whole block in the `{{ "{% raw "}}%}` tag:
 
-<pre class="highlight">
-{{ "{% raw "}}%}
 <pre><code class="language-liquid">
+```liquid
+{{ "{% raw "}} %}
+{% raw %}
 {% if value != blank %}
-  Show my {{ "{{ value "}}}}
+  Show my {{ value }}
 {% endif %}
-</code></pre>
-{{ "{% endraw "}}%}</pre>
+{% endraw %}
+{{ "{% endraw "}}%}
+```
+</pre></code>
 
 ### Tables
 
