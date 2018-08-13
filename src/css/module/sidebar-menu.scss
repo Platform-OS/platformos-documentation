@@ -1,0 +1,86 @@
+.sidebar-menu {
+  padding-left: 0;
+  font-weight: 500;
+}
+
+.sidebar-menu li a {
+  padding: .35rem 0;
+}
+
+.sidebar-menu > li > a {
+  padding: 1.2rem 0;
+}
+
+.collapse {
+  list-style-type: disc;
+  margin-left: .5rem;
+}
+
+.sidebar-menu > li {
+  border-bottom: 1px solid rgb(225, 225, 225);
+  > a {
+    position: relative;
+  }
+
+  > a:after {
+    @extend .fa;
+    content: "\f054";
+
+    position: absolute;
+    right: 0;
+    transform: translateY(50%);
+    font-size: .75rem;
+  }
+
+  &.active > a:after {
+    content: "\f078";
+  }
+}
+
+.sidebar-menu li a {
+  text-decoration: none;
+  display: block;
+  transition: color .2s;
+  color: $black;
+  &:hover {
+    color: $green;
+  }
+}
+
+.sidebar-menu .active.last-level-nested a {
+  color: $green;
+  text-decoration: underline;
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.sidebar-menu .has-submenu .has-submenu .sub-menu {
+  position: relative;
+  list-style-type: none;
+  li a {
+    color: #6f6f6f;
+  }
+  li.active a {
+    color: $green;
+  }
+}
+
+.sidebar-menu .has-submenu .has-submenu .sub-menu:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 12px;
+  width: 1px;
+  background: #e1e1e1;
+  height: calc(100% - 25px);
+}
+
+/* Speed up some transitions */
+.metismenu .collapsing {
+  transition-duration: .2s;
+}
+
+.metismenu .has-arrow::after {
+  transition: all .2s ease-out;
+}

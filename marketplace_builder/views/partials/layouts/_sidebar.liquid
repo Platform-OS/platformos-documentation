@@ -1,20 +1,17 @@
 <ul class="widgets mb-4 mb-md-0">
-  <li class="widget widget--search">
-    <form action="/search" class="search-form" method="get" role="search">
-      <label>
-        <span class="screen-reader-text hidden">Search for:</span>
-        <input type="search" title="Search for:" name="query" value="{{ params.query }}" placeholder="Search …" class="search__field">
-      </label>
-      <button type="submit" value="Search" class="search__btn screen-reader-text">
-        <i class="fas fa-search"></i>
-      </button>
-    </form>
-  </li>
+  <form action="/search" class="search-form" method="get" role="search">
+    <label>
+      <span class="screen-reader-text hidden">Search for:</span>
+      <input type="search" title="Search for:" name="query" value="{{ params.query }}" placeholder="Search …" class="search__field">
+    </label>
+    <button type="submit" value="Search" class="search__btn screen-reader-text">
+      <i class="fa fa-search"></i>
+    </button>
+  </form>
+</ul>
 
-  <li class="widget widget--nav">
-    <ul>
-      {% include 'shared/nav-links' %}
-      {% include 'shared/navigation', links: navLinks %}
-    </ul>
-  </li>
+
+{% include 'shared/nav-links' %}
+<ul class="metismenu sidebar-menu">
+  {% include 'shared/navigation', links: navLinks %}
 </ul>
