@@ -48,7 +48,7 @@ Load required javascript file that contains code responsible for making the AJAX
 
 Create form, and set up all required data in hidden inputs (those will be read by JavaScript later):
 
-```liquid
+```html
 {% raw %}
 {% form html-data-s3-direct-upload: 'form' %}
   {% for input in image_s3_upload.form_data %}
@@ -87,7 +87,6 @@ const $presignFields = qa('[data-s3-direct-upload-field="presign"]');
 
 const getXMLText = (data, key) => $(data).find(key).text() || '';
 const getFileName = () => $form.find('[name="file"]').val().split("/").pop().split("\\").pop();
-
 
 const updateFileUrl = data => {
   // save url where file landed to the database by sending it instead of the file

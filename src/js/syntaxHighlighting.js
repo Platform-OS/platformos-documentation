@@ -24,6 +24,6 @@ const initialize = () => {
   });
 };
 
-if (document.querySelector("[class^=language]")) {
+if (document.querySelector("[class*=language-]")) {
   initialize();
 }
