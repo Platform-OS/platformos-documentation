@@ -1,13 +1,13 @@
 ---
 converter: markdown
 metadata:
-  title: Uploading Files Directly to Amazon S3 and using uploaded file as an avatar
-  description: This guide will help you use the Amazon S3 direct upload from the browser using AJAX and using uploaded file as an user avatar
-slug: how-to/user-uploads/uploading-files-directly-amazons3-and-updating-profile
+  title: Uploading Files Directly to Amazon S3 with User Profile Update
+  description: This guide will help you use the Amazon S3 direct upload from the browser using AJAX and then use the uploaded file as a user avatar. 
+slug: how-to/user-uploads/uploading-files-directly-amazons3-user-profile-update
 searchable: true
 ---
 
-This guide is combining simple html form that is used to update user profile with direct AWS S3 upload to update user profile and at the same time use AJAX uploaded image in submitted form.
+This guide will help you upload a file to Amazon S3, and use it as a user avatar. It combines a simple HTML for updating a user profile with direct AWS S3 upload to update the user profile and at the same time use the image uploaded with AJAX in the submitted form. 
 
 ## Requirements
 This is an advanced tutorial. To follow it, you should be familiar with basic Platform OS concepts, HTML, Liquid, APIs and Form Configurations, and the topics in the Get Started section.
@@ -24,7 +24,7 @@ Uploading content directly to Amazon S3 with profile update is a three-step proc
 2. Submit file using AJAX
 3. Submit form using AWS S3 image url as a value in image field
 
-### Prepare HTML form with fields including required metadata
+### Step 1: Prepare HTML form with fields including required metadata
 
 #### marketplace_builder/form_configurations/developer/update_profile.liquid
 
@@ -38,7 +38,7 @@ Create variables for quicker access later on:
 {% endraw %}
 ```
 
-Load required javascript file that contains code responsible for making the AJAX request:
+Load required JavaScript file that contains code for making the AJAX request:
 
 ```html
 {% raw %}
@@ -71,7 +71,7 @@ Create form, and set up all required data in hidden inputs (those will be read b
 {% endraw %}
 ```
 
-### Submit file using AJAX
+### Step 2: Submit file using AJAX
 
 `UpdateProfileWithDirectUpload.js` file contains all necessary JavaScript needed to handle file sending, error, and preview display.
 
@@ -128,19 +128,19 @@ const onFileChange = () => {
 $form.find('[name="file"]').on("change", onFileChange);
 ```
 
-### Submit form using AWS S3 image url as a value in image field
+### Step 3: Submit form using AWS S3 image URL as a value in image field
 
-Form should be ready to accept new field values - text for `Bio` and text (url) for image.
+The form should be ready to accept new field values — text for `Bio` and text (URL) for the image.
 
 {% include 'alert/note', content: 'In our case we are using Platform OS S3 bucket as a hosting for the image, but keep in mind that if you have your own hosting solution for files you can just as well send the image there and use that url to save in the database.' %}
 
 To test the form:
 
-* change text inside the field labeled "My bio"
-* upload different image - observe your browsers developer tools to know when upload is done or implement notification
-* submit form using submit button
+* Change text inside the field labeled "My bio".
+* Upload different image, and observe your browser's developer tools to know when the upload is done or implement a notification. 
+* Submit form using the `Submit` button. 
 
-After page reload both fields should have values saved. Image value should have URL.
+After page reload both fields should have values saved. Image value should have a URL.
 
 {% include 'alert/note', content: 'Code above is stripped from non-essential parts. Source code and live example are more complete with error handling, image previews, and more.' %}
 
