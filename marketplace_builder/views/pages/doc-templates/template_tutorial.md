@@ -32,6 +32,12 @@ This guide will help you [describe what the user will achieve by the end of the 
 
 ### Step 3: [VERB the/a(n)/your NOUN]
 
+## Live example and source code
+[optional: link to live site or source code on GitHub]
+
+## Additional resources
+[optional: bulleted list to additional external resources]
+
 ## Next steps
 
 Congratulations! You have [what the user has achieved].
