@@ -52,19 +52,19 @@ The Marketplace Kit is a tool that helps you develop and deploy your application
 
 Start your command-line tool (e.g. Terminal on a Mac, or Git Bash on Windows), and enter:
 
-```shell
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
 npm i -g @platform-os/marketplace-kit
-```
+</code></pre>
 
 If your node is installed for all users you might need to use `sudo` to install npm packages globally:
 
-```shell
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
 sudo npm i -g @platform-os/marketplace-kit
-```
+</code></pre>
 
 You can follow the installation process in your command-line (something similar to this will be displayed during installation):
 
-```shell
+<pre class="command-line" data-output="2-30" data-user="user" data-host="host"><code class="language-bash">
 /usr/local/bin/marketplace-kit -> /usr/local/lib/node_modules/@platform-os/marketplace-kit/marketplace-kit
 /usr/local/bin/marketplace-kit-env -> /usr/local/lib/node_modules/@platform-os/marketplace-kit/marketplace-kit-env
 /usr/local/bin/marketplace-kit-archive -> /usr/local/lib/node_modules/@platform-os/marketplace-kit/marketplace-kit-archive
@@ -76,13 +76,13 @@ You can follow the installation process in your command-line (something similar 
 /usr/local/bin/marketplace-kit-watch -> /usr/local/lib/node_modules/@platform-os/marketplace-kit/marketplace-kit-watch
 + @platform-os/marketplace-kit@1.0.5
 added 88 packages in 6.719s
-```
+</code></pre>
 
 Use the following command to test the Marketplace Kit:
 
-```shell
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
 marketplace-kit -V
-```
+</code></pre>
 
 If the Marketplace Kit has been installed correctly, running this command displays the version of your Marketplace Kit. If the Marketplace Kit hasn't been installed, running this command gives a `command not found` error.
 
@@ -92,9 +92,9 @@ In order to correctly communicate with the Platform OS engine and API, your code
 
 You can create the required directory structure using the marketplace-kit.
 
-```shell
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
 marketplace-kit init
-```
+</code></pre>
 
 {% include 'alert/note', content: 'Make sure you invoke this command where you have permissions to create a directory.' %}
 
@@ -112,7 +112,6 @@ slug: /
 ---
 ```
 
-
 Save your changes.
 
 Now, you have to authenticate your environment to be able to deploy your changes.
@@ -121,24 +120,22 @@ Now, you have to authenticate your environment to be able to deploy your changes
 
 To add your environment to the `.marketplace-kit` config file, run the `env add` command, and authenticate with your credentials:
 
-```shell
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
 marketplace-kit env add <environment> --email <your email> --url <your marketplace url>
-```
-
+</code></pre>
 
 To deploy all changes, run the `deploy` command:
 
-```shell
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
 marketplace-kit deploy <environment>
-```
+</code></pre>
 
 
 For example:
 
-```shell
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
 marketplace-kit deploy staging
-```
-
+</code></pre>
 
 Now, refresh your Instance in you browser, and you can see the change you made.
 
