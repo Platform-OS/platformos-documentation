@@ -1,0 +1,73 @@
+---
+converter: markdown
+metadata:
+  title: Integrating SendGrid Using API Call Notifications 
+  description: This guide will help you create a SendGrid integration for Platform OS using API call notifications. 
+slug: how-to/integrations/integrating-sendgrid-api-call-notifications
+searchable: true
+---
+
+This guide will help you create a SendGrid integration for Platform OS using API call notifications. 
+
+When a user fills out a form on your Platform OS site, you need to have that user added to the correct SendGrid Segment so you can provide them with the correct marketing campaign. This guide explains how to create an API call notification for each form on your site, that sends the user’s info to SendGrid and creates a custom (field) attribute in SendGrid to allow the user to be added to the correct segment.
+
+## Requirements
+To follow this tutorial, you should be familiar with creating API call notifications. You also have to have access to SendGrid, and be familiar with the SendGrid API and creating segments in SendGrid.    
+
+* [Creating an API Call Notification](/get-started/notifications/creating-api-call-notification)
+* [SendGrid API Reference, Contacts API - Recipients: POST](https://sendgrid.api-docs.io/v3.0/contacts-api-recipients/add-recipients) 
+* [Segments in SendGrid](https://sendgrid.com/docs/Glossary/segments.html) 
+
+## Steps
+
+Integrating SendGrid using API call notifications is a three-step process:
+
+1. Create API call notification
+2. Add API call notification to form
+3. Create segments in SendGrid
+
+### Step 1: Create API call notification  
+
+Create an API call notification:
+
+* Replace `<<YOUR_API_KEY>>` with your SendGrid API key. 
+* Add the payload based on the attributes in your form. 
+* Create a custom (field) attribute in SendGrid called `contact_via`. Each form on your site provides a unique response that is recorded here. 
+
+```yaml
+---
+name: sendgrid_new_user_homepage
+delay: '0'
+enabled: true
+format: http
+headers: '{ "Content-Type": "application/json", "Authorization": "Bearer <<YOUR_API_KEY>> }'
+request_type: POST
+to: https://api.sendgrid.com/v3/contactdb/recipients
+trigger_condition: true
+---
+[
+  {
+    "email": "{{ form.properties.email }}",
+    "first_name": "{{ form.properties.first_name }}",
+    "last_name": "{{ form.properties.last_name }}",
+    "contact_via": "Home Page Contact Form"
+  }
+]
+```
+
+
+### Step 2: Add API call notification to forms
+
+Add the following to the front matter on your form:
+
+```yaml
+api_call_notifications:
+- sendgrid_new_user_homepage
+```
+
+### Step 3: Create segments in SendGrid
+Create [segments in SendGrid](https://sendgrid.com/docs/Glossary/segments.html) and filter using the `contact_via` attribute.  
+
+{% include 'shared/questions_section' %}
+
+
