@@ -11,7 +11,7 @@ const getLastUpdateTime = data => {
 
 const getContributorHtml = ({ author, item }) => {
   const authorName = item.commit.author.name;
-  return `<a href="${author.html_url}" target="_blank" rel="noopener">
+  return `<a href="${author.html_url}" target="_blank" >
     <img src="${author.avatar_url}&s=20" width="20" height="20" alt="${authorName} (${author.login})" />
   </a>`;
 };
