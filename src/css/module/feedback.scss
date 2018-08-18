@@ -1,0 +1,54 @@
+.feedback-form {
+  border: 1px solid $blue-ll;
+
+  textarea, input {
+    width: 100%;
+    border: 1px solid $grey-l;
+    padding: 10px;
+  }
+  textarea { height: 100px; } 
+  label { width: 100% }
+  input[type="submit"] {
+    background-color: $blue;
+    color: $blue-l;
+    margin-top: 32px;
+  }
+
+  a { text-decoration: none; }
+
+  .feedback-main {
+    background-color: $blue-l;
+    padding: 30px;
+    color: $blue;
+    svg {
+        width: 60px;
+        height: 60px;
+        margin-right: 10px;
+
+        &.github {
+          width: 30px;
+          height: 30px;
+        }
+    }
+    svg { 
+      circle, path {
+        fill: $blue;
+      }
+      &.feedback-smile:hover, &.feedback-smile.feedback-selected {
+        circle, path {
+          fill: $mint;
+      }}
+
+      &.feedback-wired:hover, &.feedback-wired.feedback-selected {
+        circle, path {
+          fill: black;
+      }}
+
+      &.feedback-sad:hover, &.feedback-sad.feedback-selected {
+        circle, path {
+          fill: $red;
+      }}
+    }
+  }
+}
+

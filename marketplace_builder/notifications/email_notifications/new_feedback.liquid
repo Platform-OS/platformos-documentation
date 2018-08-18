@@ -1,0 +1,28 @@
+---
+name: new_feedback
+to: 'support@platform-os.com'
+from: noreply@near-me.com
+subject: 'Documentation - New Feedback'
+trigger_condition: 'true'
+---
+
+<h2>Hello Team!</h2>
+
+<p>New feedback from Documentation site</p>
+<table>
+  <tr>
+    <td>Rate: </td>
+    {% assign rate = form.model.customization.properties.rate %}
+    <td><b>
+      {% if rate == 5 %}Positive{% else rate == 3 %}Neutral{% else %}Neagtive{% endif %}
+    </b></td>
+  </tr>
+  <tr>
+    <td>Email: </td>
+    <td><b>{{ form.model.customization.properties.email }}</b></td>
+  </tr>
+  <tr>
+    <td>Message: </td>
+    <td><b>{{ form.model.customization.properties.message }}</b></td>
+  </tr>
+</table>

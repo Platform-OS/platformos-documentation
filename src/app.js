@@ -9,5 +9,6 @@ import "./js/viewportClasses";
 import "./js/deepLinks";
 import "./js/scrollToContent";
 import "./js/githubContributors";
+import "./js/feedback";
 
 Turbolinks.start();
