@@ -1,9 +1,5 @@
 import MetisMenu from 'metismenu';
 
-(() => {
-  const initialize = () => {
-    new MetisMenu('.sidebar-menu');
-  }
-
-  initialize();
-})();
+document.addEventListener("turbolinks:load", () => {
+  new MetisMenu('.sidebar-menu');
+});

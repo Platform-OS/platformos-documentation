@@ -1,7 +1,11 @@
 const initialize = () => {
   const liquidKeywords = /\b(?:comment|endcomment|if|elsif|else|endif|unless|endunless|for|endfor|case|endcase|when|in|break|assign|continue|limit|offset|range|reversed|raw|endraw|capture|endcapture|tablerow|endtablerow|include|form|endform|render_form|query_graph|execute_query|content_for|endcontent_for|yield|input|include_form|endinclude_form)\b/;
 
-  import(/* webpackChunkName: "prism" */ "prismjs");
+  import(/* webpackChunkName: "prism" */ "prismjs").then(() => {
+    document.addEventListener("turbolinks:load", () => {
+      Prism.highlightAll();
+    });
+  });
   import(/* webpackChunkName: "prism" */ "prismjs/plugins/line-numbers/prism-line-numbers");
   import(/* webpackChunkName: "prism" */ "prismjs/plugins/normalize-whitespace/prism-normalize-whitespace");
   import(/* webpackChunkName: "prism" */ "prismjs/plugins/command-line/prism-command-line");
@@ -22,8 +26,8 @@ const initialize = () => {
       // Prism.languages.liquid.keyword = liquidKeywords;
     });
   });
-};
+}
 
-if (document.querySelector("[class*=language-]")) {
+if (document.querySelector('[class*="language-"]')) {
   initialize();
 }

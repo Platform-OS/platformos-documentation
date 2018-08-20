@@ -56,6 +56,8 @@ const initialize = () => {
     .catch(console.error);
 };
 
-if (contributorsContainer) {
-  initialize();
-}
+document.addEventListener("turbolinks:load", () => {
+  if (contributorsContainer) {
+    initialize();
+  }
+});
