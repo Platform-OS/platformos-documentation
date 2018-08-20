@@ -11,6 +11,22 @@ A **User** is an account that any of your users can have. Each user is assumed t
 
 **User Profiles** are roles in the marketplace. Each User Profile can be associated with any number of Custom Attributes, Categories, and Custom Model Types.
 
+## Sharing attributes across multiple profiles
+
+If your multiple profiles happen to have the same custom attributes in them you can extract them to a container profile which will group them and could be used in different profiles.
+
+### Example
+
+Company has a lot of employees, but all of them have name, email, emergency contact, so it would be a good idea to make a default profile for employee and then use more specific ones for specific roles in the company.
+
+```yaml
+Employee: name, email, emergency_contact
+  - Software Developer: programming_languages
+  - Project Manager: projects
+```
+
+{% include 'alert/note', content: 'Read more about [sharing attributes across multiple profiles](/get-started/users/sharing-attributes-across-multiple-profiles).' %}
+
 ## The default User Profile
 
 All users are assigned a User Profile named Default. If you don't want to distinguish one type of user from the other, you don't need to create any other user profiles.
@@ -21,7 +37,7 @@ All users are assigned a User Profile named Default. If you don't want to distin
 
 All forms should be located in the `marketplace_builder/form_configurations` directory.
 
-{% include 'alert/note', content: 'Check out our <a href="">API and Form Configurations</a> pages to learn more about sign up forms.' %}
+{% include 'alert/note', content: 'Check out our [Creating a Sign Up Form](/get-started/users/creating-sign-up-form) pages to learn more about sign up forms.' %}
 
 ## User authentication
 

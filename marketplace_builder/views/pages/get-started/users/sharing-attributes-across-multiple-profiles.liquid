@@ -1,0 +1,111 @@
+---
+converter: markdown
+metadata:
+  title: Sharing attributes across multiple profiles
+  description: If your multiple profiles happen to have the same custom attributes in them you can extract them to a container profile which will group them and could be used in different profiles.
+slug: get-started/users/sharing-attributes-across-multiple-profiles
+searchable: true
+---
+
+If your multiple profiles happen to have the same custom attributes in them you can extract them to a container profile which will group them and could be used in different profiles.
+
+* [Users](get-started/users/users)
+
+#### marketplace_builder/user_profile_types/employee.yml
+```yaml
+name: employee
+custom_attributes:
+  - name: name
+    attribute_type: string
+  - name: email
+    attribute_type: string
+  - name: emergency_contact
+    attribute_type: string
+```
+
+Having setup our general employee template you can define other profiles that will have fields from `employee` profile and some more.
+
+#### marketplace_builder/user_profile_types/software_developer.yml
+```yaml
+name: software_developer
+custom_attributes:
+  - name: programming_languages
+    attribute_type: array
+```
+
+#### marketplace_builder/user_profile_types/project_manager.yml
+```yaml
+name: project_manager
+custom_attributes:
+  - name: projects_managed
+    attribute_type: array
+```
+
+Currently your form configuration require to have `enabled` field set up to true for profile to work.
+
+### Software developer example
+
+#### marketplace_builder/form_configurations/software_developer_signup.liquid
+```yaml
+---
+name: software_developer_signup
+return_to: /software-developer/sign-in
+resource: User
+configuration:
+  profiles:
+    employee:
+      validation: { presence: true }
+      enabled:
+        property_options:
+          default: true
+          readonly: true
+      properties:
+        name: { validation: { presence: true } }
+        email: { validation: { presence: true } }
+        emergency_contact: { validation: { presence: true } }
+    software_developer:
+      validation: { presence: true }
+      enabled:
+        property_options:
+          default: true
+          readonly: true
+      properties:
+        programming_languages:  { validation: { presence: true } }
+---
+[...]
+```
+
+### Project Manager example
+
+#### marketplace_builder/form_configurations/project_manager_signup.liquid
+```yaml
+---
+name: project_manager_signup
+return_to: /project-manager/sign-in
+resource: User
+configuration:
+  profiles:
+    employee:
+      validation: { presence: true }
+      enabled:
+        property_options:
+          default: true
+          readonly: true
+      properties:
+        name: { validation: { presence: true } }
+        email: { validation: { presence: true } }
+        emergency_contact: { validation: { presence: true } }
+    project_manager:
+      validation: { presence: true }
+      enabled:
+        property_options:
+          default: true
+          readonly: true
+      properties:
+        projects:  { validation: { presence: true } }
+---
+[...]
+```
+
+
+{% include 'alert/note', content: 'To discover names that fields should have explore `form_builder` variable by printing it on your page.' %}
