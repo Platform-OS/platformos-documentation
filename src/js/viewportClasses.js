@@ -11,5 +11,9 @@ document.addEventListener("turbolinks:load", () => {
     .filter(breakpointWidth => window.innerWidth > Number(breakpointWidth))
     .pop();
 
-  document.body.dataset.viewportSize = breakpointsSizes[breakpoint];
+  const currentBreakpoint = breakpointsSizes[breakpoint];
+
+  if (document.body.dataset.viewportSize != currentBreakpoint) {
+    document.body.dataset.viewportSize = currentBreakpoint;
+  }
 });
