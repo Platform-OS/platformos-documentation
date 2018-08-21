@@ -30,13 +30,13 @@ An alternative name given to the result of a field to avoid conflicts during dat
 {
   admin: users(role: admin) {
     id
-    firstname
-    lastname
+    first_name
+    last_name
   }
   managers: users(role: manager) {
     id
-    firstname
-    lastname
+    first_name
+    last_name
   }
 }
 ```
@@ -48,9 +48,8 @@ An alternative name given to the result of a field to avoid conflicts during dat
 A declaration prefixed with an `@` character that encapsulates programming logic for query execution on the client or server. There are built-in directives such as `@skip` or `@include`. Directives can be used for features such as authentication, incremental data loading, etc. 
 
 ```graphql
-type User @auth {
-  name: String!
-  banned: Boolean @auth!
+query myAwesomeQuery($isAwesome: Boolean) {
+  awesomeField @skip(if: $isAwesome)
 }
 ```
 
@@ -180,22 +179,6 @@ type Query {
   author(id: Int!): Author
 }
 ```
-
-## Subscription
-A real-time GraphQL operation. A Subscription is defined in a schema like queries and mutations.
-
-```graphql
-type Subscription {
-  commentAdded(repoFullName: String!): Comment
-}
-...
-subscription onCommentAdded($repoFullName: String!){
-  commentAdded(repoFullName: $repoFullName){
-    id
-    content
-  }
-}
-``` 
 
 ## Scalar Type
 A type that qualifies the data a GraphQL field resolves. GraphQL ships with some scalar types out of the box; **Int**, **Float**, **String**, **Boolean** and **ID**. However, a custom scalar type such as **Date** can be specified in a GraphQL service implementation.
