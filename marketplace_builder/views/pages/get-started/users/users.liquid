@@ -15,13 +15,29 @@ A **User** is an account that any of your users can have. Each user is assumed t
 
 All users are assigned a User Profile named Default. If you don't want to distinguish one type of user from the other, you don't need to create any other user profiles.
 
+## Sharing attributes across multiple profiles
+
+If your multiple profiles happen to have the same custom attributes, you can extract them to a container profile which will group them and could be used in different profiles.
+
+### Example
+
+A company has a lot of employees, but all of them have the same attributes like name, email, emergency contact, so it would be a good idea to make a default profile for employee, and then use more specific ones for specific roles in the company.
+
+```yaml
+Employee: name, email, emergency_contact
+  - Software Developer: programming_languages
+  - Project Manager: projects
+```
+
+{% include 'alert/note', content: 'Read more about [sharing attributes across multiple profiles](/get-started/users/sharing-attributes-across-multiple-profiles).' %}
+
 ## Sign up forms
 
 **Sign up forms** allow users to sign up by entering their information in a form embedded in a page.
 
 All forms should be located in the `marketplace_builder/form_configurations` directory.
 
-{% include 'alert/note', content: 'Check out our <a href="">API and Form Configurations</a> pages to learn more about sign up forms.' %}
+{% include 'alert/note', content: 'Check out our [Creating a Sign Up Form](/get-started/users/creating-sign-up-form) pages to learn more about sign up forms.' %}
 
 ## User authentication
 
@@ -37,3 +53,4 @@ There are a couple of ways to authenticate a user in Platform OS,  the most comm
 * [Logging Out an Authenticated User](/get-started/users/logging-out-authenticated-user)
 * [Resetting Password of an Authenticated User](/get-started/users/resetting-password-authenticated-user)
 * [Accessing Authenticated User Data](/get-started/users/accessing-authenticated-user-data)
+* [Sharing Attributes Across Multiple Profiles](/get-started/users/sharing-attributes-across-multiple-profiles)
