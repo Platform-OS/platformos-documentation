@@ -1,17 +1,33 @@
 ---
 converter: markdown
 metadata:
-  title: Sharing attributes across multiple profiles
-  description: If your multiple profiles happen to have the same custom attributes in them you can extract them to a container profile which will group them and could be used in different profiles.
+  title: Sharing Attributes Across Multiple Profiles
+  description: This guide will help you share Custom Attributes across multiple user profiles, if the profiles have the same attributes. 
 slug: get-started/users/sharing-attributes-across-multiple-profiles
 searchable: true
 ---
 
-If your multiple profiles happen to have the same custom attributes in them you can extract them to a container profile which will group them and could be used in different profiles.
+This guide will help you share attributes across multiple user profiles. 
+If your profiles happen to have the same Custom Attributes, you can extract them to a container profile which will group them and could be used in different profiles.
+
+## Requirements
+To follow the steps in this tutorial, you should be familiar with users and user profiles. This guide builds on previous tutorials in the **Get Started: Users** section. 
 
 * [Users](get-started/users/users)
 
-#### marketplace_builder/user_profile_types/employee.yml
+## Steps
+
+Sharing attributes across multiple user profiles is a three-step process:
+
+1. Create profile template
+2. Create profiles 
+3. Use profiles 
+
+
+### Step 1: Create profile template
+Create a general employee template. You can define other profiles that will have fields from the `employee` profile and some more.
+
+#### `marketplace_builder/user_profile_types/employee.yml`
 ```yaml
 name: employee
 custom_attributes:
@@ -23,9 +39,9 @@ custom_attributes:
     attribute_type: string
 ```
 
-Having setup our general employee template you can define other profiles that will have fields from `employee` profile and some more.
+### Step 2: Create profiles
 
-#### marketplace_builder/user_profile_types/software_developer.yml
+#### `marketplace_builder/user_profile_types/software_developer.yml`
 ```yaml
 name: software_developer
 custom_attributes:
@@ -33,7 +49,7 @@ custom_attributes:
     attribute_type: array
 ```
 
-#### marketplace_builder/user_profile_types/project_manager.yml
+#### `marketplace_builder/user_profile_types/project_manager.yml`
 ```yaml
 name: project_manager
 custom_attributes:
@@ -41,11 +57,14 @@ custom_attributes:
     attribute_type: array
 ```
 
-Currently your form configuration require to have `enabled` field set up to true for profile to work.
 
-### Software developer example
+### Step 3: Use profiles 
 
-#### marketplace_builder/form_configurations/software_developer_signup.liquid
+Currently, your Form Configuration has to have the `enabled` field set to true for the profile to work.
+
+An example of using the software developer profile on a sign-up form: 
+
+#### `marketplace_builder/form_configurations/software_developer_signup.liquid`
 ```yaml
 ---
 name: software_developer_signup
@@ -75,9 +94,9 @@ configuration:
 [...]
 ```
 
-### Project Manager example
+An example of using the project manager profile on a sign-up form: 
 
-#### marketplace_builder/form_configurations/project_manager_signup.liquid
+#### `marketplace_builder/form_configurations/project_manager_signup.liquid`
 ```yaml
 ---
 name: project_manager_signup
@@ -107,5 +126,11 @@ configuration:
 [...]
 ```
 
+{% include 'alert/note', content: 'To discover names that fields should have, explore the `form_builder` variable by printing it on your page.' %} 
 
-{% include 'alert/note', content: 'To discover names that fields should have explore `form_builder` variable by printing it on your page.' %}
+## Next steps
+Congratulations! You know how to share attributes across user profiles. You can learn more about Form Configurations here:
+
+* [Reference: Form Configurations](/reference/form-configurations/form-configurations)
+
+{% include 'shared/questions_section' %}
