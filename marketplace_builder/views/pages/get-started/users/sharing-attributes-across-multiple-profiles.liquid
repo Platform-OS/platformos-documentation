@@ -2,16 +2,16 @@
 converter: markdown
 metadata:
   title: Sharing Attributes Across Multiple Profiles
-  description: This guide will help you share Custom Attributes across multiple user profiles, if the profiles have the same attributes. 
+  description: This guide will help you share Custom Attributes across multiple user profiles, if the profiles have the same attributes.
 slug: get-started/users/sharing-attributes-across-multiple-profiles
 searchable: true
 ---
 
-This guide will help you share attributes across multiple user profiles. 
+This guide will help you share attributes across multiple user profiles.
 If your profiles happen to have the same Custom Attributes, you can extract them to a container profile which will group them and could be used in different profiles.
 
 ## Requirements
-To follow the steps in this tutorial, you should be familiar with users and user profiles. This guide builds on previous tutorials in the **Get Started: Users** section. 
+To follow the steps in this tutorial, you should be familiar with users and user profiles. This guide builds on previous tutorials in the **Get Started: Users** section.
 
 * [Users](get-started/users/users)
 
@@ -20,8 +20,8 @@ To follow the steps in this tutorial, you should be familiar with users and user
 Sharing attributes across multiple user profiles is a three-step process:
 
 1. Create profile template
-2. Create profiles 
-3. Use profiles 
+2. Create profiles
+3. Use profiles
 
 
 ### Step 1: Create profile template
@@ -58,11 +58,9 @@ custom_attributes:
 ```
 
 
-### Step 3: Use profiles 
+### Step 3: Use profiles
 
-Currently, your Form Configuration has to have the `enabled` field set to true for the profile to work.
-
-An example of using the software developer profile on a sign-up form: 
+An example of using the software developer profile on a sign-up form:
 
 #### `marketplace_builder/form_configurations/software_developer_signup.liquid`
 ```yaml
@@ -72,29 +70,24 @@ return_to: /software-developer/sign-in
 resource: User
 configuration:
   profiles:
+    validation: { presence: true }
     employee:
       validation: { presence: true }
-      enabled:
-        property_options:
-          default: true
-          readonly: true
       properties:
+        validation: { presence: true }
         name: { validation: { presence: true } }
         email: { validation: { presence: true } }
         emergency_contact: { validation: { presence: true } }
     software_developer:
       validation: { presence: true }
-      enabled:
-        property_options:
-          default: true
-          readonly: true
       properties:
+        validation: { presence: true }
         programming_languages:  { validation: { presence: true } }
 ---
 [...]
 ```
 
-An example of using the project manager profile on a sign-up form: 
+An example of using the project manager profile on a sign-up form:
 
 #### `marketplace_builder/form_configurations/project_manager_signup.liquid`
 ```yaml
@@ -104,29 +97,25 @@ return_to: /project-manager/sign-in
 resource: User
 configuration:
   profiles:
+    validation: { presence: true }
     employee:
       validation: { presence: true }
-      enabled:
-        property_options:
-          default: true
-          readonly: true
       properties:
+        validation: { presence: true }
         name: { validation: { presence: true } }
         email: { validation: { presence: true } }
         emergency_contact: { validation: { presence: true } }
     project_manager:
       validation: { presence: true }
-      enabled:
-        property_options:
-          default: true
-          readonly: true
       properties:
+        validation: { presence: true }
         projects:  { validation: { presence: true } }
 ---
 [...]
 ```
 
-{% include 'alert/note', content: 'To discover names that fields should have, explore the `form_builder` variable by printing it on your page.' %} 
+{% include 'alert/note', content: 'If you would like to create a profile on sign up without assigning any custom attribute, please make sure that params would include at minimum form[profiles_attributes][<my_profile_name>_attributes]. You can achieve it with hidden input and `form_builder` or via `default_payload` json.' %}
+{% include 'alert/note', content: 'To discover names that fields should have, explore the `form_builder` variable by printing it on your page.' %}
 
 ## Next steps
 Congratulations! You know how to share attributes across user profiles. You can learn more about Form Configurations here:
