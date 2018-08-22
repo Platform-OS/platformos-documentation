@@ -1,0 +1,56 @@
+---
+converter: markdown
+metadata:
+  title: Setting UP SSL for a Domain
+  description: This guide will help you request and set up an SSL Certificate for your domain. 
+slug: get-started/partner-portal/setting-up-ssl-domain
+searchable: true
+---
+
+This guide will help you request and set up an SSL Certificate for your domain. 
+
+## Requirements
+To follow the steps in this tutorial, you should be able to log in to our Partner Portal, have an Instance you created or have access to, and have a domain associated with the Instance. 
+
+* [Accessing our Partner Portal](/get-started/setup/accessing-partner-portal)
+* [Setting Up a Site on Our Platform](/get-started/setup/setting-up-site)
+* [Adding a Domain to an Instance](/get-started/partner-portal/adding-domain-instance)
+
+## Steps
+
+Setting up SSL for a domain is a three-step process:
+
+1. Locate domain
+2. Request SSL Certificate 
+3. Install certificate into Load Balancer
+
+### Step 1: Locate domain
+In the menu on the left, click on `Instances`, and select the Instance you would like to add a domain to. You can also [find an Instance through Search](/get-started/partner-portal/finding-instances). The information page of the Instance is displayed.
+
+Click the `DNS & SSL` button. You can see DNS information, and a list of domains associated with the Instance. Locate the domain you would like to request an SSL Certificate for. 
+
+### Step 2: Request SSL Certificate
+Click on the `request SSL cert` button. A form is displayed, pre-populated with default values according to the selected domain:
+
+* `Domain name`: name of the selected domain
+* `Subject alternative names`: Add up to 10 domain names to this text area, one domain per line. 
+* `Validation method`: Your SSL Certificate can be validated in two ways:
+    * `DNS`: Add CNAME DNS record to your domain configuration.
+    * `EMAIL`: Receive an email with a validation link.
+
+Click on `Request Certificate`. We start the process of requesting your certificate. You can check the status of this process on the Certificate details page displayed. 
+
+It can take 30 minutes or longer for the changes to propagate, and for AWS to validate the domain and issue the certificate.
+
+Click on `Refresh` to display the instructions for using the SSL Certificate. The instructions correspond to the validation method you chose earlier (DNS or email). 
+
+### Step 3: Install certificate into Load Balancer
+When your certificate is verified, click on `Add to Load Balancer` to install it into the Load Balancer. Your certificate has been installed, and your site is secure now. 
+
+## Next steps
+Congratulations! You know how to set up an SSL Certificate for your domain. Now you can learn about checking the Audit Log:
+
+* [Checking the Audit Log](/get-started/partner-portal/checking-audit-log)
+
+{% include 'shared/questions_section' %}
+
