@@ -1,38 +1,39 @@
 ---
 converter: markdown
 metadata:
-  title: Protection with reCAPTCHA
-  description: Add spam protection to your forms
-slug: how-to/integrations/recaptcha-protection
+  title: Adding reCaptcha Spam Protection 
+  description: This guide will help you add spam protection to your forms with Google reCAPTCHA.
+slug: how-to/integrations/adding-recaptcha-spam-protection
 searchable: true
 ---
-This guide will help you add spam protection to your forms with Google reCAPTCHA. The goal is to display spam protection only after X number of failed login attempts.
+This guide will help you add spam protection to your forms with Google reCAPTCHA. In this example, you'll display spam protection after a specified number of failed login attempts.
 
 ## Requirements
 
-To follow this tutorial, you should be familiar with creating pages and forms, especially loging user.
+To follow this tutorial, you should be familiar with creating pages and forms, especially user sign in forms. You should also know how to add an integration to your site using the Partner Portal. 
 
 * [Creating a Page](/get-started/pages/creating-page)
-* [Signin a User](/get-started/users/signing-in-user-manually)
+* [Signing In a User Manually](/get-started/users/signing-in-user-manually)
+* [Managing Integrations](/get-started/partner-portal/managing-integrations)
 
 ## Steps
 
-reCAPTCHA protection is a two-step process:
+Adding reCAPTCHA protection is a four-step process:
 
 1.  Add Google reCAPTCHA keys
-2.  Create signin page with spam protection.
-3.  Count failed login attempts.
-4.  Show spam protection only after X number of failed login attempts.
+2.  Create sign-in page with spam protection
+3.  Count failed login attempts
+4.  Show spam protection only after specified number of failed login attempts 
 
-### Step 1: Add Google reCAPTCHA keys.
+### Step 1: Add Google reCAPTCHA keys
 
-Go to  [Partner Portal](https://portal.apps.near-me.com/instances) and add reCAPTCHA keys in "Integrations" section. Keys can be generated on https://www.google.com/recaptcha
+Go to our [Partner Portal](https://portal.apps.near-me.com/instances), and add reCAPTCHA keys in the `Integrations` section. Keys can be generated on [https://www.google.com/recaptcha](https://www.google.com/recaptcha). 
 
-### Step 2: Create sign-in page with spam protection.
+### Step 2: Create sign-in page with spam protection
 
 {% raw %}
-Start with simple sign-in page with spam protection enabled by default.
-Create a sign-in page and sign-in form configuration. Form configuration needs to have attribute `spam_protection: recaptcha` to enable protection. Use also `{% spam_protection %}` tag to generate required js(you can include required js code by your own).
+Start with a simple sign-in page with spam protection enabled by default.
+Create a sign-in page and sign-in form configuration. Form configuration needs to have the attribute `spam_protection: recaptcha` to enable protection. Also use the `{% spam_protection %}` tag to generate required JS (you can include required JS code on your own).
 {% endraw %}
 
 #### marketplace_builder/views/pages/sign-in-recaptcha.liquid
@@ -41,7 +42,7 @@ Create a sign-in page and sign-in form configuration. Form configuration needs t
 ---
 slug: sign-in-recaptcha
 ---
-<h2>Log in </h2>
+<h2>Sign in</h2>
 
 {% render_form 'sign_in_with_recaptcha' %}
 {% endraw %}
@@ -67,16 +68,15 @@ configuration:
     {% spam_protection %}
   </div>
 
-  <button>Log In</button>
+  <button>Sign In</button>
 {% endform %}
 {% endraw %}
 ```
 
-
 ### Step 3: Count failed attempts
 
-In order to show reCAPTCHA only after X failed login attempts we need to know how many times user tried to login. We can count this and store in session. We can use mutation `session_create_field`.
-We need also sign-in form configuration without spam protection.
+In order to show reCAPTCHA only after a specified number of failed login attempts, you need to know how many times the user tried to log in. You can count this and store the number in a session. Use mutation `session_create_field`.
+You also need the sign-in form configuration without spam protection.
 
 #### marketplace_builder/form_configurations/sign_in_without_recaptcha.liquid
 ```liquid
@@ -99,7 +99,7 @@ callback_actions: >
     {% execute_query "set_failed_signin_attempts", attempts: attempts %}
   {% endif %}
 
-  <button>Log In</button>
+  <button>Sign In</button>
 {% endform %}
 {% endraw %}
 
@@ -117,9 +117,9 @@ mutation set_failed_signin_attempts(
 }
 ```
 
-### Step 4: Show spam protection only after X number of failed login attempts.
+### Step 4: Show spam protection only after the specified number of failed login attempts
 
-Once we have number of failed attempts in session we can display correct form, with or without spam protection. `context` variable has information about session.
+Once you have the number of failed attempts in the session, you can display the correct form, with or without spam protection. `context` variable has information about the session.
 
 #### marketplace_builder/views/pages/sign-in-recaptcha.liquid
 ```liquid
@@ -127,7 +127,7 @@ Once we have number of failed attempts in session we can display correct form, w
 ---
 slug: sign-in-recaptcha
 ---
-<h2>Log in </h2>
+<h2>Sign in </h2>
 
 {% assign signin_failed_attempts = context.session.failed_attempts | plus: 0 %}
 {% if signin_failed_attempts > 3 %}
@@ -139,7 +139,7 @@ slug: sign-in-recaptcha
 
 ```
 
-After user login successfully we should clear session information with callback `{% raw %}{% execute_query "clear_failed_signin_attempts" %}{% endraw %}`
+After the user signed in successfully, you should clear session information with callback `{% raw %}{% execute_query "clear_failed_signin_attempts" %}{% endraw %}`
 
 #### marketplace_builder/graph_queries/clear_failed_signin_attempts.graphql
 ```graphql
@@ -152,13 +152,13 @@ mutation clear_failed_signin_attempts {
 
 
 ## Live example and source code
-To play with live example create developer account at [https://nearme-example.staging-oregon.near-me.com](https://nearme-example.staging-oregon.near-me.com) and go to [sign-in-recaptcha](https://nearme-example.staging-oregon.near-me.com/sign-in-recaptcha) page.
+To play with live example create developer account at [https://nearme-example.staging-oregon.near-me.com](https://nearme-example.staging-oregon.near-me.com) and go to the [sign-in-recaptcha](https://nearme-example.staging-oregon.near-me.com/sign-in-recaptcha) page.
 
-[Source code](https://github.com/mdyd-dev/marketplace-nearme-example) can be found at GitHub.
+[Source code](https://github.com/mdyd-dev/marketplace-nearme-example) can be found on GitHub.
 
 ## Additional resources
 
-[Spam Protection liquid tag](/api-reference/liquid-tags)
-[Render reCAPTCHA widget by your own](https://developers.google.com/recaptcha/docs/display)
+* [Spam Protection liquid tag](/api-reference/liquid-tags)
+* [Render reCAPTCHA widget](https://developers.google.com/recaptcha/docs/display)
 
 {% include 'shared/questions_section' %}
