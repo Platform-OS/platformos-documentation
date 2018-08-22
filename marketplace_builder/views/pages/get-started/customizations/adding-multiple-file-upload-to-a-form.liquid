@@ -85,10 +85,61 @@ configuration:
 {% endraw %}
 ```
 
+File input has a lot of code in it so it was extracted for future re-use.
+
+#### marketplace_builder/views/partials/inputs/file.liquid
+
+```liquid
+{% assign _errors = field.validation.errors %}
+{% assign _index = index | default: 0 %}
+
+{% comment %} Educated guess, to prevent not displaying anything if someone forget to pass + sensible default {% endcomment %}
+{% capture _label -%}
+  {%- if field.file.value != blank %} {{ field.file.value | split: '?' | first | split: '/' | last }}
+  {%- elsif label == blank -%} {{ field.file.name | parameterize | split: '-' | last | titleize }}
+  {%- else -%} {{ label }}
+  {%- endif -%}
+{%- endcapture %}
+
+<div class="form-group" data-multiple-files-item>
+  <div class="row">
+    <div class="col-8">
+      <div class="custom-file">
+        <input
+          type="file"
+          class="custom-file-input {% if _errors != empty %}is-invalid{% endif %}"
+          name="{{ field.file.name }}"
+          id="{{ field.file.name }}"
+        >
+
+        <label class="custom-file-label" for="{{ field.file.name }}">
+          {{ _label }}
+        </label>
+
+        {% if _errors != empty %}
+          <p class="invalid-feedback">
+            {{ _errors | join: ', ' }}
+          </p>
+        {% endif %}
+      </div>
+    </div>
+    <div class="col-4">
+      <button type="button" class="btn btn-secondary" data-multiple-files-button="remove">Remove</button>
+    </div>
+  </div>
+
+  <input type="hidden" value="{{ attachment.id.value }}" name="{{ attachment.id.name }}" data-multiple-files-input="id" />
+  <input type="hidden" value="{{ attachment._destroy.value }}" name="{{ attachment._destroy.name }}" data-multiple-files-input="destroy" />
+</div>
+```
+
 #### Notes:
 
-* for styling we assume [Twitter Bootstrap 4](https://getbootstrap.com/docs/4.1/getting-started/introduction/) loaded to make it prettier for example purposes
+* For styling we assume [Twitter Bootstrap 4](https://getbootstrap.com/docs/4.1/getting-started/introduction/) loaded to make it prettier for example purposes
 * `prepopulate: 1` tells the system to render at least one field in case no files are saved for this user
+* It is important to note that input with id is being incremented in javascript to let the system know that it is the next file
+* Destroy field is being populated by javascript with value `1` if file is being deleted to tell the system to remove that particular record in the database
+
 
 ### Step 3: Render form on a page
 
