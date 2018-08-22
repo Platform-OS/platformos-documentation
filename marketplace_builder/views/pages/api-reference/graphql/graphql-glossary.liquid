@@ -3,6 +3,7 @@
 converter: markdown
 metadata:
   title: GraphQL Glossary
+  description: Alphabetical list of GraphQL related terms with examples from Platform OS implementations. 
 slug: api-reference/graphql/graphql-glossary
 searchable: true
 ---
@@ -14,42 +15,44 @@ A set of key-value pairs attached to a specific field. Arguments can be literal 
 
 ```graphql
 {
-  human(id: "200") {
-    weight(unit: "pounds")
-    height
+  user(id: 200) {
+  email
+  bio: property(name: "bio")
   }
 }
 ```
-
-`id` is an argument to `human` in the query above. 
 
 ## Alias
 An alternative name given to the result of a field to avoid conflicts during data fetching.
 
 ```graphql
 {
-  admin: users(role: admin) {
-    id
-    first_name
-    last_name
+  notes: customizations(name: "notes"){
+    results{ id }
   }
-  managers: users(role: manager) {
-    id
-    first_name
-    last_name
+  car_photos: customizations(name: "car_photos"){
+    results{
+      photos: custom_images(name: "photo"){
+        url
+      }
+    }
   }
 }
 ```
-
-`admin` and `managers` are aliases in the example query above.
 
 ## Directive
 
 A declaration prefixed with an `@` character that encapsulates programming logic for query execution on the client or server. There are built-in directives such as `@skip` or `@include`. Directives can be used for features such as authentication, incremental data loading, etc. 
 
 ```graphql
-query myAwesomeQuery($isAwesome: Boolean) {
-  awesomeField @skip(if: $isAwesome)
+query clients($is_client: Boolean!){
+  people{
+    results{
+      email
+      created_at @skip(if: $is_client)
+      
+    }
+  }
 }
 ```
 
@@ -60,28 +63,28 @@ A file or request string that contains one or multiple definitions of a GraphQL 
 A unit of data you are asking for in a Schema, which ends up as a field in your JSON response data.
 
 ```graphql
-type Author {
-  id: Int!
-  firstName: String
-  lastName: String
+type User{
+  id: ID!
+  first_name: String
+  last_name: String
 }
 ```
-
-`id`, `firstName`, and `lastName` are fields in the `Author` type above.
 
 ## Fragment
 A selection set that can be reused in multiple query operations. A GraphQL fragment is a shared piece of query logic.
 
 ```graphql
-fragment UserData on User {
-  id: ID!
-  firstName: String!
-  lastName: String!
+fragment UserData on UserListing{
+  id
+  first_name
+  last_name
 }
 
-query getUsers {
-  allUsers {
-    ...UserData
+{
+  people{
+    results{
+      ...UserData
+    }
   }
 }
 ```
@@ -109,10 +112,29 @@ A technique to provide detailed information about a GraphQL API's schema. Types 
 An operation for creating, modifying and destroying data.
 
 ```graphql
-mutation AddTodo($type: String!) {
-  addTodo(type: $type) {
+mutation edit_car($car_id: ID!, $color: String!){
+  customization_update(
+    form_configuration_name: "edit_car"
+    id: $car_id
+    customization: {
+      properties: [
+        { name: "color", value: $color }
+      ]
+    }
+  ){
     id
-    type
+  }
+}
+```
+
+```graphql
+mutation store_in_session($token: String!){
+  session_create_field(name: "token", value: $token)
+}
+
+query find_user($id: ID){
+  user(id: $id){
+    email
   }
 }
 ```
@@ -150,8 +172,6 @@ query getHuman {
 }
 ```
 
-`AddTodo` and `getHuman` are names for the mutation and query operation respectively.
-
 ## Query
 A read-only fetch operation to request data from a GraphQL service. 
 
@@ -162,21 +182,24 @@ A GraphQL schema is at the center of any GraphQL server implementation and descr
 The syntax for writing GraphQL Schemas. It is otherwise known as Interface Definition Language. It is the lingua franca shared by all for building GraphQL APIs regardless of the programming language chosen.
 
 ```graphql
-type Author {
-  id: Int!
-  firstName: String
-  lastName: String
-  posts: [Post]
+type UserListing {
+  created_at: JSONDate
+  customizations(name: String, properties: [QueryCustomAttribute], user_id: ID): [ListingsCustomization]
+  deleted_at: JSONDate
+  email: String!
+  external_id: ID
+  first_name: String
+  id: ID!
+  last_name: String
 }
-type Post {
-  id: Int!
-  title: String
-  author: Author
-  votes: Int
-}
-type Query {
-  posts: [Post]
-  author(id: Int!): Author
+
+# Authentication using provider
+type Authentication {
+  id: ID
+
+  # name of authentication provider used for creating this authentication
+  provider: AuthenticationProvider
+  token_expires_at: JSONDate
 }
 ```
 
