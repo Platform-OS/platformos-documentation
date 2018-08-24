@@ -1,5 +1,7 @@
 import MetisMenu from 'metismenu';
 
 document.addEventListener("turbolinks:load", () => {
-  new MetisMenu('.sidebar-menu');
+  if (document.querySelector('.sidebar-menu') ) {
+    new MetisMenu('.sidebar-menu');
+  }
 });

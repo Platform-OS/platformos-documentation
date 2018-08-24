@@ -1,0 +1,91 @@
+---
+name: feedback_form
+resource: Customization
+resource_owner: anyone
+configuration:
+  properties:
+    path: 
+      validation:
+        presence: true
+    rate:
+      validation:
+        presence: true 
+        inclusion:
+          in:
+            - 1
+            - 3
+            - 5
+    email:
+      validation: { presence: false }
+    message:
+      validation: { presence: false }
+email_notifications:
+  - new_feedback
+flash_notice: Thank you for your feedback.
+---
+{% form html-class: 'feedback-form' %}
+  {% assign p = form_builder.fields.properties %}
+
+  {% include 'forms/shared/errors-notification' %}
+
+  <input name="{{ p.path.name }}" type='hidden' value='{{ context.location.pathname }}'>
+  <div class="col-12 feedback-main" >
+    <div class="row">
+      <div class="col-12 pb-3" >
+        <b>Was this documentation helpful?</b>
+      </div>
+        <div class="col-7">
+          <span data-feedback-rate="5" >
+            {% include "shared/svg/smile" %}
+          </span>
+          <span data-feedback-rate="3">
+            {% include "shared/svg/werid" %}
+          </span>
+          <span data-feedback-rate="1">
+            {% include "shared/svg/sad" %}
+          </span>
+          <input data-feedback-input type='hidden' name='{{ p.rate.name }}'>
+        </div>
+        <div class="col-5">
+          {% assign github_path = "https://github.com/mdyd-dev/nearme-documentation/blob/master/" %}
+          {% assign pages_path = github_path | append: "marketplace_builder/views/pages/" %}
+          <a target="_blank" href="{{ pages_path }}{{ page.slug }}.liquid">
+            {% include "shared/svg/github" %}
+            Contribute to this page
+          </a>
+        </div>
+    </div>
+    <p>
+    </p>
+  </div>
+  <div data-feedback-questions="true" class="hidden">
+    <div class="col-12 pt-4">
+      <label form="message" data-feedback="5"> 
+        We’re glad you liked our documentation page!<br />
+        Why did you like it? How could we make it even better?</label>
+       </label>
+      <label class="hidden" data-feedback="3">
+        We are continuously working on our docs to make them better.<br />
+        How do you think we could improve this page?
+      </label>
+      <label class='hidden' data-feedback="1">
+        We’re sorry you didn’t like our documentation page.<br />
+        What was the problem? How do you think we could fix it?
+      </label>
+      <textarea type='text' id="message" name='{{ p.message.name }}'></textarea>
+    </div>
+    <div class="col-12">
+    <div class="row pb-5">
+      <div class="col-9">
+        <label for="email">Would you like to get an answer from us?</label>
+        <input type='text' id="email" name='{{ p.email.name }}' placeholder='E-mail'>
+      </div>
+
+      <div class="col-3">
+        <input class="btn btn-primary float-right" type="submit" value="Send">
+      </div>
+    </div>
+    </div>
+  </div>
+{% endform %}
+
