@@ -32,12 +32,13 @@ Inject this code for example on the home page, which re-uses already created `cu
 ```liquid
 {% raw %}
 {% query_graph 'current_user', result_name: 'g' %}
+
 {% if g.current_user.client_profile %}
 
   {% assign page = params.page | default: 1 | plus: 0 %}
   <a href="/client/projects/new">Create project</a>
 
-  {% query_graph 'client_projects', result_name: 'g', creator_id: g.current_user.id, per_page: 20, page: page %}
+  {% query_graph 'client_projects', result_name: 'g', creator_id: g.current_user.id, page: page %}
 
   {% if g.projects.total_entries > 0 %}
     <ul>
