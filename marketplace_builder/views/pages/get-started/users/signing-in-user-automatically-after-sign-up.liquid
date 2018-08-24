@@ -27,7 +27,7 @@ Automatic sign in after sign up is a three-step process:
 
 In your `sign_up` form configuration add `callback_actions` at the end (order doesn't matter) of the YML definition.
 
-##### `form_configurations/sign_up.liquid`
+##### marketplace_builder/form_configurations/sign_up.liquid
 
 ```liquid
 {% raw %}
@@ -44,7 +44,7 @@ This code snippet executes the `user_session_create` query, so you have to creat
 
 This mutation takes two obligatory arguments: `email` and `password` &ndash; both strings.
 
-##### `graph_queries/user_session_create.graphql`
+##### `marketplace_builder/graph_queries/user_session_create.graphql`
 
 ```graphql
 mutation user_session_create($email: String!, $password: String!) {
@@ -64,7 +64,7 @@ This calls the `session_create_form` with the same arguments you received from t
 
 SessionForm is supported by the server, so you don't need to define anything &ndash; the server will take care of handling user credentials and authenticating the user.
 
-##### `form_configurations/session_create_form`
+##### `marketplace_builder/form_configurations/session_create_form.liquid`
 
 ```yaml
 ---
