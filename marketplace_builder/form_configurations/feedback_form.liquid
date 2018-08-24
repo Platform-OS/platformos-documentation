@@ -35,14 +35,14 @@ flash_notice: Thank you for your feedback.
         <b>Was this documentation helpful?</b>
       </div>
         <div class="col-7">
-          <span data-feedback-rate="5">
-            <img class="svg feedback-smile" src="{{ 'images/svg/smile.svg' | asset_url }}"/>
+          <span data-feedback-rate="5" >
+            {% include "shared/svg/smile" %}
           </span>
           <span data-feedback-rate="3">
-            <img class="svg feedback-wired" src="{{ 'images/svg/weird.svg' | asset_url }}"/>
+            {% include "shared/svg/werid" %}
           </span>
           <span data-feedback-rate="1">
-            <img class="svg feedback-sad" src="{{ 'images/svg/sad.svg' | asset_url }}"/>
+            {% include "shared/svg/sad" %}
           </span>
           <input data-feedback-input type='hidden' name='{{ p.rate.name }}'>
         </div>
@@ -50,7 +50,7 @@ flash_notice: Thank you for your feedback.
           {% assign github_path = "https://github.com/mdyd-dev/nearme-documentation/blob/master/" %}
           {% assign pages_path = github_path | append: "marketplace_builder/views/pages/" %}
           <a target="_blank" href="{{ pages_path }}{{ page.slug }}.liquid">
-            <img class="svg github" src="{{ 'images/svg/github-logo.svg' | asset_url }}"/>
+            {% include "shared/svg/github" %}
             Contribute to this page
           </a>
         </div>

@@ -17,7 +17,9 @@
           {% endif %}
             {% include 'shared/flash-messages' %}
             {% include 'layouts/content' %}
-            {% include 'shared/feedback' %}
+            {% if page.metadata.exclude_feedback == blank %}
+              {% include 'shared/feedback' %}
+            {% endif %}
           </section>
         </div>
       </div>

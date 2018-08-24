@@ -40,40 +40,7 @@ const getFeedback = () => {
   });
 }
 
-const svgSetup = () => {
-  document.querySelectorAll('img.svg').forEach(function(element) {
-    var imgID = element.getAttribute('id')
-    var imgClass = element.getAttribute('class')
-    var imgURL = element.getAttribute('src')
-
-    var xhr = new XMLHttpRequest()
-    xhr.onreadystatechange = function() {
-        if(xhr.readyState == 4 && xhr.status == 200) {
-            var svg = xhr.responseXML.getElementsByTagName('svg')[0];
-
-            if(imgID != null) {
-                 svg.setAttribute('id', imgID);
-            }
-
-            if(imgClass != null) {
-                 svg.setAttribute('class', imgClass + ' replaced-svg');
-            }
-
-            svg.removeAttribute('xmlns:a')
-
-            if(!svg.hasAttribute('viewBox') && svg.hasAttribute('height') && svg.hasAttribute('width')) {
-                svg.setAttribute('viewBox', '0 0 ' + svg.getAttribute('height') + ' ' + svg.getAttribute('width'))
-            }
-            element.parentElement.replaceChild(svg, element)
-        }
-    }
-    xhr.open('GET', imgURL, true)
-    xhr.send(null)
-  })
-}
-
 if (feedbackSection.length) {
-  svgSetup();
   getFeedback();
 }
 
