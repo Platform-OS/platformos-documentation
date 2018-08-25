@@ -1,0 +1,58 @@
+---
+converter: markdown
+metadata:
+  title: Developing GraphQL Queries Using marketplace-kit gui
+  description: This guide will help you quickly develop GraphQL queries using the `marketplace-kit gui serve` command.
+slug: how-to/qa/developing-graphql-queries-using-marketplace-kit-gui
+searchable: true
+---
+
+This guide will help you quickly develop GraphQL queries using the `marketplace-kit gui serve` command.
+
+`marketplace-kit gui serve` command is very useful when:
+
+1) You are developing new query and you want to be sure it is working - it communicates with the database directly,
+so you are eliminating errors other layers and features of the system
+
+2) You are debugging an error - because you have direct control over a query and instant feedback after your changes,
+you can strip everything that you dont need, manipulate arguments passed etc.
+
+## Requirements
+So that you can follow the steps in this tutorial, you have to have the Marketplace Kit installed, an environment configured, and the required directory structure set up. You should be familiar with Pages, and the technologies behind Platform OS, especially Liquid.
+
+* [Quickstart Guide](/get-started/quickstart-guide) or [Setup tutorials](/get-started/setup): help you get access to our platform, set up a site, install the Marketplace Kit, set up the required directory structure, and deploy to your site.
+* [Technologies](/how-platformos-works/technologies)
+
+## Steps
+
+Developing GraphQL queries using marketplace-kit gui
+
+1. Start marketplace-kit gui serve
+2. Write / update query
+
+### Step 1: Start marketplace-kit gui serve
+
+<pre class="command-line" data-output="2-4" data-user="user" data-host="host"><code class="language-bash">
+marketplace-kit gui serve staging
+Server is listening on 3333
+Resources Editor: http://localhost:3333/gui/editor
+GraphQL Browser: http://localhost:3333/gui/graphql
+</code></pre>
+
+{% include "alert/note", content: "Replace `staging` with environment name you want to develop on. To list all available environments use `marketplace-kit env list`" %}
+
+### Step 2: Write / update query
+
+To write your query go to the second link: [http://localhost:3333/gui/graphql](http://localhost:3333/gui/graphql)
+
+You will be greeted with [graphiql editor](https://github.com/graphql/graphiql).
+
+![Graphiql editor](https://raw.githubusercontent.com/graphql/graphiql/master/resources/graphiql.png)
+
+
+#### Tips
+
+* On the right side yu can open sidebar with graphql schema documentation
+* When you dont know what to type, try pressing `ctrl + space` - this will open the suggestion box and usually help you decide
+* To quickly run the query, press `ctrl + enter` (or `cmd + enter` on a mac)
+* To pass arguments to a query, open `Query variables` panel on the bottom and write them in form of JSON (see image above)
