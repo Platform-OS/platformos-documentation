@@ -59,6 +59,7 @@ nodejs 8.x, npm 6.x
 
     ./scripts/generate_graphql.sh
     ./scripts/generate_liquid_filters.sh
+    ./scripts/generate_liquid_tags.sh
     ./scripts/generate_rest_api.sh
 
 ## Testing
