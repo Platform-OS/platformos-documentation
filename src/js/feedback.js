@@ -1,8 +1,7 @@
 const form = document.querySelector('[data-feedback="form"]');
-const selectedValues = form.querySelectorAll('[data-feedback-selected-value]');
-const questionsContainer = form.querySelector('[data-feedback="questions"]');
-const questionValues = questionsContainer.querySelectorAll('[data-feedback-value]');
-const sendButton = form.querySelector('.btn-primary');
+const selectedValues = document.querySelectorAll('[data-feedback-selected-value]');
+const questionsContainer = document.querySelector('[data-feedback="questions"]');
+const questionValues = document.querySelectorAll('[data-feedback-value]');
 
 const toggleQuestionsContainer = addOrRemove => questionsContainer.classList.toggle('hidden', addOrRemove);
 const hideQuestions = () => [...questionValues].map(el => el.classList.add('hidden'));
@@ -21,6 +20,7 @@ const sendFeedback = () => {
   .then(res => res.json())
   .then(res => updateFormForCustomizationUpdate(res.id))
   .catch(e => {
+    Raven.captureException(e);
   });
 }
 
