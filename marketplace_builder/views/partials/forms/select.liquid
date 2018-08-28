@@ -1,0 +1,41 @@
+{% assign field_options = options | to_hash %}
+{% assign selectedValue = field.value | append: '' %}
+
+{% assign is_required = false %}
+{% if field.validation.rules.presence != blank or required == true %}
+  {% assign is_required = true %}
+{% endif %}
+
+{% assign _errors = field.validation.errors %}
+{% assign _size = size | default: 'md' %}
+
+<div class="form-group {{ css_class }}">
+  <label for="{{ field.name }}" {% if is_required %}class="form-required"{% endif %}>
+    {% if is_required %}<span>*</span>{% endif %}
+    {{ label }}
+  </label>
+
+  <select
+      class="form-control form-control-{{ _size }} {% if _errors != empty %}is-invalid{% endif %}"
+      name="{{ field.name }}"
+      id="{{ field.name }}"
+      {% if is_required %}required{% endif %}
+    >
+
+    {% for opt in field_options %}
+      <option
+        value="{{ opt.value }}"
+        {% if opt.selected or selectedValue == opt.value %}selected{% endif %}
+      >
+        {{ opt.text }}
+      </option>
+    {% endfor %}
+
+  </select>
+
+  {% if _errors != empty %}
+    <div class="invalid-feedback">
+      {{ _errors | join: ', ' }}
+    </div>
+  {% endif %}
+</div>

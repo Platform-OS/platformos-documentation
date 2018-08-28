@@ -1,0 +1,52 @@
+{% if field.validation.rules.presence != blank or required == true %}
+  {% assign is_required = true %}
+{% else %}
+  {% assign is_required = false %}
+{% endif %}
+
+{% assign _errors = field.validation.errors %}
+
+{% assign _size = size | default: 'md' %}
+{% assign _rows = rows | default: 4 %}
+{% comment %} Educated guess, to prevent not displaying anything if forgot + sensible default {% endcomment %}
+{% capture _label -%}
+  {%- if label == blank -%} {{ field.name | parameterize | split: '-' | last | titleize }}
+  {%- else -%} {{ label }}
+  {%- endif -%}
+{%- endcapture %}
+
+{% capture _placeholder -%}
+  {%- if placeholder == blank -%} {{ _label }}
+  {%- else -%} {{ placeholder }}
+  {%- endif -%}
+{%- endcapture %}
+
+<div class="form-group">
+  <label for="{{ field.name }}" {% if is_required %}class="form-required"{% endif %}>
+    {% if is_required %}<span>*</span>{% endif %}
+    {{ _label }}
+  </label>
+
+  <textarea
+    rows="{{ _rows }}"
+    class="form-control form-control-{{ _size }} {% if _errors != empty %}is-invalid{% endif %}"
+    type="{{ type | default: 'text' }}"
+    name="{{ field.name }}"
+    id="{{ field.name }}"
+    {% if _placeholder %}placeholder="{{ _placeholder }}"{% endif %}
+    {% if wysiwyg %}data-wysiwyg="{{ wysiwyg }}"{% endif %}
+    {% if is_required %}required{% endif %}
+    {% if is_disabled %}disabled{% endif %}
+    {% if attributes %}{{ attributes }}{% endif %}
+  >{{ field.value }}</textarea>
+
+  {% if hint %}
+    <small class="form-text text-muted">{{ hint }}</small>
+  {% endif %}
+
+  {% if _errors != empty %}
+    <div class="invalid-feedback">
+      {{ _errors | join: ', ' }}
+    </div>
+  {% endif %}
+</div>

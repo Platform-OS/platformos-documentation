@@ -1,0 +1,30 @@
+{% capture _flash %}
+{
+  "notice": "{% if flash.notice %}{{ flash.notice }}{% elsif params.flash.notice %}{{ params.flash.notice }}{% else %}{% endif %}",
+  "alert": "{% if flash.alert %}{{ flash.alert }}{% elsif params.flash.alert %}{{ params.flash.alert }}{% else %}{% endif %}",
+  "error": "{% if flash.error %}{{ flash.error }}{% elsif params.flash.error %}{{ params.flash.error }}{% else %}{% endif %}"
+}
+{% endcapture %}
+
+{% assign flash = _flash | to_hash %}
+
+{% capture _class_map %}
+{
+  "notice": "success",
+  "alert": "warning",
+  "error": "danger"
+}
+{% endcapture %}
+
+{% assign _class_map_hash = _class_map | to_hash %}
+{% assign keys = "notice,alert,error" | split: ',' %}
+
+{% for key in keys %}
+  {% if flash[key] != blank %}
+    <div class="container flash-messages">
+      <div class="alert alert-{{ _class_map_hash[key] }}" role="alert">
+        {{ flash[key] }}
+      </div>
+    </div>
+  {% endif %}
+{% endfor %}
