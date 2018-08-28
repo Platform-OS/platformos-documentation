@@ -15,7 +15,9 @@ configuration:
             - 3
             - 5
     email:
+      validation: { presence: false }
     message:
+      validation: { presence: false }
 email_notifications:
   - new_feedback
 flash_notice: Thank you for your feedback.
@@ -29,7 +31,7 @@ flash_notice: Thank you for your feedback.
 
   <input name="{{ p.path.name }}" type='hidden' value='{{ context.location.pathname }}'>
 
-  <div class="col-12 feedback-main">
+  <div class="feedback-main col p-4">
     <div class="row">
       <div class="col-12 pb-3">
         <h4>Was this documentation helpful?</h4>
@@ -61,39 +63,48 @@ flash_notice: Thank you for your feedback.
       <div class="col-5">
         {% assign github_path = "https://github.com/mdyd-dev/nearme-documentation/blob/master/" %}
         {% assign pages_path = github_path | append: "marketplace_builder/views/pages/" %}
-        <a target="_blank" href="{{ pages_path }}{{ page.slug }}.liquid">
+        <a href="{{ pages_path }}{{ page.slug }}.liquid" target="_blank" rel="noopener">
           {% include "shared/svg/github" %}
           Contribute to this page
         </a>
       </div>
     </div>
   </div>
-  <div data-feedback="questions" class="hidden">
-    <div class="col-12 pt-4">
-      <label class="hidden" data-feedback-value="5">
-        We’re glad you liked our documentation page!<br />
-        Why did you like it? How could we make it even better?
-      </label>
-      <label class="hidden" data-feedback-value="3">
-        We are continuously working on our docs to make them better.<br />
-        How do you think we could improve this page?
-      </label>
-      <label class='hidden' data-feedback-value="1">
-        We’re sorry you didn’t like our documentation page.<br />
-        What was the problem? How do you think we could fix it?
-      </label>
-      <textarea type='text' id="message" name='{{ p.message.name }}'></textarea>
+  <div data-feedback="questions" class="hidden col p-4">
+    <div class="row">
+      <div class="col">
+        <div class="alert alert-success" role="alert">
+          <h6>Thank you. Your feedback has been saved.</h6>
+          <hr>
+          <p class="mb-0">If you would like to give us more details, please do it below.</p>
+        </div>
+      </div>
     </div>
-    <div class="col-12">
-      <div class="row pb-5">
-        <div class="col-9">
-          <label for="email">Would you like to get an answer from us?</label>
-          <input type='text' id="email" name='{{ p.email.name }}' placeholder='E-mail'>
-        </div>
+    <div class="row">
+      <div class="col mt-2">
+        <label class="hidden" data-feedback-value="5">
+          We’re glad you liked our documentation page!<br />
+          Why did you like it? How could we make it even better?
+        </label>
+        <label class="hidden" data-feedback-value="3">
+          We are continuously working on our docs to make them better.<br />
+          How do you think we could improve this page?
+        </label>
+        <label class='hidden' data-feedback-value="1">
+          We’re sorry you didn’t like our documentation page.<br />
+          What was the problem? How do you think we could fix it?
+        </label>
+        <textarea type='text' id="message" name='{{ p.message.name }}'></textarea>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col-9">
+        <label for="email">Would you like to get an answer from us?</label>
+        <input type='text' id="email" name='{{ p.email.name }}' placeholder='E-mail'>
+      </div>
 
-        <div class="col-3">
-          <input class="btn btn-primary float-right" type="submit" value="Send">
-        </div>
+      <div class="col-3">
+        <button class="btn btn-primary float-right">Send</button>
       </div>
     </div>
   </div>

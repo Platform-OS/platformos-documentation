@@ -1,24 +1,31 @@
 .feedback-form {
   border: 1px solid $blue-ll;
 
-  textarea, input {
+  textarea {
     width: 100%;
     border: 1px solid $grey-l;
     padding: 10px;
+    height: 100px;
   }
 
-  textarea {
-    height: 100px;
+  input#email {
+    width: 100%;
+    border: 1px solid $grey-l;
+    padding: 10px;
   }
 
   label {
     width: 100%;
   }
 
-  input[type="submit"] {
+  button {
     background-color: $blue;
     color: $blue-l;
     margin-top: 32px;
+    border: 0;
+    width: 100%;
+    border: 1px solid $grey-l;
+    padding: 10px;
   }
 
   a {
@@ -27,7 +34,6 @@
 
   .feedback-main {
     background-color: $blue-l;
-    padding: 30px;
     color: $blue;
 
     svg {
@@ -41,19 +47,26 @@
       }
     }
 
+    svg[class*="feedback-"] {
+      opacity: 0.7;
+    }
+
     input:checked ~ .feedback-smile, .feedback-smile:hover {
+      opacity: 1;
       circle, path {
         fill: $mint;
       }
     }
 
     input:checked ~ .feedback-weird, .feedback-weird:hover {
+      opacity: 1;
       circle, path {
         fill: $black;
       }
     }
 
     input:checked ~ .feedback-sad, .feedback-sad:hover {
+      opacity: 1;
       circle, path {
         fill: $red;
       }

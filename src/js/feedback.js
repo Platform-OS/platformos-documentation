@@ -1,61 +1,40 @@
 const form = document.querySelector('[data-feedback="form"]');
-const selectedValues = document.querySelectorAll('[data-feedback-selected-value]');
-const questionsContainer = document.querySelector('[data-feedback="questions"]');
+const selectedValues = form.querySelectorAll('[data-feedback-selected-value]');
+const questionsContainer = form.querySelector('[data-feedback="questions"]');
 const questionValues = questionsContainer.querySelectorAll('[data-feedback-value]');
+const sendButton = form.querySelector('.btn-primary');
 
-const showQuestionsContainer = () => questionsContainer.classList.remove('hidden');
-const showQuestion = value => form.querySelector(`[data-feedback-value="${value}"]`).classList.remove('hidden');
+const toggleQuestionsContainer = addOrRemove => questionsContainer.classList.toggle('hidden', addOrRemove);
 const hideQuestions = () => [...questionValues].map(el => el.classList.add('hidden'));
+const showQuestion = value => form.querySelector(`[data-feedback-value="${value}"]`).classList.remove('hidden');
 
-const attachEventHandlers = () => {
-  [...selectedValues].map(el => {
-    el.addEventListener("change", event => {
-      const selectedValue = event.target.value;
-      hideQuestions();
-      showQuestionsContainer();
-      showQuestion(selectedValue);
-    });
+const updateFormForCustomizationUpdate = (id) => {
+  form.setAttribute('action', `/api/customizations/${id}`);
+  form.insertAdjacentHTML('beforeend', '<input type="hidden" name="_method" value="PUT">');
+}
+
+const sendFeedback = () => {
+  return fetch(form.getAttribute('action'), {
+    method: form.getAttribute('method'),
+    body: new FormData(form)
+  })
+  .then(res => res.json())
+  .then(res => updateFormForCustomizationUpdate(res.id))
+  .catch(e => {
   });
 }
 
-attachEventHandlers();
+const onRatingSelected = event => {
+  const selectedValue = event.target.value;
+  toggleQuestionsContainer(true);
+  hideQuestions();
 
-// const removeSelectedFeedback = () => {
-//   const selectedFeedback = [...document.querySelectorAll(".feedback-selected")];
+  sendFeedback().then(() => {
+    showQuestion(selectedValue);
+    toggleQuestionsContainer(false);
+  });
+};
 
-//   if (selectedFeedback.length > 0) {
-//     selectedFeedback.forEach(el => {
-//       el.classList.remove("feedback-selected");
-//     });
-//   }
-// };
-
-// const hideMessageLabels = () => {
-//   var messageLabels = document.querySelectorAll("[data-feedback]");
-
-//   if (messageLabels.length > 0) {
-//     Array.from(messageLabels).forEach(el => {
-//       el.classList.add("hidden");
-//     });
-//   }
-// };
-
-// const getFeedback = () => {
-//   feedbackElements.forEach(el => {
-//     el.addEventListener("click", () => {
-//       removeSelectedFeedback();
-//       hideMessageLabels();
-//       feedbackQuestions.classList.remove("hidden");
-//       el.querySelector("svg").classList.add("feedback-selected");
-//       feedbackInput.value = el.dataset.feedbackRate;
-
-//       document
-//         .querySelector(`[data-feedback="${el.dataset.feedbackRate}"]`)
-//         .classList.remove("hidden");
-//     });
-//   });
-// };
-
-// if (feedbackSection.length > 0) {
-//   getFeedback();
-// }
+if (form) {
+  [...selectedValues].map(el => el.addEventListener("change", onRatingSelected));
+}
