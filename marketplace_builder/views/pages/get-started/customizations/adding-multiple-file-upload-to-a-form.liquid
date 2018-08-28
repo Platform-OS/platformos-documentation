@@ -90,6 +90,7 @@ File input has a lot of code in it so it was extracted for future re-use.
 #### marketplace_builder/views/partials/inputs/file.liquid
 
 ```liquid
+{% raw %}
 {% assign _errors = field.validation.errors %}
 {% assign _index = index | default: 0 %}
 
@@ -131,6 +132,7 @@ File input has a lot of code in it so it was extracted for future re-use.
   <input type="hidden" value="{{ attachment.id.value }}" name="{{ attachment.id.name }}" data-multiple-files-input="id" />
   <input type="hidden" value="{{ attachment._destroy.value }}" name="{{ attachment._destroy.name }}" data-multiple-files-input="destroy" />
 </div>
+{% endraw %}
 ```
 
 #### Notes:

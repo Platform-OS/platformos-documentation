@@ -5,6 +5,7 @@
     {% include 'layouts/header' %}
 
     <main class="main">
+      {%- include 'layouts/flash-messages', flash: context.flash -%}
       <div class="container">
         <div class="row">
           {% if context.page.metadata.hide_sidebar != true %}
@@ -15,11 +16,10 @@
           {% else %}
             <section class="content col-12 col-md-12">
           {% endif %}
-            {% include 'shared/flash-messages' %}
-            {% include 'layouts/content' %}
-            {% if page.metadata.exclude_feedback == blank %}
-              {% include 'shared/feedback' %}
-            {% endif %}
+          {% include 'layouts/content' %}
+          {% if page.metadata.exclude_feedback == blank %}
+            {% include 'shared/feedback' %}
+          {% endif %}
           </section>
         </div>
       </div>

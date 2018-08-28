@@ -25,38 +25,46 @@ email_notifications:
   - new_contact_request
 flash_notice: Thank you for your request. We will contact you shortly.
 ---
-  {% form html-class: 'contact-form' %}
-    {% fields_for properties %}
-        {% include 'forms/shared/errors-notification' %}
+{% form html-class: 'contact-form' %}
+  {% assign f = form_builder.fields.properties %}
+  {% include 'forms/errors' %}
 
-        <div class="row mb-3">
-          <div class="col-6">
-            {% include 'forms/inputs/text', field_name: 'email', form_name: 'properties', placeholder: 'Email', label: false %}
-          </div>
+  <div class="row mb-3">
+    <div class="col-6">
+      {% include 'forms/input', field: f.email, placeholder: 'Email', label: false %}
+    </div>
 
-          <div class="col-6">
-            {% include 'forms/inputs/text', field_name: 'name', form_name: 'properties', placeholder: 'Name', label: false %}
-          </div>
-        </div>
+    <div class="col-6">
+      {% include 'forms/input', field: f.name, placeholder: 'Name', label: false %}
+    </div>
+  </div>
 
-        <div class="row mb-3">
-          <div class="col-6">
-            {% assign topics = '-- Select Topic --|Documentation|Community|Product|Pricing' | split: "|" %}
-            {% include 'forms/inputs/select2', field_name: 'topic', form_name: 'properties', input_collection: topics, label: false, placeholder: "Please Select" %}
-          </div>
+  <div class="row mb-3">
+    <div class="col-6">
+      {%- capture topics -%}
+      [
+        { "value": "", "text": "-- Select Topic --", "selected": true },
+        { "value": "Documentation", "text": "Documentation" },
+        { "value": "Community", "text": "Community" },
+        { "value": "Product", "text": "Product" },
+        { "value": "Pricing", "text": "Pricing" }
+      ]
+      {%- endcapture -%}
 
-          <div class="col-6">
-            {% include 'forms/inputs/text', field_name: 'company', form_name: 'properties', placeholder: "Company", label: false %}
-          </div>
-        </div>
 
-        <div class="row mb-3">
-          <div class="col-12">
-            {% include 'forms/inputs/text', type: 'text', field_name: 'message', form_name: 'properties' %}
-          </div>
-        </div>
-    {% endfields_for %}
+      {% include 'forms/select', field: f.topic, options: topics, label: "Topic", placeholder: "Please Select" %}
+    </div>
 
-    <button class="btn btn-primary float-right">Send</button>
-  {% endform %}
+    <div class="col-6">
+      {% include 'forms/input', field: f.company, placeholder: "Company", label: false %}
+    </div>
+  </div>
 
+  <div class="row mb-3">
+    <div class="col-12">
+      {% include 'forms/textarea', type: 'text', field: f.message %}
+    </div>
+  </div>
+
+  <button class="btn btn-primary float-right">Send</button>
+{% endform %}
