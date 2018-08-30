@@ -2,10 +2,7 @@ const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const WebpackRequireFrom = require("webpack-require-from");
 
-const BUILD_DIR = path.join(
-  __dirname,
-  process.env.npm_package_config_build_dir
-);
+const BUILD_DIR = path.join(__dirname, process.env.npm_package_config_build_dir);
 
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -37,12 +34,7 @@ module.exports = () => {
         },
         {
           test: /(\.css|\.scss)$/,
-          use: [
-            MiniCssExtractPlugin.loader,
-            "css-loader?url=false",
-            "postcss-loader",
-            "sass-loader"
-          ]
+          use: [MiniCssExtractPlugin.loader, "css-loader?url=false", "postcss-loader", "sass-loader"]
         },
         {
           test: /\.gif$/,
