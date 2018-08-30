@@ -38,7 +38,6 @@ module.exports = () => {
         {
           test: /(\.css|\.scss)$/,
           use: [
-            'cache-loader',
             MiniCssExtractPlugin.loader,
             "css-loader?url=false",
             "postcss-loader",
