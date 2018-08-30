@@ -1,6 +1,6 @@
 const API_ENDPOINT = "https://api.github.com/repos/mdyd-dev/nearme-documentation/commits";
 const params = `?path=marketplace_builder/views/pages/${window.location.pathname}.liquid`;
-const contributorsContainer = document.querySelector("[data-contributors]");
+const contributorsContainer = () => document.querySelector("[data-contributors]");
 const homepage = window.location.pathname.length === 1;
 
 const getLastUpdateTime = data => {
@@ -44,7 +44,7 @@ const getHTML = data => {
 
 const updateContributorsHtml = data => {
   if (data.length) {
-    contributorsContainer.innerHTML = getHTML(data);
+    contributorsContainer().innerHTML = getHTML(data);
   }
 };
 
@@ -58,7 +58,7 @@ const initialize = () => {
 };
 
 document.addEventListener("turbolinks:load", () => {
-  if (contributorsContainer && !homepage) {
+  if (contributorsContainer() && !homepage) {
     initialize();
   }
 });
