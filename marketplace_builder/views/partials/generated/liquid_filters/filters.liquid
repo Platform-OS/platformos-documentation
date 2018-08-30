@@ -840,6 +840,129 @@ specified by the second parameter (an array of arrays)
 </div>
 
 <div>
+<h2 class="signature " id="jwt_decode-instance_method">
+
+#<strong>jwt_decode</strong>(encoded_token, algorithm, secret = nil)  &#x21d2; <tt>Hash</tt> 
+
+
+
+</h2>
+
+
+### Returns:
+
+(<tt>Hash</tt>) - result of decoded jwt token
+
+
+
+
+### Params:
+
+
+* encoded_token (<tt>String</tt>) - encoded jwt token you want to decode 
+
+* algorithm (<tt>String</tt>) - algorithm which was used to encode the token 
+
+* secret (<tt>String</tt>) - either a shared secret (for hmac) or a PUBLIC key for RSA
+Valid options:
+  none - unsigned token
+  HS256 - HMAC using SHA-256 hash algorithm
+  HS384 - HMAC using SHA-384 hash algorithm
+  HS512 - HMAC using SHA-512 hash algorithm
+  RS256 - RSA using SHA-256 hash algorithm
+  RS384 - RSA using SHA-384 hash algorithm
+  RS512 - RSA using SHA-512 hash algorithm  <em class="default">(defaults to: <tt>nil</tt>)</em> 
+
+
+
+
+### Examples:
+```liquid
+HMAC:
+
+  {% assign original_payload = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJrZXkiOiJ2YWx1ZSIsImFub3RoZXJfa2V5IjoiYW5vdGhlciB2YWx1ZSJ9.XT8sHXyPTA9DoHzssXh1q6Uv2D1ENosW0F3Ixle85L0' | jwt_decode: 'HS256', 'this-is-secret'  }} =>
+  [
+    {
+      "key" => "value",
+      "another_key" => "another value"
+    },
+    {
+      "typ" => "JWT",
+      "alg" => "HS256"
+    }
+  ]
+
+RSA:
+
+  {% capture public_key %}
+  -----BEGIN PUBLIC KEY-----
+  MIIBI...
+  -----END PUBLIC KEY-----
+  {% endcapture %}
+  {% assign original_payload = 'some encoded token' | jwt_decode: 'RS256', public_key %}
+```
+
+
+
+</div>
+
+<div>
+<h2 class="signature " id="jwt_encode-instance_method">
+
+#<strong>jwt_encode</strong>(payload, algorithm, secret = nil)  &#x21d2; <tt>String</tt> 
+
+
+
+</h2>
+
+
+### Returns:
+
+(<tt>String</tt>) - jwt token encrypted using algorithm of your choice
+
+
+
+
+### Params:
+
+
+* payload (<tt>Hash</tt>) - payload or message you want to encrypt 
+
+* algorithm (<tt>String</tt>) - algorithm you want to use for encryption. 
+
+* secret (<tt>String</tt>) - either a shared secret (for hmac) or private key for RSA  <em class="default">(defaults to: <tt>nil</tt>)</em> 
+
+
+
+
+### Examples:
+```liquid
+{% capture payload_string %}
+  {
+    "key": "value",
+    "another_key": "another value"
+  }
+{% endcapture %}
+{% assign payload = payload_string | to_hash %}
+
+HMAC:
+  {{ payload | jwt_encode: 'HS256', 'this-is-secret'  }} => 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJrZXkiOiJ2YWx1ZSIsImFub3RoZXJfa2V5IjoiYW5vdGhlciB2YWx1ZSJ9.XT8sHXyPTA9DoHzssXh1q6Uv2D1ENosW0F3Ixle85L0'
+RSA:
+  {% capture private_key %}
+  -----BEGIN RSA PRIVATE KEY-----
+  MIIEpA...
+  -----END RSA PRIVATE KEY-----
+  {% endcapture %}
+  {% assign jwt_token = payload | jwt_encode: 'RS256', private_key  %}
+  {% comment %} Please note that storing private key as a plain text in a code is not a good idea. We suggest you
+                provide the key via Partner Portal and use context.constants.<name of private key constant> instead.{% endcomment %}
+```
+
+
+
+</div>
+
+<div>
 <h2 class="signature " id="limit-instance_method">
 
 #<strong>limit</strong>(array, limit)  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
@@ -1251,7 +1374,8 @@ the default separator used is '-';
 
 ### Examples:
 ```liquid
-{{ 'dog' | pluralize }} => 'dogs'
+{{ 'dog' | pluralize: 1 }} => 'dog'
+{{ 'dog' | pluralize: 2 }} => 'dogs'
 ```
 
 
