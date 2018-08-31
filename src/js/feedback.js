@@ -35,6 +35,9 @@ const onRatingSelected = event => {
   });
 };
 
-if (form) {
-  [...selectedValues].map(el => el.addEventListener("change", onRatingSelected));
-}
+document.addEventListener("turbolinks:load", () => {
+  if (form) {
+    [...selectedValues].map(el => el.addEventListener("change", onRatingSelected));
+  }
+});
+
