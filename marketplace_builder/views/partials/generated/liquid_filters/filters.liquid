@@ -711,7 +711,9 @@ HMAC:
       "alg" => "HS256"
     }
   ]
+```
 
+```liquid
 RSA:
 
   {% capture public_key %}
@@ -757,9 +759,14 @@ RSA:
   }
 {% endcapture %}
 {% assign payload = payload_string | to_hash %}
+```
 
+```liquid
 HMAC:
   {{ payload | jwt_encode: 'HS256', 'this-is-secret'  }} => 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJrZXkiOiJ2YWx1ZSIsImFub3RoZXJfa2V5IjoiYW5vdGhlciB2YWx1ZSJ9.XT8sHXyPTA9DoHzssXh1q6Uv2D1ENosW0F3Ixle85L0'
+```
+
+```liquid
 RSA:
   {% capture private_key %}
   -----BEGIN RSA PRIVATE KEY-----
