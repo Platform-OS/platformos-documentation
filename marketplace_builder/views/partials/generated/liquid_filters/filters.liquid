@@ -2,6 +2,7 @@
 converter: markdown
 ---
 {% raw %}
+
 <h2>#<strong>add_to_array</strong>(array, item)  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
 
 </h2>
@@ -710,9 +711,7 @@ HMAC:
       "alg" => "HS256"
     }
   ]
-```
 
-```liquid
 RSA:
 
   {% capture public_key %}
@@ -725,11 +724,25 @@ RSA:
 
 
 </div>
-<h2>#<strong>jwt_encode</strong>(payload, algorithm, secret = nil)  &#x21d2; <tt>Object</tt> 
+<h2>#<strong>jwt_encode</strong>(payload, algorithm, secret = nil)  &#x21d2; <tt>String</tt> 
 
 </h2>
 <div class="border-bottom mb-5 pb-5">
 
+<h3>Returns:</h3>
+
+(<tt>String</tt>) - jwt token encrypted using algorithm of your choice
+
+
+
+
+<h3>Params:</h3>
+
+<li>payload (<tt>Hash</tt>) - payload or message you want to encrypt </li>
+
+<li>algorithm (<tt>String</tt>) - algorithm you want to use for encryption. </li>
+
+<li>secret (<tt>String</tt>) - either a shared secret (for hmac) or private key for RSA  <em>(defaults to: <tt>nil</tt>)</em> </li>
 
 
 
@@ -737,20 +750,25 @@ RSA:
 <h3>Examples:</h3>
 
 ```liquid
-HMAC:
-{{ payload | jwt_encode: 'HS256', 'this-is-secret'  }} => 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJrZXkiOiJ2YWx1ZSIsImFub3RoZXJfa2V5IjoiYW5vdGhlciB2YWx1ZSJ9.XT8sHXyPTA9DoHzssXh1q6Uv2D1ENosW0F3Ixle85L0'
-```
-
-```liquid
-RSA:
-{% capture private_key %}
------BEGIN RSA PRIVATE KEY-----
-MIIEpA...
------END RSA PRIVATE KEY-----
+{% capture payload_string %}
+  {
+    "key": "value",
+    "another_key": "another value"
+  }
 {% endcapture %}
-{% assign jwt_token = payload | jwt_encode: 'RS256', private_key  %}
-{% comment %} Please note that storing private key as a plain text in a code is not a good idea. We suggest you
-              provide the key via Partner Portal and use context.constants.<name of private key constant> instead.{% endcomment %}
+{% assign payload = payload_string | to_hash %}
+
+HMAC:
+  {{ payload | jwt_encode: 'HS256', 'this-is-secret'  }} => 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJrZXkiOiJ2YWx1ZSIsImFub3RoZXJfa2V5IjoiYW5vdGhlciB2YWx1ZSJ9.XT8sHXyPTA9DoHzssXh1q6Uv2D1ENosW0F3Ixle85L0'
+RSA:
+  {% capture private_key %}
+  -----BEGIN RSA PRIVATE KEY-----
+  MIIEpA...
+  -----END RSA PRIVATE KEY-----
+  {% endcapture %}
+  {% assign jwt_token = payload | jwt_encode: 'RS256', private_key  %}
+  {% comment %} Please note that storing private key as a plain text in a code is not a good idea. We suggest you
+                provide the key via Partner Portal and use context.constants.<name of private key constant> instead.{% endcomment %}
 ```
 
 
@@ -1786,6 +1804,7 @@ which will play the video at the given url; otherwise an empty string is returne
 
 
 </div>
+
 
 
 {% endraw %}
