@@ -1,9 +1,9 @@
 <% input_fields.each do |field| %>
 
-<div class="field-entry <%= classes[:field_entry] %>">
-  <span id="<%= slugify.(field[:name]) %>" class="field-name anchored"><%= field[:name] %> (<code><a href="<%= base_url %>/<%= field[:type][:path] %>"><%= field[:type][:info] %></a></code>)</span>
+<div class="pb-2 mb-2 <%= classes[:field_entry] %>">
+  <h3><%= field[:name] %> (<code><a href="<%= base_url %>/<%= field[:type][:path] %>"><%= field[:type][:info] %></a></code>)</h3>
 
-  <div class="description-wrapper">
+  <div>
     <%= include.('notices.html', notices: field[:notices]) %>
 
     <%= markdownify.(field[:description]) %>

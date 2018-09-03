@@ -1,4 +1,4 @@
-<table class="arguments">
+<table class="table">
   <thead>
     <tr>
       <th>Argument</th>
@@ -9,9 +9,9 @@
   <tbody>
   <% arguments.each do |argument| %>
   <tr>
-    <td><code class="anchored"><%= argument[:name] %></code></td>
+    <td><%= argument[:name] %></td>
     <td>
-      <code><a href="<%= base_url %>/<%= argument[:type][:path]%>"><%= argument[:type][:info] %></a></code>
+      <a href="<%= base_url %>/<%= argument[:type][:path]%>"><%= argument[:type][:info] %></a>
     </td>
     <td>
       <%= markdownify.(argument[:description]) %>
