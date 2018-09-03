@@ -18,7 +18,6 @@ const scrollToHash = () => {
       scrollToElement(element);
     }, 400);
   } catch (e) {
-    // location.reload();
     // TODO: Customize yard generated titles to not include weirdness or else its throwing erors
   }
 };

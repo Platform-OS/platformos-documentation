@@ -1,23 +1,24 @@
-
+<div class="border-bottom mb-5 pb-5">
 <% if object.has_tag?('return') %>
-### Returns:
+<h3>Returns:</h3>
 <% object.tags('return').each do |tag| %>
 <%= format_types(tag.types) %> - <%= tag.text %>
 <% end %>
-
 <% end %>
+
 <% if object.has_tag?('param') %>
-### Params:
-
+<h3>Params:</h3>
 <% object.tags('param').each do |tag| %>
-* <%= tag.name %> <%= format_types(tag.types) %> - <%= tag.text %> <% if (o=object.parameters.assoc(tag.name.to_s)) && o[1] %> <em class="default">(defaults to: <tt><%= h o[1] %></tt>)</em> <% end %>
+<li><%= tag.name %> <%= format_types(tag.types) %> - <%= tag.text %> <% if (o=object.parameters.assoc(tag.name.to_s)) && o[1] %> <em>(defaults to: <tt><%= h o[1] %></tt>)</em> <% end %></li>
+<% end %>
 <% end %>
 
-<% end %>
 <% if object.has_tag?('example') %>
-### Examples:
+<h3>Examples:</h3>
+<% object.tags('example').each do |tag| %>
 ```liquid
-<%= object.tags('example').first&.text %>
+<%= tag.text %>
 ```
-
 <% end %>
+<% end %>
+</div>

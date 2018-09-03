@@ -1,59 +1,43 @@
 ---
 converter: markdown
 ---
-<div>
 {% raw %}
-
-
-
-<div>
-<h2 class="signature first" id="add_to_array-instance_method">
-
-#<strong>add_to_array</strong>(array, item)  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
-
-
+<h2>#<strong>add_to_array</strong>(array, item)  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>Array&lt;Object&gt;</tt>) - array to which we add the item given as the second parameter
 
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>array (<tt>Array&lt;Object&gt;</tt>) - array to which we add a new element </li>
+
+<li>item (<tt>Object</tt>) - item we add to the array </li>
 
 
-* array (<tt>Array&lt;Object&gt;</tt>) - array to which we add a new element 
-
-* item (<tt>Object</tt>) - item we add to the array 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {% assign array = 'a,b,c' | split: ',' %}
 {{ array | add_to_array: 'd' }} => ['a', 'b', 'c', 'd']
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="add_to_date-instance_method">
-
-#<strong>add_to_date</strong>(date, number_of_days)  &#x21d2; <tt>Date</tt> 
-
-
+<h2>#<strong>add_to_date</strong>(date, number_of_days)  &#x21d2; <tt>Date</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>Date</tt>) - input date/time to which the number_of_days days have been added; use negative values to obtain
 a date in the past
@@ -61,53 +45,46 @@ a date in the past
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>date (<tt>Date</tt>, <tt>String</tt>, <tt>Time</tt>) - date to which we add number_of_days </li>
+
+<li>number_of_days (<tt>Integer</tt>) - number of days to add to the input date </li>
 
 
-* date (<tt>Date</tt>, <tt>String</tt>, <tt>Time</tt>) - date to which we add number_of_days 
-
-* number_of_days (<tt>Integer</tt>) - number of days to add to the input date 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {{ '2010-01-01' | add_to_date: 1 }} => 2010-01-02
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="advanced_format-instance_method">
-
-#<strong>advanced_format</strong>(argument_to_format, format)  &#x21d2; <tt>String</tt> 
-
-
+<h2>#<strong>advanced_format</strong>(argument_to_format, format)  &#x21d2; <tt>String</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>String</tt>) - formatted string
 
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>argument_to_format (<tt>Object</tt>) - object you want to format </li>
+
+<li>format (<tt>String</tt>) - should look like: %[flags][width][.precision]type. More examples and information could be taken from: https://ruby-doc.org/core-2.5.1/Kernel.html#method-i-sprintf </li>
 
 
-* argument_to_format (<tt>Object</tt>) - object you want to format 
-
-* format (<tt>String</tt>) - should look like: %[flags][width][.precision]type. More examples and information could be taken from: https://ruby-doc.org/core-2.5.1/Kernel.html#method-i-sprintf 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {{ 3.124 | advanced_format: '%.2f' }} => 3.12
 {{ 3 | advanced_format: '%.2f' }} => 3.00
@@ -117,126 +94,98 @@ type "f" means floating point
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="any-instance_method">
-
-#<strong>any</strong>(array = [], query = &#39;true&#39;)  &#x21d2; <tt>Boolean</tt> 
-
-
+<h2>#<strong>any</strong>(array = [], query = &#39;true&#39;)  &#x21d2; <tt>Boolean</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>Boolean</tt>) - checks if given array contains at least one queried string/number
 
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>array (<tt>Array</tt>) - array to search through  <em>(defaults to: <tt>[]</tt>)</em> </li>
+
+<li>query (<tt>String</tt>, <tt>Number</tt>) - String/Number compared to each item in the given array  <em>(defaults to: <tt>&#39;true&#39;</tt>)</em> </li>
 
 
-* array (<tt>Array</tt>) - array to search through  <em class="default">(defaults to: <tt>[]</tt>)</em> 
-
-* query (<tt>String</tt>, <tt>Number</tt>) - String/Number compared to each item in the given array  <em class="default">(defaults to: <tt>&#39;true&#39;</tt>)</em> 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {% assign elements = 'foo,bar' | split: ',' %}
 {{ elements | any: 'foo' }} => true
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="asset_url-instance_method">
-
-#<strong>asset_url</strong>(file_path, **_options)  &#x21d2; <tt>String</tt> 
-
-
+<h2>#<strong>asset_url</strong>(file_path, **_options)  &#x21d2; <tt>String</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>String</tt>) - url to the physical file if existing, root asset url otherwise
 
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>file_path (<tt>String</tt>) -  </li>
 
 
-* file_path (<tt>String</tt>) -  
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {{ "valid/file.jpg" | asset_url }} => https://cdn-server.com/valid/file.jpg
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="compact-instance_method">
-
-#<strong>compact</strong>(array)  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
-
-
+<h2>#<strong>compact</strong>(array)  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>Array&lt;Object&gt;</tt>) - array from which blank values are removed
 
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>array (<tt>Array&lt;Object&gt;</tt>) - array with some blank values </li>
 
 
-* array (<tt>Array&lt;Object&gt;</tt>) - array with some blank values 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {{ array }} => [1,2,null,4]
 {{ array | compact }} => [1,2,4]
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="compute_hmac-instance_method">
-
-#<strong>compute_hmac</strong>(data, secret, algorithm = &#39;sha256&#39;)  &#x21d2; <tt>String</tt> 
-
-
+<h2>#<strong>compute_hmac</strong>(data, secret, algorithm = &#39;sha256&#39;)  &#x21d2; <tt>String</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>String</tt>) - Keyed-hash message authentication code (HMAC), that can
 be used to authenticate requests from third
@@ -245,249 +194,199 @@ party apps, for ex. Stripe webhooks requests
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>data (<tt>String</tt>) - message to be authenticated </li>
+
+<li>secret (<tt>String</tt>) - secret key </li>
+
+<li>algorithm (<tt>String</tt>) - defaults to SHA256. Supported algorithms are:
+SHA, SHA1, SHA224, SHA256, SHA384, SHA512, MD4, MDC2, MD5, RIPEMD160, DSS1  <em>(defaults to: <tt>&#39;sha256&#39;</tt>)</em> </li>
 
 
-* data (<tt>String</tt>) - message to be authenticated 
-
-* secret (<tt>String</tt>) - secret key 
-
-* algorithm (<tt>String</tt>) - defaults to SHA256. Supported algorithms are:
-SHA, SHA1, SHA224, SHA256, SHA384, SHA512, MD4, MDC2, MD5, RIPEMD160, DSS1  <em class="default">(defaults to: <tt>&#39;sha256&#39;</tt>)</em> 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {{ 'some_data' | compute_hmac: 'some_secret', 'MD4' }} => 'cabff538af5f97ccc27d481942616492'
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="detect-instance_method">
-
-#<strong>detect</strong>(objects, conditions = {})  &#x21d2; <tt>Object</tt> 
-
-
+<h2>#<strong>detect</strong>(objects, conditions = {})  &#x21d2; <tt>Object</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>Object</tt>) - with first object from collection that matches provided conditions
 
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>objects (<tt>Array&lt;Object&gt;</tt>) - array of objects to be processed </li>
+
+<li>conditions (<tt>Hash</tt>) - hash with conditions { field_name: value }  <em>(defaults to: <tt>{}</tt>)</em> </li>
 
 
-* objects (<tt>Array&lt;Object&gt;</tt>) - array of objects to be processed 
-
-* conditions (<tt>Hash</tt>) - hash with conditions { field_name: value }  <em class="default">(defaults to: <tt>{}</tt>)</em> 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {{ objects }} => [{"foo":1,"bar":"a"},{"foo":2,"bar":"b"},{"foo":3,"bar":"c"}]
 {{ objects | detect: foo: 2 }} => [{"foo":2,"bar":"b"}]
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="escape_javascript-instance_method">
-
-#<strong>escape_javascript</strong>(text)  &#x21d2; <tt>String</tt> 
-
-
+<h2>#<strong>escape_javascript</strong>(text)  &#x21d2; <tt>String</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>String</tt>) - 
 
 
 
 
-### Params:
+<h3>Params:</h3>
 
-
-* text (<tt>String</tt>) - text to be escaped 
-
+<li>text (<tt>String</tt>) - text to be escaped </li>
 
 
 
 
 </div>
-
-<div>
-<h2 class="signature " id="expand_url_template-instance_method">
-
-#<strong>expand_url_template</strong>(template, params)  &#x21d2; <tt>String</tt> 
-
-
+<h2>#<strong>expand_url_template</strong>(template, params)  &#x21d2; <tt>String</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>String</tt>) - url
 
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>template (<tt>String</tt>) - - url template </li>
+
+<li>params (<tt>Hash</tt>) - - url data </li>
 
 
-* template (<tt>String</tt>) - - url template 
-
-* params (<tt>Hash</tt>) - - url data 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {{ "/search/{city}/{street}" | expand_url_template city: "Sydney", street: "BlueRoad" }}
 => /search/Sydney/BlueRoad
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="extract_url_params-instance_method">
-
-#<strong>extract_url_params</strong>(url, templates)  &#x21d2; <tt>Hash</tt> 
-
-
+<h2>#<strong>extract_url_params</strong>(url, templates)  &#x21d2; <tt>Hash</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>Hash</tt>) - params
 
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>url (<tt>String</tt>) -  </li>
+
+<li>templates (<tt>String</tt>, <tt>Array&lt;String&gt;</tt>) - url templates array </li>
 
 
-* url (<tt>String</tt>) -  
-
-* templates (<tt>String</tt>, <tt>Array&lt;String&gt;</tt>) - url templates array 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {{ "/search/Sydney/BlueRoad" | extract_url_params: "/search/{city}/{street}" }}
 => {"city"=>"Sydney", "street"=>"BlueRoad"}
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="fetch-instance_method">
-
-#<strong>fetch</strong>(hash, key)  &#x21d2; <tt>Object</tt> 
-
-
+<h2>#<strong>fetch</strong>(hash, key)  &#x21d2; <tt>Object</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>Object</tt>) - 
 
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>hash (<tt>Hash</tt>) -  </li>
+
+<li>key (<tt>String</tt>) -  </li>
 
 
-* hash (<tt>Hash</tt>) -  
-
-* key (<tt>String</tt>) -  
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {{ users | first | fetch: "name"}} => "Jane"
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="flatten-instance_method">
-
-#<strong>flatten</strong>(array)  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
-
-
+<h2>#<strong>flatten</strong>(array)  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>Array&lt;Object&gt;</tt>) - with objects
 
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>array (<tt>Array&lt;Array&gt;</tt>) - array of arrays to be processed </li>
 
 
-* array (<tt>Array&lt;Array&gt;</tt>) - array of arrays to be processed 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {{ array_of_arrays }} => [[1,2], [3,4], [5,6]]
 {{ array_of_arrays | flatten }} => [1,2,3,4,5,6]
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="group_by-instance_method">
-
-#<strong>group_by</strong>(objects, method_name)  &#x21d2; <tt>Hash&lt;MethodResult =&gt; Array&lt;Object&gt;&gt;</tt> 
-
-
+<h2>#<strong>group_by</strong>(objects, method_name)  &#x21d2; <tt>Hash&lt;MethodResult =&gt; Array&lt;Object&gt;&gt;</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>Hash&lt;MethodResult =&gt; Array&lt;Object&gt;&gt;</tt>) - the original array grouped by method
 specified by the second parameter
@@ -495,17 +394,17 @@ specified by the second parameter
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>objects (<tt>Array&lt;Object&gt;</tt>) - array to be grouped </li>
+
+<li>method_name (<tt>String</tt>) - method name to be used to group Objects </li>
 
 
-* objects (<tt>Array&lt;Object&gt;</tt>) - array to be grouped 
-
-* method_name (<tt>String</tt>) - method name to be used to group Objects 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {{ objects }} =>  [
   { size: 'xl', color: 'red'},
@@ -516,20 +415,13 @@ specified by the second parameter
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="html_safe-instance_method">
-
-#<strong>html_safe</strong>(text)  &#x21d2; <tt>String</tt> 
-
-
+<h2>#<strong>html_safe</strong>(text)  &#x21d2; <tt>String</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>String</tt>) - returns string that can be rendered with all html tags
 by default all variables are striped from danger html tags
@@ -537,28 +429,20 @@ by default all variables are striped from danger html tags
 
 
 
-### Params:
+<h3>Params:</h3>
 
-
-* text (<tt>String</tt>) -  
-
+<li>text (<tt>String</tt>) -  </li>
 
 
 
 
 </div>
-
-<div>
-<h2 class="signature " id="humanize-instance_method">
-
-#<strong>humanize</strong>(key)  &#x21d2; <tt>String</tt> 
-
-
+<h2>#<strong>humanize</strong>(key)  &#x21d2; <tt>String</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>String</tt>) - a human readable string derived from the input; capitalizes the first word, turns
 underscores into spaces, and strips a trailing '_id' if present. Meant for creating pretty output.
@@ -566,34 +450,27 @@ underscores into spaces, and strips a trailing '_id' if present. Meant for creat
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>key (<tt>String</tt>) - input string to be transformed </li>
 
 
-* key (<tt>String</tt>) - input string to be transformed 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {{ 'car_model' | humanize }} => 'Car model'
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="in_groups_of-instance_method">
-
-#<strong>in_groups_of</strong>(array, integer)  &#x21d2; <tt>Array&lt;Array&lt;Object&gt;&gt;</tt> 
-
-
+<h2>#<strong>in_groups_of</strong>(array, integer)  &#x21d2; <tt>Array&lt;Array&lt;Object&gt;&gt;</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>Array&lt;Array&lt;Object&gt;&gt;</tt>) - the original array split into groups having the size
 specified by the second parameter (an array of arrays)
@@ -601,54 +478,47 @@ specified by the second parameter (an array of arrays)
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>array (<tt>Array&lt;Object&gt;</tt>) - array to be split into groups </li>
+
+<li>integer (<tt>Integer</tt>) - the size of each group the array is to be split into </li>
 
 
-* array (<tt>Array&lt;Object&gt;</tt>) - array to be split into groups 
-
-* integer (<tt>Integer</tt>) - the size of each group the array is to be split into 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {% assign elements = '1,2,3,4' | split: ','
 {{ elements | in_groups_of: 3 }} => [[1, 2, 3], [4, null, null]]
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="intersection-instance_method">
-
-#<strong>intersection</strong>(array, other_array)  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
-
-
+<h2>#<strong>intersection</strong>(array, other_array)  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>Array&lt;Object&gt;</tt>) - that exists in both arrays
 
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>array (<tt>Array&lt;Object&gt;</tt>) - array of objects to be processed </li>
+
+<li>other_array (<tt>Array&lt;Object&gt;</tt>) - array of objects to be processed </li>
 
 
-* array (<tt>Array&lt;Object&gt;</tt>) - array of objects to be processed 
-
-* other_array (<tt>Array&lt;Object&gt;</tt>) - array of objects to be processed 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {% assign array = '1,2,3,4' | split: ',' %}
 {% assign other_array = '3,4,5,6' | split: ',' %}
@@ -657,213 +527,161 @@ specified by the second parameter (an array of arrays)
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="is_date_before-instance_method">
-
-#<strong>is_date_before</strong>(first_date, second_date)  &#x21d2; <tt>Boolean</tt> 
-
-
-
-<span class="aliases">Also known as:
-<span class="names"><span id='date_before-instance_method'>date_before</span></span>
-</span>
-
+<h2>#<strong>is_date_before</strong>(first_date, second_date)  &#x21d2; <tt>Boolean</tt> 
+<small>Also known as: date_before</small>
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>Boolean</tt>) - returns true if first date is lower than second date
 
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>first_date (<tt>DateTime</tt>) - time which will be compared to the second one </li>
+
+<li>second_date (<tt>DateTime</tt>) - second time, against which we will do comparison </li>
 
 
-* first_date (<tt>DateTime</tt>) - time which will be compared to the second one 
-
-* second_date (<tt>DateTime</tt>) - second time, against which we will do comparison 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {{ '2010-01-02' | date_before: '2010-01-03' }} => true
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="is_date_in_past-instance_method">
-
-#<strong>is_date_in_past</strong>(date)  &#x21d2; <tt>Boolean</tt> 
-
-
+<h2>#<strong>is_date_in_past</strong>(date)  &#x21d2; <tt>Boolean</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>Boolean</tt>) - true if date passed is in the past, false otherwise
 
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>date (<tt>Date</tt>, <tt>String</tt>, <tt>Time</tt>) - date object, can be also a string </li>
 
 
-* date (<tt>Date</tt>, <tt>String</tt>, <tt>Time</tt>) - date object, can be also a string 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {{ '2010-01-01' | is_date_in_past }} => true
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="is_included_in_array-instance_method">
-
-#<strong>is_included_in_array</strong>(array, el)  &#x21d2; <tt>Boolean</tt> 
-
-
+<h2>#<strong>is_included_in_array</strong>(array, el)  &#x21d2; <tt>Boolean</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>Boolean</tt>) - whether the array includes the element given
 
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>array (<tt>Array</tt>) - array of elements where we look into </li>
+
+<li>el (<tt>Object</tt>) - we will look for this element inside the array </li>
 
 
-* array (<tt>Array</tt>) - array of elements where we look into 
-
-* el (<tt>Object</tt>) - we will look for this element inside the array 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {% assign elements = 'a,b,c,d' | split: ',' %}
 {{ elements | is_included_in_array: 'c' }} => true
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="is_token_valid-instance_method">
-
-#<strong>is_token_valid</strong>(token, user_id)  &#x21d2; <tt>Boolean</tt> 
-
-
+<h2>#<strong>is_token_valid</strong>(token, user_id)  &#x21d2; <tt>Boolean</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>Boolean</tt>) - returns true if the token has not expired and was generated for given user
 
 
 
 
-### Params:
+<h3>Params:</h3>
 
+<li>token (<tt>String</tt>) - encrypted token generated via temporary_token graphql property </li>
 
-* token (<tt>String</tt>) - encrypted token generated via temporary_token graphql property 
-
-* user_id (<tt>Integer</tt>) - id of the user who generated token 
-
+<li>user_id (<tt>Integer</tt>) - id of the user who generated token </li>
 
 
 
 
 </div>
-
-<div>
-<h2 class="signature " id="json-instance_method">
-
-#<strong>json</strong>(object)  &#x21d2; <tt>String</tt> 
-
-
-
-<span class="aliases">Also known as:
-<span class="names"><span id='to_json-instance_method'>to_json</span></span>
-</span>
-
+<h2>#<strong>json</strong>(object)  &#x21d2; <tt>String</tt> 
+<small>Also known as: to_json</small>
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>String</tt>) - JSON formatted string containing a representation of object
 
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>object (<tt>Object</tt>) - object we want a JSON representation of </li>
 
 
-* object (<tt>Object</tt>) - object we want a JSON representation of 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {{ user | json }} => {"name":"Mike","email":"mike@mail.com"}
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="jwt_decode-instance_method">
-
-#<strong>jwt_decode</strong>(encoded_token, algorithm, secret = nil)  &#x21d2; <tt>Hash</tt> 
-
-
+<h2>#<strong>jwt_decode</strong>(encoded_token, algorithm, secret = nil)  &#x21d2; <tt>Hash</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>Hash</tt>) - result of decoded jwt token
 
 
 
 
-### Params:
+<h3>Params:</h3>
 
+<li>encoded_token (<tt>String</tt>) - encoded jwt token you want to decode </li>
 
-* encoded_token (<tt>String</tt>) - encoded jwt token you want to decode 
+<li>algorithm (<tt>String</tt>) - algorithm which was used to encode the token </li>
 
-* algorithm (<tt>String</tt>) - algorithm which was used to encode the token 
-
-* secret (<tt>String</tt>) - either a shared secret (for hmac) or a PUBLIC key for RSA
+<li>secret (<tt>String</tt>) - either a shared secret (for hmac) or a PUBLIC key for RSA
 Valid options:
   none - unsigned token
   HS256 - HMAC using SHA-256 hash algorithm
@@ -871,12 +689,13 @@ Valid options:
   HS512 - HMAC using SHA-512 hash algorithm
   RS256 - RSA using SHA-256 hash algorithm
   RS384 - RSA using SHA-384 hash algorithm
-  RS512 - RSA using SHA-512 hash algorithm  <em class="default">(defaults to: <tt>nil</tt>)</em> 
+  RS512 - RSA using SHA-512 hash algorithm  <em>(defaults to: <tt>nil</tt>)</em> </li>
 
 
 
 
-### Examples:
+<h3>Examples:</h3>
+
 ```liquid
 HMAC:
 
@@ -891,7 +710,9 @@ HMAC:
       "alg" => "HS256"
     }
   ]
+```
 
+```liquid
 RSA:
 
   {% capture public_key %}
@@ -903,155 +724,104 @@ RSA:
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="jwt_encode-instance_method">
-
-#<strong>jwt_encode</strong>(payload, algorithm, secret = nil)  &#x21d2; <tt>String</tt> 
-
-
+<h2>#<strong>jwt_encode</strong>(payload, algorithm, secret = nil)  &#x21d2; <tt>Object</tt> 
 
 </h2>
-
-
-### Returns:
-
-(<tt>String</tt>) - jwt token encrypted using algorithm of your choice
+<div class="border-bottom mb-5 pb-5">
 
 
 
 
-### Params:
 
+<h3>Examples:</h3>
 
-* payload (<tt>Hash</tt>) - payload or message you want to encrypt 
-
-* algorithm (<tt>String</tt>) - algorithm you want to use for encryption. 
-
-* secret (<tt>String</tt>) - either a shared secret (for hmac) or private key for RSA  <em class="default">(defaults to: <tt>nil</tt>)</em> 
-
-
-
-
-### Examples:
 ```liquid
-{% capture payload_string %}
-  {
-    "key": "value",
-    "another_key": "another value"
-  }
-{% endcapture %}
-{% assign payload = payload_string | to_hash %}
-
 HMAC:
-  {{ payload | jwt_encode: 'HS256', 'this-is-secret'  }} => 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJrZXkiOiJ2YWx1ZSIsImFub3RoZXJfa2V5IjoiYW5vdGhlciB2YWx1ZSJ9.XT8sHXyPTA9DoHzssXh1q6Uv2D1ENosW0F3Ixle85L0'
+{{ payload | jwt_encode: 'HS256', 'this-is-secret'  }} => 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJrZXkiOiJ2YWx1ZSIsImFub3RoZXJfa2V5IjoiYW5vdGhlciB2YWx1ZSJ9.XT8sHXyPTA9DoHzssXh1q6Uv2D1ENosW0F3Ixle85L0'
+```
+
+```liquid
 RSA:
-  {% capture private_key %}
-  -----BEGIN RSA PRIVATE KEY-----
-  MIIEpA...
-  -----END RSA PRIVATE KEY-----
-  {% endcapture %}
-  {% assign jwt_token = payload | jwt_encode: 'RS256', private_key  %}
-  {% comment %} Please note that storing private key as a plain text in a code is not a good idea. We suggest you
-                provide the key via Partner Portal and use context.constants.<name of private key constant> instead.{% endcomment %}
+{% capture private_key %}
+-----BEGIN RSA PRIVATE KEY-----
+MIIEpA...
+-----END RSA PRIVATE KEY-----
+{% endcapture %}
+{% assign jwt_token = payload | jwt_encode: 'RS256', private_key  %}
+{% comment %} Please note that storing private key as a plain text in a code is not a good idea. We suggest you
+              provide the key via Partner Portal and use context.constants.<name of private key constant> instead.{% endcomment %}
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="limit-instance_method">
-
-#<strong>limit</strong>(array, limit)  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
-
-
+<h2>#<strong>limit</strong>(array, limit)  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>Array&lt;Object&gt;</tt>) - parameter; [1,2,3,4] limited to 2 elements gives [1,2]
 
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>array (<tt>Array&lt;Object&gt;</tt>) - array to be shrank </li>
+
+<li>limit (<tt>Integer</tt>) - number of elements to be returned </li>
 
 
-* array (<tt>Array&lt;Object&gt;</tt>) - array to be shrank 
-
-* limit (<tt>Integer</tt>) - number of elements to be returned 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 items => [{id: 1, name: 'foo', label: 'Foo'}, {id: 2, name: 'bar', label: 'Bar'}]
 {{ items | limit: 1 }} => [{ id: 1, name: 'foo', label: 'Foo' }]
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="localize-instance_method">
-
-#<strong>localize</strong>(datetime, format = &#39;long&#39;)  &#x21d2; <tt>String</tt><sup>?</sup> 
-
-
-
-<span class="aliases">Also known as:
-<span class="names"><span id='l-instance_method'>l</span></span>
-</span>
-
+<h2>#<strong>localize</strong>(datetime, format = &#39;long&#39;)  &#x21d2; <tt>String</tt><sup>?</sup> 
+<small>Also known as: l</small>
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>String</tt>, <tt>nil</tt>) - formatted representation of the passed in DateTime object
 
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>datetime (<tt>String</tt>, <tt>DateTime</tt>) - DateTime object to be formatted; can be a string and it will be converted
+to a date </li>
+
+<li>format (<tt>String</tt>) - the format to be used for formatting the date; default is 'long'; other values can be used:
+they are taken from translations, keys are of the form 'time.formats.#!{format_name}'  <em>(defaults to: <tt>&#39;long&#39;</tt>)</em> </li>
 
 
-* datetime (<tt>String</tt>, <tt>DateTime</tt>) - DateTime object to be formatted; can be a string and it will be converted
-to a date 
-
-* format (<tt>String</tt>) - the format to be used for formatting the date; default is 'long'; other values can be used:
-they are taken from translations, keys are of the form 'time.formats.#!{format_name}'  <em class="default">(defaults to: <tt>&#39;long&#39;</tt>)</em> 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {{ '2010-01-01' | localize }} => 'January 01, 2010'
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="map-instance_method">
-
-#<strong>map</strong>(object, method)  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
-
-
+<h2>#<strong>map</strong>(object, method)  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>Array&lt;Object&gt;</tt>) - array of objects obtained from the original array of objects
 (passed in as the object parameter) by calling the method 'method' on each object
@@ -1060,165 +830,133 @@ in the original array
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>object (<tt>Array&lt;Object&gt;</tt>) - array of objects to be processed </li>
+
+<li>method (<tt>String</tt>) - method name to be called on each of the objects in the passed
+in array of objects </li>
 
 
-* object (<tt>Array&lt;Object&gt;</tt>) - array of objects to be processed 
-
-* method (<tt>String</tt>) - method name to be called on each of the objects in the passed
-in array of objects 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {% assign objects = '[{"id":1,"name":"foo","label":"Foo"},{"id":2,"name":"bar","label":"Bar"}]' %}
 {{ objects | map: 'name' }} => ['foo', 'bar']
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="map_attributes-instance_method">
-
-#<strong>map_attributes</strong>(array, *attributes)  &#x21d2; <tt>Array&lt;Array&gt;</tt> 
-
-
+<h2>#<strong>map_attributes</strong>(array, *attributes)  &#x21d2; <tt>Array&lt;Array&gt;</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>Array&lt;Array&gt;</tt>) - array of arrays with values for given keys
 
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>array (<tt>Array&lt;Object&gt;</tt>) - array of objects to be processed </li>
+
+<li>attributes (<tt>Array&lt;String&gt;</tt>) - array of keys to be extracted </li>
 
 
-* array (<tt>Array&lt;Object&gt;</tt>) - array of objects to be processed 
-
-* attributes (<tt>Array&lt;String&gt;</tt>) - array of keys to be extracted 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 items => [{id: 1, name: 'foo', label: 'Foo'}, {id: 2, name: 'bar', label: 'Bar'}]
 {{ items | map_attributes: 'id', 'name' }} => [[1, 'foo'], [2, 'bar']]
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="markdownify-instance_method">
-
-#<strong>markdownify</strong>(text)  &#x21d2; <tt>String</tt> 
-
-
+<h2>#<strong>markdownify</strong>(text)  &#x21d2; <tt>String</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>String</tt>) - processed text with markdown syntax changed to HTML
 
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>text (<tt>String</tt>) - text using markdown syntax </li>
 
 
-* text (<tt>String</tt>) - text using markdown syntax 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {{ '# Foo' | markdownify }} => '<h1>Foo</h1>'
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="matches-instance_method">
-
-#<strong>matches</strong>(text, regexp)  &#x21d2; <tt>Boolean</tt> 
-
-
+<h2>#<strong>matches</strong>(text, regexp)  &#x21d2; <tt>Boolean</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>Boolean</tt>) - whether the given string matches the given regular expression
 
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>text (<tt>String</tt>) - string we check against the regular expression </li>
+
+<li>regexp (<tt>String</tt>) - string representing a regular expression pattern against which
+we try to match the first parameter </li>
 
 
-* text (<tt>String</tt>) - string we check against the regular expression 
-
-* regexp (<tt>String</tt>) - string representing a regular expression pattern against which
-we try to match the first parameter 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {{ 'foo' | matches: '[a-z]' }} => true
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="new_line_to_br-instance_method">
-
-#<strong>new_line_to_br</strong>(html = &#39;&#39;)  &#x21d2; <tt>String</tt> 
-
-
-
-<span class="aliases">Also known as:
-<span class="names"><span id='nl2br-instance_method'>nl2br</span></span>
-</span>
-
+<h2>#<strong>new_line_to_br</strong>(html = &#39;&#39;)  &#x21d2; <tt>String</tt> 
+<small>Also known as: nl2br</small>
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>String</tt>) - replaces newlines in the input string with the <br /> HTML tag
 
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>html (<tt>String</tt>) - HTML string to be processed  <em>(defaults to: <tt>&#39;&#39;</tt>)</em> </li>
 
 
-* html (<tt>String</tt>) - HTML string to be processed  <em class="default">(defaults to: <tt>&#39;&#39;</tt>)</em> 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {% capture text %}
   foo
@@ -1229,37 +967,30 @@ we try to match the first parameter
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="number_of_minutes_until-instance_method">
-
-#<strong>number_of_minutes_until</strong>(end_time, start_time = Time.zone.now)  &#x21d2; <tt>Integer</tt> 
-
-
+<h2>#<strong>number_of_minutes_until</strong>(end_time, start_time = Time.zone.now)  &#x21d2; <tt>Integer</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>Integer</tt>) - number of minutes
 
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>end_time (<tt>DateTime</tt>) - a date time object, must be after start_time </li>
+
+<li>start_time (<tt>DateTime</tt>) - defaults to current time  <em>(defaults to: <tt>Time.zone.now</tt>)</em> </li>
 
 
-* end_time (<tt>DateTime</tt>) - a date time object, must be after start_time 
-
-* start_time (<tt>DateTime</tt>) - defaults to current time  <em class="default">(defaults to: <tt>Time.zone.now</tt>)</em> 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 assuming it's 9:30am CET
 {{ 'today 10am' | to_time: '', 'CET' | number_of_minutes_until }} => 30
@@ -1267,58 +998,44 @@ assuming it's 9:30am CET
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="pad_left-instance_method">
-
-#<strong>pad_left</strong>(str, count, symbol = &#39; &#39;)  &#x21d2; <tt>String</tt> 
-
-
+<h2>#<strong>pad_left</strong>(str, count, symbol = &#39; &#39;)  &#x21d2; <tt>String</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>String</tt>) - returns string padded from left to length of count with symbol character
 
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>str (<tt>String</tt>) - string to pad </li>
+
+<li>count (<tt>Integer</tt>) - minimum length of output string </li>
+
+<li>symbol (<tt>String</tt>) - string to pad with  <em>(defaults to: <tt>&#39; &#39;</tt>)</em> </li>
 
 
-* str (<tt>String</tt>) - string to pad 
-
-* count (<tt>Integer</tt>) - minimum length of output string 
-
-* symbol (<tt>String</tt>) - string to pad with  <em class="default">(defaults to: <tt>&#39; &#39;</tt>)</em> 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {{ 'foo' | pad_left: 5 }} => '  foo'
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="parameterize-instance_method">
-
-#<strong>parameterize</strong>(text, separator = &#39;-&#39;)  &#x21d2; <tt>String</tt> 
-
-
+<h2>#<strong>parameterize</strong>(text, separator = &#39;-&#39;)  &#x21d2; <tt>String</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>String</tt>) - replaces special characters in a string so that it may be used as part of a 'pretty' URL;
 the default separator used is '-';
@@ -1326,214 +1043,172 @@ the default separator used is '-';
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>text (<tt>String</tt>) - input string to be 'parameterized' </li>
+
+<li>separator (<tt>String</tt>) - string to be used as separator in the output string; default is '-'  <em>(defaults to: <tt>&#39;-&#39;</tt>)</em> </li>
 
 
-* text (<tt>String</tt>) - input string to be 'parameterized' 
-
-* separator (<tt>String</tt>) - string to be used as separator in the output string; default is '-'  <em class="default">(defaults to: <tt>&#39;-&#39;</tt>)</em> 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {{ 'John arrived_foo' | parameterize }} => 'john-arrived_foo'
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="pluralize-instance_method">
-
-#<strong>pluralize</strong>(string, count = 2)  &#x21d2; <tt>String</tt> 
-
-
+<h2>#<strong>pluralize</strong>(string, count = 2)  &#x21d2; <tt>String</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>String</tt>) - pluralized version of the input string
 
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>string (<tt>String</tt>) - string to be pluralized </li>
+
+<li>count (<tt>Number</tt>) - optional count number based on which string will be pluralized or singularized  <em>(defaults to: <tt>2</tt>)</em> </li>
 
 
-* string (<tt>String</tt>) - string to be pluralized 
-
-* count (<tt>Number</tt>) - optional count number based on which string will be pluralized or singularized  <em class="default">(defaults to: <tt>2</tt>)</em> 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {{ 'dog' | pluralize: 1 }} => 'dog'
 {{ 'dog' | pluralize: 2 }} => 'dogs'
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="pricify-instance_method">
-
-#<strong>pricify</strong>(amount, currency = &#39;USD&#39;, options = {})  &#x21d2; <tt>String</tt> 
-
-
+<h2>#<strong>pricify</strong>(amount, currency = &#39;USD&#39;, options = {})  &#x21d2; <tt>String</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>String</tt>) - formatted price using the global price formatting rules
 
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>amount (<tt>Numeric</tt>, <tt>String</tt>) - amount to be formatted </li>
+
+<li>currency (<tt>String</tt>) - currency to be used for formatting  <em>(defaults to: <tt>&#39;USD&#39;</tt>)</em> </li>
 
 
-* amount (<tt>Numeric</tt>, <tt>String</tt>) - amount to be formatted 
-
-* currency (<tt>String</tt>) - currency to be used for formatting  <em class="default">(defaults to: <tt>&#39;USD&#39;</tt>)</em> 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {{ 1 | pricify }} => '$1 USD'
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="pricify_cents-instance_method">
-
-#<strong>pricify_cents</strong>(amount, currency = &#39;USD&#39;, options = {})  &#x21d2; <tt>String</tt> 
-
-
+<h2>#<strong>pricify_cents</strong>(amount, currency = &#39;USD&#39;, options = {})  &#x21d2; <tt>String</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>String</tt>) - formatted price using the global price formatting rules
 
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>amount (<tt>Numeric</tt>, <tt>String</tt>) - amount in cents to be formatted </li>
+
+<li>currency (<tt>String</tt>) - currency to be used for formatting  <em>(defaults to: <tt>&#39;USD&#39;</tt>)</em> </li>
 
 
-* amount (<tt>Numeric</tt>, <tt>String</tt>) - amount in cents to be formatted 
-
-* currency (<tt>String</tt>) - currency to be used for formatting  <em class="default">(defaults to: <tt>&#39;USD&#39;</tt>)</em> 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {{ 1 | pricify_cents }} => '$0.01 USD'
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="querify-instance_method">
-
-#<strong>querify</strong>(hash)  &#x21d2; <tt>String</tt> 
-
-
+<h2>#<strong>querify</strong>(hash)  &#x21d2; <tt>String</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>String</tt>) - a query string
 
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>hash (<tt>Hash{Object =&gt; Object}</tt>) - hash to be "querified" </li>
 
 
-* hash (<tt>Hash{Object =&gt; Object}</tt>) - hash to be "querified" 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {{ hash }} => { 'name' => 'Dan', 'id' => 1 }
 {{ hash | querify }} => 'name=Dan&id=1'
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="random_string-instance_method">
-
-#<strong>random_string</strong>(length = 12)  &#x21d2; <tt>String</tt> 
-
-
+<h2>#<strong>random_string</strong>(length = 12)  &#x21d2; <tt>String</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>String</tt>) - returns a random alphanumeric string of given length;
 
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>length (<tt>Int</tt>) - how many random characters should be included. Default 12  <em>(defaults to: <tt>12</tt>)</em> </li>
 
 
-* length (<tt>Int</tt>) - how many random characters should be included. Default 12  <em class="default">(defaults to: <tt>12</tt>)</em> 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {{ 10 | random_string }} => '6a1ee26292227f64fcbf'
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="raw_escape_string-instance_method">
-
-#<strong>raw_escape_string</strong>(value)  &#x21d2; <tt>String</tt> 
-
-
+<h2>#<strong>raw_escape_string</strong>(value)  &#x21d2; <tt>String</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>String</tt>) - input string HTML-escaped; this will return a string whose HTML tags will be visible in
 the browser
@@ -1541,34 +1216,27 @@ the browser
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>value (<tt>String</tt>) - input string to be HTML-escaped </li>
 
 
-* value (<tt>String</tt>) - input string to be HTML-escaped 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {{ 'foo<b>bar</b>' | raw_escape_string }} => 'foo&lt;b&gt;bar&lt;/b&gt;'
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="regex_matches-instance_method">
-
-#<strong>regex_matches</strong>(text, regexp)  &#x21d2; <tt>Array&lt;Array&lt;String&gt;&gt;</tt> 
-
-
+<h2>#<strong>regex_matches</strong>(text, regexp)  &#x21d2; <tt>Array&lt;Array&lt;String&gt;&gt;</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>Array&lt;Array&lt;String&gt;&gt;</tt>) - matches for the expression in the string;
 each item in the array is an array containing all groups matches; for example
@@ -1578,17 +1246,17 @@ for the regex (.)(.) and the text 'abcdef', the result will look like:
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>text (<tt>String</tt>) -  </li>
+
+<li>regexp (<tt>String</tt>) - regexp to use for matching </li>
 
 
-* text (<tt>String</tt>) -  
-
-* regexp (<tt>String</tt>) - regexp to use for matching 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 To retrieve the URL from a meta tag see the example below:
 {% assign text = '<html><head><meta property="og:image" content="http://somehost.com/someimage.jpg" /></head><body>content</body></html>' | html_safe %}
@@ -1602,57 +1270,43 @@ To retrieve the URL from a meta tag see the example below:
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="reject-instance_method">
-
-#<strong>reject</strong>(objects, conditions = {})  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
-
-
+<h2>#<strong>reject</strong>(objects, conditions = {})  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>Array&lt;Object&gt;</tt>) - with objects from collection that don't match provided conditions
 
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>objects (<tt>Array&lt;Object&gt;</tt>) - array of objects to be processed </li>
+
+<li>conditions (<tt>Hash</tt>) - hash with conditions { field_name: value }  <em>(defaults to: <tt>{}</tt>)</em> </li>
 
 
-* objects (<tt>Array&lt;Object&gt;</tt>) - array of objects to be processed 
-
-* conditions (<tt>Hash</tt>) - hash with conditions { field_name: value }  <em class="default">(defaults to: <tt>{}</tt>)</em> 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {{ objects }} => [{"foo":1,"bar":"a"},{"foo":2,"bar":"b"},{"foo":3,"bar":"c"},{"foo":2,"bar":"d"}]
 {{ objects | reject: foo: 2 }} => [{"foo":1,"bar":"a"},{"foo":3,"bar":"c"}]
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="rotate-instance_method">
-
-#<strong>rotate</strong>(array, count = 1)  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
-
-
+<h2>#<strong>rotate</strong>(array, count = 1)  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>Array&lt;Object&gt;</tt>) - the input array rotated by a number of times given as the second
 parameter; [1,2,3,4] rotated by 2 gives [3,4,1,2]
@@ -1660,142 +1314,114 @@ parameter; [1,2,3,4] rotated by 2 gives [3,4,1,2]
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>array (<tt>Array&lt;Object&gt;</tt>) - array to be rotated </li>
+
+<li>count (<tt>Integer</tt>) - number of times to rotate the input array  <em>(defaults to: <tt>1</tt>)</em> </li>
 
 
-* array (<tt>Array&lt;Object&gt;</tt>) - array to be rotated 
-
-* count (<tt>Integer</tt>) - number of times to rotate the input array  <em class="default">(defaults to: <tt>1</tt>)</em> 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {% assign numbers = "1,2,3" | split: "," %}
 {{ numbers | rotate }} => [3,2,1]
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="select-instance_method">
-
-#<strong>select</strong>(objects, conditions = {})  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
-
-
+<h2>#<strong>select</strong>(objects, conditions = {})  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>Array&lt;Object&gt;</tt>) - with objects from collection that matches provided conditions
 
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>objects (<tt>Array&lt;Object&gt;</tt>) - array of objects to be processed </li>
+
+<li>conditions (<tt>Hash</tt>) - hash with conditions { field_name: value }  <em>(defaults to: <tt>{}</tt>)</em> </li>
 
 
-* objects (<tt>Array&lt;Object&gt;</tt>) - array of objects to be processed 
-
-* conditions (<tt>Hash</tt>) - hash with conditions { field_name: value }  <em class="default">(defaults to: <tt>{}</tt>)</em> 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {{ objects }} => [{"foo":1,"bar":"a"},{"foo":2,"bar":"b"},{"foo":3,"bar":"c"},{"foo":2,"bar":"d"}]
 {{ objects | select: foo: 2 }} => [{"foo":2,"bar":"b"},{"foo":2,"bar":"d"}]
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="sha1-instance_method">
-
-#<strong>sha1</strong>(object)  &#x21d2; <tt>String</tt> 
-
-
+<h2>#<strong>sha1</strong>(object)  &#x21d2; <tt>String</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>String</tt>) - SHA1 digest of the input object
 
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>object (<tt>String</tt>) - input object whose digest we want to obtain </li>
 
 
-* object (<tt>String</tt>) - input object whose digest we want to obtain 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {{ 'foo' | sha1 }} => '0beec7b5ea3f0fdbc95d0dd47f3c5bc275da8a33'
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="slugify-instance_method">
-
-#<strong>slugify</strong>(text)  &#x21d2; <tt>String</tt> 
-
-
+<h2>#<strong>slugify</strong>(text)  &#x21d2; <tt>String</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>String</tt>) - replaces special characters in a string so that it may be used as part of a 'pretty' URL;
 
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>text (<tt>String</tt>) - input string to be 'slugified' </li>
 
 
-* text (<tt>String</tt>) - input string to be 'slugified' 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {{ 'John arrived_foo' | slugify }} => 'john-arrived-foo'
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="strftime-instance_method">
-
-#<strong>strftime</strong>(date, format, zone = nil)  &#x21d2; <tt>String</tt> 
-
-
+<h2>#<strong>strftime</strong>(date, format, zone = nil)  &#x21d2; <tt>String</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>String</tt>) - formatted representation of the date object; the formatted representation
 will be based on what the format parameter specifies
@@ -1803,20 +1429,20 @@ will be based on what the format parameter specifies
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>date (<tt>Date</tt>, <tt>Time</tt>, <tt>DateTime</tt>) - date object </li>
+
+<li>format (<tt>String</tt>) - string representing the desired output format </li>
+
+<li>zone (<tt>String</tt>) - string representing the time zone
+e.g. '%Y-%m-%d' will result in something like '2020-12-12'  <em>(defaults to: <tt>nil</tt>)</em> </li>
 
 
-* date (<tt>Date</tt>, <tt>Time</tt>, <tt>DateTime</tt>) - date object 
-
-* format (<tt>String</tt>) - string representing the desired output format 
-
-* zone (<tt>String</tt>) - string representing the time zone
-e.g. '%Y-%m-%d' will result in something like '2020-12-12'  <em class="default">(defaults to: <tt>nil</tt>)</em> 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {{ '2018-05-30T09:12:34.000-07:00' | strftime: '%Y-%m-%d %H:%M' }} => 2018-05-30 09:12
 
@@ -1825,37 +1451,30 @@ e.g. '%Y-%m-%d' will result in something like '2020-12-12'  <em class="default">
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="subtract_array-instance_method">
-
-#<strong>subtract_array</strong>(array, other_array)  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
-
-
+<h2>#<strong>subtract_array</strong>(array, other_array)  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>Array&lt;Object&gt;</tt>) - that is a difference between two arrays
 
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>array (<tt>Array&lt;Object&gt;</tt>) - array of objects to be processed </li>
+
+<li>other_array (<tt>Array&lt;Object&gt;</tt>) - array of objects to be processed </li>
 
 
-* array (<tt>Array&lt;Object&gt;</tt>) - array of objects to be processed 
-
-* other_array (<tt>Array&lt;Object&gt;</tt>) - array of objects to be processed 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {% assign array = '1,2' | split: ',' %}
 {% assign other_array = '2' | split: ',' %}
@@ -1864,55 +1483,41 @@ e.g. '%Y-%m-%d' will result in something like '2020-12-12'  <em class="default">
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="sum_array-instance_method">
-
-#<strong>sum_array</strong>(array)  &#x21d2; <tt>Numeric</tt> 
-
-
+<h2>#<strong>sum_array</strong>(array)  &#x21d2; <tt>Numeric</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>Numeric</tt>) - summarised value of array
 
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>array (<tt>Array&lt;Numeric&gt;</tt>) - array with values to be summarised </li>
 
 
-* array (<tt>Array&lt;Numeric&gt;</tt>) - array with values to be summarised 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {% assign numbers = '1,2,3' | split: ',' %}
 {{ numbers | sum_array }} => 6
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="titleize-instance_method">
-
-#<strong>titleize</strong>(text)  &#x21d2; <tt>String</tt> 
-
-
+<h2>#<strong>titleize</strong>(text)  &#x21d2; <tt>String</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>String</tt>) - capitalizes all the words and replaces some characters in the string to create
 a nicer looking title; it is meant for creating pretty output
@@ -1920,83 +1525,69 @@ a nicer looking title; it is meant for creating pretty output
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>text (<tt>String</tt>) - string to be processed </li>
 
 
-* text (<tt>String</tt>) - string to be processed 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {{ 'foo bar_zoo-xx' | titleize }} => 'Foo Bar Zoo Xx'
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="to_date-instance_method">
-
-#<strong>to_date</strong>(datetime)  &#x21d2; <tt>Date</tt> 
-
-
+<h2>#<strong>to_date</strong>(datetime)  &#x21d2; <tt>Date</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>Date</tt>) - a Date object obtained/parsed from the input object
 
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>datetime (<tt>Date</tt>, <tt>String</tt>, <tt>Object</tt>) - object from which we try to obtain/parse a date object </li>
 
 
-* datetime (<tt>Date</tt>, <tt>String</tt>, <tt>Object</tt>) - object from which we try to obtain/parse a date object 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {{ '2010-01-01 8:00:00' | to_date }} => 2010-01-01
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="to_hash-instance_method">
-
-#<strong>to_hash</strong>(object)  &#x21d2; <tt>Hash</tt> 
-
-
+<h2>#<strong>to_hash</strong>(object)  &#x21d2; <tt>Hash</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>Hash</tt>) - Hash created based on JSON
 
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>object (<tt>Object</tt>) - String containing valid JSON </li>
 
 
-* object (<tt>Object</tt>) - String containing valid JSON 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {% assign text = '{ "name": "foo", "bar": {} }' %}
 {% assign object = text | to_hash %}
@@ -2004,108 +1595,87 @@ a nicer looking title; it is meant for creating pretty output
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="to_mobile_number-instance_method">
-
-#<strong>to_mobile_number</strong>(number, country = nil)  &#x21d2; <tt>String</tt> 
-
-
+<h2>#<strong>to_mobile_number</strong>(number, country = nil)  &#x21d2; <tt>String</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>String</tt>) - returns mobile number in E.164 format; recommended for sending sms notifications
 
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>number (<tt>String</tt>) - the base part of mobile number </li>
+
+<li>country (<tt>String</tt>) - country for which country code should be used. Can be anything - full name, iso2, iso3  <em>(defaults to: <tt>nil</tt>)</em> </li>
 
 
-* number (<tt>String</tt>) - the base part of mobile number 
-
-* country (<tt>String</tt>) - country for which country code should be used. Can be anything - full name, iso2, iso3  <em class="default">(defaults to: <tt>nil</tt>)</em> 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {{ '500 123 999' | to_mobile_number: 'PL' }} => '+48500123999'
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="to_positive_integer-instance_method">
-
-#<strong>to_positive_integer</strong>(param, default)  &#x21d2; <tt>Integer</tt> 
-
-
+<h2>#<strong>to_positive_integer</strong>(param, default)  &#x21d2; <tt>Integer</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>Integer</tt>) - 
 
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>param (<tt>Object</tt>) - value to be coerced to posivite integer </li>
+
+<li>default (<tt>Integer</tt>) - default value in case param is not valid positive integer </li>
 
 
-* param (<tt>Object</tt>) - value to be coerced to posivite integer 
-
-* default (<tt>Integer</tt>) - default value in case param is not valid positive integer 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {{ '1' | to_positive_integer: 2 }} => 1
 {{ '' | to_positive_integer: 2 }} => 2
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="to_time-instance_method">
-
-#<strong>to_time</strong>(time, zone = nil, format = nil)  &#x21d2; <tt>DateTime</tt> 
-
-
+<h2>#<strong>to_time</strong>(time, zone = nil, format = nil)  &#x21d2; <tt>DateTime</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>DateTime</tt>) - a time object created from parsing the string representation of time given as input
 
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>time (<tt>String</tt>, <tt>Integer</tt>) - a string representation of time for example 'today', '3 days ago' etc. a integer in unix time format </li>
 
 
-* time (<tt>String</tt>, <tt>Integer</tt>) - a string representation of time for example 'today', '3 days ago' etc. a integer in unix time format 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {{ 'today' | to_time }} => 2017-04-15 15:21:00
 {{ 'today' | to_time '', 'UTC' }} => 2017-04-15 15:21:00
@@ -2115,60 +1685,42 @@ a nicer looking title; it is meant for creating pretty output
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="translate-instance_method">
-
-#<strong>translate</strong>(key, options = {})  &#x21d2; <tt>String</tt> 
-
-
-
-<span class="aliases">Also known as:
-<span class="names"><span id='t-instance_method'>t</span></span>
-</span>
-
+<h2>#<strong>translate</strong>(key, options = {})  &#x21d2; <tt>String</tt> 
+<small>Also known as: t</small>
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>String</tt>) - translation value taken from translations yml file for the key given as parameter
 
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>key (<tt>String</tt>) - translation key </li>
+
+<li>options (<tt>Hash{String =&gt; String}</tt>) - values passed to translation string  <em>(defaults to: <tt>{}</tt>)</em> </li>
 
 
-* key (<tt>String</tt>) - translation key 
-
-* options (<tt>Hash{String =&gt; String}</tt>) - values passed to translation string  <em class="default">(defaults to: <tt>{}</tt>)</em> 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {{ 'beer' | translate }} => 'cerveza'
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="url_for_path_with_token-instance_method">
-
-#<strong>url_for_path_with_token</strong>(path, user)  &#x21d2; <tt>String</tt> 
-
-
+<h2>#<strong>url_for_path_with_token</strong>(path, user)  &#x21d2; <tt>String</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>String</tt>) - returns a url for the given page slug, which includes user temporary token;
 
@@ -2176,61 +1728,49 @@ a nicer looking title; it is meant for creating pretty output
 
 
 
-### Examples:
+
+<h3>Examples:</h3>
+
 ```liquid
 {{ '/account' | url_for_with_token: current_user }} => 'https://example.com/account?temporary_token=TOKEN_HERE'
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="video_params-instance_method">
-
-#<strong>video_params</strong>(url)  &#x21d2; <tt>Hash</tt> 
-
-
+<h2>#<strong>video_params</strong>(url)  &#x21d2; <tt>Hash</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>Hash</tt>) - metadata about video
 
 
 
 
-### Params:
+<h3>Params:</h3>
+
+<li>url (<tt>String</tt>) - url to a video on the internet </li>
 
 
-* url (<tt>String</tt>) - url to a video on the internet 
 
 
+<h3>Examples:</h3>
 
-
-### Examples:
 ```liquid
 {{ 'https://www.youtube.com/watch?v=8N_tupPBtWQ' | video_params }}
 => {"provider"=>"YouTube", "url"=>"https://www.youtube.com/watch?v=8N_tupPBtWQ", "video_id"=>"8N_tupPBtWQ", "embed_url"=>"//www.youtube.com/embed/8N_tupPBtWQ", "embed_code"=>"<iframe src=\"//www.youtube.com/embed/8N_tupPBtWQ\" frameborder=\"0\" allowfullscreen=\"allowfullscreen\"></iframe>"},
 ```
 
 
-
 </div>
-
-<div>
-<h2 class="signature " id="videoify-instance_method">
-
-#<strong>videoify</strong>(url = &#39;&#39;, options = {})  &#x21d2; <tt>String</tt> 
-
-
+<h2>#<strong>videoify</strong>(url = &#39;&#39;, options = {})  &#x21d2; <tt>String</tt> 
 
 </h2>
+<div class="border-bottom mb-5 pb-5">
 
-
-### Returns:
+<h3>Returns:</h3>
 
 (<tt>String</tt>) - if the given url is supported, an HTML formatted string containing a video player (inside an iframe)
 which will play the video at the given url; otherwise an empty string is returned
@@ -2238,19 +1778,14 @@ which will play the video at the given url; otherwise an empty string is returne
 
 
 
-### Params:
+<h3>Params:</h3>
 
-
-* url (<tt>String</tt>) - url to a video on the internet  <em class="default">(defaults to: <tt>&#39;&#39;</tt>)</em> 
-
+<li>url (<tt>String</tt>) - url to a video on the internet  <em>(defaults to: <tt>&#39;&#39;</tt>)</em> </li>
 
 
 
 
 </div>
-
-
 
 
 {% endraw %}
-</div>
