@@ -1,0 +1,79 @@
+---
+converter: markdown
+metadata:
+  title: Migrating Data 
+  description: This guide will help you use migrations when you need to change the data or execute a piece of code outside of the regular application running cycle.
+slug: how-to/migrations/migrating-data
+searchable: true
+---
+This guide will help you use migrations when you need to change the data or execute a piece of code outside of the regular application running cycle, for example, when you want to seed data on each environment.
+
+## Requirements
+
+This is an advanced tutorial. To follow it, you should be familiar with basic Platform OS concepts, and the topics in the Get Started section. 
+
+* [How Platform OS Works](/how-platformos-works)
+* [Get Started](/get-started)
+
+## Steps
+
+Migrating data is a three-step process:
+
+1. Generate empty migration
+2. Implement migration
+3. Run migration
+
+### Step 1: Generate empty migration
+Generate an empty migration using the `marketplace-kit migrations` command: 
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+marketplace-kit migrations generate ENVIRONMENT MIGRATION_NAME
+</code></pre>
+
+For example:
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+marketplace-kit migrations generate local add_some_books
+</code></pre>
+
+On success, this generates an empty migration in the `marketplace_builder/migrations` directory. 
+
+Please note that the name you provide will be prefixed with a UTC timestamp, that looks like this: `20180731120002`. In our example, the file created will be named something like this: `20180909123423_add_some_books.liquid`. 
+This value is used to keep the migrations in order in all environments.
+
+### Step 2: Implement migration
+Use the Liquid markup in migration files, that includes executing GraphQL mutations (execute_query tag). A migration file can be synced many times. 
+
+For example, the following mutation can be put into the file created by the command in step 1:
+
+```liquid
+{% raw %}
+{% execute_query 'create_book', name: "Animal Farm", author: "George Orwell" %}
+{% endraw %}
+```
+
+{% include 'alert/note', content: 'Be careful about using deploys with migrations that are not ready, because  deployment runs all migrations that are in pending status.' %}
+
+### Step 3: Run migration
+
+Deployment will try to run migrations one by one (ordered by timestamp) and it will fail if one of the migrations fails.
+
+The `marketplace-kit migrations run` command runs a single migration:
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+marketplace-kit migrations run ENVIRONMENT MIGRATION_TIMESTAMP
+</code></pre>
+
+For example:
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+marketplace-kit migrations run local 20180909123423
+</code></pre>
+
+{% include 'alert/note', content: 'For the command, you have to provide the timestamp, not the full name, for example: 20180731120002' %}
+
+A newly created migration is in pending status for as long as it has not been run. Once it's executed (either through a deploy or using the `migrations run` command) it progresses to either done (on success) or error status.
+
+Once migration is in done status it can't be run any more - this makes it safer to run the same queue of migrations on all environments.
+
+When an error occurs, the migration can be edited and rerun until it succeeds.
+
+{% include 'shared/questions_section' %}
