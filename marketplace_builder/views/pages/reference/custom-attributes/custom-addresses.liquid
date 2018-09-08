@@ -54,28 +54,19 @@ profiles:
         address:
           validation: { presence: true }
         city:
-          validation: {}
         state:
           validation: { presence: true }
         street:
-          validation: {}
         country:
-          validation: {}
         postcode:
-          validation: {}
       correspondence_address:
         address:
           validation: { presence: false }
         city:
-          validation: {}
         state:
-          validation: {}
         street:
-          validation: {}
         country:
-          validation: {}
         postcode:
-          validation: {}
 ```
 
 Another example, adding CustomAddress for a Customization named "EmergencyContact":
@@ -86,20 +77,11 @@ customizations:
     custom_addresses:
       contact_address:
         city:
-          validation:
-            presence: {}
         street:
-          presence: {}
     properties:
       contact_name:
-        validation:
-          presence: {}
       contact_email:
-        validation:
-          presence: {}
       contact_phone:
-        validation:
-          presence: {}
       contact_address:
 ```
 
@@ -142,16 +124,13 @@ After setting up addresses as described above, you can further customize them in
 <input value="{{ form_builder.fields.profiles.seller.custom_addresses.correspondence_address.address.value }}" name="{{ form_builder.fields.profiles.seller.custom_addresses.correspondence_address.address.name }}" id="correspondence_address" type="text">
 
 <label for="correspondence_city">City</label>
-<div>
 <input value="{{ form_builder.fields.profiles.seller.custom_addresses.correspondence_address.city.value }}" name="{{ form_builder.fields.profiles.seller.custom_addresses.correspondence_address.city.name }}" id="correspondence_city" type="text">
 
 <label for="correspondence_street">Street</label>
 <input value="{{ form_builder.fields.profiles.seller.custom_addresses.correspondence_address.street.value }}" name="{{ form_builder.fields.profiles.seller.custom_addresses.correspondence_address.street.name }}" id="correspondence_street" type="text">
 
 <label for="correspondence_state">State</label>
-<div>
 <input value="{{ form_builder.fields.profiles.seller.custom_addresses.correspondence_address.state.value }}" name="{{ form_builder.fields.profiles.seller.custom_addresses.correspondence_address.state.name }}" id="correspondence_state" type="text">
-</div>
 
 <label for="correspondence_country">Country</label>
 <input value="{{ form_builder.fields.profiles.seller.custom_addresses.correspondence_address.country.value }}" name="{{ form_builder.fields.profiles.seller.custom_addresses.correspondence_address.country.name }}" id="correspondence_country" type="text">
