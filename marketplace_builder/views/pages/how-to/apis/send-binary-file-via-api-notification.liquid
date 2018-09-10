@@ -17,7 +17,7 @@ This is an advanced tutorial. To follow it, you should be familiar with basic Pl
 * [Get Started: Creating an API Call Notification](/get-started/notifications/creating-api-call-notification)
 
 ## Steps
-Sending a binary file using an API call notification is a special case of creating a regular API call notification as described in [Get Started: Creating an API Call Notification](/get-started/notifications/creating-api-call-notification). This tutorial describes the difference between a regular request and sending a file, so it consists of only one step. 
+Sending a binary file using an API call notification is a special case of creating a regular API call notification as described in [Get Started: Creating an API Call Notification](/get-started/notifications/creating-api-call-notification). This tutorial describes the difference between a regular request and sending a file, so it consists of only one step.
 
 1. Create API call notification
 
@@ -25,8 +25,7 @@ Sending a binary file using an API call notification is a special case of creati
 
 Create the API call notification `notifications/api_call_notifications/send_file.liquid`:
 
-```liquid
-{% raw %}
+```yaml
 ---
 name: send_file
 to: 'https://example.com/endpoint'
@@ -36,6 +35,8 @@ format: http
 trigger_condition: true
 request_type: post_multipart
 ---
+```
+```liquid
 {
   "file": {
     "url": "https://domain.com/my-file.jpg",
@@ -48,12 +49,10 @@ request_type: post_multipart
     "content_type": "image/jpeg"
   }
 }
-{% endraw %}
 ```
 
 This defines a POST request to the endpoint, which would send two binary files. The main difference between a regular API call and sending a binary file is the `_multipart` suffix in request type. Valid request types are `post_multipart`, `patch_multipart`, and `put_multipart`. The required body format for `*_multipart` requests is JSON following structure:
 ```json
-{% raw %}
 {
   "<param name>": {
     "url": "<required url to file remote location>",
@@ -61,8 +60,6 @@ This defines a POST request to the endpoint, which would send two binary files. 
     "content_type": "<optional content type>"
   }
 }
-{% endraw %}
-
 ```
 
 {% include 'alert/warning', content: 'If url includes special characters, for example & [which is the case for custom_attachment.url] please make sure to use the `html_safe` filter.' %}
