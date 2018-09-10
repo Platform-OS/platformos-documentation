@@ -1,13 +1,13 @@
 ---
 converter: markdown
 metadata:
-  title: Send binary file via api notification
-  description: This guide will help you send file using api call notification.
-slug: how-to/apis/send-binary-file-via-api-notification
+  title: Sending a Binary File Using an API Call Notification
+  description: This guide will help you send a file using an API call notification.
+slug: how-to/apis/sending-binary-file-using-api-call-notification
 searchable: true
 ---
 
-This guide This guide will help you send file using api call notification.
+This guide will help you send a file using an API call notification.
 
 ## Requirements
 This is an advanced tutorial. To follow it, you should be familiar with basic Platform OS concepts, HTML, Liquid, APIs and Form Configurations, and the topics in the Get Started section, especially tutorials related to Notifications.
@@ -17,14 +17,13 @@ This is an advanced tutorial. To follow it, you should be familiar with basic Pl
 * [Get Started: Creating an API Call Notification](/get-started/notifications/creating-api-call-notification)
 
 ## Steps
-
-Sending binary file via api notification is a special case of creating regular api call notification as described in [Get Started: Creating an API Call Notification](/get-started/notifications/creating-api-call-notification). This how to will describe the difference between regular request and sending a file
+Sending a binary file using an API call notification is a special case of creating a regular API call notification as described in [Get Started: Creating an API Call Notification](/get-started/notifications/creating-api-call-notification). This tutorial describes the difference between a regular request and sending a file, so it consists of only one step. 
 
 1. Create API call notification
 
 ### Step 1: Create API call notification
 
-Create an API call notification `notifications/api_call_notifications/send_file.liquid`:
+Create the API call notification `notifications/api_call_notifications/send_file.liquid`:
 
 ```liquid
 {% raw %}
@@ -52,7 +51,7 @@ request_type: post_multipart
 {% endraw %}
 ```
 
-This defines a POST request to the endpoint, which would send two binary files. The main difference between regular api call and sending binary file is the `_multipart` suffix in request type. Valid request types are `post_multipart`, `patch_multipart` and `put_multipart`. The required body format for `*_multipart` requests is json following structure:
+This defines a POST request to the endpoint, which would send two binary files. The main difference between a regular API call and sending a binary file is the `_multipart` suffix in request type. Valid request types are `post_multipart`, `patch_multipart`, and `put_multipart`. The required body format for `*_multipart` requests is JSON following structure:
 ```json
 {% raw %}
 {
@@ -66,6 +65,6 @@ This defines a POST request to the endpoint, which would send two binary files. 
 
 ```
 
-{% include 'alert/warning', content: 'If url includes special characters, like for example & [which is the case for custom_attachment.url] please make sure to use `html_safe` filter.' %}
+{% include 'alert/warning', content: 'If url includes special characters, for example & [which is the case for custom_attachment.url] please make sure to use the `html_safe` filter.' %}
 
 {% include 'shared/questions_section' %}
