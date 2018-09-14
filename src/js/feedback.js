@@ -21,9 +21,7 @@ const sendFeedback = () => {
     method: form().getAttribute("method"),
     body: new FormData(form())
   })
-    .then(response => {
-      return response.status === 201 ? response.json() : {};
-    })
+    .then(response => response.status === 201 ? response.json() : {})
     .then(customization => updateFormForCustomizationUpdate(customization.id))
     .catch(e => {
       throw new Error(e);
