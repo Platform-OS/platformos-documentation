@@ -49,16 +49,15 @@ const updateContributorsHtml = data => {
 };
 
 const initialize = () => {
-  fetch(`${API_ENDPOINT}${params}`, {
-    method: "get"
-  })
-    .then(response => response.json())
-    .then(updateContributorsHtml)
-    .catch(console.error);
+  if (contributorsContainer() && !homepage) {
+    fetch(`${API_ENDPOINT}${params}`, {
+      method: "get"
+    })
+      .then(response => response.json())
+      .then(updateContributorsHtml)
+      .catch(console.error);
+  }
 };
 
-document.addEventListener("turbolinks:load", () => {
-  if (contributorsContainer() && !homepage) {
-    initialize();
-  }
-});
+document.addEventListener("turbolinks:load", initialize);
+window.addEventListener("DOMContentLoaded", initialize);
