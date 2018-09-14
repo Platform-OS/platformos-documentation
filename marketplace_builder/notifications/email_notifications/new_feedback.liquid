@@ -25,4 +25,9 @@ trigger_condition: 'true'
     <td>Message: </td>
     <td><b>{{ form.model.customization.properties.message }}</b></td>
   </tr>
+  <tr>
+    <td>Feedback to: </td>
+    {% assign url = "https://" | append: context.location.host | append: form.model.customization.properties.path %}
+    <td><b><a href="{{ url }}">{{ url }}</a></b></td>
+  </tr>
 </table>
