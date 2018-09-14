@@ -11,6 +11,7 @@ const showQuestion = value =>
     .classList.remove("hidden");
 
 const updateFormForCustomizationUpdate = id => {
+  if (!id) { return; }
   form().setAttribute("action", `/api/customizations/${id}`);
   form().insertAdjacentHTML("beforeend", '<input type="hidden" name="_method" value="PUT">');
 };
@@ -20,8 +21,10 @@ const sendFeedback = () => {
     method: form().getAttribute("method"),
     body: new FormData(form())
   })
-    .then(res => res.json())
-    .then(res => updateFormForCustomizationUpdate(res.id))
+    .then(response => {
+      return response.status === 201 ? response.json() : {};
+    })
+    .then(customization => updateFormForCustomizationUpdate(customization.id))
     .catch(e => {
       throw new Error(e);
     });
@@ -33,6 +36,7 @@ const onRatingSelected = event => {
   hideQuestions();
 
   sendFeedback().then(() => {
+    console.log('Showing question: ', selectedValue);
     showQuestion(selectedValue);
     toggleQuestionsContainer(false);
   });
