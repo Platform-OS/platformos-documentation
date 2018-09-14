@@ -49,6 +49,10 @@ const updateContributorsHtml = data => {
 };
 
 const initialize = () => {
+  if (!contributorsContainer() || homepage) {
+    return;
+  }
+
   fetch(`${API_ENDPOINT}${params}`, {
     method: "get"
   })
@@ -57,8 +61,5 @@ const initialize = () => {
     .catch(console.error);
 };
 
-document.addEventListener("turbolinks:load", () => {
-  if (contributorsContainer() && !homepage) {
-    initialize();
-  }
-});
+document.addEventListener("turbolinks:load", initialize);
+window.addEventListener("load", initialize);
