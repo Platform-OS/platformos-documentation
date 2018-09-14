@@ -62,4 +62,4 @@ const initialize = () => {
 };
 
 document.addEventListener("turbolinks:load", initialize);
-window.addEventListener("load", initialize);
+window.addEventListener("DOMContentLoaded", initialize);
