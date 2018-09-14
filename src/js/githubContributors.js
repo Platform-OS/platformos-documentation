@@ -49,16 +49,14 @@ const updateContributorsHtml = data => {
 };
 
 const initialize = () => {
-  if (!contributorsContainer() || homepage) {
-    return;
+  if (contributorsContainer() && !homepage) {
+    fetch(`${API_ENDPOINT}${params}`, {
+      method: "get"
+    })
+      .then(response => response.json())
+      .then(updateContributorsHtml)
+      .catch(console.error);
   }
-
-  fetch(`${API_ENDPOINT}${params}`, {
-    method: "get"
-  })
-    .then(response => response.json())
-    .then(updateContributorsHtml)
-    .catch(console.error);
 };
 
 document.addEventListener("turbolinks:load", initialize);
