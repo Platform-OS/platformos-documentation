@@ -11,7 +11,9 @@ const showQuestion = value =>
     .classList.remove("hidden");
 
 const updateFormForCustomizationUpdate = id => {
-  if (!id) { return; }
+  if (!id) {
+    return;
+  }
   form().setAttribute("action", `/api/customizations/${id}`);
   form().insertAdjacentHTML("beforeend", '<input type="hidden" name="_method" value="PUT">');
 };
@@ -19,9 +21,10 @@ const updateFormForCustomizationUpdate = id => {
 const sendFeedback = () => {
   return fetch(form().getAttribute("action"), {
     method: form().getAttribute("method"),
-    body: new FormData(form())
+    body: new FormData(form()),
+    credentials: "same-origin"
   })
-    .then(response => response.status === 201 ? response.json() : {})
+    .then(response => (response.status === 201 ? response.json() : {}))
     .then(customization => updateFormForCustomizationUpdate(customization.id))
     .catch(e => {
       throw new Error(e);
@@ -34,7 +37,7 @@ const onRatingSelected = event => {
   hideQuestions();
 
   sendFeedback().then(() => {
-    console.log('Showing question: ', selectedValue);
+    console.log("Showing question: ", selectedValue);
     showQuestion(selectedValue);
     toggleQuestionsContainer(false);
   });
@@ -42,6 +45,8 @@ const onRatingSelected = event => {
 
 document.addEventListener("turbolinks:load", () => {
   if (form()) {
-    [...selectedValues()].map(el => el.addEventListener("change", onRatingSelected));
+    [...selectedValues()].map(el =>
+      el.addEventListener("change", onRatingSelected)
+    );
   }
 });
