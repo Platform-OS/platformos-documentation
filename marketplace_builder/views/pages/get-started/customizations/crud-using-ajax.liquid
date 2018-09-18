@@ -1,26 +1,24 @@
 ---
 converter: markdown
 metadata:
-  title: Creating, Reading, Updating, Deleting customizations using AJAX
-  description: This guide will help you create, list, update and delete customizations using javascript.
-slug: get-started/customizations/crud-using-ajax
+  title: Managing Customizations using AJAX (CRUD operations)
+  description: This guide will help you create, list, update, and delete Customizations using JavaScript.
+slug: get-started/customizations/crud-customizations-using-ajax
 searchable: true
 ---
 
-This guide will help you create, list, update and delete customizations using javascript and graphql.
-
+This guide will help you create, list, update, and delete Customizations using JavaScript and GraphQL.
 
 ## Requirements
 
 * [GraphQL](https://graphql.org/learn/)
-* [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)
-
+* [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)
 
 ## Steps
 
-Building a Contact Form with Customization is a five-step process:
+Managing Customizations using AJAX by implementing the full CRUD cycle is a five-step process:
 
-1. Define prerequisites: Custom Model Type, Form Configuration, Page, javascript functions used in multiple places
+1. Define prerequisites: Custom Model Type, Form Configuration, Page, JavaScript functions used in multiple places
 2. Implement `Create`
 3. Implement `Read`
 4. Implement `Update`
@@ -29,7 +27,7 @@ Building a Contact Form with Customization is a five-step process:
 
 ### Step 1: Define prerequisites: Custom Model Type, Form Configuration, Page, javascript functions used in multiple places
 
-Lets create files that will be used in our implementation.
+Create required files for your implementation: 
 
 #### marketplace_builder/custom_model_types/feedback.yml
 
@@ -79,7 +77,7 @@ const request = ({ url, form }) => {
 
 ### Step 2: Implement `Create`
 
-First create a simple form that will work even without javascript.
+First, create a simple form that works without JavaScript:
 
 #### marketplace_builder/views/partials/feedback/create.liquid
 
@@ -110,7 +108,7 @@ First create a simple form that will work even without javascript.
 {% endraw %}
 ```
 
-Then add javascript to make it work in the background.
+Then add JavaScript to make it work in the background:
 
 #### marketplace_builder/assets/Feedback.js
 
@@ -132,7 +130,7 @@ createForm.addEventListener("submit", Create);
 
 ### Step 3: Implement `Read`
 
-First we will need GraphQL query to pull out the data.
+First, you'll need a GraphQL query to pull out the data:
 
 #### marketplace_builder/graph_queries/feedback.graphql
 
@@ -154,7 +152,7 @@ query feedback($per_page: Int = 10) {
 }
 ```
 
-Then we need to create a page that will return JSON with the data.
+Then you need to create a page that returns JSON with the data:
 
 #### marketplace_builder/views/pages/feedback/feedback_list.liquid
 
@@ -170,7 +168,7 @@ format: json
 {% endraw %}
 ```
 
-We need some html that will contain the data and a button that will trigger data download.
+You also need some HTML that will contain the data, and a button that will trigger data download:
 
 #### marketplace_builder/views/partials/feedback/read.liquid
 
@@ -188,7 +186,7 @@ We need some html that will contain the data and a button that will trigger data
 </table>
 ```
 
-We also need javascript get the data from the server and render it into the html.
+You also need JavaScript to get the data from the server and render it into the HTML:
 
 #### marketplace_builder/assets/Feedback.js
 
@@ -219,10 +217,10 @@ refreshReadButton.addEventListener("click", Read);
 
 ### Step 4: Implement `Update`
 
-Update form is pretty similar to Create, with couple differences:
+The update form is similar to Create, with a couple of differences:
 
-1. We add hidden input with `_method` set to PUT
-2. We need to send ID of customization we want to edit
+1. Add hidden input with `_method` set to PUT
+2. Send ID of Customization you want to edit
 
 #### marketplace_builder/views/partials/feedback/update.liquid
 
@@ -257,7 +255,7 @@ Update form is pretty similar to Create, with couple differences:
 {% endraw %}
 ```
 
-Javascript is also very similar, but it takes ID from input defined above and puts it into the URL.
+JavaScript is also very similar, but it takes ID from input defined above and puts it into the URL.
 
 #### marketplace_builder/assets/Feedback.js
 
@@ -280,7 +278,7 @@ updateForm.addEventListener("submit", Update);
 
 ### Implement `Delete`
 
-Delete operation also needs `method` and `id` because underneath it is just an update.
+The delete operation also needs `method` and `id` because underneath it all, it is just an update.
 
 #### marketplace_builder/views/partials/feedback/delete.liquid
 
@@ -314,6 +312,14 @@ deleteForm.addEventListener("submit", Delete);
 
 ## Live example and source code
 
-To play with live example (in much fuller form and with additional information) go to [feedback example](https://pawel-test.oregon.near-me.com/feedback) page.
+To play with a live example (in much fuller form and with additional information) go to [feedback example](https://pawel-test.oregon.near-me.com/feedback) page.
 
-[Source code](https://github.com/mdyd-dev/marketplace-nearme-example) can be found at GitHub. You can also review [example code commit](https://github.com/mdyd-dev/marketplace-nearme-example/commit/ee636cb8903d11f860abb13b8fc6c4cc352ffabb) for this particular article.
+[Source code](https://github.com/mdyd-dev/marketplace-nearme-example) can be found on GitHub. You can also review [example code commit](https://github.com/mdyd-dev/marketplace-nearme-example/commit/ee636cb8903d11f860abb13b8fc6c4cc352ffabb) for this particular article.
+
+## Next steps
+
+Congratulations! You know how to implement CRUD operations for Customizations. Now you can try building a form that will allow your users to upload multiple files into one Customization: 
+
+* [Adding Multiple File Uploads to a Form](/get-started/customizations/adding-multiple-file-uploads-form)
+
+{% include 'shared/questions_section' %}
