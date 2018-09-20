@@ -10,10 +10,10 @@ searchable: true
 ---
 <h3>{{ page.metadata.description }}</h3>
 
-{% execute_query 'release_notes' %}
+{% query_graph 'release_notes' %}
 
 <ul>
-  {% for page in g.pages.results %}
+  {% for page in g.pages.results reversed %}
     <li>
       <strong>{{ page.metadata.date }}</strong>
       <a href="/{{ page.slug }}">{{ page.metadata.description }}</a>
