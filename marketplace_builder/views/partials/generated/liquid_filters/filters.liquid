@@ -153,6 +153,43 @@ type "f" means floating point
 
 
 </div>
+<h2>#<strong>assign_to_hash_key</strong>(hash, key, value)  &#x21d2; <tt>Hash</tt> 
+
+</h2>
+<div class="border-bottom mb-5 pb-5">
+
+<h3>Returns:</h3>
+
+(<tt>Hash</tt>) - 
+
+
+
+
+<h3>Params:</h3>
+
+<li>hash (<tt>Hash</tt>) -  </li>
+
+<li>key (<tt>String</tt>) -  </li>
+
+<li>value (<tt>Object</tt>) -  </li>
+
+
+
+
+<h3>Examples:</h3>
+
+```liquid
+{% assign accountants = "Angela,Kevin,Oscar" | split: "," %}
+{% assign management = "David,Jan,Michael" | split: "," %}
+{% assign company = '{}' | to_hash %}
+{% assign company = company | assign_to_hash_key: "name", "Dunder Mifflin" %}
+{% assign company = company | assign_to_hash_key: "accountants", accountants %}
+{% assign company = company | assign_to_hash_key: "management", management %}
+{{ company }} => {"name"=>"Dunder Mifflin", "accountants"=>["Angela", "Kevin", "Oscar"], "management"=>["David", "Jan", "Michael"]}
+```
+
+
+</div>
 <h2>#<strong>compact</strong>(array)  &#x21d2; <tt>Array&lt;Object&gt;</tt> 
 
 </h2>
@@ -699,7 +736,6 @@ Valid options:
 
 ```liquid
 HMAC:
-
   {% assign original_payload = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJrZXkiOiJ2YWx1ZSIsImFub3RoZXJfa2V5IjoiYW5vdGhlciB2YWx1ZSJ9.XT8sHXyPTA9DoHzssXh1q6Uv2D1ENosW0F3Ixle85L0' | jwt_decode: 'HS256', 'this-is-secret'  }} =>
   [
     {
@@ -715,7 +751,6 @@ HMAC:
 
 ```liquid
 RSA:
-
   {% capture public_key %}
   -----BEGIN PUBLIC KEY-----
   MIIBI...
@@ -1223,7 +1258,7 @@ the default separator used is '-';
 <h3>Examples:</h3>
 
 ```liquid
-{{ 10 | random_string }} => '6a1ee26292227f64fcbf'
+{{ 10 | random_string }} => '6a1ee2629'
 ```
 
 
@@ -1353,6 +1388,42 @@ parameter; [1,2,3,4] rotated by 2 gives [3,4,1,2]
 ```liquid
 {% assign numbers = "1,2,3" | split: "," %}
 {{ numbers | rotate }} => [3,2,1]
+```
+
+
+</div>
+<h2>#<strong>sanitize</strong>(input, whitelist_attributes = nil, whitelist_tags = nil)  &#x21d2; <tt>String</tt> 
+
+</h2>
+<div class="border-bottom mb-5 pb-5">
+
+<h3>Returns:</h3>
+
+(<tt>String</tt>) - 
+
+
+
+
+<h3>Params:</h3>
+
+<li>input (<tt>String</tt>) -  </li>
+
+<li>whitelist_attributes (<tt>Array&lt;String&gt;</tt>) -   <em>(defaults to: <tt>nil</tt>)</em> </li>
+
+<li>whitelist_tags (<tt>Array&lt;String&gt;</tt>) -   <em>(defaults to: <tt>nil</tt>)</em> </li>
+
+
+
+
+<h3>Examples:</h3>
+
+```liquid
+{% capture link %}
+  <a href="javascript:prompt(1)" target="_blank">Link</a>
+{% endcapture %}
+{{ link | sanitize }} => <a href="">Link</a>
+{% assign whitelist_attributes = 'target' | split: '|' %}
+{{ link | sanitize: whitelist_attributes }} => <a href="" target="_blank">Link</a>
 ```
 
 
@@ -1758,6 +1829,39 @@ a nicer looking title; it is meant for creating pretty output
 
 ```liquid
 {{ '/account' | url_for_with_token: current_user }} => 'https://example.com/account?temporary_token=TOKEN_HERE'
+```
+
+
+</div>
+<h2>#<strong>useragent</strong>(useragent_header)  &#x21d2; <tt>Hash</tt> 
+
+</h2>
+<div class="border-bottom mb-5 pb-5">
+
+<h3>Returns:</h3>
+
+(<tt>Hash</tt>) - parsed browser useragent information
+
+
+
+
+<h3>Params:</h3>
+
+<li>useragent_header (<tt>String</tt>) - browser useragent from request header </li>
+
+
+
+
+<h3>Examples:</h3>
+
+```liquid
+{{ context.headers.HTTP_USER_AGENT | useragent }} =>
+{
+  "device": {"family":"Other","model":"Other","brand":null},
+  "family":"Firefox",
+  "os":{"version":null,"family":"Windows 7"},
+  "version":{"version":"47.0","major":"47","minor":"0","patch":null}
+}
 ```
 
 
