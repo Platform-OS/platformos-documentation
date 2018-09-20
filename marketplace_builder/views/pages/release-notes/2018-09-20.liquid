@@ -1,0 +1,104 @@
+---
+converter: markdown
+metadata:
+  title: September 20, 2018  &ndash;  Release Notes
+  date: September 20, 2018
+  description: New liquid filters, sending files via API calls
+  hide_sidebar: true
+slug: release-notes/20-SEPTEMBER-2018
+searchable: true
+---
+### {{ page.metadata.description }}
+
+In this release notes we will focus on new liquid filters, fixed filter and one new feature.
+
+## New filters
+
+### assign_to_hash_key
+
+This filter allows you to add new key-value pairs into existing hash.
+
+Example:
+
+```liquid
+{% raw %}
+{% assign accountants = "Angela,Kevin,Oscar" | split: "," %}
+{% assign management = "David,Jan,Michael" | split: "," %}
+
+{% assign company = '{}' | to_hash %}
+{% assign company = company | assign_to_hash_key: "name", "Dunder Mifflin" %}
+{% assign company = company | assign_to_hash_key: "accountants", accountants %}
+{% assign company = company | assign_to_hash_key: "management", management %}
+{{ company }}
+{% endraw %}
+```
+
+Result:
+
+```json
+{"name"=>"Dunder Mifflin", "accountants"=>["Angela", "Kevin", "Oscar"], "management"=>["David", "Jan", "Michael"]}
+```
+
+### sanitize
+
+This filter allows you to sanitize user input before rendering it and at the same time decide which attributes should not be sanitized.
+
+Example:
+
+```liquid
+{% raw %}
+{% capture link %}
+  <a href="javascript:prompt(1)" target="_blank">Link</a>
+{% endcapture %}
+{{ link | sanitize }} => <a href="">Link</a>
+{% assign whitelist_attributes = 'target' | split: '|' %}
+{{ link | sanitize: whitelist_attributes }}
+{% endraw %}
+```
+
+Result:
+
+```html
+<a href="" target="_blank">Link</a>
+```
+
+### useragent
+
+There was a community request to make it easier to access useragent and parse it, so here it is.
+
+You can access useragent string (as you normally could in the past)
+
+This filter takes useragent string as an input and returns object with parsed data about it.
+
+Example:
+
+```liquid
+{% raw %}
+{{ context.headers.HTTP_USER_AGENT | useragent }}
+{% endraw %}
+```
+
+Result after using `| json` filter for readability:
+
+```json
+{{ context.headers.HTTP_USER_AGENT | useragent | json }}
+```
+
+## Fixed random_string filter
+
+This filter was returning string that was longer than expected. Now it returns string of length that you want.
+
+Example:
+
+```liquid
+{% raw %}
+{{ 10 | random_string }} => '6a1ee2629'
+{{ 2 | random_string }} => '8b'
+{% endraw %}
+```
+
+## New feature
+
+You have the possibility to send binary files in API call. This might be useful when integrating your system with external APIs that require additional data from your users, for example photo.
+
+Read guide [Sending a Binary File Using an API Call Notification](https://documentation.platform-os.com/how-to/apis/sending-binary-file-using-api-call-notification) to learn more.
