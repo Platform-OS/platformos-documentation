@@ -73,6 +73,37 @@ api_call_notifications:
 ### Step 3: Create segments in SendGrid
 Create [segments in SendGrid](https://sendgrid.com/docs/Glossary/segments.html) and filter using the `contact_via` attribute.
 
+## Troubleshooting
+
+### Emails getting stuck in spam folders/filters
+There are some tweaks you can make to your DNS records to help ensure that your emails are getting to your users' inboxes and not getting caught up in their spam folders/filters.
+
+#### Solution 1
+Add the sendgrid.net lookup to your current SFP record for your domain. 
+
+**Example**
+
+If your current record (TXT or SPF) is 
+
+```
+"v=spf1 a mx include:_spf.google.com include:spf.protection.outlook.com ~all"
+```
+
+you can add 
+
+```
+include:sendgrid.net
+```
+
+prior to the `~all` at the end, resulting in
+
+```
+"v=spf1 a mx include:_spf.google.com include:spf.protection.outlook.com include:sendgrid.net ~all"
+```
+
+Learn more about it here: [https://sendgrid.com/docs/Glossary/spf.html](https://sendgrid.com/docs/Glossary/spf.html)
+
+#### Solution 2
+Add DKIM records to your DNS records as described here: [https://sendgrid.com/docs/Glossary/dkim.html](https://sendgrid.com/docs/Glossary/dkim.html)
+
 {% include 'shared/questions_section' %}
-
-
