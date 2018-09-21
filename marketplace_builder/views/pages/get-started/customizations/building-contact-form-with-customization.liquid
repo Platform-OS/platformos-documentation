@@ -19,22 +19,21 @@ This guide will help you understand the process of building a contact form backe
 
 ## Steps
 
-Building a Contact Form with Customization is a five-step process:
-
+Building a Contact Form with Customization is a nine-step process:
 
 1. Define Contact &ndash; Customization
 2. Define Contact Form &ndash; Data Creation
 3. Fetch saved data with GraphQL
-4. Rendering customizations within page
+4. Render Customizations within page
 5. Build Contact Form with HTML
-6. Delete contact
+6. Delete Contact
 7. Edit Contact
 8. Add email notification
-9. Securing the form
+9. Secure the form
 
 ### Step 1: Define Contact &ndash; Custom Model Type
 
-To define a new Custom Model Type, use YAML files placed in the `custom_model_types` directory. In the key-value format you can define a name for your Customization, and an array of custom attributes for the Customization object. To build a Contact Form, you'll need email, name, and description attributes on Customization that you can call a `Contact`.
+To define a new Custom Model Type, use YAML files placed in the `custom_model_types` directory. In the key-value format you can define a name for your Customization, and an array of Custom Attributes for the Customization object. To build a Contact Form, you'll need email, name, and description attributes on the Customization that you can call a `Contact`.
 
 Create a file `custom_model_types/contact.yml` with the following content:
 
@@ -49,9 +48,9 @@ custom_attributes:
   attribute_type: string
 ```
 
-The basic Configuration of Customization consists of a name and the list of custom attributes. In the example above, you have defined three attributes of type `string`.
+The basic Configuration of the Customization consists of a name and the list of Custom Attributes. In the example above, you have defined three attributes of type `string`.
 
-For more information on custom attributes please see [Custom Attributes Documentation](/reference/custom-attributes/).
+For more information on Custom Attributes please see [Custom Attributes Documentation](/reference/custom-attributes/).
 
 ### Step 2: Define Contact Form &ndash; Form Object
 
@@ -79,7 +78,7 @@ configuration:
 ---
 ```
 
-The above definition whitelists name, email and description attributes and defines validation for each attribute. You can now use this form, and send requests to [customization create endpoint](/reference/rest-api/customizations_post)
+The above definition whitelists name, email, and description attributes and defines validation for each attribute. You can now use this form, and send requests to the [Customization create endpoint](/reference/rest-api/customizations_post)
 
 <pre class="command-line" data-output="2-50" data-user="user" data-host="host"><code class="language-bash">
  curl -X POST https://example.com/api/customizations.json \
@@ -128,15 +127,15 @@ query get_contacts($id: ID) {
 To see if the above query works properly you can head to the next section to learn how to embed query results with page view or use [markeptlace-kit gui](/how-to/qa/developing-graphql-queries-using-marketplace-kit-gui)
 
 
-### Step 4 - Rendering customizations within page
+### Step 4: Render Customizations within page
 
-We want to display contacts as a list with possiblity to follow up to the contact details view page.
-As a first step we need a page that will respond to given paths:
+Display contacts as a list with the possiblity to get to the contact details view.
+As a first step, you need a page that will respond to given paths:
 
 `GET /contacts` for list view
 `GET /contacts/[ID]` for detail view
 
-Page slug for the above url map will simply be `contacts` as ID passed in the url is dynamically assigned to `context.params.slug2` variable, read [Page](/get-started/pages/pages) manual for more information.
+Page slug for the above URL map will simply be `contacts` as the ID passed in the URL is dynamically assigned to the `context.params.slug2` variable. For more information, see [Pages](/get-started/pages/pages) documentation.
 
 ```liquid
 {% raw %}
@@ -192,7 +191,7 @@ slug: contacts
 
 ### Step 5: Build Contact Form with HTML
 
-In _Step 2: Define Contact Form-Data Creation, you have created a form file called `contact_form`, that configures the form object. This was a minimal example to allow sending requests to our API endpoint, and create Customization objects. Now you can extend this file with HTML, that renders the form to our users. The HTML part of the file comes after the configuration part, i.e. after the closing `---` tag.
+In Step 2: Define Contact Form-Data Creation, you have created a form file called `contact_form`, that configures the form object. This was a minimal example to allow sending requests to our API endpoint, and create Customization objects. Now you can extend this file with HTML, that renders the form to our users. The HTML part of the file comes after the configuration part, i.e. after the closing `---` tag.
 
 
 ```yaml
@@ -242,11 +241,11 @@ configuration:
 {% endraw %}
 ```
 
-The `redirect_to` configuration option defines where to redirect the user after successful form submission. The predefined `form` tag allow you to create context for submitted data.
+The `redirect_to` configuration option defines where to redirect the user after successful form submission. The predefined `form` tag allows you to create context for submitted data.
 
 For more information of advanced form configuration please visit [Form Configuration Documentation](/reference/form-configurations/).
 
-To display the form on previously created `contacts` page you have to include it with:
+To display the form on the previously created `contacts` page you have to include it with:
 
 ```liquid
 {% raw %}
@@ -254,11 +253,11 @@ To display the form on previously created `contacts` page you have to include it
 {% endraw %}
 ```
 
-Similarly to the `cURL` request in step 2, you have to pass the Custom Model Type parameterized name as parent_resource_id, and point to the name of the form to include it properly in the page. As a result you should be able to create Customization objects, called Contact with simple form submission, and list them after fetching with GraphQL. You are not setting up headers and API keys with this approach, as those are included automagically with the `form` tag.
+Similarly to the `curl` request in step 2, you have to pass the Custom Model Type parameterized name as parent_resource_id, and point to the name of the form to include it properly in the page. As a result you should be able to create Customization objects, called Contact with simple form submission, and list them after fetching with GraphQL. You are not setting up headers and API keys with this approach, as those are included automagically with the `form` tag.
 
 ### Step 6: Delete contact
 
-In order to remove record from the database we need to create `delete_contact_form`:
+In order to remove record from the database, create `delete_contact_form`:
 
 {% raw %}
 ```liquid
@@ -275,7 +274,7 @@ configuration: {}
 {% endform %}
 ```
 {% endraw %}
-To display delete button on the list of contacts we need to include the form as follows:
+To display delete button on the list of contacts, include the form as follows:
 {% raw %}
 ```liquid
 <td>
@@ -288,7 +287,7 @@ To display delete button on the list of contacts we need to include the form as 
 
 ### Step 7: Edit Contact
 
-As we already have the form to create contacts we can simply reuse it for the porpuse of record update. In order to prefil the form with proper data, we need to add resource_id to include_form tag.
+As you already have the form to create contacts, you can simply reuse it for the purpose of record update. In order to prefill the form with proper data, add resource_id to include_form tag.
 
 {% raw %}
 ```liquid
@@ -302,7 +301,7 @@ slug: contacts/edit
 
 ### Step 8: Add email notification
 
-To send an email notification to the email that was sent with form submition, create an email notification file that will define email configuration and message template.
+To send an email notification to the email that was sent with form submission, create an email notification file that will define email configuration and message template.
 
 File should be located in the `notifications/email_notifications`, name it `contact_notification.liquid`:
 
@@ -329,9 +328,9 @@ email_notifications:
 - contact_notification
 ```
 
-### Step 9 - Securing the form
+### Step 9: Secure the form
 
-At this point you might want to restrict access to the forms and views we have created. You can do that using [Authorization Policies](https://documentation.platform-os.com/get-started/authorization-policy/adding-authorization-policy).
+At this point you might want to restrict access to the forms and views you have created. You can do that using [Authorization Policies](https://documentation.platform-os.com/get-started/authorization-policy/adding-authorization-policy).
 
 ## Live example and source code
 
