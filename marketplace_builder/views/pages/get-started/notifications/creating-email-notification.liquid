@@ -30,7 +30,7 @@ Create the notification file `notifications/email_notifications/welcome_user.liq
 {% raw %}
 ---
 name: welcome_user
-to: '{{ form.email }}'
+to: '{{ form.properties.email }}'
 delay: 0
 enabled: true
 trigger_condition: true
@@ -38,10 +38,10 @@ from: no-reply@example.com
 reply_to: no-reply@example.com
 cc:
 bcc:
-subject: 'Welcome {{ form.first_name }} in our marketplace!'
+subject: 'Welcome {{ form.properties.first_name }} in our marketplace!'
 layout_path: mailer
 ---
-<h1>Hi {{ form.first_name }}!</h1>
+<h1>Hi {{ form.properties.first_name }}!</h1>
 
 <p>Welcome in our marketplace!</p>
 {% endraw %}
