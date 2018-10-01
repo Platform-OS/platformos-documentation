@@ -1,7 +1,7 @@
 const API_ENDPOINT = "https://api.github.com/repos/mdyd-dev/nearme-documentation/commits";
 const params = `?path=marketplace_builder/views/pages${window.location.pathname}.liquid`;
 const contributorsContainer = () => document.querySelector("[data-contributors]");
-const homepage = window.location.pathname.length === 1;
+const homepage = () => window.location.pathname.length === 1;
 
 const getLastUpdateTime = data => {
   const commitDate = new Date(data[0].commit.committer.date);
@@ -45,7 +45,7 @@ const getHTML = data => {
 const updateContributorsHtml = data => (contributorsContainer().innerHTML = getHTML(data));
 
 const initialize = () => {
-  if (contributorsContainer() && !homepage) {
+  if (contributorsContainer() && !homepage()) {
     fetch(`${API_ENDPOINT}${params}`, {
       method: "get"
     })
