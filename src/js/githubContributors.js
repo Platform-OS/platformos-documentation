@@ -50,8 +50,7 @@ const initialize = () => {
       method: "get"
     })
       .then(response => response.json())
-      .then(data => (data.length ? updateContributorsHtml(data) : undefined))
-      .catch(console.error);
+      .then(data => (data.length ? updateContributorsHtml(data) : undefined));
   }
 };
 
