@@ -25,7 +25,24 @@ This is an advanced tutorial. To follow it, you should be familiar with basic Pl
 
 * [Form Configurations Reference](/reference/form-configurations/form-configurations)
 
-This guide uses the following form configuration code:
+This guide assumes that there is a user profile called `developer` which is defined as such:
+
+#### marketplace_builder/user_profile_types/developer.yml
+
+```yaml
+name: developer
+custom_attributes:
+- name: bio
+  attribute_type: string
+- name: avatar
+  attribute_type: photo
+- name: banner
+  attribute_type: photo
+- name: cv
+  attribute_type: custom_attachment
+```
+
+This guide uses the following form configuration that is used to update developers profile:
 
 #### marketplace_builder/form_configurations/developer/update_profile.liquid
 
@@ -34,30 +51,32 @@ This guide uses the following form configuration code:
 ---
 name: update_profile
 resource: User
+flash_notice: Congratulations, your profile has been updated.
+redirect_to: /update_profile
 configuration:
   profiles:
     developer:
+      properties:
+        bio:
+      custom_attachments:
+        cv:
+          file:
       custom_images:
         avatar:
           image:
-[...]
+        banner:
+          image:
+---
+
+{% include 'update_profile/html_form' %}
+{% include 'update_profile/ajax' %}
+{% include 'update_profile/name_with_ajax' %}
 {% endraw %}
 ```
 
+A simple page renders the form mentioned above:
 
-It is uploading image to a developer profile which is defined as such:
-
-#### marketplace_builder/user_profile_types/developer.yml
-
-```yaml
-name: developer
-custom_attributes:
-[...]
-- name: avatar
-  attribute_type: photo
-```
-
-A simple page renders the form:
+#### marketplace_builder/views/pages/developer/update_profile.liquid
 
 ```liquid
 {% raw %}
@@ -107,8 +126,7 @@ Example for custom attribute of custom attachment type:
 
 ### Step 2: Prepare HTML form with fields including required metadata
 
-
-Create variables for quicker access later on:
+Set up action and all required data in hidden inputs:
 
 #### marketplace_builder/form_configurations/developer/update_profile.liquid
 
@@ -117,15 +135,7 @@ Create variables for quicker access later on:
 {% assign profile = form_builder.fields.profiles.developer %}
 {% assign avatar = profile.custom_images.avatar %}
 {% assign image_s3_upload = avatar.image.s3_upload %}
-{% endraw %}
-```
 
-Set up action and all required data in hidden inputs:
-
-#### marketplace_builder/form_configurations/developer/update_profile.liquid
-
-```liquid
-{% raw %}
 <form action="{{ image_s3_upload.direct_upload_url }}" accept-charset="UTF-8" method="post" enctype="multipart/form-data">
 
   {% comment %} Loop over all form_data keys and create hidden inputs in the form to send the data to S3 {% endcomment %}
