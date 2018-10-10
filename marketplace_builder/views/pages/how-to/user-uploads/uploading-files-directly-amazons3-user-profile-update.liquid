@@ -2,147 +2,239 @@
 converter: markdown
 metadata:
   title: Uploading Files Directly to Amazon S3 with User Profile Update
-  description: This guide will help you use the Amazon S3 direct upload from the browser using AJAX and then use the uploaded file as a user avatar.
+  description: This guide will help you upload files directly to Amazon S3 using AJAX, and use them as user's avatar/banner.
 slug: how-to/user-uploads/uploading-files-directly-amazons3-user-profile-update
 searchable: true
 ---
 
-This guide will help you upload a file to Amazon S3, and use it as a user avatar. It combines a simple HTML for updating a user profile with direct AWS S3 upload to update the user profile and at the same time use the image uploaded with AJAX in the submitted form.
+This guide will help you upload files directly to Amazon S3 using AJAX, and use them as user's avatar/banner.
+It combines a simple HTML for updating a user profile with direct AWS S3 upload to update the user profile and at the same time use the images uploaded with AJAX in the submitted form.
 
 ## Requirements
-This is an advanced tutorial. To follow it, you should be familiar with basic Platform OS concepts, HTML, Liquid, APIs and Form Configurations, and the topics in the Get Started section.
+This is an advanced tutorial. To follow it, you should be familiar with basic Platform OS concepts, HTML, Liquid, GraphQL, APIs and Form Configurations, and the topics in the Get Started section.
 This guide uses the same Form Configuration, user profile type, and page as [Uploading Files Directly to Amazon S3 Using HTML Form](/how-to/user-uploads/uploading-files-directly-amazons3-using-html-form).
 
 * [Uploading Files Directly to Amazon S3 Using HTML Form](/how-to/user-uploads/uploading-files-directly-amazons3-using-html-form)
 * [Uploading Files Directly to Amazon S3 Using AJAX](/how-to/user-uploads/uploading-files-directly-amazons3-using-ajax)
+
+{% include 'alert/note', content: 'To make the code modern and short javascript code is written using ES2015. To make it a little bit prettier it is assuming Bootstrap 4 loaded' %}
 
 ## Steps
 
 Uploading content directly to Amazon S3 with profile update is a three-step process:
 
 1. Prepare HTML form with fields including required metadata
-2. Submit file using AJAX
-3. Submit form using AWS S3 image url as a value in image field
+2. Prepare JavaScript that will upload files to S3
+3. Submit form with urls to S3 images as values of avatar and banner fields
 
 ### Step 1: Prepare HTML form with fields including required metadata
 
 #### marketplace_builder/form_configurations/developer/update_profile.liquid
 
-Create variables for quicker access later on:
-
-```liquid
-{% raw %}
-{% assign profile = form_builder.fields.profiles.developer %}
-{% assign avatar = profile.custom_images.avatar %}
-{% assign image_s3_upload = avatar.image.s3_upload %}
-{% endraw %}
-```
-
-Load required JavaScript file that contains code for making the AJAX request:
-
-```html
-{% raw %}
-<script src="{{ 'UpdateProfileWithDirectUpload.js' | asset_url }}" defer></script>
-{% endraw %}
-```
-
 Create form, and set up all required data in hidden inputs (those will be read by JavaScript later):
 
 ```html
 {% raw %}
+{% if context.current_user.id %}
+  {% query_graph 'get_developer_images', result_name: 'g', user_id: context.current_user.id %}
+{% endif %}
+{% assign profile = g.user.profile %}
+{% assign avatar_url = profile.avatar.url %}
+{% assign banner_url = profile.banner.url %}
+{% assign bio_field = form_builder.fields.profiles.developer.properties.bio %}
+{% assign image_s3_upload = avatar.image.s3_upload %}
+
 {% form html-data-s3-direct-upload: 'form' %}
   {% for input in image_s3_upload.form_data %}
     <input type="hidden" name="{{ input[0] }}" value="{{ input[1] }}" data-s3-direct-upload-field="presign" disabled>
   {% endfor %}
+  {% comment %} Presence of metadata field is required even if it is empty {% endcomment %}
   <input type="hidden" name="x-amz-meta-metadata" value="{}" data-s3-direct-upload-field="presign" disabled>
   <input type="hidden" name="action" value="{{ image_s3_upload.direct_upload_url }}" disabled>
 
-  <label for="{{ bio_field.name }}">My bio</label>
-  <textarea name="{{ bio_field.name }}" class="form-control" id="{{ bio_field.name }}">{{ bio_field.value }}</textarea>
+  <div class="row">
+    <div class="col-12 col-md-4">
 
-  <label for="{{ avatar.image.name }}">Avatar</label>
-  {% comment %} This field is used as a control for user to interact in the UI {% endcomment %}
-  <input type="file" name="file" id="{{ avatar.image.name }}" data-s3-direct-upload-field="file">
-  {% comment %} This field's value will be populated by JS with URL to uploaded image {% endcomment %}
-  <input type="hidden" name="{{ avatar.image.name }}" data-s3-direct-upload-field="file-url">
+      <div class="card">
+        <div class="card-header">Profile text field</div>
+        <div class="card-body">
+          <div class="form-group">
+            <label for="{{ bio_field.name }}">My bio</label>
+            <textarea name="{{ bio_field.name }}" class="form-control" id="{{ bio_field.name }}">{{ bio_field.value }}</textarea>
+          </div>
 
-  <button class="btn btn-primary mt-3">Update profile</button>
+          <hr>
+
+          <label for="{{ avatar.image.name }}">Avatar</label>
+          <input type="file" name="file" id="{{ avatar.image.name }}" data-s3-direct-upload-field-input="avatar">
+          <input type="hidden" name="{{ avatar.image.name }}" data-s3-direct-upload-field-file-url="avatar">
+
+          <div class="progress invisible mt-3" data-s3-direct-upload-progress="avatar">
+            <div class="progress-bar progress-bar-striped bg-info progress-bar-animated" style="width: 100%"></div>
+          </div>
+
+          <hr>
+
+          <label for="{{ banner.image.name }}">Banner</label>
+          <input type="file" name="file" id="{{ banner.image.name }}" data-s3-direct-upload-field-input="banner">
+          <input type="hidden" name="{{ banner.image.name }}" data-s3-direct-upload-field-file-url="banner">
+
+          <div class="progress invisible mt-3" data-s3-direct-upload-progress="banner">
+            <div class="progress-bar progress-bar-striped bg-info progress-bar-animated" style="width: 100%"></div>
+          </div>
+
+          <button class="btn btn-primary mt-3">Save changes</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-8">
+      <div class="card">
+        <div class="card-header">Preview</div>
+
+        <div class="row">
+          <div class="col-6 border-right">
+            <div class="card-body" data-s3-direct-upload-field-preview="avatar">
+              {% if avatar_url %}
+                <figure class="figure mr-3 pr-3">
+                  <p class="text-muted">Current avatar</p>
+                  <a href="{{ avatar_url }}" target="_blank">
+                    <img src="{{ avatar_url }}" alt="{{ avatar_url }}" width="200" class="figure-img img-fluid rounded">
+                  </a>
+                </figure>
+                <hr class="hr">
+              {% endif %}
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="card-body" data-s3-direct-upload-field-preview="banner">
+              {% if banner_url %}
+                <figure class="figure mr-3 pr-3">
+                  <p class="text-muted">Current banner</p>
+                  <a href="{{ banner_url }}" target="_blank">
+                    <img src="{{ banner_url }}" alt="{{ banner_url }}" width="200" class="figure-img img-fluid rounded">
+                  </a>
+                </figure>
+                <hr class="hr">
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endform %}
+
+<script src="{{ 'UpdateProfileWithDirectUpload.js' | asset_url }}" defer></script>
+
 {% endraw %}
 ```
 
-### Step 2: Submit file using AJAX
+### Step 2: Prepare JavaScript that will upload files to S3
 
-`UpdateProfileWithDirectUpload.js` file contains all necessary JavaScript needed to handle file sending, error, and preview display.
+`UpdateProfileWithDirectUpload.js` file contains all necessary JavaScript needed to handle file sending via ajax, error handling, logic handling form fields and preview display.
 
 #### marketplace_builder/assets/UpdateProfileWithDirectUpload.js
 
 ```javascript
-const qa = s => [...document.querySelectorAll(s)];
+const qa = s => Array.prototype.slice.call(document.querySelectorAll(s));
 const q = s => document.querySelector(s);
-
-const $form = $('[data-s3-direct-upload="form"]');
-const $fileField = q('[data-s3-direct-upload-field="file"]');
-const $presignFields = qa('[data-s3-direct-upload-field="presign"]');
-
 const getXMLText = (data, key) => $(data).find(key).text() || '';
-const getFileName = () => $form.find('[name="file"]').val().split("/").pop().split("\\").pop();
 
-const updateFileUrl = data => {
-  // save url where file landed to the database by sending it instead of the file
-  const fileUrl = getXMLText(data, "Location");
-  q('[data-s3-direct-upload-field="file-url"]').value = fileUrl;
+class FileUpload {
+  constructor({ name }) {
+    this.name = name;
+
+    this.fileInput = q(`[data-s3-direct-upload-field-input="${this.name}"]`);
+    this.presignFields = qa('[data-s3-direct-upload-field="presign"]');
+
+    this.form = $(this.fileInput).closest('form');
+    this.action = this.form.find('[name="action"]').val();
+    this.fileUrl = q(`[data-s3-direct-upload-field-file-url="${this.name}"]`);
+    this.progress = this.form.find(`[data-s3-direct-upload-progress="${this.name}"]`);
+    this.previewContainer = this.form.find(`[data-s3-direct-upload-field-preview="${this.name}"]`);
+
+    this.attachEventHandlers();
+  }
+
+  onFileChange() {
+    this.sendForm()
+      .done(data => (this.fileUrl.value = getXMLText(data, 'Location'))) // save path to uploaded file in db
+      .done(() => this.fileInput.setAttribute('disabled', 'disabled')) // do not submit files in form, since they are not used
+      .done(this.updatePreview.bind(this)) // update preview to show what has been uploaded to s3
+      .always(() => (this.showProgressBar = false));
+  }
+
+  attachEventHandlers() {
+    $(this.fileInput).on('change', this.onFileChange.bind(this));
+  }
+
+  get fileName() {
+    return this.fileInput.value.split('/').pop().split('\\').pop();
+  }
+
+  get fileSize() {
+    return this.fileInput.files[0].size;
+  }
+
+  updatePreview(data) {
+    const imageUrl = getXMLText(data, 'Location');
+
+    const previewHtml = `
+      <figure class="figure mr-3">
+        <p class="text-muted">Newly uploaded ${this.name}</p>
+        <a href="${imageUrl}" target="_blank">
+          <img src="${imageUrl}" class="figure-img img-fluid rounded" width="200">
+        </a>
+        <figcaption class="figure-caption">
+          Name: ${this.fileName}
+          <br/>
+          Size: ${this.fileSize} bytes
+        </figcaption>
+      </figure>
+    `;
+
+    this.previewContainer.append(previewHtml);
+  }
+
+  get formData() {
+    const formdata = new FormData();
+    this.presignFields.forEach(field => formdata.append(field.name, field.value));
+    formdata.append(this.fileInput.name, this.fileInput.files[0], this.fileName);
+    return formdata;
+  }
+
+  set showProgressBar(showOrHide) {
+    this.progress.toggleClass('invisible', !showOrHide);
+  }
+
+  sendForm() {
+    return $.ajax({
+      type: 'post',
+      url: this.action,
+      contentType: false,
+      processData: false,
+      beforeSend: () => (this.showProgressBar = true),
+      data: this.formData
+    });
+  }
 }
 
-const getFormData = () => {
-  const formdata = new FormData(); // create empty FormData object
-
-  // append all fields marked by data attribute
-  $presignFields.forEach(field => {
-    formdata.append(field.name, field.value);
-  });
-
-  // and finally, add file as a last field
-  formdata.append($fileField.name, $fileField.files[0], getFileName($fileField.value));
-
-  return formdata;
-}
-
-const sendForm = data => {
-  return $.ajax({
-    type: "post",
-    url: $form.find('[name="action"]').val(), // url to the s3 is saved inside hidden field named action
-    contentType: false,
-    processData: false,
-    data: data
-  });
-};
-
-const onFileChange = () => {
-  const formData = getFormData();
-
-  sendForm(formData)
-    .done(updateFileUrl)
-};
-
-$form.find('[name="file"]').on("change", onFileChange);
+new FileUpload({ name: 'avatar' });
+new FileUpload({ name: 'banner' });
 ```
 
-### Step 3: Submit form using AWS S3 image URL as a value in image field
+### Step 3: Submit form with urls to S3 images as values of avatar and banner fields
 
-The form should be ready to accept new field values — text for `Bio` and text (URL) for the image.
-
-{% include 'alert/note', content: 'In our case we are using Platform OS S3 bucket as a hosting for the image, but keep in mind that if you have your own hosting solution for files you can just as well send the image there and use that url to save in the database.' %}
+Form is now ready to update three different fields on `developer` profile: `bio` (string), `avatar` (image), and `banner` (image).
 
 To test the form:
 
-* Change text inside the field labeled "My bio".
-* Upload different image, and observe your browser's developer tools to know when the upload is done or implement a notification.
-* Submit form using the `Submit` button.
-
-After page reload both fields should have values saved. Image value should have a URL.
-
-{% include 'alert/note', content: 'Code above is stripped from non-essential parts. Source code and live example are more complete with error handling, image previews, and more.' %}
+* Log in to your developers account (or create account if you don't have it already)
+* Insert new text into `Bio` field
+* Upload new avatar and banner images (observe preview to be updated with source to *s3 bucket* - later on it will be replaced to CDN url) - after the image has been uploaded different versions are generated, it gets compressed and put onto the CDN - it takes couple of seconds
+* Submit form by clicking `Save changes`
+* After successful submit images should be loaded from CDN using transformed version (compressed) - if they are not updated refresh after couple seconds
 
 ## Important notes / troubleshooting
 
