@@ -1,0 +1,140 @@
+---
+converter: markdown
+metadata:
+  title: Implementing Activity Feeds
+  description: 
+slug: how-to/activity-feeds/implementing-activity-feed
+searchable: true
+---
+
+This guide will help you create and publish an activity, and then display the activity feed. 
+
+You'll follow the sample scenario described in the [Activity Feeds](/how-to/activity-feed/activity-feeds) topic: A user joins a private group by sending a membership request to the group moderator. Later the moderator reviews and accepts the user's request. The user becomes a group member. 
+
+This guide shows how to implement the following sample process: After the user clicks the `Join` button, you create the `group-membership` record [`group_id`, `user_id`, `approved_at`]. Group membership is approved by setting the `approved_at` property to the current time. 
+
+## Requirements 
+This is an advanced tutorial. To follow it, you should be familiar with basic Platform OS concepts, the topics in the Get Started section, and activity feeds. 
+
+* [How Platform OS Works](/how-platformos-works)
+* [Get Started](/get-started)
+* [Activity Feeds](/how-to/activity-feed/activity-feeds) 
+
+## Steps
+Implementing activity feeds is a three-step process:
+
+1. Create activity
+2. Publish activity
+3. Display feed
+4. Get all feed names 
+
+### Step 1: Create activity 
+Prepare an activity payload (hash). 
+
+{% include 'alert/note', content: 'The activity payload can have any structure, but it's recommended to follow the <a href="https://www.w3.org/TR/2017/REC-activitystreams-core-20170523/">W3C Recommendation for Activity Streams 2.0</a>.' %} 
+
+```liquid
+{% raw %}
+{% capture payload %}
+{
+  "actor": {
+    "type": "Person",
+    "id": "{{user_id}}",
+    "name": "Sally Smith"
+  },
+  "type": "Create",
+  "object": {
+    "type": "Relationship",
+    "id": "{{model.id}}",
+    "name": "GroupMembership"
+  },
+  "target": {
+    "type": "Group",
+    "id": "{{group.id}}"
+  }
+}
+{% endcapture %}
+{% assign payload = payload | to_hash %}
+{% endraw %}
+```
+
+Then use a GraphQL mutation
+
+```grapql
+mutation activity_create($payload: ActivityPayload!) {
+  activity: activity_create(payload: $payload) {
+    uuid
+  }
+}
+``` 
+
+to add activity to database by executing:
+
+```liquid
+{% raw %}
+{% execute_query 'activity_create', payload: payload, result_name: 'ga' %}
+{% endraw %}
+```
+
+Under `ga.activity.uuid` you have the UUID of your new activity.
+
+### Step 2: Publish activity
+
+Each Feed has type and ID (both are required). 
+Each Feed (if does not exist) is created on the fly when an activity publishes to it. You don't have to create it manually - just start publishing to it. 
+
+Once the activity is saved you can publish it to some activity feeds. 
+
+Create a GraphQL query
+
+```grapql
+mutation activity_publish($feed_ids: [ID]!, $uuid: ID!, $feed_type: String!) {
+  activity_publish(ids: $feed_ids, uuid: $uuid, feed_type: $feed_type)
+}
+```
+
+and use it in Liquid like
+
+```liquid
+{% raw %}
+{% assign user_id = 1 %}
+{% assign recipients = "" | split: "|" %}
+{% assign recipients = recipients | add_to_array: user_id %}
+
+{% execute_query 'activity_publish', uuid: ga.activity.uuid, feed_ids: recipients, result_name: 'gp', feed_type: 'UserNotifications' %}
+{% endraw %}
+```
+
+Your activity has been published to `UserNotifications[user_id]` feed. 
+
+### Step 3: Display feed
+To read the content of your feed, you have to provide `feed_name` and `feed_id`: 
+
+```liquid
+{% raw %}
+query activities($type: String!, $id: ID!, $per_page: Int, $page: Int) { streams(feed_id: $id, feed_type: $type, per_page: $per_page, page: $page) { total_entries results { id uuid payload } } }
+
+{% query_graph activities, result_name: g, type: 'UserNotifications', id: user_id %}
+total entries: {{ g.streams.total_entries }}
+
+{% for activity in g.streams.results %} {{ activity.payload }} {% endfor %}
+{% endraw %}
+```
+
+### Step 4: Get all feed names
+You can list all created feed types with `ids` by using: 
+
+```graphql
+{
+  feeds {
+    name
+    ids
+  }
+}
+```
+
+{% include 'shared/questions_section' %}
+
+
+ 
+
