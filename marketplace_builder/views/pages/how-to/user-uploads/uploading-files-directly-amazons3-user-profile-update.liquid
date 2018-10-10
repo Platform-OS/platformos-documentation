@@ -17,7 +17,8 @@ This guide uses the same Form Configuration, user profile type, and page as [Upl
 * [Uploading Files Directly to Amazon S3 Using HTML Form](/how-to/user-uploads/uploading-files-directly-amazons3-using-html-form)
 * [Uploading Files Directly to Amazon S3 Using AJAX](/how-to/user-uploads/uploading-files-directly-amazons3-using-ajax)
 
-{% include 'alert/note', content: 'To make the code modern and short javascript code is written using ES2015. To make it a little bit prettier it is assuming Bootstrap 4 loaded' %}
+{% include 'alert/note', content: 'To make the code modern and short javascript code is written using ES2015 and assumes jQuery loaded.
+To make it a little bit prettier it is assuming Bootstrap 4 loaded.' %}
 
 ## Steps
 
@@ -33,7 +34,7 @@ Uploading content directly to Amazon S3 with profile update is a three-step proc
 
 Create form, and set up all required data in hidden inputs (those will be read by JavaScript later):
 
-```html
+```liquid
 {% raw %}
 {% if context.current_user.id %}
   {% query_graph 'get_developer_images', result_name: 'g', user_id: context.current_user.id %}
