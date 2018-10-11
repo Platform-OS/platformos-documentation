@@ -1,30 +1,31 @@
 ---
 converter: markdown
 metadata:
-  title: Payments with GraphQL mutations.
-  description: This guide will help you create a Stripe integration for Platform OS.
-slug: how-to/payments/payments-with-graphql-mutations
+  title: Processing Payments with GraphQL Mutations.
+  description: This guide will teach you how to process payments with GraphQL mutations.
+slug: how-to/payments/processing-payments-graphql-mutations
 searchable: true
 ---
 
-This guide will teach you how to process payments with mutations.
+This guide will teach you how to process payments with GraphQL mutations.
 
 ## Requirements
 
 It is recommended that you:
-* have Stripe configured correctly as examplned in [Stripe Integration](/how-to/payments/stripe-integration)
-* understand how [GraphQL mutation](/api-reference/graphql/g/operation/mutation) works.
+* have Stripe configured correctly as explained in [Integratin Stripe](/how-to/payments/integrating-stripe)
+* understand how [GraphQL mutations](/api-reference/graphql/g/operation/mutation) work
 
 ## Steps
+Processing payments with GraphQL mutations is a four-step process: 
 
-1. Invoice Model
+1. Create Invoice Model
 2. Fetch stored Credit Card 
-3. Create Payment
+3. Create payment
 4. Charge payment with mutation 
 
-### Step 1. Invoice Model
+### Step 1: Create Invoice Model
 
-Usualy when you create payment in your system you want to associate it with another object. This association is saved on payment object and it's called `payable`. In this example we will create a custom model called `Invoice` - that accept only amount and we will use it as payment payable. Payable can have only one payment, when you try to create multiple payments to the same object you will get an error. Let's start with simple definition of Custom Model:
+Usually when you create a payment in your system, you want to associate it with another object. This association is saved on the payment object and it's called `payable`. In this example you will create a custom model called `Invoice` - that accepts only an amount, and you will use it as payment payable. Payable can have only one payment, when you try to create multiple payments to the same object you will get an error. Start with a simple definition of the Custom Model:
 
 ```yml
 name: Invoice
@@ -33,7 +34,7 @@ custom_attributes:
   attribute_type: float
 ```
 
-We now need to crate object of Invoice model, you can do that with a mutation:
+You now need to create the object of the Invoice model, you can do that with a mutation:
 
 ```graphql
 mutation create_invoice(
@@ -77,9 +78,9 @@ Now create invoice object with mutation execution:
 ```
 {% endraw %}
 
-### Step 2. Fetch stored Credit Card 
+### Step 2: Fetch stored Credit Card 
 
-In Step 5 of [Stripe Integration](/how-to/payments/stripe-integration") you have learned how to fetch data of Credit Cards saved on your instance. You will now use this data to create new payment. To do that we need the `id` and `payment_method_id` that are saved on the CreditCard object. The following lines assign that data to `cc` variable:
+In Step 5 of [Integrating Stripe](/how-to/payments/integrating-stripe") you have learned how to fetch data of Credit Cards saved on your instance. You will now use this data to create a new payment. To do that, you need the `id` and `payment_method_id` that are saved on the CreditCard object. The following lines assign that data to `cc` variable:
 
 {% raw %}
 ```
@@ -89,9 +90,9 @@ In Step 5 of [Stripe Integration](/how-to/payments/stripe-integration") you have
 ```
 {% endraw %}
 
-### Step 3. Create Payment
+### Step 3: Create payment
 
-As you now have all data required to create new payment you need to create proper mutation and form:
+As you now have all the data required to create a new payment, you need to create the proper mutation and form:
 
 ```
 mutation create_payment(
@@ -159,7 +160,7 @@ email_notifications:
 ---
 ```
 
-With the definition above execute query with data that you've previously assigned to proper variables.
+With the definition above, execute the query with the data that you've previously assigned to proper variables.
 
 {% raw %}
 ```liquid
@@ -179,9 +180,9 @@ With the definition above execute query with data that you've previously assigne
 
 The result of the mutation will be saved to variable `p` as defined in the last line of query execution. What you need to extract is `payment_id` that is used in the next step.
 
-### Step 4. Charge payment with mutation 
+### Step 4: Charge payment with GrahpQL mutation 
 
-As you now have payment saved in the system, you can at any time send a request to accually process and charge credit card assigned to it. In order to do it define `charge_payment` mutation and form:
+As you now have payment saved in the system, you can at any time send a request to accually process and charge the credit card assigned to it. In order to do it define `charge_payment` mutation and form:
 
 ```graphql
 mutation charge_payment($id: ID!) {
@@ -204,7 +205,7 @@ authorization_policies: ""
 ```
 {% endraw %}
 
-Now as everything is in place, execute mutation and see the results in Stripe dashboard. Result of mutation is saved to `p` variabled so you can inspect if `paid_at` was set correctly.
+Now as everything is in place, execute the mutation and see the results on the Stripe dashboard. Result of mutation is saved to `p` variable, so you can inspect if `paid_at` was set correctly.
 
 {% raw %}
 ```liquid
