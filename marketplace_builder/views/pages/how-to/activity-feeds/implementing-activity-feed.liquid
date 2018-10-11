@@ -60,7 +60,7 @@ Prepare an activity payload (hash).
 
 Then use a GraphQL mutation
 
-```grapql
+```graphql
 mutation activity_create($payload: ActivityPayload!) {
   activity: activity_create(payload: $payload) {
     uuid
@@ -87,7 +87,7 @@ Once the activity is saved you can publish it to some activity feeds.
 
 Create a GraphQL query
 
-```grapql
+```graphql
 mutation activity_publish($feed_ids: [ID]!, $uuid: ID!, $feed_type: String!) {
   activity_publish(ids: $feed_ids, uuid: $uuid, feed_type: $feed_type)
 }
@@ -136,7 +136,7 @@ total entries: {{ g.streams.total_entries }}
 You can list all created feed types with `ids` by using:
 
 ```graphql
-{
+query {
   feeds {
     name
     ids
