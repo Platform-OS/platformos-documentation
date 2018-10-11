@@ -1,0 +1,88 @@
+---
+converter: markdown
+metadata:
+  title: Activity Feeds
+  description: A description of activities and activity feeds with examples.
+slug: how-to/activity-feeds/activity-feeds
+searchable: true
+---
+
+An **activity** is a semantic description of an action.
+
+Get familiar with the [W3C Recommendation for Activity Streams 2.0](https://www.w3.org/TR/2017/REC-activitystreams-core-20170523/). Most examples and part of the implementation you'll find in this guide are based on this specification, that provides a JSON-based syntax that is sufficient to express metadata about activities in a rich, human-friendly but machine-processable and extensible manner. This can include constructing natural-language descriptions or visual representations about the activity, associating actionable information with various types of objects, communicating or recording activity logs, or delegation of potential actions to other applications.
+
+## Activities
+After each specified action, you have to create an activity and then publish the activity UUID to specific feeds.
+
+### Example
+
+#### Sample scenario
+A user joins a private group by sending a membership request to the group moderator. Later the moderator reviews and accepts the user's request. The user becomes a group member.
+
+#### Actions and activities
+In this scenario you can distinguish 3 actions:
+
+1. User requests group membership
+2. Group moderator accepts user's request
+3. User joins the group
+
+For each action, you can create an activity as follows:
+
+|    | actor     | type    | object       | target |
+|----|-----------|---------|--------------|--------|
+| 1. | user      | create  | relationship | group  |
+| 2. | moderator | approve | relationship | group  |
+| 3. | user      | join    | group        |        |
+
+
+#### Sample code
+
+```json
+{
+	"actor": {
+		"type": "Person",
+		"id": "User.1",
+		"name": "Sally Smith"
+	},
+	"type": "Join",
+	"object": {
+		"type": "Group",
+		"id": "Customization.1",
+		"name": "SuperGroup"
+	}
+}
+```
+
+## Activity feeds
+
+You can define multiple different activity feeds.
+
+* Private feed: your FB main page for example is your private feed - your friends' activities are posted there
+* Public feed: there is also a public feed - where your friends may see your activities
+
+You can specify the following activity feed types:
+
+| feed type          | visibility | purpose                                  |
+|--------------------|------------|------------------------------------------|
+| user-notifications | private    | notifications that only the user can see |
+| user-activities    | public     | user's public activities                 |
+| group-activities   | public     | all group related public activities      |
+
+In the example scenario, the activity distribution could be like this:
+
+| activity                                | feeds                          |
+|-----------------------------------------|--------------------------------|
+| user-create-relationship-to-group       | moderator's user-notifications |
+| moderator-approve-relationship-to-group | user's user-notifications      |
+| user-join-group                         | user's group activities        |
+|                                         | group's group-activities       |
+
+
+## Related topics
+
+* [Implementing Activity Feeds](/how-to/activity-feeds/implementing-activity-feeds)
+
+{% include 'shared/questions_section' %}
+
+
+
