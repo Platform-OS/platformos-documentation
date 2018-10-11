@@ -31,7 +31,7 @@ Implementing activity feeds is a three-step process:
 ### Step 1: Create activity 
 Prepare an activity payload (hash). 
 
-{% include 'alert/note', content: 'The activity payload can have any structure, but it's recommended to follow the <a href="https://www.w3.org/TR/2017/REC-activitystreams-core-20170523/">W3C Recommendation for Activity Streams 2.0</a>.' %} 
+{% include 'alert/note', content: 'The activity payload can have any structure, but it is recommended to follow the <a href="https://www.w3.org/TR/2017/REC-activitystreams-core-20170523/">W3C Recommendation for Activity Streams 2.0</a>.' %} 
 
 ```liquid
 {% raw %}
@@ -110,15 +110,15 @@ Your activity has been published to `UserNotifications[user_id]` feed.
 ### Step 3: Display feed
 To read the content of your feed, you have to provide `feed_name` and `feed_id`: 
 
-```liquid
-{% raw %}
-query activities($type: String!, $id: ID!, $per_page: Int, $page: Int) { streams(feed_id: $id, feed_type: $type, per_page: $per_page, page: $page) { total_entries results { id uuid payload } } }
+```graphql
+query activities($type: String!, $id: ID!, $per_page: Int, $page: Int) 
+{ streams(feed_id: $id, feed_type: $type, per_page: $per_page, page: $page) 
+{ total_entries results { id uuid payload } } }
 
-{% query_graph activities, result_name: g, type: 'UserNotifications', id: user_id %}
+{% query_graph activities, result_name: 'g', type: 'UserNotifications', id: user_id %}
 total entries: {{ g.streams.total_entries }}
 
 {% for activity in g.streams.results %} {{ activity.payload }} {% endfor %}
-{% endraw %}
 ```
 
 ### Step 4: Get all feed names
