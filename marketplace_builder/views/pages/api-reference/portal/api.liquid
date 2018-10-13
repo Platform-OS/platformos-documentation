@@ -1,0 +1,229 @@
+---
+slug: api-reference/partner-portal/api
+searchable: true
+metadata:
+  title: Partner Portal API
+  description: This documentation will help you manage your instances programmatically using Partner Portal REST API.
+---
+
+<p>This documentation will help you manage your instances programmatically using Partner Portal REST API.</p>
+
+  <h2>POST /api/authenticate</h2>
+
+
+    <h4>Request</h4>
+      <p>Params</p>
+      <pre><code class="language-json line-numbers">
+        {
+  "email": "user@example.com",
+  "password": "valid password"
+}
+      </code></pre>
+
+    <p class="mt-4">cURL example</p>
+    <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+      curl -X POST -H "Content-Type: application/json" -d '{"email":"user@example.com","password":"valid password"}' "https://portal.apps.near-me.com/api/authenticate"
+    </code></pre>
+
+    <h4 class="mt-5">Response [200]</h4>
+
+    <p>Body</p>
+    <pre><code class="language-json line-numbers">
+      {"auth_token":"[[auth_token]]","expires_at":"2004-11-25T01:04:44Z"}
+
+    </code></pre>
+
+    <hr class="hr mt-5 mb-3 py-2" />
+
+    <h4>Request</h4>
+      <p>Params</p>
+      <pre><code class="language-json line-numbers">
+        {
+  "email": "user@example.com",
+  "password": "INVALID PASSWORD"
+}
+      </code></pre>
+
+    <p class="mt-4">cURL example</p>
+    <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+      curl -X POST -H "Content-Type: application/json" -d '{"email":"user@example.com","password":"INVALID PASSWORD"}' "https://portal.apps.near-me.com/api/authenticate"
+    </code></pre>
+
+    <h4 class="mt-5">Response [401]</h4>
+
+    <p>Body</p>
+    <pre><code class="language-json line-numbers">
+      -
+      
+    </code></pre>
+
+    <hr class="hr mt-5 mb-3 py-2" />
+  <h2>POST /api/instances</h2>
+
+
+    <h4>Request</h4>
+      <p>Params</p>
+      <pre><code class="language-json line-numbers">
+        {
+  "instance_params": {
+    "endpoint_id": "[[endpoint_id]]",
+    "name": "Busy Instance"
+  },
+  "partner_id": "[[partner_id]]"
+}
+      </code></pre>
+
+    <p class="mt-4">cURL example</p>
+    <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+      curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer [[auth_token]]" -d '{"instance_params":{"endpoint_id":"[[endpoint_id]]","name":"Busy Instance"},"partner_id":"[[partner_id]]"}' "https://portal.apps.near-me.com/api/instances"
+    </code></pre>
+
+    <h4 class="mt-5">Response [202]</h4>
+
+    <p>Body</p>
+    <pre><code class="language-json line-numbers">
+      {"acknowledged":true}
+
+    </code></pre>
+
+    <hr class="hr mt-5 mb-3 py-2" />
+
+    <h4>Request</h4>
+      <p>Params</p>
+      <pre><code class="language-json line-numbers">
+        {
+  "instance_params": {
+    "endpoint_id": "[[endpoint_id]]"
+  },
+  "partner_id": "[[partner_id]]"
+}
+      </code></pre>
+
+    <p class="mt-4">cURL example</p>
+    <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+      curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer [[auth_token]]" -d '{"instance_params":{"endpoint_id":"[[endpoint_id]]"},"partner_id":"[[partner_id]]"}' "https://portal.apps.near-me.com/api/instances"
+    </code></pre>
+
+    <h4 class="mt-5">Response [422]</h4>
+
+    <p>Body</p>
+    <pre><code class="language-json line-numbers">
+      {"errors":["Name can't be blank","Url can't be blank"]}
+
+    </code></pre>
+
+    <hr class="hr mt-5 mb-3 py-2" />
+  <h2>GET /api/endpoints</h2>
+
+
+    <h4>Request</h4>
+
+    <p class="mt-4">cURL example</p>
+    <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+      curl -X GET -H "Content-Type: application/json" -H "Authorization: Bearer [[auth_token]]" "https://portal.apps.near-me.com/api/endpoints"
+    </code></pre>
+
+    <h4 class="mt-5">Response [200]</h4>
+
+    <p>Body</p>
+    <pre><code class="language-json line-numbers">
+      {"data":[{"id":9999,"name":"Endpoint 0"},{"id":9999,"name":"Endpoint 1"}]}
+
+    </code></pre>
+
+    <hr class="hr mt-5 mb-3 py-2" />
+  <h2>GET /api/instances</h2>
+
+
+    <h4>Request</h4>
+      <p>Params</p>
+      <pre><code class="language-json line-numbers">
+        {
+  "page": "1",
+  "per_page": "2"
+}
+      </code></pre>
+
+    <p class="mt-4">cURL example</p>
+    <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+      curl -X GET -H "Content-Type: application/json" -H "Authorization: Bearer [[auth_token]]" "https://portal.apps.near-me.com/api/instances?page=1&per_page=2"
+    </code></pre>
+
+    <h4 class="mt-5">Response [200]</h4>
+
+    <p>Body</p>
+    <pre><code class="language-json line-numbers">
+      {"data":[{"name":"Instance 1","uuid":"[[uuid]]"},{"name":"Instance 0","uuid":"[[uuid]]"}]}
+
+    </code></pre>
+
+    <hr class="hr mt-5 mb-3 py-2" />
+  <h2>GET /api/instances/[[UUID]]</h2>
+
+
+    <h4>Request</h4>
+      <p>Params</p>
+      <pre><code class="language-json line-numbers">
+        {
+  "uuid": "[[uuid]]"
+}
+      </code></pre>
+
+    <p class="mt-4">cURL example</p>
+    <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+      curl -X GET -H "Content-Type: application/json" -H "Authorization: Bearer [[auth_token]]" "https://portal.apps.near-me.com/api/instances/[[UUID]]"
+    </code></pre>
+
+    <h4 class="mt-5">Response [200]</h4>
+
+    <p>Body</p>
+    <pre><code class="language-json line-numbers">
+      {"data":{"endpoint":{"id":9999,"name":"Endpoint 6"},"name":"Instance 2","partner":{"id":9999,"name":"Partner 19"},"uuid":"[[uuid]]"}}
+
+    </code></pre>
+
+    <hr class="hr mt-5 mb-3 py-2" />
+  <h2>GET /api/instances/[[UUID]]/configuration</h2>
+
+
+    <h4>Request</h4>
+      <p>Params</p>
+      <pre><code class="language-json line-numbers">
+        {
+  "uuid": "[[uuid]]"
+}
+      </code></pre>
+
+    <p class="mt-4">cURL example</p>
+    <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+      curl -X GET -H "Content-Type: application/json" -H "Authorization: Bearer [[auth_token]]" "https://portal.apps.near-me.com/api/instances/[[UUID]]/configuration"
+    </code></pre>
+
+    <h4 class="mt-5">Response [200]</h4>
+
+    <p>Body</p>
+    <pre><code class="language-json line-numbers">
+      {"data":{"domains":[{"name":"your-domain.example.com","created_at":"2018-08-09T12:43:52.037Z","redirect_to":null,"redirect_code":null,"use_as_default":true},{"name":"www.your-domain.example.com","created_at":"2018-10-02T11:25:48.426Z","redirect_to":"your-domain.example.com","redirect_code":null,"use_as_default":false}],"attributes":{"test_email":"kacper@near-me.com","maintenance_mode":false,"enable_sms_and_api_workflow_alerts_on_staging":false},"integrations":{"social":{"github_consumer_key":"your_github_consumer_key","google_consumer_key":"your_google_consumer_key","twitter_consumer_key":"your_twitter_consumer_key","facebook_consumer_key":"your_facebook_consumer_key","linkedin_consumer_key":"your_linkedin_consumer_key","github_consumer_secret":"your_github_consumer_secret","google_consumer_secret":"your_google_consumer_secret","instagram_consumer_key":"your_instagram_consumer_key","twitter_consumer_secret":"your_twitter_consumer_secret","facebook_consumer_secret":"your_facebook_consumer_secret","linkedin_consumer_secret":"your_linkedin_consumer_secret","instagram_consumer_secret":"your_instagram_consumer_secret"},"twilio":{"sid":"your_sid","from":"your_from","auth_token":"[[auth_token]]"},"sendgrid":{"password":"your_password","user_name":"your_user_name"}}}}
+
+    </code></pre>
+
+    <hr class="hr mt-5 mb-3 py-2" />
+  <h2>GET /api/partners</h2>
+
+
+    <h4>Request</h4>
+
+    <p class="mt-4">cURL example</p>
+    <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+      curl -X GET -H "Content-Type: application/json" -H "Authorization: Bearer [[auth_token]]" "https://portal.apps.near-me.com/api/partners"
+    </code></pre>
+
+    <h4 class="mt-5">Response [200]</h4>
+
+    <p>Body</p>
+    <pre><code class="language-json line-numbers">
+      {"data":[{"id":9999,"name":"Partner 1"},{"id":9999,"name":"Partner 0"}]}
+
+    </code></pre>
+
+    <hr class="hr mt-5 mb-3 py-2" />
