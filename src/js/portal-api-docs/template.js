@@ -1,5 +1,4 @@
 const request = `<%_ let req = value.request _%>
-
   <%_ if (req) { _%>
     <h4>Request</h4>
     <%_ if (Object.keys(req.params).length > 0) { _%>
@@ -31,22 +30,12 @@ const response = `<%_ let res = value.response _%>
   <%_ } _%>
 `;
 
-const template = `---
-slug: api-reference/partner-portal/api
-searchable: true
-metadata:
-  title: Partner Portal API
-  description: This documentation will help you manage your instances programmatically using Partner Portal REST API.
----
-
-<p>This documentation will help you manage your instances programmatically using Partner Portal REST API.</p>
-
-<%_ for (let name in endpoints) { _%>
-  <%_ var examples = endpoints[name] _%>
+const template = `<%_ for (let name in endpoints) { _%>
+  <%_ let examples = endpoints[name] _%>
   <h2><%= name _%></h2>
 
   <%_ for (let example in examples) { _%>
-    <%_ var value = examples[example] _%>
+    <%_ let value = examples[example] _%>
     ${request}
     ${response}
     <hr class="hr mt-5 mb-3 py-2" />
