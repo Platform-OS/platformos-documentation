@@ -85,8 +85,7 @@ In Step 5 of [Integrating Stripe](/how-to/payments/integrating-stripe") you have
 
 ```liquid
 {% raw %}
-{% query_graph "current_user", result_name: "u" %}
-{% query_graph "get_credit_cards", user_id: u.current_user.id %}
+{% query_graph "get_credit_cards", user_id: context.current_user.id %}
 {% assign cc = g.credit_cards.last %}
 {% endraw %}
 ```
@@ -169,7 +168,7 @@ With the definition above, execute the query with the data that you've previousl
   payment_method_id: cc.payment_method_id,
   payable_id: invoice.id,
   payable_type: "Customization",
-  payer_id: u.current_user.id,
+  payer_id: context.current_user.id,
   total_amount: 10,
   result_name: "p"
 %}
