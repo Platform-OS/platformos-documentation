@@ -16,12 +16,12 @@ It is recommended that you:
 * understand how [GraphQL mutations](/api-reference/graphql/g/operation/mutation) work
 
 ## Steps
-Processing payments with GraphQL mutations is a four-step process: 
+Processing payments with GraphQL mutations is a four-step process:
 
 1. Create Invoice Model
-2. Fetch stored Credit Card 
+2. Fetch stored Credit Card
 3. Create payment
-4. Charge payment with mutation 
+4. Charge payment with mutation
 
 ### Step 1: Create Invoice Model
 
@@ -54,13 +54,14 @@ mutation create_invoice(
 ```
 
 The form for the above mutation is:
-```
+
+```yaml
 ---
 name: create_invoice_form
 resource: Customization
 resource_owner: anyone
 configuration:
-  customizable_type: 
+  customizable_type:
   customizable_id:
   user_id:
   properties:
@@ -71,30 +72,30 @@ configuration:
 ````
 
 Now create invoice object with mutation execution:
-{% raw %}
 ```liquid
+{% raw %}
 {% execute_query "create_invoice", amount: "10", result_name: "i" %}
 {% assign invoice = i.customization_create %}
-```
 {% endraw %}
+```
 
-### Step 2: Fetch stored Credit Card 
+### Step 2: Fetch stored Credit Card
 
 In Step 5 of [Integrating Stripe](/how-to/payments/integrating-stripe") you have learned how to fetch data of Credit Cards saved on your instance. You will now use this data to create a new payment. To do that, you need the `id` and `payment_method_id` that are saved on the CreditCard object. The following lines assign that data to `cc` variable:
 
+```liquid
 {% raw %}
-```
 {% query_graph "current_user", result_name: "u" %}
 {% query_graph "get_credit_cards", user_id: u.current_user.id %}
 {% assign cc = g.credit_cards.last %}
-```
 {% endraw %}
+```
 
 ### Step 3: Create payment
 
 As you now have all the data required to create a new payment, you need to create the proper mutation and form:
 
-```
+```graphql
 mutation create_payment(
   $credit_card_id: ID
   $credit_card_token: String
@@ -130,7 +131,7 @@ mutation create_payment(
 
 To make things simpler, USD is the default currency, but feel free to change it.
 
-```liquid
+```yaml
 ---
 name: create_payment_form
 resource: Payment
@@ -161,25 +162,25 @@ configuration:
 
 With the definition above, execute the query with the data that you've previously assigned to proper variables.
 
-{% raw %}
 ```liquid
-{% execute_query "create_payment", 
+{% raw %}
+{% execute_query "create_payment",
   credit_card_id: cc.id,
   payment_method_id: cc.payment_method_id,
   payable_id: invoice.id,
   payable_type: "Customization",
   payer_id: u.current_user.id,
-  total_amount: 10, 
+  total_amount: 10,
   result_name: "p"
 %}
 
 {% assign payment_id = p.payment_create.result.id %}
-```
 {% endraw %}
+```
 
 The result of the mutation will be saved to variable `p` as defined in the last line of query execution. What you need to extract is `payment_id` that is used in the next step.
 
-### Step 4: Charge payment with GrahpQL mutation 
+### Step 4: Charge payment with GrahpQL mutation
 
 As you now have payment saved in the system, you can at any time send a request to accually process and charge the credit card assigned to it. In order to do it define `charge_payment` mutation and form:
 
@@ -192,7 +193,6 @@ mutation charge_payment($id: ID!) {
 }
 ```
 
-{% raw %}
 ```yaml
 ---
 name: charge_payment_form
@@ -201,7 +201,6 @@ configuration: {}
 resource_owner: anyone
 ---
 ```
-{% endraw %}
 
 Now as everything is in place, execute the mutation and see the results on the Stripe dashboard. Result of mutation is saved to `p` variable, so you can inspect if `paid_at` was set correctly.
 
@@ -211,6 +210,6 @@ Now as everything is in place, execute the mutation and see the results on the S
 ```
 {% endraw %}
 
-Congratulations! You now know how to use stored credit cards to process new payments. 
+Congratulations! You now know how to use stored credit cards to process new payments.
 
 {% include 'shared/questions_section' %}
