@@ -13,7 +13,7 @@ const plugins = [
     chunkFilename: "[name].css"
   }),
   new WebpackRequireFrom({
-    methodName: "__cdnUrl"
+    variableName: "window.__CONTEXT__.cdnUrl"
   })
 ];
 
@@ -29,6 +29,7 @@ if (production) {
 const config = {
   entry: {
     app: "./src/app",
+    raven: "./src/raven",
     webfonts: "./src/webfonts"
   },
   output: {

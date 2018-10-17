@@ -1,8 +1,4 @@
-<script type="text/javascript">
-  /* Set output.publicPath on runtime, to avoid hardcoding paths in env's or views */
-  window.__cdnUrl = function() { return "{{ '' | asset_url }}" };
-</script>
-
 {% comment %} Placing here to comply with turbolinks. It doesnt change anything, because defer. {% endcomment %}
 <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=Promise,Element.prototype.closest,es5,fetch,Element.prototype.classList,Node.insertBefore,Node.firstChild" defer></script>
+<script src="{{ 'raven.js' | asset_url }}" defer data-turbolinks-track="reload"></script>
 <script src="{{ 'app.js' | asset_url }}" defer data-turbolinks-track="reload"></script>
