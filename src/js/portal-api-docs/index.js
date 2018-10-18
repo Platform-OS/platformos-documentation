@@ -5,14 +5,14 @@ import(/* webpackChunkName: "vendor" */ "ejs/ejs.min").then(() => {
   const placeholder = () => document.querySelector('[data-portal-api-docs="content"]');
 
   const initialize = () => {
-    if (!placeholder) {
+    if (!placeholder()) {
       return false;
     }
 
     fetch(DOCS_URL)
       .then(res => res.json())
       .then(endpoints => ejs.render(template, { endpoints }))
-      .then(html => (placeholder.innerHTML = html))
+      .then(html => (placeholder().innerHTML = html))
       .then(() => document.dispatchEvent(new CustomEvent("prism:reinitialize")))
       .catch(err => console.log);
   };
