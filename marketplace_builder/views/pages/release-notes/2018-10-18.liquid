@@ -1,0 +1,52 @@
+---
+converter: markdown
+metadata:
+  title: October 18, 2018  &ndash;  Release Notes
+  date: October 18, 2018
+  description: priority setting and limitations of async_callback_actions
+  hide_sidebar: true
+  draft: true
+slug: release-notes/18-OCTOBER-2018
+searchable: true
+---
+
+### {{ page.metadata.description }}
+
+Some users reported that they have troubles running very long tasks in `async_callback_actions` because the task was too slow to execute.
+
+Before you had no control or information about limits, errors, timeouts.
+
+From now on you have full control over priority of your `async_callback_actions`.
+
+If you don't set priority at all, it will be set to `default`.
+
+#### Example
+
+```yaml
+{% raw %}
+[...]
+
+async_callback_actions:
+  delay: 10
+  priority: low
+  content: >
+    {% execute_query 'long_running_task' %}
+
+[...]
+{% endraw %}
+```
+
+#### Limits
+
+| Priority | Timeout   |
+|----------------|-----------|
+| high           | 1 minute  |
+| default        | 5 minutes |
+| low            | 4 hours   |
+
+Keep them in mind when writing code so that it runs fast enough for its priority.
+
+#### Logging
+
+Additionally, when job fails or timeouts it will be logged.
+You can access that log using `marketplace-kit logs` command.
