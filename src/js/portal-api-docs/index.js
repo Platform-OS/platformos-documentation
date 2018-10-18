@@ -2,9 +2,13 @@ import template from "./template";
 
 import(/* webpackChunkName: "vendor" */ "ejs/ejs.min").then(() => {
   const DOCS_URL = "https://portal.apps.near-me.com/api_doc.json";
-  const placeholder = document.querySelector('[data-portal-api-docs="content"]');
+  const placeholder = () => document.querySelector('[data-portal-api-docs="content"]');
 
   const initialize = () => {
+    if (!placeholder) {
+      return false;
+    }
+
     fetch(DOCS_URL)
       .then(res => res.json())
       .then(endpoints => ejs.render(template, { endpoints }))
