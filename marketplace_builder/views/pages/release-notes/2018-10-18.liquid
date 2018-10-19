@@ -13,8 +13,18 @@ searchable: true
 
 Some users reported issues with running very long tasks in `async_callback_actions` because the task was too slow to execute.
 
-Before, you had no control or information about limits, errors, timeouts. From now on you have full control over priority of your `async_callback_actions`.
+Before, you had no control or information about limits, errors, timeouts.
+
+#### priority
+
+You have full control over priority of your `async_callback_actions`.
 If you don't set priority at all, it will be set to `default`.
+
+#### max_attempts
+
+You can also set maximum number of attempts if job fails for whatever reason - timeout, error in the code, 3rd party api not responding
+
+Default is 1. Use it with caution, as every attempt uses resources.
 
 #### Example
 
@@ -25,6 +35,7 @@ If you don't set priority at all, it will be set to `default`.
 async_callback_actions:
   delay: 10
   priority: low
+  max_attempts: 2
   content: >
     {% execute_query 'long_running_task' %}
 
