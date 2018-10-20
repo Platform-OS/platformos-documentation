@@ -49,10 +49,16 @@ const initialize = () => {
     fetch(`${API_ENDPOINT}${filePath()}`, {
       method: "get"
     })
+      .then(response => {
+        if (!response.ok) {
+          throw response.json();
+        }
+        return response;
+      })
       .then(response => response.json())
-      .then(data => (data.length ? updateContributorsHtml(data) : undefined));
+      .then(data => (data.length ? updateContributorsHtml(data) : undefined))
+      .catch(response => response.then(err => console.log("Github API fetch resulted in an error: ", err)));
   }
 };
 
 document.addEventListener("turbolinks:load", initialize);
-// window.addEventListener("DOMContentLoaded", initialize);
