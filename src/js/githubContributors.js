@@ -53,9 +53,8 @@ const initialize = () => {
         if (!response.ok) {
           throw response.json();
         }
-        return response;
+        return response.json();
       })
-      .then(response => response.json())
       .then(data => (data.length ? updateContributorsHtml(data) : undefined))
       .catch(response => response.then(err => console.log("Github API fetch resulted in an error: ", err)));
   }
