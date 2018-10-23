@@ -1,36 +1,36 @@
 ---
 converter: markdown
 metadata:
-  title: Platform OS Components
-  description: Learn more about the components that help you create, update, and build your site, and the required directory structure of your Platform OS codebase.
+  title: PlatformOS Components
+  description: Learn more about the components that help you create, update, and build your site, and the required directory structure of your PlatformOS codebase.
 slug: how-platformos-works/platformos-components
 searchable: true
 ---
 
-The Platform OS package consists of three components that help you create, update, and build your site:
+The PlatformOS package consists of three components that help you create, update, and build your site:
 
-* **Partner Portal**: The Partner Portal is an online interface where our Partners can create, manage, and configure sites built with Platform OS, and manage other users of the Partner Portal. The site created on the Partner Portal will be the site you deploy and sync your changes to during development.
+* **Partner Portal**: The Partner Portal is an online interface where our Partners can create, manage, and configure sites built with PlatformOS, and manage other users of the Partner Portal. The site created on the Partner Portal will be the site you deploy and sync your changes to during development.
 
   * The sites created are called **Instances**. Instances have a URL, and they represent different development environments, like staging or production.
   * Users of the Partner Portal are called **Partners**. Partners have the permissions to create, manage, and configure Instances. Partners can also create and manage other Partners.
 
-* **Marketplace Kit**: The Marketplace Kit is a command line interface that helps you deploy configuration files and assets to your Platform OS site.
+* **Marketplace Kit**: The Marketplace Kit is a command line interface that helps you deploy configuration files and assets to your PlatformOS site.
 
 * **Your code base**: Your files organized into the required directory structure.
 
 ## Components in action
 
-The workflow of developing a site using Platform OS starts with a Partner creating a new Instance through the Partner Portal. Besides creating a new Instance, the Partner has the options to update and configure existing Instances, or copy and modify the configuration of one Instance to create another with the same or similar configuration. The Platform OS engine saves the Instance, which &ndash; after authorization &ndash; becomes available for developers to deploy and sync to.
+The workflow of developing a site using PlatformOS starts with a Partner creating a new Instance through the Partner Portal. Besides creating a new Instance, the Partner has the options to update and configure existing Instances, or copy and modify the configuration of one Instance to create another with the same or similar configuration. The PlatformOS engine saves the Instance, which &ndash; after authorization &ndash; becomes available for developers to deploy and sync to.
 
 Developers usually start with creating the required directory structure in a local environment. This becomes the framework for the codebase of the Instance.
 
 The Marketplace Kit deploys and syncs the codebase to the Instance.
 
-[TO BE ADDED: diagram1: processes between Platform OS components]
+[TO BE ADDED: diagram1: processes between PlatformOS components]
 
 ## Required directory structure
 
-In order to correctly communicate with the Platform OS engine and API, your code base should be organized into a specific directory structure. The root directory of your project should contain the `marketplace_builder` directory. All directories other than the `marketplace_builder` will be ignored by the Marketplace Kit when deploying and syncing, so you can keep all your JS and CSS files outside of the `marketplace_builder` directory, and use any pre-processors you want to automatically generate the end result files in a proper path inside `marketplace_builder`.
+In order to correctly communicate with the PlatformOS engine and API, your code base should be organized into a specific directory structure. The root directory of your project should contain the `marketplace_builder` directory. All directories other than the `marketplace_builder` will be ignored by the Marketplace Kit when deploying and syncing, so you can keep all your JS and CSS files outside of the `marketplace_builder` directory, and use any pre-processors you want to automatically generate the end result files in a proper path inside `marketplace_builder`.
 
 ### Recommended directories and files inside the marketplace_builder directory
 

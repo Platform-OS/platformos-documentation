@@ -2,14 +2,14 @@
 converter: markdown
 metadata:
   title: Integrating SendGrid Using API Call Notifications
-  description: This guide will help you create a SendGrid integration for Platform OS using API call notifications.
+  description: This guide will help you create a SendGrid integration for PlatformOS using API call notifications.
 slug: how-to/integrations/integrating-sendgrid-api-call-notifications
 searchable: true
 ---
 
-This guide will help you create a SendGrid integration for Platform OS using API call notifications.
+This guide will help you create a SendGrid integration for PlatformOS using API call notifications.
 
-When a user fills out a form on your Platform OS site, you need to have that user added to the correct SendGrid Segment so you can provide them with the correct marketing campaign. This guide explains how to create an API call notification for each form on your site, that sends the user’s info to SendGrid and creates a custom (field) attribute in SendGrid to allow the user to be added to the correct segment.
+When a user fills out a form on your PlatformOS site, you need to have that user added to the correct SendGrid Segment so you can provide them with the correct marketing campaign. This guide explains how to create an API call notification for each form on your site, that sends the user’s info to SendGrid and creates a custom (field) attribute in SendGrid to allow the user to be added to the correct segment.
 
 ## Requirements
 To follow this tutorial, you should be familiar with creating API call notifications. You also have to have access to SendGrid, and be familiar with the SendGrid API and creating segments in SendGrid.
@@ -79,17 +79,17 @@ Create [segments in SendGrid](https://sendgrid.com/docs/Glossary/segments.html) 
 There are some tweaks you can make to your DNS records to help ensure that your emails are getting to your users' inboxes and not getting caught up in their spam folders/filters.
 
 #### Solution 1
-Add the sendgrid.net lookup to your current SFP record for your domain. 
+Add the sendgrid.net lookup to your current SFP record for your domain.
 
 **Example**
 
-If your current record (TXT or SPF) is 
+If your current record (TXT or SPF) is
 
 ```
 "v=spf1 a mx include:_spf.google.com include:spf.protection.outlook.com ~all"
 ```
 
-you can add 
+you can add
 
 ```
 include:sendgrid.net

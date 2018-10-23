@@ -1,1 +1,1 @@
-# Platform OS GraphQL
+# PlatformOS GraphQL
