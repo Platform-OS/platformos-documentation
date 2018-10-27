@@ -20,6 +20,7 @@ pipeline {
       }
       steps {
         sh 'bash -l ./scripts/deploy.sh'
+        sh 'docker run -v $PWD/tests/e2e:/tests -it testcafe/testcafe "chromium --no-sandbox" /tests/index.js'
       }
     }
   }
