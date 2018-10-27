@@ -1,14 +1,14 @@
 import { Selector, ClientFunction } from "testcafe";
 
 fixture(`Getting Started`)
-  .page(`https://documentation-staging.staging.oregon.platform-os.com`)
+  .page(`https://documentation.staging-oregon.near-me.com`)
   .beforeEach(async t => {
     await t.expect(await Selector("body").withText("Liquid Error").count).eql(0, "There are liquid errors on the page");
   });
 
 test("Homepage boxes exist", async t => {
   const h4 = Selector("h4");
-  console.log("STAGING URL: ", process.env.STAGING_URL);
+  console.log("STAGING URL from ENV: ", process.env.STAGING_URL);
 
   await t
     .expect(Selector(".content__box").count)

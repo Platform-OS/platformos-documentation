@@ -4,7 +4,7 @@ pipeline {
   environment {
     TOKEN = credentials('POS_TOKEN')
     EMAIL = "darek+ci@near-me.com"
-    STAGING_URL = "https://documentation-staging.staging.oregon.platform-os.com"
+    STAGING_URL = "https://documentation.staging-oregon.near-me.com"
   }
 
   options {
@@ -20,7 +20,7 @@ pipeline {
       }
       steps {
         sh 'bash -l ./scripts/deploy.sh'
-        sh 'docker run -v $PWD/tests/e2e:/tests testcafe/testcafe "chromium --no-sandbox" /tests/index.js'
+        sh 'URL=$STAGING_URL docker run -v $PWD/tests/e2e:/tests testcafe/testcafe "chromium --no-sandbox" /tests/index.js'
       }
     }
   }
