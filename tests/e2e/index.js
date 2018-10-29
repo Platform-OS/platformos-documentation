@@ -8,7 +8,6 @@ fixture(`Getting Started`)
 
 test("Homepage boxes exist", async t => {
   const h4 = Selector("h4");
-  console.log("STAGING URL from ENV: ", process.env.STAGING_URL);
 
   await t
     .expect(Selector(".content__box").count)
