@@ -23,9 +23,9 @@ pipeline {
       }
 
       steps {
-        sh 'bash -l ./scripts/build.sh'
-        sh 'bash -l ./scripts/deploy.sh'
-        bash 'npm run test'
+        shell './scripts/build.sh'
+        shell './scripts/deploy.sh'
+        shell 'npm run test'
       }
     }
   }
