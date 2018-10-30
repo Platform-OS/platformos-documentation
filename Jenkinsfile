@@ -23,7 +23,7 @@ pipeline {
       }
 
       steps {
-        sh 'echo env'
+        sh 'echo $env'
         // sh './scripts/build.sh'
         // sh './scripts/deploy.sh'
         // sh 'npm run test'
