@@ -25,7 +25,7 @@ pipeline {
       steps {
         sh 'bash -l ./scripts/build.sh'
         sh 'bash -l ./scripts/deploy.sh'
-        sh 'npm run test'
+        bash 'npm run test'
       }
     }
   }
