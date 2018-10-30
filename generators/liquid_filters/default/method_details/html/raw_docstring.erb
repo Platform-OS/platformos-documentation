@@ -1,24 +1,21 @@
 <div class="border-bottom mb-5 pb-5">
 <% if object.has_tag?('return') %>
-<h3>Returns:</h3>
+<h4>Returns:</h4>
 <% object.tags('return').each do |tag| %>
 <%= format_types(tag.types) %> - <%= tag.text %>
-<% end %>
-<% end %>
+<% end %><% end %>
 
 <% if object.has_tag?('param') %>
-<h3>Params:</h3>
+<h4>Params:</h4>
 <% object.tags('param').each do |tag| %>
-<li><%= tag.name %> <%= format_types(tag.types) %> - <%= tag.text %> <% if (o=object.parameters.assoc(tag.name.to_s)) && o[1] %> <em>(defaults to: <tt><%= h o[1] %></tt>)</em> <% end %></li>
-<% end %>
-<% end %>
+  <li><%= tag.name %> <%= format_types(tag.types) %> - <%= tag.text %> <% if (o=object.parameters.assoc(tag.name.to_s)) && o[1] %> <em>(defaults to: <tt><%= h o[1] %></tt>)</em> <% end %></li>
+<% end %><% end %>
 
 <% if object.has_tag?('example') %>
-<h3>Examples:</h3>
+<h4>Examples:</h4>
 <% object.tags('example').each do |tag| %>
 ```liquid
 <%= tag.text %>
 ```
-<% end %>
-<% end %>
+<% end %><% end %>
 </div>
