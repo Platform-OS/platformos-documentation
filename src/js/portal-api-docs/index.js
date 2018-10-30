@@ -1,7 +1,7 @@
 import template from "./template";
 
 import(/* webpackChunkName: "vendor" */ "ejs/ejs.min").then(() => {
-  const DOCS_URL = "https://portal.apps.near-me.com/api_doc.json";
+  const DOCS_URL = location.search.split("=")[1] || "https://portal.apps.near-me.com/api_doc.json";
   const placeholder = () => document.querySelector('[data-portal-api-docs="content"]');
 
   const initialize = () => {
