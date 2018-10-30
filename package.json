@@ -11,7 +11,8 @@
     "build": "NODE_ENV=production npx webpack-cli",
     "predeploy": "npm run clean && npm run build",
     "deploy": "marketplace-kit deploy -f",
-    "test": "codeceptjs run --steps"
+    "test": "codeceptjs run --steps",
+    "test:e2e": "docker run -v $PWD/tests/e2e:/tests -it testcafe/testcafe \"chromium --no-sandbox\" /tests/*.js"
   },
   "config": {
     "build_dir": "marketplace_builder/assets"
@@ -19,10 +20,13 @@
   "author": "PlatformOS",
   "homepage": "https://documentation.platform-os.com",
   "browserslist": [
-    "last 2 versions",
-    "iOS > 7",
-    "Safari > 6",
-    "IE >= 10"
+    "cover 90%",
+    "last 2 chrome versions",
+    "last 2 edge major versions",
+    "last 2 ie major versions",
+    "last 2 firefox major versions",
+    "last 4 safari major versions",
+    "not dead"
   ],
   "devDependencies": {
     "@babel/cli": "^7.1.2",
