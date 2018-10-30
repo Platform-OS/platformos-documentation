@@ -4,7 +4,6 @@ pipeline {
   environment {
     TOKEN = credentials('POS_TOKEN')
     EMAIL = "darek+ci@near-me.com"
-    STAGING_URL = "https://documentation.staging-oregon.near-me.com"
   }
 
   options {
@@ -14,13 +13,19 @@ pipeline {
   }
 
   stages {
-    stage('Build') {
+    stage('Staging') {
+      environment {
+        MP_URL = "https://documentation.staging-oregon.near-me.com"
+      }
+
       when {
         branch 'master'
       }
+
       steps {
+        sh 'bash -l ./scripts/build.sh'
         sh 'bash -l ./scripts/deploy.sh'
-        sh 'URL=$STAGING_URL docker run -v $PWD/tests/e2e:/tests testcafe/testcafe "chromium --no-sandbox" /tests/index.js'
+        sh 'npm run test'
       }
     }
   }
