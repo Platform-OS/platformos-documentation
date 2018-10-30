@@ -23,11 +23,9 @@ pipeline {
       }
 
       steps {
-        sh 'bash -l ./scripts/build.sh'
-        sh 'bash -l ./scripts/deploy.sh'
-        sh '''#!/bin/bash
-              npm run test
-        '''
+        sh './scripts/build.sh'
+        sh './scripts/deploy.sh'
+        sh 'npm run test:e2e'
       }
     }
   }
