@@ -24,9 +24,9 @@ pipeline {
 
       steps {
         sh 'echo $env'
-        // sh './scripts/build.sh'
-        // sh './scripts/deploy.sh'
-        // sh 'npm run test'
+        sh 'bash -l ./scripts/build.sh'
+        sh 'bash -l ./scripts/deploy.sh'
+        sh 'bash -l npm run test'
       }
     }
   }
