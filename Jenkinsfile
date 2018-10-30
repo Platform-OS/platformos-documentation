@@ -23,10 +23,11 @@ pipeline {
       }
 
       steps {
-        sh 'echo $env'
         sh 'bash -l ./scripts/build.sh'
         sh 'bash -l ./scripts/deploy.sh'
-        sh 'bash -l npm run test'
+        sh '''#!/bin/bash
+              npm run test
+        '''
       }
     }
   }
