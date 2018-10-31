@@ -22,19 +22,22 @@ pipeline {
       }
 
       steps {
-        slackSend (channel: "#javascript-errors", color: '#00FF00', message: "STARTED: Deploying new code to staging ${MP_URL} (${env.BUILD_URL})")
+        slackSend (channel: "#javascript-errors", message: "STARTED: Deploying to ${MP_URL} (Build: ${env.BUILD_URL})")
+
         sh 'bash -l ./scripts/build.sh'
         sh 'bash -l ./scripts/deploy.sh'
         sh 'bash -l ./scripts/test-e2e.sh'
+
+        FAILL {}
       }
 
       post {
         success {
-          slackSend (channel: "#javascript-errors", color: '#00FF00', message: "SUCCESS: Deployed new code to staging, tests passed (${env.BUILD_URL})")
+          slackSend (channel: "#javascript-errors", color: '#00FF00', message: "SUCCESS: Deployed new code to staging, tests passed. (Preview ${MP_URL}): ")
         }
 
         failure {
-          slackSend (channel: "#javascript-errors", color: '#FF0000', message: "FAILED: Build failed. Deploy or tests failed (${env.BUILD_URL})")
+          slackSend (channel: "#javascript-errors", color: '#FF0000', message: "FAILED: Build failed. Deploy or tests failed (*Error details*: ${env.BUILD_URL})")
         }
       }
     }
