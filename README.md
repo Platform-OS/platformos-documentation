@@ -2,22 +2,22 @@
 
 ## Easy way
 
-[Create a issue](https://guides.github.com/features/issues/) with your finding :)
+[Create an issue](https://guides.github.com/features/issues/) with your finding. 
 
 ## Quick way
 
-Go to the file you think is wrong, [click edit and commit changes](https://help.github.com/articles/editing-files-in-your-repository/) in Github UI.
+Go to the file you would like to change, [click edit and commit changes](https://help.github.com/articles/editing-files-in-your-repository/) on the Github UI.
 
-## Normal way
+## Recommended way
 
-- [Fork the repository](https://guides.github.com/activities/forking/)
-- install dependencies
-- change something
-- create pull request
+1. [Fork the repository](https://guides.github.com/activities/forking/)
+2. Install dependencies
+3. Change something or add a new topic. Please check if a [template](/tree/master/marketplace_builder/views/pages/doc-templates) is already available for the type of content you’d like to contribute. We have prepared templates for most content on our documentation page, to make contribution easier, and to ensure the consistency of contributed content.
+4. Create pull request
 
 ## Contributors
 
-Thank you to everyone who help our documentation in the journey to excellence. :)
+Thank you to all our contributors! 
 
 [<img alt="pavelloz" src="https://avatars1.githubusercontent.com/u/546845?v=4&s=117" width="117">](https://github.com/pavelloz) |[<img alt="diana-lakatos" src="https://avatars0.githubusercontent.com/u/4191691?v=4&s=117" width="117">](https://github.com/diana-lakatos) |[<img alt="piotrze" src="https://avatars0.githubusercontent.com/u/96238?v=4&s=117" width="117">](https://github.com/piotrze) |[<img alt="Slashek" src="https://avatars3.githubusercontent.com/u/30107?v=4&s=117" width="117">](https://github.com/Slashek) |[<img alt="lemingos" src="https://avatars0.githubusercontent.com/u/95296?v=4&s=117" width="117">](https://github.com/lemingos) |[<img alt="kv109" src="https://avatars3.githubusercontent.com/u/399968?v=4&s=117" width="117">](https://github.com/kv109) |
 :---: |:---: |:---: |:---: |:---: |:---: |
