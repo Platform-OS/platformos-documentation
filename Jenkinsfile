@@ -26,6 +26,7 @@ pipeline {
         sh 'bash -l ./scripts/build.sh'
         sh 'bash -l ./scripts/deploy.sh'
         sh 'bash -l ./scripts/test-e2e.sh'
+        // TODO: Add slack notification with the build result
       }
     }
   }
