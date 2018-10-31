@@ -22,7 +22,7 @@ pipeline {
       }
 
       steps {
-        slackSend (channel: "#javascript-errors", message: "STARTED: Deploying to <${MP_URL}|staging> (<${env.BUILD_URL}|Build> #${env.BUILD_NUMBER})")
+        slackSend (channel: "#javascript-errors", message: "STARTED: Deploying to <${MP_URL}|staging> (<${env.BUILD_URL}|Build #${env.BUILD_NUMBER}>)")
 
         sh 'bash -l ./scripts/build.sh'
         sh 'bash -l ./scripts/deploy.sh'
