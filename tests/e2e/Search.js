@@ -1,7 +1,6 @@
 import { Selector, ClientFunction } from "testcafe";
 
 import LayoutPO from "./page-objects/Layout";
-import HomepagePO from "./page-objects/Homepage";
 import SearchPO from "./page-objects/Search";
 
 const Layout = new LayoutPO();
