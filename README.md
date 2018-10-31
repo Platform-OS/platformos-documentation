@@ -1,19 +1,21 @@
-## Content contributions
+## Contribute content
+Thank you for your interest in contributing to the PlatformOS documentation! Our docs are a tool for our community, so we strive to ensure they serve you well. We always welcome any kind of contribution to our documentation: we value your feedback, and appreciate any improvement suggestions or extensions.
 
-## Easy way
+## Give us feedback
 
-[Create an issue](https://guides.github.com/features/issues/) with your finding. 
+[Create an issue](https://guides.github.com/features/issues/) with your finding.  
 
-## Quick way
+## Edit or add topics on the GitHub UI
 
-Go to the file you would like to change, [click edit and commit changes](https://help.github.com/articles/editing-files-in-your-repository/) on the Github UI.
+Go to the file you would like to change, [click edit and commit changes](https://help.github.com/articles/editing-files-in-your-repository/) on the GitHub UI.
 
-## Recommended way
+## Edit or add topics using git
 
-1. [Fork the repository](https://guides.github.com/activities/forking/)
-2. Install dependencies
+1. [Fork the repository](https://guides.github.com/activities/forking/).
+2. Install dependencies (NPM).
 3. Change something or add a new topic. Please check if a [template](/tree/master/marketplace_builder/views/pages/doc-templates) is already available for the type of content you’d like to contribute. We have prepared templates for most content on our documentation page, to make contribution easier, and to ensure the consistency of contributed content.
-4. Create pull request
+4. Create a pull request.
+5. We review your changes, and either get back to you with our feedback, or merge your changes.
 
 ## Contributors
 
@@ -43,7 +45,7 @@ Thank you to all our contributors!
   githubcontrib --owner mdyd-dev --repo nearme-documentation --cols 6 --showlogin --sortOrder desc
 -->
 
-## Code contributions
+## Contribute code
 
 ### Dependencies
 
