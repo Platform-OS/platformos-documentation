@@ -22,25 +22,20 @@ pipeline {
       }
 
       steps {
-        try {
-          sh 'bash -l ./scripts/build.sh'
-          sh 'bash -l ./scripts/deploy.sh'
-          sh 'bash -l ./scripts/test-e2e.sh'
+        sh 'bash -l ./scripts/build.sh'
+        sh 'bash -l ./scripts/deploy.sh'
+        sh 'bash -l ./scripts/test-e2e.sh'
+      }
 
-          notifySuccessful()
-        } catch (e) {
-          notifyFailed()
-          throw e
+      post {
+        success {
+          slackSend (channel: "#javascript-errors", color: '#00FF00', message: "SUCCESS: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+        }
+
+        failure {
+          slackSend (channel: "#javascript-errors", color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
         }
       }
     }
   }
-}
-
-def notifySuccessful() {
-  slackSend (channel: "#javascript-errors", color: '#00FF00', message: "SUCCESS: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-}
-
-def notifyFailed() {
-  slackSend (channel: "#javascript-errors", color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
 }
