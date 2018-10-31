@@ -1,7 +1,11 @@
 import { Selector } from "testcafe";
 
-export default class Layout {
+export default class LayoutPO {
   constructor() {
+    // env var doesnt work yet, but when we pass it to docker, it will be ready to rock
+    this.URL = {
+      staging: process.env.MP_URL || "https://documentation.staging-oregon.near-me.com"
+    };
     this.Body = Selector("body");
     this.Contributors = Selector(".contributors");
     this.Sidebar = Selector(".sidebar-menu", { visibilityCheck: true });

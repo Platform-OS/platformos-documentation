@@ -1,10 +1,7 @@
 import { Selector } from "testcafe";
 
-export default class Homepage {
+export default class HomepagePO {
   constructor() {
-    this.URL = {
-      staging: "https://documentation.staging-oregon.near-me.com"
-    };
     this.Boxes = Selector(".content__box", { visibilityCheck: true });
     this.BoxesHeaders = [
       "How PlatformOS Works",
@@ -15,7 +12,5 @@ export default class Homepage {
       "Use Cases",
       "Need Help?"
     ];
-
-    this.SearchInput = Selector(".search__field");
   }
 }
