@@ -17,7 +17,7 @@ test("Github contributors are not shown", async t => {
   await t.expect(Lay.Contributors.find("div").count).eql(0);
 });
 
-test.only("All boxes exist", async t => {
+test("All boxes exist", async t => {
   await t.expect(Home.Boxes.count).eql(7);
 });
 
