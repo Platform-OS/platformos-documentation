@@ -1,6 +1,4 @@
 pipeline {
-  agent any
-
   environment {
     TOKEN = credentials('POS_TOKEN')
     EMAIL = "darek+ci@near-me.com"
@@ -11,7 +9,6 @@ pipeline {
     timeout(time: 10, unit: 'MINUTES')
     buildDiscarder(logRotator(daysToKeepStr: '365', artifactDaysToKeepStr: '30'))
   }
-
   stages {
     stage('Staging') {
       environment {
@@ -23,11 +20,27 @@ pipeline {
       }
 
       steps {
-        sh 'bash -l ./scripts/build.sh'
-        sh 'bash -l ./scripts/deploy.sh'
-        sh 'bash -l ./scripts/test-e2e.sh'
-        // TODO: Add slack notification with the build result
+        try {
+          sh 'bash -l ./scripts/build.sh'
+          sh 'bash -l ./scripts/deploy.sh'
+          sh 'bash -l ./scripts/test-e2e.sh'
+
+          notifySuccessful()
+        } catch (e) {
+          notifyFailed()
+          throw e
+        }
       }
+
+
+      def notifySuccessful() {
+        slackSend (channel: "#javascript-errors", color: '#00FF00', message: "SUCCESS: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+      }
+
+      def notifyFailed() {
+        slackSend (channel: "#javascript-errors", color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+      }
+
     }
   }
 }
