@@ -11,6 +11,7 @@
     "build": "NODE_ENV=production npx webpack-cli",
     "deploy": "npm run clean && npm run build && marketplace-kit deploy -f",
     "test": "docker run -v $PWD/tests/e2e:/tests -it testcafe/testcafe \"chromium --no-sandbox\" /tests/*.js",
+    "test-ci": "docker run -v $PWD/tests/e2e:/tests testcafe/testcafe \"chromium --no-sandbox\" /tests/*.js",
     "test-codecept": "codeceptjs run --steps"
   },
   "config": {
