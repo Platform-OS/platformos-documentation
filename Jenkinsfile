@@ -1,4 +1,6 @@
 pipeline {
+  agent any
+
   environment {
     TOKEN = credentials('POS_TOKEN')
     EMAIL = "darek+ci@near-me.com"
