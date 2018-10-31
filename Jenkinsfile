@@ -31,16 +31,14 @@ pipeline {
           throw e
         }
       }
-
-
-      def notifySuccessful() {
-        slackSend (channel: "#javascript-errors", color: '#00FF00', message: "SUCCESS: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-      }
-
-      def notifyFailed() {
-        slackSend (channel: "#javascript-errors", color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-      }
-
     }
   }
+}
+
+def notifySuccessful() {
+  slackSend (channel: "#javascript-errors", color: '#00FF00', message: "SUCCESS: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+}
+
+def notifyFailed() {
+  slackSend (channel: "#javascript-errors", color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
 }
