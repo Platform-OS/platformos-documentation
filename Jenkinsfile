@@ -27,17 +27,15 @@ pipeline {
         sh 'bash -l ./scripts/build.sh'
         sh 'bash -l ./scripts/deploy.sh'
         sh 'bash -l ./scripts/test-e2e.sh'
-
-        FAILL {}
       }
 
       post {
         success {
-          slackSend (channel: "#javascript-errors", color: '#00FF00', message: "SUCCESS: Deployed new code to staging, tests passed. (<${MP_URL}|Preview>): ")
+          slackSend (channel: "#javascript-errors", color: '#00FF00', message: "SUCCESS: Deployed new code to staging, tests passed. (<${MP_URL}|Preview>)")
         }
 
         failure {
-          slackSend (channel: "#javascript-errors", color: '#FF0000', message: "FAILED: Build failed. Deploy or tests failed (<${env.BUILD_URL}|Error details>)")
+          slackSend (channel: "#javascript-errors", color: '#FF0000', message: "FAILED: Build failed. Deploy or tests failed. (<${env.BUILD_URL}|Error details>)")
         }
       }
     }
