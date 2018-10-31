@@ -22,7 +22,7 @@ pipeline {
       }
 
       steps {
-        slackSend (channel: "#javascript-errors", message: "STARTED: Deploying to <${MP_URL}|staging> (<${env.BUILD_URL}|Build>)")
+        slackSend (channel: "#javascript-errors", message: "STARTED: Deploying to <${MP_URL}|staging> (<${env.BUILD_URL}|Build> #${env.BUILD_NUMBER})")
 
         sh 'bash -l ./scripts/build.sh'
         sh 'bash -l ./scripts/deploy.sh'
@@ -35,7 +35,7 @@ pipeline {
         }
 
         failure {
-          slackSend (channel: "#javascript-errors", color: '#FF0000', message: "FAILED: Build failed. Deploy or tests failed. (<${env.BUILD_URL}|Error details>)")
+          slackSend (channel: "#javascript-errors", color: '#FF0000', message: "FAILED: Build failed. Deploy or tests failed. (<${env.BUILD_URL}|Build details>)")
         }
       }
     }
