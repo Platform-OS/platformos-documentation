@@ -10,9 +10,9 @@ fixture("Search").page(`${Layout.URL.staging}/search`);
 
 test("There are no liquid errors on the page", async t => {
   await Search.go(Search.existingPhrase);
-  await t.expect(Layout.Body.withText("Liquid Error").count).eql(0);
+  await Layout.checkLiquidErrors();
   await Search.go(Search.nonExistingPhrase);
-  await t.expect(Layout.Body.withText("Liquid Error").count).eql(0);
+  await Layout.checkLiquidErrors();
 });
 
 test("Results contain phrase when exists", async t => {
