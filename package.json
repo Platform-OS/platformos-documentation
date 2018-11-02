@@ -10,8 +10,9 @@
     "autogenerate": "time ./scripts/generate_all.sh",
     "build": "NODE_ENV=production npx webpack-cli",
     "deploy": "npm run clean && npm run build && marketplace-kit deploy -f",
-    "test": "docker run -v $PWD/tests/e2e:/tests -it testcafe/testcafe \"chromium --no-sandbox,firefox:headless\" /tests/*.js",
-    "test-ci": "docker run -v $PWD/tests/e2e:/tests testcafe/testcafe \"chromium --no-sandbox,firefox:headless\" /tests/*.js",
+    "test": "docker run -v $PWD/tests/e2e:/tests --shm-size=1g -it testcafe/testcafe \"chromium:headless --no-sandbox,firefox:headless\" -c 2 /tests",
+    "test-ci": "docker run -v $PWD/tests/e2e:/tests --shm-size=1g testcafe/testcafe \"chromium:headless --no-sandbox,firefox:headless\" -c 2 /tests",
+    "test-local": "npx testcafe 'chrome:headless' -c 4",
     "test-codecept": "codeceptjs run --steps"
   },
   "config": {
@@ -63,9 +64,10 @@
     "turbolinks": "^5.2.0"
   },
   "peerDependencies": {
+    "codeceptjs": "^1.3.1",
     "mocha": "^5.2.0",
-    "unirest": "^0.5.1",
     "puppeteer": "^1.5.0",
-    "codeceptjs": "^1.3.1"
+    "testcafe": "^0.23.0",
+    "unirest": "^0.5.1"
   }
 }
