@@ -15,9 +15,10 @@ test("There are no liquid errors on the page", async t => {
   await Layout.checkLiquidErrors();
 });
 
-test("Results contain phrase when exists", async t => {
+test("Proper results are returned", async t => {
   await Search.go(Search.existingPhrase);
   await t.expect(Selector("h2").withText(Search.existingPhrase).count).eql(1);
+  await t.expect(Search.ResultsItems.count).eql(10);
 });
 
 test("Pagination is working", async t => {
