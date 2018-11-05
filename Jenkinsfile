@@ -1,6 +1,10 @@
 pipeline {
   agent any
 
+  triggers {
+    cruon('H H/12 * * *')
+  }
+
   environment {
     TOKEN = credentials('POS_TOKEN')
     EMAIL = "darek+ci@near-me.com"
