@@ -14,6 +14,19 @@ test("No sidebar item is active on page load", async t => {
   await t.expect(Layout.SidebarItemActive.count).eql(0);
 });
 
+test("no_feedback and no_sidebar flags are working", async t => {
+  await t.click(Selector("a").withText("Contributor Guide"));
+
+  await t.expect(Layout.Sidebar.count).eql(0);
+  await t.expect(Layout.Feedback.count).eql(0);
+});
+
+test("Contributors list is working", async t => {
+  await t.click(Selector("a").withText("Contributor Guide"));
+
+  await t.expect(Layout.Contributors.find("p").count).gt(1);
+});
+
 test("Expanding menu works", async t => {
   await t
     .click(Layout.SidebarItem.withText(Layout.HowPOSWorksPhrase))

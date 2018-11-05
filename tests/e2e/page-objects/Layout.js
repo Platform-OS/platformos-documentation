@@ -12,6 +12,7 @@ export default class LayoutPO {
     this.Body = Selector("body");
     this.Contributors = Selector(".contributors");
     this.Sidebar = Selector(".sidebar-menu", { visibilityCheck: true });
+    this.Feedback = Selector(".feedback-main");
     this.SidebarItem = this.Sidebar.find(".has-submenu");
     this.SidebarItemExpanded = this.SidebarItem.filter(".active");
     this.SidebarItemActive = this.Sidebar.find("li.active");
