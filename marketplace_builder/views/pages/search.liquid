@@ -1,12 +1,12 @@
 ---
 slug: search
 metadata:
-  title: "Search"
+  title: Search
   exclude_feedback: true
 ---
 
 {% include 'shared/pagination-variables' %}
-{% query_graph "search", query: params.query, per_page: @per_page, page: page %}
+{% query_graph "search", query: params.query, per_page: per_page, page: page %}
 
 <h2>
   {{ g.pages.total_entries }} result{% if g.pages.total_entries != 1 %}s{% endif %} for: {{ params.query }}
@@ -20,6 +20,7 @@ metadata:
     </li>
   {% endfor %}
 </ul>
+
 <br>
 
 {% include 'shared/pagination', total_pages: g.pages.total_pages, total_entries: g.pages.total_entries %}
