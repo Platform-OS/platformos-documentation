@@ -1,0 +1,101 @@
+---
+converter: markdown
+metadata:
+  title: Displaying a Transactable
+  description: This guide will help you display a newly created Transactable on a page with pagination.
+slug: tutorials/transactables/displaying-transactable
+searchable: true
+---
+
+This guide will help you display a newly created Transactable on a page with pagination.
+
+_This guide is part of a series that follows a scenario to demonstrate how to manage Transactables. You can find previous and next parts of the series in the Requirements and Next steps sections._
+
+## Requirements
+So that you can follow the steps in this tutorial, you should understand the concept of Transactables. You'll also reuse some code from another tutorial, and you should have a Transactable you created.
+
+* [Transactables](/tutorials/transactables/transactables)
+* [Accessing Authenticated User Data](/tutorials/users/accessing-authenticated-user-data) (code re-use)
+* [Building a Transactable Creation Form](/get-started/transactables/building-transactable-creation-form) (previous tutorial)
+
+## Steps
+
+Displaying a Transactable is a two-step process:
+
+1. Inject GraphQL query into page with pagination
+2. Create GraphQL query for client projects
+
+### Step 1: Inject GraphQL query into page with pagination
+Inject this code for example on the home page, which re-uses already created `current_user.graphql` from the tutorial [Accessing Authenticated User Data](/tutorials/users/accessing-authenticated-user-data):
+
+
+```liquid
+{% raw %}
+{% query_graph 'current_user', result_name: 'g' %}
+
+{% if g.current_user.client_profile %}
+
+  {% assign page = params.page | default: 1 | plus: 0 %}
+  <a href="/client/projects/new">Create project</a>
+
+  {% query_graph 'client_projects', result_name: 'g', creator_id: g.current_user.id, page: page %}
+
+  {% if g.projects.total_entries > 0 %}
+    <ul>
+      {% for project in g.projects.results %}
+        <li>{{ project.name }} ({{ project.state }}) - <a href="/client/projects/edit/{{ project.slug }}">edit</a></li>
+      {% endfor %}
+    </ul>
+    {% assign pages = g.projects.total_pages %}
+    {% assign current_page = g.projects.current_page %}
+    {% if pages > 1 %}
+      <div class="pager">
+        {% for page in (1..pages) %}
+          <a href="{{ current_full_path }}?page={{ page }}">{{ page }}</a>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% else %}
+    <p>You have not created any projects yet.</p>
+  {% endif %}
+{% endif %}
+{% endraw %}
+```
+
+
+A common issue in Liquid are types. Most of the time Liquid converts everything to a string, so it is often necessary to do coercion. In this example, URL parameters are strings, and GraphQL expects the `page` variable to be an integer. To solve the problem,  add a `0`, which casts string to integer:
+{% raw %}`{% assign page = params.page | default: 1 | plus: 0 %}`{% endraw %}
+
+### Step 2: Create GraphQL query for client projects
+
+#### marketplace_builder/graph_queries/client_projects.graphql
+
+```graphql
+query client_projects($page: Int, $creator_id: ID!) {
+  projects: listings(
+    per_page: 20
+    page: $page
+    sort: [{ name: "created_at", order: "desc" }]
+    listing: { creator_id: $creator_id, is_deleted: false }
+  ) {
+    total_entries
+    has_next_page
+    has_previous_page
+
+    results {
+      id
+      name
+      slug
+      state
+      description
+    }
+  }
+}
+```
+
+## Next steps
+Congratulations! You have displayed a newly created Tranactable on a page with pagination. Now you can create the Edit Transactable page:
+
+* [Creating the Edit Transactable Page](/get-started/transactables/creating-edit-transactable-page)
+
+{% include 'shared/questions_section' %}

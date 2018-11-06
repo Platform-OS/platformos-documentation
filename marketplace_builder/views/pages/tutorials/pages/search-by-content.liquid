@@ -1,0 +1,45 @@
+---
+converter: markdown
+metadata:
+  title: Search by content
+  description: A page can be searched by it's content.
+slug: tutorials/pages/search-by-content
+searchable: true
+---
+
+## Searching for a page by a content
+
+You can search for a page using its content. This might be helpfull for creating search for FAQ page.
+Search will work on rendered page version, so this page can't rely on any dynamic data, ie. `current_user` or url params.
+Page needs to be marked as `searchable: true`.
+
+
+```yaml
+---
+slug: signup
+searchable: true
+---
+What is the delivery cost?
+
+It will be 20$.
+```
+
+```graphql
+query search_page(
+  $value: String
+) {
+  pages: pages(
+    filter: {
+      content: {
+        contains: $value
+      }
+    }
+  ) {
+    total_entries
+    results {
+      slug
+      content
+    }
+  }
+}
+```
