@@ -1,0 +1,61 @@
+<h1>
+<a id="smsnotificationinputtype" class="anchor" href="#smsnotificationinputtype" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>SmsNotificationInputType</h1>
+<h2>
+<a id="input-fields" class="anchor" href="#input-fields" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Input Fields</h2>
+<div class="pb-2 mb-2 ">
+  <h3>
+<a id="content-string" class="anchor" href="#content-string" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>content (<code><a href="/api-reference/graphql/g/scalar/string">String</a></code>)</h3>
+  <div>
+   <p>liquid code to evaluate to valid form html. If sms is triggered via form
+configuration, You have access to "form" variable, with data specified in configuration.</p>
+  </div>
+</div>
+<div class="pb-2 mb-2 ">
+  <h3>
+<a id="delay_by-string" class="anchor" href="#delay_by-string" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>delay_by (<code><a href="/api-reference/graphql/g/scalar/string">String</a></code>)</h3>
+  <div>
+   <p>liquid code which should evaluate to integer. Delays invoking the job by
+specified number of minutes. Useful to invoke code at certain point in time,
+for example 1 hour before something etc. To calculate proper number you can
+use number_of_minutes_until filter.</p>
+  </div>
+</div>
+<div class="pb-2 mb-2 ">
+  <h3>
+<a id="form_configuration_ids-id" class="anchor" href="#form_configuration_ids-id" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>form_configuration_ids (<code><a href="/api-reference/graphql/g/scalar/id">[ID]</a></code>)</h3>
+  <div>
+   <p>ids of form configurations which should trigger the sms</p>
+  </div>
+</div>
+<div class="pb-2 mb-2 ">
+  <h3>
+<a id="name-string" class="anchor" href="#name-string" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>name (<code><a href="/api-reference/graphql/g/scalar/string">String!</a></code>)</h3>
+  <div>
+   <p>name of the sms, which is used in form_configurations or mutation to trigger it</p>
+  </div>
+</div>
+<div class="pb-2 mb-2 ">
+  <h3>
+<a id="physical_file_path-string" class="anchor" href="#physical_file_path-string" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>physical_file_path (<code><a href="/api-reference/graphql/g/scalar/string">String!</a></code>)</h3>
+  <div>
+   <p>defines where the file definition will be available after pull; should start
+with the module name follow by private/public scope, for example
+manual/public/notifications/sms_notifications/my_sms_notification</p>
+  </div>
+</div>
+<div class="pb-2 mb-2 ">
+  <h3>
+<a id="to-string" class="anchor" href="#to-string" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>to (<code><a href="/api-reference/graphql/g/scalar/string">String</a></code>)</h3>
+  <div>
+   <p>liquid code to evaluate to valid mobile number with country code, for example
++1 541 754 3010.     Useful filter to build valid mobile number is
+"$to_mobile_number".</p>
+  </div>
+</div>
+<div class="pb-2 mb-2 ">
+  <h3>
+<a id="trigger_condition-string" class="anchor" href="#trigger_condition-string" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>trigger_condition (<code><a href="/api-reference/graphql/g/scalar/string">String</a></code>)</h3>
+  <div>
+   <p>liquid code which should evaluate to true if the sms should be sent</p>
+  </div>
+</div>

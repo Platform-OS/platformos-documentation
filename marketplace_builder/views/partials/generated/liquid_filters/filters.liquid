@@ -152,7 +152,7 @@ type "f" means floating point
 ```liquid
 {% assign accountants = "Angela,Kevin,Oscar" | split: "," %}
 {% assign management = "David,Jan,Michael" | split: "," %}
-{% assign company = '{}' | to_hash %}
+{% assign company = '{}' | parse_json %}
 {% assign company = company | assign_to_hash_key: "name", "Dunder Mifflin" %}
 {% assign company = company | assign_to_hash_key: "accountants", accountants %}
 {% assign company = company | assign_to_hash_key: "management", management %}
@@ -667,7 +667,7 @@ RSA:
     "another_key": "another value"
   }
 {% endcapture %}
-{% assign payload = payload_string | to_hash %}
+{% assign payload = payload_string | parse_json %}
 ```
 
 ```liquid
@@ -942,6 +942,30 @@ the default separator used is '-';
 
 ```liquid
 {{ 'John arrived_foo' | parameterize }} => 'john-arrived_foo'
+```
+
+</div>
+<h2 class="font-weight-bold">parse_json</h2>
+<div class="border-bottom mb-5 pb-5">
+
+<h4>Returns:</h4>
+
+(<tt>Hash</tt>) - Hash created based on JSON
+
+
+
+<h4>Params:</h4>
+
+  <li>object (<tt>Object</tt>) - String containing valid JSON </li>
+
+
+
+<h4>Examples:</h4>
+
+```liquid
+{% assign text = '{ "name": "foo", "bar": {} }' %}
+{% assign object = text | parse_json %}
+{{ object.name }} => 'foo'
 ```
 
 </div>
@@ -1418,30 +1442,6 @@ a nicer looking title; it is meant for creating pretty output
 
 ```liquid
 {{ '2010-01-01 8:00:00' | to_date }} => 2010-01-01
-```
-
-</div>
-<h2 class="font-weight-bold">to_hash</h2>
-<div class="border-bottom mb-5 pb-5">
-
-<h4>Returns:</h4>
-
-(<tt>Hash</tt>) - Hash created based on JSON
-
-
-
-<h4>Params:</h4>
-
-  <li>object (<tt>Object</tt>) - String containing valid JSON </li>
-
-
-
-<h4>Examples:</h4>
-
-```liquid
-{% assign text = '{ "name": "foo", "bar": {} }' %}
-{% assign object = text | to_hash %}
-{{ object.name }} => 'foo'
 ```
 
 </div>

@@ -1,0 +1,205 @@
+<h1>
+<a id="formconfiguration" class="anchor" href="#formconfiguration" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>FormConfiguration</h1>
+<p>Form configuration</p>
+<h2>
+<a id="fields" class="anchor" href="#fields" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Fields</h2>
+<div class="pb-3 mb-3">
+  <h3>
+<a id="--api_call_notifications-apicallnotification--" class="anchor" href="#--api_call_notifications-apicallnotification--" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
+  api_call_notifications (<code><a href="/api-reference/graphql/g/object/apicallnotification">[ApiCallNotification]</a></code>)
+  </h3>
+  <div>
+  <p>associated api call notifications</p>
+  </div>
+</div>
+<div class="pb-3 mb-3">
+  <h3>
+<a id="--async_callback_actions-string--" class="anchor" href="#--async_callback_actions-string--" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
+  async_callback_actions (<code><a href="/api-reference/graphql/g/scalar/string">String</a></code>)
+  </h3>
+  <div>
+  <p>Same as callback, but invoked asynchronously. Recommended for performance reason.</p>
+  </div>
+</div>
+<div class="pb-3 mb-3">
+  <h3>
+<a id="--async_callback_delay-string--" class="anchor" href="#--async_callback_delay-string--" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
+  async_callback_delay (<code><a href="/api-reference/graphql/g/scalar/string">String</a></code>)
+  </h3>
+  <div>
+  <p>liquid code which should evaluate to float. Delays invoking the job by
+specified number of minutes. Useful to invoke code at certain point in time,
+for example 1 hour before something etc. To calculate proper number you can
+use number_of_minutes_until filter.</p>
+  </div>
+</div>
+<div class="pb-3 mb-3">
+  <h3>
+<a id="--async_callback_max_attempts-int--" class="anchor" href="#--async_callback_max_attempts-int--" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
+  async_callback_max_attempts (<code><a href="/api-reference/graphql/g/scalar/int">Int</a></code>)
+  </h3>
+  <div>
+  <p>Defines max number of retrying attempts in case of an error. Usually you do not want to change it.</p>
+  </div>
+</div>
+<div class="pb-3 mb-3">
+  <h3>
+<a id="--async_callback_priority-asynccallbackpriority--" class="anchor" href="#--async_callback_priority-asynccallbackpriority--" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
+  async_callback_priority (<code><a href="/api-reference/graphql/g/enum/asynccallbackpriority">AsyncCallbackPriority</a></code>)
+  </h3>
+  <div>
+  <p>defines the invocaction priority, the higher the quicker timeout</p>
+  </div>
+</div>
+<div class="pb-3 mb-3">
+  <h3>
+<a id="--authorization_policies-authorizationpolicy--" class="anchor" href="#--authorization_policies-authorizationpolicy--" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
+  authorization_policies (<code><a href="/api-reference/graphql/g/object/authorizationpolicy">[AuthorizationPolicy]</a></code>)
+  </h3>
+  <div>
+  <p>associated authorization policies</p>
+  </div>
+</div>
+<div class="pb-3 mb-3">
+  <h3>
+<a id="--callback_actions-string--" class="anchor" href="#--callback_actions-string--" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
+  callback_actions (<code><a href="/api-reference/graphql/g/scalar/string">String</a></code>)
+  </h3>
+  <div>
+  <p>liquid code to be invoked after persisting input to DB. If possible, use async callback actions instead</p>
+  </div>
+</div>
+<div class="pb-3 mb-3">
+  <h3>
+<a id="--configuration-hashobject--" class="anchor" href="#--configuration-hashobject--" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
+  configuration (<code><a href="/api-reference/graphql/g/scalar/hashobject">HashObject</a></code>)
+  </h3>
+  <div>
+  <p>whitelist of attributes which can be persisted in the DB. On server side
+(callbacks, emails etc) you have access to submited values via form variable
+(for exapmple configuration: properties: my_var is accessible via
+form.properties.my_var )</p>
+  </div>
+</div>
+<div class="pb-3 mb-3">
+  <h3>
+<a id="--default_payload-string--" class="anchor" href="#--default_payload-string--" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
+  default_payload (<code><a href="/api-reference/graphql/g/scalar/string">String</a></code>)
+  </h3>
+  <div>
+  <p>liquid code which has to evaluate to JSON. This extends/overwrites user
+submitted input via form, before validation. Most useful to store in DB
+sensitive data which you do not want user to modify, for example
+context.current_user.id</p>
+  </div>
+</div>
+<div class="pb-3 mb-3">
+  <h3>
+<a id="--email_notifications-emailnotification--" class="anchor" href="#--email_notifications-emailnotification--" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
+  email_notifications (<code><a href="/api-reference/graphql/g/object/emailnotification">[EmailNotification]</a></code>)
+  </h3>
+  <div>
+  <p>associated email notifications</p>
+  </div>
+</div>
+<div class="pb-3 mb-3">
+  <h3>
+<a id="--flash_alert-string--" class="anchor" href="#--flash_alert-string--" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
+  flash_alert (<code><a href="/api-reference/graphql/g/scalar/string">String</a></code>)
+  </h3>
+  <div>
+  <p>liquid code which should evaluate to message which you want to display to user
+upon validation errors.Output is available via context.flash_alert</p>
+  </div>
+</div>
+<div class="pb-3 mb-3">
+  <h3>
+<a id="--flash_notice-string--" class="anchor" href="#--flash_notice-string--" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
+  flash_notice (<code><a href="/api-reference/graphql/g/scalar/string">String</a></code>)
+  </h3>
+  <div>
+  <p>liquid code which should evaluate to message which you want to display to user
+after successful form submission. Output is available via context.flash_notice</p>
+  </div>
+</div>
+<div class="pb-3 mb-3">
+  <h3>
+<a id="--id-id--" class="anchor" href="#--id-id--" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
+  id (<code><a href="/api-reference/graphql/g/scalar/id">ID!</a></code>)
+  </h3>
+  <div>
+  </div>
+</div>
+<div class="pb-3 mb-3">
+  <h3>
+<a id="--liquid_body-string--" class="anchor" href="#--liquid_body-string--" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
+  liquid_body (<code><a href="/api-reference/graphql/g/scalar/string">String</a></code>)
+  </h3>
+  <div>
+  <p>liquid code to evaluate to valid form html. You have access to form_builder variable and form tag.</p>
+  </div>
+</div>
+<div class="pb-3 mb-3">
+  <h3>
+<a id="--name-string--" class="anchor" href="#--name-string--" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
+  name (<code><a href="/api-reference/graphql/g/scalar/string">String!</a></code>)
+  </h3>
+  <div>
+  </div>
+</div>
+<div class="pb-3 mb-3">
+  <h3>
+<a id="--physical_file_path-string--" class="anchor" href="#--physical_file_path-string--" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
+  physical_file_path (<code><a href="/api-reference/graphql/g/scalar/string">String</a></code>)
+  </h3>
+  <div>
+  <p>defines where the file definition will be available after pull; should start
+with the module name follow by private/public scope, for example
+manual/public/form_configuraations/my_form</p>
+  </div>
+</div>
+<div class="pb-3 mb-3">
+  <h3>
+<a id="--redirect_to-string--" class="anchor" href="#--redirect_to-string--" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
+  redirect_to (<code><a href="/api-reference/graphql/g/scalar/string">String</a></code>)
+  </h3>
+  <div>
+  <p>liquid code which should evaluate to valid path or url to which user should be
+redirected after successful form submission.</p>
+  </div>
+</div>
+<div class="pb-3 mb-3">
+  <h3>
+<a id="--resource-string--" class="anchor" href="#--resource-string--" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
+  resource (<code><a href="/api-reference/graphql/g/scalar/string">String!</a></code>)
+  </h3>
+  <div>
+  </div>
+</div>
+<div class="pb-3 mb-3">
+  <h3>
+<a id="--resource_owner-string--" class="anchor" href="#--resource_owner-string--" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
+  resource_owner (<code><a href="/api-reference/graphql/g/scalar/string">String!</a></code>)
+  </h3>
+  <div>
+  <p>defines who can submit the form. If set to anyone, please make sure to provide authorization_policies</p>
+  </div>
+</div>
+<div class="pb-3 mb-3">
+  <h3>
+<a id="--sms_notifications-smsnotification--" class="anchor" href="#--sms_notifications-smsnotification--" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
+  sms_notifications (<code><a href="/api-reference/graphql/g/object/smsnotification">[SmsNotification]</a></code>)
+  </h3>
+  <div>
+  <p>associated sms notifications</p>
+  </div>
+</div>
+<div class="pb-3 mb-3">
+  <h3>
+<a id="--spam_protection-spamprotection--" class="anchor" href="#--spam_protection-spamprotection--" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
+  spam_protection (<code><a href="/api-reference/graphql/g/enum/spamprotection">SpamProtection</a></code>)
+  </h3>
+  <div>
+  <p>name of the strategy to protect against spam attacks.</p>
+  </div>
+</div>

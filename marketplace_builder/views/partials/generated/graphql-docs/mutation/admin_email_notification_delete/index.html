@@ -1,0 +1,146 @@
+<h1>
+<a id="admin_email_notification_delete" class="anchor" href="#admin_email_notification_delete" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>admin_email_notification_delete</h1>
+<p>Creates email_notification schema</p>
+<h2>
+<a id="input-fields" class="anchor" href="#input-fields" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Input fields</h2>
+<div class="pb-3 mb-3">
+  <h3>
+<a id="--id-id--" class="anchor" href="#--id-id--" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
+  id (<code><a href="/api-reference/graphql/g/scalar/id">ID!</a></code>)
+  </h3>
+  <div>
+  </div>
+</div>
+<h2>
+<a id="return-fields" class="anchor" href="#return-fields" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Return fields</h2>
+<div class="pb-3 mb-3">
+  <h3>
+<a id="--bcc-string--" class="anchor" href="#--bcc-string--" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
+  bcc (<code><a href="/api-reference/graphql/g/scalar/string">String</a></code>)
+  </h3>
+  <div>
+  <p>liquid code to evaluate to valid, comma separated blind carbon copy list, for example "john@example.com, jane@example.com"</p>
+  </div>
+</div>
+<div class="pb-3 mb-3">
+  <h3>
+<a id="--cc-string--" class="anchor" href="#--cc-string--" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
+  cc (<code><a href="/api-reference/graphql/g/scalar/string">String</a></code>)
+  </h3>
+  <div>
+  <p>liquid code to evaluate to valid, comma separated carbon copy list, for example "john@example.com, jane@example.com"</p>
+  </div>
+</div>
+<div class="pb-3 mb-3">
+  <h3>
+<a id="--content-string--" class="anchor" href="#--content-string--" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
+  content (<code><a href="/api-reference/graphql/g/scalar/string">String</a></code>)
+  </h3>
+  <div>
+  <p>liquid code to evaluate to valid form html. If email is triggered via form
+configuration, You have access to "form" variable, with data specified in the configuration.</p>
+  </div>
+</div>
+<div class="pb-3 mb-3">
+  <h3>
+<a id="--delay_by-string--" class="anchor" href="#--delay_by-string--" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
+  delay_by (<code><a href="/api-reference/graphql/g/scalar/string">String</a></code>)
+  </h3>
+  <div>
+  <p>liquid code which should evaluate to integer. Delays invoking the job by
+specified number of minutes. Useful to invoke code at certain point in time,
+for example 1 hour before something etc. To calculate proper number you can
+use number_of_minutes_until filter.</p>
+  </div>
+</div>
+<div class="pb-3 mb-3">
+  <h3>
+<a id="--form_configurations-formconfiguration--" class="anchor" href="#--form_configurations-formconfiguration--" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
+  form_configurations (<code><a href="/api-reference/graphql/g/object/formconfiguration">[FormConfiguration]</a></code>)
+  </h3>
+  <div>
+  <p>form configurations which trigger the email</p>
+  </div>
+</div>
+<div class="pb-3 mb-3">
+  <h3>
+<a id="--from-string--" class="anchor" href="#--from-string--" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
+  from (<code><a href="/api-reference/graphql/g/scalar/string">String</a></code>)
+  </h3>
+  <div>
+  <p>email address from which you would like to send the email, for example notifications@mydomain.com</p>
+  </div>
+</div>
+<div class="pb-3 mb-3">
+  <h3>
+<a id="--id-id---1" class="anchor" href="#--id-id---1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
+  id (<code><a href="/api-reference/graphql/g/scalar/id">ID!</a></code>)
+  </h3>
+  <div>
+  </div>
+</div>
+<div class="pb-3 mb-3">
+  <h3>
+<a id="--layout_path-string--" class="anchor" href="#--layout_path-string--" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
+  layout_path (<code><a href="/api-reference/graphql/g/scalar/string">String</a></code>)
+  </h3>
+  <div>
+  <p>name of the liquid layout to which the content should be injected</p>
+  </div>
+</div>
+<div class="pb-3 mb-3">
+  <h3>
+<a id="--name-string--" class="anchor" href="#--name-string--" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
+  name (<code><a href="/api-reference/graphql/g/scalar/string">String</a></code>)
+  </h3>
+  <div>
+  <p>name of the email, which is used in form_configurations or mutation to trigger it</p>
+  </div>
+</div>
+<div class="pb-3 mb-3">
+  <h3>
+<a id="--physical_file_path-string--" class="anchor" href="#--physical_file_path-string--" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
+  physical_file_path (<code><a href="/api-reference/graphql/g/scalar/string">String</a></code>)
+  </h3>
+  <div>
+  <p>defines where the file definition will be available after pull; should start
+with the module name follow by private/public scope, for example
+manual/public/notifications/email_notifications/my_email_notification</p>
+  </div>
+</div>
+<div class="pb-3 mb-3">
+  <h3>
+<a id="--reply_to-string--" class="anchor" href="#--reply_to-string--" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
+  reply_to (<code><a href="/api-reference/graphql/g/scalar/string">String</a></code>)
+  </h3>
+  <div>
+  <p>email address to which users should reply, for example support@mydomain.com</p>
+  </div>
+</div>
+<div class="pb-3 mb-3">
+  <h3>
+<a id="--subject-string--" class="anchor" href="#--subject-string--" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
+  subject (<code><a href="/api-reference/graphql/g/scalar/string">String</a></code>)
+  </h3>
+  <div>
+  <p>liquid code to evaluate to text</p>
+  </div>
+</div>
+<div class="pb-3 mb-3">
+  <h3>
+<a id="--to-string--" class="anchor" href="#--to-string--" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
+  to (<code><a href="/api-reference/graphql/g/scalar/string">String</a></code>)
+  </h3>
+  <div>
+  <p>liquid code to evaluate to valid, comma separated recipient list, for example "john@example.com, jane@example.com"</p>
+  </div>
+</div>
+<div class="pb-3 mb-3">
+  <h3>
+<a id="--trigger_condition-string--" class="anchor" href="#--trigger_condition-string--" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
+  trigger_condition (<code><a href="/api-reference/graphql/g/scalar/string">String</a></code>)
+  </h3>
+  <div>
+  <p>liquid code which should evaluate to true if the email should be sent</p>
+  </div>
+</div>
