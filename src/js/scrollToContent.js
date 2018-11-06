@@ -1,16 +1,16 @@
 const scrollToContent = () => {
-  if (location.hash.indexOf("#") !== -1) {
+  if (location.hash.indexOf('#') !== -1) {
     return false; // let deep links do its thing
   }
 
   const viewportSize = document.body.dataset.viewportSize;
-  const content = document.querySelector("section.content");
+  const content = document.querySelector('section.content');
 
-  if (content.scrollIntoView && (viewportSize === "xs" || viewportSize === "sm")) {
+  if (content.scrollIntoView && (viewportSize === 'xs' || viewportSize === 'sm')) {
     content.scrollIntoView();
   }
 };
 
-document.addEventListener("turbolinks:load", scrollToContent);
+document.addEventListener('turbolinks:load', scrollToContent);
 
 scrollToContent();

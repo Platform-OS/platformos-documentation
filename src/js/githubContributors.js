@@ -1,20 +1,24 @@
-const API_ENDPOINT = "https://api.github.com/repos/mdyd-dev/nearme-documentation/commits";
+const API_ENDPOINT = 'https://api.github.com/repos/mdyd-dev/nearme-documentation/commits';
 const filePath = () => `?path=marketplace_builder/views/pages${window.location.pathname}.liquid`;
-const contributorsContainer = () => document.querySelector("[data-contributors]");
+const container = () => document.querySelector('[data-contributors]');
 const homepage = () => window.location.pathname.length === 1;
 
 const getLastUpdateTime = data => {
   const commitDate = new Date(data[0].commit.committer.date);
 
   // prettier-ignore
-  return commitDate.toLocaleString("en-ENG", { day: "numeric", month: "short", year: "numeric" });
+  return commitDate.toLocaleString('en-ENG', {
+    day: 'numeric', month: 'short', year: 'numeric'
+  });
 };
 
-const getContributorHtml = ({ author, item }) => {
+const getHtml = ({ author, item }) => {
   const authorName = item.commit.author.name;
   return `<a href="${author.html_url}" target="_blank">
-    <img src="${author.avatar_url}&s=20" width="20" height="20" alt="${authorName} (${author.login})" />
-  </a>`;
+    <img src="${author.avatar_url}&s=20"
+      alt="${authorName} (${author.login})"
+      width="20" height="20" />
+    </a>`;
 };
 
 const getContributors = data => {
@@ -25,10 +29,13 @@ const getContributors = data => {
     .map(item => {
       if (uniqueAuthors.indexOf(item.author.id) < 0) {
         uniqueAuthors.push(item.author.id);
-        return getContributorHtml({ author: item.author, item: item });
+        return getHtml({
+          author: item.author,
+          item: item
+        });
       }
     })
-    .join("");
+    .join('');
 };
 
 const getHTML = data => {
@@ -42,12 +49,12 @@ const getHTML = data => {
   `;
 };
 
-const updateContributorsHtml = data => (contributorsContainer().innerHTML = getHTML(data));
+const updateHtml = data => (container().innerHTML = getHTML(data));
 
 const initialize = () => {
-  if (contributorsContainer() && !homepage()) {
+  if (container() && !homepage()) {
     fetch(`${API_ENDPOINT}${filePath()}`, {
-      method: "get"
+      method: 'get'
     })
       .then(response => {
         if (!response.ok) {
@@ -55,9 +62,11 @@ const initialize = () => {
         }
         return response.json();
       })
-      .then(data => (data.length ? updateContributorsHtml(data) : undefined))
-      .catch(response => response.then(err => console.log("Github API fetch resulted in an error: ", err)));
+      .then(data => (data.length ? updateHtml(data) : undefined))
+      .catch(response =>
+        response.then(err => console.log('Github API fetch resulted in an error: ', err))
+      );
   }
 };
 
-document.addEventListener("turbolinks:load", initialize);
+document.addEventListener('turbolinks:load', initialize);
