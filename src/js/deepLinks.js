@@ -9,17 +9,10 @@ const scrollToHash = () => {
     return false;
   }
 
-  try {
-    const element = document.querySelector(location.hash);
-
-    // ugly, but anchor-js doesn't expose any info about when its initialized.
-    // So: polling for anchors.elements array vs this.
-    setTimeout(() => {
-      scrollToElement(element);
-    }, 400);
-  } catch (e) {
-    // TODO: Customize yard generated titles to not include weirdness or else its throwing erors
-  }
+  const element = document.querySelector(location.hash);
+  setTimeout(() => {
+    scrollToElement(element);
+  }, 400);
 };
 
 document.addEventListener("turbolinks:load", () => {
