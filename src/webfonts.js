@@ -1,1 +1,1 @@
-import './webfonts.scss'
+import './webfonts.scss';
