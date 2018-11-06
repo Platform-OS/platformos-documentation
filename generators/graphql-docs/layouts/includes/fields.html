@@ -1,24 +1,21 @@
 <% fields.each do |field| %>
-<div class="pb-3 mb-3">
-  <h3>
-    <%= field[:name] %> (<code><a href="<%= base_url %>/<%= field[:type][:path] %>"><%= field[:type][:info] %></a></code>)
-  </h3>
+<h2 class="mt-3">
+  <%= field[:name] %>
+  <small>(<code><a href="<%= base_url %>/<%= field[:type][:path] %>"><%= field[:type][:info] %></a></code>)</small>
+</h2>
 
-  <div>
-  <% if field[:is_deprecated] %>
-    <div class="text-danger">
-      <span>Deprecation notice</span>
-      <%= markdownify.(field[:deprecation_reason]) %>
-    </div>
-  <% end %>
-
-  <%= include.('notices.html', notices: field[:notices]) %>
-
-  <%= markdownify.(field[:description]) %>
-
-  <% unless field[:arguments].empty? %>
-    <%= include.('arguments.html', arguments: field[:arguments]) %>
-  <% end %>
-  </div>
+<% if field[:is_deprecated] %>
+<div class="text-danger">
+  <span>Deprecation notice</span>
+  <%= markdownify.(field[:deprecation_reason]) %>
 </div>
+<% end %>
+
+<%= include.('notices.html', notices: field[:notices]) %>
+
+<%= markdownify.(field[:description]) %>
+
+<% unless field[:arguments].empty? %>
+<%= include.('arguments.html', arguments: field[:arguments]) %>
+<% end %>
 <% end %>

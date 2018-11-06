@@ -1,20 +1,22 @@
-<h3 id="fields">Values</h3>
+<h3 class="mt-3">Values</h3>
 
 <% values.each do |value| %>
 
-  <h4 id="<%= slugify.(value[:name]) %>" class="name anchored"><%= value[:name] %></h4>
+<h4>
+  <%= value[:name] %>
+</h4>
 
-  <div class="description-wrapper">
-    <%= include.('notices.html', notices: value[:notices]) %>
+<%= include.('notices.html', notices: value[:notices]) %>
 
-    <% if value[:is_deprecated] %>
-      <div class="deprecation-notice <%= classes[:deprecation_notice] %>">
-        <span class="deprecation-title">Deprecation notice</span>
-        <%= markdownify.(value[:deprecation_reason]) %>
-      </div>
-    <% end %>
+<% if value[:is_deprecated] %>
+<div class="text-danger">
+  <span class="font-weight-bold">Deprecation notice</span>
+  <%= markdownify.(value[:deprecation_reason]) %>
+</div>
+<% end %>
 
-    <p><%= value[:description] %></p>
-  </div>
+<p>
+  <%= value[:description] %>
+</p>
 
 <% end %>

@@ -1,16 +1,15 @@
 <% connections.each do |connection| %>
-<div class="pb-2 mb-2 <%= classes[:field_entry] %>">
-  <h3>
-    <%= connection[:name] %> (<code><a href="<%= base_url %>/<%= connection[:type][:path] %>"><%= connection[:type][:info] %></a></code>)
-  </h3>
+<h3 class="mt-3">
+  <%= connection[:name] %>
+  <small>(<code><a href="<%= base_url %>/<%= connection[:type][:path] %>"><%= connection[:type][:info] %></a></code>)</small>
+</h3>
 
-  <div>
-    <%= include.('notices.html', notices: connection[:notices]) %>
-    <p><%= connection[:description] %></p>
+<%= include.('notices.html', notices: connection[:notices]) %>
+<p>
+  <%= connection[:description] %>
+</p>
 
-    <% unless connection[:arguments].empty? %>
-      <%= include.('arguments.html', arguments: connection[:arguments]) %>
-    <% end %>
-  </div>
-</div>
+<% unless connection[:arguments].empty? %>
+<%= include.('arguments.html', arguments: connection[:arguments]) %>
+<% end %>
 <% end %>
