@@ -1,27 +1,27 @@
-import { Selector, ClientFunction } from "testcafe";
+import { Selector, ClientFunction } from 'testcafe';
 
-import LayoutPO from "./page-objects/Layout";
-import HomepagePO from "./page-objects/Homepage";
+import LayoutPO from './page-objects/Layout';
+import HomepagePO from './page-objects/Homepage';
 
 const Home = new HomepagePO();
 const Layout = new LayoutPO();
 
-fixture("Homepage").page(Layout.URL.staging);
+fixture('Homepage').page(Layout.URL.staging);
 
-test("There are no liquid errors on the page", async t => {
+test('There are no liquid errors on the page', async t => {
   await Layout.checkLiquidErrors();
 });
 
-test("Github contributors are not shown", async t => {
+test('Github contributors are not shown', async t => {
   await t.expect(Layout.Contributors.count).eql(1);
-  await t.expect(Layout.Contributors.find("div").count).eql(0);
+  await t.expect(Layout.Contributors.find('div').count).eql(0);
 });
 
-test("All boxes exist", async t => {
+test('All boxes exist', async t => {
   await t.expect(Home.Boxes.count).eql(7);
 });
 
-test("Boxes have proper headers", async t => {
+test('Boxes have proper headers', async t => {
   Home.BoxesHeaders.forEach(async header => {
     await t.expect(Home.Boxes.withText(header).count).eql(1);
   });

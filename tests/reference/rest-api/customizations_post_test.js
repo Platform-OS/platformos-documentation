@@ -3,14 +3,14 @@ const createUser = require('./createExampleUser');
 
 Feature('Customizations post');
 
-Scenario('Create customization', async (I) => {
+Scenario('Create customization', async I => {
   const user = await createUser(I);
   const payload = {
-    "form_configuration_name": "reference_rest_api_create_customization",
-    "parent_resource_id": "links",
-    "form": {
-      "properties": {
-        "url": "google.com"
+    form_configuration_name: 'reference_rest_api_create_customization',
+    parent_resource_id: 'links',
+    form: {
+      properties: {
+        url: 'google.com'
       }
     }
   };

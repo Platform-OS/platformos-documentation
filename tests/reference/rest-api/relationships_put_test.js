@@ -4,14 +4,14 @@ const createRelationship = require('./relationshipCreate');
 
 Feature('Relationships put');
 
-Scenario('Update relationship', async (I) => {
+Scenario('Update relationship', async I => {
   const user = await createUser(I);
   const relationship = await createRelationship(I, user);
   const payload = {
-    "form_configuration_name": "reference_rest_api_relationship_update",
-    "form": {
-      "properties": {
-        "group_name": "Senior Captains"
+    form_configuration_name: 'reference_rest_api_relationship_update',
+    form: {
+      properties: {
+        group_name: 'Senior Captains'
       }
     }
   };

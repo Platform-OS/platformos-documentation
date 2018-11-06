@@ -1,15 +1,15 @@
 var assert = require('assert');
 const createUser = require('./createExampleUser');
-const createTransactable= require('./createExampleTransactable');
+const createTransactable = require('./createExampleTransactable');
 
 Feature('Transactables update');
-Scenario('Update transactable', async (I) => {
+Scenario('Update transactable', async I => {
   const user = await createUser(I);
   const transactable = await createTransactable(I, user);
   const payload = {
-    "form_configuration_name": "reference_rest_api_transactable_update",
-    "form": {
-      "name": "new name"
+    form_configuration_name: 'reference_rest_api_transactable_update',
+    form: {
+      name: 'new name'
     }
   };
 
