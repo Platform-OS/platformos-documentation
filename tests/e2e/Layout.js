@@ -15,30 +15,37 @@ test('No sidebar item is active on page load', async t => {
 });
 
 test('no_feedback and no_sidebar flags are working', async t => {
-  await t.click(Selector('a').withText('Contributor Guide'));
+  await t.click(Selector('a').withText(Layout.txt.contributorGuide));
 
   await t.expect(Layout.Sidebar.count).eql(0);
   await t.expect(Layout.Feedback.count).eql(0);
 });
 
 test('Contributors list is working', async t => {
-  await t.click(Selector('a').withText('Contributor Guide'));
+  await t.click(Selector('a').withText(Layout.txt.contributorGuide));
 
   await t.expect(Layout.Contributors.find('p').count).gt(1);
 });
 
 test('Expanding menu works', async t => {
   await t
-    .click(Layout.SidebarItem.withText(Layout.HowPOSWorksPhrase))
-    .click(Layout.SidebarItemExpanded.find('a').withText(Layout.AboutPOSPhrase));
+    .click(Layout.SidebarItem.withText(Layout.txt.howItWorks))
+    .click(Layout.SidebarItemExpanded.find('a').withText(Layout.txt.about));
 
   const headerText = await Selector('h1')().textContent;
 
-  await t.expect(headerText).eql(Layout.AboutPOSPhrase);
+  await t.expect(headerText).eql(Layout.txt.about);
 });
 
 test('External links have target and rel attributes', async t => {
-  await t.click(Selector('h4').withText(Layout.HowPOSWorksPhrase));
+  await t.click(Selector('h4').withText(Layout.txt.howItWorks));
+
+  await t.expect(Layout.TOSLink.withAttribute('target', '_blank').exists).ok();
+  await t.expect(Layout.TOSLink.withAttribute('rel', 'external noopener').exists).ok();
+});
+
+test('Back button is working as expected with turbolinks', async t => {
+  await t.click(Selector('h4').withText(Layout.txt.howItWorks));
 
   await t.expect(Layout.TOSLink.withAttribute('target', '_blank').exists).ok();
   await t.expect(Layout.TOSLink.withAttribute('rel', 'external noopener').exists).ok();

@@ -2,8 +2,11 @@ import { Selector, t } from 'testcafe';
 
 export default class LayoutPO {
   constructor() {
-    this.AboutPOSPhrase = 'About PlatformOS';
-    this.HowPOSWorksPhrase = 'How PlatformOS Works';
+    this.txt = {
+      about: 'About PlatformOS',
+      howItWorks: 'How PlatformOS Works',
+      contributorGuide: 'Contributor Guide'
+    };
 
     // env var doesnt work yet, but when we pass it to docker, it will be ready to rock
     this.URL = {
