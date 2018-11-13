@@ -1,0 +1,14 @@
+---
+name: get_page_contributors_from_github
+delay: '1'
+enabled: true
+format: http
+headers: '{ "Content-Type": "application/json" }'
+request_type: GET
+to: |-
+  {%- query_graph "get_github_clients" -%}
+  {% assign client = g.customizations.results.last %}
+  https://api.github.com/repos/mdyd-dev/nearme-documentation/commits?client_id={{ client.client_id }}&client_secret={{ client.client_secret }}&path={{ data.path }}
+trigger_condition: true
+---
+{}

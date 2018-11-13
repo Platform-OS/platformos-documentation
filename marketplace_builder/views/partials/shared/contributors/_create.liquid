@@ -1,0 +1,16 @@
+{%- query_graph "get_page_contributors", result_name: "pc", slug: slug -%}
+
+{%- assign page_contributors = pc.customizations.results.last -%}
+
+{% if page_contributors == blank %}
+
+  {% if paths == blank %}
+    {% capture "page_path" %}marketplace_builder/views/pages{{ href }}.liquid{% endcapture %}
+    {% assign paths = page_paths | split: "," %}
+  {% endif %}
+
+  {% execute_query "create_page_contributors", slug: slug, paths: paths %}
+  {% assign page_contributors = g.customization_create %}
+
+{% endif %}
+

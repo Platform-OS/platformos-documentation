@@ -1,1 +1,23 @@
-<div class="contributors d-flex" data-contributors></div>
+{% query_graph "get_page_contributors", slug: context.location.href %}
+{% assign page_contributors = g.customizations.results.last %}
+
+{% if page_contributors != blank %}
+  <div class="contributors d-flex">
+    <p class="mb-0 d-flex align-items-center">
+      <span>Last edit:</span>&nbsp; {{ page_contributors.last_edit | date: "%b %d, %Y" }}
+    </p>
+    <p class="mb-0 d-flex align-items-center">
+      <span>Contributors:</span>&nbsp;
+      {% assign c = page_contributors.contributors | default: "[]" | to_hash | reverse %}
+      {% for contributor in c %}
+        {% if contributor.login != blank %}
+          <a href="https://github.com/{{ contributor.login }}" target="_blank">
+            <img src="{{ contributor.avatar_url }}" width="20" height="20" alt="{{ contributor.login }}">
+          </a>
+        {% endif %}
+      {% endfor %}
+    </p>
+  </div>
+{% else %}
+  <div class="contributors d-flex" data-contributors></div>
+{% endif %}
