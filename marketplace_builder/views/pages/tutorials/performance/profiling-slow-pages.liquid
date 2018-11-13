@@ -1,0 +1,47 @@
+---
+converter: markdown
+metadata:
+  title: Profiling Slow Pages
+  description: This guide will show you how to profile a slow page to find performance issues.
+slug: tutorials/performance/profiling-slow-pages
+searchable: true
+---
+This guide will show you how to profile a slow page to find performance issues.
+
+## Requirements
+
+This is an advanced tutorial. To follow it, you should be familiar with basic PlatformOS concepts, Liquid, the topics in the Get Started section, and tutorials related to Pages.
+
+* [How PlatformOS Works](/how-platformos-works)
+* [Get Started](/get-started)
+* [Pages tutorials](/tutorials/pages/pages)
+
+## Steps
+
+Profiling a page is a one-step process:
+
+1. Enable profiling for a page
+
+### Step 1: Enable profiling for a page
+
+Add `enable_profiler: true` to a yml file corresponding to the page you want to profile: 
+
+```yaml
+---
+slug: my-slow-page
+enable_profiler: true
+---
+```
+```liquid
+{% raw %}
+{% include 'very_time_consuming_partial' %}
+{% endraw %}
+```
+
+When the flag is set, whenever you trigger a request to the `my-slow-page`, two log entries will be added and accessible via the `marketplace-kit logs` command. The first one shows information about the page, the second one about the layout associated with the page. You can use this information to identify slow code and improve it.
+
+{% include 'alert/warning', content: 'To avoid noise, the log will include only entries which took longer than 10ms '%}
+
+{% include 'alert/warning', content: 'Try to not profile a page on production, as it can result in performance hit. If you absolutely have to, make sure to disable it right after you trigger the request to the page, to minimize the risk of leaving profiling enabled for a long period of time.' %}
+
+{% include 'shared/questions_section' %}
