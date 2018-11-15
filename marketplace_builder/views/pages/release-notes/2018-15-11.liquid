@@ -1,0 +1,95 @@
+---
+converter: markdown
+metadata:
+  title: November 15, 2018  &ndash;  Release Notes
+  date: November 15, 2018
+  description: Performance benchmarking tools
+  hide_sidebar: true
+slug: release-notes/15-NOVEMBER-2018
+searchable: true
+---
+
+### {{ page.metadata.description }}
+
+In this release we are answering to community requests and introducing two ways to benchmark performance of your code.
+
+#### time_diff filter
+
+This filter can be used in many different ways, including:
+
+* calculating how many days from now will an event happen - just pass two dates and unit `d` for days
+* calculating when you have to leave to arrive at train station - just pass two time objects and unit `m` for minutes
+* calculating precisely how long something took - for example, code execution, pass two time objects and unit `ms` for milliseconds (default)
+
+#### Example - code benchmarking
+
+You can use `time_diff` anywhere where liquid is allowed, for example: partials, callbacks.
+
+You can also measure how long graphql query is taking by putting it between start/stop variables you are measuring.
+
+To measure speed of code snippet:
+
+```liquid
+{% raw %}
+{% assign start = "now" | to_time  %}
+
+{% assign letters = "A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z" | split: "," %}
+{% for letter in letters %}
+<ul>
+  <li class="letter-{{ forloop.index }}">{{ letter }}</li>
+</ul>
+{% endfor %}
+
+{% assign stop = "now" | to_time %}
+
+{% assign durationInMS = start | time_diff: stop  %}
+{% assign durationInS = start | time_diff: stop, 's'  %}
+
+{% log durationInMS, type: 'render alphabet in a list in milliseconds' %}
+{% log durationInS, type: 'render alphabet in a list in seconds' %}
+{% endraw %}
+```
+
+Using `marketplace-kit logs` command observe what has been logged:
+
+```shell
+[2018-11-15 16:23:33.719Z] - render alphabet in a list in milliseconds: 7.392
+[2018-11-15 16:23:33.741Z] - render alphabet in a list in seconds: 0.007
+```
+
+[Read more about time_diff filter](/api-reference/liquid-filters#time_diff).
+
+#### Liquid profiler
+
+You can now profile your application per liquid view (including partials) by setting up a `enable_profiler: true` flag inside your page.
+
+```yaml
+---
+slug: my-slow-page
+enable_profiler: true
+---
+```
+
+When the flag is set, whenever you trigger a request to the `my-slow-page`, two log entries will be added and accessible via the `marketplace-kit logs` command.
+The first one shows information about the page, the second one about the layout associated with the page.
+You can use this information to identify slow code and improve it.
+
+{% include 'alert/note', content: 'To avoid noise, the log will include only entries which took longer than 10ms' %}
+
+#### Example log
+
+```shell
+[2018-11-15 17:39:48.733Z] - debug: PROFILING:
+ [0.015517108] TOTAL (lvl: 0)
+    [0.013081715] if url_params  (lvl: 1)
+      [0.013057744] include 'designers/all_designers'  (lvl: 2)
+[2018-11-15 17:39:48.816Z] - debug: PROFILING:
+ [0.067086901] TOTAL (lvl: 0)
+    [0.056122558] include 'layouts/header'  (lvl: 1)
+      [0.055988452] include 'layouts/theme_header'  (lvl: 2)
+        [0.055747433] if current_user == blank  (lvl: 3)
+          [0.055718548] include 'layouts/theme_header/signed-in-nav'  (lvl: 4)
+            [0.050209644] query_graph 'get_unconfirmed_orders_count', result_name: 'g__unconfirmed', receiver_id: context.current_user.id  (lvl: 5)
+```
+
+{% include 'alert/warning', content: 'Try to not profile a page on production, as it can result in performance hit. If you absolutely have to, make sure to disable it right after you trigger the request to the page, to minimize the risk of leaving profiling enabled for a long period of time.' %}
