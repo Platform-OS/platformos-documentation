@@ -371,11 +371,14 @@ specified by the second parameter
 <h4>Examples:</h4>
 
 ```liquid
-{{ objects }} =>  [
-  { size: 'xl', color: 'red'},
-  { size: 'xl', color: 'yellow'},
-  { size: 's', color: 'red'}
- ]
+{% parse_json objects %}
+  [
+    { "size": "xl", "color": "red"},
+    { "size": "xl", "color": "yellow"},
+    { "size": "s", "color": "red"}
+  ]
+{% endparse_json %}
+
 {{ objects | group_by: 'size' }} => {"xl"=>[{"size"=>"xl", "color"=>"red"}, {"size"=>"xl", "color"=>"yellow"}], "s"=>[{"size"=>"s", "color"=>"red"}]}
 ```
 
@@ -484,9 +487,9 @@ specified by the second parameter (an array of arrays)
 
 <h4>Params:</h4>
 
-  <li>first_date (<tt>DateTime</tt>) - time which will be compared to the second one </li>
+  <li>first_date (<tt>DateTime</tt>, <tt>String</tt>) - time which will be compared to the second one </li>
 
-  <li>second_date (<tt>DateTime</tt>) - second time, against which we will do comparison </li>
+  <li>second_date (<tt>DateTime</tt>, <tt>String</tt>) - second time, against which we will do comparison </li>
 
 
 
@@ -494,6 +497,8 @@ specified by the second parameter (an array of arrays)
 
 ```liquid
 {{ '2010-01-02' | date_before: '2010-01-03' }} => true
+{{ '6 months ago' | date_before: '2010-01-03' }} => false
+{{ '1 day ago' | date_before: 'now' }} => true
 ```
 
 </div>
@@ -762,7 +767,7 @@ in array of objects </li>
 <h4>Examples:</h4>
 
 ```liquid
-{% assign objects = '[{"id":1,"name":"foo","label":"Foo"},{"id":2,"name":"bar","label":"Bar"}]' %}
+{% assign objects = '[{"id":1,"name":"foo","label":"Foo"},{"id":2,"name":"bar","label":"Bar"}]' | parse_json %}
 {{ objects | map: 'name' }} => ['foo', 'bar']
 ```
 
@@ -863,32 +868,6 @@ we try to match the first parameter </li>
 {% endcapture %}
 
 {{ text | new_line_to_br }} => 'foo<br />bar'
-```
-
-</div>
-<h2 class="font-weight-bold">number_of_minutes_until</h2>
-<div class="border-bottom mb-5 pb-5">
-
-<h4>Returns:</h4>
-
-(<tt>Integer</tt>) - number of minutes
-
-
-
-<h4>Params:</h4>
-
-  <li>end_time (<tt>DateTime</tt>) - a date time object, must be after start_time </li>
-
-  <li>start_time (<tt>DateTime</tt>) - defaults to current time  <em>(defaults to: <tt>Time.zone.now</tt>)</em> </li>
-
-
-
-<h4>Examples:</h4>
-
-```liquid
-assuming it's 9:30am CET
-{{ 'today 10am' | to_time: '', 'CET' | number_of_minutes_until }} => 30
-{{ 'today 8am' | to_time: '', 'CET' | number_of_minutes_until }} => -90
 ```
 
 </div>
@@ -1395,8 +1374,38 @@ e.g. '%Y-%m-%d' will result in something like '2020-12-12'  <em>(defaults to: <t
 <h4>Examples:</h4>
 
 ```liquid
-{% assign numbers = '1,2,3' | split: ',' %}
+{% assign numbers = '[1,2,3]' | parse_json %}
 {{ numbers | sum_array }} => 6
+```
+
+</div>
+<h2 class="font-weight-bold">time_diff</h2>
+<div class="border-bottom mb-5 pb-5">
+
+<h4>Returns:</h4>
+
+(<tt>Float</tt>) - duration between start and finish in unit - default: ms - milliseconds
+
+
+
+<h4>Params:</h4>
+
+  <li>start (<tt>Time</tt>, <tt>Number</tt>) -  </li>
+
+  <li>finish (<tt>Time</tt>, <tt>Number</tt>) -  </li>
+
+  <li>unit (<tt>String</tt>) - - time unit - allowed options are: d, days, h, hours, m, minutes, s, seconds, ms, milliseconds [default]  <em>(defaults to: <tt>&#39;ms&#39;</tt>)</em> </li>
+
+
+
+<h4>Examples:</h4>
+
+```liquid
+{% assign start = "now" | to_time %}
+[ ... ] your code goes here
+{% assign stop = "now" | to_time %}
+{% assign result = start | time_diff: stop, 'd' %}
+{% log result %}
 ```
 
 </div>
@@ -1513,10 +1522,10 @@ a nicer looking title; it is meant for creating pretty output
 
 ```liquid
 {{ 'today' | to_time }} => 2017-04-15 15:21:00
-{{ 'today' | to_time '', 'UTC' }} => 2017-04-15 15:21:00
+{{ 'today' | to_time 'UTC' }} => 2017-04-15 15:21:00
 {{ '1 day ago' | to_time }} => 2017-04-14 15:21:00
 {{ '5 days from now' | to_time }} => 2017-04-14 15:21:00
-{{ '2010:01:01' | to_time: '%Y:%m:%d' }} => 2010-01-01 00:00:00
+{{ '2010:01:01' | to_time: '', '%Y:%m:%d' }} => 2010-01-01 00:00:00
 ```
 
 </div>
@@ -1625,7 +1634,7 @@ a nicer looking title; it is meant for creating pretty output
 
 ```liquid
 {{ 'https://www.youtube.com/watch?v=8N_tupPBtWQ' | video_params }}
-=> {"provider"=>"YouTube", "url"=>"https://www.youtube.com/watch?v=8N_tupPBtWQ", "video_id"=>"8N_tupPBtWQ", "embed_url"=>"//www.youtube.com/embed/8N_tupPBtWQ", "embed_code"=>"<iframe src=\"//www.youtube.com/embed/8N_tupPBtWQ\" frameborder=\"0\" allowfullscreen=\"allowfullscreen\"></iframe>"},
+=> {"provider"=>"YouTube", "url"=>"https://www.youtube.com/watch?v=8N_tupPBtWQ", "video_id"=>"8N_tupPBtWQ", "embed_url"=>"https://www.youtube.com/embed/8N_tupPBtWQ", "embed_code"=>"<iframe src=\"https://www.youtube.com/embed/8N_tupPBtWQ\" frameborder=\"0\" allowfullscreen=\"allowfullscreen\"></iframe>"},
 ```
 
 </div>
