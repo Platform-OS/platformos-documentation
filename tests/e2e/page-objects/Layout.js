@@ -24,6 +24,13 @@ export default class LayoutPO {
   }
 
   async checkLiquidErrors() {
-    return t.expect(await this.Body.textContent).notContains('Liquid Error');
+    const bodyText = await this.Body.textContent;
+    return t
+      .expect(bodyText)
+      .notContains('Liquid Error')
+      .expect(bodyText)
+      .notContains('RenderFormTag Error')
+      .expect(bodyText)
+      .notContains('QueryGraphTag Error');
   }
 }
