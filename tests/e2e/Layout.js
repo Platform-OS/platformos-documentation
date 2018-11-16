@@ -1,4 +1,4 @@
-import { Selector, ClientFunction } from 'testcafe';
+import { Selector } from 'testcafe';
 
 import LayoutPO from './page-objects/Layout';
 

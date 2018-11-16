@@ -1,4 +1,4 @@
-import { Selector, ClientFunction } from 'testcafe';
+import { Selector } from 'testcafe';
 
 import LayoutPO from './page-objects/Layout';
 import SearchPO from './page-objects/Search';
@@ -8,7 +8,7 @@ const Search = new SearchPO();
 
 fixture('Search').page(`${Layout.URL.staging}/search`);
 
-test('There are no liquid errors on the page', async t => {
+test('There are no liquid errors on the page', async () => {
   await Search.go(Search.existingPhrase);
   await Layout.checkLiquidErrors();
   await Search.go(Search.nonExistingPhrase);

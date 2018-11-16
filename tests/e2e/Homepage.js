@@ -1,4 +1,4 @@
-import { Selector, ClientFunction } from 'testcafe';
+import 'testcafe';
 
 import LayoutPO from './page-objects/Layout';
 import HomepagePO from './page-objects/Homepage';
@@ -8,7 +8,7 @@ const Layout = new LayoutPO();
 
 fixture('Homepage').page(Layout.URL.staging);
 
-test('There are no liquid errors on the page', async t => {
+test('There are no liquid errors on the page', async () => {
   await Layout.checkLiquidErrors();
 });
 
