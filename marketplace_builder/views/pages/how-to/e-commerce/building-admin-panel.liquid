@@ -1,0 +1,293 @@
+---
+converter: markdown
+metadata:
+  title: Building Admin Panel
+  description: Tutorial on how to build e-commerce sites powered by PlatformOS
+slug: how-to/e-commerce/configuring-data-schema
+searchable: true
+---
+
+{% include 'how-to/e-commerce/tutorial-info' %}
+
+With our data schema in place, we are ready to start building the application. The end goal is ordering t-shirts, but to do that we need to be able to add some to the database first. That’s why we’ll start with admin section for our online shop.
+
+## Authorizing users
+
+Our admin panel should be accessible only to admin users, but we don’t have one yet! After creating the instance your user from Partner Portal has been automatically added to your shop we now want to turn him into an admin. We’ll use [migrations](/how-to/migrations/migrating-data) to do that.
+
+### Step 1. Create migration
+
+Go to terminal and run the following command to create your first migration:
+
+```shell
+marketplace-kit migrations generate development add_admin
+```
+
+This should create a new file for your in `migrations` folder.
+
+```liquid
+migrations/{TIMESTAMP}_add_admin.liquid
+{% raw %}
+{% query_graph 'get_user', result_name: g, email: "your-email@example.com" %}
+{% execute_query "promote_user_to_admin", id: g.users.first.id %}
+{% endraw %}
+
+```
+
+`{TIMESTAMP}` is going to be a 12 digit number representing date time when the migration was created. You will use this in a moment to run the migration.
+
+We need three more files to make it work. First, we will create a generic `get_user` query, which we will be able to reuse later on.
+
+```graphql
+# graph_queries/get_user.graphql
+query get_user($id: ID, $email: String, $slug: String) {
+  user(id: $id, email: $email, slug: $slug) {
+    id
+    name
+    email
+    profile(profile_type: "default") {
+      properties
+    }
+  }
+}
+```
+
+{% capture content %}
+You can build queries with additional parameters, to make them more versatile. Empty parameters are omitted when query is executed.
+{% endcapture %}
+{% include 'alert/note', content: content %}
+
+{% capture content %}
+`properties` is a special keyword, that will list all of custom properties attached to the object, so you do not have to list them all one by one
+{% endcapture %}
+{% include 'alert/note', content: content %}
+
+```graphql
+# graph_queries/mutations/promote_user_to_admin.graphql
+mutation promote_user_to_admin($id: ID) {
+  user_update(
+    form_configuration_name: "promote_user_to_admin_form"
+    id: $id
+    user: {
+      profiles: [
+        {
+          name: "default"
+          values: { properties: [{ name: "admin", value: "true" }] }
+        }
+      ]
+    }
+  ) {
+    id
+  }
+}
+```
+
+```yaml
+# form_configurations/user/promote_user_to_admin_form.liquid
+---
+name: promote_user_to_admin_form
+resource_owner: "anyone"
+resource: User
+configuration:
+  profiles:
+    default:
+      properties:
+        admin:
+---
+
+```
+
+Once all of these files are ready, you can run the migration with marketplace-kit command. Substitute `TIMESTAMP` with migration ID from your own file.
+
+```shell
+marketplace-kit migrations run development TIMESTAMP
+```
+
+### Step 2. Create authorization policy
+
+Now, you are an admin! This allows us to create our first [authorization policy](/get-started/authorization-policy/authorization-policy),
+that we will use to secure the form we’ve just created in the previous step and reuse to limit access to all resources in admin panel.
+
+```liquid
+# authorization_policies/admin_user.liquid
+---
+name: admin_user
+redirect_to: /unauthorized
+flash_alert: Sorry, you have to be an admin user to access this page.
+---
+{% raw %}
+{% query_graph 'current_user', result_name: "g" %}
+{% if g.current_user.profile.admin %}true{% endif %}
+{% endraw %}
+```
+
+```grapqhl
+query current_user {
+  current_user {
+    id
+    name
+    email
+    profile(profile_type: "default") {
+      properties
+    }
+  }
+}
+```
+
+{% capture content %}
+You’ll notice, that this query is identical to the `get_user` apart for no parameters, but `current_user` endpoint. It always returns the currently authorized user.
+{% endcapture %}
+{% include 'alert/note', content: content %}
+
+Now, that our authorization policy is in place, we can go ahead and modify the `promote_user_to_admin_form` form, so that only admins can promote other users to admins from now on.
+
+```yaml
+# form_configurations/user/promote_user_to_admin_form.liquid
+---
+name: promote_user_to_admin_form
+....
+authorization_policies: [admin_user]
+---
+```
+
+### Step 3. Creating sign-in form
+
+We are ready to create the sign-in form for our application. Sign-up will come later, after we’ve finished management section of the app.
+
+Whole process has been described in our documentation in the [Signing in User Manually](/get-started/users/signing-in-user-manually) article.
+
+We’ll need a new page and form configuration file.
+
+```liquid
+---
+slug: sign-in
+layout_name: authorization
+metadata:
+  title: Sign in
+---
+{% raw %}
+{% include_form 'sign_in_form' %}
+
+<hr>
+
+<p>
+  Don’t have an account yet?
+  <a href="/sign-up">Sign up as a new user</a>
+</p>
+
+{% endraw %}
+```
+
+{% capture content %}
+We’ve also created a new layout file `views/layouts/authorization.html.liquid` but since it’s only different html, we’ll omit it here for brevity.
+{% endcapture %}
+{% include 'alert/note', content: content %}
+
+```liquid
+# form_configurations/session/sign_in_form.liquid
+{% raw %}
+---
+name: sign_in_form
+resource: Session
+flash_notice: 'You are now logged in'
+redirect_to: >
+  {%- query_graph 'current_user', result_name: "g" -%}
+  {%- if g.current_user.profile.admin -%}
+    /admin
+  {%- else -%}
+    /
+  {%- endif -%}
+configuration:
+  email:
+  password:
+---
+{% form %}
+  <div class="form-group">
+    <label for="sign-in-email">Email</label>
+
+    <input
+      type="email"
+      class="form-control{% if form_builder.errors.email != blank %} is-invalid{% endif %}"
+      id="sign-in-email"
+      value="{{ form_builder.fields.email.value }}"
+      name="{{ form_builder.fields.email.name }}"
+    />
+
+    {% if form_builder.errors.email %}
+      <div class="invalid-feedback">{{ form_builder.errors.email }}</div>
+    {% endif %}
+  </div>
+  <div class="form-group">
+    <label for="sign-in-password">Password</label>
+
+    <input
+      type="password"
+      class="form-control{% if form_builder.errors.email != blank %} is-invalid{% endif %}"
+      id="sign-in-password"
+      name="{{ form_builder.fields.password.name }}"
+    />
+
+    {% if form_builder.errors.password %}
+      <div class="invalid-feedback">{{ form_builder.errors.password }}</div>
+    {% endif %}
+  </div>
+
+  <div class="form-group row">
+    <div class="col-sm-12">
+      <button type="submit" class="btn btn-primary">Sign in</button>
+    </div>
+  </div>
+{% endform %}
+
+{% endraw %}
+```
+
+{% capture content %}
+Input fields are a prime candidate for refactoring, as there is a lot of repetition and common logic that can be implemented with shared partials.
+{% endcapture %}
+{% include 'alert/note', content: content %}
+
+### Step 4. Create sign out form
+
+Now that we can sign in, we should be able to sign out as well. [Logging Out an Authenticated User](/get-started/users/logging-out-authenticated-user) describes well what needs to be done. We’ll add our form configuration now, so we have it ready, when working on top navigation and sign out button.
+
+```
+# form_configurations/session/sign_out_form.liquid
+---
+name: sign_out_form
+resource: Session
+---
+{% raw %}
+{% form method: 'delete' %}
+  <button type="submit" class="dropdown-item">Log out</button>
+{% endform %}
+{% endraw %}
+```
+
+### Step 5. Create protected section
+
+All that is left is adding an admin index page and make sure only admins can access it
+
+```liquid
+# views/pages/admin/index.liquid
+---
+slug: admin
+authorization_policies: [admin_user]
+metadata:
+  title: Admin panel
+---
+<p>Only admins can see access this page.</p>
+```
+
+### Summary
+
+We’ve promoted our user to an admin, created sign-in and sign-out forms and added a protected area that will be used to add all administration functionalities for the website.
+
+We are ready to do some refactoring to make sure we are ready for further development.
+
+## Next steps
+
+- Next: Refactoring
+- Previous: [Configuring Data Schema](/how-to/e-commerce/configuring-data-schema)
+
+{% include 'shared/questions_section' %}
