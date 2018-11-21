@@ -18,7 +18,7 @@ pipeline {
   stages {
     stage('Staging') {
       environment {
-        MP_URL = "https://documentation.staging-oregon.near-me.com"
+        MP_URL = "https://documentation-staging.staging.oregon.platform-os.com"
       }
 
       when {

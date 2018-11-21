@@ -10,7 +10,7 @@ export default class LayoutPO {
 
     // env var doesnt work yet, but when we pass it to docker, it will be ready to rock
     this.URL = {
-      staging: process.env.MP_URL || 'https://documentation.staging-oregon.near-me.com'
+      staging: process.env.MP_URL || 'https://documentation-staging.staging.oregon.platform-os.com'
     };
     this.Body = Selector('body');
     this.Contributors = Selector('.contributors');
