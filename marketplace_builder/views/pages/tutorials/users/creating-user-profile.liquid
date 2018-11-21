@@ -1,0 +1,65 @@
+---
+converter: markdown
+metadata:
+  title: Creating a User Profile
+  description: This guide will help you create User Profiles for your PlatformOS site.
+slug: tutorials/users/creating-user-profile
+searchable: true
+---
+
+This guide will help you create User Profiles for your PlatformOS site.
+
+For the sake of the tutorials in this section, we will assume that you want to build a marketplace which connects Developers (who build marketplaces) with Clients (who want to hire them). In order to display a different UI based on their role in the marketplace, you will create two profiles: developer and client.
+
+## Requirements
+
+To follow the steps in this tutorial, you should be familiar with the required directory structure for your code base, and understand the concept of users.
+
+* [Required Directory Structure](/how-platformos-works/platformos-workflow)
+* [Users](/tutorials/users/users)
+
+## Steps
+
+Creating a User Profile is a two-step process:
+
+1. Create yml file
+2. Edit User Profile
+
+### Step 1: Create yml file
+
+Create two yml files for the two User Profiles (developer and client) in the `marketplace_builder/user_profile_types` directory. Name the files `developer.yml` and `client.yml`.
+
+### Step 2: Edit User Profile
+
+#### marketplace_builder/user_profile_types/developer.yml
+
+```yaml
+name: developer
+custom_attributes:
+- name: bio
+  attribute_type: string
+- name: years_of_experience
+  attribute_type: integer
+- name: hourly_rate
+  attribute_type: float
+```
+
+Explanation:
+
+* `name`: the most important setting. Its [snake case](https://en.wikipedia.org/wiki/Snake_case) version is used in many places like Form Configuration and GraphQL.
+* `custom_attributes`: the heart of User Profiles, that allow you to specify Custom Attributes for the User Profile. They are used to build customized forms that gather user input during registration for later display. They take an array of elements that consist of name and type. To learn more, check our [full Custom Attributes documentation](/reference/custom-attributes/).
+
+Similarly, add content to the `client.yml` User Profile:
+
+```yaml
+name: client
+```
+
+Save your User Profiles.
+
+## Next steps
+Congratulations! You have created User Profiles. Now you can create a sign up form:
+
+* [Creating a Sign-Up Form](/tutorials/users/creating-sign-up-form)
+
+{% include 'shared/questions_section' %}

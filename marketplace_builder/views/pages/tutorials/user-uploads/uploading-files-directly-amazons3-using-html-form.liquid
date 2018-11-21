@@ -1,0 +1,182 @@
+---
+converter: markdown
+metadata:
+  title: Uploading Files Directly to Amazon S3 Using HTML Form
+  description: This guide will help you use the Amazon S3 direct upload from the front-end by adding the files from `form_builder` that are exposed to you for each file/image custom attribute.
+slug: tutorials/user-uploads/uploading-files-directly-amazons3-using-html-form
+searchable: true
+---
+
+This guide will help you use the Amazon S3 direct upload from the front-end by adding the files from `form_builder` that are exposed to you for each file uploader.
+
+This guide presents a low-tech demonstration without any JavaScript. It only uses a standard HTML form to show you what exactly you need to include in the request to be able to directly upload to S3.
+
+In most cases you will want to do the upload using AJAX, because doing it like in this guide has some limitations:
+
+* Standard submit redirects the user to a response page, which in this case is on AWS domain.
+* You cannot submit any data to our system using a form that is sending data to AWS.
+* The URL with uploaded file needs to be sent to our system to inform it where the file lies. Without JavaScript, this is very difficult/impossible.
+
+## Requirements
+This is an advanced tutorial. To follow it, you should be familiar with basic PlatformOS concepts, HTML, Liquid, APIs and Form Configurations, and the topics in the Get Started section.
+
+* [How PlatformOS Works](/how-platformos-works)
+* [Get Started](/get-started)
+
+* [Form Configurations Reference](/tutorials/form-configurations/form-configurations)
+
+This guide assumes that there is a user profile called `developer` which is defined as such:
+
+#### marketplace_builder/user_profile_types/developer.yml
+
+```yaml
+name: developer
+custom_attributes:
+- name: bio
+  attribute_type: string
+- name: avatar
+  attribute_type: photo
+- name: banner
+  attribute_type: photo
+- name: cv
+  attribute_type: custom_attachment
+```
+
+This guide uses the following form configuration that is used to update developers profile:
+
+#### marketplace_builder/form_configurations/developer/update_profile.liquid
+
+```yaml
+{% raw %}
+---
+name: update_profile
+resource: User
+flash_notice: Congratulations, your profile has been updated.
+redirect_to: /update_profile
+configuration:
+  profiles:
+    developer:
+      properties:
+        bio:
+      custom_attachments:
+        cv:
+          file:
+      custom_images:
+        avatar:
+          image:
+        banner:
+          image:
+---
+
+{% include 'update_profile/html_form' %}
+{% include 'update_profile/ajax' %}
+{% include 'update_profile/name_with_ajax' %}
+{% endraw %}
+```
+
+A simple page renders the form mentioned above:
+
+#### marketplace_builder/views/pages/developer/update_profile.liquid
+
+```liquid
+{% raw %}
+---
+slug: update_profile
+---
+{% include_form 'update_profile', resource_id: context.current_user.id %}
+{% endraw %}
+```
+
+### Presigned metadata
+
+Access all metadata required to post data to S3 through the field's `s3_upload` key.
+
+Example object converted to JSON:
+
+{% include 'how-to/user-uploads/example-presigned-json' %}
+
+## Steps
+
+Uploading content directly to Amazon S3 is a three-step process:
+
+1. Obtain required metadata from the server using `form_builder` object
+2. Prepare HTML form with fields including required metadata
+3. Submit form with metadata + file
+
+### Step 1: Obtain required metadata from the server
+Access all metadata required to post data to S3 through the field's `s3_upload` key.
+
+Example for custom attribute of image type:
+
+```liquid
+{% raw %}
+{{ form_builder.fields.profiles.expert.custom_images.photo.image.s3_upload }}
+{% endraw %}
+```
+
+Example for custom attribute of custom attachment type:
+
+```liquid
+{% raw %}
+{{ form_builder.fields.profiles.expert.custom_attachments.cv.file.s3_upload }}
+{% endraw %}
+```
+
+{% include 'alert/note', content: 'In image type there is **image** just before s3_upload, for custom attachment, it is **file**' %}
+
+### Step 2: Prepare HTML form with fields including required metadata
+
+Set up action and all required data in hidden inputs:
+
+#### marketplace_builder/form_configurations/developer/update_profile.liquid
+
+```liquid
+{% raw %}
+{% assign profile = form_builder.fields.profiles.developer %}
+{% assign avatar = profile.custom_images.avatar %}
+{% assign image_s3_upload = avatar.image.s3_upload %}
+
+<form action="{{ image_s3_upload.direct_upload_url }}" accept-charset="UTF-8" method="post" enctype="multipart/form-data">
+
+  {% comment %} Loop over all form_data keys and create hidden inputs in the form to send the data to S3 {% endcomment %}
+  {% for input in image_s3_upload.form_data %}
+    <input type="hidden" name="{{ input[0] }}" value="{{ input[1] }}" />
+  {% endfor %}
+
+  {% comment %} Obligatory metadata key, even though not used in this case {% endcomment %}
+  <input type="hidden" name="x-amz-meta-metadata" value="{}" />
+
+  {% comment %} Partial with  {% endcomment %}
+  <h4>Upload your image</h4>
+  <input name="file" type="file" />
+
+  <button class="btn btn-primary">Submit image</button>
+</form>
+{% endraw %}
+```
+
+{% include 'alert/note', content: 'File input has to have the name **file**' %}
+
+### Step 3: Submit form with metadata + file
+
+This uploads the file to S3 and gives you the URL in the response. Response is in XML and the URL you are interested in is named `Location`.
+
+Example S3 response:
+
+{% include 'how-to/user-uploads/example-s3-response' %}
+
+## Important notes / troubleshooting
+
+{% include 'how-to/user-uploads/aws-request-requirements' %}
+
+## Live example and source code
+
+{% include 'how-to/user-uploads/live-example-and-source-code' %}
+
+## Additional resources
+
+* [Example: Browser-Based Upload using HTTP POST (Using AWS Signature Version 4)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-post-example.html)
+* [Creating an HTML Form (Using AWS Signature Version 4)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-HTTPPOSTForms.html)
+* [Upload a file with $.ajax to AWS S3 with a pre-signed url](https://gist.github.com/guumaster/9f18204aca2bd6c71a24)
+
+{% include 'shared/questions_section' %}
