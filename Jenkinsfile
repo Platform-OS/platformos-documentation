@@ -30,7 +30,7 @@ pipeline {
           commitInfo = sh(returnStdout: true, script: 'git log --no-merges --format="[%h] %an - %B" -1')
         }
 
-        slackSend (channel: "#pawel-test", message: "STARTED: Deploying to <${MP_URL}|staging environment> (<${env.BUILD_URL}|Build #${env.BUILD_NUMBER}>) \n ${commitInfo}")
+        slackSend (channel: "#notifications-docs", message: "STARTED: Deploying to ${MP_URL} (<${env.BUILD_URL}|Build #${env.BUILD_NUMBER}>) \n ${commitInfo}")
 
         sh 'bash -l ./scripts/build.sh'
         sh 'bash -l ./scripts/deploy.sh'
@@ -39,11 +39,11 @@ pipeline {
 
       post {
         success {
-          slackSend (channel: "#pawel-test", color: '#00FF00', message: "SUCCESS: Deployed new code to staging, tests passed. (<${MP_URL}|Preview staging>)")
+          slackSend (channel: "#notifications-docs", color: '#00FF00', message: "SUCCESS: Deployed new code to staging, tests passed. (<${MP_URL}|Open preview>)")
         }
 
         failure {
-          slackSend (channel: "#pawel-test", color: '#FF0000', message: "FAILED: Build failed. Deploy or tests failed. (<${env.BUILD_URL}|Open build details>)")
+          slackSend (channel: "#notifications-docs", color: '#FF0000', message: "FAILED: Build failed. Deploy or tests failed. (<${env.BUILD_URL}|Open build details>)")
         }
       }
     }
