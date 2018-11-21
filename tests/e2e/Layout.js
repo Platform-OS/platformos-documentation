@@ -21,12 +21,6 @@ test('no_feedback and no_sidebar flags are working', async t => {
   await t.expect(Layout.Feedback.count).eql(0);
 });
 
-test('Contributors list is working', async t => {
-  await t.click(Selector('a').withText(Layout.txt.contributorGuide));
-
-  await t.expect(Layout.Contributors.find('p').count).gt(1);
-});
-
 test('Expanding menu works', async t => {
   await t
     .click(Layout.SidebarItem.withText(Layout.txt.howItWorks))
