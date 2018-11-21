@@ -1,0 +1,23 @@
+{% parse_json links %}{% include 'how-to/e-commerce/nav-links' %}{% endparse_json %}
+<h2>Next steps</h2>
+
+{% comment %}
+  We have to do this in the loop. Not the most efficient, but right now
+  there is no filter allowing me to fetch index of an item in the array.
+{% endcomment %}
+
+<ul>
+  {% for link in links %}
+    {% if context.location.pathname contains link.href %}
+      {% if forloop.last == false %}
+        {% assign next_index = forloop.index0 | plus: 1 %}
+        <li>Next: <a rel="next" href="{{ links[next_index].href }}">{{ links[next_index].name }}</a></li>
+      {% endif %}
+      {% if forloop.first == false %}
+        {% assign prev_index = forloop.index0 | minus: 1 %}
+        <li>Previous: <a rel="prev" href="{{ links[prev_index].href }}">{{ links[prev_index].name }}</a></li>
+      {% endif %}
+      {% break %}
+    {% endif %}
+  {% endfor %}
+</ul>
