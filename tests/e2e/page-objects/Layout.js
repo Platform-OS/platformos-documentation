@@ -13,6 +13,7 @@ export default class LayoutPO {
       staging: process.env.MP_URL || 'https://documentation-staging.staging.oregon.platform-os.com'
     };
     this.Body = Selector('body');
+    this.Content = this.Body.find('section.content');
     this.Contributors = Selector('.contributors');
     this.Sidebar = Selector('.sidebar-menu', { visibilityCheck: true });
     this.Feedback = Selector('.feedback-main');

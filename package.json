@@ -16,7 +16,7 @@
     "deploy": "npm run clean && npm run build && marketplace-kit deploy -f",
     "test": "docker run -v $PWD/tests/e2e:/tests --shm-size=1g -it testcafe/testcafe \"chromium:headless --no-sandbox\" -c 4 /tests",
     "test-ci": "docker run -v $PWD/tests/e2e:/tests testcafe/testcafe \"chromium:headless --no-sandbox,firefox:headless\" /tests",
-    "test-local": "npx testcafe 'chrome:headless' -c 4",
+    "test-local": "npx testcafe 'chrome:headless' tests/e2e",
     "test-codecept": "codeceptjs run --steps"
   },
   "config": {
