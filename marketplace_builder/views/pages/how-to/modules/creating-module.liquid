@@ -1,0 +1,192 @@
+---
+converter: markdown
+metadata:
+  title: Creating a Module
+  description:  
+slug: tutorials/modules/creating-module
+searchable: true
+---
+
+This guide will help you learn how to create a module by walking you through the steps of creating a simple module. 
+
+## Requirements
+
+This is an advanced tutorial. To follow it, you should be familiar with basic PlatformOS concepts, the topics in the Get Started section, and modules. 
+
+* [How PlatformOS Works](/how-platformos-works)
+* [Get Started](/get-started)
+* [Modules](/tutorials/modules)
+
+## Steps
+
+Creating a module is a three-step process:
+
+1. Create directories
+2. Create GraphQL queries
+3. Create page
+
+
+### Step 1: Create directories
+
+Create two directories inside the `modules` directory called `admincms`, then create the `public` and `private` folders inside it. Place the `graph_queries` directory inside `private`, and the `views/pages` directories inside public. 
+
+See the structural overview of the module you'll create here for reference: 
+
+```
+admincms
+├── private
+│   └── graph_queries
+│       ├── get_customizations.graphql
+│       └── get_pages.graphql
+└── public
+    └── views
+        └── pages
+            └── admin.html.liquid
+```
+
+### Step 2: Create GraphQL queries
+
+Create a GraphQL query that pulls a list of Customizations,`admincms/private/graph_queries/get_customizations.graphql`:
+
+```graphql
+query get_customizations {
+  customizations(
+    per_page: 20
+    sort: [{ name: "human_name", order: "asc" }]
+  ) {
+    total_entries
+    results {
+      human_name
+      properties
+    }
+  }
+} 
+```
+
+Create another GraphQL query that pulls a list of pages, `admincms/private/graph_queries/get_pages.graphql`:
+
+```graphql
+query get_pages {
+    pages(per_page: 100) {
+    total_entries
+    results {
+      format
+      slug
+    }
+  }
+}
+```
+
+### Step 3: Create page
+
+Create the page `admincms/public/views/pages/admin.html.liquid`:
+
+```liquid
+{% raw %}
+---
+slug: admincms
+layout_name: 1col
+---
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mini.css/3.0.0/mini-default.min.css">
+
+<div class="container">
+    <h1> ADMIN </h1>
+
+    <div class="row">
+        <div class="col-sm-8">
+            <section class="customizations">
+                <h3> Manage Customizations </h3>
+                {%- query_graph "get_customizations", result_name: "c", id: id -%}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                Properties
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for customization in c.customizations.results %}
+                            <tr>
+                                <td>
+                                    {{ customization.human_name }}
+                                </td>
+                                <td>
+                                    {{ customization.properties }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-8">
+            <section class="pages">
+                <h3> Manage Pages </h3>
+                {%- query_graph "get_pages", result_name: "c", id: id -%}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Slug
+                            </th>
+                            <th>
+                                Format
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for page in c.pages.results %}
+                            <tr>
+                                <td>
+                                    {{ page.slug }}
+                                </td>
+                                <td>
+                                    {{ page.format }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </div>
+</div>
+{% endraw %}
+```
+
+As you can see you are using the queries like usual `{%- query_graph "get_pages", result_name: "c", id: id -%}`. The only difference between this code and code of a regular Instance is that this module code is split into public and private folders, and if you'd pull the code when it's installed on an Instance, you would get a structure like this: 
+
+```
+.
+├── module_marketplace
+│   └── views
+|   └── graph_queries
+│       ...       
+└── modules
+    └── admin
+        └── public
+            └── views
+                └── pages
+                    └── admin.html.liquid
+```
+
+
+
+## Live example and source code
+
+You can download the directory structure and all code included in this tutorial [here]() as a zip file.  
+
+## Next steps
+Congratulations! You have created a module. Now you can learn about sharing your module on the Platform OS Module Marketplace. 
+
+* [Sharing a Module](/tutorials/modules/sharing-module)
+
+{% include 'shared/questions_section' %}
