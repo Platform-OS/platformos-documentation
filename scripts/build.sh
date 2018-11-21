@@ -1,4 +1,4 @@
 #!/bin/bash
-nvm use 8 && \
+nvm use 10 && \
   npm ci && \
   npm run build
