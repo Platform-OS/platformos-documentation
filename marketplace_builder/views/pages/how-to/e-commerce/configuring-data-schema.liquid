@@ -19,8 +19,8 @@ Our data schema will be based on three primary models - `user`, `product` and `o
 
 Every t-shirt in our store will be described by `product_type` and `brand`. Additionally every product may have one or more `photo` attached. Finally, there is a mater of available variants of the product (in our case it’s t—shirt sizes). We will create `stock_level` tht will hold information on the available amount of products in specific variant (size).
 
+#### marketplace_builder/custom_model_types/product.yml
 ```yaml
-# custom_model_types/product.yml
 name: product
 custom_attributes:
   - name: name
@@ -30,7 +30,7 @@ custom_attributes:
   - name: sex
     attribute_type: string
   - name: price
-    attribute_type: int
+    attribute_type: integer
   - name: brand_id
     attribute_type: string
   - name: product_type_id
@@ -43,30 +43,29 @@ Few items worth noting:
 - Price will stored as an integer, representing cents, so \$1.00 is stored as `100`. This helps us to avoid problematic computations and rounding problems that sometime happen with `float` data type.
 - External ids are integer numbers but since variable types are important and `"100" != 100` it’s easier to store all IDs as strings. We will talk more on this problem in later chapters.
 
+#### marketplace_builder/custom_model_types/brand.yml
 ```yaml
-# custom_model_types/brand.yml
 name: brand
 custom_attributes:
   - name: name
     attribute_type: string
 ```
 
+#### marketplace_builder/custom_model_types/product_type.yml
 ```yaml
-# custom_model_types/product_type.yml
 name: product_type
 custom_attributes:
   - name: name
     attribute_type: string
 ```
 
+#### marketplace_builder/custom_model_types/photo.yml
 ```yaml
-# custom_model_types/photo.yml
 name: photo
 custom_attributes:
   - name: product_id
     attribute_type: string
   - name: image
-    attribute_type: image
     attribute_type: photo
     versions_configuration:
       thumb:
@@ -85,8 +84,8 @@ custom_attributes:
 
 `photo` model will be using special field type called, well, `photo`. It helps automating upload and versions creation. You can [read more on `Custom Images`](/reference/custom-attributes/custom-images).
 
+#### marketplace_builder/custom_model_types/stock_level.yml
 ```yaml
-# custom_model_types/stock_level.yml
 name: stock_level
 custom_attributes:
   - name: product_id
@@ -94,15 +93,15 @@ custom_attributes:
   - name: variant
     attribute_type: string
   - name: amount
-    attribute_type: int
+    attribute_type: integer
 ```
 
 ## User
 
 `User` is a built-in data type in PlatformOS. It has some predefined fields already `name` and `email`. We can extend `User` with additional custom attributes by using user profiles. We will use `default` user profile to add a phone number field.
 
+#### marketplace_builder/user_profile_types/default.yml
 ```yaml
-# user_profile_types/default.yml
 name: default
 custom_attributes:
   - name: phone
@@ -113,6 +112,7 @@ custom_attributes:
 
 Every user will also be able to save multiple `addresses` to his contact book.
 
+#### marketplace_builder/custom_model_types/address.yml
 ```yaml
 name: address
 custom_attributes:
@@ -138,8 +138,8 @@ PlatformOS has a special field type called `CustomAddress`. It allows geolocatio
 
 Last part of our shop data schema is related to `order`s created by clients. Every order can have multiple products attached and a `shipping_option` selected during checkout. Order is finished with `payment`, we will store history of all payments for given order (usually it will be just one, but we want to log every interaction with payments API as separate entry). Finally, we will store `order_history` describing any changes to order state (received, paid, shipped, etc.)
 
+#### marketplace_builder/custom_model_types/order.yml
 ```yaml
-# custom_model_types/order.yml
 name: order
 custom_attributes:
   - name: billing_address
@@ -151,15 +151,15 @@ custom_attributes:
   - name: shipping_option_name
     attribute_type: string
   - name: shipping_price
-    attribute_type: int
+    attribute_type: integer
   - name: comments
     attribute_type: text
   - name: state
     attribute_type: string
 ```
 
+#### marketplace_builder/custom_model_types/order_product.yml
 ```yaml
-# custom_model_types/order_product.yml
 name: order_product
 custom_attributes:
   - name: product_id
@@ -171,15 +171,15 @@ custom_attributes:
   - name: variant
     attribute_type: string
   - name: amount
-    attribute_type: int
+    attribute_type: integer
   - name: price
-    attribute_type: int
+    attribute_type: integer
 ```
 
 You’ve probably noticed that some fields are duplicated (shipping) or not referencing other custom types by id (addresses). We want to ensure that order data is persistent and do not change after order has been created. If at any point in time admin would remove the shipping option used in this order, or user updates his address in the address book, our order would no longer represent state at the moment of creation. Therefore, we will copy any piece of information prone to being manipulated, when the new order is created. Same logic applies to `order_product` table where we store information on the ordered products, along with the reference to the product itself. In case product is removed, or updated, we do not loose any data.
 
+#### marketplace_builder/custom_model_types/order_history.yml
 ```yaml
-# custom_model_types/order_history.yml
 name: order_history
 custom_attributes:
   - name: order_id
@@ -188,8 +188,8 @@ custom_attributes:
     attribute_type: string
 ```
 
+#### marketplace_builder/custom_model_types/payment.yml
 ```yaml
-# custom_model_types/payment.yml
 name: payment
 custom_attributes:
   - name: order_id
@@ -203,14 +203,14 @@ Our data diagram mentioned `timestamp` field for both `payment` and `order_histo
 {% endcapture %}
 {% include 'alert/note', content: content %}
 
+#### marketplace_builder/custom_model_types/shipping_option.yml
 ```yaml
-# custom_model_types/shipping_option.yml
 name: shipping_option
 custom_attributes:
   - name: name
     attribute_type: string
   - name: price
-    attribute_type: int
+    attribute_type: integer
 ```
 
 ## Summary
