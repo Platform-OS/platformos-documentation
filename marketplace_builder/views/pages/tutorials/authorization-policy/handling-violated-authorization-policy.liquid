@@ -1,0 +1,69 @@
+---
+converter: markdown
+metadata:
+  title: Handling a Violated Authorization Policy
+  description: This guide will help you handle a violated Authorization Policy.
+slug: tutorials/authorization-policy/handling-violated-authorization-policy
+searchable: true
+---
+
+This guide will help you handle a violated Authorization Policy.
+
+When an Authorization Policy is violated, the server by default will return an empty page with the `403 Forbidden` status code. You can redirect the user to a different page or display an alert message.
+
+## Requirements
+So that you can follow the steps in this tutorial, you should understand the concept of Authorization Policy. This guide refers to an Authorization Policy created in a previous tutorial (`only_allowed_by_johns`).
+
+* [Authorization Policy](/tutorials/authorization-policy/authorization-policy)
+* [Adding an Authorization Policy](/tutorials/authorization-policy/adding-authorization-policy) (previous tutorial)
+
+## Steps
+
+Handling a violated Authorization Policy is a two-step process:
+
+1. Redirect user to a page
+2. Display alert message
+
+### Step 1: Redirect user to a page
+To redirect user to a page after violation set the `redirect_to` key. For example, to redirect to page `/login`:
+
+
+```yaml
+{% raw %}
+---
+name: only_allowed_by_johns
+redirect_to: /login
+---
+...
+{% endraw %}
+```
+
+
+
+### Step 2: Display alert message
+To generate flash alert message on the page that you defined as `redirect_to`, use the `flash_alert` property:
+
+{% raw %}
+
+```yaml
+---
+name: only_allowed_by_johns
+redirect_to: /login
+flash_alert: Please login to access this page.
+---
+...
+```
+
+
+{% endraw %}
+
+As with normal flash messages, you can access it in Liquid using the `{{ context.flash }}` variable.
+
+## Next steps
+Congratulations! You know how to handle violated Authorization Policies. Check out our Reference Documentation to learn more about our GraphQL schemas, Liquid filters, API, and Form Configurations:
+
+* [PlatformOS Reference Documentation](/reference)
+
+{% include 'shared/questions_section' %}
+
+

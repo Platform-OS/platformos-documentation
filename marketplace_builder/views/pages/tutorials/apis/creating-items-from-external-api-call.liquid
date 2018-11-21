@@ -1,0 +1,75 @@
+---
+converter: markdown
+metadata:
+  title: Creating Items from an External API Call
+  description: This guide will help you create items from an external API call. The example shows the steps of creating a Transactable from existing data through an API call to our service.
+slug: tutorials/apis/creating-items-from-external-api-call
+searchable: true
+---
+
+This guide will help you create items from an external API call. The example shows the steps of creating a Transactable from existing data through an API call to our service.
+
+## Requirements
+This is an advanced tutorial. To follow it, you should be familiar with basic PlatformOS concepts, HTML, Liquid, APIs and Form Configurations, and the topics in the Get Started section, especially tutorials related to Transactables.
+
+* [How PlatformOS Works](/how-platformos-works)
+* [APIs and Form Configurations](/api-reference)
+* [Get Started: Transactables tutorials](/tutorials/transactables/transactables)
+
+## Steps
+
+Creating items from an external API call is a four-step process:
+
+1. Create TransactableType
+2. Create Form Configuration
+3. Generate API token
+4. Create curl command
+
+### Step 1: Create TransactableType
+
+Create the following TransactableType:
+
+#### transactable_types/flowers.yml
+
+```yaml
+name: Flowers
+```
+
+### Step 2: Create FormConfiguration
+
+Define what data you expect, and required validations:
+
+#### form_configurations/import_flowers.liquid
+
+```yaml
+---
+name: import_flowers
+resource: Transactable
+configuration:
+  name:
+    validation:
+      presence: true
+  creator_id:
+resource_owner: anyone
+---
+```
+
+### Step 3: Generate API token
+
+Generate API token from instance admin [Settings -> API Keys -> Generate new API Key].
+
+### Step 4: Create curl command
+
+Here is an example POST request you need to send. You need to set:
+
+* token in header
+* data payload in a JSON format
+
+<pre class="command-line" data-output="2-50" data-user="user" data-host="host"><code class="language-bash">
+curl https://example.platform-os.com/api/user/transactables
+  -H "Authorization: Token token=[YOUR API TOKEN]"
+  -H 'Content-Type: application/json'
+  --data '{"form":{"name": "Red flowers", "creator_id":"1" }, "form_configuration_name": "import_flowers", "parent_object_class":"TransactableType","parent_object_id":"flowers"}'
+</code></pre>
+
+{% include 'shared/questions_section' %}
