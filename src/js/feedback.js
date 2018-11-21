@@ -1,11 +1,11 @@
 const form = () => document.querySelector('[data-feedback="form"]');
-const selectedValues = () => document.querySelectorAll('[data-feedback-selected-value]');
+const selectedValues = () => Array.prototype.slice.call(document.querySelectorAll('[data-feedback-selected-value]') || []);
 const questionsContainer = () => document.querySelector('[data-feedback="questions"]');
-const questionValues = () => document.querySelectorAll('[data-feedback-value]');
+const questionValues = () => Array.prototype.slice.call(document.querySelectorAll('[data-feedback-value]') || []);
 
 const toggleQuestionsContainer = addOrRemove =>
   questionsContainer().classList.toggle('hidden', addOrRemove);
-const hideQuestions = () => [...questionValues()].map(el => el.classList.add('hidden'));
+const hideQuestions = () => questionValues().map(el => el.classList.add('hidden'));
 const showQuestion = value =>
   form()
     .querySelector(`[data-feedback-value="${value}"]`)
@@ -38,7 +38,6 @@ const onRatingSelected = event => {
   hideQuestions();
 
   sendFeedback().then(() => {
-    console.log('Showing question: ', selectedValue);
     showQuestion(selectedValue);
     toggleQuestionsContainer(false);
   });
@@ -46,6 +45,6 @@ const onRatingSelected = event => {
 
 document.addEventListener('turbolinks:load', () => {
   if (form()) {
-    [...selectedValues()].map(el => el.addEventListener('change', onRatingSelected));
+    selectedValues().map(el => el.addEventListener('change', onRatingSelected));
   }
 });
