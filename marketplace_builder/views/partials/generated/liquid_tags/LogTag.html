@@ -7,12 +7,13 @@ Print any information to marketplace logs
 
 ### Arguments:
 - **message** [Any] Any object that can be printed
-- **type** [String] type of log entry. One of the: 'error', 'info', 'debug'
+- **type** [String] type of log entry. Use it to tag your logs to make it easier to differentiate logs. If you set it to 'error' marketplace-kit will also notify your OS about it.
 
 ### Examples:
 ```liquid
   {% log 'hello world' %}
-  {% log params %}
+  {% log params, type: 'request-params' %}
   {% log user.id, type: 'debug' %}
+  {% log context.current_user, type: 'error' %}
 ```
 {% endraw %}
