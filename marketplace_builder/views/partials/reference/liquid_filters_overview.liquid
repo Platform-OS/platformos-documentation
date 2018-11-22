@@ -20,7 +20,13 @@ Some filters accept arguments, for example replace filter accepts two:
 {% endraw %}
 ```
 
-You can chain filters to get the desired result in shorter form:
+Having verbose version of code that will:
+
+1. Create string with words
+2. Prepend "Zero," in front of the string
+3. Append ",Five" string at the end
+4. Split it by comma to create an array of strings
+5. Print it to the source
 
 ```liquid
 {% raw %}
@@ -32,9 +38,7 @@ You can chain filters to get the desired result in shorter form:
 {% endraw %}
 ```
 
-Keep in mind that liquid will not output brackets and commas when printing an array, but you can iterate over it with a for loop.
-
-Above example could be written shorter using chaining:
+You can achieve the same result in much shorter form by chaining the filters one after another:
 
 ```liquid
 {% raw %}
