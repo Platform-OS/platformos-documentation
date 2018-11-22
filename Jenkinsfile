@@ -30,7 +30,7 @@ pipeline {
           commitInfo = sh(returnStdout: true, script: 'git log --no-merges --format="[%h] %an - %B" -1')
         }
 
-        slackSend (channel: "#notifications-docs", message: "STARTED: Deploying to ${MP_URL} (<${env.BUILD_URL}|Build #${env.BUILD_NUMBER}>) \n ${commitInfo}")
+        slackSend (channel: "#notifications-docs", message: "STARTED: Deploying to <${MP_URL}|Staging> (<${env.BUILD_URL}|Build #${env.BUILD_NUMBER}>) \n ${commitInfo}")
 
         sh 'bash -l ./scripts/build.sh'
         sh 'bash -l ./scripts/deploy.sh'
