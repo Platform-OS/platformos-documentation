@@ -7,6 +7,7 @@ module.exports = ({ env }) => {
       require('postcss-pseudoelements'),
       require('autoprefixer'),
       require('postcss-fixes'),
+      require('postcss-font-display')({ display: 'swap', replace: false }),
       env === 'production' ? require('postcss-csso')({ restructure: false }) : undefined
     ]
   };
