@@ -2,16 +2,16 @@
 converter: markdown
 metadata:
   title: Creating a Module
-  description:  
+  description:
 slug: tutorials/modules/creating-module
 searchable: true
 ---
 
-This guide will help you learn how to create a module by walking you through the steps of creating a simple module. 
+This guide will help you learn how to create a module by walking you through the steps of creating a simple module.
 
 ## Requirements
 
-This is an advanced tutorial. To follow it, you should be familiar with basic PlatformOS concepts, the topics in the Get Started section, and modules. 
+This is an advanced tutorial. To follow it, you should be familiar with basic PlatformOS concepts, the topics in the Get Started section, and modules.
 
 * [How PlatformOS Works](/how-platformos-works)
 * [Get Started](/get-started)
@@ -28,11 +28,11 @@ Creating a module is a three-step process:
 
 ### Step 1: Create directories
 
-Create two directories inside the `modules` directory called `admincms`, then create the `public` and `private` folders inside it. Place the `graph_queries` directory inside `private`, and the `views/pages` directories inside public. 
+Create two directories inside the `modules` directory called `admincms`, then create the `public` and `private` folders inside it. Place the `graph_queries` directory inside `private`, and the `views/pages` directories inside public.
 
-See the structural overview of the module you'll create here for reference: 
+See the structural overview of the module you'll create here for reference:
 
-```
+```shell
 admincms
 ├── private
 │   └── graph_queries
@@ -46,7 +46,9 @@ admincms
 
 ### Step 2: Create GraphQL queries
 
-Create a GraphQL query that pulls a list of Customizations,`admincms/private/graph_queries/get_customizations.graphql`:
+Create a GraphQL query that pulls a list of Customizations.
+
+#### admincms/private/graph_queries/get_customizations.graphql
 
 ```graphql
 query get_customizations {
@@ -60,10 +62,12 @@ query get_customizations {
       properties
     }
   }
-} 
+}
 ```
 
-Create another GraphQL query that pulls a list of pages, `admincms/private/graph_queries/get_pages.graphql`:
+Create another GraphQL query that pulls a list of pages
+
+#### admincms/private/graph_queries/get_pages.graphql
 
 ```graphql
 query get_pages {
@@ -79,7 +83,7 @@ query get_pages {
 
 ### Step 3: Create page
 
-Create the page `admincms/public/views/pages/admin.html.liquid`:
+#### admincms/public/views/pages/admin.liquid
 
 ```liquid
 {% raw %}
@@ -162,14 +166,24 @@ layout_name: 1col
 {% endraw %}
 ```
 
-As you can see you are using the queries like usual `{%- query_graph "get_pages", result_name: "c", id: id -%}`. The only difference between this code and code of a regular Instance is that this module code is split into public and private folders, and if you'd pull the code when it's installed on an Instance, you would get a structure like this: 
+As you can see you are using the queries like usual
 
+```liquid
+{% raw %}
+{%- query_graph "get_pages", result_name: "c", id: id -%}
+{% endraw %}
 ```
+
+The only difference between this code and code of a regular Instance is that this module code is split
+into public and private folders, and if you'd pull the code when it's installed on an Instance,
+you would get a structure like this:
+
+```shell
 .
 ├── module_marketplace
 │   └── views
 |   └── graph_queries
-│       ...       
+│       ...
 └── modules
     └── admin
         └── public
@@ -182,10 +196,10 @@ As you can see you are using the queries like usual `{%- query_graph "get_pages"
 
 ## Live example and source code
 
-You can download the directory structure and all code included in this tutorial [here](https://github.com/mdyd-dev/nearme-documentation/tree/master/marketplace_builder/assets/files/tutorials/modules/admincms.zip) as a zip file.  
+You can download the directory structure and all code included in this tutorial [here](https://github.com/mdyd-dev/nearme-documentation/tree/master/marketplace_builder/assets/files/tutorials/modules/admincms.zip) as a zip file.
 
 ## Next steps
-Congratulations! You have created a module. Now you can learn about sharing your module on the Platform OS Module Marketplace. 
+Congratulations! You have created a module. Now you can learn about sharing your module on the Platform OS Module Marketplace.
 
 * [Sharing a Module](/tutorials/modules/sharing-module)
 
