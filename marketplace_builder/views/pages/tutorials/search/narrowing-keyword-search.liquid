@@ -30,7 +30,7 @@ Default value is `AND`.
 
 ```graphql
 query get_owners {
-  people(query: { keyword: "Tanya Rose", operator: "AND" }) {
+  people(query: { keyword: "Tanya Rose", operator: AND }) {
     results {
       first_name
       last_name
@@ -58,7 +58,7 @@ query get_owners {
 
 ```graphql
 query get_owners {
-  people(query: { keyword: "Tanya Rose", operator: "OR" }) {
+  people(query: { keyword: "Tanya Rose", operator: OR }) {
     results {
       first_name
       last_name
@@ -97,7 +97,7 @@ query get_providers {
   people(
     query: {
       keyword: "Tanya Rose"
-      operator: "OR"
+      operator: OR
       fields: [{ name: "last_name" }]
     }
   ) {
@@ -143,7 +143,7 @@ query get_providers {
   people(
     query: {
       keyword: "Tanya Rose"
-      operator: "AND"
+      operator: AND
       fields: [{ name: "last_name" }, { name: "first_name" }]
     }
   ) {
