@@ -1,0 +1,9 @@
+{% comment %} This line will set navLinks variable {% endcomment %}
+{%- include "shared/nav-links" -%}
+{{ navLinks
+    | detect: href: "/use-cases"
+    | fetch: 'children'
+    | detect: href: '/use-cases/e-commerce'
+    | fetch: 'children'
+    | json
+}}

@@ -1,4 +1,4 @@
-const externalLinks = () => [...document.querySelectorAll('a[href^="http"]')];
+const externalLinks = () => Array.prototype.slice.call(document.querySelectorAll('a[href^="http"]') || []);
 
 document.addEventListener('turbolinks:load', () => {
   if (externalLinks().length) {

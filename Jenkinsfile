@@ -18,7 +18,7 @@ pipeline {
   stages {
     stage('Staging') {
       environment {
-        MP_URL = "https://documentation.staging-oregon.near-me.com"
+        MP_URL = "https://documentation-staging.staging.oregon.platform-os.com"
       }
 
       when {
@@ -26,7 +26,11 @@ pipeline {
       }
 
       steps {
-        slackSend (channel: "#notifications-docs", message: "STARTED: Deploying to <${MP_URL}|staging environment> (<${env.BUILD_URL}|Build #${env.BUILD_NUMBER}>)")
+        script {
+          commitInfo = sh(returnStdout: true, script: 'git log --no-merges --format="[%h] %an - %B" -1')
+        }
+
+        slackSend (channel: "#notifications-docs", message: "STARTED: Deploying to <${MP_URL}|Staging> (<${env.BUILD_URL}|Build #${env.BUILD_NUMBER}>) \n ${commitInfo}")
 
         sh 'bash -l ./scripts/build.sh'
         sh 'bash -l ./scripts/deploy.sh'
@@ -35,7 +39,7 @@ pipeline {
 
       post {
         success {
-          slackSend (channel: "#notifications-docs", color: '#00FF00', message: "SUCCESS: Deployed new code to staging, tests passed. (<${MP_URL}|Preview staging>)")
+          slackSend (channel: "#notifications-docs", color: '#00FF00', message: "SUCCESS: Deployed new code to staging, tests passed. (<${MP_URL}|Open preview>)")
         }
 
         failure {

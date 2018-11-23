@@ -1,0 +1,263 @@
+---
+converter: markdown
+metadata:
+  title: Adding Multiple File Uploads to a Form
+  description: This guide explains how to upload multiple files using Customization.
+  draft: true
+slug: tutorials/customizations/adding-multiple-file-uploads-form
+searchable: true
+---
+
+This guide will help you build a form that will allow your users to upload multiple files into one Customization. For example, you might want to allow the user to upload all certificates required for a job or images of a car from the inside and outside.
+
+In this example, a developer uploads multiple application files.
+
+## Requirements
+To follow this tutorial, you should know how to create a user profile and embed a sign up form in a page. You should also have basic knowledge of Form Configurations and Javascript (ES2015).
+
+* [Creating User Profiles](/tutorials/users/creating-user-profile)
+* [Embedding a Sign Up Form in a Page](/tutorials/users/embedding-sign-up-form)
+* [Form Configurations](/tutorials/form-configurations/form-configurations)
+* Javascript (ES2015)
+
+## Steps
+
+Adding the possibility to upload multiple files into a Customization is a four-step process:
+
+1. Define Custom Model Type
+2. Create Form Configuration
+3. Render form on a page
+4. Add javascript that will handle adding more than one file and remove files
+
+### Step 1: Define Custom Model Type
+
+Define custom model with one Custom Attribute named `application_files` and type `file` to be able to use it in your form.
+
+#### marketplace_builder/custom_model_types/application_files.yml
+
+```yaml
+name: application_files
+instance_profile_types:
+  - developer
+custom_attributes:
+  - name: application_file
+    attribute_type: file
+```
+
+### Step 2: Create Form Configuration
+
+#### marketplace_builder/form_configurations/upload_application.liquid
+
+```yaml
+---
+name: upload_application
+resource: User
+flash_notice: Congratulations, your application has been saved.
+configuration:
+  profiles:
+    developer:
+      customizations:
+        application_files:
+          property_options:
+            prepopulate: 1
+          custom_attachments:
+            application_file:
+              file:
+---
+```
+
+```liquid
+{% raw %}
+{% assign customizations = form_builder.fields.profiles.developer.customizations %}
+
+{% form %}
+  <h4>Upload Documents</h4>
+
+  <div data-multiple-files>
+    {% for attachment in customizations.application_files.data %}
+      {% include 'inputs/file', field: attachment.custom_attachments.application_file, label: 'Choose file' %}
+    {% endfor %}
+
+    <button type="button" data-multiple-files-button="add" class="btn btn-secondary btn-sm">Add next</button>
+  </div>
+
+  <button class="btn btn-primary mt-5">Save</button>
+{% endform %}
+{% endraw %}
+```
+
+File input has a lot of code in it so it was extracted for future re-use.
+
+#### marketplace_builder/views/partials/inputs/file.liquid
+
+```liquid
+{% raw %}
+{% assign _errors = field.validation.errors %}
+{% assign _index = index | default: 0 %}
+
+{% comment %} Educated guess, to prevent not displaying anything if someone forget to pass + sensible default {% endcomment %}
+{% capture _label -%}
+  {%- if field.file.value != blank %} {{ field.file.value | split: '?' | first | split: '/' | last }}
+  {%- elsif label == blank -%} {{ field.file.name | parameterize | split: '-' | last | titleize }}
+  {%- else -%} {{ label }}
+  {%- endif -%}
+{%- endcapture %}
+
+<div class="form-group" data-multiple-files-item>
+  <div class="row">
+    <div class="col-8">
+      <div class="custom-file">
+        <input
+          type="file"
+          class="custom-file-input {% if _errors != empty %}is-invalid{% endif %}"
+          name="{{ field.file.name }}"
+          id="{{ field.file.name }}"
+        >
+
+        <label class="custom-file-label" for="{{ field.file.name }}">
+          {{ _label }}
+        </label>
+
+        {% if _errors != empty %}
+          <p class="invalid-feedback">
+            {{ _errors | join: ', ' }}
+          </p>
+        {% endif %}
+      </div>
+    </div>
+    <div class="col-4">
+      <button type="button" class="btn btn-secondary" data-multiple-files-button="remove">Remove</button>
+    </div>
+  </div>
+
+  <input type="hidden" value="{{ attachment.id.value }}" name="{{ attachment.id.name }}" data-multiple-files-input="id" />
+  <input type="hidden" value="{{ attachment._destroy.value }}" name="{{ attachment._destroy.name }}" data-multiple-files-input="destroy" />
+</div>
+{% endraw %}
+```
+
+#### Notes:
+
+* For styling we assume [Twitter Bootstrap 4](https://getbootstrap.com/docs/4.1/getting-started/introduction/) loaded to make it prettier for example purposes
+* `prepopulate: 1` tells the system to render at least one field in case no files are saved for this user
+* It is important to note that input with id is being incremented in javascript to let the system know that it is the next file
+* Destroy field is being populated by javascript with value `1` if file is being deleted to tell the system to remove that particular record in the database
+
+
+### Step 3: Render form on a page
+
+#### marketplace_builder/views/pages/upload_application.liquid
+
+```liquid
+{% raw %}
+---
+slug: upload_application
+---
+<script src="{{ 'MultipleFilesUpload.js' | asset_url }}" defer></script>
+
+<style>
+  .custom-file-label {
+      overflow: hidden;
+  }
+  /* Prevent removing last item on the list */
+  [data-multiple-files-item]:first-child [data-multiple-files-button] {
+    display: none;
+  }
+  /* Implement visually hiding of the deleted items */
+  .hidden {
+    display: none;
+  }
+</style>
+
+<div class="row">
+  <div class="col-6">
+    {% include_form 'upload_application', resource_id: context.current_user.id %}
+  </div>
+</div>
+{% endraw %}
+```
+
+#### Notes:
+
+* MultipleFilesUpload file is responsible for adding new rows, removing rows, and updating labels
+* Couple lines of CSS help to keep things more user friendly
+
+### Step 4: Add javascript that will handle adding more than one file and remove files
+
+Javascript is needed to:
+
+1. Dynamically add rows when the user decides to add more than one file
+2. Remove row visually when the user wants to delete a file
+3. Update value of hidden input responsible for removing files
+4. Update label after file has been selected
+
+#### marketplace_builder/assets/MultipleFilesUpload.js
+
+```javascript
+const SELECTOR = '[data-multiple-files]';
+const SELECTOR_FILE_CONTAINER = '[data-multiple-files-item]';
+const SELECTOR_INPUT_ID = '[data-multiple-files-input="id"]';
+const SELECTOR_INPUT_DESTROY = '[data-multiple-files-input="destroy"]';
+const SELECTOR_ADD_BUTTON = '[data-multiple-files-button="add"]';
+const SELECTOR_REMOVE_BUTTON = '[data-multiple-files-button="remove"]';
+const SELECTOR_CUSTOM_FILE_INPUT = '.custom-file-input';
+const CONTAINER = document.querySelector(SELECTOR);
+
+const DEFAULT_LABEL = 'Choose file';
+
+const qa = s => [...document.querySelectorAll(s)];
+const q = s => document.querySelector(s);
+const getNextIndex = () => qa(SELECTOR_FILE_CONTAINER).length;
+
+const updateClone = element => {
+  const elements = element.querySelectorAll('[name]');
+  const attachmentId = element.querySelector(SELECTOR_INPUT_ID);
+  elements.forEach(el => (el.name = el.name.replace('[0]', `[${getNextIndex()}]`))); // increment id
+  element.querySelector('label').innerText = DEFAULT_LABEL; // reset label
+  attachmentId.value = attachmentId.value + 1; // increment attachment id
+  return element;
+};
+
+const addNewFile = event => {
+  const original = q(SELECTOR_FILE_CONTAINER);
+  const clone = original.cloneNode(true);
+  const updated = updateClone(clone);
+
+  CONTAINER.insertBefore(updated, event.target);
+};
+
+const removeFile = event => {
+  const currentFileContainer = event.target.closest(SELECTOR_FILE_CONTAINER);
+  const destroyInput = currentFileContainer.querySelector(SELECTOR_INPUT_DESTROY);
+  currentFileContainer.classList.add('hidden'); // hide row in the UI
+  destroyInput.value = 1; // make sure this file will be deleted
+};
+
+const updateFileName = event => {
+  const label = $(event.target).val().replace(/^.*[\\\/]/, '') || DEFAULT_LABEL;
+  $(event.target).next('label').addClass('selected').html(label);
+};
+
+const initialize = () => {
+  $(SELECTOR_ADD_BUTTON).on('click', addNewFile);
+  $(SELECTOR).on('click', SELECTOR_REMOVE_BUTTON, removeFile);
+  $(SELECTOR).on('change', SELECTOR_CUSTOM_FILE_INPUT, updateFileName);
+};
+
+initialize();
+```
+
+#### Notes:
+
+* For ease of use (cross browser) and shorter code this snippet assumes [jQuery](https://code.jquery.com/) loaded
+* This javascript is written using ES6 syntax and is for demonstration purposes only. For production you might want to process it using [babel](https://babeljs.io/).
+
+## Next steps
+
+Congratulations! Your users can now upload multiple files when submitting the form.
+
+You can play with [this example](https://nearme-example.staging-oregon.near-me.com/upload_application) online and take look at the [source code](https://github.com/mdyd-dev/marketplace-nearme-example) on GitHub.
+
+* [Uploading Files Directly to Amazon S3 Using HTML Form](/how-to/user-uploads/uploading-files-directly-amazons3)
+
+{% include 'shared/questions_section' %}

@@ -1,0 +1,65 @@
+---
+converter: markdown
+metadata:
+  title: Sending a Binary File Using an API Call Notification
+  description: This guide will help you send a file using an API call notification.
+slug: tutorials/apis/sending-binary-file-using-api-call-notification
+searchable: true
+---
+
+This guide will help you send a file using an API call notification.
+
+## Requirements
+This is an advanced tutorial. To follow it, you should be familiar with basic PlatformOS concepts, HTML, Liquid, APIs and Form Configurations, and the topics in the Get Started section, especially tutorials related to Notifications.
+
+* [How PlatformOS Works](/how-platformos-works)
+* [APIs and Form Configurations](/api-reference)
+* [Get Started: Creating an API Call Notification](/tutorials/notifications/creating-api-call-notification)
+
+## Steps
+Sending a binary file using an API call notification is a special case of creating a regular API call notification as described in [Get Started: Creating an API Call Notification](/tutorials/notifications/creating-api-call-notification). This tutorial describes the difference between a regular request and sending a file, so it consists of only one step.
+
+1. Create API call notification
+
+### Step 1: Create API call notification
+
+Create the API call notification `notifications/api_call_notifications/send_file.liquid`:
+
+```yaml
+---
+name: send_file
+to: 'https://example.com/endpoint'
+delay: 0
+enabled: true
+format: http
+trigger_condition: true
+request_type: post_multipart
+---
+{
+  "file": {
+    "url": "https://domain.com/my-file.jpg",
+    "name": "my-file.jpg",
+    "content_type": "image/jpeg"
+  },
+  "file2": {
+    "url": "https://domain.com/other-file.jpg",
+    "name": "other-file.jpg",
+    "content_type": "image/jpeg"
+  }
+}
+```
+
+This defines a POST request to the endpoint, which would send two binary files. The main difference between a regular API call and sending a binary file is the `_multipart` suffix in request type. Valid request types are `post_multipart`, `patch_multipart` and `put_multipart`. The required body format for `*_multipart` requests is JSON following structure:
+```json
+{
+  "<param name>": {
+    "url": "<required url to file remote location>",
+    "name": "<optional file name>",
+    "content_type": "<optional content type>"
+  }
+}
+```
+
+{% include 'alert/warning', content: 'If url includes special characters, for example & [which is the case for custom_attachment.url] please make sure to use the `html_safe` filter.' %}
+
+{% include 'shared/questions_section' %}

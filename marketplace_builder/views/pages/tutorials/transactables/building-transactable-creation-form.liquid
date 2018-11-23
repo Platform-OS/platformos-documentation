@@ -1,0 +1,106 @@
+---
+converter: markdown
+metadata:
+  title: Building a Transactable Creation Form
+  description: This guide will help you build a form for creating a Transactable.
+slug: tutorials/transactables/building-transactable-creation-form
+searchable: true
+---
+
+This guide will help you build a form for creating a Transactable.
+
+_This guide is part of a series that follows a scenario to demonstrate how to manage Transactables. You can find previous and next parts of the series in the Requirements and Next steps sections._
+
+## Requirements
+So that you can follow the steps in this tutorial, you should understand the concept of Transactables. This guide refers to the scenario and Transactable Type discussed in a previous tutorial:
+
+* [Transactables](/tutorials/transactables/creating-transactables)
+* [Creating a Transactable Type](/tutorials/transactables/creating-transactable-type) (previous tutorial)
+
+## Steps
+
+Building a Transactable creation form is a two-step process:
+
+1. Create form
+2. Embed form into a page
+
+### Step 1: Create form
+
+Create a form for Transactable creation:
+
+```liquid
+{% raw %}
+---
+name: project
+resource: Transactable
+configuration:
+  name:
+    validation: { presence: true }
+  description:
+    validation:
+      presence: true
+  properties:
+    deadline:
+      validation:
+        presence: true
+    workplace_onsite:
+    workplace_online:
+    budget:
+      validation:
+        presence: true
+---
+{% form %}
+  <label for="name">Name</label>
+  <input name="{{ form_builder.fields.name.name }}" value="{{ form_builder.fields.name.value }}" id="name" type="text">
+  {% if form_builder.errors.name %}
+    <p>{{ form_builder.errors.name }}</p>
+  {% endif %}
+
+  <label for="description">Description</label>
+  <textarea name="{{ form_builder.fields.description.name }}" id="description">{{ form_builder.fields.description.value }}</textarea>
+  {% if form_builder.errors.description %}
+    <p>{{ form_builder.errors.description }}</p>
+  {% endif %}
+
+  <label for="workplace_online">Workplace online</label>
+  <input value="0" name="{{ form_builder.fields.properties.workplace_online.name }}" type="hidden">
+  <input value="1" name="{{ form_builder.fields.properties.workplace_online.name }}" id="workplace_online" type="checkbox" {% if form_builder.fields.properties.workplace_online.value %}checked{% endif %}>
+
+  <label for="workplace_onsite">Workplace onsite</label>
+  <input value="0" name="{{ form_builder.fields.properties.workplace_onsite.name }}" type="hidden">
+  <input value="1" name="{{ form_builder.fields.properties.workplace_onsite.name }}" id="workplace_onsite" type="checkbox" {% if form_builder.fields.properties.workplace_onsite.value %}checked{% endif %}>
+
+  <label for="budget">Budget</label>
+  <input name="{{ form_builder.fields.properties.budget.name }}" value="{{ form_builder.fields.properties.budget.value }}" id="budget" type="text">
+
+  <label for="deadline">Deadline</label>
+  <input placeholder="YYYY-mm-dd" name="{{ form_builder.fields.properties.deadline.name }}" value="{{ form_builder.fields.properties.deadline.value }}" id="deadline" type="text">
+  {% if form_builder.errors['properties.deadline'] %}
+    <p>{{ form_builder.errors['properties.deadline'] }}</p>
+  {% endif %}
+
+  <button>Save</button>
+{% endform %}
+{% endraw %}
+```
+
+### Step 2: Embed form into a page
+
+The page with the embedded `project` form could look like this:
+
+```liquid
+{% raw %}
+---
+slug: client/projects/new
+---
+<h1>Create Project</h1>
+{% include_form 'project', parent_resource_id: 'project' %}
+{% endraw %}
+```
+
+## Next steps
+Congratulations! You have built a form for creating a Transactable. Now you can display the newly created Transactable:
+
+* [Displaying a Transactable](/tutorials/transactables/displaying-transactable)
+
+{% include 'shared/questions_section' %}

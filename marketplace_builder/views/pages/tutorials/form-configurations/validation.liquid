@@ -1,0 +1,221 @@
+---
+converter: markdown
+metadata:
+  title: Form Validation
+  description: Form Validation gives you full control over the data format accepted by the form.
+slug: tutorials/form-configurations/validation
+searchable: true
+---
+
+**Validations** are used to ensure that only valid data is saved into your database.
+This reference shows you how to validate the state of objects before they go into the database using Form Configuration's validations feature.
+
+After reading this reference, you will know:
+
+* How to configure form validation
+* How to render validation errors
+
+## Example
+
+Simple validation example:
+
+```yaml
+configuration:
+  properties:
+    title:
+      validation:
+        presence: true
+```
+
+A form with the above configuration will not be valid without title property passed with the request unless it's already set on the object passed to the form.
+
+## Validation types
+
+You can use the following validation types:
+
+### presence
+```yaml
+title:
+  validation:
+    presence: true
+```
+### unique
+```yaml
+configuration:
+  properties:
+    slug:
+      validation:
+        presence: true
+        unique:
+          scope:
+            - other_property
+          message: Must be uniq
+```
+### confirmation
+```yaml
+email:
+  validation:
+    confirmation: true
+```
+### inclustion / exclusion
+```yaml
+   malpractice_history:
+      validation:
+        inclusion:
+          in: [true, false]
+          message: disclosure is required
+```
+
+### format
+```yaml
+phone:
+  validation:
+    presence: true
+    format:
+      with: !ruby/regexp /\A[+]?[\d \-()]+\z/
+      allow_blank: true
+      message: This seems to be an invalid phone number. Please try using numbers only
+```
+
+### file_content_type
+```yaml
+file:
+  validation:
+    presence: true
+    file_content_type:
+      allow:
+      - image/jpeg
+      - image/png
+      - application/pdf
+      - application/msword
+      - application/vnd.ms-excel
+```
+
+### length
+```yaml
+attachments:
+  validation:
+    length:
+      is: 2
+      message: You need to include Front side and Back side Photo ID
+```
+
+The possible length constraint options are:
+
+* minimum - The attribute cannot have less than the specified length.
+* maximum - The attribute cannot have more than the specified length.
+* in (or within) - The attribute length must be included in a given interval. The value for this option must be a range.
+* is - The attribute length must be equal to the given value.
+
+### numericality
+
+```yaml
+rate_amount:
+  validation:
+    presence: true
+    numericality:
+      greater_than_or_equal_to: 0
+```
+Available options are:
+
+* only_integer
+* greater_than - Specifies that the value must be greater than the supplied value. The default error message for this option is "must be greater than %{count}".
+* greater_than_or_equal_to - Specifies that the value must be greater than or equal to the supplied value. The default error message for this option is "must be greater than or equal to %{count}".
+* equal_to - Specifies that the value must be equal to the supplied value. The default error message for this option is "must be equal to %{count}".
+* less_than - Specifies that the value must be less than the supplied value. The default error message for this option is "must be less than %{count}".
+* less_than_or_equal_to - Specifies that the value must be less than or equal to the supplied value. The default error message for this option is "must be less than or equal to %{count}".
+* other_than - Specifies that the value must be other than the supplied value. The default error message for this option is "must be other than %{count}".
+* odd - Specifies that the value must be an odd number if set to true. The default error message for this option is "must be odd".
+* even - Specifies that the value must be an even number if set to true. The default error message for this option is "must be even".
+
+## Conditional Validation
+
+It is possible to validate attributes based on the state of other attributes from the form.
+{% raw %}
+```yaml
+expiry_year:
+  validation:
+    presence:
+      if: '{% if form.expires %}true{% endif %}'
+```
+{% endraw %}
+
+## Common Validation Options
+
+### message
+It is possible to overwrite the default message with additional configuration:
+
+```yaml
+customizations:
+  expertise:
+    validation:
+      presence:
+        message: record is required.
+```
+
+### allow_nil
+The `allow_nil` option skips the validation when the value being validated is nil.
+
+### allow_blank
+Allows to pass an empty string.
+
+### Validation Errors
+
+When form validation is raised, error message is added to `form_builder.errors` object that contains errors corresponding to fields.
+
+If you need errors for particular field, access them through:
+
+```liquid
+{% raw %}
+{{ form_object.errors.<field_name> }}
+{% endraw %}
+```
+
+Example:
+```liquid
+{% raw %}
+{{ form_object.errors.name }}
+{% endraw %}
+```
+
+### Translation
+
+Each error message can be translated with the PlatformOS transalation mechanism.
+The default error messages are:
+```yaml
+en:
+  errors:
+    # The default format to use in full error messages.
+    format: "%{attribute} %{message}"
+    # The values :model, :attribute and :value are always available for interpolation
+    # The value :count is available when applicable. Can be used for pluralization.
+    messages:
+      model_invalid: "Validation failed: %{errors}"
+      inclusion: "is not included in the list"
+      exclusion: "is reserved"
+      invalid: "is invalid"
+      confirmation: "doesn't match %{attribute}"
+      accepted: "must be accepted"
+      empty: "can't be empty"
+      blank: "can't be blank"
+      present: "must be blank"
+      too_long:
+        one: "is too long (maximum is 1 character)"
+        other: "is too long (maximum is %{count} characters)"
+      too_short:
+        one: "is too short (minimum is 1 character)"
+        other: "is too short (minimum is %{count} characters)"
+      wrong_length:
+        one: "is the wrong length (should be 1 character)"
+        other: "is the wrong length (should be %{count} characters)"
+      not_a_number: "is not a number"
+      not_an_integer: "must be an integer"
+      greater_than: "must be greater than %{count}"
+      greater_than_or_equal_to: "must be greater than or equal to %{count}"
+      equal_to: "must be equal to %{count}"
+      less_than: "must be less than %{count}"
+      less_than_or_equal_to: "must be less than or equal to %{count}"
+      other_than: "must be other than %{count}"
+      odd: "must be odd"
+      even: "must be even"
+```

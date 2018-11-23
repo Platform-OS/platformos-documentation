@@ -1,0 +1,6 @@
+{% parse_json links %}{% include 'use-cases/e-commerce/nav-links' %}{% endparse_json %}
+<ol>
+  {%- for link in links %}
+  <li><a href="{{ link.href }}">{{ link.name }} </a></li>
+  {% endfor -%}
+</ol>
