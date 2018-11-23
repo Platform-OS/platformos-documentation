@@ -53,10 +53,9 @@ Create a GraphQL query that pulls a list of Customizations.
 ```graphql
 query get_customizations {
   customizations(
-    per_page: 20
-    sort: [{ name: "human_name", order: "asc" }]
+    per_page: 10
+    sort: [{ name: "id", order: "desc" }]
   ) {
-    total_entries
     results {
       human_name
       properties
@@ -71,8 +70,7 @@ Create another GraphQL query that pulls a list of pages
 
 ```graphql
 query get_pages {
-    pages(per_page: 100) {
-    total_entries
+    pages(per_page: 10) {
     results {
       format
       slug
@@ -89,79 +87,52 @@ query get_pages {
 {% raw %}
 ---
 slug: admincms
-layout_name: 1col
 ---
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mini.css/3.0.0/mini-default.min.css">
+<h2> Module example - Admin </h2>
 
-<div class="container">
-    <h1> ADMIN </h1>
+<div class="row">
+  <div class="col-xs-12 col-lg-6">
+    <h3> Customizations </h3>
+    {%- query_graph "get_customizations", result_name: "c" -%}
+    <table class="table table-compact">
+      <thead>
+        <tr>
+          <th> Name </th>
+          <th> Properties </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for customization in c.customizations.results %}
+          <tr>
+            <td> {{ customization.human_name }} </td>
+            <td> {{ customization.properties }} </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 
-    <div class="row">
-        <div class="col-sm-8">
-            <section class="customizations">
-                <h3> Manage Customizations </h3>
-                {%- query_graph "get_customizations", result_name: "c", id: id -%}
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>
-                                Name
-                            </th>
-                            <th>
-                                Properties
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for customization in c.customizations.results %}
-                            <tr>
-                                <td>
-                                    {{ customization.human_name }}
-                                </td>
-                                <td>
-                                    {{ customization.properties }}
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </section>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-sm-8">
-            <section class="pages">
-                <h3> Manage Pages </h3>
-                {%- query_graph "get_pages", result_name: "c", id: id -%}
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>
-                                Slug
-                            </th>
-                            <th>
-                                Format
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for page in c.pages.results %}
-                            <tr>
-                                <td>
-                                    {{ page.slug }}
-                                </td>
-                                <td>
-                                    {{ page.format }}
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </section>
-        </div>
-    </div>
+  <div class="col-xs-12 col-lg-6">
+    <h3> Pages </h3>
+    {%- query_graph "get_pages", result_name: "c" -%}
+    <table class="table table-compact">
+      <thead>
+        <tr>
+          <th> Slug </th>
+          <th> Format </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for page in c.pages.results %}
+          <tr>
+            <td> {{ page.slug }} </td>
+            <td> {{ page.format }} </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 </div>
 {% endraw %}
 ```
@@ -170,7 +141,7 @@ As you can see you are using the queries like usual
 
 ```liquid
 {% raw %}
-{%- query_graph "get_pages", result_name: "c", id: id -%}
+{%- query_graph "get_pages", result_name: "c" -%}
 {% endraw %}
 ```
 
@@ -192,14 +163,13 @@ you would get a structure like this:
                     └── admin.html.liquid
 ```
 
-
-
 ## Live example and source code
 
-You can download the directory structure and all code included in this tutorial [here](https://github.com/mdyd-dev/nearme-documentation/tree/master/marketplace_builder/assets/files/tutorials/modules/admincms.zip) as a zip file.
+To see it in action go to [live example](https://nearme-example.staging-oregon.near-me.com/).
+[Source files](https://github.com/mdyd-dev/marketplace-nearme-example/tree/master/marketplace_builder/modules/admincms) are also publicly accessible.
 
 ## Next steps
-Congratulations! You have created a module. Now you can learn about sharing your module on the Platform OS Module Marketplace.
+Congratulations! You have created a module. Now you can learn about sharing your module on the PlatformOS Module Marketplace.
 
 * [Sharing a Module](/tutorials/modules/sharing-module)
 
