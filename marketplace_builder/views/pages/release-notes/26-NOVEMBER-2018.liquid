@@ -1,0 +1,81 @@
+---
+converter: markdown
+metadata:
+  title: November 26, 2018  &ndash;  Release Notes
+  date: November 26, 2018
+  description: Parsing json to hash
+  hide_sidebar: true
+slug: release-notes/26-NOVEMBER-2018
+searchable: true
+---
+
+### {{ page.metadata.description }}
+
+To make your work with json easier we introduced `parse_json` tag and renamed `to_hash` filter to `parse_json`.
+
+
+### parse_json tag
+
+Using `parse_json` filter while keeping your json tidy and formatted forced you to use `capture`.
+`parse_json` tag is basically a hybrid of `capture` and `to_hash`, it parses json string inside of the tag and converts it to a hash.
+
+Why would you want to convert your json config to a hash?
+To be able to iterate over it, use filters that will modify the structure, traverse the tree.
+
+#### Example
+
+```liquid
+{% raw %}
+{% parse_json car %}
+  {
+    "maker": "Honda",
+    "model": "CRX",
+    "version": "EE8",
+    "power": 180
+  }
+{% endparse_json %}
+
+Hash: {{ car }}
+JSON: {{ car | json }}
+
+Properties:
+{% for property in car -%}
+{{ property[0] }}: {{ property[1] }}
+{% endfor %}
+{% endraw %}
+```
+
+Result:
+{% parse_json car -%}{ "maker": "Honda", "model": "CRX", "version": "EE8", "power": 180 }{%- endparse_json %}
+
+```json
+Hash: {{ car }}
+JSON: {{ car | json }}
+
+Properties:
+{% for property in car -%}
+{{ property[0] }}: {{ property[1] }}
+{% endfor %}
+```
+
+### parse_json filter
+
+Usage of `parse_json` is exactly the same, as a matter of fact, to keep backwards compatibility, `to_hash` still works.
+
+#### Example
+
+```liquid
+{% raw %}
+{% assign car = '{ "maker": "Honda", "model": "CRX", "version": "EE8", "power": 180 }' %}
+{% assign object = car | parse_json %}
+Maker: {{ car.maker }}
+{% endraw %}
+```
+
+{% assign car = '{ "maker": "Honda", "model": "CRX", "version": "EE8", "power": 180 }' %}
+{% assign object = car | parse_json %}
+
+Result:
+```json
+Maker: {{ object.maker }}
+```
