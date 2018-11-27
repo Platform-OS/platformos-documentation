@@ -1,6 +1,6 @@
 import template from './template';
 
-import(/* webpackChunkName: "vendor" */ 'ejs/ejs.min').then(() => {
+import(/* webpackChunkName: "vendor" */ 'ejs/ejs.min').then(ejs => {
   const DOCS_URL = location.search.split('=')[1] || 'https://portal.apps.near-me.com/api_doc.json';
   const placeholder = () => document.querySelector('[data-portal-api-docs="content"]');
 
@@ -14,7 +14,8 @@ import(/* webpackChunkName: "vendor" */ 'ejs/ejs.min').then(() => {
       .then(endpoints => ejs.render(template, { endpoints }))
       .then(html => (placeholder().innerHTML = html))
       .then(() => document.dispatchEvent(new CustomEvent('prism:reinitialize')))
-      .catch(err => console.log);
+      .then(() => document.dispatchEvent(new CustomEvent('deeplinks:initialize')))
+      .catch(console.log);
   };
 
   document.addEventListener('turbolinks:load', initialize);

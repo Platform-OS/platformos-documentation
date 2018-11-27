@@ -1,6 +1,6 @@
 const request = `<%_ let req = value.request _%>
   <%_ if (req) { _%>
-    <h4>Request</h4>
+    <h3>Request</h3>
     <%_ if (Object.keys(req.params).length > 0) { _%>
       <p>Params</p>
       <pre><code class="language-json line-numbers">
@@ -17,7 +17,7 @@ const request = `<%_ let req = value.request _%>
 
 const response = `<%_ let res = value.response _%>
   <%_ if (res) { _%>
-    <h4 class="mt-5">Response [<%- res.status _%>]</h4>
+    <h3 class="mt-5">Response [<%- res.status _%>]</h3>
 
     <p>Body</p>
     <pre><code class="language-json line-numbers">
