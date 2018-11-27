@@ -15,18 +15,18 @@ Some users reported issues with running very long tasks in `async_callback_actio
 
 Before, you had no control or information about limits, errors, timeouts.
 
-#### priority
+## priority
 
 You have full control over priority of your `async_callback_actions`.
 If you don't set priority at all, it will be set to `default`.
 
-#### max_attempts
+## max_attempts
 
 You can also set maximum number of attempts if job fails for whatever reason - timeout, error in the code, 3rd party api not responding
 
 Default is 1. Use it with caution, as every attempt uses resources.
 
-#### Example
+### Example
 
 ```yaml
 {% raw %}
@@ -43,7 +43,7 @@ async_callback_actions:
 {% endraw %}
 ```
 
-#### Limits
+### Limits
 
 | Priority | Timeout   |
 |----------------|-----------|

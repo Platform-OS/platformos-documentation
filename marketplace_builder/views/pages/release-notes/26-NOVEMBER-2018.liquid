@@ -14,7 +14,7 @@ searchable: true
 To make your work with json easier we introduced `parse_json` tag and renamed `to_hash` filter to `parse_json`.
 
 
-### parse_json tag
+## parse_json tag
 
 Using `parse_json` filter while keeping your json tidy and formatted forced you to use `capture`.
 `parse_json` tag is basically a hybrid of `capture` and `to_hash`, it parses json string inside of the tag and converts it to a hash.
@@ -46,6 +46,7 @@ Properties:
 ```
 
 Result:
+
 {% parse_json car -%}{ "maker": "Honda", "model": "CRX", "version": "EE8", "power": 180 }{%- endparse_json %}
 
 ```json
@@ -58,7 +59,7 @@ Properties:
 {% endfor %}
 ```
 
-### parse_json filter
+## parse_json filter
 
 Usage of `parse_json` is exactly the same, as a matter of fact, to keep backwards compatibility, `to_hash` still works.
 
@@ -76,6 +77,7 @@ Maker: {{ car.maker }}
 {% assign object = car | parse_json %}
 
 Result:
+
 ```json
 Maker: {{ object.maker }}
 ```
