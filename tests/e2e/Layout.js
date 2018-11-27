@@ -54,11 +54,17 @@ test('Syntax highlighting is working', async t => {
   await t.expect(Selector('span.operator').exists).ok();
 });
 
-test('Images are working fine', async t => {
+test.only('Images are working fine', async t => {
   await t.navigateTo('/tutorials/qa/testing');
-  const contentImages = Layout.Content.find('img');
+  const contentImages = Layout.Content.find('img[src*="assets/image"]');
 
-  await t.expect(contentImages.count).gte(2);
+  const loadedImages = await t.eval(() => {
+    const images = Array.prototype.slice.call(document.querySelectorAll('img[src*="assets/image"]'));
+    return images.map(image => image.naturalHeight).filter(height => height > 10);
+  });
+
+  await t.expect(contentImages.count).eql(2);
+  await t.expect(loadedImages.length).eql(2);
 });
 
 /*
@@ -73,7 +79,7 @@ test('Deep linking to h2 headers is working', async t => {
 });
 
 // test.skip("Contributors are showing up", async t => {
-  /*
+/*
     Because there is a limit on github api requests (pretty low, 100) and it runs on every page reload
    lets not test this, because it will cause tests to be flaky.
 
