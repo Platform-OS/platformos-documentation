@@ -1,69 +1,69 @@
 ---
 converter: markdown
 metadata:
-  title: Setting up the Instance
-  description: Preparing instance environment for building an e-commerce site in Platform OS.
+  title: Setting Up the Instance
+  description: Preparing Instance environment for building an e-commerce site on PlatformOS.
 slug: use-cases/e-commerce/setting-up-the-instance
 searchable: true
 ---
 
-This guide will help you to prepare development environment for building an e-commerce site in Platform OS.
+This guide will help you prepare a development environment for building an e-commerce site on PlatformOS.
+
+{% include 'alert/note', content: 'This guide is part of a tutorial series on building an e-commerce website powered by PlatformOS. <a href="/use-cases/e-commerce/e-commerce-platformos">Find the first part of the series here.</a>' %}
 
 ## Requirements
+To follow this tutorial, you should be familiar with basic PlatformOS concepts, the topics in the Get Started section, and the sample scenario of the e-commerce use case. 
 
-This guide is part of a tutorial series on building an e-commerce website powered by Platform OS. [You can find the first part of the series here](/use-cases/e-commerce/e-commerce-platformos).
+* [How Platform OS Works](/how-platformos-works) 
+* [Get Started](/get-started)
+* [E-commerce in PlatformOS](/use-cases/e-commerce/e-commerce-platformos) — sample scenario
 
 ## Steps
 
-Setting up the Instance is a 5-step process:
+Setting up the Instance for an e-commerce site is a five-step process:
 
-1. [Create a new instance](#step-1-create-a-new-instance)
-2. [Add version control](#step-2-add-version-control)
-3. [Transform static HTML files to static pages](#step-3-transform-static-html-files-to-static-pages)
-4. [Enable sync](#step-4-enable-sync)
-5. [Add static content](#step-5-add-static-content)
+1. Create new instance
+2. Add version control
+3. Transform static HTML files to static pages
+4. Enable sync
+5. Add static content
 
-### Step 1. Create a new instance
+### Step 1. Create new instance
 
-Creating up a new instance has been described in detail in [Quickstart guide](/get-started/quickstart-guide). Go through the process of configuring new instance in the [partner portal](https://portal.apps.near-me.com/), installing [marketplace-kit](https://www.npmjs.com/package/@platform-os/marketplace-kit) on your machine, creating a default folder structure with
-
-```shell
-marketplace-kit init
-```
-
-command. In your project folder you will now see a new folder called `marketplace_builder`. It contains all of necessary folders where views, models, queries, etc. will be stored. You can read more about the structure in [Platform OS Components](/how-platformos-works/platformos-components) article in our documentation.
+Set up your development environment, create a new Instance, and create the Required Directory Structure as described in the [Get Started](/get-started) section. 
 
 ### Step 2. Add version control
 
-We **strongly** suggest using some version of source control to store your code, so go ahead and create a new repository and commit your initial version of the code now.
-Make sure to add `.marketplace-kit` file to ignore list. It contains access keys used for deploying, specific to your user.
+We **strongly** recommend using a version control system. Set up your version control system, create a new repository, and commit your initial version of the code. 
+
+Make sure to add the `.marketplace-kit` file to ignore list. It contains access keys used for deploying, specific to your user. 
 
 ### Step 3. Transform static HTML files to static pages
 
-At the end of the design process you usually get a number of HTML files that represent sections of the site. Same should be true for your project, but for the sake of simplicity this example uses only pure [Bootstrap](http://getbootstrap.com) styles and scripts, hosted on their CDN.
+At the end of the design process you usually get a number of HTML files that represent sections of the site. This example uses only pure [Bootstrap](http://getbootstrap.com) styles and scripts, hosted on their CDN. 
 
 Since all you’ve got to worry about is HTML, you will start coding with moving existing HTML templates to pOS pages and partials. At the end of the process you should have a prototype, with clickable links that will take you between specific sections of the site.
 
-Running the `init` command will provides you with a sample layout and some partials. They are a good starting point for implementing application layout.
+Running the `init` command provides a sample layout and some partials. They are a good starting point for implementing application layout.
 
 ### Step 4. Enable sync
 
-You should be ready to start tinkering. Instance should be created, so it’s time to configure your local environment for working with remote instance. Use `marketplace-kit` to add a new `development` environment and then you can run
+Configure your local environment for working with the remote Instance. Use `marketplace-kit` to add a new `development` environment and then you can run
 
 ```shell
 marketplace-kit sync development
 ```
 
-to automatically update instance with changes made on your local machine.
+to automatically update your Instance with changes made on your local machine.
 
 ### Step 5. Add static content
 
-You should start with creating a file `views/layouts/application.liquid` to create a default layout for all pages. A good rule of thumb is keeping common sections of HTML (e.g. `<head>` or navigation) that should appear on every single page in separate partials. It will help you to stay DRY whenever you want to add a new layout file.
+Create a file `views/layouts/application.liquid` to create a default layout for all pages. A good rule of thumb is keeping common sections of HTML (e.g. `<head>` or navigation) that should appear on every single page in separate partials. It will help you to stay DRY whenever you want to add a new layout file.
 
 You can now start adding page placeholders with static HTML, that will be gradually transformed to dynamic content in following parts of this tutorial.
 
 ## Next steps
 
-Congratulations! You have set up the instance. Next step is: configuring data schema.
+Congratulations! You have set up the Instance. Now you can go on and configure the data schema.
 
 {% include 'shared/questions_section' %}
