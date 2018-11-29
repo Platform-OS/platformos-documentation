@@ -54,7 +54,7 @@ test('Syntax highlighting is working', async t => {
   await t.expect(Selector('span.operator').exists).ok();
 });
 
-test.only('Images are working fine', async t => {
+test('Images are working fine', async t => {
   await t.navigateTo('/tutorials/qa/testing');
   const contentImages = Layout.Content.find('img[src*="assets/image"]');
 
