@@ -1,0 +1,217 @@
+---
+converter: markdown
+metadata:
+  title: Loading Related Models 
+  description: This guide will help you load related models while avoiding n+1. 
+slug: /tutorials/custom-model-types/loading-related-models
+searchable: true
+---
+
+This guide will help you load related models while avoiding n+1. n+1 queries slow down the process, because displaying each record produces a request for another model.   
+
+## Requirements 
+This is an advanced tutorial. To follow it, you should be familiar with basic PlatformOS concepts, the topics in the Get Started section, Custom Model Types, and Custom Attributes. For testing, you should be familiar with measuring the execution time of Liquid code fragments using the time_diff filter. 
+
+* [How Platform OS Works](/how-platformos-works) 
+* [Get Started](/get-started)
+* [Custom Model Types](/tutorials/custom-model-types/custom-model-types)
+* [Custom Attributes](/tutorials/custom-attributes/custom-attributes) 
+* [Measuring Execution Time of Liquid Code Fragments (time_diff)](/tutorials/performance/measuring-execution-time-liquid-time-diff) 
+
+## Steps
+
+The guide's sample scenario walks you through two different approaches to demonstrate the difference between the naive and the recommended approach. **When implementing related models, use the second, recommended approach.**
+
+Loading related models in this demonstrative scenario is a five-step process:
+
+1. Create models
+2. Load related model for each record (not recommended)
+3. Test approach
+4. Request data from related model within GraphQL query (recommended)
+5. Test and compare 
+
+### Step 1: Create models
+The data schema in this scenario consists of two models: `company` and `programmer`. The `programmer model has a `company_id` property which references a corresponding company model [foreign key]. 
+
+```yaml
+name: company
+custom_attributes:
+- name: name
+  attribute_type: string
+- name: email
+  attribute_type: string
+- name: url
+  attribute_type: string
+```
+
+```yaml  
+name: programmer
+custom_attributes:
+- name: title
+  attribute_type: string
+- name: email
+  attribute_type: string
+- name: company_id
+  attribute_type: string
+```
+
+The goal is to load programmers' data along with related company by joining programmers and companies: 
+
+**Programmers:**
+
+| email                    | title  | company_id |
+|--------------------------|--------|------------|
+| programmer-1@example.com | junior | 238415     |
+| programmer-2@example.com | middle | 238416     |
+| programmer-3@example.com | senior | 238417     |
+| programmer-7@example.com | senior | 238421     | 
+
+
+**Companies:**
+
+|     id | name       | url           |
+|--------|------------|---------------|
+| 238415 | Company #2 | company-2.com |
+| 238416 | Company #3 | company-3.com |
+| 238417 | Company #4 | company-4.com |
+| 238421 | Company #8 | company-8.com |
+
+
+**Result collection** should be as follows:
+
+| programmer.email         | programmer.title | company.name | company.url   |
+|--------------------------|------------------|--------------|---------------------|
+| programmer-1@example.com | junior           | Company #2   | company-2.com |
+| programmer-2@example.com | middle           | Company #3   | company-3.com |
+| programmer-3@example.com | senior           | Company #4   | company-4.com |
+| programmer-7@example.com | senior           | Company #8   | company-8.com |
+
+
+### Step 2: Load related model for each record (not recommended)
+In this approach, you use two GraphQL queries: 
+
+#### programmers.grapqhl
+```graphql
+query programmers {
+  programmers: customizations(name: "programmer"){
+    total_entries
+    results {
+      properties
+    }
+  }
+}
+```
+
+#### company.graphql
+```graphql
+query company($id: ID) {
+  companies: customizations(name: "company", id: $id){
+    results {
+      name
+      id
+      deleted_at
+      properties
+    }
+  }
+}
+```
+
+While displaying the programmer collection — for each programmer record — you fetch the related company model using the `company` graphql query: 
+
+```liquid
+{% raw %}
+{% query_graph 'programmers' %}
+
+{% for programmer in g.programmers.results %}
+  <tr>
+    <td> {{ programmer.properties.email }} </td>
+    <td> {{ programmer.properties.title }} </td>
+      {% if programmer.properties.company_id %}
+        {% query_graph 'company', id: programmer.properties.company_id, result_name: 'company' %}
+        <td> {{ company.companies.results.first.properties.name }} </td>
+        <td> {{ company.companies.results.first.properties.url }} </td>
+      {% endif  %}
+</tr>
+{% endfor %}
+{%endraw%}
+```
+
+### Step 3: Test approach
+
+Test the approach described in step 2. The results of [Measuring Execution Time of Liquid Code Fragments (time_diff)](/tutorials/performance/measuring-execution-time-liquid-time-diff) in this case will be as follows:
+
+|               | graphql |   render |
+|---------------|---------|----------|
+| benchmark-n+1 |  24.065 | 1748.686 |
+|               |  29.663 | 1862.711 |
+|               |  27.478 | 1654.610 |
+|               |  25.765 | 1787.026 |
+||—|—|
+| | 27.478 | 1787.026 |
+
+The results show that this approach produces slow output. The n+1 queries slow down the process, because displaying each record produces a request for another model. 
+
+### Step 4: Request data from related model within GraphQL query (recommended)
+
+To avoid n+1 queries, request company data within the `programmers` GraphQL query. Load related data at once along with the programmer collection using new GraphQL field called `model`.
+
+```graphql
+   model(join_on_property: "company_id") { properties }
+```
+
+`join_on_property` argument is required and is used as a foreign key of the company collection. In SQL language this could look similarly:
+
+```sql
+select * from programmers joins companies on (programmers.company_id = companies.id)
+```
+
+and after updating your graphql query looks like this now:
+
+```graphql
+query programmers {
+  programmers: customizations(name: "programmer", per_page: 200){
+    total_entries
+    results {
+      properties
+      company: model(join_on_property: "company_id") {
+        url: property(name: "url")
+        properties
+      }
+    }
+  }
+}
+```
+
+Update the `programmers/index` page. The page looks much simpler now:
+
+```liquid
+{% raw %}
+  {% for programmer in g.programmers.results %}
+    <tr>
+      <td> {{ programmer.properties.email }} </td>
+      <td> {{ programmer.properties.title }} </td>
+      <td>{{ programmer.company.properties.name }} </td>
+      <td>{{ programmer.company.properties.url }} </td>
+    </tr>
+ {% endfor %}
+{% endraw %}
+```
+
+### Step 5: Test and compare
+
+Test the second approach using the same measurement method. The results: 
+
+|                 |   graphql |  render |
+|---------------|---------|----------|
+| benchmark-model |     57.42 |  165.78 |
+|                 |     61.52 |  187.39 |
+|                 |    51.407 | 154.171 |
+|                 |    49.946 | 153.696 |
+|                 |    48.501 | 241.319 |
+|                 |    45.854 | 192.571 |
+||—|—|
+| | 64.281001 | 182.718 |
+
+Requesting data from the related model within the GraphQL query delivers results 10 times faster. 
+
+{% include 'shared/questions_section' %}
