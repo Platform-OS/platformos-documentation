@@ -1,0 +1,259 @@
+---
+converter: markdown
+metadata:
+  title: Configuring the Data Schema
+  description: This guide will help you set up all models required to run an e-commerce site.
+slug: use-cases/e-commerce/configuring-data-schema
+searchable: true
+---
+
+This guide will help you set up all models required to run an e-commerce site.
+
+{% include 'alert/note', content: 'This guide is part of a tutorial series on building an e-commerce website powered by PlatformOS. <a href="/use-cases/e-commerce/e-commerce-platformos">Find the first part of the series here.</a>' %}
+
+In PlatformOS, you are free to build any kind of data model you want. Defining the data schema is very similar to creating any other relational database. You can use one of the many tools to create a visual representation of the model. We chose  [dbdiagram.io](https://dbdiagram.io/).
+
+{% include 'use-cases/e-commerce/data-model-graph' %}
+
+Your data schema will be based on three primary models:
+
+* `user`
+* `product`
+* `order` 
+
+On the PlatformOS side you will use `User` to map the corresponding model, and `Custom Model Type` to represent everything else.
+
+## Requirements
+
+To follow this tutorial, you should be familiar with basic PlatformOS concepts, and the topics in the Get Started section. You should have set up the Instance for development, as described in a previous part of this tutorial series.
+
+- [How Platform OS Works](/how-platformos-works)
+- [Get Started](/get-started)
+- [Setting Up the Instance](/use-cases/e-commerce/setting-up-the-instance)
+- [Creating a User profile](/tutorials/users/creating-user-profile)
+- [Custom Model Types](/tutorials/custom-model-types/custom-model-types)
+- [Custom Images](/tutorials/custom-attributes/custom-images)
+
+## Steps
+
+Creating the data schema varies from one project to another. In this case it’s a three-step process:
+
+1. Configure product models
+2. Configure user models
+3. Configure order models
+
+### Step 1. Configure product models
+
+Every T-shirt in your store will be described by `product_type` and `brand`. Additionally every product may have one or more `photo`s attached. Finally, there are available variants of the product (in this case it’s T—shirt sizes). You will create `stock_level` that will hold information on the available amount of products in a specific variant (size).
+
+#### marketplace_builder/custom_model_types/product.yml
+
+```yaml
+name: product
+custom_attributes:
+  - name: name
+    attribute_type: string
+  - name: description
+    attribute_type: text
+  - name: gender
+    attribute_type: string
+  - name: price
+    attribute_type: integer
+  - name: brand_id
+    attribute_type: string
+  - name: product_type_id
+    attribute_type: string
+```
+
+Notes:
+
+- PlatformOS does not support `enum` data type at the moment. You will handle that on the frontend side with constants.
+- Price will be stored as an integer, representing cents, so \$1.00 is stored as `100`. This helps to avoid problematic computations and rounding problems that sometimes happen with the `float` data type.
+- External ids are integer numbers, but since variable types are important and `"100" != 100`, it’s easier to store all IDs as strings.
+
+#### marketplace_builder/custom_model_types/brand.yml
+
+```yaml
+name: brand
+custom_attributes:
+  - name: name
+    attribute_type: string
+```
+
+#### marketplace_builder/custom_model_types/product_type.yml
+
+```yaml
+name: product_type
+custom_attributes:
+  - name: name
+    attribute_type: string
+```
+
+#### marketplace_builder/custom_model_types/photo.yml
+
+```yaml
+name: photo
+custom_attributes:
+  - name: product_id
+    attribute_type: string
+  - name: image
+    attribute_type: photo
+    versions_configuration:
+      thumb:
+        width: 250
+        height: 345
+        transform: resize_to_fill
+      mini:
+        width: 500
+        height: 800
+        transform: resize_to_fit
+      normal:
+        width: 1500
+        height: 1200
+        transform: resize_to_fit
+```
+
+The `photo` model uses a special field type called `photo`. It helps automating upload and versions creation. You can [read more on `Custom Images` here](/tutorials/custom-attributes/custom-images).
+
+#### marketplace_builder/custom_model_types/stock_level.yml
+
+```yaml
+name: stock_level
+custom_attributes:
+  - name: product_id
+    attribute_type: string
+  - name: variant
+    attribute_type: string
+  - name: amount
+    attribute_type: integer
+```
+
+### Step 2. Configure user models
+
+`User` is a built-in data type in PlatformOS. It has some predefined fields like `name` and `email`. You can extend `User` with additional Custom Attributes by using user profiles. The example below uses the `default` user profile to add a phone number field. You can [learn more about creating a user profile](/tutorials/users/creating-user-profile) in our documentation.
+
+#### marketplace_builder/user_profile_types/default.yml
+
+```yaml
+name: default
+custom_attributes:
+  - name: phone
+    attribute_type: string
+  - name: admin
+    attribute_type: boolean
+```
+
+Every user will also be able to save multiple `addresses` to his contact book.
+
+#### marketplace_builder/custom_model_types/address.yml
+
+```yaml
+name: address
+custom_attributes:
+  - name: label
+    attribute_type: string
+  - name: location
+    attribute_type: string
+  - name: default_address
+    attribute_type: boolean
+```
+
+{% capture content %}
+As you’ve probably noticed we’ve omitted the `user_id` attribute. Every Custom Model Type in PlatformOS can be attached to another object via built-in `customizable_type` and `customizable_id` fields. You will be setting these values when creating forms.
+{% endcapture %}
+{% include "alert/note", content: content %}
+
+{% capture content %}
+PlatformOS has a special field type called `CustomAddress`. It allows geolocation and detailed validation of the address. You will not be using that in this example, but you can [read more on the `Custom Address` field](/reference/custom-attributes/custom-addresses) in our documentation.
+{% endcapture %}
+{% include "alert/note", content: content %}
+
+### Step 3. Configure order models
+
+Last part of your shop data schema is related to `order`s created by clients. Every order can have multiple products attached to it and a `shipping_option` selected during checkout. Order is finished with `payment`. You will store the history of all payments for a given order (usually it will be just one, but you would want to log every interaction with the payments API as a separate entry). Finally, you will store `order_history` describing any changes to order state (received, paid, shipped, etc.)
+
+#### marketplace_builder/custom_model_types/order.yml
+
+```yaml
+name: order
+custom_attributes:
+  - name: billing_address
+    attribute_type: text
+  - name: shipping_address
+    attribute_type: text
+  - name: shipping_option_id
+    attribute_type: string
+  - name: shipping_option_name
+    attribute_type: string
+  - name: shipping_price
+    attribute_type: integer
+  - name: comments
+    attribute_type: text
+  - name: state
+    attribute_type: string
+```
+
+#### marketplace_builder/custom_model_types/order_product.yml
+
+```yaml
+name: order_product
+custom_attributes:
+  - name: product_id
+    attribute_type: string
+  - name: order_id
+    attribute_type: string
+  - name: name
+    attribute_type: string
+  - name: variant
+    attribute_type: string
+  - name: amount
+    attribute_type: integer
+  - name: price
+    attribute_type: integer
+```
+
+You’ve probably noticed that some fields are duplicated (shipping) or not referencing other custom types by `id` (addresses). You want to ensure that order data is persistent and does not change after an order has been created. If at any point in time the admin removed the shipping option used in this order, or the user updated his address in the address book, the order would no longer represent the state at the moment of creation. Therefore, you should copy any piece of information prone to being manipulated, when the new order is created. Same logic applies to the `order_product` table where information on the ordered products is stored, along with the reference to the product itself. In case a product is removed or updated, you do not lose any data.
+
+#### marketplace_builder/custom_model_types/order_history.yml
+
+```yaml
+name: order_history
+custom_attributes:
+  - name: order_id
+    attribute_type: string
+  - name: state
+    attribute_type: string
+```
+
+#### marketplace_builder/custom_model_types/payment.yml
+
+```yaml
+name: payment
+custom_attributes:
+  - name: order_id
+    attribute_type: string
+  - name: state
+    attribute_type: string
+```
+
+{% capture content %}
+The data diagram mentions a `timestamp` field for both the `payment` and the `order_history` data types. PlatformOS automates creation of such timestamps. Every object gets two built-in fields `created_at` and `updated_at` that are updated automatically.
+{% endcapture %}
+{% include "alert/note", content: content %}
+
+#### marketplace_builder/custom_model_types/shipping_option.yml
+
+```yaml
+name: shipping_option
+custom_attributes:
+  - name: name
+    attribute_type: string
+  - name: price
+    attribute_type: integer
+```
+
+## Next steps
+
+Congratulations! You have set up the data model that will power your store. You can now move on to the next step - building an admin section, where you will be able to add and modify T-shirts.
+
+{% include 'shared/questions_section' %}
