@@ -33,7 +33,7 @@ Create a page using the `log` Liquid tag, and sync it.
 slug: log-test
 ---
 {% log 'This is a message' %}
-{% log params %}
+{% log params, type: 'request-params' %}
 {% log user.id, type: 'debug' %}
 {% endraw %}
 ```
@@ -41,7 +41,8 @@ slug: log-test
 #### Notes:
 You can print any object to the logs that can be printed.
 You can use parameters (e.g. take parameters from the URL and include them in the message).
-The `type` of the log entry can be: `info`, `debug`, or `error`.
+The `type` of the log entry can be any string you want to tag your entry.
+If you chose `error` marketplace-kit will mark it red and try to notify your OS.
 
 ### Step 2: Start logging
 In your command line, enter the command to start live logging:
