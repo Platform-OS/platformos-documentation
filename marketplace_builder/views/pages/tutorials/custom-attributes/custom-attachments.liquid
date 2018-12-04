@@ -22,13 +22,14 @@ You can enable CustomAttachments by adding a CustomAttribute with `attribute_typ
 
 The Custom Attachment attribute must be defined in a form in order to whitelist and validate the form request.
 
-```yaml">
+```yaml
 ...
-custom_attachments:
-  agreement:
-    file:
-      validation:
-        file_content_type: { allow: ['image/jpeg', 'image/png', 'application/pdf'] }
+configuration:
+  custom_attachments:
+    agreement:
+      file:
+        validation:
+          file_content_type: { allow: ['image/jpeg', 'image/png', 'application/pdf'] }
 ...
 ```
 
@@ -51,6 +52,8 @@ After setting up attachments as described above, you can further customize them 
   <span>Select file...</span>
   <input accept=".pdf,.jpg,.jpeg,.png" name="{{ form_builder.fields.custom_attachments.agreement.file.name }}" type="file">
 </label>
+
+<button>Submit file</button>
 
 {% if form_builder.errors['custom_attachments.agreement.file'] %}
   <p>{{ form_builder.errors['custom_attachments.agreement.file'] }}</p>
