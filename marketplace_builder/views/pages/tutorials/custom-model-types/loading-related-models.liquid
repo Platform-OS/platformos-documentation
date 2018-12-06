@@ -140,14 +140,14 @@ While displaying the programmer collection — for each programmer record — yo
 
 Test the approach described in step 2. The results of [Measuring Execution Time of Liquid Code Fragments (time_diff)](/tutorials/performance/measuring-execution-time-liquid-time-diff) in this case will be as follows:
 
-|               | graphql |   render |
-|---------------|---------|----------|
-| benchmark-n+1 |  24.065 | 1748.686 |
-|               |  29.663 | 1862.711 |
-|               |  27.478 | 1654.610 |
-|               |  25.765 | 1787.026 |
-||—|—|
-| | 27.478 | 1787.026 |
+|               |  overall |
+|---------------+----------|
+| benchmark-n+1 | 1236.169 |
+|               | 1223.485 |
+|               | 1418.733 |
+|               | 1216.547 |
+|               | 1314.053 |
+
 
 The results show that this approach produces slow output. The n+1 queries slow down the process, because displaying each record produces a request for another model. 
 
@@ -201,16 +201,13 @@ Update the `programmers/index` page. The page looks much simpler now:
 
 Test the second approach using the same measurement method. The results: 
 
-|                 |   graphql |  render |
-|---------------|---------|----------|
-| benchmark-model |     57.42 |  165.78 |
-|                 |     61.52 |  187.39 |
-|                 |    51.407 | 154.171 |
-|                 |    49.946 | 153.696 |
-|                 |    48.501 | 241.319 |
-|                 |    45.854 | 192.571 |
-||—|—|
-| | 64.281001 | 182.718 |
+|                 | overall |
+|-----------------+---------|
+| benchmark-model | 122.504 |
+|                 | 160.885 |
+|                 | 134.064 |
+|                 | 160.051 |
+|                 | 131.056 |
 
 Requesting data from the related model within the GraphQL query delivers results 10 times faster. 
 
