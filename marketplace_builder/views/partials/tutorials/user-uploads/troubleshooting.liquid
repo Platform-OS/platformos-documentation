@@ -1,0 +1,19 @@
+---
+converter: markdown
+---
+
+#### General
+* Instead of sending an image to our server you will send a url (returned by S3 response) to the image inside the text field for given image. Image URL should look similar to `https://near-me-oregon-staging.s3-us-west-2.amazonaws.com/uploads%2Fbc50d6da-c17e-477d-b143-c65422c221fd%2Ftest.3+%282%29.png`
+* After form submission give our server couple of seconds to pickup your image, generate size versions, compress them and upload to the new S3 location so the CDN could pick it up for you and datatabase to be updated with CDN links
+
+If you have problems that you cannot figure out, go to live example page, inspect whats being sent to S3 and our server respectively and find differences between your requests and those that work - the difference usually is whats broken
+
+### AWS
+* Make sure your form is using POST method
+* Make sure your form is sending data as `enctype="multipart/form-data"`
+* Do not include any fields that are not listed in the `s3_upload` key, otherwise AWS will return error 403 with message `Invalid according to Policy: Extra input fields: xxx`
+* Make sure file input is sent last in the form
+* Remember to set your file input name to `file`
+* Make sure you included `x-amz-meta-metadata` field even if it is an empty object (`{}`), lack of it will throw a validation error because AWS S3 is expecting it to be present
+
+Read more about [aws requirements](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-HTTPPOSTForms.html).
