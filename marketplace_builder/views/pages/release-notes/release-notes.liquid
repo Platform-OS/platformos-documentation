@@ -8,15 +8,24 @@ metadata:
 slug: release-notes
 searchable: true
 ---
+
 <h3>{{ page.metadata.description }}</h3>
 
-{% query_graph 'release_notes' %}
+{% query_graph 'release_notes', result_name: "rn" %}
 
 <ul>
-  {% for page in g.pages.results reversed %}
+  {% for page in rn.pages.results reversed %}
     <li>
       <strong>{{ page.metadata.date }}</strong>
       <a href="/{{ page.slug }}">{{ page.metadata.description }}</a>
     </li>
   {% endfor %}
- </ul>
+</ul>
+
+
+<h3>Documentation Reports</h3>
+
+<p>
+  Sign up for our <a href="https://platform-os.com/documentation-reports" target="_blank" rel="noopener">weekly documentation reports</a>
+  if you want stay up to date with new tutorials and other changes within our documentation site.
+</p>
