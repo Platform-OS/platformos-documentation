@@ -81,7 +81,7 @@ query get_pages {
 
 ### Step 3: Create page
 
-#### A not on naming conventions and paths
+#### A note on naming conventions and paths
 
 Configuration files placed in a module are treated a bit differently than regular files.
 To avoid conflicts between the code of a module and regular code (or between modules) a namspacing strategy is used.
@@ -117,7 +117,7 @@ Layouts have the same prefix so when you use them you should do it in the follow
 ```liquid
 slug: 'admin/settings'
 format: html
-layout_name: 'layouts/modules/admin/settings'
+layout_name: 'modules/admin/layouts/settings'
 ```
 
 4. Other resources (Authorization Policy, Graph Query, etc.)
@@ -159,7 +159,6 @@ query get_blog_instance(
 {% comment %} But you use it with the module prefix {% endcomment %}
 {%- query_graph 'blog/get_blog_instance', scope: 'blog', result_name: bi, slug: url_params.slug -%}
 ```
-
 
 #### admincms/public/views/pages/admin.liquid
 
