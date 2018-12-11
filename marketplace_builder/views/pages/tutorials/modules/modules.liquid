@@ -66,10 +66,12 @@ The same thing works for JavaScript files, for example:
 
 2. Partials
 
-Partials can use full path with the prefix this is a bit longer but allows us to avoid ambiguity
+Partials can be referenced with their shorter name - the same as the regular ones. For example, if you had
+a partial in `'modules/admin/private/views/partials/comments.liquid'` to include it you should use:
+
 
 ```liquid
-{% include 'modules/blog/private/views/partials/comments' %}
+{% include 'modules/admin/comments' %}
 ```
 
 3. Layouts
@@ -77,14 +79,15 @@ Partials can use full path with the prefix this is a bit longer but allows us to
 Layouts have the same prefix so when you use them you should do it in the following way
 
 ```liquid
-slug: admin/settings
-layout_name: modules/admin/views/layouts/settings
+slug: 'admin/settings'
+format: html
+layout_name: 'modules/admin/settings'
 ```
 
 4. Other resources (Authorization Policy, Graph Query, etc.)
 
 When creating a module you don't have to add prefix to the name but when you use it (inside or outside of module scope) you have to provide
-the 'module_name/' prefix. Some examples:
+the 'modules/module_name/' prefix. Some examples:
 
 ```liquid
 {% comment %} Definition stays the same {% endcomment %}
@@ -93,7 +96,7 @@ name: can_view_blog_posts
 redirect_to: /blog
 flash_alert: Please log in to access this page.
 ---
-{% query_graph "blog/get_blog_user", result_name: "g" %}
+{% query_graph "modules/admin/get_blog_user", result_name: "g" %}
 {% comment %}
  if g.current_user and g.current_user.admin_profile true endif
 {% endcomment %}
@@ -101,7 +104,7 @@ true
 
 {% comment %} But is used with a prefix {% endcomment %}
 authorization_policies:
-  - blog/can_view_blog_posts
+  - modules/admin/can_view_blog_posts
 ```
 
 ```liquid
@@ -118,7 +121,7 @@ query get_blog_instance(
 }
 
 {% comment %} But you use it with the module prefix {% endcomment %}
-{%- query_graph 'blog/get_blog_instance', scope: 'blog', result_name: 'bi', slug: url_params.slug -%}
+{%- query_graph 'modules/admin/get_blog_instance', scope: 'blog', result_name: 'bi', slug: url_params.slug -%}
 ```
 
 ## Related topics
