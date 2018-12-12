@@ -1,28 +1,27 @@
 ---
 converter: markdown
 metadata:
-  title: Search by content
-  description: A page can be searched by it's content.
+  title: Search by Content
+  description: Configuring search by page content. 
 slug: tutorials/pages/search-by-content
 searchable: true
 ---
 
-## Searching for a page by a content
+You can **search for a page based on its content**. For example, this might be helpful for creating search for the FAQ page.
+Search will work on the rendered page version, so this page can't rely on any dynamic data, ie. `current_user` or URL params.
 
-You can search for a page using its content. This might be helpfull for creating search for FAQ page.
-Search will work on rendered page version, so this page can't rely on any dynamic data, ie. `current_user` or url params.
-Page needs to be marked as `searchable: true`.
-
+Page needs to be marked as `searchable: true`:
 
 ```yaml
 ---
-slug: signup
+...
+slug: tutorials/pages/search-by-content
 searchable: true
 ---
-What is the delivery cost?
-
-It will be 20$.
+...
 ```
+
+Search query: 
 
 ```graphql
 query search_page(
