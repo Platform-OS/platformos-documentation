@@ -15,10 +15,17 @@ Page caching means you create a static HTML site, and serve it bypassing the who
 
 ```liquid
 {% raw %}
-cache_static_page_for: 0 
+# views/pages/home.liquid
+---
+slug: /
+static_cache:
+  expire: 10 # static html page will be cached for 10 seconds
+---
+... 
 {% endraw %}
 ```
-{% include 'alert/note', content: 'In the old infrastructure of PlatformOS, you used `cache_for`, in the new infrastructure you should use `cache_static_page_for`.' %}
+
+{% include 'alert/note', content: 'In the old infrastructure of PlatformOS, you used `cache_for`. See the example above for the new infrastructure.' %}
  
 ## Action caching
 
@@ -28,44 +35,46 @@ Action caching works similarly to page caching, you can use it to cache the whol
 
 ```liquid
 {% raw %}
-cache_expiration_key > 
-	{{ context.page.slug }} 
-cache_action_for: 10 
-cache_layout: true 
+---
+# views/pages/home.liquid
+slug: /
+dynamic_cache:
+  expire: 10 # keep the cache for 10 seconds
+  layout: true # layout will be part of the cache, if it's not desired, use false instead
+  key: > # by default the key is the whole url, for example https://example.com?my_arg=1. If the page content does not depend on arguments, it's best to restrict it to just page.slug [ and/or context.params.slug2 etc ]
+    {{ context.page.slug }} 
+---
+...
 {% endraw %}
 ```
 
 **Explanation:** 
 
-There are three properties that control the action cache: 
+The following properties control the action cache: 
 
-* The **`cache_expiration_key`** allows you to define a unique identifier for the page. By default, it's the full page URL. If you cache a page for 10 seconds, and the `cache_expiration_key` is blank, cache will be generated for the whole URL. If the user changes anything in the URL, the cache will not be taken into consideration. 
+```liquid
+{% raw %}
+dynamic_cache:
+  key:
+  layout:
+  expire:
+{% endraw %}
+```
 
-   In a scenario, where you have multiple product pages, and you want to cache the product page, you can have a GraphQL query here: 
-   
-   ```liquid
-   {% raw %}
-   cache_expiration_key > 
-	   {% graph_query 'get_cached_at_from_product', result_name: 'g' %} 
-	   {{ context.page.slug }}/{{ g.results.first.cached_at }}
-   cache_action_for: 0 
-   cache_layout: true 
-   {% endraw %}
-   ```
-
-* The default for `cache_action_for` is as long as possible. Setting it to `0` means invalidate the cache if anything changes (i.e. when the `cache_expiration_key` changes).  
-* The default for `cache_layout` is `false`. 
+* **`key`** allows you to define a unique identifier for the page. By default, it's the full page URL. If you cache a page for 10 seconds, and the `cache_expiration_key` is blank, cache will be generated for the whole URL. If the user changes anything in the URL, the cache will not be taken into consideration. 
+* If **`expire`** is set to 0 and `key` is set, the cache will never expire by itself (updating the file would invalidate the cache though). If `key` is blank and `expire` is 0, the page won't be cached at all.  
+* The default for **`layout`** is `false`. 
 
 ## Fragment caching
 
-Using page caching, or action caching for the whole page, whenever you change something on the page and deploy it, the cache will be invalidated. In reality, it's rare, that you would want to cache the whole page or layout (this is why `cache_layout` is `false` by default). 
+Using page caching, or action caching for the whole page, whenever you change something on the page and deploy it, the cache will be invalidated. In reality, it's rarely possible to cache the whole page or layout (this is why `layout` is `false` by default). 
 
 You can cache specific parts of a page or layout using fragment caching, where you just cache common parts, fragments that take a lot of time and can be cached, for example:
 
 ```liquid
 {% raw %}
-{% assign cache_key = context.page.slug %}
-{% cache cache_key, expires_in: 5 %}
+{% assign key = context.page.slug %}
+{% cache key, expires_in: 5 %}
    {% include 'very_big_graph_query' %}
    {% for ... %}
       ...
@@ -79,7 +88,7 @@ You can cache specific parts of a page or layout using fragment caching, where y
 You can test the cache by adding a random string to the beginning of the page and another one to the beginning of the layout. This way, you can see if the string on the page or layout has changed after refreshing the page:
 
 * When the page is rendered from the cache, the string remains the same. 
-* When the cache is invalidated (e.g. after the time specified in the `cache_action_for` property), the string changes.  
+* When the cache is invalidated (e.g. after the time specified in the `expire` property), the string changes.  
 
 **Example:**
 
@@ -91,16 +100,10 @@ randomstring: {{ 18 | random_string }}
 
 ## Tokens
 
-Caching pages that include secret tokens (like an `authenticity_token` that's generated for each session) can be implemented using fragment caching. 
-
-If you cache the whole page that includes a token, then the token gets also cached. This could for example prevent the user from submitting a form. 
+If you cache a whole page that includes a token (like an `authenticity_token` that's generated for each session), then the token gets also cached. This could for example prevent the user from submitting a form. 
 
 PlatformOS automatically processes the cache and updates those tokens if you use the PlatformOS-specific `form` tag. 
 If you'd like to use the `form` HTML tag, you have to include the token exactly as it is. 
 If you're using JavaScript, we include the CSRF token in the cookie of the logged in user. 
 
 {% include 'shared/questions_section' %}
-
- 
-
-
