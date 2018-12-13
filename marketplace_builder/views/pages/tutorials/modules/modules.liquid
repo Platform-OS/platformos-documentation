@@ -104,6 +104,7 @@ the `modules/module_name/` prefix.
 Authorization policy definition looks like any other:
 
 ```liquid
+{% raw %}
 ---
 name: can_view_blog_posts
 redirect_to: /blog
@@ -111,6 +112,7 @@ flash_alert: Please log in to access this page.
 ---
 {% query_graph "modules/admin/get_blog_user", result_name: "g" %}
 true
+{% endraw %}
 ```
 
 But within page/form it is referenced with a prefix:
