@@ -42,6 +42,88 @@ admincms
             └── admin.liquid
 ```
 
+
+## Resource naming conventions and paths
+
+Configuration files placed in a module are treated a bit differently than regular files.
+To avoid conflicts between the code of a module and regular code (or between modules) a namespacing strategy is used.
+
+##### Namespacing rules
+
+1. Assets (JavaScript, CSS, images) - paths for those files are prefixed with *modules/MODULE_NAME*
+
+For example if you have asset in a file called 'app.css' in a module named "admin" to include it you should use
+
+```liquid
+<link rel="stylesheet" media="screen" href="{{ 'modules/admin/app.css' | asset_url }}">
+```
+
+The same thing works for JavaScript files, for example:
+
+```liquid
+<script src="{{ 'modules/admin/admin.js' | asset_url }}"></script>
+```
+
+2. Partials
+
+Partials can be referenced with their shorter name - the same as the regular ones. For example, if you had
+a partial in `'modules/admin/private/views/partials/comments.liquid'` to include it you should use:
+
+
+```liquid
+{% include 'modules/admin/comments' %}
+```
+
+3. Layouts
+
+Layouts have the same prefix so when you use them you should do it in the following way
+
+```liquid
+slug: 'admin/settings'
+format: html
+layout_name: 'modules/admin/settings'
+```
+
+4. Other resources (Authorization Policy, Graph Query, etc.)
+
+When creating a module you don't have to add prefix to the name but when you use it (inside or outside of module scope) you have to provide
+the 'modules/module_name/' prefix. Some examples:
+
+```liquid
+{% comment %} Definition stays the same {% endcomment %}
+---
+name: can_view_blog_posts
+redirect_to: /blog
+flash_alert: Please log in to access this page.
+---
+{% query_graph "modules/admin/get_blog_user", result_name: "g" %}
+{% comment %}
+ if g.current_user and g.current_user.admin_profile true endif
+{% endcomment %}
+true
+
+{% comment %} But is used with a prefix {% endcomment %}
+authorization_policies:
+  - modules/admin/can_view_blog_posts
+```
+
+```liquid
+{% comment %} Query stays the same {% endcomment %}
+
+query get_blog_instance(
+  $current_user_id: ID
+  $slug: String
+  $scope: String
+) {
+  customizations(
+  ...
+) {
+}
+
+{% comment %} But you use it with the module prefix {% endcomment %}
+{%- query_graph 'modules/admin/get_blog_instance', scope: 'blog', result_name: 'bi', slug: url_params.slug -%}
+```
+
 ## Related topics
 
 * [Creating a Module](/tutorials/modules/creating-module)
