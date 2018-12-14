@@ -290,14 +290,14 @@ Take a look at how you could structure the shared partial, to make it configurab
 This example can be split into three separate parts and as a pattern reused throughout the application:
 
 1. Top comment: contains a list of all required and optional parameters that can be passed and will be used in this partial. This way it’s easier to see at a glance what options are available. 
-2. Assign values part: most of the optional parameters should have some kind
+2. Assign values: most of the optional parameters should have some kind of initial value assigned, if none is provided in the `include` tag. Keeping all of these declarations always in the same place makes your partial more readable.
 
 {% capture content %}
 You should always reset values of all variables at the top of the partial. In case of `_required` you could have omitted the `else` section and just assume if it’s not assigned then the default blank applies. However, if any of the previous partials did set the value for the variable, it would leak into your partial.
 {% endcapture %}
 {% include 'alert/warning', content: content %}
 
-3. Rendering part: It’s recommended to split common components into their own separate partials. Whenever you want to make a change to either `label` or `error` elements, they will be used in all fields, so once more you do not have to repeat yourself.
+3. Rendering: It’s recommended to split common components into their own separate partials. Whenever you want to make a change to either `label` or `error` elements, they will be used in all fields, so once more you do not have to repeat yourself.
 
 ### Step 5. Update existing forms
 
