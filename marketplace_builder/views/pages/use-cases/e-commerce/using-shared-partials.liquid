@@ -1,13 +1,13 @@
 ---
 converter: markdown
 metadata:
-  title: Using shared partials
-  description: Tutorial on how to structure the application to avoid repeating yourself.
+  title: Using Shared Partials
+  description: This guide will show you how you can structure your code more efficiently by avoiding unnecessary repetition.
 slug: use-cases/e-commerce/using-shared-partials
 searchable: true
 ---
 
-This guide will show you how you can structure your code in a more efficient manner, to avoid unnecessary repetition. So far you haven’t written much code, but there are already some cases that will benefit greatly from refactoring:
+This guide will show you how you can structure your code more efficiently by avoiding unnecessary repetition. Although you haven't written much code so far in this tutorial series, there are already some cases that will benefit greatly from refactoring:
 
 - using shared partials for fetching common data
 - creating form field partials
@@ -20,29 +20,29 @@ To follow this tutorial, you should be familiar with basic PlatformOS concepts, 
 
 - [How Platform OS Works](/how-platformos-works)
 - [Get Started](/get-started)
-- [Building an Admin Section](/use-cases/e-commerce/building-admin-section)
+- [Building the Admin Section](/use-cases/e-commerce/building-admin-section)
 - [Documentation for `include` tag](https://www.rubydoc.info/gems/liquid/Liquid/Include)
 
 ## Steps
 
-Refactoring the views we’ve build so far is a five-step process:
+Refactoring the views we’ve built so far is a five-step process:
 
-1. Create a shared partial with current user data
+1. Create shared partial with current user data
 2. Rename `current_user` query
 3. Update files fetching `current_user` data
 4. Create shared partials for form fields
 5. Update existing forms
 
-### Step 1. Create a shared partial with current user data
+### Step 1. Create shared partial with current user data
 
-Some information is reused over and over in your application. When you’ve built the admin panel logic, you had to keep checking over and over again in different places if current user has admin access flag set to `true`. So far each time you needed to do that, you called `current_user` query and checked appropriate field value. Imagine though, that further down the road in the project, additional business logic is put in place, that changes this condition. You will have to go in, and updated all of these places in code.
+Some information is reused over and over in your application. When you’ve built the admin panel logic, you had to keep checking over and over again in different places if current user has admin access flag set to `true`. So far each time you needed to do that, you called the `current_user` query and checked the appropriate field value. Imagine though, that further down the road in the project, additional business logic is put in place, that changes this condition. You will have to go in, and update all of these places in code.
 
 {% capture content %}
-This problem is not new and every programming project has to deal with it in one way or the other. What we propose below is just a convention, and not a definitive and only way of approaching this issue.
+This problem is not new and every programming project has to deal with it in one way or another. What we propose below is just a convention, and not the only way to approach this issue.
 {% endcapture %}
 {% include 'alert/note', content: content %}
 
-Start with moving data fetching to separate partial in `shared` namespace.
+Start with moving the part that fetches data to a separate partial in the `shared` namespace.
 
 #### marketplace_builder/views/partials/shared/get_current_user.liquid
 
@@ -63,7 +63,7 @@ Start with moving data fetching to separate partial in `shared` namespace.
 
 ```
 
-In the above code snippet you’ve:
+In the above code snippet you have:
 
 1. Fetched the data with query
 2. Added a new field `has_admin_access` to returned object (which is a reference to another field down the properties tree)
@@ -79,17 +79,17 @@ Now, anytime you want to fetch current user data you can go ahead and write
 {% endraw %}
 ```
 
-You will then have access to `current_user.has_admin_access` variable. This example might seem too convoluted, but there are certain upsides to this convention:
+You will then have access to the `current_user.has_admin_access` variable. This example might seem too convoluted, but there are certain upsides to this convention:
 
-1. Every variable is defined explicitly. By generating / parsing JSON you avoided creating a variable that magically appears in the parent template, leaving any future developers scratching their heads.
-2. You can extend logic attached to current user in one place, and make it available everywhere else.
+1. Every variable is defined explicitly. By generating / parsing JSON, you avoided creating a variable that magically appears in the parent template, leaving any future developers scratching their heads.
+2. You can extend the logic attached to the current user in one place, and make it available everywhere else.
 
 ### Step 2. Rename `current_user` query
 
-Rename query `marketplace_builder/graph_queries/user/current_user.liquid` to `marketplace_builder/graph_queries/user/get_current_user_data.liquid` and update query name inside the file.
+Rename query `marketplace_builder/graph_queries/user/current_user.liquid` to `marketplace_builder/graph_queries/user/get_current_user_data.liquid` and update the query name inside the file.
 
 {% capture content %}
-Liquid implementation comes with a certain feature you have to be aware of. [Documentation for `include` tag](https://www.rubydoc.info/gems/liquid/Liquid/Include) mentions, that you you can use `for` and `with` keywords to pass a variable that will named after the partial name.
+Liquid implementation comes with a certain feature you have to be aware of. The [documentation for the `include` tag](https://www.rubydoc.info/gems/liquid/Liquid/Include) mentions, that you can use `for` and `with` keywords to pass a variable that will be named after the partial name.
 
 This variable is created every time, even if you do not use `for` or `with` keywords (it’s simply blank). It cannot be overwritten, so it’s important to avoid creating new variables or calling queries that are called the same as the partial file.
 {% endcapture %}
@@ -138,9 +138,9 @@ redirect_to: >
 
 ### Step 4. Create shared partials for form fields
 
-Another prime candidate for refactoring are form field inputs. Form components can be rendered using `form_builder` variable, available inside of every form configuration html content section.
+Another prime candidate for refactoring are form field inputs. Form components can be rendered using the `form_builder` variable, available inside of every form configuration html content section.
 
-This variable contains all of the information regarding every field - it’s name, current value, validation rules and possible errors attached to the field.
+This variable contains all information regarding every field - its name, current value, validation rules, and possible errors attached to the field.
 
 Having this in place you can easily build shared partials, that will accept a `form_builder.fields` entry and generate the required control in a consistent manner.
 
@@ -150,7 +150,7 @@ For the sake of brevity, this tutorial includes only one example, for regular `<
 {% include 'alert/note', content: content %}
 
 {% comment %}
-TODO: Add a link to the form_builder beginners tutorial once it’s out
+TO BE ADDED: link to the form_builder beginners tutorial once it’s out
 {% endcomment %}
 
 #### `form_builder.fields` sample entry
@@ -179,13 +179,13 @@ TODO: Add a link to the form_builder beginners tutorial once it’s out
 }
 ```
 
-Let’s quickly dissect particular properties:
+Properties explained:
 
 - `name` and `value` represent matching html attributes for any html input
-- `validation` contains both the rules that should be applied to the input (very useful to add validation on the frontend as we’ll see in just a moment) and actual validation errors if any occurred during last form submit.
+- `validation` contains both the rules that should be applied to the input (very useful to add validation on the frontend as you’ll see in just a moment) and actual validation errors if any occurred during the last form submit
 - `property_options` contains additional configuration options but these do not apply to building shared form input partials
 
-Let’s take a look at how you could structure the shared partial, to make it configurable and use values provided by `form_builder`
+Take a look at how you could structure the shared partial, to make it configurable and use values provided by `form_builder`:
 
 #### marketplace_builder/views/partials/forms/fields/text.liquid
 
@@ -287,21 +287,21 @@ Let’s take a look at how you could structure the shared partial, to make it co
 {% endraw %}
 ```
 
-This example can be split into three separate parts and as a pattern reused throughout the application
+This example can be split into three separate parts and as a pattern reused throughout the application:
 
-1. Top comment contains a list of all required and optional parameters that can be passed and will be used in this partial. It’s easier this way to see at a glance what options are available
-2. Assign values part - most of the optional parameters should have some kind
+1. Top comment: contains a list of all required and optional parameters that can be passed and will be used in this partial. This way it’s easier to see at a glance what options are available. 
+2. Assign values part: most of the optional parameters should have some kind
 
 {% capture content %}
 You should always reset values of all variables at the top of the partial. In case of `_required` you could have omitted the `else` section and just assume if it’s not assigned then the default blank applies. However, if any of the previous partials did set the value for the variable, it would leak into your partial.
 {% endcapture %}
 {% include 'alert/warning', content: content %}
 
-3. Rendering part. It’s recommended to split common components into their own separate partials. Whenever you want to make a change to either `label` or `error` elements, they will be used in all fields, so once more you do not have to repeat yourself.
+3. Rendering part: It’s recommended to split common components into their own separate partials. Whenever you want to make a change to either `label` or `error` elements, they will be used in all fields, so once more you do not have to repeat yourself.
 
 ### Step 5. Update existing forms
 
-With partial in place you can now update your one existing form `sign_in_form`
+With partial in place you can now update your form `sign_in_form`:
 
 #### marketplace_builder/form_configurations/session/sign_in_form.liquid
 
@@ -356,7 +356,7 @@ configuration:
 {% endraw %}
 ```
 
-For good measure it’s recommended to keep all common elements in their own partials, so go ahead and create a default submit partial
+It’s recommended to keep all common elements in their own partials, so go ahead and create a default submit partial:
 
 #### marketplace_builder/views/partials/forms/submit.liquid
 
@@ -386,6 +386,6 @@ Congratulations! You’ve cleaned up the views and made it easier to reuse commo
 - extend default HTML5 validation by parsing `validation` rules provided by `form_builder`
 - use {% raw %}`{% log "{message}", type: "error" %}`{% endraw %} tag to mark an error anytime a require parameter is missing in the partial
 
-With these simple changes you are now ready to start building the admin panel in earnest. In the next part you’ll define all constants and enums for your application, so it’s easier than relying on magical strings.
+With these simple changes you are now ready to start building the admin panel in earnest. In the next part you’ll define all constants and enums for your application, so that it’s easier than relying on magical strings.
 
 {% include 'shared/questions_section' %}
