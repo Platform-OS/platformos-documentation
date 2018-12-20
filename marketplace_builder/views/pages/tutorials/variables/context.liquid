@@ -42,7 +42,7 @@ slug: context_example
 {% endraw %}
 
 * **context.session** object allows for quick access to session storage. Use mutations in order to store data in session as in [example](https://documentation.platform-os.com/api-reference/graphql/graphql-glossary#operation-name)
-* **context.current_user** object returns basic data of currently logged in user. Available attributes are: `first_name`, `last_name`, `email`, `id` and `slug`.
+* **context.current_user** object returns basic data of currently logged in user. Available attributes are: `first_name`, `last_name`, `email`, `id` and `slug`. It will return `nil` instead of object if user is not logged in.
 
 * **context.headers** object contains whitelisted [HTTP headers](https://en.wikipedia.org/wiki/List_of_HTTP_header_fields) with the data from the current HTTP request.
 
