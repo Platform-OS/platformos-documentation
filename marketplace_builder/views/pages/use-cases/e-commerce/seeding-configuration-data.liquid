@@ -1,0 +1,278 @@
+---
+converter: markdown
+metadata:
+  title: Seeding Configuration Data
+  description: This guide will help you seed initial configuration data in your application.
+slug: use-cases/e-commerce/seeding-configuration-data
+searchable: true
+---
+
+This guide will help you seed initial configuration data in your application. 
+
+## Requirements
+
+To follow this tutorial, you should be familiar with basic PlatformOS concepts, and the topics in the Get Started section. You should have followed this tutorial series up to the previous part "Using Constants".
+
+- [How Platform OS Works](/how-platformos-works)
+- [Get Started](/get-started)
+- [Using Constants](/use-cases/e-commerce/using-constants)
+
+## Steps
+
+Seeding configuration data is a six-step process:
+
+1. Prepare configuration data files
+2. Create processor partials
+3. Create queries and mutations
+4. Create form configurations
+5. Create migrations
+6. Run migrations
+
+### Step 1: Prepare configuration data files
+
+Brand and product type models are pretty basic ones, they only contain a name of the object. In the future though, you might want to extend them with descriptions, photos, icons, etc. Storing these values in a partial would quickly become very cumbersome and limit the usefulness of GraphQL searches.
+
+#### marketplace_builder/views/partials/data/brand.json.liquid
+
+```json
+[
+  "adidas",
+  "adidas Originals",
+  "Airstep Socks",
+  "Alexander Del Rossa",
+  "alpine swiss",
+  "Amazon Essentials",
+  "Arctic Extreme",
+  "ARRIS",
+  "boxercraft",
+  "Calvin Klein",
+  "Carhartt",
+  "Champion",
+  "Columbia",
+  "Copper Fit",
+  "CYZ Collection",
+  "Debra Weitzner",
+  "DG Hill",
+  "Dickies",
+  "Dockers",
+  "Enerwear",
+  "FITEXTREME",
+  "fresh tees",
+  "Fruit of the Loom",
+  "Gildan",
+  "Gold Toe",
+  "Hanes",
+  "Hanes Ultimate",
+  "Happypop",
+  "HSELL",
+  "Legendary Whitetails",
+  "Lucky Brand",
+  "Marino Avenue",
+  "Mottee&Zconia",
+  "NY Threads",
+  "ororo",
+  "People Socks",
+  "PUMA",
+  "Ross Michaels",
+  "Saucony",
+  "Socksmith",
+  "Southpole",
+  "Stance",
+  "Tesla",
+  "Thermajohn",
+  "Under Armour",
+  "USBingoshop",
+  "Wantdo",
+  "WANTDO",
+  "Wrangler"
+]
+```
+
+#### marketplace_builder/views/partials/data/product_type.json.liquid
+
+```json
+["Crew Neck", "V Neck", "Henley - Y Neck", "Polo", "Scoop Neck"]
+```
+
+`.json` part of the file name is optional, it just helps identify file type at a glance.
+
+{% capture content %}
+Many editors allow you to set syntax highlighting depending on more than just one extension. For example, in VS Code you can add below entry in editor settings.
+
+`"files.associations": { "*.json.liquid": "json" }`
+
+{% endcapture %}
+{% include 'alert/tip', content: content %}
+
+### Step 2: Create processor partials
+
+Processor files are supposed to be included inside of the migration file and should allow multiple execution without creating any duplicates. This way if you need to add more Customizations in the future, you can create a new migration, include processor partial without having to repeat the logic behind it.
+
+#### marketplace_builder/views/partials/migrations/create_brands.liquid
+
+```liquid
+{% raw %}
+{% query_graph 'get_brands', result_name: existing %}
+{% parse_json brand_names %}{% include "data/brand.json" %}{% endparse_json %}
+
+{% assign existing_names = existing.customizations.results | map: "name" %}
+
+{% for name in brand_names %}
+  {% unless existing_names contains name %}
+    {% execute_query "create_brand", name: name %}
+  {% endunless %}
+{% endfor %}
+{% endraw %}
+```
+
+#### marketplace_builder/views/partials/migrations/create_product_types.liquid
+
+```liquid
+{% raw %}
+{% query_graph 'get_product_types', result_name: existing %}
+{% parse_json product_type_names %}{% include "data/product_type.json" %}{% endparse_json %}
+
+{% assign existing_names = existing.customizations.results | map: "name" %}
+
+{% for name in product_type_names %}
+  {% unless existing_names contains name %}
+    {% execute_query "create_product_type", name: name %}
+  {% endunless %}
+{% endfor %}
+{% endraw %}
+```
+
+### Step 3: Create queries and mutations
+
+#### marketplace_builder/graph_queries/brand/get_brands.graphql
+
+```graphql
+query get_brands {
+  customizations(name: "brand", per_page: 999) {
+    results {
+      id
+      name: property(name: "name")
+    }
+  }
+}
+```
+
+#### marketplace_builder/graph_queries/brand/mutations/create_brand.graphql
+
+```graphql
+mutation create_brand($name: String) {
+  customization_create(
+    form_configuration_name: "create_brand_form"
+    customization: {
+      custom_model_type_name: "brand"
+      properties: [{ name: "name", value: $name }]
+    }
+  ) {
+    id
+  }
+}
+```
+
+#### marketplace_builder/graph_queries/product_type/get_product_types.graphql
+
+```graphql
+query get_product_types {
+  customizations(name: "product_type", per_page: 999) {
+    results {
+      id
+      name: property(name: "name")
+    }
+  }
+}
+```
+
+#### marketplace_builder/graph_queries/product_type/mutations/create_product_type.graphql
+
+```graphql
+mutation create_product_type($name: String) {
+  customization_create(
+    form_configuration_name: "create_product_type_form"
+    customization: {
+      custom_model_type_name: "product_type"
+      properties: [{ name: "name", value: $name }]
+    }
+  ) {
+    id
+  }
+}
+```
+
+### Step 4: Create form configurations
+
+#### marketplace_builder/form_configurations/brand/create_brand_form.liquid
+
+```yaml
+name: create_brand_form
+resource: Customization
+configuration:
+  properties:
+    name:
+      validation:
+        presence: true
+---
+
+```
+
+#### marketplace_builder/form_configurations/brand/create_product_type_form.liquid
+
+```yaml
+name: create_product_type_form
+resource: Customization
+configuration:
+  properties:
+    name:
+      validation:
+        presence: true
+---
+
+```
+
+### Step 5: Create migrations
+
+```shell
+marketplace-kit migrations generate development create_brands
+```
+
+#### marketplace_builder/migrations/TIMESTAMP_create_brands.liquid
+
+````liquid
+{% raw %}
+{% include "migrations/create_brands" %}
+{% endraw %}
+
+```shell
+marketplace-kit migrations generate development create_product_types
+````
+
+#### marketplace_builder/migrations/TIMESTAMP_create_product_types.liquid
+
+```liquid
+{% raw %}
+{% include "migrations/create_product_types" %}
+{% endraw %}
+```
+
+### Step 6: Run migrations
+
+Deploying your code or executing migrations with the `marketplace-kit migration run` command will save all of the data to the database. In the future, in order to add new brands, you can simply edit `brand.yml` and add a new migration that includes the processor file.
+
+{% capture content %}
+There is quite a lot of overlap between `brand` and `product_type` models. Above example could be streamlined and optimized, to use common queries, Form Configurations, etc.
+{% endcapture %}
+{% include 'alert/note', content: content %}
+
+{% capture content %}
+Be careful when creating processor files that either modify or delete existing Customizations. Make sure that you do not inadvertently create data inconsistencies with missing reference to existing models.
+{% endcapture %}
+{% include 'alert/warning', content: content %}
+
+## Next steps
+
+Congratulations! You’ve seeded your application with initial configuration data. You are now ready to create product management section in your admin panel.
+
+{% include 'shared/questions_section' %}
