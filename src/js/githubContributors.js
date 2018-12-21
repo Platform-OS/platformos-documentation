@@ -63,9 +63,7 @@ const initialize = () => {
         return response.json();
       })
       .then(data => (data.length ? updateHtml(data) : undefined))
-      .catch(response =>
-        response.then(err => console.log('Github API fetch resulted in an error: ', err))
-      );
+      .catch(err => console.log('Github API fetch resulted in an error: ', err));
   }
 };
 
