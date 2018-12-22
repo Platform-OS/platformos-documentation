@@ -1,6 +1,10 @@
 pipeline {
   agent any
 
+  triggers {
+    cron('H H/12 * * *')
+  }
+
   environment {
     TOKEN = credentials('POS_TOKEN')
     EMAIL = "darek+ci@near-me.com"
@@ -12,14 +16,8 @@ pipeline {
     timeout(time: 10, unit: 'MINUTES')
     buildDiscarder(logRotator(daysToKeepStr: '365', artifactDaysToKeepStr: '30'))
   }
-
   stages {
     stage('Staging') {
-
-      triggers {
-        cron('H H/12 * * *')
-      }
-
       environment {
         MP_URL = "https://documentation-staging.staging.oregon.platform-os.com"
       }
