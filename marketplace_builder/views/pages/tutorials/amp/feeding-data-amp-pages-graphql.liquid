@@ -9,13 +9,14 @@ searchable: true
 
 This guide will help you feed data into your AMP pages using GraphQL. The guide explains the process through a real-life example of displaying products of an online store.
 
+The guide explains the process through a real-life example of displaying products of an online store.
+
 ## Requirements
 This is an advanced tutorial. To follow it, you should be familiar with basic PlatformOS concepts, technologies, and the topics in the Get Started section, especially pages. You should also know what AMP pages are and how to create them.
 
-* [How PlatformOS Works](/how-platformos-works)
-* [Get Started: Pages](/tutorials/pages/pages)
-* [Using a Static AMP Template](/tutorials/amp/using-static-amp-template)
-* [Converting AMP HTML Pages to Layouts and Pages](/tutorials/amp/converting-amp-html-layouts-pages)
+* [Tutorials: Pages](/tutorials/pages/pages)
+* [Tutorials: Using a Static AMP Template](/tutorials/amp/using-static-amp-template)
+* [Tutorials: Converting AMP HTML Pages to Layouts and Pages](/tutorials/amp/converting-amp-html-layouts-pages)
 
 ## Steps
 Feeding data into AMP pages with GraphQL, in this case, displaying products on a page is a four-step process:
@@ -66,7 +67,7 @@ Include the AMP dependencies in the layout file `marketplace_builder/views/layou
 {% endraw %}
 ```
 
-#### Notes:
+#### Notes
 * The data source for `<amp-list>` is `products.json`.
 * `amp-mustache` enables the 'mustache' (double curly braces) templating syntax.
 * The `{{ "{% raw" }} %}` tag instructs the liquid preprocessor not to interpret the liquid tags, and leaves them to AMP/mustache to process.
@@ -102,7 +103,7 @@ format: json
 {% endraw %}
 ```
 
-#### Notes:
+#### Notes
 
 * The GraphQL query is not given any argument, thus it retrieves all the listings (products) which are then sorted by price in ascending order with the `sort:` liquid filter.
 * Then the `for` loop populates the `"items"` list with JSON data that contains the info for each product.
@@ -131,7 +132,7 @@ query get_listings($slug: String) {
 }
 ```
 
-#### Notes:
+#### Notes
 * If the optional slug argument is omitted, then it returns all listings.
 * `price` is a custom attribute defined in the Transactable Type's .yml file, which is found in the `transactable_types` directory:
 
@@ -163,7 +164,7 @@ layout_name: application
 {% endraw %}
 ```
 
-#### Notes:
+#### Notes
 
 * The page at `/product-list` passes the listing (product) slug to this page through the URL, which is formed as `/product-details/<listing_slug>`
 * Then we pass on the listing's slug to the GraphQL query (`slug: params.slug2`), to find the product details.
