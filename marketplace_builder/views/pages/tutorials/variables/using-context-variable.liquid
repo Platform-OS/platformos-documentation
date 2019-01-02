@@ -63,6 +63,22 @@ Most common use cases are:
 * Form data manipulation through default_payload
 * Data validation in Authorization Policies
 
+**Example 1. site path params maping**
+{% raw %}
+When visiting page with path `www.mysite.com/app/admin/content/nyc/brooklyn/main`
+the value of `context.params` would be:
+```json
+{
+  "slug": "app",
+  "slug2": "admin",
+  "slug3": "content",
+  "slugs": "nyc/brooklyn/main"
+}
+```
+{% endraw %}
+*Other way of extracting page params is to use [context.location.pathname](/tutorials/variables/using-context-variable#context-location) as shown in Example 1.*
+
+
 ### context.language
 `context.language` returns String, language ISO code used in current request.
 For more information about built-in translation mechanism go to the [translations section](/tutorials/translations/translations). 
@@ -83,6 +99,33 @@ Available attributes are:
 * pathname
 * search
 
+**Example 1. Extracting a params from path name with extract_url_params**
+
+URL: `www.mysite.com/app/admin/content/nyc/brooklyn/main`
+{% raw %}
+```liquid
+{% assign template = '/app/admin/content/{city}/{area}/{street}' %}
+{% assign params = context.location.pathname | extract_url_params: template %}
+
+"params": {
+  "city": "nyc",
+  "area": "brooklyn",
+  "street": "main"
+}
+
+The street is {{ params.street }}.
+```
+{% endraw %}
+
+**Example 2. Conditional list class**
+{% raw %}
+```liquid
+<li class="{% if context.location.href contains link.href %}active{% endif %}">
+  <a href="#">{{ link.name }}</a>
+</li>
+```
+{% endraw %}
+
 ### context.page
 `context.page` contains information about the [page](/tutorials/pages/pages) on which it is included.
 
@@ -93,6 +136,20 @@ Available attributes are:
 * enable_profiler
 * layout_name
 * metadata
+
+### context.useragent
+`context.useragent` returns an object with user agent data
+
+**Example 1. displaying useragent**
+
+{% raw %}
+```liquid
+{{ context.useragent }}
+
+Morzilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebkKit/537.36
+(KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36
+```
+{% endraw %}
 
 ### context.visitor
 `context.visitor` returns an object describing browser user. For now there is only one available attribute `ip`.
