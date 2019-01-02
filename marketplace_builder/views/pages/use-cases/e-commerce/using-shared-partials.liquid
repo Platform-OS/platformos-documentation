@@ -290,7 +290,7 @@ Take a look at how you could structure the shared partial, to make it configurab
 
 This example can be split into three separate parts and as a pattern reused throughout the application:
 
-1. Top comment: contains a list of all required and optional parameters that can be passed and will be used in this partial. This way it’s easier to see at a glance what options are available. 
+1. Top comment: contains a list of all required and optional parameters that can be passed and will be used in this partial. This way it’s easier to see at a glance what options are available.
 2. Assign values: most of the optional parameters should have some kind of initial value assigned, if none is provided in the `include` tag. Keeping all of these declarations always in the same place makes your partial more readable.
 
 {% capture content %}
@@ -387,6 +387,6 @@ Congratulations! You’ve cleaned up the views and made it easier to reuse commo
 - extend default HTML5 validation by parsing `validation` rules provided by `form_builder`
 - use {% raw %}`{% log "error message", type: "error" %}`{% endraw %} to mark an error anytime a require parameter is missing in the partial - [`log` tag documentation](/api-reference/liquid-tags#log)
 
-With these simple changes you are now ready to start building the admin panel in earnest. In the next part you’ll define all constants and enums for your application. 
+With these simple changes you are now ready to start building the admin panel in earnest. In the next part you’ll [seed initial configuration data for your application](/use-cases/e-commerce/seeding-configuration-data).
 
 {% include 'shared/questions_section' %}
