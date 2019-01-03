@@ -1,0 +1,320 @@
+---
+converter: markdown
+metadata:
+  title: Adding Photos to Products
+  description: This guide will help you to add photo management to your products
+slug: use-cases/e-commerce/adding-photos-to-products
+searchable: true
+---
+
+This guide will help you to add photos to your products and is a larger topic of product. Product management consists of three separate sections:
+
+1. Product properties management
+2. **Product images management**  (described in this topic)
+3. Stock levels management
+
+## Requirements
+
+To follow this tutorial, you should be familiar with basic PlatformOS concepts, and the topics in the Get Started section. You should have followed this tutorial series up to the previous part "Creating Product Management Forms", where you’ve set up forms for creating, editing and deleting products.
+
+- [How Platform OS Works](/how-platformos-works)
+- [Get Started](/get-started)
+- [Creating Product Management Forms](/use-cases/e-commerce/creating-product-management-forms)
+- [Uploading Files Directly to Amazon S3 Using AJAX](/tutorials/user-uploads/uploading-files-directly-amazons3-using-ajax)
+
+## Steps
+
+Adding photos to products is a six-step process:
+
+1. Create new photo form
+2. Add upload script
+3. Create photo destroy form
+4. Create query to fetch photos from database
+5. Create photos partial
+6. Modify product details page
+
+
+### Step 1: Create new photo form
+
+Photo form will be included on the product details page. Photo upload is a two-step process. First, you upload image directly to a S3 bucket, then you submit the form itself, including url to the newly uploaded file. You can read more about [Uploading Files Directly to Amazon S3 Using AJAX](/tutorials/user-uploads/uploading-files-directly-amazons3-using-ajax) in our documentation.
+
+#### marketplace_builder/form_configurations/photo/create_photo_form.liquid
+
+```liquid
+{% raw %}
+---
+name: create_photo_form
+resource: Customization
+redirect_to: /admin/product/{{ params.form.properties_attributes.product_id }}
+configuration:
+  properties:
+    product_id:
+      validation:
+        presence: true
+  custom_images:
+    image:
+      image:
+        validation:
+          presence:
+            message: 'Upload an image'
+---
+{% comment %}
+  Required params:
+    product_id: string
+{% endcomment %}
+
+{% form, html-class: "my-2", html-data-upload-form: true %}
+  <input type="hidden" name="{{ form_builder.fields.properties.product_id.name }}" value="{{ product_id }}">
+  <div class="form-row align-items-center">
+    <div class="col-auto">
+      <label for="photo-file">Upload a new photo</label>
+    </div>
+    <div class="col-auto">
+      <input
+        class="form-control-file"
+        name="{{ form_builder.fields.custom_images.image.image.name }}"
+        type="file"
+        id="photo-file"
+        accept="image/png, image/jpeg">
+    </div>
+
+    <div class="col-auto">
+      <button type="submit" class="btn btn-primary btn-sm">Upload</button>
+    </div>
+  </div>
+{% endform %}
+
+{% endraw %}
+```
+### Step 2: Add upload script
+
+Upload form should be already working, but is less efficient than it could be. Your file will be uploaded to the application server and then again uploaded to S3 bucket. You can eliminate the intermediate step using S3 credentials provided in `form_builder` object for every `image` or `file` type fields.
+
+Create the upload script first:
+
+#### marketplace_builder/views/partials/forms/upload/s3_script.liquid
+```liquid
+{% raw %}
+{% comment %}
+  Required params:
+    config: s3_upload object from form_builder
+{% endcomment %}
+<script>
+  (function(config){
+    const form = document.querySelector('[data-upload-form]');
+    const input = form.querySelector('input[type="file"]');
+    const submitButton = form.querySelector('[type="submit"]');
+
+    // When S3 upload succeeds, you should:
+    // 1. add hidden input with with the same name attribute as your file input
+    // 2. set it’s value to URL returned from S3
+    // 3. disable file input, so the file is not uploaded again
+    // 4. submit the form
+    function onSuccess(location) {
+      const inputOverride = document.createElement('input');
+      inputOverride.type = 'hidden';
+      inputOverride.name = input.name;
+      inputOverride.value = location;
+      input.disabled = true;
+      form.appendChild(inputOverride);
+      form.submit();
+    }
+
+    // whenever an error occurs you should enable the submit button again
+    // and communicate it to user.
+    function onError(error) {
+      alert('We were unable to upload this file');
+      submitButton.disabled = false;
+      submitButton.innerText = 'Upload';
+      throw error;
+    }
+
+    // handle upload to S3. Make sure you send all of the metadata provided in s3_upload key
+    function s3Upload(file, uploadUrl, metadata) {
+      const request = new XMLHttpRequest();
+      request.open('POST', uploadUrl, true);
+
+      const fd = new FormData();
+      for(const key in metadata) {
+        fd.append(key, metadata[key]);
+      }
+      fd.append('file', file)
+
+      request.onload = function() {
+        if (request.status >= 200 && request.status < 400) {
+          onSuccess(request.responseXML.querySelector('Location').innerHTML);
+        } else {
+          onError(request.responseXML.querySelector('Message').innerHTML);
+        }
+      };
+
+      request.onerror = function() {
+        onError(request.responseText);
+      };
+
+      request.send(fd);
+    }
+
+    // Prevent default submit of the form, disable submit button and upload the file to S3
+    form.addEventListener('submit', function(event){
+      event.preventDefault();
+      const file = input.files[0];
+      if (!file) {
+        return;
+      }
+      submitButton.innerText = 'Uploading...';
+      submitButton.disabled = true;
+      s3Upload(file, config.direct_upload_url, config.form_data);
+    });
+
+  }({{ config | json }})); // transform configuration object into a JSON string, that can be parsed by JS
+</script>
+
+{% endraw %}
+```
+
+Include the script at the end of the `create_photo_form` form.
+
+#### marketplace_builder/form_configurations/photo/create_photo_form.liquid
+```liquid
+{% raw %}
+
+...
+
+{%
+  include "forms/upload/s3_script",
+    config: form_builder.fields.custom_images.image.image.s3_upload
+%}
+{% endraw %}
+```
+
+### Step 3. Create photo destroy form
+
+Now you can upload new photos, it’s time to remove them as well.
+
+#### marketplace_builder/form_configurations/photo/destroy_photo_form.liquid
+
+```liquid
+{% raw %}
+---
+name: destroy_photo_form
+resource: Customization
+redirect_to: /admin/product/{{ form.properties.product_id }}
+flash_notice: Photo has been deleted
+configuration:
+  properties:
+    product_id:
+      property_options:
+        readonly: true
+---
+{% comment %}
+  Optional params:
+    product_name: string
+{% endcomment %}
+
+{% form method: 'DELETE' %}
+  <button
+    type="submit"
+    class="btn btn-link"
+    aria-label="Remove this photo"
+  >
+    Remove
+  </button>
+{% endform %}
+
+{% endraw %}
+```
+
+{% capture content %}
+  `product_id` field is not required to perform the `delete` action, but is needed to add a correct redirect after the action.
+{% endcapture %}
+{% include 'alert/note', content: content %}
+
+### Step 4. Create query to fetch photos from database
+
+Uploading and removing photo forms are ready, but before we can create the partial to show photos attached to the product and the form for uploading new ones, we need a query to fetch that information from the database.
+
+#### marketplace_builder/graph_queries/photo/get_photos.graphql
+
+```graphql
+query get_photos($product_id: String) {
+  customizations(
+    name: "photo"
+    properties: [{ name: "product_id", value: $product_id }]
+  ) {
+    results {
+      id
+      product_id: property(name: "product_id")
+      image: custom_image(name: "image") {
+        id
+        thumb: url(version: "thumb")
+        mini: url(version: "mini")
+        normal: url(version: "normal")
+      }
+    }
+  }
+}
+```
+
+### Step 5. Create photos partial
+
+It’s time to tie it all together. Create partial that will:
+
+1. Show all photos attached to the product
+2. Add _Remove_ button to each of them
+3. Include an upload form to add new photos
+
+#### marketplace_builder/views/partials/admin/product/photos.liquid
+
+```liquid
+{% raw %}
+{% comment %}
+  Required params:
+    product_id: string
+{% endcomment %}
+
+{%- query_graph "get_photos", result_name: "gp", product_id: product_id -%}
+
+<h4>Photos</h4>
+<div class="row">
+  {% for photo in gp.customizations.results %}
+    <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-2">
+      <a href="{{ photo.image.normal }}" target="_blank">
+        <img
+          class="img-thumbnail img-responsive"
+          src="{{ photo.image.thumb }}"
+          alt="Product photo"
+        />
+      </a>
+      {% include_form "destroy_photo_form", resource_type: "photo", resource_id: photo.id %}
+    </div>
+  {% endfor %}
+</div>
+
+{%
+  include_form "create_photo_form",
+    product_id: product_id,
+    resource_type: "photo"
+%}
+{% endraw %}
+```
+
+### Step 6. Modify product details page
+
+Include the details page in admin section, by including the partial created in the previous step at the end of the `show.liquid` file.
+
+#### marketplace_builder/views/partials/admin/product/show.liquid
+
+```liquid
+{% raw %}
+...
+
+{% include "admin/product/photos", product_id: product.id %}
+{% endraw %}
+```
+
+## Next steps
+
+Congratulations! You’ve created necessary forms to upload and remove photos of your products. In the next part you’ll handle stock levels of your products.
+
+{% include 'shared/questions_section' %}
