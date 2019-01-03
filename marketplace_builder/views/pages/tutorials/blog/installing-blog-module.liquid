@@ -12,9 +12,9 @@ This guide will help you install the PlatformOS Blog Module.
 _This guide is part of a series that walks you through the process of building a blog on PlatformOS. You can find previous and next parts of the series in the Requirements and Next steps sections._
 
 ## Requirements
-So that you can follow the steps in this tutorial, you should have set up a PlatformOS Instance and your code base, and you should have NPM and the Marketplace Kit installed on your computer. The Quickstart Guide walks you through all the steps required to start this tutorial. You should also understand the concept of layouts.
+So that you can follow the steps in this tutorial, you should have set up a PlatformOS Instance and your code base, and you should have NPM and the Marketplace Kit installed on your computer. You should also understand the concept of layouts, modules, and migrations.
 
-* [Quickstart Guide](/get-started/quickstart-guide)
+* [Get Started](/get-started)
 * [Layouts](/tutorials/pages/layouts)
 * [Installing Module](/tutorials/modules/installing-module)
 * [Migrating Data](/tutorials/migrations/migrating-data)
@@ -32,32 +32,32 @@ Installing the Blog Module is a three-step process:
 Log in to the [Partner Portal](https://portal.apps.near-me.com/) and go to your Instance detail view. 
 At the bottom of the page in the Available modules section search for "PlatformOS Blog" and click Install on the right. You will receive an email notification when the installation process is complete.
 
-It might be necesary to reindex your instance after blog installation so go to your instance detail view in Partner Portal and follow up with "Rake Tasks" at the top navigation. Click run next to `elasticsearch:create_index`
+It might be necesary to reindex your instance after blog installation so go to your instance detail view in Partner Portal and follow up with "Rake Tasks" at the top navigation. Click run next to `elasticsearch:create_index`.
 
 ### Step 2: Create Blog Administrator
 
-Together with Blog comes simple administration panel where you can configure your blog and create it's content. By default this part is restricted for registered users with Administrator role. 
+A simple administration panel is included in the Blog module, where you can configure your blog and create its content. By default, this part is restricted for registered users with Administrator role. 
 
-In order to create first Admin:
+In order to create your first Admin:
 
-1. Visit your instance page
-2. Go to signup page by appending `/sign-up` to your instance address in your browser address bar
-3. Fill the form and create first user. 
-4. You will be redirected to `/log-in` page, where you need to provide the same user login and password
-5. Blog comes with handy migration which grants Administrator role to all existing users:
+1. Visit your instance page.
+2. Go to the signup page by appending `/sign-up` to your instance address in your browser's address bar. 
+3. Fill in the form and create your first user. 
+4. You will be redirected to the `/log-in` page, where you need to provide the same user login and password. 
+5. Blog comes with a handy migration which grants Administrator role to all existing users:
 
     ```bash
     marketplace-kit migrations run staging modules/dashboard/20190102222130
     ```
-    You should see:
+    Result:
     ```
     [Migration Run] Done. modules/dashboard/20190102222130_promote_users_to_admins executed.
     ```
-6. Go to Dashboard page by appending `/dashboard` to your instance address in your browser address bar
+6. Go to Dashboard page by appending `/dashboard` to your instance address in your browser's address bar. 
 
 ### Step 3: Setup Blog
 
-In your Dashboard page use left side navigation and click on "Blog". You will see your Blog navigation, choose "Blog settings" and fill all the the required details. Save your changes.
+On your Dashboard page click on "Blog" in the left side navigation. You will see your Blog navigation, choose "Blog settings" and fill in all the required details. Save your changes.
 
 You can now see your blog at [your-Instance-URL]/blog.
 
@@ -71,7 +71,7 @@ layout_name: 'modules/dashboard-blog/layouts/blog'
 {% include 'modules/dashboard-blog/blog/index' %}
 ```
 
-Blog module doesn't define header and footer of your website as this elements are dynamic and specific to given instance. You can define your header and footer HTML in `marketplace_builder/views/partials/layouts/header.liquid` and `marketplace_builder/views/partials/layouts/footer.liquid`
+The Blog module doesn't define header and footer of your website as these elements are dynamic and specific to the given instance. You can define your header and footer HTML in `marketplace_builder/views/partials/layouts/header.liquid` and `marketplace_builder/views/partials/layouts/footer.liquid`
 
 ## Next steps
 Congratulations! You have installed the Blog Module. Now you can write your first blog post:
