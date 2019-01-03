@@ -16,47 +16,62 @@ So that you can follow the steps in this tutorial, you should have set up a Plat
 
 * [Quickstart Guide](/get-started/quickstart-guide)
 * [Layouts](/tutorials/pages/layouts)
+* [Installing Module](/tutorials/modules/installing-module)
+* [Migrating Data](/tutorials/migrations/migrating-data)
 
 ## Steps
 
 Installing the Blog Module is a three-step process:
 
-1. Install Blog Module
-2. Deploy blog
-3. Enable blog
+1. Install Dashboard Module
+2. Register Blog Administrator
+3. Setup blog
 
 ### Step 1: Install Blog Module
 
-To install the Blog Module, go to the root directory of your codebase (e.g. `marketplace-example`), and enter the following command in the command-line application of your choice:
+Log in to the [Partner Portal](https://portal.apps.near-me.com/) and go to your Instance detail view. 
+At the bottom of the page in the Available modules section search for "PlatformOS Blog" and click Install on the right. You will receive an email notification when the installation process is complete.
 
-<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
-npm install --no-save @platform-os/blog
-</code></pre>
+It might be necesary to reindex your instance after blog installation so go to your instance detail view in Partner Portal and follow up with "Rake Tasks" at the top navigation. Click run next to `elasticsearch:create_index`
 
-The installer starts and asks you the following:
+### Step 2: Create Blog Administrator
 
-* `? Your blog path:`: Enter the path where you would like to display your blog, for example `blog`. Don't enter the full URL.
-* `? Your blog type is:`: Select the type of your blog with the up and down arrow keys. The **Instance blog** is the main blog of the site, where the Instance owner can create and edit posts. **User blogs** allow any user to create a blog, and the owner of the blog can create and edit posts.
-* `? Please provide name of user profile type that is allowed to access admin part of the blog:`: Every user has an `user_profile_type` (user type, e.g. default or admin). Depending on what your site does (e.g. connects experts with lawyers) you can have additional user profile types (e.g. expert and lawyer). Specify here which users will be able to access the admin interface of the blog by entering their user profile type. Enter `default` to use the default user profile type.
-* `? Your blog layout name:`: You can have a layout specific to your blog (e.g. widgets, columns, etc.), specify it here. To use the default blog layout provided by the Blog Module enter `blog-layout`.
+Together with Blog comes simple administration panel where you can configure your blog and create it's content. By default this part is restricted for registered users with Administrator role. 
 
-The installer runs and the Blog Module is installed.
+In order to create first Admin:
 
-{% include 'alert/note', content: 'In this example, you used the default user profile, so any user can edit posts on the Instance blog. To prevent unauthorized use, it is recommended to create an admin user profile type and adjust the blogs <a href="/tutorials/authorization-policy/authorization-policy">Authorization Policies</a>.' %}
+1. Visit your instance page
+2. Go to signup page by appending `/sign-up` to your instance address in your browser address bar
+3. Fill the form and create first user. 
+4. You will be redirected to `/log-in` page, where you need to provide the same user login and password
+5. Blog comes with handy migration which grants Administrator role to all existing users:
 
-### Step 2: Deploy blog
+    ```bash
+    marketplace-kit migrations run staging modules/dashboard/20190102222130
+    ```
+    You should see:
+    ```
+    [Migration Run] Done. modules/dashboard/20190102222130_promote_users_to_admins executed.
+    ```
+6. Go to Dashboard page by appending `/dashboard` to your instance address in your browser address bar
 
-[Deploy your Instance with the `--force` flag](/get-started/deploying-syncing-changes), for example:
+### Step 3: Setup Blog
 
-<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
-marketplace-kit deploy staging
-</code></pre>
-
-### Step 3: Enable blog
-
-Go to [your-Instance-URL]/blog/admin/settings. Enter a title for your blog, and make sure the `Enable` button is turned on. Save your changes.
+In your Dashboard page use left side navigation and click on "Blog". You will see your Blog navigation, choose "Blog settings" and fill all the the required details. Save your changes.
 
 You can now see your blog at [your-Instance-URL]/blog.
+
+If you want to display your blog content on your home page, define it as follows:
+
+```liquid
+---
+slug: /
+layout_name: 'modules/dashboard-blog/layouts/blog'
+---
+{% include 'modules/dashboard-blog/blog/index' %}
+```
+
+Blog module doesn't define header and footer of your website as this elements are dynamic and specific to given instance. You can define your header and footer HTML in `marketplace_builder/views/partials/layouts/header.liquid` and `marketplace_builder/views/partials/layouts/footer.liquid`
 
 ## Next steps
 Congratulations! You have installed the Blog Module. Now you can write your first blog post:
