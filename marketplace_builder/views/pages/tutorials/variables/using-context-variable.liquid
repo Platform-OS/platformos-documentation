@@ -1,8 +1,8 @@
 ---
 converter: markdown
 metadata:
-  title: Using Context Variable
-  description: 
+  title: Using the Context Variable
+  description: Detailed description of the context variable with examples. 
 slug: tutorials/variables/using-context-variable
 searchable: true
 ---
@@ -11,7 +11,7 @@ searchable: true
 
 
 ## Displaying the context object
-To inspect its structure and content, you can display it on the page as in the example below:
+To inspect its structure and content, you can display the context object on the page as in the example below:
 
 {% raw %}
 ```liquid
@@ -30,7 +30,7 @@ slug: context_example
 {% endraw %}
 
 ### context.session
-`context.session` allows for quick access to session storage. Use mutations in order to store data in session as in [this example](https://documentation.platform-os.com/api-reference/graphql/graphql-glossary#operation-name)
+`context.session` allows for quick access to session storage. Use mutations in order to store data in session like in [this example](https://documentation.platform-os.com/api-reference/graphql/graphql-glossary#operation-name)
 
 ### context.current_user
 `context.current_user` returns basic data of currently logged in user. Available attributes are: `first_name`, `last_name`, `email`, `id` and `slug`. It will return `nil` instead of object if user is not logged in.
@@ -63,9 +63,9 @@ Most common use cases are:
 * Form data manipulation through default_payload
 * Data validation in Authorization Policies
 
-**Example 1. site path params maping**
+**Example 1: site path params mapping**
 {% raw %}
-When visiting page with path `www.mysite.com/app/admin/content/nyc/brooklyn/main`
+When visiting the page with path `www.mysite.com/app/admin/content/nyc/brooklyn/main`
 the value of `context.params` would be:
 ```json
 {
@@ -76,11 +76,11 @@ the value of `context.params` would be:
 }
 ```
 {% endraw %}
-*Other way of extracting page params is to use [context.location.pathname](/tutorials/variables/using-context-variable#context-location) as shown in Example 1.*
+*Another way of extracting page params is using [context.location.pathname](/tutorials/variables/using-context-variable#context-location) as shown in Example 1.*
 
 
 ### context.language
-`context.language` returns String, language ISO code used in current request.
+`context.language` returns a String, the language ISO code used in the current request.
 For more information about built-in translation mechanism go to the [translations section](/tutorials/translations/translations). 
 
 ### context.environment
@@ -99,7 +99,7 @@ Available attributes are:
 * pathname
 * search
 
-**Example 1. Extracting a params from path name with extract_url_params**
+**Example 1: Extracting params from path name with `extract_url_params`**
 
 URL: `www.mysite.com/app/admin/content/nyc/brooklyn/main`
 {% raw %}
@@ -117,7 +117,7 @@ The street is {{ params.street }}.
 ```
 {% endraw %}
 
-**Example 2. Conditional list class**
+**Example 2: Conditional list class**
 {% raw %}
 ```liquid
 <li class="{% if context.location.href contains link.href %}active{% endif %}">
@@ -138,9 +138,9 @@ Available attributes are:
 * metadata
 
 ### context.useragent
-`context.useragent` returns an object with user agent data
+`context.useragent` returns an object with user agent data.
 
-**Example 1. displaying useragent**
+**Example 1: Displaying useragent**
 
 {% raw %}
 ```liquid
