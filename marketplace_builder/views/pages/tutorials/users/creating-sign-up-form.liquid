@@ -87,7 +87,7 @@ configuration:
 ```
 
 * `name`: the name of the form, written in snake case. It is used to embed the form in a page.
-* `resource`: defines what is the root resource in this form. In our example it is naturally User. Please check our [full FormBuilder documentation](/reference/form-builder/) for all options.
+* `resource`: defines what is the root resource in this form. In our example it is User.
 * `redirect_to`: defines the url to which the user will be redirected after success. You can use liquid. In our example, you will redirect the user to /sign-in.
 * `configuration`: defines which fields should be acceptable by the form, and it's possible to define validation of each field. Depending on the `resource`, some fields are available without having to create custom attributes. Some of them have pre-defined validation due to the backend requirements. In this example, such fields are `email`, with validation that ensures uniqueness (no two user can sign up with the same email address), it has to be a valid email, and it can't be blank; and `password`, which has to be minimum 6 characters long.
 
@@ -162,7 +162,7 @@ The end result would be the same. The point is, that with PlatformOS, you have t
 
 The second part of the form is the actual html that will be presented to the user. There are few things that you will want to include in every form.
 
-* **form tag**: {% raw %}{% form %}{% endraw %} form tag renders the `<form>` html tag with `action` set based on the `resource` provided in configuration. It also adds a bunch of hidden inputs. The most important are CSRF token (called `authenticity-token`) and `_method` - depending whether you want to create or update the resource, it will be either `post` or `patch`. In case you want to allow users to destroy their resources, you would need to manually pass `method` as argument to tag with value `delete`. Another set of hidden inputs are `resource_id` - the one that you passed in `include_form` if any, and `slug`, `slug2`, `slug3` - in case of validation errors, you most likely will need those to be available. Please note: If you want to invoke our write API manually (for example via AJAX or even from third-party API) we recommend to take a look at [full API Endpoints documentation](/reference/api-endpoints).
+* **form tag**: {% raw %}{% form %}{% endraw %} form tag renders the `<form>` html tag with `action` set based on the `resource` provided in configuration. It also adds a bunch of hidden inputs. The most important are CSRF token (called `authenticity-token`) and `_method` - depending whether you want to create or update the resource, it will be either `post` or `patch`. In case you want to allow users to destroy their resources, you would need to manually pass `method` as argument to tag with value `delete`. Another set of hidden inputs are `resource_id` - the one that you passed in `include_form` if any, and `slug`, `slug2`, `slug3` - in case of validation errors, you most likely will need those to be available. Please note: If you want to invoke our write API manually (for example via AJAX or even from third-party API) we recommend to take a look at [full API Endpoints documentation](/api-reference/rest-api).
 
 #### Optional inputs
 
