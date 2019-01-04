@@ -14,7 +14,7 @@ pipeline {
   options {
     disableConcurrentBuilds()
     timeout(time: 10, unit: 'MINUTES')
-    buildDiscarder(logRotator(daysToKeepStr: '365', artifactDaysToKeepStr: '30'))
+    buildDiscarder(logRotator(daysToKeepStr: '30', artifactDaysToKeepStr: '7'))
   }
   stages {
     stage('Staging') {
