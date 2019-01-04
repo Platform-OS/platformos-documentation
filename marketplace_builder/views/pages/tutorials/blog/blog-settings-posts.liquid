@@ -11,7 +11,23 @@ searchable: true
 
 ## Example: Get blog posts GraphQL query
 
-#### marketplace_builder/graph_queries/get_blog_posts.graphql
+You can fetch blog settings with:
+
+{% raw %}
+```liquid
+{%- query_graph 'modules/dashboard-blog/get_blog_instance' -%}
+```
+{% endraw %}
+
+You can fetch all post details with:
+
+{% raw %}
+```liquid
+{%- query_graph 'modules/dashboard-blog/get_blog_posts' -%}
+```
+{% endraw %}
+
+#### modules/dashboard-blog/get_blog_posts.graphql
 
 ```graphql
 query get_blog_posts(
