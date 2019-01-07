@@ -52,11 +52,14 @@ configuration:
   password:
   profiles:
     client:
+      enabled:
+        property_options:
+          default: true
+          readonly: true
 ---
 
 {% form %}
   {% assign f = form_builder.fields %}
-  {% assign profile = f.profiles.client.properties %}
 
   <input type="text" name="{{ f.name.name }}" value="{{ f.name.value }}">
   <input type="email" name="{{ f.email.name }}" value="{{ f.email.value }}">
