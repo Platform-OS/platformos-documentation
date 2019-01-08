@@ -2,12 +2,12 @@
 converter: markdown
 metadata:
   title: Adding Photos to Products
-  description: This guide will help you add image management to your products. 
+  description: This guide will help you add image management to your products.
 slug: use-cases/e-commerce/adding-photos-to-products
 searchable: true
 ---
 
-This guide will help you add image management to your products. It's one of the three topics related to product management: 
+This guide will help you add image management to your products. It's one of the three topics related to product management:
 
 1. Product properties management
 2. **Product images management**  (described in this topic)
@@ -129,7 +129,7 @@ Create the upload script first:
       throw error;
     }
 
-    // Handle upload to S3. Make sure you send all of the metadata provided in s3_upload key. 
+    // Handle upload to S3. Make sure you send all of the metadata provided in s3_upload key.
     function s3Upload(file, uploadUrl, metadata) {
       const request = new XMLHttpRequest();
       request.open('POST', uploadUrl, true);
@@ -155,7 +155,7 @@ Create the upload script first:
       request.send(fd);
     }
 
-    // Prevent default submission of the form, disable submit button, and upload the file to S3. 
+    // Prevent default submission of the form, disable submit button, and upload the file to S3.
     form.addEventListener('submit', function(event){
       event.preventDefault();
       const file = input.files[0];
@@ -167,13 +167,14 @@ Create the upload script first:
       s3Upload(file, config.direct_upload_url, config.form_data);
     });
 
-  }({{ config | json }})); // Transform configuration object into a JSON string, that can be parsed by JS. 
+  }({{ config | json }})); // Transform configuration object into a JSON string, that can be parsed by JS.
 </script>
 
 {% endraw %}
 ```
 
 Include the script at the end of the `create_photo_form` form.
+
 
 #### marketplace_builder/form_configurations/photo/create_photo_form.liquid
 ```liquid
@@ -187,6 +188,13 @@ Include the script at the end of the `create_photo_form` form.
 %}
 {% endraw %}
 ```
+
+{% capture content %}
+  You might consider using promise-based `fetch` instead of `XMLHttpRequest` for making requests to the server. Remember that it will not work in Internet Explorer without adding an appropriate polyfill like https://github.com/github/fetch .
+
+  To learn more about using `fetch` you can go to https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+{% endcapture %}
+{% include 'alert/tip', content: content %}
 
 ### Step 3: Create photo destroy form
 
