@@ -5,7 +5,7 @@ module.exports = (delay = 400) => {
     return false;
   }
 
-  const element = document.querySelector(location.hash);
+  const element = document.querySelector(decodeURIComponent(location.hash));
 
   setTimeout(() => {
     scrollToElement(element);
