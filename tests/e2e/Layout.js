@@ -38,9 +38,9 @@ test('External links have target and rel attributes', async t => {
   await t.expect(Layout.TOSLink.withAttribute('rel', 'external noopener').exists).ok();
 });
 
-test.skip('Back button is working as expected with turbolinks', async t => {
-  console.log('TODO: Implement');
-});
+// test.skip('Back button is working as expected with turbolinks', async t => {
+//   console.log('TODO: Implement');
+// });
 
 /*
   TODO: Create page that will include all the usual stuff and test everything on one
@@ -76,6 +76,17 @@ test('Deep linking to h2 headers is working', async t => {
   const deepLinks = Layout.Content.find('h2 a.anchorjs-link');
 
   await t.expect(deepLinks.count).eql(7);
+});
+
+test('Deep linking is working with utf8 characters in the heading id/href', async t => {
+  const heading = await Selector('#step-2-define-contact-form-–-form-object');
+
+  await t.navigateTo(
+    '/tutorials/customizations/building-contact-form-with-customization#step-2-define-contact-form-–-form-object'
+  );
+
+  await t.expect(await heading.exists).ok();
+  await t.expect(await heading.visible).ok();
 });
 
 // test.skip("Contributors are showing up", async t => {
