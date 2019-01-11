@@ -48,6 +48,8 @@ callback_actions: >
   {% log "Hello from callback actions" %}
 async_callback_actions:
   delay: 1
+  priority: low
+  max_attempts: 2
   content: |-
     {% log "Hello from async callback actions - I am delayed 1 minute!" %}
 authorization_policies:
@@ -118,14 +120,18 @@ api_call_notifications:
 
 ### async_callback_actions
 `async_callback_actions` accepts two parameters:
-* delay - Integer, number of minutes added to the moment of form submission before the code defined in `content` is executed.
 * content - String, Liquid Template code executed asynchronusly. There is no timeout set for processing this code so it is the right place for more time-consuming calculations.
+* delay - Integer, number of minutes added to the moment of form submission before the code defined in `content` is executed.
+* priority - String, `high`, `default` or `low`, defines priority of execution when executed at the same time with other callbaacs.
+* max_attempts - Integer, number of execution of callback in case of an error, default is 1.
 
 Example:
 {% raw %}
 ```yml
 async_callback_actions:
   delay: 1
+  priority: low
+  max_attempts: 2
   content: >
     {% log "Hello from background" %}
 ```
