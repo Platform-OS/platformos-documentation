@@ -187,6 +187,26 @@ Read more in separate tutorial [Flash Messages](/tutorials/form-configurations/f
 Availble values are:
 * `owner` - only user that previously created object can update/delete object with that form configuration
 * `anyone` - anyone can modify the object
+* `self` - like `owner` for User resource
+* `related` - related thorugh other object
+* `recipient` - for UserMessage resource
+
+*The table below show all possible resource owners for different resources:*
+
+| Resource | Available resoruce ovners|
+|---|---|
+|Offer | related, creator, owner, anyone|
+|Order | related, creator, owner, anyone|
+|OrderItem | related, creator, owner, anyone|
+|Payment | related, payer, receiver, anyone|
+|UserMessage | owner, recipient|
+|PaymentTransfer | related, payer, receiver, anyone|
+|Reservation | related, creator, owner, anyone|
+|TransactableLineItem | creator, owner, related anyone|
+|User | self, anyowne |
+|**All others** | creator, anyone |
+
+
 
 This is very useful when you want to restrict user permissions to modify only records that were previously created by that user.
 
