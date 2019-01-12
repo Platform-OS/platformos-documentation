@@ -1,18 +1,18 @@
-{% for link in links %}
-  {% if link.children != null or link.include_children != null %}
+{%- for link in links -%}
+  {%- if link.children != null or link.include_children != null -%}
     <li class="has-submenu {% if context.location.href contains link.href %}active{% endif %}">
       <a href="#">{{ link.name }}</a>
       <ul class="sub-menu {% if context.location.href contains link.href %}in{% endif %}">
-        {% if link.include_children != null %}
-          {% include link.include_children %}
-        {% else %}
-          {% include 'shared/navigation', links: link.children %}
-        {% endif %}
+        {%- if link.include_children != null -%}
+          {%- include link.include_children -%}
+        {%- else -%}
+          {% include 'shared/navigation', links: link.children -%}
+        {%- endif -%}
       </ul>
     </li>
-  {% else %}
+  {%- else -%}
     <li {% if link.href == context.location.href %}class="last-level-nested active"{% endif %}>
       <a href="{{ link.href }}">{{ link.name }}</a>
     </li>
-  {% endif %}
-{% endfor %}
+  {%- endif -%}
+{%- endfor -%}
