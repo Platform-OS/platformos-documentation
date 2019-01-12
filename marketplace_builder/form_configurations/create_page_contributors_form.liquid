@@ -14,7 +14,7 @@ configuration:
       validation: { presence: false }
 callback_actions: ""
 async_callback_actions:
-  delay: 5
+  delay: 0
   content: |-
     {%- query_graph "get_page_contributors", result_name: "pc", slug: form.properties.slug -%}
     {%- assign page_contributors = pc.customizations.results.last -%}
