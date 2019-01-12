@@ -9,8 +9,11 @@
   </button>
 </form>
 
-{% include 'shared/nav-links' %}
+{% cache 'sidebar', expire: 60 %}
 
+{% include 'shared/nav-links' %}
 <ul class="metismenu sidebar-menu">
   {% include 'shared/navigation', links: navLinks %}
 </ul>
+
+{% endcache %}
