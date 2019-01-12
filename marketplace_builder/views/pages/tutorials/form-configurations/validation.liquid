@@ -79,16 +79,35 @@ phone:
 
 ### file_content_type
 ```yaml
-file:
-  validation:
-    presence: true
-    file_content_type:
-      allow:
-      - image/jpeg
-      - image/png
-      - application/pdf
-      - application/msword
-      - application/vnd.ms-excel
+custom_attachments:
+  document:
+    file:
+      validation:
+        presence: true
+        file_content_type:
+          allow:
+          - image/jpeg
+          - image/png
+          - application/pdf
+          - application/msword
+          - application/vnd.ms-excel
+```
+
+### file_extension
+
+Validation of file extension uploaded as custom_attachement:
+
+Example:
+
+```yaml
+custom_attachments:
+  document:
+    file:
+      validation:
+        file_extension:
+          allow:
+          - .doc
+          - .docx
 ```
 
 ### length
