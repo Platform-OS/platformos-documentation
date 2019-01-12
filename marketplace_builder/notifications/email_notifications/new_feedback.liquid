@@ -6,6 +6,7 @@ reply_to: '{{ form.model.customization.properties.email }}'
 subject: Documentation - New Feedback
 trigger_condition: true
 ---
+{% assign properties = form.properties %}
 
 <h2>Hello Team!</h2>
 
@@ -13,22 +14,30 @@ trigger_condition: true
 <table>
   <tr>
     <td>Rate: </td>
-    {% assign rate = form.model.customization.properties.rate %}
     <td><b>
-      {% if rate == 5 %}Positive{% else rate == 3 %}Neutral{% else %}Neagtive{% endif %}
+      {%- if properties.rate == 5 -%}Positive{%- endif -%}
+      {%- if properties.rate == 3 -%}Neutral{%- endif -%}
+      {%- if properties.rate == 1 -%}Negative{%- endif -%}
     </b></td>
   </tr>
+
+  {% if properties.email %}
   <tr>
     <td>Email: </td>
-    <td><b>{{ form.model.customization.properties.email }}</b></td>
+    <td><b>{{ properties.email }}</b></td>
   </tr>
+  {% endif %}
+
+  {% if properties.message %}
   <tr>
     <td>Message: </td>
-    <td><b>{{ form.model.customization.properties.message }}</b></td>
+    <td><b>{{ properties.message }}</b></td>
   </tr>
+  {% endif %}
+
   <tr>
-    <td>Feedback to: </td>
-    {% assign url = "https://" | append: context.location.host | append: form.model.customization.properties.path %}
+    <td>Feedback to:</td>
+    {% assign url = "https://" | append: context.location.host | append: properties.path %}
     <td><b><a href="{{ url }}">{{ url }}</a></b></td>
   </tr>
 </table>
