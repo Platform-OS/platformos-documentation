@@ -1,0 +1,78 @@
+---
+converter: markdown
+metadata:
+  title: Forms
+  description: Basic concepts of forms in PlatformOS with examples. 
+slug: tutorials/forms/forms
+searchable: true
+---
+
+Just like in every web application, **HTML forms** are essential in PlatformOS. Because using plain HTML forms can get difficult to maintain with complex data structures, we provide multiple tools that make working with forms much easier.
+
+To delve into forms, you should be familiar with: 
+ * [Liquid Template language](https://shopify.github.io/liquid/)
+ * PlatformOS [Pages](/tutorials/pages/pages)
+
+## Basic concept
+
+Form configuration is defined as Liquid files and is located within the `marketplace_builder/form_configurations` directory.
+
+Each file is divided into two sections: configuration and implementation. 
+
+* **Configuration section** is placed on top of the file marked with three dashes `---` at the start and end of the section. It is a definition written in [YAML](https://en.wikipedia.org/wiki/YAML) that is telling the platform to create/update the form endpoint with given name and settings. These settings determine where to store and how to validate the data. Head to the [Form Configuration Options](/tutorials/forms/form-configuration-options#list-of-required-form-configuration-options) section for a full list of configuration options.
+{% raw %}
+* **Implementation section** is an HTML part that accepts Liquid Markup with all goodies from PlatformOS. This is where you construct the form displayed to users. You can construct the form in HTML but it's much easier to use the `{% form %}` tag that will handle many tasks behind the scenes, and will make it easier to write clean code. Learn more about it in the [Rendering Form Tutorial](/tutorials/forms/rendering-form).
+{% endraw %}
+
+
+## Minimal form example
+
+Every form configuration is strictly connected with the resource that can be a static class predefined by PlatformOS or a dynamic model. The very basic example of the FormConfiguration that enables the possibility to create an object of CustomModelType named "Car" and accepts one property called "color", would look like this:
+
+{% raw %}
+```liquid
+---
+name: car_form
+resource: car
+configuration:
+  properties:
+    color: {}
+---
+
+{% form %}
+  <input name="{{ form_builder.fields.properties.color.name }}" />
+  <button>Save</button>
+{% endform %}
+```
+{% endraw %}
+
+As already mentioned the file is split into two sections. In the configuration part, you define `name` that is later used to include the form in the view, `resource` that tells the platform which CustomModelType is connected with that form and `configuration` that whitelists model `properties` that can be altered with this form endpoint.
+In the implementation part the [form tag](/api-reference/liquid-tags#form) generates the HTML `<form>` together with all inputs and properties required for successful form submission. The name of the text input, included in the form body, is provided by the [form_builder variable](/tutorials/forms/form-builder).
+
+To display the form within a page, use the [include_form tag](/api-reference/liquid-tags#include_form) that accepts the name of the form that you want to display:
+{% raw %}
+
+```liquid
+---
+slug: car
+---
+{% include_form "car_form" %}
+```
+{% endraw %}
+
+Now head to the `/car` page and see the form with text input followed by a submit button.
+
+
+## Related topics
+
+* [Form Configuration](/tutorials/forms/form-configuration)
+* [Form Rendering](/tutorials/forms/form-rendering)
+* [Flash Messages](/tutorials/forms/flash-messages)
+* [Default Payload](/tutorials/forms/default-payload)
+* [Validations](/tutorials/forms/validations)
+* [Examples](tutorials/forms/examples)
+
+
+{% include 'shared/questions_section' %}
+
+
