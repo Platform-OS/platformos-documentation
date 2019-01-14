@@ -20,8 +20,8 @@ To follow this tutorial, you should be familiar with basic PlatformOS concepts, 
 - [How Platform OS Works](/how-platformos-works)
 - [Get Started](/get-started)
 - [Seeding Configuration Data](/use-cases/e-commerce/seeding-configuration-data)
-- [Form Validation](/tutorials/form-configurations/validation)
-- [Default Payload](/tutorials/form-configurations/default-payload)
+- [Form Validation](/tutorials/forms/validation)
+- [Default Payload](/tutorials/forms/default-payload)
 - [Loading Related Models](/tutorials/custom-model-types/loading-related-models)
 
 ## Steps
@@ -249,7 +249,7 @@ Entering and storing monetary values is tricky in any system. Using `float` as d
 
 It’s much better to store all prices as cents, using the `integer` data type. This way `$5.99` becomes `599`, thus eliminating any issues with rounding. However, this approach comes with its own set of challenges when it comes to transforming user input to database entry.
 
-First, set basic validation rules for the price field. You can read more about [Form Validation](/tutorials/form-configurations/validation) in our documentation.
+First, set basic validation rules for the price field. You can read more about [Form Validation](/tutorials/forms/validation) in our documentation.
 
 ```yaml
 price:
@@ -297,7 +297,7 @@ You might have noticed additional options. Partial update is described in one of
 {% endcapture %}
 {% include 'alert/note', content: content %}
 
-Finally, transform the price value once again, just before committing it to the database. To do that, you should use [`default_payload` form configuration option](/tutorials/form-configurations/default-payload).
+Finally, transform the price value once again, just before committing it to the database. To do that, you should use [`default_payload` form configuration option](/tutorials/forms/default-payload).
 
 Price should be submitted as a `float` with two decimal spaces, so first, multiply it by 100 and then round it.
 
