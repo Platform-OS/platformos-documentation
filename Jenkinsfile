@@ -38,7 +38,7 @@ pipeline {
         slackSend (channel: "#notifications-docs", message: "STARTED: Deploying to <${MP_URL}|Staging> (<${env.BUILD_URL}|Build #${env.BUILD_NUMBER}>) \n ${commitInfo}")
 
         sh 'bash -l ./scripts/build.sh'
-        sh 'bash -l ./scripts/deploy.sh'
+        sh 'bash -l ./scripts/deploy.sh || exit 1'
         sh 'bash -l ./scripts/test-e2e.sh'
       }
 
