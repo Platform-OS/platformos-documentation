@@ -35,7 +35,7 @@ pipeline {
           commitInfo = "<${env.GH_URL}/commit/${commitSha}|${commitSha}> - ${commitAuthor} - ${commitMsg}"
         }
 
-        slackSend (channel: "#notifications-docs", message: "STARTED: Deploying to <${MP_URL}|Staging> (<${env.BUILD_URL}|Build #${env.BUILD_NUMBER}>) \n ${commitInfo}")
+        slackSend (channel: "#notifications-docs", message: "DEPLOY: <${MP_URL}|Staging> (<${env.BUILD_URL}|Build #${env.BUILD_NUMBER}>) \n ${commitInfo}")
 
         sh 'bash -l ./scripts/build.sh'
         sh 'bash -l ./scripts/deploy.sh || exit 1'
@@ -44,11 +44,11 @@ pipeline {
 
       post {
         success {
-          slackSend (channel: "#notifications-docs", color: '#00FF00', message: "SUCCESS: Deployed new code to staging, tests passed. (<${MP_URL}|Open preview>)")
+          slackSend (channel: "#notifications-docs", color: '#00FF00', message: "SUCCESS: Deployed to staging, tests passed. (<${MP_URL}|Open preview>)")
         }
 
         failure {
-          slackSend (channel: "#notifications-docs", color: '#FF0000', message: "FAILED: Build failed. Deploy or tests failed. (<${env.BUILD_URL}|Open build details>)")
+          slackSend (channel: "#notifications-docs", color: '#FF0000', message: "FAILED: Deploy or tests failed. (<${env.BUILD_URL}|Open build details>)")
         }
       }
     }
