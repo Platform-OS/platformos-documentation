@@ -42,6 +42,10 @@ Each configuration can accept different properties, but some of the main concept
 
 {% include 'alert/important', content: '`to` property is required in SMS and API Call notifications.' %}
 
+## Accessing form data from the notification
+
+Wherever you have access to liquid inside the notification, you can access data submitted in the form which triggered the notification using `form` variable. It's structure mirrors `fields` property of associated FormConfiguration. When in doubt, you can always use {% log form %} too visualize the structure. If you would like to access properties, which are not included in the `form` variable, you should use GraphQL query to fetch them. You can access id of the resource associated with the submitted form via `form.id`.
+
 ## Related topics
 
 * [Creating an Email Notification](/tutorials/notifications/creating-email-notification)
