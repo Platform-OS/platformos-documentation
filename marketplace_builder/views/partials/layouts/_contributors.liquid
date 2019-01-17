@@ -1,1 +1,43 @@
-<div class="contributors d-flex" data-contributors></div>
+{% if context.location.href != "/" %}
+  {% query_graph "get_page_contributors", slug: context.location.href %}
+  {% assign page_contributors = g.customizations.results.last %}
+  {% assign key = context.page.slug %}
+
+  {% comment %}
+    For every page we do not want to call Github to fetch contributores 
+    more often than once a day
+  {% endcomment %}
+
+  {% cache key, expire: 86400 %}
+    {% if page_contributors.id != blank %}
+      {% execute_query "fetch_page_contributors_from_github", id: page_contributors.id %}
+      {% assign page_contributors = g.customization_update %}
+    {% else %}
+      {% capture "page_path" %}marketplace_builder/views/pages{{ context.location.href }}.liquid{% endcapture %}
+      {% assign slug = context.location.href %}
+      {% execute_query "create_page_contributors", slug: slug, paths: page_path %}
+      {% assign page_contributors = g.customization_create %}
+    {% endif %}
+  {% endcache %}
+
+  {% if page_contributors != blank %}
+    <div class="contributors d-flex">
+      <p class="mb-0 d-flex align-items-center">
+        <span>Last edit:</span>&nbsp; {{ page_contributors.last_edit | date: "%b %d, %Y" }}
+      </p>
+      <p class="mb-0 d-flex align-items-center">
+        <span>Contributors:</span>&nbsp;
+        {% assign c = page_contributors.contributors | default: "[]" | to_hash | reverse %}
+        {% for contributor in c %}
+          {% if contributor.login != blank %}
+            <a href="https://github.com/{{ contributor.login }}&s=20" target="_blank">
+              <img src="{{ contributor.avatar_url }}" width="20" height="20" alt="{{ contributor.login }}">
+            </a>
+          {% endif %}
+        {% endfor %}
+      </p>
+    </div>
+  {% else %}
+    <div class="contributors d-flex" data-contributors></div>
+  {% endif %}
+{% endif %}

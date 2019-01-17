@@ -1,0 +1,13 @@
+query get_github_clients {
+ customizations (
+   name: "github_client"
+   is_deleted: false
+ )
+ {
+   results {
+     id
+     client_id: property(name: "client_id")
+     client_secret: property(name: "client_secret")
+   }
+ }
+}
