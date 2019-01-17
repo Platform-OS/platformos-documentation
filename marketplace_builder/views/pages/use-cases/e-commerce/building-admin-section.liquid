@@ -116,7 +116,7 @@ mutation promote_user_to_admin($id: ID) {
 name: promote_user_to_admin_form
 resource_owner: "anyone"
 resource: User
-configuration:
+fields:
   profiles:
     default:
       properties:
@@ -148,7 +148,7 @@ mutation set_user_password($id: ID, $password: String) {
 name: set_user_password_form
 resource_owner: "anyone"
 resource: User
-configuration:
+fields:
   password:
 ---
 ```
@@ -210,7 +210,7 @@ Now, that the Authorization Policy is in place, you can go ahead and modify the 
 name: promote_user_to_admin_form
 resource_owner: "anyone"
 resource: User
-configuration:
+fields:
   profiles:
     default:
       properties:
@@ -269,7 +269,7 @@ redirect_to: >
   {%- else -%}
     /
   {%- endif -%}
-configuration:
+fields:
   email:
   password:
 ---

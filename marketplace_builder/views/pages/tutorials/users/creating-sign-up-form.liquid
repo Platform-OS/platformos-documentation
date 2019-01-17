@@ -42,7 +42,7 @@ name: developer_sign_up
 resource: User
 resource_owner: anyone
 redirect_to: /sign-in
-configuration:
+fields:
   email:
   password:
   first_name:
@@ -114,7 +114,7 @@ can be also represented as an independent form, with configuration like this:
 ```yaml
 ...
 resource: UserProfile
-configuration:
+fields:
   enabled:
     property_options:
       default: true
@@ -132,7 +132,7 @@ name: generic_sign_up
 resource: User
 resource_owner: anyone
 redirect_to: /
-configuration:
+fields:
   email:
   password:
   first_name:
@@ -147,7 +147,7 @@ and the second one would be similar to:
 name: become_developer_form
 resource: UserProfile
 redirect_to: /
-configuration:
+fields:
   enabled:
     validation: { presence: true }
     property_options:
@@ -200,7 +200,7 @@ name: client_sign_up
 resource: User
 resource_owner: anyone
 redirect_to: /sign-in
-configuration:
+fields:
   email:
   password:
   first_name:
