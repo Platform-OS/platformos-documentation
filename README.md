@@ -1,6 +1,6 @@
 ## Contribute content
 
-Thank you for your interest in contributing to the PlatformOS documentation! Our docs are a tool for our community, so we strive to ensure they serve you well. We always welcome any kind of contribution to our documentation: we value your feedback, and appreciate any improvement suggestions or extensions.
+Thank you for your interest in contributing to the platformOS documentation! Our docs are a tool for our community, so we strive to ensure they serve you well. We always welcome any kind of contribution to our documentation: we value your feedback, and appreciate any improvement suggestions or extensions.
 
 ## Give us feedback
 

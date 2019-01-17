@@ -13,7 +13,7 @@ This is an overview of all form configuration options.
 
 To understand this topic, you should be familiar with:
  * [Liquid Template language](https://shopify.github.io/liquid/)
- * PlatformOS [Forms introduction](/tutorials/forms/introduction)
+ * platformOS [Forms introduction](/tutorials/forms/introduction)
 
 ## Full Form Configuration example
 
@@ -101,7 +101,7 @@ The unique identifier of the form. It's how you reference your forms in the [inc
 {% include 'alert/warning', content: content %}
 
 ### `resource`
-Either the name of your CustomModelType or one of predefined PlatformOS classes. For the full list of classes visit our [REST API reference](api-reference/rest-api).
+Either the name of your CustomModelType or one of predefined platformOS classes. For the full list of classes visit our [REST API reference](api-reference/rest-api).
 
 Examples:
 
@@ -192,28 +192,16 @@ String, defines form configuration user permissions schema.
 
 Available values are:
 
-* `owner` - only the user that previously created the object can update/delete the object with that form configuration
 * `anyone` - anyone can modify the object
+* `creator` - only the user that previously created the object can update/delete the object with that form configuration
 * `self` - like `owner` for User resource
-* `related` - related through other object
-* `recipient` - for UserMessage resource
 
 *The table below shows all possible resource owners for different resources:*
 
-| Resource | Available resoruce ovners|
+| Resource | Available resource owners|
 |---|---|
-|Offer | related, creator, owner, anyone|
-|Order | related, creator, owner, anyone|
-|OrderItem | related, creator, owner, anyone|
-|Payment | related, payer, receiver, anyone|
-|UserMessage | owner, recipient|
-|PaymentTransfer | related, payer, receiver, anyone|
-|Reservation | related, creator, owner, anyone|
-|TransactableLineItem | creator, owner, related anyone|
 |User | self, anyone |
-|**All others** | creator, anyone |
-
-
+|Customization | creator, anyone |
 
 This is very useful when you want to restrict user permissions to modify only records that were previously created by that user.
 
