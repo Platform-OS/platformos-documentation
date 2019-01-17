@@ -63,7 +63,7 @@ Now that you have the definition of a `Contact` in place, you can create a Form 
 name: contact_form
 resource: Customization
 resource_owner: anyone
-configuration:
+fields:
   properties:
     name:
       validation:
@@ -200,7 +200,7 @@ name: contact_form
 resource: Customization
 resource_owner: anyone
 redirect_to: /contacts
-configuration:
+fields:
   properties:
     name:
       validation:
@@ -266,7 +266,7 @@ name: delete_contact_form
 resource: Customization
 resource_owner: anyone
 redirect_to: /contacts
-configuration: {}
+fields: {}
 ---
 
 {% form method: "delete" %}
@@ -278,7 +278,7 @@ To display delete button on the list of contacts, include the form as follows:
 {% raw %}
 ```liquid
 <td>
-  {% include_form "delete_contact_form", resource_id: contact.id,
+  {% include_form "delete_contact_form", id: contact.id,
     resource_type: 'contact' %}
 </td>
 ```
@@ -287,14 +287,14 @@ To display delete button on the list of contacts, include the form as follows:
 
 ### Step 7: Edit Contact
 
-As you already have the form to create contacts, you can simply reuse it for the purpose of record update. In order to prefill the form with proper data, add resource_id to include_form tag.
+As you already have the form to create contacts, you can simply reuse it for the purpose of record update. In order to prefill the form with proper data, add id to include_form tag.
 
 {% raw %}
 ```liquid
 ---
 slug: contacts/edit
 ---
-{% include_form "contact_form", resource_id: context.params.slug3,
+{% include_form "contact_form", id: context.params.slug3,
   parent_resource_id: "contact" %}
 ```
 {% endraw %}

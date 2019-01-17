@@ -65,7 +65,7 @@ redirect_to: |-
     /admin/product/{{ form.id }}/edit
   {% endif %}
 flash_notice: Product details have been saved
-configuration:
+fields
   new_record:
     property_options:
       virtual: true
@@ -215,7 +215,7 @@ redirect_to: |-
 
 ...
 
-configuration:
+fields:
   new_record:
     property_options:
       virtual: true
@@ -823,7 +823,7 @@ Once the router has been added, it’s time to add partials for specific views:
 {%
   include_form "product_form",
   resource_type: "product",
-  resource_id: context.params.slug3
+  id: context.params.slug3
 %}
 {% endraw %}
 ```
@@ -947,7 +947,7 @@ The router you’ve created also handles displaying details of the given product
         {%
           include_form "destroy_product_form",
           resource_type: "product",
-          resource_id: product.id,
+          id: product.id,
           product_name: product.name
         %}
       </div>
@@ -982,7 +982,7 @@ name: destroy_product_form
 resource: Customization
 redirect_to: /admin/products
 flash_notice: Product has been deleted
-configuration:
+fields:
 ---
 {% comment %}
   Optional params:

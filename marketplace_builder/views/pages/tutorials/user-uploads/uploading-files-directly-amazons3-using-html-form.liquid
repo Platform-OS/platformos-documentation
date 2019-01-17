@@ -53,7 +53,7 @@ name: update_profile
 resource: User
 flash_notice: Congratulations, your profile has been updated.
 redirect_to: /update_profile
-configuration:
+fields:
   profiles:
     developer:
       properties:
@@ -83,7 +83,7 @@ A simple page renders the form mentioned above:
 ---
 slug: update_profile
 ---
-{% include_form 'update_profile', resource_id: context.current_user.id %}
+{% include_form 'update_profile', id: context.current_user.id %}
 {% endraw %}
 ```
 

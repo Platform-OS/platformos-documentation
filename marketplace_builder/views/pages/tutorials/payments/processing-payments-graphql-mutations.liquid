@@ -64,7 +64,7 @@ The form for the above mutation is:
 name: create_invoice_form
 resource: Customization
 resource_owner: anyone
-configuration:
+fields:
   customizable_type:
   customizable_id:
   user_id:
@@ -141,7 +141,7 @@ To make things simpler, USD is the default currency, but feel free to change it.
 ---
 name: create_payment_form
 resource: Payment
-configuration:
+fields:
   credit_card_id:
   payment_method_id:
     validation:
@@ -205,7 +205,7 @@ mutation charge_payment($id: ID!) {
 ---
 name: charge_payment_form
 resource: Payment
-configuration: {}
+fields: {}
 resource_owner: anyone
 ---
 ```
