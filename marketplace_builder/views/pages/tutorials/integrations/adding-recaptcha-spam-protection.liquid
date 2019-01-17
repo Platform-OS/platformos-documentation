@@ -44,7 +44,7 @@ slug: sign-in-recaptcha
 ---
 <h2>Sign in</h2>
 
-{% render_form 'sign_in_with_recaptcha' %}
+{% include_form 'sign_in_with_recaptcha' %}
 {% endraw %}
 
 ```
@@ -131,9 +131,9 @@ slug: sign-in-recaptcha
 
 {% assign signin_failed_attempts = context.session.failed_attempts | plus: 0 %}
 {% if signin_failed_attempts > 3 %}
-  {% render_form 'sign_in_with_recaptcha' %}
+  {% include_form 'sign_in_with_recaptcha' %}
 {% else %}
-  {% render_form 'sign_in_without_recaptcha' %}
+  {% include_form 'sign_in_without_recaptcha' %}
 {% endif %}
 {% endraw %}
 
