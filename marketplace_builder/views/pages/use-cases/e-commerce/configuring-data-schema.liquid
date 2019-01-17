@@ -50,7 +50,7 @@ Every T-shirt in your store will be described by `product_type` and `brand`. Add
 
 ```yaml
 name: product
-custom_attributes:
+properties:
   - name: name
     attribute_type: string
   - name: description
@@ -72,7 +72,7 @@ Notes:
 
 ```yaml
 name: brand
-custom_attributes:
+properties:
   - name: name
     attribute_type: string
 ```
@@ -81,7 +81,7 @@ custom_attributes:
 
 ```yaml
 name: product_type
-custom_attributes:
+properties:
   - name: name
     attribute_type: string
 ```
@@ -90,7 +90,7 @@ custom_attributes:
 
 ```yaml
 name: photo
-custom_attributes:
+properties:
   - name: product_id
     attribute_type: string
   - name: image
@@ -116,7 +116,7 @@ The `photo` model uses a special field type called `photo`. It helps automating 
 
 ```yaml
 name: stock_level
-custom_attributes:
+properties:
   - name: product_id
     attribute_type: string
   - name: variant
@@ -133,7 +133,7 @@ custom_attributes:
 
 ```yaml
 name: default
-custom_attributes:
+properties:
   - name: phone
     attribute_type: string
   - name: admin
@@ -146,7 +146,7 @@ Every user will also be able to save multiple `addresses` to his contact book.
 
 ```yaml
 name: address
-custom_attributes:
+properties:
   - name: label
     attribute_type: string
   - name: location
@@ -173,7 +173,7 @@ Last part of your shop data schema is related to `order`s created by clients. Ev
 
 ```yaml
 name: order
-custom_attributes:
+properties:
   - name: billing_address
     attribute_type: text
   - name: shipping_address
@@ -194,7 +194,7 @@ custom_attributes:
 
 ```yaml
 name: order_product
-custom_attributes:
+properties:
   - name: product_id
     attribute_type: string
   - name: order_id
@@ -215,7 +215,7 @@ You’ve probably noticed that some fields are duplicated (shipping) or not refe
 
 ```yaml
 name: order_history
-custom_attributes:
+properties:
   - name: order_id
     attribute_type: string
   - name: state
@@ -226,7 +226,7 @@ custom_attributes:
 
 ```yaml
 name: payment
-custom_attributes:
+properties:
   - name: order_id
     attribute_type: string
   - name: state
@@ -242,7 +242,7 @@ The data diagram mentions a `timestamp` field for both the `payment` and the `or
 
 ```yaml
 name: shipping_option
-custom_attributes:
+properties:
   - name: name
     attribute_type: string
   - name: price
