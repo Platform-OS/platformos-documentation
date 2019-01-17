@@ -30,7 +30,7 @@ pipeline {
         script {
           commitSha = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
           commitAuthor = sh(returnStdout: true, script: 'git log --no-merges --format="%an" -1').trim()
-          commitMsg = sh(returnStdout: true, script: 'git log --no-merges --format="%B" -1').trim()
+          commitMsg = sh(returnStdout: true, script: 'git log --no-merges --format="%B" -1 ${commitSha}').trim()
 
           commitInfo = "<${env.GH_URL}/commit/${commitSha}|${commitSha}> - ${commitAuthor} - ${commitMsg}"
         }
