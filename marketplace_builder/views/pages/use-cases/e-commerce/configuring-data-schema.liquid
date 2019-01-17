@@ -50,17 +50,17 @@ Every T-shirt in your store will be described by `product_type` and `brand`. Add
 
 ```yaml
 name: product
-custom_attributes:
+properties:
   - name: name
-    attribute_type: string
+    type: string
   - name: description
-    attribute_type: text
+    type: text
   - name: price
-    attribute_type: integer
+    type: integer
   - name: brand_id
-    attribute_type: string
+    type: string
   - name: product_type_id
-    attribute_type: string
+    type: string
 ```
 
 Notes:
@@ -72,29 +72,29 @@ Notes:
 
 ```yaml
 name: brand
-custom_attributes:
+properties:
   - name: name
-    attribute_type: string
+    type: string
 ```
 
 #### marketplace_builder/custom_model_types/product_type.yml
 
 ```yaml
 name: product_type
-custom_attributes:
+properties:
   - name: name
-    attribute_type: string
+    type: string
 ```
 
 #### marketplace_builder/custom_model_types/photo.yml
 
 ```yaml
 name: photo
-custom_attributes:
+properties:
   - name: product_id
-    attribute_type: string
+    type: string
   - name: image
-    attribute_type: photo
+    type: photo
     versions_configuration:
       thumb:
         width: 250
@@ -116,13 +116,13 @@ The `photo` model uses a special field type called `photo`. It helps automating 
 
 ```yaml
 name: stock_level
-custom_attributes:
+properties:
   - name: product_id
-    attribute_type: string
+    type: string
   - name: variant
-    attribute_type: string
+    type: string
   - name: amount
-    attribute_type: integer
+    type: integer
 ```
 
 ### Step 2. Configure user models
@@ -133,11 +133,11 @@ custom_attributes:
 
 ```yaml
 name: default
-custom_attributes:
+properties:
   - name: phone
-    attribute_type: string
+    type: string
   - name: admin
-    attribute_type: boolean
+    type: boolean
 ```
 
 Every user will also be able to save multiple `addresses` to his contact book.
@@ -146,13 +146,13 @@ Every user will also be able to save multiple `addresses` to his contact book.
 
 ```yaml
 name: address
-custom_attributes:
+properties:
   - name: label
-    attribute_type: string
+    type: string
   - name: location
-    attribute_type: string
+    type: string
   - name: default_address
-    attribute_type: boolean
+    type: boolean
 ```
 
 {% capture content %}
@@ -173,40 +173,40 @@ Last part of your shop data schema is related to `order`s created by clients. Ev
 
 ```yaml
 name: order
-custom_attributes:
+properties:
   - name: billing_address
-    attribute_type: text
+    type: text
   - name: shipping_address
-    attribute_type: text
+    type: text
   - name: shipping_option_id
-    attribute_type: string
+    type: string
   - name: shipping_option_name
-    attribute_type: string
+    type: string
   - name: shipping_price
-    attribute_type: integer
+    type: integer
   - name: comments
-    attribute_type: text
+    type: text
   - name: state
-    attribute_type: string
+    type: string
 ```
 
 #### marketplace_builder/custom_model_types/order_product.yml
 
 ```yaml
 name: order_product
-custom_attributes:
+properties:
   - name: product_id
-    attribute_type: string
+    type: string
   - name: order_id
-    attribute_type: string
+    type: string
   - name: name
-    attribute_type: string
+    type: string
   - name: variant
-    attribute_type: string
+    type: string
   - name: amount
-    attribute_type: integer
+    type: integer
   - name: price
-    attribute_type: integer
+    type: integer
 ```
 
 You’ve probably noticed that some fields are duplicated (shipping) or not referencing other custom types by `id` (addresses). You want to ensure that order data is persistent and does not change after an order has been created. If at any point in time the admin removed the shipping option used in this order, or the user updated his address in the address book, the order would no longer represent the state at the moment of creation. Therefore, you should copy any piece of information prone to being manipulated, when the new order is created. Same logic applies to the `order_product` table where information on the ordered products is stored, along with the reference to the product itself. In case a product is removed or updated, you do not lose any data.
@@ -215,22 +215,22 @@ You’ve probably noticed that some fields are duplicated (shipping) or not refe
 
 ```yaml
 name: order_history
-custom_attributes:
+properties:
   - name: order_id
-    attribute_type: string
+    type: string
   - name: state
-    attribute_type: string
+    type: string
 ```
 
 #### marketplace_builder/custom_model_types/payment.yml
 
 ```yaml
 name: payment
-custom_attributes:
+properties:
   - name: order_id
-    attribute_type: string
+    type: string
   - name: state
-    attribute_type: string
+    type: string
 ```
 
 {% capture content %}
@@ -242,11 +242,11 @@ The data diagram mentions a `timestamp` field for both the `payment` and the `or
 
 ```yaml
 name: shipping_option
-custom_attributes:
+properties:
   - name: name
-    attribute_type: string
+    type: string
   - name: price
-    attribute_type: integer
+    type: integer
 ```
 
 ## Next steps
