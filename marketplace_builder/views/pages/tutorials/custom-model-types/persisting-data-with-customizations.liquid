@@ -17,7 +17,7 @@ I want to store my "todo list" in platformOS
 
 | Task                 | Priority |
 |----------------------|----------|
-| Clean the appartment | Low      |
+| Clean the apartment  | Low      |
 | Do the homework      | High     |
 
 
@@ -45,7 +45,7 @@ properties:
 
 ## Step 4. Sync/Deploy Custom Model Type definition.
 
-At the moment of deploy Marketplace-Kit is asking platformOS if Custom Model Type object with name `todo` already exists, if so it will be updated with given definition otherise new object is created.
+At the moment of deploy Marketplace-Kit is asking platformOS if Custom Model Type object with name `todo` already exists, if so it will be updated with given definition otherwise new object is created.
 
 You can verify this step with GraphQL query:
 
@@ -96,7 +96,7 @@ In [Building Contact Form With Customization tutorial](/tutorials/customizations
   As you know by now Customizations and Custom Model Type objects are strictly related as the definition of properties allows for storing the data in platformOS backend systems.
   Once you have data persisted within Customization you need to be aware of how changes in CustomModelType affect your Customization objects:
 
-  * **custom model type definition delete** - you can only delete your Custom Model Type object if there is no related Customization objects. Use [customizations_delete_all](/api-reference/graphql/g/mut/customizations_delete_all) mutation to delete all releated Customization objects.
+  * **custom model type definition delete** - you can only delete your Custom Model Type object if there is no related Customization objects. Use [customizations_delete_all](/api-reference/graphql/g/mut/customizations_delete_all) mutation to delete all related Customization objects.
 
       If you try to deploy with orphaned Customization, you will see the following message:
 
@@ -105,14 +105,14 @@ In [Building Contact Form With Customization tutorial](/tutorials/customizations
       Use the mutation below to remove dependent objects:
       mutation { customizations_delete_all(custom_model_type_name: "todo") { count } }
       ```
-  * **name change** - as platformOS detects CustomModelType definition by it's name, if you change it is equal with adding new CustomModelType, please note that Customization objects are not automatically migrated and will be treated as orphaned with next deploy attempt, see error message above.
-  * **add new custom model type property** - adding new properties is a valid change that do not need addtional actions, the data remains untouched.
-  * **delete of custom model type property** - deletion of property is a valid change, data stored in related Customization properties will remain saved but will not be accessible. Use migration to remove the data prior the the change.
-  * **property edition** - is a valid change and is equal to removal of property witd old name and creation of new property, data is not migrated.
+  * **name change** - as platformOS detects CustomModelType definition by its name, if you change it is equal with adding new CustomModelType, please note that Customization objects are not automatically migrated and will be treated as orphaned with next deploy attempt, see error message above.
+  * **add new custom model type property** - adding new properties is a valid change that do not need additional actions, the data remains untouched.
+  * **delete of custom model type property** - deletion of the property is a valid change, data stored in related Customization properties will remain saved but will not be accessible. Use migration to remove the data prior to the change.
+  * **property edition** - is a valid change and is equal to the removal of property with old name and creation of new property, data is not migrated.
 
 
 Step 7. Mutations
 
 What you have done in steps 2, 3 and 4 can be done with [admin_model_schema_create](/api-reference/graphql/g/mutation/admin_model_schema_create/) mutation.
-In your platformOS instance, result would ne exactly the same, but you can now create CMS system where user can define their own models with a few clicks in user interface.
+In your platformOS instance, the result would be exactly the same, but you can now create CMS system where the user can define their own models with a few clicks in the user interface.
 Please note that the same rules apply for Custom Model Type deletion as when you delete it with Marketplace-Kit
