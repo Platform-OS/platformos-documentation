@@ -4,7 +4,7 @@
   {% assign key = context.page.slug %}
 
   {% comment %}
-    For every page we do not want to call Github to fetch contributores 
+    For every page we do not want to call Github to fetch contributores
     more often than once a day
   {% endcomment %}
 
@@ -30,14 +30,12 @@
         {% assign c = page_contributors.contributors | default: "[]" | to_hash | reverse %}
         {% for contributor in c %}
           {% if contributor.login != blank %}
-            <a href="https://github.com/{{ contributor.login }}&s=20" target="_blank">
-              <img src="{{ contributor.avatar_url }}" width="20" height="20" alt="{{ contributor.login }}">
+            <a href="https://github.com/{{ contributor.login }}" target="_blank">
+              <img src="{{ contributor.avatar_url }}&s=20" width="20" height="20" alt="{{ contributor.login }}">
             </a>
           {% endif %}
         {% endfor %}
       </p>
     </div>
-  {% else %}
-    <div class="contributors d-flex" data-contributors></div>
   {% endif %}
 {% endif %}
