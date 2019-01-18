@@ -63,27 +63,10 @@ Thank you to all our contributors!
 
     npm run build # runs webpack in production mode
 
-## Generators
-
-    ./scripts/generate_graphql.sh
-    ./scripts/generate_liquid_filters.sh
-    ./scripts/generate_liquid_tags.sh
-    ./scripts/generate_rest_api.sh
-
-or
-
-    npm run autogenerate # runs all docs generators
-
-## Integrations testing
-
-We are using CodeceptJS to run integration tests
-
-    API_KEY=XXXXXXXX npm test-codecept
-
-## E2E local testing
+## End to end local testing
 
 We are using testcafe to run E2E tests
 
     npm install -g testcafe
 
-    npm run test-local # uses headless chrome
+    npm run test-local # uses headless chrome. use `npm run` for details

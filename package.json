@@ -16,8 +16,7 @@
     "deploy": "npm run clean && npm run build && marketplace-kit deploy -f",
     "test": "docker run -v $PWD/tests/e2e:/tests --shm-size=1g -it testcafe/testcafe \"chromium:headless --no-sandbox\" -c 4 /tests",
     "test-ci": "docker run -v $PWD/tests/e2e:/tests testcafe/testcafe \"chromium:headless --no-sandbox\" /tests",
-    "test-local": "npx testcafe \"chrome:headless\" tests/e2e",
-    "test-codecept": "codeceptjs run --steps"
+    "test-local": "npx testcafe \"chrome:headless\" tests/e2e"
   },
   "config": {
     "build_dir": "marketplace_builder/assets"
@@ -70,10 +69,6 @@
     "turbolinks": "5.2.0"
   },
   "peerDependencies": {
-    "codeceptjs": "1.3.1",
-    "mocha": "5.2.0",
-    "puppeteer": "1.5.0",
-    "testcafe": "0.23.0",
-    "unirest": "0.5.1"
+    "testcafe": "0.23.0"
   }
 }
