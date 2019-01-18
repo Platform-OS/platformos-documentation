@@ -89,11 +89,9 @@ test('Deep linking is working with utf8 characters in the heading id/href', asyn
   await t.expect(await heading.visible).ok();
 });
 
-// test.skip("Contributors are showing up", async t => {
-/*
-    Because there is a limit on github api requests (pretty low, 100) and it runs on every page reload
-   lets not test this, because it will cause tests to be flaky.
+test('Contributors are showing up', async t => {
+  await t.navigateTo('/how-platformos-works');
 
-   TODO: Implement after our DB caching mechanism has been implemented.
-  */
-// });
+  await t.expect(Layout.Contributors.count).eql(1);
+  await t.expect(Layout.Contributors.find('a').count).gt(0);
+});

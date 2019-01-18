@@ -13,11 +13,10 @@ test('There are no liquid errors on the page', async () => {
 });
 
 test('Github contributors are not shown', async t => {
-  await t.expect(Layout.Contributors.count).eql(1);
-  await t.expect(Layout.Contributors.find('div').count).eql(0);
+  await t.expect(Layout.Contributors.count).eql(0);
 });
 
-test('All boxes exist', async t => {
+test('All 6 boxes are present', async t => {
   await t.expect(Home.Boxes.count).eql(6);
 });
 
