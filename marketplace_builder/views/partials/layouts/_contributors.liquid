@@ -1,7 +1,6 @@
 {% if context.location.href != "/" %}
   {% query_graph "get_page_contributors", slug: context.location.href %}
   {% assign page_contributors = g.customizations.results.last %}
-  {% log page_contributors, type: '[page_contrib]' %}
   {% assign key = context.page.slug %}
 
   {% comment %}
