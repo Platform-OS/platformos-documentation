@@ -1,17 +1,17 @@
 ---
 converter: markdown
 metadata:
-  title: User-Defined Custom Attributes
-  description: User-defined Custom Attributes are Custom Attributes you can create on demand.
+  title: User-Defined Properties
+  description: User-defined Properties are Properties you can create on demand.
 slug: tutorials/custom-attributes/user-defined
 searchable: true
 ---
 
-User-defined Custom Attributes are Custom Attributes you can create on demand.
+User-defined Properties are Properties you can create on demand.
 
-## Defining user-defined Custom Attributes
+## Defining user-defined Properties
 
-CustomAttributes are defined in YML configuration files for:
+Properties are defined in YML configuration files for:
 
 * [CustomModelTypes](/tutorials/custom-model-types/custom-model-types)
 * RelationshipTypes
@@ -31,12 +31,12 @@ properties:
 
 The above configuration adds three custom properties: "name" of type _string_, "enabled" of type _boolan_, and "age" of type _integer_.
 
-## CustomAttribute Types
+## Property Types
 
-Each CustomAttribute is described with the type of data that is stored within the database.
-Please note that when processing your CustomAttribute in Liquid, types are automatically converted to those supported by [Liquid Data Types](https://help.shopify.com/themes/liquid/basics/types).
+Each Property is described with the type of data that is stored within the database.
+Please note that when processing your Property in Liquid, types are automatically converted to those supported by [Liquid Data Types](https://help.shopify.com/themes/liquid/basics/types).
 
-The table below lists available data types for CustomAttribute configuration, that are used to configure fields on the database:
+The table below lists available data types for Property configuration, that are used to configure fields on the database:
 
 | Type     | Description                                        | Example                     |
 | -------- | -------------------------------------------------- | --------------------------- |
@@ -54,11 +54,11 @@ The table below lists available data types for CustomAttribute configuration, th
 
 ## Grouping into models
 
-You can group your custom attributes into [Custom Models](/tutorials/custom-model-types/custom-model-types).
+You can group your Properties into [Custom Models](/tutorials/custom-model-types/custom-model-types).
 
 ### FormConfiguration
 
-You can configure Custom Attributes settings in Form Configuration similarly to other parameters:
+You can configure Properties settings in Form Configuration similarly to other parameters:
 
 
 ```yaml
@@ -87,9 +87,9 @@ fields:
 
 For more information see our [Form Builder Reference](/tutorials/forms/form-configurations) and our [Building a Contact Form with Customization](/tutorials/customizations/building-contact-form-with-customization) tutorial.
 
-## Fetching CustomAttribute with GraphQL
+## Fetching Property with GraphQL
 
-CustomAttributes depend on their parent objects and are accessible in the query after mapping the name of the CustomAttribute with the query attribute name, you can do that with the `property` method:
+Properties depend on their parent objects and are accessible in the query after mapping the name of the Property with the query attribute name, you can do that with the `property` method:
 
 
 ```graphql
@@ -104,10 +104,10 @@ query get_customizations {
 }
 ```
 
-## Filtering CustomAttribute with GraphQL
+## Filtering Property with GraphQL
 
 You can filter GraphQL results based on object properties states.
-Each object in the properties array is connected with a CustomAttribute through its name. Additional options are:
+Each object in the properties array is connected with a Property through its name. Additional options are:
 
 ### value - matches the value of given property
 
@@ -173,6 +173,6 @@ query get_all_with_name {
 }
 ```
 
-Please note that the above examples are only valid for CustomAttributes defined on CustomModelType. Please refer to GraphQL schema in order to filter CustomAttributes defined on different parents than CustomModelType.
+Please note that the above examples are only valid for Properties defined on CustomModelType. Please refer to GraphQL schema in order to filter Properties defined on different parents than CustomModelType.
 
 {% include 'shared/questions_section' %}

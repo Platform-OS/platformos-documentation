@@ -33,7 +33,7 @@ Building a Contact Form with Customization is a nine-step process:
 
 ### Step 1: Define Contact &ndash; Custom Model Type
 
-To define a new Custom Model Type, use YAML files placed in the `custom_model_types` directory. In the key-value format you can define a name for your Customization, and an array of Custom Attributes for the Customization object. To build a Contact Form, you'll need email, name, and description attributes on the Customization that you can call a `Contact`.
+To define a new Custom Model Type, use YAML files placed in the `custom_model_types` directory. In the key-value format you can define a name for your Customization, and an array of Properties for the Customization object. To build a Contact Form, you'll need email, name, and description attributes on the Customization that you can call a `Contact`.
 
 Create a file `custom_model_types/contact.yml` with the following content:
 
@@ -48,9 +48,9 @@ properties:
   type: string
 ```
 
-The basic Configuration of the Customization consists of a name and the list of Custom Attributes. In the example above, you have defined three attributes of type `string`.
+The basic Configuration of the Customization consists of a name and the list of Properties. In the example above, you have defined three attributes of type `string`.
 
-For more information on Custom Attributes please see [Custom Attributes Documentation](/tutorials/custom-attributes/custom-attributes/).
+For more information on Properties please see [Properties Documentation](/tutorials/custom-attributes/custom-attributes/).
 
 ### Step 2: Define Contact Form &ndash; Form Object
 
@@ -105,7 +105,7 @@ The above definition whitelists name, email, and description attributes and defi
 * From the example above you are sending the following parameters in the request:
   * `form_configuration_name`: name of the form object that you have created before
   * `parent_resource_id`: parameterized name of Custom Model Type, `Contact` becomes `contact`
-  * `customization`: json attributes that correspond with structure of form and customization. Please note that custom attributes are nested within "properties_attributes" node.
+  * `customization`: json attributes that correspond with structure of form and customization. Please note that Properties are nested within "properties_attributes" node.
 
 ### Step 3: Fetch saved data with GraphQL
 
@@ -340,9 +340,9 @@ To play with a live example (in much fuller form and with additional information
 
 ## Next steps
 
-Congratulations! You have learned how to build forms with Customization. You can now explore our reference documentation for Custom Attributes and Custom Model Types:
+Congratulations! You have learned how to build forms with Customization. You can now explore our reference documentation for Properties and Custom Model Types:
 
-* [Custom Attributes](/tutorials/custom-attributes/custom-attributes)
+* [Properties](/tutorials/custom-attributes/custom-attributes)
 * [Custom Model Types](/tutorials/custom-model-types/custom-model-types)
 
 
