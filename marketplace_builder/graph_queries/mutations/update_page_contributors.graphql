@@ -1,4 +1,4 @@
-mutation update_page_contributors($id: ID!, $contributors: String, $last_edit: String) {
+mutation update_page_contributors($id: ID!, $contributors: String, $last_edit: String, $slug: String) {
   customization_update(
     form_configuration_name: "update_page_contributors_form"
       id: $id
@@ -7,6 +7,7 @@ mutation update_page_contributors($id: ID!, $contributors: String, $last_edit: S
       properties: [
         { name: "contributors", value: $contributors }
         { name: "last_edit", value: $last_edit }
+        { name: "slug", value: $slug }
       ]
     }
   ) {

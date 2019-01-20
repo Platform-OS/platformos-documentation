@@ -2,7 +2,7 @@
 converter: markdown
 metadata:
   title: Basic Concepts
-  description: Learn more about pages, layouts, partials, Form Configurations, Users, User Profiles, Custom Attributes, Custom Models, Authorization Policies, Transactables, Translations.
+  description: Learn more about pages, layouts, partials, Form Configurations, Users, User Profiles, Properties, Custom Models, Authorization Policies, Transactables, Translations.
 slug: how-platformos-works/basic-building-blocks
 searchable: true
 ---
@@ -36,17 +36,17 @@ On top of that, you can define callbacks (either synchronous or asynchronous) fo
 
 **Users** are accounts that any of your users can have. Users are identified by their unique email addresses.
 
-**User Profiles** are roles in the marketplace. Each User Profile can be associated with any number of Custom Attributes and Custom Model Types. All users are assigned a User Profile named Default. The difference between User Profile and Custom Model Type is that each user can have maximum one profile of a given name (but can have many different profiles), whereas they can have many custom models with the same name. From practical perspective, it is very simple to create `upsert` operation on UserProfile (i.e. create user profile, or if it exists, update it)
+**User Profiles** are roles in the marketplace. Each User Profile can be associated with any number of Properties and Custom Model Types. All users are assigned a User Profile named Default. The difference between User Profile and Custom Model Type is that each user can have maximum one profile of a given name (but can have many different profiles), whereas they can have many custom models with the same name. From practical perspective, it is very simple to create `upsert` operation on UserProfile (i.e. create user profile, or if it exists, update it)
 
 [Learn how to create and manage Users and User Profiles in our Get Started guide](/tutorials/users/users)
 
-## Custom Attributes and Custom Models
+## Properties and Custom Models
 
-**Custom Model Types** have multiple use cases. Think of them as a custom DB table, which allows you to build highly customized features. Use them to group Custom Attributes, and allow the user to provide multiple values for each of them.
+**Custom Model Types** have multiple use cases. Think of them as a custom DB table, which allows you to build highly customized features. Use them to group Properties, and allow the user to provide multiple values for each of them.
 
-**Custom Attributes** are fields that you attach to a User Profile, Transactable, Custom Model Type, etc. Think of them as a custom DB columns (though complex types, like files, photos and addresses should be treated as separate DB tables). We also provide some Custom Attributes to jumpstart your development.
+**Properties** are fields that you attach to a User Profile, Transactable, Custom Model Type, etc. Think of them as a custom DB columns (though complex types, like files, photos and addresses should be treated as separate DB tables). We also provide some Properties to jumpstart your development.
 
-[Learn more about Custom Attributes and Custom Model Types in our Reference](/tutorials/custom-attributes/custom-attributes)
+[Learn more about Properties and Custom Model Types in our Reference](/tutorials/properties/properties)
 
 ## Authorization Policies
 
@@ -60,7 +60,7 @@ Each policy is parsed using Liquid, and the system checks them in order of their
 
 **Transactable** represents a resource around which any transaction is made. Transactables can be products (e.g. users selling products that other users want to buy), services (e.g. matching users who provide services with those who want to hire them), or projects (e.g. matching users with a project to experts who can accomplish it).
 
-**Transactable Types** allow you to define Transactables in terms of what custom attributes, images, addresses and attachments they have per business rules.
+**Transactable Types** allow you to define Transactables in terms of what Properties, images, addresses and attachments they have per business rules.
 
 [Learn how to use Transactables and Transactable Types in our Get Started guides](/tutorials/transactables/transactables)
 

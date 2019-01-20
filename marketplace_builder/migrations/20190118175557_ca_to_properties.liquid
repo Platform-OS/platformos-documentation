@@ -1,0 +1,33 @@
+{% parse_json "pages" %}
+[
+  {
+    "slug": "/tutorials/custom-attributes/custom-attributes",
+    "new_slug": "/tutorials/properties/properties"
+  },
+  {
+    "slug": "/tutorials/custom-attributes/user-defined",
+    "new_slug": "/tutorials/properties/user-defined"
+  },
+  {
+    "slug": "/tutorials/custom-attributes/custom-addresses",
+    "new_slug": "/tutorials/properties/custom-addresses"
+  },
+  {
+    "slug": "/tutorials/custom-attributes/custom-attachments",
+    "new_slug": "/tutorials/properties/custom-attachments"
+  },
+  {
+    "slug": "/tutorials/custom-attributes/custom-images",
+    "new_slug": "/tutorials/properties/custom-images"
+  }
+]
+{% endparse_json %}
+
+{% assign page_dir = "marketplace_builder/views/pages/" %}
+{% for page in pages %}
+  {% query_graph "get_page_contributors", slug: page.slug %}
+  {% assign id = g.customizations.results.first.id %}
+  {% if id != blank %}
+    {% execute_query "update_page_contributors", id: id, slug: page.new_slug %} 
+  {% endif %}
+{% endfor %}
