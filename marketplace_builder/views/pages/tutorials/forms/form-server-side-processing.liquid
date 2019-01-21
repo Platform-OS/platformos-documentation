@@ -6,34 +6,34 @@ metadata:
 slug: tutorials/forms/form-server-side-processing
 searchable: true
 ---
-This topic explains form server-side processing in platformOS when user submits form.
+This topic explains form server-side processing in platformOS when a user submits a form.
 
 To understand this topic, you should be familiar with:
 
  * [Liquid Template language](https://shopify.github.io/liquid/)
- * platformOS Forms [Configuration Options](/tutorials/forms/configuration-options)
+ * platformOS Form [Configuration Options](/tutorials/forms/configuration-options)
 
 ## 1. CSRF Token validation
 
-The very first thing before every POST request is to verify CSRF token. If it is not provided, the user's session won't be validated and will be discarded.
+The very first thing before every POST request is to verify the CSRF token. If it is not provided, the user's session won't be validated and will be discarded.
 
 {% capture content %}
-  For AJAX calls make sure to provide headers `X-CSRF-Token: <value from context.authenticity_token>` and `X-Requested-With: 'XMLHttpRequest`. If you use {% raw %}`{% form %}`{% endraw %} tag, then authencitiy_token is included automatically as a hidden input and no action is needed.
+  For AJAX calls make sure to provide the headers `X-CSRF-Token: <value from context.authenticity_token>` and `X-Requested-With: 'XMLHttpRequest`. If you use {% raw %}`{% form %}`{% endraw %} tag, then the authenticity_token is included automatically as a hidden input and no action is needed.
 {% endcapture %}
 {% include 'alert/important', content: content %}
 
 
 ## 2. Find FormConfiguration based on `form_configuration_name` or `form_configuration_id` parameter
 
-The first step is to identify FormConfiguration to be used to process user's request. In order to do it, the server checks for parameter called `form_configuration_name` or `form_configuration_id`, which is automatically added to the page when form is rendered using {% raw %}`{% form %}`{% endraw %} tag as described in [FormTag](/tutorials/forms/form-rendering#form-tag). If the value is missing or invalid, 404 error is rendered, otherwise we move on.
+The first step is to identify the FormConfiguration to be used to process the user's request. In order to do it, the server checks for the parameter called `form_configuration_name` or `form_configuration_id`, which is automatically added to the page when the form is rendered using the {% raw %}`{% form %}`{% endraw %} tag as described in [FormTag](/tutorials/forms/form-rendering#form-tag). If the value is missing or invalid, 404 error is rendered, otherwise you can move on.
 
 ## 3. Check Authorization Policies
 
-The next step is authorization using [Authorization Policies](/tutorials/authorization-policy/authorization-policy). Those are processed in the order in which we were defined - from top to bottom. If the authorization fails, the server stops processing the form and handles authorization policy failure(usually redirect or rendering 403 error).
+The next step is authorization using [Authorization Policies](/tutorials/authorization-policy/authorization-policy). Those are processed in the order in which they were defined - from top to bottom. If the authorization fails, the server stops processing the form and handles authorization policy failure (usually redirect or rendering 403 error).
 
 ## 4. Resource Owner authorization
 
-Once all authorization policies pass, the next check is authorization [Resource Owner](/tutorials/forms/form-configuration#resource_owner) property. It checks if the currently logged in user has access to the resource with given `id`. If fails, the server returns 404 error.
+Once all authorization policies pass, the next check is authorization for the [Resource Owner](/tutorials/forms/form-configuration#resource_owner) property. It checks if the currently logged in user has access to the resource with given `id`. If it fails, the server returns a 404 error.
 
 {% capture content %}
 Resource Owner is only relevant for update / delete. It does not matter for create, as there is no resource at that time.
@@ -42,19 +42,19 @@ Resource Owner is only relevant for update / delete. It does not matter for crea
 
 ## 5. Modifying user input with `default_payload` JSON
 
-The next step is to extend/overwrite user's input with `default_payload`. This is the place when liquid is evaluated server-side. The most useful variables here used to build default_payload are `context.params` and `form` variables. If evaluated liquid is not valid JSON, the server raises 500 error and automatically creates relevant [Log](/tutorials/qa/creating-marketplace-kit-logs).
+The next step is to extend/overwrite the user's input with `default_payload`. This is the place where Liquid is evaluated on the server side. The most useful variables used to build default_payload are `context.params` and `form` variables. If evaluated Liquid is not valid JSON, the server raises a 500 error and automatically creates relevant [Log](/tutorials/qa/creating-marketplace-kit-logs).
 
 ## 6. Validating user input
 
-The result of merging user's input with default_payload is then run against validation rules defined for each field. If at least one validation fails, the server renders response based on the format. For HTML the errors are added to `form_builder` variable inside the relevant field and server renders [Page](/tutorials/pages/pages) based on `page_id` parameter passed to the server. Additionally, the flash_alert is evaluated and set if provided in the configuration. It's then accessible using `context` variable. For JSON, a JSON object is returned with populated `errors` key. The status code is 200 in both scenarios.
+The result of merging user's input with default_payload is then run against validation rules defined for each field. If at least one validation fails, the server renders response based on the format. For HTML, the errors are added to the `form_builder` variable inside the relevant field and the server renders [Page](/tutorials/pages/pages) based on the `page_id` parameter passed to the server. Additionally, the flash_alert is evaluated and set if provided in the configuration. It is then accessible using the `context` variable. For JSON, a JSON object is returned with a populated `errors` key. The status code is 200 in both scenarios.
 
 ## 7. Calculating changes
 
-If validation pass, the changeset between existing state of the resource and user input is calculated, and accessible from now on via `changes` variable.
+If validation passes, the changeset between existing state of the resource and user input is calculated, and accessible from now on via the `changes` variable.
 
 ## 8. Persisting changes
 
-The new state of the resource is persisted in the database. In case of rare scenario of internal server error, the changes are rolled back and server renders 500 error.
+The new state of the resource is persisted in the database. In case of the rare scenario of an internal server error, the changes are rolled back and the server renders a 500 error.
 
 ## 9. Processing Callbacks
 
@@ -66,13 +66,13 @@ The next step is to schedule processing async callbacks in the background.
 
 ## 11. Schedule sending notifications
 
-The next step is to schedule all notifications (email, sms, api calls) to be processed in the background.
+The next step is to schedule all notifications (email, SMS, API calls) to be processed in the background.
 
 ## 12. Render response
 
-If the format is set to HTML, the flash_notice property is evaluated and set, then redirect_to property is evaluated to determine where the user should be redirected. For JSON request, the server renders 200 status and serializes the form to JSON few basic properties (like `id`) to JSON.
+If the format is set to HTML, the flash_notice property is evaluated and set, then redirect_to property is evaluated to determine where the user should be redirected. For a JSON request, the server renders 200 status and serializes the form to JSON a few basic properties (like `id`) to JSON.
 
 {% capture content %}
-It is possible to send request via AJAX, but receive HTML response from the server. The trick is to explicitly set the format to HTML by appending to the rest endpoint `.html`, for example `/api/users.html`. The server will render HTML if validation fails (so you could display errors) or will return a JSON including redirect URL upon success.
+It is possible to send a request via AJAX, but receive HTML response from the server. The trick is to explicitly set the format to HTML by appending to the REST endpoint `.html`, for example `/api/users.html`. The server will render HTML if validation fails (so you could display errors) or will return a JSON including redirect URL upon success.
 {% endcapture %}
 {% include 'alert/tip', content: content %}
