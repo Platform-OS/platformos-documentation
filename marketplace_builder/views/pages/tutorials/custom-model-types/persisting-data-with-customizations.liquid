@@ -1,0 +1,119 @@
+---
+converter: markdown
+metadata:
+  title: Persisting Data With Customizations
+  description: Build your custom data structure without any limitations with Custom Model Types.
+slug: tutorials/custom-model-types/persisting-data-with-customizations
+searchable: true
+---
+
+Let's use the example to see exactly what is happening at each stage of Custom Model Type definition life cycle.
+
+## Step 1. Requirements
+
+I want to store my "todo list" in platformOS
+
+**Todo list:**
+
+| Task                 | Priority |
+|----------------------|----------|
+| Clean the apartment  | Low      |
+| Do the homework      | High     |
+
+
+## Step 2. Custom Model Type File
+Create definition file in your project repository that will describe my Custom Model Type:
+
+```bash
+  touch marketplace_builder/custom_model_types/todo.yml
+```
+
+## Step 3. Definition of Custom Model Type
+Using the editor of choice, add the definition of Custom Model Type.
+
+The code below is the description of properties that Customization will accept and the name of Custom Model Type object that is used to identify the object.
+For full list of Types that can be used see [CustomAttribute Types](/tutorials/custom-attributes/user-defined#customattribute-types)
+
+```yml
+name: todo
+properties:
+- name: task
+  type: string
+- name: priority
+  type: string
+```
+
+## Step 4. Sync/Deploy Custom Model Type definition.
+
+At the moment of deploy marketplace-kit is asking platformOS if Custom Model Type object with name `todo` already exists, if so it will be updated with given definition otherwise new object is created.
+
+You can verify this step with GraphQL query:
+
+```graphql
+{
+  admin_model_schemas {
+    results {
+      name
+      properties {
+        name
+      }
+    }
+  }
+}
+
+```
+
+the result for that query depending on your instance state should be similar to:
+
+```json
+{
+  "data": {
+    "admin_model_schemas": {
+      "results": [
+        {
+          "name": "todo",
+          "properties": [
+            {
+              "name": "task"
+            },
+            {
+              "name": "priority"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
+```
+
+
+## Step 5. Customization Creation
+
+In [Building Contact Form With Customization tutorial](/tutorials/customizations/building-contact-form-with-customization) you will learn in details how to create Customizations.
+
+## Step 6. Custom Model Type change
+
+  As you know by now Customizations and Custom Model Type objects are strictly related as the definition of properties allows for storing the data in platformOS backend systems.
+  Once you have data persisted within Customization you need to be aware of how changes in CustomModelType affect your Customization objects:
+
+  * **custom model type definition delete** - you can only delete your Custom Model Type object if there is no related Customization objects. Use [customizations_delete_all](/api-reference/graphql/g/mut/customizations_delete_all) mutation to delete all related Customization objects.
+
+      If you try to deploy with orphaned Customization, you will see the following message:
+
+      ```bash
+      Cannot delete record because of dependent customization of type: todo
+      Use the mutation below to remove dependent objects:
+      mutation { customizations_delete_all(custom_model_type_name: "todo") { count } }
+      ```
+  * **name change** - as platformOS detects CustomModelType definition by its name, if you change it is equal with adding new CustomModelType, please note that Customization objects are not automatically migrated and will be treated as orphaned with next deploy attempt, see error message above.
+  * **add new custom model type property** - adding new properties is a valid change that do not need additional actions, the data remains untouched.
+  * **delete of custom model type property** - deletion of the property is a valid change, data stored in related Customization properties will remain saved but will not be accessible. Use migration to remove the data prior to the change.
+  * **property edition** - is a valid change and is equal to the removal of property with old name and creation of new property, data is not migrated.
+
+
+## Step 7. Mutations
+
+What you have done in steps 2, 3 and 4 can be done with [admin_model_schema_create](/api-reference/graphql/g/mutation/admin_model_schema_create/) mutation.
+In your platformOS instance, the result would be exactly the same, but you can now create CMS system where the user can define their own models with a few clicks in the user interface.
+Please note that the same rules apply for Custom Model Type deletion as when you delete it with marketplace-kit
