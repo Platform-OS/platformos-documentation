@@ -9,9 +9,9 @@ searchable: true
 
 This guide will help you set up all models required to run an e-commerce site.
 
-{% include 'alert/note', content: 'This guide is part of a tutorial series on building an e-commerce website powered by PlatformOS. <a href="/use-cases/e-commerce/e-commerce-platformos">Find the first part of the series here.</a>' %}
+{% include 'alert/note', content: 'This guide is part of a tutorial series on building an e-commerce website powered by platformOS. <a href="/use-cases/e-commerce/e-commerce-platformos">Find the first part of the series here.</a>' %}
 
-In PlatformOS, you are free to build any kind of data model you want. Defining the data schema is very similar to creating any other relational database. You can use one of the many tools to create a visual representation of the model. We chose [dbdiagram.io](https://dbdiagram.io/).
+In platformOS, you are free to build any kind of data model you want. Defining the data schema is very similar to creating any other relational database. You can use one of the many tools to create a visual representation of the model. We chose [dbdiagram.io](https://dbdiagram.io/).
 
 {% include 'use-cases/e-commerce/data-model-graph' %}
 
@@ -21,13 +21,13 @@ Your data schema will be based on three primary models:
 - `product`
 - `order`
 
-On the PlatformOS side you will use `User` to map the corresponding model, and `Custom Model Type` to represent everything else.
+On the platformOS side you will use `User` to map the corresponding model, and `Custom Model Type` to represent everything else.
 
 ## Requirements
 
-To follow this tutorial, you should be familiar with basic PlatformOS concepts, and the topics in the Get Started section. You should have set up the Instance for development, as described in a previous part of this tutorial series.
+To follow this tutorial, you should be familiar with basic platformOS concepts, and the topics in the Get Started section. You should have set up the Instance for development, as described in a previous part of this tutorial series.
 
-- [How Platform OS Works](/how-platformos-works)
+- [How platformOS Works](/how-platformos-works)
 - [Get Started](/get-started)
 - [Setting Up the Instance](/use-cases/e-commerce/setting-up-the-instance)
 - [Creating a User profile](/tutorials/users/creating-user-profile)
@@ -127,7 +127,7 @@ properties:
 
 ### Step 2. Configure user models
 
-`User` is a built-in data type in PlatformOS. It has some predefined fields like `name` and `email`. You can extend `User` with additional Properties by using user profiles. The example below uses the `default` user profile to add a phone number field. You can [learn more about creating a user profile](/tutorials/users/creating-user-profile) in our documentation.
+`User` is a built-in data type in platformOS. It has some predefined fields like `name` and `email`. You can extend `User` with additional Properties by using user profiles. The example below uses the `default` user profile to add a phone number field. You can [learn more about creating a user profile](/tutorials/users/creating-user-profile) in our documentation.
 
 #### marketplace_builder/user_profile_types/default.yml
 
@@ -156,7 +156,7 @@ properties:
 ```
 
 {% capture content %}
-As you’ve probably noticed we’ve omitted the `user_id` attribute. Every Custom Model Type in PlatformOS can be attached to another object via built-in `customizable_type` and `customizable_id` fields. You will be setting these values when creating forms.
+As you’ve probably noticed we’ve omitted the `user_id` attribute. Every Custom Model Type in platformOS can be attached to another object via built-in `customizable_type` and `customizable_id` fields. You will be setting these values when creating forms.
 {% endcapture %}
 {% include "alert/note", content: content %}
 

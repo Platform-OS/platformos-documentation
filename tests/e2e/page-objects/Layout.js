@@ -3,8 +3,8 @@ import { Selector, t } from 'testcafe';
 export default class LayoutPO {
   constructor() {
     this.txt = {
-      about: 'About PlatformOS',
-      howItWorks: 'How PlatformOS Works',
+      about: 'About platformOS',
+      howItWorks: 'How platformOS Works',
       contributorGuide: 'Contributor Guide'
     };
 
