@@ -16,5 +16,5 @@
 {% assign contributors = contributors | uniq | json %}
 
 {% if contributors != empty %}
-  {% execute_query "update_page_contributors", id: page_contributors.id, contributors: contributors, last_edit: last_edit %}
+  {% execute_query "update_page_contributors", id: id, contributors: contributors, last_edit: last_edit, slug: page_contributors.slug %}
 {% endif %}
