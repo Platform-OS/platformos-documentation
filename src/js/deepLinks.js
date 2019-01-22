@@ -17,4 +17,4 @@ const initializeDeepLinks = () => {
 };
 
 document.addEventListener('turbolinks:load', initializeDeepLinks);
-document.addEventListener('deeplinks:initialize', initializeDeepLinks);
+document.addEventListener('deeplinks:reinitialize', initializeDeepLinks);

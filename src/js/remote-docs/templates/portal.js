@@ -30,9 +30,9 @@ const response = `<%_ let res = value.response _%>
   <%_ } _%>
 `;
 
-const template = `<%_ for (let name in endpoints) { _%>
-  <%_ let examples = endpoints[name] _%>
-  <h2><%= name _%></h2>
+const template = `<%_ for (let item in items) { _%>
+  <%_ let examples = items[item] _%>
+  <h2><%= item _%></h2>
 
   <%_ for (let example in examples) { _%>
     <%_ let value = examples[example] _%>
