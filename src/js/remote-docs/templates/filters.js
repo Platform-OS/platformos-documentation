@@ -1,27 +1,27 @@
 const returns = `<h4>Returns:</h4>
-<% item.returns.map(function(r) { %>
+<%_ item.returns.map(function(r) { _%>
   <p>
     <%= JSON.parse(r.types) %>
-    <% if (r.description) { %> - <%= r.description %> <% } %>
+    <%_ if (r.description) { _%> - <%= r.description %> <%_ } _%>
   </p>
-<% }) %>`;
+<%_ }) _%>`;
 
 const params = `<h4>Params:</h4>
 <ul>
-  <% item.params.map(function(p) { %>
+  <%_ item.params.map(function(p) { _%>
     <li>
       <%= p.name %> (<%= p.types.map(function(t) { return t }) %>)
       <% if (p.description) { %> - <%= p.description %> <% } %>
     </li>
-  <% }) %>
+  <%_ }) _%>
 </ul>`;
 
 const examples = `<h4>Examples:</h4>
-<% item.examples.map(function(e) { %>
+<%_ item.examples.map(function(e) { _%>
   <pre><code class="language-liquid line-numbers">
     <%= e %>
   </code></pre>
-<% }) %>`;
+<%_ }) _%>`;
 
 const template = `<%_ items.filters.map(function(item) { _%>
   <h2><%= item.name %></h2>

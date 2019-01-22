@@ -9,6 +9,6 @@ import './js/viewportClasses';
 import './js/deepLinks';
 import './js/scrollToContent';
 import './js/feedback';
-import './js/remote-docs/index';
+import './js/remote-docs';
 
 Turbolinks.start();
