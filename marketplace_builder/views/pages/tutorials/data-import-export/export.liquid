@@ -6,7 +6,7 @@ metadata:
 slug: tutorials/data-import-export/export
 searchable: true
 ---
-Exporting data can be done using either the CLI or the raw export API. This can be useful when test data is needed for a service, e.g. in a stagin environment.
+Exporting data can be done using either the CLI or the raw export API. This can be useful when test data is needed for a service, e.g. in a staging environment.
 
 ## Data export with the CLI
 
@@ -15,6 +15,79 @@ platformOS CLI offers the `marketplace-kit data export` command. It accepts one 
 - --path (short: -p): A file path to a json file which will be created by the CLI and where the exported data is stored
 
 Under the hood, the CLI uses the export API that's described in the next section. However, using the CLI provides some major benefits:
-
 - leveraging the CLI's authentication mechanism (i.e. you don't need to manually send your authentication token)
 - writing downloaded data directly to file system
+
+Example:
+
+```bash
+  marketplace-kit data export --path=data.json production
+```
+
+## Data export with raw export API
+
+Our CLI uses http API to schedule export task. Once it is finished you can download data.
+
+```bash
+curl  -d @data.json -H "Content-Type: application/json" -H "Authorization: Token token=[YOUR API TOKEN]" \
+  -X POST https://example.platform-os.com/api/markteplace_builder/exports
+````
+
+```bash
+curl -H "Content-Type: application/json" -H "Authorization: Token token=[YOUR API TOKEN]" \
+  https://example.platform-os.com/api/markteplace_builder/exports/1
+````
+
+## Data export with GraphQL
+
+It is possible to export data with GraphQL queries.
+
+```graphql
+{
+  users: people(per_page: 10000 user: {is_deleted: false}){
+    total_entries
+    results{
+      id
+      email
+      first_name
+      last_name
+      middle_name
+      created_at
+      slug
+      profiles{
+        type_name: profile_type
+        id
+        ...Properties
+      }
+    }
+  }
+  transactables: listings(per_page: 10000, listing: { is_deleted: false }) {
+    total_entries
+    results{
+      type_name: type
+      id
+      name
+      slug
+      creator_id
+      created_at
+      updated_at
+      ...Properties
+    }
+  }
+  models: customizations(per_page: 10000 is_deleted: false){
+    total_entries
+    results{
+      type_name: name
+      id
+      customizable_id
+      customizable_type
+      user_id
+      ...Properties
+    }
+  }
+}
+
+fragment Properties on ListingCustomAttributeInterface{
+  properties
+}
+```

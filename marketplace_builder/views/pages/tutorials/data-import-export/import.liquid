@@ -6,8 +6,7 @@ metadata:
 slug: tutorials/data-import-export/import
 searchable: true
 ---
-
-Data to be imported needs to be in json format. Input data should be in format:
+For now you can export/import instance data on new stack. Data to be imported needs to be in json format:
 
 ```json
 {
@@ -17,15 +16,13 @@ Data to be imported needs to be in json format. Input data should be in format:
 }
 ```
 
-You can generate data from existing instance with `marketplace-kit data export` command(
-[more details here](/tutorials/data-import-export/export#cli-export)). It will generate `data.json` file.
-You can generate this file with your own tool. This is fairly easily convert for example csv file into json file.
+You can generate data from existing instance with `marketplace-kit data export` command([more details here](/tutorials/data-import-export/export#cli-export)). It will generate `data.json` file. You can also import data from other sources(old stack, other systems) once you generate proper json file. This is fairly easily to convert for example csv file into json file.
 
 ## General information
 
-Before import your model schemas needs to deployed.
+Before import, your model schemas needs to deployed.
 
-When importing data `id` fields will be chanaged. Relations will be keept. If you have your own relations defined in properties you need to first decribe them in model schema files - [more info here](/tutorials/data-import-export/model-relations).
+When importing data `id` fields will be chanaged. Relations will be keept. If you have your own relations defined in properties you need to first decribe them in model schema files - [more info here](/tutorials/data-import-export/models-relations).
 
 Importing always adds data to the instance. When you run import twice it will try add data to existing set. If you test you imports and need to clean instance data use `marketplace-kit data clean`. Note that this command will work only on staging instanes.
 
@@ -33,8 +30,10 @@ Import will do only basic validations, such us email uniqness on users existence
 
 ## Data Import with CLI
 
-platformOS cli offers `marketplace-kit data import` command for uploading and importing data from json file.  It accepts one option:
+With marketplace-kit data you can export/import instance data. Those are the information entered by the users.
 
+
+platformOS cli offers `marketplace-kit data import` command for uploading and importing data from json file. It accepts one option:
 - --path (short: -p): A path to a json data file to be imported
 
 Under the hood, the CLI uses the GraphQL import API that's described in the next section. However, using the CLI provides some major benefits:
@@ -44,7 +43,7 @@ Under the hood, the CLI uses the GraphQL import API that's described in the next
 
 ### Input format
 
-When importing data using the CLI, the file should data in format that matches this structure:
+Data format requires a json file with users, models, transactables keys that have array of maps. Each of those collection needs to be in the same format as coresponding graphql mutation. Under the hood import is just a set of mutations: `import_users()`, `import_models()`, `import_transactables()`. When importing data using the CLI, the file should data in format that matches this structure:
 
 ```json
   {
@@ -53,7 +52,6 @@ When importing data using the CLI, the file should data in format that matches t
     "transactables": [<TransactableImport>]
   }
 ```
-Each of the keys should contains the array with object represented by GraphQL type that match input type for corresponding import mutation.
 
 ### Example
 
