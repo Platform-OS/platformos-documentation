@@ -1,4 +1,5 @@
 module.exports = {
   portal: require('./portal'),
-  filters: require('./filters')
+  filters: require('./filters'),
+  tags: require('./tags')
 };

@@ -1,11 +1,3 @@
-const returns = `<h4>Returns:</h4>
-<%_ item.returns.map(function(r) { _%>
-  <p>
-    <%= JSON.parse(r.types) %>
-    <%_ if (r.description) { _%> - <%= r.description %> <%_ } _%>
-  </p>
-<%_ }) _%>`;
-
 const params = `<h4>Params:</h4>
 <ul>
   <%_ item.params.map(function(p) { _%>
@@ -23,19 +15,15 @@ const examples = `<h4>Examples:</h4>
   </code></pre>
 <%_ }) _%>`;
 
-const template = `<%_ items.filters.map(function(item) { _%>
+const template = `<%_ items.tags.map(function(item) { _%>
   <h2><%= item.name %></h2>
 
   <div class="border-bottom mb-5 pb-5">
-    <% if (item.returns) { %>
-      ${returns}
-    <% } %>
-
-    <% if (item.params) { %>
+    <% if (item.params.length > 0) { %>
       ${params}
     <% } %>
 
-    <% if (item.examples) { %>
+    <% if (item.examples.length > 0) { %>
       ${examples}
     <% } %>
   </div>
