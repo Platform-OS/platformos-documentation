@@ -45,4 +45,15 @@ flash_alert: Please fix validation errors
 
 {% include 'alert/note', content: 'Quotes around the value of flash_notice are required if you interpolate Liquid code inside YAML' %}
 
+### Displaying flash messages
+
+Messages can be displayed on page with [context variable](/tutorials/variables/context-variable)
+
+{% raw %}
+```liquid
+{{ context.flash['notice'] }}
+{{ context.flash['alert'] }}
+```
+{% endraw %}
+
 {% include 'shared/questions_section' %}
