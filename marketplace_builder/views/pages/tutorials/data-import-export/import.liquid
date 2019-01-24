@@ -83,7 +83,7 @@ slug: import_data
 format: json
 method: post
 ---
-{% execute_query "import_data", users: params.users, transactables: params.transactables, models: params.models %}
+{% execute_query "import_data", users: context.params.users, transactables: context.params.transactables, models: context.params.models %}
 {{ g | json }}
 ```
 {% endraw %}
