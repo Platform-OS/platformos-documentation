@@ -9,7 +9,7 @@ searchable: true
 
 ## Pages, layouts, and partials
 
-**Pages** are the the most essential components of our platform, that define content displayed at a given path. Each page is represented by a single file with a liquid extension.
+**Pages** are the most essential components of our platform, that define content displayed at a given path. Each page is represented by a single file with a liquid extension.
 
 **Layouts** are Liquid views that store code that would normally repeat on a lot of pages and is surrounding page content (e.g. header, footer). Without layouts, pages would share a lot of duplicated code, and changing anything would become a very time consuming and error prone process. You can create as many layouts as you need, and decide which page uses which layout.
 
@@ -19,13 +19,13 @@ searchable: true
 
 ## Form Configurations
 
-**Form Configurations** are the main tool for rendering forms, persisting data, and sending notifications (email/sms/api) in a secure and customizable way.
+**Form Configurations** are the main tool for rendering forms, persisting data, and sending notifications (email/SMS/API) in a secure and customizable way.
 
 They give you full control when defining:
 
 * which fields for a defined resource can be persisted
 * what authorization rules apply to be able to submit the form (i.e. if you want to edit a comment, you might want to specify that only the creator or the administrator is able to do it)
-* what should happen when the form is submitted successfully (i.e. without validation errors), e.g. send an email/sms notifications or API call to a third party system
+* what should happen when the form is submitted successfully (i.e. without validation errors), e.g. send an email/SMS notifications or API call to a third party system
 * where the user should be redirected
 
 On top of that, you can define callbacks (either synchronous or asynchronous) for further modifications to the system using GraphQL mutations. For example, you can define a signup form that creates User records, and if the user input is valid, also creates a few sample products for them, so that they don’t have to start from scratch.
@@ -36,7 +36,7 @@ On top of that, you can define callbacks (either synchronous or asynchronous) fo
 
 **Users** are accounts that any of your users can have. Users are identified by their unique email addresses.
 
-**User Profiles** are roles in the marketplace. Each User Profile can be associated with any number of Properties and Custom Model Types. All users are assigned a User Profile named Default. The difference between User Profile and Custom Model Type is that each user can have maximum one profile of a given name (but can have many different profiles), whereas they can have many custom models with the same name. From practical perspective, it is very simple to create `upsert` operation on UserProfile (i.e. create user profile, or if it exists, update it)
+**User Profiles** are roles in the marketplace. Each User Profile can be associated with any number of Properties and Custom Model Types. All users are assigned a User Profile named Default. The difference between User Profile and Custom Model Type is that each user can have maximum one profile of a given name (but can have many different profiles), whereas they can have many custom models with the same name. From a practical perspective, it is very simple to create `upsert` operation on UserProfile (i.e. create user profile, or if it exists, update it)
 
 [Learn how to create and manage Users and User Profiles in our Get Started guide](/tutorials/users/users)
 
@@ -66,7 +66,7 @@ Each policy is parsed using Liquid, and the system checks them in order of their
 
 ## Translations
 
-You can use platformOS to build sites in any language, and each site can have multiple language versions. **Translations** are yml files used for multilingual sites, but also used to define date formats, flash messages or system wide default error messages like "can't be blank".
+You can use platformOS to build sites in any language, and each site can have multiple language versions. **Translations** are yml files used for multilingual sites but also used to define date formats, flash messages or system-wide default error messages like "can't be blank".
 
 [Learn more about Translations in our Reference](/tutorials/translations/translations)
 
