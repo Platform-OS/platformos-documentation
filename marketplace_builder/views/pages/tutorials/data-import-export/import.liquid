@@ -20,7 +20,7 @@ You can generate data from existing instance with `marketplace-kit data export` 
 
 ## General information
 
-Before import, your model schemas needs to deployed.
+Before import, your model schemas need to be deployed.
 
 When importing data `id` fields will be chanaged. Relations will be keept. If you have your own relations defined in properties you need to first decribe them in model schema files - [more info here](/tutorials/data-import-export/models-relations).
 
@@ -46,11 +46,11 @@ Under the hood, the CLI uses the GraphQL import API that's described in the next
 Data format requires a json file with users, models, transactables keys that have array of maps. Each of those collection needs to be in the same format as coresponding graphql mutation. Under the hood import is just a set of mutations: `import_users()`, `import_models()`, `import_transactables()`. When importing data using the CLI, the file should data in format that matches this structure:
 
 ```json
-  {
-    "users": [<UserImport],
-    "models": [<ModelImport>],
-    "transactables": [<TransactableImport>]
-  }
+{
+  "users": [<UserImport],
+  "models": [<ModelImport>],
+  "transactables": [<TransactableImport>]
+}
 ```
 
 ### Example
@@ -59,7 +59,7 @@ Data format requires a json file with users, models, transactables keys that hav
 To import data from such file simply run the following command in terminal:
 
 ```sh
-  marketplace-kit data import --path=data.json staging-instance
+marketplace-kit data import --path=data.json staging-instance
 ```
 
 ## Data Import with GraphQL mutations
@@ -69,11 +69,11 @@ It is possible to import data using GraphQL mutations. This gives you more flexi
 There are three main mutations for importing [import_users](), [import_models]() and [import_transactables](). You can create a page that will import send data.
 
 ```graphql
-  mutation import_data($users: [UserImport!]!, $transactables: [TransactableImport!]!, $models: [CustomizationImport!]!){
-    import_users(users: $users){ ids }
-    import_transactables(transactables: $transactables){ ids }
-    import_models(models: $models){ ids }
-  }
+mutation import_data($users: [UserImport!]!, $transactables: [TransactableImport!]!, $models: [CustomizationImport!]!){
+  import_users(users: $users){ ids }
+  import_transactables(transactables: $transactables){ ids }
+  import_models(models: $models){ ids }
+}
 ```
 
 {% raw %}
@@ -97,7 +97,7 @@ curl -d @transformed.json -H "Content-Type: application/json" -X POST https://yo
 Our CLI uses http API to import data file. You can use it in your own tool. Note that you need to provide your authentication token in the HTTP Authorization header of the request!
 
 ```bash
-  curl -d @data.json \
+curl -d @data.json \
   -H "Content-Type: application/json" \
   -H "Authorization: Token token=[YOUR API TOKEN]"
   -X POST https://example.platform-os.com/api/markteplace_builder/imports
