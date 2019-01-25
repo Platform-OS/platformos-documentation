@@ -1,0 +1,36 @@
+---
+converter: markdown
+metadata:
+  title: Codebase
+  description: 
+slug: how-platformos-works/platformos-workflow/codebase
+searchable: true
+---
+
+You develop your site (write code) in your **codebase** in your local environment. 
+
+## Required directory structure 
+
+In order to correctly communicate with the platformOS engine and API, your codebase should be organized into a specific directory structure. The root directory of your project should contain the marketplace_builder directory. 
+
+### Recommended directories and files inside the `marketplace_builder` and `modules/<module name>` directories
+
+| Directory/file           | Explanation                                                                                                                                                                                                                      | Learn more                           |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
+| .marketplace-kit       | Configuration file that specifies available endpoints. Usually, you want to have two endpoints &ndash; staging and production.                                                                                                           | [Development Workflow](/how-platformos-works/platformos-workflow/development-workflow)                         |
+| assets                 | Directory for static assets, like CSS, JS, images, etc.                                                                                                                                                                          | [Assets](/tutorials/assets/assets)                               |
+| authorization_policies | Directory for liquid files that contains Authorization Policy configuration files. Authorization Policies define rules that control whether a user has access to a form or page.                                                 | [Authorization Policies](/tutorials/authorization-policy/authorization-policy)               |
+| custom_model_types     | Directory for yml files that define Custom Model Types. Custom Model Types allow you to create persistence containers for your custom forms.                                                                                     | [Custom Model Types](/tutorials/custom-model-types/custom-model-types)                   |
+| form_configurations    | Directory for liquid files that define Form Configurations. Each of the liquid files should include configuration (including associated Authorization Policies, Notifications, etc.), along with liquid code which renders HTML. | [Form Configurations](/tutorials/forms/form-configuration)                  |
+| graph_queries          | Directory for .graphql files, each defining one GraphQL Query.                                                                                                                                                                   | [GraphQL](https://graphql.org/learn/)                              |
+| notifications          | Directory for files that define Notifications, which then can be associated with Form Configuration.                                                                                                                             | [Notifications](/tutorials/notifications/notifications)                        |
+| views/pages            | Directory for files that define pages.                                                                                                                                                                                           | [Pages](/tutorials/pages/pages)                                |
+| views/layouts          | Directory for layouts                                                                                                                                                                                                            | [Layout](/tutorials/pages/layouts)                               |
+| views/partials         | Directory for partials  &ndash;  reusable snippets of Liquid code usually used to render HTML.                                                                                                                                           |                               |
+| transactable_types     | Directory for files that define Transactable Types.                                                                                                                                                                              | [Transactables](/tutorials/transactables/transactables) |
+| translations           | Directory for yml files of Translations for multilingual sites, also used to define date format, or flash messages.                                                                                                              | [Translations](/tutorials/translations/translations)                         |
+| user_profile_types     | Directory for yml files that define User Profiles. Each instance includes one user role, called ‘default’, so each instance needs to include the default.yml file inside this directory.                                         | [Users](/tutorials/users/users)                        |
+
+
+
+{% include 'shared/questions_section' %}

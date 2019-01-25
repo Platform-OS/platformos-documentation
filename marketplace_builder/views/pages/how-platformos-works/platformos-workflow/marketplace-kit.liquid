@@ -1,0 +1,177 @@
+---
+converter: markdown
+metadata:
+  title: Marketplace Kit
+  description: 
+slug: how-platformos-works/platformos-workflow/marketplace-kit
+searchable: true
+---
+
+The **[Marketplace Kit](https://github.com/mdyd-dev/marketplace-kit)** is a command line interface that helps you deploy configuration files and assets to your platformOS site. 
+
+## Requirements 
+
+Marketplace Kit requires [Node.js](https://nodejs.org/en/) version 8 or higher to work properly.
+
+## Installation
+
+Follow our [Installing the Marketplace Kit](/get-started/installing-marketplace-kit) tutorial to install the Marketplace Kit. 
+
+## Commands and options
+
+All commands should be run in the project root directory (one level above the `marketplace_builder` directory). 
+
+**Usage**: 
+
+`marketplace-kit [options] [command]`
+
+**Help**: 
+
+The `help [cmd]` displays help for the command in `[cmd]`, for example:
+
+`marketplace-kit help data`
+
+### Options
+
+* `-V`, `--version`: Display the version number
+* `-h`, `--help`: Display usage information
+
+### Commands
+
+#### audit
+Check your code for deprecations, recommendations, errors. 
+
+| Command 	| Usage                 	| Example               	|
+|---------	|-----------------------	|-----------------------	|
+| audit   	| `marketplace-kit audit` 	| `marketplace-kit audit` 	|
+
+#### data
+Export, import or clean data on instance. 
+
+**Operations**: 
+
+* `export <environment>`: export Instance data to a JSON file
+* `import <environment>`: import Instance data from a JSON file
+* `clean <environment>`: remove all stored data in users, models, etc. Execute with caution, there is no coming back. Works only on staging. 
+
+| Command      	| Usage                                     	| Example                                 	|
+|--------------	|-------------------------------------------	|-----------------------------------------	|
+| data export  	| `marketplace-kit data export <environment>` 	|  `marketplace-kit data export production` 	|
+| data import  	| `marketplace-kit data import <environment>` 	| `marketplace-kit data import production`  	|
+| data clean   	| `marketplace-kit data clean <environment>`  	| `marketplace-kit data clean staging`      	|
+
+
+#### deploy 
+Deploy code to environment. It is recommended to first deploy to staging, test, and only then trigger deploy to production as desribed in the recommended [Development Workflow](/how-platformos-works/platformos-workflow/development-workflow). 
+
+Effectively, deploy creates a zip file that contains all your files and sends it to the API. It is then processed in the background. Each zip file is stored by us, to allow you to roll back in case something goes wrong. 
+
+
+| Command                	| Usage                                   	| Example                           	|
+|------------------------	|-----------------------------------------	|-----------------------------------	|
+| deploy                 	| `marketplace-kit deploy <environment>`    	| `marketplace-kit deploy staging`     	|
+| deploy with force flag 	| `marketplace-kit deploy <environment> -f` 	| `marketplace-kit deploy staging -f` 	|
+
+**Related topics**: 
+
+* [Deploying and Syncing Changes](/get-started/deploying-syncing-changes)
+
+
+#### env
+Manage environments. 
+
+To add your environment to a config file, run the `env add` command, and authenticate with your Partner Portal credentials. Configuration for environments is saved in the `.marketplace-kit` file. 
+
+
+| Command                	| Usage                                   	| Example                           	|
+|------------------------	|-----------------------------------------	|-----------------------------------	|
+| env add                 	| `marketplace-kit env add <environment> --email <your email> --url <your marketplace url>`    	| `marketplace-kit env add staging --email myemail@example.com --url https://example.com`     	|
+| env list 	| `marketplace-kit env list` 	| `marketplace-kit env list` 	|
+
+**Related topics**: 
+
+* [Deploying and Syncing Changes: Authenticate environments](/get-started/deploying-syncing-changes#step-1-authenticate-environments)
+
+#### gui
+GUI for content editor, GraphQL. 
+
+To start the http server locally that will serve the GUI use the `gui serve` command. 
+
+**GraphQL Browser**: To explore your instance database using GraphQL open `http://localhost:3333/gui/graphql` in your web browser.
+
+**Resources editor**: To list, edit, and create resources open `http://localhost:3333/gui/editor` in your web browser. 
+
+| Command 	| Usage                 	| Example               	|
+|---------	|-----------------------	|-----------------------	|
+| gui serve   	| `marketplace-kit gui serve <environment>` 	| `marketplace-kit gui serve staging` 	|
+
+#### init
+Initialize required directory structure.
+
+In order to correctly communicate with the platformOS engine and API, your codebase should be organized into a specific directory structure. Use the `marketplace-kit init` command to download the directory structure in a zip file, and extract it into the current directory. 
+
+| Command 	| Usage                 	| Example               	|
+|---------	|-----------------------	|-----------------------	|
+| init   	| `marketplace-kit init` 	| `marketplace-kit init` 	|
+
+**Options**:
+
+* `--url <url>`: theme GitHub repository URL (default: "https://github.com/mdyd-dev/directory-structure")
+* `--branch <branch>`: branch where the theme is located (default: "master")
+
+**Related topics**: 
+
+* [Creating the Codebase](/get-started/creating-codebase)
+
+#### logs
+Attach to environment log streams. 
+
+| Command 	| Usage                 	| Example               	|
+|---------	|-----------------------	|-----------------------	|
+| logs   	| `marketplace-kit logs` 	| `marketplace-kit logs` 	|
+
+**Options**: 
+
+*  `-c --config-file <config-file>`: config file path (default: ".marketplace-kit")
+* `--interval <interval>`: time to wait between updates in ms (default: 3000)
+
+#### migrations
+Generate, run, or list migrations. 
+
+**Operations**: 
+
+* `generate <environment> <name>`: generate new empty migration
+* `run <environment> <name>`: run migration on environment
+* `list <environment> <name>`: list migrations and their statuses 
+
+| Command      	| Usage                                     	| Example                                 	|
+|--------------	|-------------------------------------------	|-----------------------------------------	|
+| migrations generate  	| `marketplace-kit migrations generate <environment> <name>` 	|  `marketplace-kit migrations generate local add_some_books` 	|
+| migrations run  	| `marketplace-kit migrations run <environment> <name>` 	| `marketplace-kit migrations run local 20180909123423`  	|
+| migrations list   	| `marketplace-kit migrations list <environment> <name>`  	|       	|
+
+**Related topics**: 
+
+* [Migrating Data](/tutorials/migrations/migrating-data)
+
+#### sync
+Update environment on file change. 
+
+Enables sync mode: it checks what's different between the server and the local environment, and sends files after they have been changed on local. It only sends files that have changed after sync was started. It feels like working on localhost. It is recommended to use sync only for staging environments, as pushing changes immediately to production can be dangerous.  
+
+| Command 	| Usage                 	| Example               	|
+|---------	|-----------------------	|-----------------------	|
+| sync   	| `marketplace-kit sync <environment>` 	| `marketplace-kit sync staging` 	|
+
+**Related topics**: 
+
+* [Deploying and Syncing Changes](/get-started/deploying-syncing-changes)
+
+#### help
+Display help for command. 
+
+| Command 	| Usage                 	| Example               	|
+|---------	|-----------------------	|-----------------------	|
+| help   	| `marketplace-kit help <command>` 	| `marketplace-kit help data` 	|
+
+{% include 'shared/questions_section' %}
