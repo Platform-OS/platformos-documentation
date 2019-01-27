@@ -11,7 +11,7 @@ const args = `<h4>Arguments</h4>
     <%_ item.arguments.map(function(a) { _%>
       <tr>
         <td><%= a.name _%></td>
-        <td><%_ if (a.type) { _%><%= a.type.info _%><%_ } _%></td>
+        <td><%_ if (a.type) { _%><%= a.type.name _%><%_ } _%></td>
         <td class="text-capitalize">
           <%_ if (a.description) { _%><%= a.description _%> <%_ } _%>
           <%_ if (a.default_value) { _%>Default: <code><%= a.default_value _%></code><%_ } _%>
@@ -25,7 +25,7 @@ const args = `<h4>Arguments</h4>
 const template = `<%_ items[0].fields.map(function(item) { _%>
   <h3>
     <%= item.name %>
-    <% if (item.type) { %><small>(<%= item.type.info _%>)</small><%_ } _%>
+    <% if (item.type) { %><small>(returns: <%= item.type.name _%>)</small><%_ } _%>
   </h3>
 
   <div class="border-bottom mb-5 pb-4">

@@ -10,7 +10,7 @@ const inputFields = `<h4>Input fields</h4>
     <%_ item.input_fields.map(function(a) { _%>
       <tr>
         <td><%= a.name _%></td>
-        <td><%_ if (a.type) { _%><%= a.type.info _%><%_ } _%></td>
+        <td><%_ if (a.type) { _%><%= a.type.name _%><%_ } _%></td>
       </tr>
     <%_ }) _%>
   </tbody>
@@ -30,7 +30,7 @@ const returnFields = `<h4 class="mt-4">Return fields</h4>
     <%_ item.return_fields.map(function(a) { _%>
       <tr>
         <td><%= a.name _%></td>
-        <td><%_ if (a.type) { _%><%= a.type.info _%><%_ } _%></td>
+        <td><%_ if (a.type) { _%><%= a.type.name _%><%_ } _%></td>
         <td class="text-capitalize"><%_ if (a.description) { _%><%= a.description _%> <%_ } _%></td>
       </tr>
     <%_ }) _%>
@@ -41,7 +41,7 @@ const returnFields = `<h4 class="mt-4">Return fields</h4>
 const template = `<%_ items.map(function(item) { _%>
   <h3>
     <%= item.name %>
-    <% if (item.type) { %><small>(<%= item.type.info _%>)</small><%_ } _%>
+    <% if (item.type) { %><small>(<%= item.type.name _%>)</small><%_ } _%>
   </h3>
 
   <div class="border-bottom mb-5 pb-4">

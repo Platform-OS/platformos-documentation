@@ -10,7 +10,8 @@ const docsTypes = {
   tags: `${VERSION_URL}/tags.json`,
   'graphql-queries': `${VERSION_URL}/graphql/operations.json`,
   'graphql-mutations': `${VERSION_URL}/graphql/mutations.json`,
-  'graphql-objects': `${VERSION_URL}/graphql/objects.json`
+  'graphql-objects': `${VERSION_URL}/graphql/objects.json`,
+  'graphql-scalars': `${VERSION_URL}/graphql/scalars.json`
 };
 
 import(/* webpackChunkName: "vendor" */ 'ejs/ejs.min').then(ejs => {
