@@ -5,5 +5,6 @@ module.exports = {
   'graphql-queries': require('./graphql/queries'),
   'graphql-mutations': require('./graphql/mutations'),
   'graphql-objects': require('./graphql/objects'),
-  'graphql-scalars': require('./graphql/scalars')
+  'graphql-scalars': require('./graphql/scalars'),
+  'graphql-interfaces': require('./graphql/interfaces')
 };
