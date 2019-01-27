@@ -1,5 +1,6 @@
 module.exports = {
   portal: require('./portal'),
   filters: require('./filters'),
-  tags: require('./tags')
+  tags: require('./tags'),
+  'graphql-queries': require('./graphql/queries')
 };

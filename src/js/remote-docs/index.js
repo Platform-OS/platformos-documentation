@@ -2,12 +2,13 @@ import templates from './templates';
 
 const appVersion = () => document.querySelector('body').dataset.version;
 
-const ROOT_URL = 'https://deidcfp1yn7c2.cloudfront.net/platform_docs';
+const VERSION_URL = `https://deidcfp1yn7c2.cloudfront.net/platform_docs/${appVersion()}`;
 
 const docsTypes = {
   portal: 'https://portal.apps.near-me.com/api_doc.json',
-  filters: `${ROOT_URL}/${appVersion()}/filters.json`,
-  tags: `${ROOT_URL}/${appVersion()}/tags.json`
+  filters: `${VERSION_URL}/filters.json`,
+  tags: `${VERSION_URL}/tags.json`,
+  'graphql-queries': `${VERSION_URL}/graphql/operations.json`
 };
 
 import(/* webpackChunkName: "vendor" */ 'ejs/ejs.min').then(ejs => {
