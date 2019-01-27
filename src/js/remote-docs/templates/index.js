@@ -3,5 +3,6 @@ module.exports = {
   filters: require('./filters'),
   tags: require('./tags'),
   'graphql-queries': require('./graphql/queries'),
-  'graphql-mutations': require('./graphql/mutations')
+  'graphql-mutations': require('./graphql/mutations'),
+  'graphql-objects': require('./graphql/objects')
 };

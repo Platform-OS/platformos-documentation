@@ -4,7 +4,6 @@ const args = `<h4>Arguments</h4>
     <tr>
       <th>Name</th>
       <th>Type</th>
-      <th>Default value</th>
       <th>Description</th>
     </tr>
   </thead>
@@ -13,8 +12,10 @@ const args = `<h4>Arguments</h4>
       <tr>
         <td><%= a.name _%></td>
         <td><%_ if (a.type) { _%><%= a.type.info _%><%_ } _%></td>
-        <td><%_ if (a.default_value) { _%><%= a.default_value _%><%_ } _%></td>
-        <td class="text-capitalize"><%_ if (a.description) { _%><%= a.description _%> <%_ } _%></td>
+        <td class="text-capitalize">
+          <%_ if (a.description) { _%><%= a.description _%> <%_ } _%>
+          <%_ if (a.default_value) { _%>Default: <code><%= a.default_value _%></code><%_ } _%>
+        </td>
       </tr>
     <%_ }) _%>
   </tbody>
