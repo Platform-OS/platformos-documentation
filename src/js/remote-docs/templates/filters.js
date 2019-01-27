@@ -26,7 +26,7 @@ const examples = `<h4>Examples:</h4>
 const template = `<%_ items.filters.map(function(item) { _%>
   <h2><%= item.name %></h2>
 
-  <div class="border-bottom mb-5 pb-5">
+  <div class="border-bottom mb-5 pb-4">
     <% if (item.returns) { %>
       ${returns}
     <% } %>

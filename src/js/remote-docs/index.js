@@ -8,7 +8,8 @@ const docsTypes = {
   portal: 'https://portal.apps.near-me.com/api_doc.json',
   filters: `${VERSION_URL}/filters.json`,
   tags: `${VERSION_URL}/tags.json`,
-  'graphql-queries': `${VERSION_URL}/graphql/operations.json`
+  'graphql-queries': `${VERSION_URL}/graphql/operations.json`,
+  'graphql-mutations': `${VERSION_URL}/graphql/mutations.json`
 };
 
 import(/* webpackChunkName: "vendor" */ 'ejs/ejs.min').then(ejs => {
