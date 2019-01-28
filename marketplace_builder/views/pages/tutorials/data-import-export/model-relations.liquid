@@ -2,16 +2,14 @@
 converter: markdown
 metadata:
   title: Model Relations
-  description: Define your relations between models
-slug: tutorials/data-import-export/models-relations
+  description: Defining relations between models. 
+slug: tutorials/data-import-export/model-relations
 searchable: true
 ---
 
-With `properties` you can create your custom fields for storing the data.
-In those properties you can also store the `id` of existing object.
-Then you can fetch those data with `model(join_on_property: String!)` or `user(join_on_property: String!) field in GraphQL.
+With `properties`, you can create your custom fields for storing the data. In the properties, you can also store the `id` of an existing object. Then you can fetch the data with `model(join_on_property: String!)` or the `user(join_on_property: String!)` field in GraphQL.
 
-In order to export/import such data with relations preserved you need to define them in models schema files by `belongs_to` attribute.
+In order to export/import data with relations preserved, you need to define them in model schema files using the `belongs_to` attribute.
 
 ```yaml
 #### marketplace_builder/custom_model_types/house.yaml
@@ -31,3 +29,5 @@ properties:
   type: integer
   belongs_to: house
 ```
+
+{% include 'shared/questions_section' %}
