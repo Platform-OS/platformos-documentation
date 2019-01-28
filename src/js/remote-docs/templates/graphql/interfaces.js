@@ -1,3 +1,11 @@
+const implementedBy = `<h4>Implemented by</h4>
+<ul>
+  <% item.implemented_by.map(function(i) { %>
+    <li><%= i %></li>
+  <% }) %>
+</ul>
+`;
+
 const fields = `<h4>Fields</h4>
 <table class="table">
   <thead>
@@ -30,6 +38,10 @@ const template = `<%_ items.map(function(item) { _%>
   <div class="border-bottom mb-5 pb-4">
     <%_ if (item.description) { _%>
      <p><%= item.description _%></p>
+    <%_ } _%>
+
+    <%_ if (item.implemented_by) { _%>
+      ${implementedBy}
     <%_ } _%>
 
     <%_ if (item.fields) { _%>
