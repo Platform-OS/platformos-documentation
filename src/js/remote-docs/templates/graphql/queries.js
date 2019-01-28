@@ -25,7 +25,11 @@ const args = `<h4>Arguments</h4>
 const template = `<%_ items[0].fields.map(function(item) { _%>
   <h3>
     <%= item.name %>
-    <% if (item.type) { %><small>(returns: <%= item.type.name _%>)</small><%_ } _%>
+    <% if (item.type) { %>
+      <small>
+        (type: <a href="/api-reference/graphql/objects#<%= item.type.name.toLowerCase() _%>"><%= item.type.name _%></a>)
+      </small>
+    <%_ } _%>
   </h3>
 
   <div class="border-bottom mb-5 pb-4">
@@ -33,7 +37,7 @@ const template = `<%_ items[0].fields.map(function(item) { _%>
      <p><%= item.description _%></p>
     <%_ } _%>
 
-    <%_ if (item.arguments) { _%>
+    <%_ if (item.arguments.length > 0) { _%>
       ${args}
     <%_ } _%>
   </div>

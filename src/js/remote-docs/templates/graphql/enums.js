@@ -1,6 +1,6 @@
 const values = `<h4>Values</h4>
 <ul>
-  <% items.map(function(v) { %>
+  <% item.values.map(function(v) { %>
     <li>
       <%= v.name %>
       <% if (v.description) { %>- <%= v.description %><% } %>

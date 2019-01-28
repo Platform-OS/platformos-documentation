@@ -1,7 +1,7 @@
 const implementedBy = `<h4>Implemented by</h4>
 <ul>
   <% item.implemented_by.map(function(i) { %>
-    <li><%= i %></li>
+    <li><a href="/api-reference/graphql/objects#<%= i.toLowerCase() %>"><%= i %></a></li>
   <% }) %>
 </ul>
 `;
