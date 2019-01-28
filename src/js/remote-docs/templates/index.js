@@ -7,5 +7,6 @@ module.exports = {
   'graphql-objects': require('./graphql/objects'),
   'graphql-scalars': require('./graphql/scalars'),
   'graphql-interfaces': require('./graphql/interfaces'),
-  'graphql-enums': require('./graphql/enums')
+  'graphql-enums': require('./graphql/enums'),
+  'graphql-inputs': require('./graphql/inputs')
 };

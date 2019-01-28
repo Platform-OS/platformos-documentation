@@ -13,7 +13,8 @@ const docsTypes = {
   'graphql-objects': `${VERSION_URL}/graphql/objects.json`,
   'graphql-scalars': `${VERSION_URL}/graphql/scalars.json`,
   'graphql-interfaces': `${VERSION_URL}/graphql/interfaces.json`,
-  'graphql-enums': `${VERSION_URL}/graphql/enums.json`
+  'graphql-enums': `${VERSION_URL}/graphql/enums.json`,
+  'graphql-inputs': `${VERSION_URL}/graphql/inputs.json`
 };
 
 import(/* webpackChunkName: "vendor" */ 'ejs/ejs.min').then(ejs => {

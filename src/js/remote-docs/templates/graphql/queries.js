@@ -1,5 +1,5 @@
 const args = `<h4>Arguments</h4>
-<table class="table">
+<table class="table table-sm">
   <thead>
     <tr>
       <th>Name</th>

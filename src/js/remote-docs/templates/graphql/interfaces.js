@@ -7,7 +7,7 @@ const implementedBy = `<h4>Implemented by</h4>
 `;
 
 const fields = `<h4>Fields</h4>
-<table class="table">
+<table class="table table-sm">
   <thead>
     <tr>
       <th>Name</th>

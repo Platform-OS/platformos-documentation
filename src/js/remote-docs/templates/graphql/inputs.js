@@ -1,23 +1,23 @@
-const fields = `<h4>Fields</h4>
+const inputFields = `<h4>Input fields</h4>
+
 <table class="table table-sm">
   <thead>
     <tr>
       <th>Name</th>
-      <th>Type</th>
       <th>Description</th>
     </tr>
   </thead>
   <tbody>
-    <%_ item.fields.map(function(f) { _%>
+    <% item.input_fields.map(function(i) { %>
       <tr>
-        <td><%= f.name _%></td>
-        <td><%_ if (f.type) { _%><%= f.type.info _%><%_ } _%></td>
+        <td>
+          <%= i.name %>
+        </td>
         <td class="text-capitalize">
-          <%_ if (f.description) { _%><%= f.description _%> <%_ } _%>
-          <%_ if (f.default_value) { _%>Default: <code><%= f.default_value _%></code><%_ } _%>
+          <% if (i.description) { %><%= i.description %><% } %>
         </td>
       </tr>
-    <%_ }) _%>
+    <% }) %>
   </tbody>
 </table>
 `;
@@ -32,8 +32,8 @@ const template = `<%_ items.map(function(item) { _%>
      <p><%= item.description _%></p>
     <%_ } _%>
 
-    <%_ if (item.fields) { _%>
-      ${fields}
+    <%_ if (item.input_fields) { _%>
+      ${inputFields}
     <%_ } _%>
   </div>
 <%_ }) _%>`;
