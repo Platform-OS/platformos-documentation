@@ -4,6 +4,7 @@ const inputFields = `<h4>Input fields</h4>
   <thead>
     <tr>
       <th>Name</th>
+      <th>Type</th>
       <th>Description</th>
     </tr>
   </thead>
@@ -12,6 +13,9 @@ const inputFields = `<h4>Input fields</h4>
       <tr>
         <td>
           <%= i.name %>
+        </td>
+        <td>
+          <% if (i.type) { %><%= i.type.name %><% } %>
         </td>
         <td class="text-capitalize">
           <% if (i.description) { %><%= i.description %><% } %>
