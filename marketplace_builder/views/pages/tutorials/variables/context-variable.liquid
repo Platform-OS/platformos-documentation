@@ -41,6 +41,9 @@ slug: context_example
 ### context.environment
 `context.environment` returns a string: `staging` or `production`. A common use case is to hide some functionalities on production without blocking the release.
 
+### context.flash
+`context.flash` returns object with possible keys: alert, notice. Value for each key is a message string. [Flash messages](/tutorials/forms/flash-messages) are set on form submissions.
+
 ### context.headers
 `context.headers` contains whitelisted [HTTP headers](https://en.wikipedia.org/wiki/List_of_HTTP_header_fields) with the data from the current HTTP request.
 
@@ -103,6 +106,26 @@ The street is {{ params.street }}.
 </li>
 ```
 {% endraw %}
+
+### context.page
+`context.page` contains information about the [page](/tutorials/pages/pages) on which it is included.
+
+Available attributes are:
+{% raw %}
+```liquid
+{{ context.page }}
+```
+```json
+{
+  "id" => 1,
+  "slug" => "foo",
+  "enable_profiler" => false,
+  "layout_name" => "application",
+  "metadata" => {}
+}
+```
+{% endraw %}
+
 ### context.params
 `context.params` contains user data provided in forms and query params.
 
@@ -128,18 +151,7 @@ the value of `context.params` would be:
 *Another way of extracting page params is using [context.location.pathname](#context-location) as shown in Example 1.*
 
 ### context.session
-`context.session` allows for quick access to session storage. Use mutations in order to store data in session like in [this example](https://documentation.platform-os.com/api-reference/graphql/graphql-glossary#operation-name)
-
-### context.page
-`context.page` contains information about the [page](/tutorials/pages/pages) on which it is included.
-
-Available attributes are:
-
-* id
-* slug
-* enable_profiler
-* layout_name
-* metadata
+`context.session` allows for quick access to session storage. Use mutations in order to store data in session like in [this example](/api-reference/graphql/glossary#operation-name)
 
 ### context.useragent
 `context.useragent` returns an object with user agent data.
@@ -172,4 +184,3 @@ It is possible to promote a local variable so it is available in the `context.ex
 
 
 {% include 'shared/questions_section' %}
-

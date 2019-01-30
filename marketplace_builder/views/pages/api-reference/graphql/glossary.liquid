@@ -1,0 +1,194 @@
+---
+converter: markdown
+metadata:
+  title: GraphQL Glossary
+  description: Alphabetical list of GraphQL related terms with examples from platformOS implementations.
+slug: api-reference/graphql/glossary
+searchable: true
+---
+
+This is a glossary of GraphQL related terms with examples from platformOS implementations.
+
+## Argument
+A set of key-value pairs attached to a specific field. Arguments can be literal values or variables.
+
+```graphql
+{
+  user(id: 200) {
+    email
+    bio: property(name: "bio")
+  }
+}
+```
+
+## Alias
+An alternative name given to the result of a field to avoid conflicts during data fetching.
+
+```graphql
+{
+  notes: customizations(name: "notes") {
+    results { id }
+  }
+  car_photos: customizations(name: "car_photos") {
+    results {
+      photos: custom_images(name: "photo") {
+        url
+      }
+    }
+  }
+}
+```
+
+## Directive
+
+A declaration prefixed with an `@` character that encapsulates programming logic for query execution on the client or server. There are built-in directives such as `@skip` or `@include`. Directives can be used for features such as authentication, incremental data loading, etc.
+
+```graphql
+query clients($is_client: Boolean!) {
+  people {
+    results {
+      email
+      created_at @skip(if: $is_client)
+    }
+  }
+}
+```
+
+## Document
+A file or request string that contains one or multiple definitions of a GraphQL type system and can be interpreted by a GraphQL execution engine.
+
+## Field
+A unit of data you are asking for in a Schema, which ends up as a field in your JSON response data.
+
+```graphql
+type User{
+  id: ID!
+  first_name: String
+  last_name: String
+}
+```
+
+## Fragment
+A selection set that can be reused in multiple query operations. A GraphQL fragment is a shared piece of query logic.
+
+```graphql
+fragment UserData on UserListing {
+  id
+  first_name
+  last_name
+}
+
+{
+  people {
+    results {
+      ...UserData
+    }
+  }
+}
+```
+
+## GraphQL Playground
+An in-browser IDE for GraphQL development and workflow. Added benefits exist such as theme change, automatic schema reloading, HTTP headers configuration, query history and GraphQL subscription support.
+
+In platformOS: `marketplace-kit gui serve`
+
+## Introspection
+
+A technique to provide detailed information about a GraphQL API's schema. Types and fields used in introspection are prefixed with `__` two underscores.
+
+```graphql
+{
+  __schema {
+    types {
+      name
+    }
+  }
+}
+```
+
+## Mutation
+An operation for creating, modifying and destroying data.
+
+```graphql
+mutation edit_car($car_id: ID!, $color: String!) {
+  customization_update(
+    form_configuration_name: "edit_car"
+    id: $car_id
+    customization: {
+      properties: [
+        { name: "color", value: $color }
+      ]
+    }
+  ) {
+    id
+  }
+}
+```
+
+## Object Type
+A type in a GraphQL schema which has fields.
+
+```graphql
+type User {
+   name: String!
+}
+```
+
+`User` is an Object type in the example above.
+
+## Operation
+A single query, mutation, or subscription that can be interpreted by a GraphQL execution engine.
+
+## Operation Name
+A name for a single query, mutation, or subscription. Identifying a query or mutation by name is very useful for logging and debugging when something goes wrong in a GraphQL server.
+
+```graphql
+mutation store_in_session($token: String!) {
+  session_create_field(name: "token", value: $token)
+}
+
+query find_user($id: ID!) {
+  user(id: $id) {
+    email
+  }
+}
+```
+
+## Query
+A read-only fetch operation to request data from a GraphQL service.
+
+## Schema
+A GraphQL schema is at the center of any GraphQL server implementation and describes the functionality available to the clients which connect to it.
+
+## Schema Definition Language
+The syntax for writing GraphQL Schemas. It is otherwise known as Interface Definition Language. It is the lingua franca shared by all for building GraphQL APIs regardless of the programming language chosen.
+
+```graphql
+type UserListing {
+  created_at: JSONDate
+  customizations(name: String, properties: [QueryCustomAttribute], user_id: ID): [ListingsCustomization]
+  deleted_at: JSONDate
+  email: String!
+  external_id: ID
+  first_name: String
+  id: ID!
+  last_name: String
+}
+
+# Authentication using provider
+type Authentication {
+  id: ID
+
+  # name of authentication provider used for creating this authentication
+  provider: AuthenticationProvider
+  token_expires_at: JSONDate
+}
+```
+
+## Scalar Type
+A type that qualifies the data a GraphQL field resolves. GraphQL ships with some scalar types out of the box; **Int**, **Float**, **String**, **HashObject**, **Boolean** and **ID**. However, a custom scalar type such as **Date** can be specified in a GraphQL service implementation.
+
+## Type System
+A collection of types which characterizes the set of data that can be validated, queried and executed on a GraphQL API.
+
+_In this glossary we reused content from [Apollo's GraphQL Glossary](https://github.com/apollographql/apollo/blob/master/docs/source/resources/graphql-glossary.md)._

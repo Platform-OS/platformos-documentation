@@ -61,7 +61,7 @@ Now that you have the definition of a `Contact` in place, you can create a Form 
 ```yaml
 ---
 name: contact_form
-resource: Customization
+resource: contact
 resource_owner: anyone
 fields:
   properties:
@@ -249,7 +249,7 @@ To display the form on the previously created `contacts` page you have to includ
 
 ```liquid
 {% raw %}
-{% include_form 'contact_form', parent_resource_id: 'contact' %}
+{% include_form 'contact_form' %}
 {% endraw %}
 ```
 
@@ -263,7 +263,7 @@ In order to remove record from the database, create `delete_contact_form`:
 ```liquid
 ---
 name: delete_contact_form
-resource: Customization
+resource: contact
 resource_owner: anyone
 redirect_to: /contacts
 fields: {}
@@ -278,8 +278,7 @@ To display delete button on the list of contacts, include the form as follows:
 {% raw %}
 ```liquid
 <td>
-  {% include_form "delete_contact_form", id: contact.id,
-    resource_type: 'contact' %}
+  {% include_form "delete_contact_form", id: contact.id %}
 </td>
 ```
 {% endraw %}
@@ -294,8 +293,7 @@ As you already have the form to create contacts, you can simply reuse it for the
 ---
 slug: contacts/edit
 ---
-{% include_form "contact_form", id: context.params.slug3,
-  parent_resource_id: "contact" %}
+{% include_form "contact_edit_form", id: context.params.slug3 %}
 ```
 {% endraw %}
 
@@ -330,7 +328,7 @@ email_notifications:
 
 ### Step 9: Secure the form
 
-At this point you might want to restrict access to the forms and views you have created. You can do that using [Authorization Policies](https://documentation.platform-os.com/tutorials/authorization-policy/adding-authorization-policy).
+At this point you might want to restrict access to the forms and views you have created. You can do that using [Authorization Policies](/tutorials/authorization-policy/adding-authorization-policy).
 
 ## Live example and source code
 

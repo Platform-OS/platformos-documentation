@@ -1,0 +1,123 @@
+---
+converter: markdown
+metadata:
+  title: Data Import
+  description: Detailed description of data import with examples.
+slug: tutorials/data-import-export/import
+searchable: true
+---
+
+This topic describes **data import** from the new stack.
+
+Data to be imported needs to be in JSON format:
+
+```json
+{
+  "users": [...],
+  "models": [...],
+  "transactables": [...]
+}
+```
+
+You can generate data from an existing Instance with the `marketplace-kit data export` command ([read more about this here](/tutorials/data-import-export/export#cli-export)). It will generate the `data.json` file. You can also import data from other sources (e.g. old stack, other systems) once you generate the proper JSON file. It is fairly easy to convert, for example, a CSV file into a JSON file.
+
+## General information
+
+Before import, your model schemas need to be deployed.
+
+When importing data, the `id` fields will be changed. Relations will be kept. If you have your own relations defined in properties, you need to first describe them in model schema files - [read more about this here](/tutorials/data-import-export/model-relations).
+
+Importing always adds data to the Instance. When you run import twice, it will try to add data to the existing set. If you test your imports and need to clean Instance data, use the `marketplace-kit data clean` command. Note, that this command will work only on staging Instances.
+
+Import will do only basic validations, such us email uniqueness on users, existence of properties, and type validation. It doesn't check any of the validations defined on forms.
+
+## Data Import with CLI
+
+With marketplace-kit data, you can export/import Instance data (information entered by the users).
+
+
+platformOS CLI provides the `marketplace-kit data import` command for uploading and importing data from a JSON file. It accepts one option:
+
+- --path (short: -p): A path to a JSON data file to be imported
+
+Under the hood, the CLI uses the GraphQL import API that's described in the next section. However, using the CLI provides some major benefits:
+
+- Uploading file from disk
+- Leveraging the CLI's authentication mechanism (i.e. you don't need to manually send your authentication token)
+
+### Input format
+
+The required data format is a JSON file with users, models, and Transactable keys that have an array of maps. Each of those collections needs to be in the same format as a corresponding GraphQL mutation. Under the hood import is just a set of mutations: `import_users()`, `import_models()`, `import_transactables()`. When importing data using the CLI, the file should contain data in a format that matches the following structure:
+
+```json
+{
+  "users": [<UserImport],
+  "models": [<CustomizationImport>],
+  "transactables": [<TransactableImport>]
+}
+```
+
+### Example
+
+To import the data from a file, simply run the following command in the terminal:
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+marketplace-kit data import --path=data.json staging-instance
+</code></pre>
+
+## Data Import with GraphQL mutations
+
+It is possible to import data using GraphQL mutations. This gives you more flexibility, and even allows you to create your own import tool as a website feature. Please remember to handle authentication properly.
+
+There are three main mutations for importing [import_users](), [import_models]() and [import_transactables](). You can create a page that will import sent data.
+
+```graphql
+mutation import_data(
+    $users: [UserImport!]!,
+    $transactables: [TransactableImport!]!,
+    $models: [CustomizationImport!]!
+  ) {
+  import_users(users: $users) { ids }
+  import_transactables(transactables: $transactables) { ids }
+  import_models(models: $models) { ids }
+}
+```
+
+{% raw %}
+```liquid
+---
+slug: import_data
+format: json
+method: post
+---
+{% execute_query "import_data",
+  users: context.params.users,
+  transactables: context.params.transactables,
+  models: context.params.models
+%}
+
+{{ g | json }}
+```
+{% endraw %}
+
+<pre class="command-line" data-output="2-6" data-user="user" data-host="host"><code class="language-bash">
+curl -d @transformed.json \
+  -H "Content-Type: application/json" \
+  -X POST https://example.com/import_data.json
+</code></pre>
+
+## Data Import with raw import API
+
+Our CLI uses the HTTP API to import a data file. You can use it in your own tool.
+Please note, that you need to provide your authentication token in the HTTP Authorization header of the request.
+
+<pre class="command-line" data-output="2-6" data-user="user" data-host="host"><code class="language-bash">
+curl -d @data.json \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Token token=[YOUR API TOKEN]" \
+  -X POST https://example.com/api/marketplace_builder/imports
+</code></pre>
+
+{% include 'alert/note', content: 'You can find your API Token in [Partner Portal](https://portal.apps.near-me.com/me) under "Access Key".' %}
+
+{% include 'shared/questions_section' %}
