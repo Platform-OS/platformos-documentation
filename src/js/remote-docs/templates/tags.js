@@ -19,6 +19,10 @@ const template = `<%_ items.tags.map(function(item) { _%>
   <h2><%= item.name %></h2>
 
   <div class="border-bottom mb-5 pb-4">
+    <% if (item.description) { %>
+      <p><%= item.description %></p>
+    <% } %>
+
     <% if (item.params.length > 0) { %>
       ${params}
     <% } %>
