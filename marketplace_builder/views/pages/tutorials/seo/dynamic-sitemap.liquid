@@ -1,0 +1,84 @@
+---
+converter: markdown
+metadata:
+  title: Dynamic Sitemap
+  description: This guide will help you create dynamic /sitemap.xml
+slug: tutorials/seo/dynamic-sitemap
+searchable: true
+---
+This guide will help you create dynamic /sitemap.xml page.
+
+## Requirements
+This is an advanced tutorial. To follow it, you should be familiar with basic platformOS concepts, HTML, GraphQL queries, Liquid, and the topics in the Get Started section, especially tutorials related to Pages.
+
+* [How platformOS Works](/how-platformos-works)
+* [Get Started: Pages tutorials](/tutorials/pages/pages)
+
+## Steps
+
+Creating dynamic sitemap.xml is a three-step process:
+
+1. Prepare GraphQL query
+2. Setup page
+
+### Step 1: Prepare GraphQL query
+
+Create a GraphQL query which fetches all pages except of those explicitly excluded via proper metatag:
+
+```graphql
+query sitemap_pages($per_page: Int = 1000, $page: Int = 1) {
+  pages: admin_pages(
+    per_page: $per_page,
+    page: $page,
+    filter: {
+      metadata: {
+        has_key: "skip_sitemap"
+        exclude: true
+      }
+    }
+  ) {
+    total_entries
+    total_pages
+    results {
+      slug
+    }
+  }
+}
+```
+
+### Step 2: Setup page
+
+* Create views/pages/sitemap.xml.liquid Page
+
+* Use GraphQL Query defined above to iterate dynamically over all pages
+
+```yaml
+---
+slug: sitemap
+layout_name: ""
+static_cache:
+  expire: 3600
+metadata:
+  skip_sitemap:
+---
+```
+```liquid
+{% raw %}
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+  {%- query_graph 'sitemap_pages', result_name: g -%}
+  {% for page in g.pages.results %}
+    {% if page.slug == '/' %}{% assign slug = page.slug %}{% else %}{% assign slug = '/' | append: page.slug %}{% endif %}
+    <url>
+      <loc>https://{{ context.location.host }}{{ slug }}</loc>
+      <changefreq>{{ page.metadata.sitemap.changefreq | default: 'monthly' }}</changefreq>
+      <priority>{{ page.metadata.sitemap.changefreq | default: 1 }}</priority>
+    </url>
+  {% endfor %}
+</urlset>
+{% endraw %}
+```
+
+Using this template, you are able to explicitly exclude any Page from the sitemap.xml by including `skip_sitemap` key to a `metaga` property of a page. Please note you can also use `metatag` to configure any sitemap properties like changefreq and priority. Please note, the example above already uses static caching for 1 hour - you might want to remove it for development.
+
+{% include 'shared/questions_section' %}
