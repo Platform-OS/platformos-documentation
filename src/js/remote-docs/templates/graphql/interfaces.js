@@ -1,8 +1,8 @@
 const implementedBy = `<h4>Implemented by</h4>
 <ul>
-  <% item.implemented_by.map(function(i) { %>
-    <li><a href="/api-reference/graphql/objects#<%= i.toLowerCase() %>"><%= i %></a></li>
-  <% }) %>
+  <%_ item.implemented_by.map(function(i) { _%>
+    <li><a href="/api-reference/graphql/objects#<%= i.toLowerCase() _%>"><%= i _%></a></li>
+  <%_ }) _%>
 </ul>
 `;
 
@@ -32,7 +32,7 @@ const fields = `<h4>Fields</h4>
 
 const template = `<%_ items.map(function(item) { _%>
   <h3>
-    <%= item.name %>
+    <%= item.name _%>
   </h3>
 
   <div class="border-bottom mb-5 pb-4">

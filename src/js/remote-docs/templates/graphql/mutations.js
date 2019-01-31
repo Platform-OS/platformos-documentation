@@ -40,8 +40,8 @@ const returnFields = `<h4 class="mt-4">Return fields</h4>
 
 const template = `<%_ items.map(function(item) { _%>
   <h3>
-    <%= item.name %>
-    <% if (item.type) { %><small>(<%= item.type.name _%>)</small><%_ } _%>
+    <%= item.name _%>
+    <%_ if (item.type) { _%><small>(<%= item.type.name _%>)</small><%_ } _%>
   </h3>
 
   <div class="border-bottom mb-5 pb-4">

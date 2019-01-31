@@ -3,7 +3,7 @@ const params = `<h4>Params:</h4>
   <%_ item.params.map(function(p) { _%>
     <li>
       <%= p.name %> (<%= p.types %>)
-      <% if (p.description) { %> - <%= p.description %> <% } %>
+      <%_ if (p.description) { %> - <%= p.description %> <%_ } _%>
     </li>
   <%_ }) _%>
 </ul>`;
@@ -19,17 +19,17 @@ const template = `<%_ items.tags.map(function(item) { _%>
   <h2><%= item.name %></h2>
 
   <div class="border-bottom mb-5 pb-4">
-    <% if (item.description) { %>
+    <%_ if (item.description) { _%>
       <p><%= item.description %></p>
-    <% } %>
+    <%_ } _%>
 
-    <% if (item.params.length > 0) { %>
+    <%_ if (item.params.length > 0) { _%>
       ${params}
-    <% } %>
+    <%_ } _%>
 
-    <% if (item.examples.length > 0) { %>
+    <%_ if (item.examples.length > 0) { _%>
       ${examples}
-    <% } %>
+    <%_ } _%>
   </div>
 <%_ }) _%>`;
 

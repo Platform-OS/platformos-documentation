@@ -1,7 +1,7 @@
 const returns = `<h4>Returns:</h4>
 <%_ item.returns.map(function(r) { _%>
   <p>
-    <%= JSON.parse(r.types) %>
+    <%= r.types.join(', ') _%>
     <%_ if (r.description) { _%> - <%= r.description %> <%_ } _%>
   </p>
 <%_ }) _%>`;
@@ -11,7 +11,7 @@ const params = `<h4>Params:</h4>
   <%_ item.params.map(function(p) { _%>
     <li>
       <%= p.name %> (<%= p.types %>)
-      <% if (p.description) { %> - <%= p.description %> <% } %>
+      <%_ if (p.description) { %> - <%= p.description _%> <%_ } _%>
     </li>
   <%_ }) _%>
 </ul>`;
@@ -27,17 +27,17 @@ const template = `<%_ items.filters.map(function(item) { _%>
   <h2><%= item.name %></h2>
 
   <div class="border-bottom mb-5 pb-4">
-    <% if (item.returns.length > 0) { %>
+    <%_ if (item.returns.length > 0) { _%>
       ${returns}
-    <% } %>
+    <%_ } _%>
 
-    <% if (item.params) { %>
+    <%_ if (item.params) { _%>
       ${params}
-    <% } %>
+    <%_ } _%>
 
-    <% if (item.examples) { %>
+    <%_ if (item.examples) { _%>
       ${examples}
-    <% } %>
+    <%_ } _%>
   </div>
 <%_ }) _%>`;
 
