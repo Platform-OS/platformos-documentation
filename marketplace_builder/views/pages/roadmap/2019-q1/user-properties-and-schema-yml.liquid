@@ -1,0 +1,62 @@
+---
+converter: markdown
+metadata:
+  title: User properties and schema.yml
+  description: This section describes a new feature of adding properties directly to user.
+slug: roadmap/2019-q1/user-properties-and-schema-yml
+searchable: true
+---
+
+This section contains information about new feature of associating properties directly to user via schema.yml.
+
+## Problem
+
+Currently in order to add a property to a User, one needs to go through UserProfile. In simple scenarios, this seems unnecessary and increases the learning curve. For example, if you wanted to add a mandatory property `date_of_birth`, you would need to create UserProfileType like `Default`, and then write FormConfiguration similar to:
+```yaml
+...
+resource: User
+fields:
+  profiles:
+    validation: { presence: true }
+    default:
+      validation: { presence: true }
+      properties:
+        validation: { presence: true }
+        date_of_birth:
+          validation: { presence: true }
+...
+```
+
+It does not look simple, despite it is one of the basic use cases.
+
+## Solution
+
+What we would like to introduce is something closer to:
+
+```yaml
+...
+resource: User
+fields:
+  properties:
+    date_of_birth:
+      validation: { presence: true }
+```
+
+In order to implement this, we need a place to define `properties` for User in `marketplace_builder`. Hence at the same time, we would like to introduce a new configuration file `schema.yml`. To be able to get most of it, you will be also able to define custom model types and user profiles in it [hence deprecating custom model types and user profile types directories]. The schema.yml could look like this:
+```yaml
+user:
+  profiles:
+    seller:
+      company_name:
+        type: string
+  properties:
+    date_of_birth:
+      type: date
+
+car:
+  properties:
+    engine:
+      type: string
+```
+
+Please note, that there are difference between defining properties in schema.yml and in custom_model_types/user_profile_types. Instead of array for properties, we will use a hash. It is better data structure, because we want properties to be unique.

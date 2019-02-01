@@ -1,0 +1,18 @@
+---
+converter: markdown
+metadata:
+  title: Durable storage for key-value pairs
+  description: This section describes an easy way to persist key => value pairs across requests
+slug: roadmap/2019-q1/durable-storage-for-key-value-pairs
+searchable: true
+---
+
+This section describes an easy way to persist key => value pairs across requests.
+
+## Problem
+
+Currently there is no easy way to persist key => value pairs for an Instance, so it can be used later. Example use case for such feature can be Salesforce integration. The way you authorize to Salesforce is that you send time consuming API call to get an authorization token in return. This token is valid for 2 hours since the last use. If you wanted to be able to re-use this token instead of keep sending unnecessary authorization call every time you want to send API call to Salesforce, you would need to create custom model type and then write GraphQL queries and mutations to manage it. It is doable, but hard for beginners.
+
+## Solution
+
+The solution is to create a new tag, for example `{% raw %}{% storage 'my_key', 'my_value' %}{% endraw %}`, which would be accessible later via`{% raw %}{{ context.storage.my_key }}{% endraw %}`. There is potential to enhance this solution later on with for example being able to specify `expire` key.
