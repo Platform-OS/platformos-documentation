@@ -9,7 +9,7 @@ searchable: true
 
 Welcome to the platformOS Quickstart Guide!
 
-This guide will get you set up and ready to develop your site on platformOS. After you get access to the Partner Portal in step 1, following and finishing the steps in this guide should take less than half an hour. Each step includes tips for learning more: recommendations for further reading, links to our glossary and to in-depth explanations of concepts you might not be familiar with.
+This guide will take you from setting up your development environment to deploying your first platformOS site. After you get access to the Partner Portal in step 1, following and finishing the steps in this guide should take less than half an hour. 
 
 Let's get started!
 
@@ -19,7 +19,7 @@ Our [Partner Portal](https://portal.apps.near-me.com) is an online interface, wh
 
 Send us an email, or call us to register an account for you on the Partner Portal.
 
-* Email: TO BE ADDED
+* Email: [support@platform-os.com](mailto:support@platform-os.com)
 * Call: +1-888-998-3375
 
 You can also get access to the Partner Portal if a registered Partner creates an account for you.
@@ -32,17 +32,16 @@ Click on the `Set my password` button. If the two passwords you entered match, y
 
 ## Step 2: Set up a site on our platform
 
-To be able to deploy your site, you have to create an Instance on the Partner Portal. Instances have a URL, and they represent different development environments, like staging or production. We recommend to create a staging environment for going through the steps in this tutorial.
+To be able to deploy your site, you have to create an Instance on the Partner Portal. Instances have a URL, and they represent different development environments, like staging or production. We recommend creating a staging environment for going through the steps in this tutorial.
 
-On the Partner Portal, in the menu on the left, click on `Create` and select `Instance`.
+On the Partner Portal, in the menu on the left, click on `Create`, select `Instance`, and fill in the form:
 
-Add a Name, select a Partner the Instance will belong to, and select an endpoint. Endpoints for staging sites have a "staging-" prefix.
+* Name: Enter a name for your Instance. 
+* Partner: Select a Partner the Instance will belong to.
+* Endpoint: Select an endpoint (staging or production). Endpoints for staging sites have a "staging-" prefix.
+* Billing Plan: Select a Billing Plan for the Instance. 
 
-Click on the `Create` button. We create the Instance, and once it's done (in a couple of minutes), send you an email with further instructions.
-
-In the email you receive, click on the link of your newly created Instance. You now see your Instance &ndash; click on the `Log In` button.
-
-To set your password for the Instance, click on the `Reset your password` link. Enter your email, and click on the `Reset Password` button. Follow the instructions we send you in email to set your password.
+Click on the `Create` button. We create the Instance, and once it's done (in a couple of minutes), send you an email with a link to your Instance and other useful information.
 
 ## Step 3: Install the Marketplace Kit
 
@@ -56,7 +55,7 @@ Start your command-line tool (e.g. Terminal on a Mac, or Git Bash on Windows), a
 npm install -g @platform-os/marketplace-kit
 </code></pre>
 
-If your node is installed for all users you might need to use `sudo` to install npm packages globally:
+If your Node.js is installed for all users you might need to use `sudo` to install npm packages globally:
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
 sudo npm install -g @platform-os/marketplace-kit
@@ -88,7 +87,7 @@ If the Marketplace Kit has been installed correctly, running this command displa
 
 ## Step 4: Create the Codebase
 
-In order to correctly communicate with the platformOS engine and API, your codebase should be organized into a specific directory structure. The root directory of your project should contain the `marketplace_builder` directory. All directories other than the `marketplace_builder` will be ignored by the Marketplace Kit when deploying and syncing, so you can keep all your JS and CSS files outside of the `marketplace_builder` directory, and use any pre-processors you want to automatically generate the end result files in a proper path inside `marketplace_builder`.
+In order to correctly communicate with the platformOS engine and API, your codebase should be organized into a specific directory structure. The root directory of your project should contain the `marketplace_builder` directory. 
 
 You can create the codebase using the marketplace-kit.
 
@@ -98,19 +97,25 @@ marketplace-kit init
 
 {% include 'alert/note', content: 'Make sure you invoke this command where you have permissions to create a directory.' %}
 
-Once you've installed the required directory structure, locate and explore it &ndash; this is how your codebase for your platformOS Instances should be organized. To learn more about the required directories and files, see [platformOS Components](/how-platformos-works/platformos-workflow).
+Once you've installed the required directory structure, locate and explore it &ndash; this is how your codebase for your platformOS Instances should be organized. To learn more about the required directories and files, see [platformOS Codebase](/how-platformos-works/platformos-workflow/codebase).
 
 ## Step 5: Change something and deploy your change
 
 In this final step, you'll make a small change on your home page, and deploy it.
 
-Locate the `home.liquid` file in your codebase (`marketplace_builder/views/pages/home.liquid`). Open it in a code editor of your choice, and change the text to anything you'd like to, but don't edit the first 3 lines:
+Locate the `home.liquid` file in your codebase (`marketplace_builder/views/pages/home.liquid`). Open it in a code editor of your choice, and add some text. Don't edit the lines between `---`:
 
-```yaml
+```liquid
+{% raw %}
 ---
 slug: /
+layout_name: 1col
 ---
-Hello, World! 
+{%- assign name = 'Home' -%}
+{%- content_for 'pagetitle' -%}{{ name }}{%- endcontent_for -%}
+<h1>{{ name }}</h1>
+Hello, World!
+{% endraw %} 
 ```
 
 Save your changes.
@@ -125,12 +130,17 @@ To add your environment to the `.marketplace-kit` config file, run the `env add`
 marketplace-kit env add &lt;environment&gt; --email &lt;your email&gt; --url &lt;your marketplace url&gt;
 </code></pre>
 
+For example:
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+marketplace-kit env add staging --email myemail@example.com --url https://example.com
+</code></pre>
+
 To deploy all changes, run the `deploy` command:
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
 marketplace-kit deploy &lt;environment&gt;
 </code></pre>
-
 
 For example:
 
@@ -138,12 +148,12 @@ For example:
 marketplace-kit deploy staging
 </code></pre>
 
-Now, refresh your Instance in you browser, and you can see the change you made.
+Now, refresh your Instance in your browser, and you can see the change you made.
 
-Congratulations! You have set up all the basic components you need for working with platformOS, and successfully deployed your first site.
+Congratulations! You have set up all the basic components you need for working with platformOS and successfully deployed your first site.
 
 ## Next steps
 
-Delve into developing your site by following our step-by step [Get Started](/get-started) tutorials, or learn more about the concepts behind platformOS in [How platformOS Works](/how-platformos-works).
+Learn more [about platformOS](how-platformos-works/about-platform-os), and delve into developing your site by following our step-by step tutorials — it's a good idea to start with [Pages](/tutorials/pages/pages). 
 
 {% include 'shared/questions_section' %}
