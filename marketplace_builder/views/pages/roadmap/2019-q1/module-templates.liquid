@@ -2,42 +2,42 @@
 converter: markdown
 metadata:
   title: Module Templates
-  description: This section describes module templates
+  description: This section describes module templates. 
 slug: roadmap/2019-q1/module-templates
 searchable: true
 ---
 
-This section contains information about a new feature of processing module templates.
+This section contains information about a new feature, processing module templates.
 
 ## Problem
 
-When you install a module there is no way to parametrize it other than by using backend API's (through GraphQL, by creating customization, etc.). This is problematic because:
+When you install a module, there is no way to parametrize it other than by using backend API's (through GraphQL, by creating customization, etc.). This is problematic because:
 
-1. That's a lot of work to configure basic things like `Page#slug`
-2. Installing the module immediately makes it available on the website with default values, which might be meant to be configured.
+1. That's a lot of work to configure basic things like `Page#slug`.
+2. Installing the module immediately makes it available on the website with default values, which might have to be configured.
 
 ### Additional requirements
 
 A solution is needed that:
 
-* will work both from marketplace-kit and Partner Portal
+* will work both from the Marketplace Kit and the Partner Portal
 * will work before configuration records are created in the back-end
 * will allow unchanged development flow (*sync* and *deploy*)
 * will be configurable
 
 ## Solution
 
-A solution that is partially implemented uses marketplace-kit (Partner Portal internally uses marketplace-kit for module deployment, so internally it's the commonplace). In marketplace-kit, there is a piece of code that is run on the file before it gets synced or deployed that handles additional layer of templating.
+A solution that is partially implemented uses the Marketplace Kit (Partner Portal internally uses the Marketplace Kit for module deployment, so internally it's commonplace). In Marketplace Kit, there is a piece of code run on the file before it gets synced or deployed that handles additional layer of templating.
 
 ### Technical details
 
 The implementation uses mustache.js which is a lib with **logicless** templates for JavaScript. Some pros of this option:
 
-* The code is based on a descending parser and quite solid
-* Tags used can be configured (examples below use `(*|` and ` |*))`
-* It handles error checking in the template format (missing/unmatched tags, etc.)
-* It handles error checking in values provided for rendering
-* It has optional HTML escaping build in
+* The code is based on a descending parser and quite solid. 
+* Tags used can be configured (examples below use `(*|` and ` |*))`.
+* It handles error checking in the template format (missing/unmatched tags, etc.). 
+* It handles error checking in values provided for rendering. 
+* It has optional HTML escaping built in. 
 
 ### Examples
 
@@ -69,7 +69,7 @@ After the processing, the result will look something like this:
 
 <img width="460" alt="zrzut ekranu 2019-01-16 20 35 28" src="https://user-images.githubusercontent.com/25693/51299313-5cd52f80-1a28-11e9-9301-1c0e61a87e53.png">
 
-This example also demonstrates how easy it is to do HTML unescape by prefixing variable name with &amp;. It is also easy to add an additional helper functions like that if they are needed in the future.
+This example also demonstrates how easy it is to do HTML unescape by prefixing the variable name with &amp;. It is also easy to add additional helper functions, if they are needed in the future.
 
 Code for rendering this output is also quite easy to understand:
 
@@ -81,9 +81,9 @@ It's easy to see the K/V hash could be easily loaded from the *.json file
 
 ## Summary
 
-This solution:
+Benefits of this solution:
 
-* will not change current workflow
-* will be easy to support
-* configuration for template values can be placed anywhere and can be passed in as a parameter to marketplace-kit (possibility of multiple configurations in development)
-* is easy to use from Partner Portal where upon clicking "Install" user would be asked to provide values for keys registered by module creator, who will be able to provide defaults
+* It will not change the current workflow.
+* It will be easy to support. 
+* The configuration for template values can be placed anywhere and can be passed in as a parameter to the Marketplace Kit (possibility of multiple configurations in development).
+* It is easy to use from the Partner Portal where upon clicking "Install", the user would be asked to provide values for keys registered by the module creator, who will be able to provide defaults. 
