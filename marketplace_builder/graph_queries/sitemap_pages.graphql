@@ -1,0 +1,18 @@
+query sitemap_pages($per_page: Int = 1000, $page: Int = 1) {
+  pages: admin_pages(
+    per_page: $per_page,
+    page: $page,
+    filter: {
+      metadata: {
+        has_key: "skip_sitemap"
+        exclude: true
+      }
+    }
+  ) {
+    total_entries
+    total_pages
+    results {
+      slug
+    }
+  }
+}
