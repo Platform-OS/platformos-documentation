@@ -10,13 +10,18 @@ export default class LayoutPO {
       contributorGuide: 'Contributor Guide'
     };
 
-    const mpkit = fs.readFileSync(path.join(path.resolve(process.cwd(), '.marketplace-kit')), 'utf8');
-    const config = JSON.parse(mpkit);
-    const stagingUrl = config.staging.url;
+    let stagingUrl = 'https://documentation-staging.staging.oregon.platform-os.com';
 
-    // env var doesnt work yet, but when we pass it to docker, it will be ready to rock
+    try {
+      const mpkit = fs.readFileSync(path.join(path.resolve(process.cwd(), '.marketplace-kit')), 'utf8');
+      const config = JSON.parse(mpkit);
+      stagingUrl = config.staging.url;
+    } catch (e) {}
+
+    console.log(`Running tests on ${stagingUrl}`);
+
     this.URL = {
-      staging: stagingUrl || 'https://documentation-staging.staging.oregon.platform-os.com'
+      staging: stagingUrl
     };
 
     this.Body = Selector('body');
