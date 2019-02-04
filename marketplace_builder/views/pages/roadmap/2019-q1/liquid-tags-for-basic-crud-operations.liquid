@@ -2,7 +2,7 @@
 converter: markdown
 metadata:
   title: Liquid tags for basic CRUD operations
-  description: This section describes simplification for executing basic CRUD operations
+  description: This section describes simplification for executing basic CRUD operations.
 slug: roadmap/2019-q1/liquid-tags-for-basic-crud-operations
 searchable: true
 ---
@@ -11,13 +11,13 @@ This section describes simplification for executing basic CRUD operations.
 
 ## Problem
 
-In order to update or create resources in a callback, one needs to duplicate work by not only writing GraphQL mutation, but also FormConfiguration. This makes the code verbose and error prone, as the same parameters needs to be configured in two different files. It should be possible to do simple Create, Read, Update, Delete [CRUD] operations without such overhead.
+In order to update or create resources in a callback, you need to duplicate work by not only writing a GraphQL mutation, but also a FormConfiguration. This makes the code verbose and error-prone, as the same parameters need to be configured in two different files. It should be possible to do simple Create, Read, Update, Delete [CRUD] operations without such overhead.
 
 ## Solution
 
 ## Create a new User/Customization
 
-It would be much easier to write in a callback something like:
+It would be much easier to write something like this in a callback:
 ```liquid
 {% raw %}
 {% parse_json car_properties %}
@@ -32,7 +32,7 @@ It would be much easier to write in a callback something like:
 ```
 ## Update one record
 
-Assuming we have just created `car`, like in the previous example, we could then update it like this:
+Assuming you have just created `car`, like in the previous example, you could then update it like this:
 ```liquid
 {% raw %}
 {% parse_json car_properties %}
@@ -57,7 +57,7 @@ Deletion seems to be quite simple:
 
 ## Increment/Decrement value
 
-This issue is currently unsolved. Let's say we want to create counter cache property. Currently it is necessary to write a GraphQL query to take total count of something and then write a GraphQL mutation to update the value. This is prone to various race condition issues, especially if done in async callback. It would be easier and reliable to be able to do it like this:
+This issue is currently unsolved. Let's say you want to create a counter cache property. Currently, it is necessary to write a GraphQL query to take the total count of something and then write a GraphQL mutation to update the value. This is prone to various race condition issues, especially if done in an async callback. It would be easier and more reliable to be able to do it like this:
 
 {% raw %}
 ```
@@ -69,15 +69,15 @@ This might not be the best name, suggestions are welcome.
 
 ## Update multiple records at once
 
-This is another issue which currently is solved in a non ideal way. I am not sure how to ideally solve this, but we can make great improvement if we allow to pass `ids` to `update` tag described above. We could get all ids of objects to be updated via GraphQL, and then would update a bunch of records the same way as one record.
+This is another issue which currently is solved in a non-ideal way. We are not yet sure how to ideally solve this, but we can improve this greatly, if we allow passing `ids` to `update` tag described above. We could get all ids of objects to be updated via GraphQL and then would update a bunch of records the same way as we do with one record.
 
 ## Fetch object(s)
 
-It would be a great shortcut for various scenarios if we could just write:
+It would be a great shortcut for various scenarios if you could just write:
 ```liquid
 {% raw %}
 {% fetch 'car', id: context.params.slug2, result_name: 'car' %}
 {% endraw %}
 ```
 
-This would be especially useful in, for example, email notifications. If one wanted anything more customized or nested data, then fallback to current way via GraphQL would be the way to go.
+This would be especially useful in, for example, email notifications. If you want more customized or nested data, then fallback to current way via GraphQL would be the way to go.
