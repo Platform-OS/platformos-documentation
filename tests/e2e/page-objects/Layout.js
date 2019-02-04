@@ -1,4 +1,6 @@
 import { Selector, t } from 'testcafe';
+import fs from 'fs';
+import path from 'path';
 
 export default class LayoutPO {
   constructor() {
@@ -8,10 +10,15 @@ export default class LayoutPO {
       contributorGuide: 'Contributor Guide'
     };
 
+    const mpkit = fs.readFileSync(path.join(path.resolve(process.cwd(), '.marketplace-kit')), 'utf8');
+    const config = JSON.parse(mpkit);
+    const stagingUrl = config.staging.url;
+
     // env var doesnt work yet, but when we pass it to docker, it will be ready to rock
     this.URL = {
-      staging: process.env.MP_URL || 'https://documentation-staging.staging.oregon.platform-os.com'
+      staging: stagingUrl || 'https://documentation-staging.staging.oregon.platform-os.com'
     };
+
     this.Body = Selector('body');
     this.Content = this.Body.find('section.content');
     this.Contributors = Selector('.contributors');
