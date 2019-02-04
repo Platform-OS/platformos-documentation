@@ -1,0 +1,6 @@
+{% assign page = context.params.page | default: 1 | plus: 0 %}
+{% if page <= 0 or page > 1000 %}
+  {% assign page = 1 %}
+{% endif %}
+{% assign per_page = context.params.per_page | default: per_page_default | default: 10 | plus: 0 %}
+

@@ -154,7 +154,7 @@ layout_name: application
 ```
 ```liquid
 {% raw %}
-{% query_graph 'get_listings', result_name: g, slug: params.slug2 %}
+{% query_graph 'get_listings', result_name: g, slug: context.params.slug2 %}
 {% assign product = g.listings.results.first %}
 
 <h1>{{ product.name }}</h1>
@@ -167,7 +167,7 @@ layout_name: application
 #### Notes
 
 * The page at `/product-list` passes the listing (product) slug to this page through the URL, which is formed as `/product-details/<listing_slug>`
-* Then we pass on the listing's slug to the GraphQL query (`slug: params.slug2`), to find the product details.
+* Then we pass on the listing's slug to the GraphQL query (`slug: context.params.slug2`), to find the product details.
 * This is the same GraphQL query that you used in the other page to retrieve all listings, but this time you call it with the listing slug to find just one listing.
 
 {% include 'shared/questions_section' %}

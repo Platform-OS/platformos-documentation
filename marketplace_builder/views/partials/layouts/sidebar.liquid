@@ -1,7 +1,7 @@
 <form action="/search" class="search-form mb-5 mb-md-0" method="get" role="search">
   <label>
     <span class="screen-reader-text hidden">Search for:</span>
-    <input type="search" title="Search for:" name="query" value="{{ params.query }}" placeholder="Search …" class="search__field">
+    <input type="search" title="Search for:" name="query" value="{{ context.params.query }}" placeholder="Search …" class="search__field">
   </label>
   <button type="submit" value="Search" class="search__btn">
     <span class="screen-reader-text">Search</span>
@@ -11,5 +11,5 @@
 
 {% include 'shared/nav-links' %}
 <ul class="metismenu sidebar-menu">
-  {% include 'shared/navigation', links: navLinks %}
+  {% include 'shared/navigation', links: context.exports.nav.navLinks %}
 </ul>

@@ -59,7 +59,7 @@ When building the product form you consider the following business rules:
 name: product_form
 resource: Customization
 redirect_to: |-
-  {%- if params.form.new_record -%}
+  {%- if context.params.form.new_record -%}
     /admin/product/{{ form.id }}
   {% else %}
     /admin/product/{{ form.id }}/edit
@@ -100,7 +100,7 @@ default_payload: >
   {% if form %}
     {
       "properties_attributes": {
-        "price": {{ params.properties_attributes.price | times: 100 | round: 0 }}
+        "price": {{ context.params.properties_attributes.price | times: 100 | round: 0 }}
       }
     }
   {% endif %}
@@ -207,7 +207,7 @@ This is a long form, see important sections described one by one here:
 ```liquid
 {% raw %}
 redirect_to: |-
-  {%- if params.form.new_record -%}
+  {%- if context.params.form.new_record -%}
     /admin/product/{{ form.id }}
   {% else %}
     /admin/product/{{ form.id }}/edit
@@ -307,7 +307,7 @@ default_payload: >
   {% if form %}
     {
       "properties_attributes": {
-        "price": {{ params.properties_attributes.price | times: 100 | round: 0 }}
+        "price": {{ context.params.properties_attributes.price | times: 100 | round: 0 }}
       }
     }
   {% endif %}
@@ -761,12 +761,12 @@ authorization_policies:
 
 {% include "common" %}
 
-{% if params.slug3 == "new" %}
+{% if context.params.slug3 == "new" %}
   {% include "admin/product/new" %}
-{% elsif params.slugs == "edit" %}
-  {% include "admin/product/edit", id: params.slug3 %}
+{% elsif context.params.slugs == "edit" %}
+  {% include "admin/product/edit", id: context.params.slug3 %}
 {% else %}
-  {% include "admin/product/show", id: params.slug3 %}
+  {% include "admin/product/show", id: context.params.slug3 %}
 {% endif %}
 {% endraw %}
 ```
@@ -784,10 +784,10 @@ name: admin_product_page
 redirect_to: /404
 ---
 {% comment %} New product form {% endcomment %}
-{% if params.slug3 == 'new' %}
+{% if context.params.slug3 == 'new' %}
   true
 {% comment %} Fetch product by id {% endcomment %}
-{% elsif params.slug3 != blank %}
+{% elsif context.params.slug3 != blank %}
   {% query_graph "get_products", id: context.params.slug3, result_name: "g" %}
   {% if g.customizations.results.first != blank %}
     true

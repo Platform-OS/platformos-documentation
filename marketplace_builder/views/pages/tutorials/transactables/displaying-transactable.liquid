@@ -35,7 +35,7 @@ Inject this code for example on the home page, which re-uses already created `cu
 
 {% if g.current_user.client_profile %}
 
-  {% assign page = params.page | default: 1 | plus: 0 %}
+  {% assign page = context.params.page | default: 1 | plus: 0 %}
   <a href="/client/projects/new">Create project</a>
 
   {% query_graph 'client_projects', result_name: 'g', creator_id: g.current_user.id, page: page %}
@@ -64,7 +64,7 @@ Inject this code for example on the home page, which re-uses already created `cu
 
 
 A common issue in Liquid are types. Most of the time Liquid converts everything to a string, so it is often necessary to do coercion. In this example, URL parameters are strings, and GraphQL expects the `page` variable to be an integer. To solve the problem,  add a `0`, which casts string to integer:
-{% raw %}`{% assign page = params.page | default: 1 | plus: 0 %}`{% endraw %}
+{% raw %}`{% assign page = context.params.page | default: 1 | plus: 0 %}`{% endraw %}
 
 ### Step 2: Create GraphQL query for client projects
 

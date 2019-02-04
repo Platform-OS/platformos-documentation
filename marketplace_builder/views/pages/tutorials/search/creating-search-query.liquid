@@ -55,7 +55,7 @@ Now pull out slug and name of the resulting Transactables into an unordered list
 ---
 slug: demo_search
 ---
-{% assign query = params.query | default: nil %}
+{% assign query = context.params.query | default: nil %}
 <form action="/demo_search" method="GET">
   {% query_graph 'demo_search_transactables',
     result_name: 'g',
