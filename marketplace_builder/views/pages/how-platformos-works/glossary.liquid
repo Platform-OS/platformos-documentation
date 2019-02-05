@@ -272,23 +272,6 @@ A special case of deploy is a deploy with a `--force` (or `-f`) flag. It means i
 
 Syncing to any environment means that marketplace-kit is watching your filesystem for changes. Whenever you change a file, it automatically picks it up and sends it to the server. If this operation fails, you will see a message in your console &ndash; we have some validations on the server side to prevent you from deploying corrupted code and breaking your marketplace.
 
-## Transactable
-
-Transactable is the core concept in our platform, it represents a resource around which any transaction is made. This model should be used to represent for example:
-
-* Product: If you want to build a marketplace matching people who want to sell or rent something with the ones who want to borrow or buy it, then the product is a Transactable.
-* Service: If you want to build a marketplace matching people who provide services with those who want to hire them, the services are Transactables. Technically speaking, the system does not really allow to hire people per se (Users or UserProfiles) &ndash; you’ll always need a Transactable object, even if it's invisible from the UI level.
-* Project: If you want to build a marketplace for users with a particular idea or task, who would like to get offers from experts, and then choose one expert, then they have to describe the task/job/project they want to have completed. This task/job/project is a Transactable.
-
-Learn more:
-
-* [Transactables](/tutorials/transactables/transactables)
-
-
-## Transactables, Transactable Type
-
-Transactable Types allow you to define Transactables in terms of what Properties, images, addresses and attachments they have per business rules.
-
 ## Translations
 
 Translations are yml files used for multilingual sites but also used to define date format, or flash messages.
