@@ -23,7 +23,7 @@ The available comparison operators are:
 
 * `==`, `!=`, `and` `<>`: equality and inequality (the latter two are synonyms)
 * `<`, `<=`, `>`, `>=`: less/greater-than
-* There's a secret special value `empty` (unquoted) that you can compare arrays to; the comparison is `true` if the array has no members.
+* There are also special values `empty` and `blank` (unquoted) that you can compare arrays to; the comparison is `true` if the array has no members.
 * contains: similar to Ruby's `include?` method, implemented on strings, arrays, and hashes. If the left argument is a string and the right isn't, it stringifies the right.
 
 ## Boolean operators
@@ -36,6 +36,8 @@ The available Boolean operators are:
 You can use the `and` and `or` operators to include more than one condition in a control flow tag. `and` and `or` can be chained together to create complex conditionals.
 
 If you use multiple `and` or `or` operators, note that `and` operators will be evaluated first, then `or` operators. You cannot use parentheses to simulate an order of operations and control the order of operator evaluation. Parentheses are invalid characters within Liquid tags and prevent your tags from working.
+
+{% include 'alert/important', content: 'Commonly used in other languages `&&` and `||` DO NOT work in liquid.' %}
 
 ### and
 
