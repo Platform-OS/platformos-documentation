@@ -1,0 +1,91 @@
+---
+converter: markdown
+slug: api-reference/liquid/whitespace-control
+searchable: true
+metadata:
+  title: API Reference - Whitespace control
+---
+
+In Liquid, you can include a hyphen in your tag syntax `{{ 'e3stLCAtfX0sIHslLSwgYW5kIC0lfQ==' | base64_decode }}` to strip whitespace from the left or right side of a rendered tag.
+
+Normally, even if it doesn’t output text, any line of Liquid in your template will still output a blank line in your rendered HTML:
+
+#### Input
+```liquid
+{% raw %}
+{% assign my_variable = "tomato" %}
+{{ my_variable }}
+{% endraw %}
+```
+
+Notice the blank line before “tomato” in the rendered template:
+
+#### Output
+
+<pre class="raw-output">
+
+tomato
+</pre>
+
+By including hyphens in your assign tag, you can strip the generated whitespace from the rendered template:
+
+#### Input
+
+```liquid
+{% raw %}
+{%- assign my_variable = "tomato" -%}
+{{ my_variable }}
+{% endraw %}
+```
+
+#### Output
+
+<pre class="raw-output">
+tomato
+</pre>
+
+If you don’t want any of your tags to output whitespace, as a general rule you can add hyphens to both sides of all your tags (`{{ 'eyUtIGFuZCAtJX0=' | base64_decode }}`):
+
+#### Input
+
+```liquid
+{% raw %}
+{% assign username = "John G. Chalmers-Smith" %}
+{% if username and username.size > 10 %}
+  Wow, {{ username }}, you have a long name!
+{% else %}
+  Hello there!
+{% endif %}
+{% endraw %}
+```
+
+#### Output without whitespace control
+
+
+<pre class="raw-output">
+
+
+  Wow, John G. Chalmers-Smith, you have a long name!
+
+</pre>
+
+#### Input
+
+```liquid
+{% raw %}
+{%- assign username = "John G. Chalmers-Smith" -%}
+{%- if username and username.size > 10 -%}
+  Wow, {{ username }}, you have a long name!
+{%- else -%}
+  Hello there!
+{%- endif -%}
+{% endraw %}
+```
+
+#### Output with whitespace control
+
+<pre class="raw-output">
+Wow, John G. Chalmers-Smith, you have a long name!
+</pre>
+
+{% include 'reference/liquid/resource-note-shopify' %}
