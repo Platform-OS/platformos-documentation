@@ -1,0 +1,17 @@
+---
+converter: markdown
+metadata:
+  title: Data import/export enhancements.
+  description: This section describes enhancements planned for data import / export.
+slug: roadmap/2019-q1/data-import-export-enhancements
+searchable: true
+---
+This section contains information about planned enhancements for data import / export.
+
+## Updating existing records
+
+Currently you should use export / import in case you want to either migrate the data from one instance to another (for example, data from staging to production or the other way around to debug). Every time you use import feature, new records will be created. We plan to extend this functionality to allow you to also update existing records instead of creating new ones.
+
+## Implementation
+
+We will work on improving our implementation to be able to handle more records in shorter time. We will also minimize the risk of encountering permission denied scenario while copying site from one stack to the other when moving custom attachments. Because we store them as a private files, the export function generates URL to physical file with a signature, which is valid for couple minutes.
