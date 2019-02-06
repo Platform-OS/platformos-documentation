@@ -22,7 +22,7 @@ Liquid allows for loops over collections iterate over arrays, hashes, and ranges
 
 ### Iterating over hash
 
-When iterating a hash, item[0] contains the key, and item[1] contains the value:
+When iterating a hash, `item[0]` contains the key, and `item[1]` contains the value:
 
 ```liquid
 {% raw %}
@@ -33,7 +33,7 @@ When iterating a hash, item[0] contains the key, and item[1] contains the value:
 ```
 
 Instead of looping over an existing collection, you can also loop through a range of numbers.
-Ranges look like (1..10) — parentheses containing a start value, two periods, and an end value.
+Ranges look like `(1..10)` — parentheses containing a start value, two periods, and an end value.
 The start and end values must be integers or expressions that resolve to integers.
 
 #### Input if item.quantity is 4
@@ -194,25 +194,24 @@ If you want to have total control over cycle groups, you can optionally specify 
 
 ```liquid
 {% raw %}
-{% cycle 'group 1': 'one', 'two', 'three' %}
-{% cycle 'group 1': 'one', 'two', 'three' %}
-{% cycle 'group 2': 'one', 'two', 'three' %}
-{% cycle 'group 2': 'one', 'two', 'three' %}
+{% cycle 'group 1': 'one', 'two', 'three', 'four' %}
+{% cycle 'group 1': 'one', 'two', 'three', 'four' %}
+{% cycle 'group 2': 'one', 'two', 'three', 'four' %}
+{% cycle 'group 2': 'one', 'two', 'three', 'four' %}
+{% cycle 'group 1': 'one', 'two', 'three', 'four' %}
+{% cycle 'group 1': 'one', 'two', 'three', 'four' %}
 {% endraw %}
 ```
 
 will result in
 
 ```liquid
-one
-two
-one
-two
+one two one two three four
 ```
 
 ## tablerow
 
-Generates rows for an HTML table. Must be wrapped in an opening <table> and closing </table> HTML tags. For a full list of attributes available within a `tablerowloop`, see [tablerow](/api-reference/liquid/objects#tablerowloop) (object).
+Generates rows for an HTML table. Must be wrapped in an opening <table> and closing </table> HTML tags. For a full list of attributes available within a `tablerow`, see [tablerowloop](/api-reference/liquid/objects#tablerowloop) object.
 
 #### Input
 ```liquid
@@ -229,24 +228,12 @@ Generates rows for an HTML table. Must be wrapped in an opening <table> and clos
 ```liquid
 <table>
   <tr class="row1">
-    <td class="col1">
-      Cool Shirt
-    </td>
-    <td class="col2">
-      Alien Poster
-    </td>
-    <td class="col3">
-      Batman Poster
-    </td>
-    <td class="col4">
-      Bullseye Shirt
-    </td>
-    <td class="col5">
-      Another Classic Vinyl
-    </td>
-    <td class="col6">
-      Awesome Jeans
-    </td>
+    <td class="col1">Cool Shirt</td>
+    <td class="col2">Alien Poster</td>
+    <td class="col3">Batman Poster</td>
+    <td class="col4">Bullseye Shirt</td>
+    <td class="col5">Another Classic Vinyl</td>
+    <td class="col6">Awesome Jeans</td>
   </tr>
 </table>
 ```
@@ -274,28 +261,16 @@ Defines how many columns the tables should have.
 ```liquid
 <table>
   <tr class="row1">
-    <td class="col1">
-      Cool Shirt
-    </td>
-    <td class="col2">
-      Alien Poster
-    </td>
+    <td class="col1">Cool Shirt</td>
+    <td class="col2">Alien Poster</td>
   </tr>
   <tr class="row2">
-    <td class="col1">
-      Batman Poster
-    </td>
-    <td class="col2">
-      Bullseye Shirt
-    </td>
+    <td class="col1">Batman Poster</td>
+    <td class="col2">Bullseye Shirt</td>
   </tr>
   <tr class="row3">
-    <td class="col1">
-      Another Classic Vinyl
-    </td>
-    <td class="col2">
-      Awesome Jeans
-    </td>
+    <td class="col1">Another Classic Vinyl</td>
+    <td class="col2">Awesome Jeans</td>
   </tr>
 </table>
 ```
@@ -343,4 +318,5 @@ Defines a range of numbers to loop through. The range can be defined by both lit
 </table>
 {% endraw %}
 ```
+
 {% include 'reference/liquid/resource-note-shopify' %}
