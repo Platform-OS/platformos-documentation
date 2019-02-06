@@ -1,0 +1,322 @@
+---
+converter: markdown
+slug: api-reference/liquid/loops
+searchable: true
+metadata:
+  title: API Reference - Liquid Loops
+---
+
+## for
+
+Liquid allows `for` loops over collections to iterate over arrays, hashes, and ranges of integers.
+
+### Iterating over an array
+
+```liquid
+{% raw %}
+{% for item in array %}
+  {{ item }}
+{% endfor %}
+{% endraw %}
+```
+
+### Iterating over a hash
+
+When iterating a hash, `item[0]` contains the key, and `item[1]` contains the value:
+
+```liquid
+{% raw %}
+{% for item in hash %}
+  {{ item[0] }}: {{ item[1] }}
+{% endfor %}
+{% endraw %}
+```
+
+Instead of looping over an existing collection, you can also loop through a range of numbers.
+Ranges look like `(1..10)` — parentheses containing a start value, two periods, and an end value.
+The start and end values must be integers or expressions that resolve to integers.
+
+#### Input if item.quantity is 4
+```liquid
+{% raw %}
+{% for i in (1..item.quantity) %}
+  {{ i }}
+{% endfor %}
+{% endraw %}
+```
+
+#### Output
+```liquid
+1,2,3,4
+```
+
+### Breaking and continuing
+You can exit a loop early with the following tags:
+
+* {% raw %}`{% continue %}`{% endraw %}: immediately end the current iteration, and continue the `for` loop with the next value.
+* {% raw %}`{% break %}`{% endraw %}: immediately end the current iteration, then completely end the `for` loop.
+Both of these are only useful when combined with something like an `if` statement.
+
+```liquid
+{% raw %}
+{% for page in pages %}
+
+{% comment %}
+  Skip anything in the hidden_pages array,
+  but keep looping over the rest of the values
+{% endcomment %}
+
+  {% if hidden_pages contains page.url %}
+    {% continue %}
+  {% endif %}
+
+{% comment %} If it's not hidden, print it. {% endcomment %}
+
+  * [page.title](page.url)
+{% endfor %}
+
+{% endraw %}
+```
+
+```liquid
+{% raw %}
+{% for page in pages %}
+  * [page.title](page.url)
+
+{% comment %}
+  After we reach the "cutoff" page,
+  stop the list and get on with whatever's after the "for" loop:
+{% endcomment %}
+
+  {% if cutoff_page == page.url %}
+    {% break %}
+  {% endif %}
+
+{% endfor %}
+{% endraw %}
+```
+
+### Helper variables
+
+During every `for` loop, the following helper variables are available for extra styling needs:
+
+| Variable | Description   |
+|----------------|-----------|
+| forloop.length | length of the entire for loop |
+| forloop.index | index of the current iteration |
+| forloop.index0 | index of the current iteration (zero-based) |
+| forloop.rindex | how many items are still left? |
+| forloop.rindex0  | how many items are still left? (zero-based) |
+| forloop.first | is this the first iteration? |
+| forloop.last | is this the last iteration? |
+
+See examples at the [Liquid Objects](/api-reference/liquid/objects#forloop) page.
+
+### Optional arguments
+There are several optional arguments to the `for` tag that can influence which items you receive in your loop and what order they appear in:
+
+* `limit:<INTEGER>` lets you restrict how many items you get.
+* `offset:<INTEGER>` lets you start the collection with the nth item.
+* `reversed` iterates over the collection from last to first.
+
+### Restricting elements
+
+#### array = [1,2,3,4,5,6]
+
+```liquid
+{% raw %}
+{% for item in array limit:2 offset:2 %}
+  {{ item }}
+{% endfor %}
+{% endraw %}
+```
+
+#### Output
+```liquid
+3,4
+```
+
+### Reversing the loop:
+
+```liquid
+{% raw %}
+{% for item in collection reversed %}
+  {{ item }}
+{% endfor %}
+{% endraw %}
+```
+
+## Handling an empty collection
+
+A `for` loop can take an optional `else` clause to display a block of text when there are no items in the collection:
+
+#### items => []
+
+```liquid
+{% raw %}
+{% for item in items %}
+  {{ item.title }}
+{% else %}
+  There are no items!
+{% endfor %}
+{% endraw %}
+```
+
+## cycle
+
+Loops through a group of strings and outputs them in the order that they were passed as parameters. Each time `cycle` is called, the next string that was passed as a parameter is output.
+
+`cycle` must be used within a `for` loop block.
+
+Often, you have to alternate between different colors or similar tasks. Liquid has built-in support for such operations, using the `cycle` tag.
+
+```liquid
+{% raw %}
+{% cycle 'one', 'two', 'three' %}
+{% cycle 'one', 'two', 'three' %}
+{% cycle 'one', 'two', 'three' %}
+{% cycle 'one', 'two', 'three' %}
+{% endraw %}
+```
+
+will result in
+
+```liquid
+one
+two
+three
+one
+```
+
+If no name is supplied for the `cycle` group, then it's assumed that multiple calls with the same parameters are one group.
+
+If you want to have total control over `cycle` groups, you can optionally specify the name of the group. This can even be a variable.
+
+```liquid
+{% raw %}
+{% cycle 'group 1': 'one', 'two', 'three', 'four' %}
+{% cycle 'group 1': 'one', 'two', 'three', 'four' %}
+{% cycle 'group 2': 'one', 'two', 'three', 'four' %}
+{% cycle 'group 2': 'one', 'two', 'three', 'four' %}
+{% cycle 'group 1': 'one', 'two', 'three', 'four' %}
+{% cycle 'group 1': 'one', 'two', 'three', 'four' %}
+{% endraw %}
+```
+
+will result in
+
+```liquid
+one two one two three four
+```
+
+## tablerow
+
+Generates rows for an HTML table. Must be wrapped in opening `<table>` and closing `</table>` HTML tags. For a full list of attributes available within a `tablerow`, see the [tablerowloop](/api-reference/liquid/objects#tablerowloop) object.
+
+#### Input
+```liquid
+{% raw %}
+<table>
+  {% tablerow product in collection.products %}
+    {{ product.title }}
+  {% endtablerow %}
+</table>
+{% endraw %}
+```
+
+#### Output
+```liquid
+<table>
+  <tr class="row1">
+    <td class="col1">Cool Shirt</td>
+    <td class="col2">Alien Poster</td>
+    <td class="col3">Batman Poster</td>
+    <td class="col4">Bullseye Shirt</td>
+    <td class="col5">Another Classic Vinyl</td>
+    <td class="col6">Awesome Jeans</td>
+  </tr>
+</table>
+```
+
+### tablerow tag parameters
+
+#### cols
+
+Defines how many columns the tables should have.
+
+##### Input
+
+```liquid
+{% raw %}
+<table>
+  {% tablerow product in collection.products cols:2 %}
+    {{ product.title }}
+  {% endtablerow %}
+</table>
+{% endraw %}
+```
+
+##### Output
+
+```liquid
+<table>
+  <tr class="row1">
+    <td class="col1">Cool Shirt</td>
+    <td class="col2">Alien Poster</td>
+  </tr>
+  <tr class="row2">
+    <td class="col1">Batman Poster</td>
+    <td class="col2">Bullseye Shirt</td>
+  </tr>
+  <tr class="row3">
+    <td class="col1">Another Classic Vinyl</td>
+    <td class="col2">Awesome Jeans</td>
+  </tr>
+</table>
+```
+### limit
+
+Exits the `tablerow` loop after a specific index.
+
+```liquid
+{% raw %}
+{% tablerow product in collection.products cols:2 limit:3 %}
+  {{ product.title }}
+{% endtablerow %}
+{% endraw %}
+```
+
+### offset
+
+Starts the `tablerow` loop at a specific index.
+
+```liquid
+{% raw %}
+{% tablerow product in collection.products cols:2 offset:3 %}
+  {{ product.title }}
+{% endtablerow %}
+{% endraw %}
+```
+
+### range
+
+Defines a range of numbers to loop through. The range can be defined by both literal and variable numbers.
+
+```liquid
+{% raw %}
+<table>
+  {% tablerow i in (3..5) %}
+    {{ i }}
+  {% endtablerow %}
+</table>
+
+{% assign num = 4 %}
+<table>
+  {% tablerow i in (1..num) %}
+    {{ i }}
+  {% endtablerow %}
+</table>
+{% endraw %}
+```
+
+{% include 'reference/liquid/resource-note-shopify' %}

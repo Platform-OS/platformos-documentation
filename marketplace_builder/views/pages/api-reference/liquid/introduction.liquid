@@ -1,0 +1,97 @@
+---
+converter: markdown
+slug: api-reference/liquid/introduction
+searchable: true
+metadata:
+  title: API Reference - Liquid Introduction
+---
+
+Liquid is a template language used in platformOS to build dynamic pages, and to provide dynamic configuration (e.g. based on currently logged in user).
+Use Liquid to provide an authorization policy for forms and pages, or to specify notifications (email, SMS, API call). We have added a lot of filters and tags to make your life easier.
+
+### Output
+
+Output markup (which may resolve to text) is surrounded by
+```liquid
+{% raw %}
+{{ matched pairs of curly brackets (ie, braces) }}
+{% endraw %}
+```
+
+#### Example
+
+```liquid
+{% raw %}
+{{ user.name }} => John
+{% endraw %}
+```
+
+### Tags
+
+Tag markup (which cannot resolve to text) is surrounded by
+
+```liquid
+{% raw %}
+{% matched pairs of curly brackets and percent signs %}
+{% endraw %}
+```
+
+#### Example
+
+```liquid
+{% raw %}
+{% if user %}
+  true
+{% endif %}
+{% endraw %}
+```
+
+## Filters
+
+Liquid filters are simple methods that modify the output of numbers, strings, variables, and objects.
+
+#### Simple use case
+
+```liquid
+{% raw %}
+{{ "honda crx" | upcase }} => HONDA CRX
+{% endraw %}
+```
+
+#### Arguments
+
+Some filters accept arguments, for example, the `replace` filter accepts two:
+
+```liquid
+{% raw %}
+{{ 'Hello liquid' | replace: 'liquid', 'world!' }} => Hello world!
+{% endraw %}
+```
+
+#### Chaining
+
+Having a verbose version of code that will:
+
+1. Create string with words
+2. Prepend "Zero," in front of the string
+3. Append ",Five" string at the end
+4. Split it by comma to create an array of strings
+5. Print it to the source
+
+```liquid
+{% raw %}
+{% assign numbers = 'One,Two,Three,Four' %}
+{% assign numbersWithZero = 'One,Two,Three,Four' | prepend: 'Zero,' %}
+{% assign all_numbers = numbersWithZero | append: ',Five' %}
+{% assign all_numbers_array = all_numbers | split: ',' %}
+{{ all_numbers_array }} => ZeroOneTwoThreeFourFive
+{% endraw %}
+```
+
+You can achieve the same result in much shorter form by chaining the filters one after another:
+
+```liquid
+{% raw %}
+{{ 'One,Two,Three,Four' | prepend: 'Zero,' | append: ',Five' | split: ',' }} => ZeroOneTwoThreeFourFive
+{% endraw %}
+```
