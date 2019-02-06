@@ -18,13 +18,13 @@ The condition of an if, elsif or unless tag should be either a normal Liquid exp
 Note that the comparison operators are implemented by the "if"-like tags; they don't work anywhere else in Liquid.
 
 ## Operators
+
 The available comparison operators are:
 
 * `==`, `!=`, `and` `<>` — equality and inequality (the latter two are synonyms)
-There's a secret special value empty (unquoted) that you can compare arrays to; the comparison is true if the array has no members.
 * `<`, `<=`, `>`, `>=` — less/greater-than
-* contains — a wrapper around Ruby's include? method, which is implemented on strings, arrays, and hashes. If the left argument is a string and the right isn't, it stringifies the right.
-
+* There's a secret special value `empty` (unquoted) that you can compare arrays to; the comparison is `true` if the array has no members.
+* contains — similar to Ruby `include?` method, implemented on strings, arrays, and hashes. If the left argument is a string and the right isn't, it stringifies the right.
 
 ## Boolean operators
 
@@ -52,6 +52,7 @@ The and operator lets you add additional conditions to a tag. A condition with a
 ```
 
 #### Output
+
 ```liquid
 {% raw %}
 You're buying a heavy item, and live in the same city as our store. Choose local pick-up as a shipping option to avoid paying high shipping costs.
@@ -149,6 +150,7 @@ Note that there is NO "not" operator. Also note that you CANNOT use parentheses 
 ```
 
 ## Case Statement
+
 If you need more conditions, you can use the case statement:
 
 ```liquid
@@ -164,7 +166,7 @@ If you need more conditions, you can use the case statement:
 {% endraw %}
 ```
 
-#### Example:
+#### Example
 
 ```liquid
 {% raw %}
