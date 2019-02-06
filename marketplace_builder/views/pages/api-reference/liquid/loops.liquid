@@ -3,14 +3,14 @@ converter: markdown
 slug: api-reference/liquid/loops
 searchable: true
 metadata:
-  title: API reference - Liquid Loops
+  title: API Reference - Liquid Loops
 ---
 
 ## for
 
-Liquid allows for loops over collections iterate over arrays, hashes, and ranges of integers.
+Liquid allows `for` loops over collections to iterate over arrays, hashes, and ranges of integers.
 
-### Iterating over array
+### Iterating over an array
 
 ```liquid
 {% raw %}
@@ -20,7 +20,7 @@ Liquid allows for loops over collections iterate over arrays, hashes, and ranges
 {% endraw %}
 ```
 
-### Iterating over hash
+### Iterating over a hash
 
 When iterating a hash, `item[0]` contains the key, and `item[1]` contains the value:
 
@@ -53,9 +53,9 @@ The start and end values must be integers or expressions that resolve to integer
 ### Breaking and continuing
 You can exit a loop early with the following tags:
 
-* {% raw %}`{% continue %}`{% endraw %} — immediately end the current iteration, and continue the "for" loop with the next value.
-* {% raw %}`{% break %}`{% endraw %} — immediately end the current iteration, then completely end the "for" loop.
-Both of these are only useful when combined with something like an "if" statement.
+* {% raw %}`{% continue %}`{% endraw %}: immediately end the current iteration, and continue the `for` loop with the next value.
+* {% raw %}`{% break %}`{% endraw %}: immediately end the current iteration, then completely end the `for` loop.
+Both of these are only useful when combined with something like an `if` statement.
 
 ```liquid
 {% raw %}
@@ -98,26 +98,26 @@ Both of these are only useful when combined with something like an "if" statemen
 
 ### Helper variables
 
-During every for loop, the following helper variables are available for extra styling needs:
+During every `for` loop, the following helper variables are available for extra styling needs:
 
 | Variable | Description   |
 |----------------|-----------|
 | forloop.length | length of the entire for loop |
 | forloop.index | index of the current iteration |
-| forloop.index0 | index of the current iteration (zero based) |
+| forloop.index0 | index of the current iteration (zero-based) |
 | forloop.rindex | how many items are still left? |
-| forloop.rindex0  | how many items are still left? (zero based) |
+| forloop.rindex0  | how many items are still left? (zero-based) |
 | forloop.first | is this the first iteration? |
 | forloop.last | is this the last iteration? |
 
-See examples at [Liquid Objects](/api-reference/liquid/objects#forloop) page.
+See examples at the [Liquid Objects](/api-reference/liquid/objects#forloop) page.
 
 ### Optional arguments
-There are several optional arguments to the for tag that can influence which items you receive in your loop and what order they appear in:
+There are several optional arguments to the `for` tag that can influence which items you receive in your loop and what order they appear in:
 
-* limit:<INTEGER> lets you restrict how many items you get.
-* offset:<INTEGER> lets you start the collection with the nth item.
-* reversed iterates over the collection from last to first.
+* `limit:<INTEGER>` lets you restrict how many items you get.
+* `offset:<INTEGER>` lets you start the collection with the nth item.
+* `reversed` iterates over the collection from last to first.
 
 ### Restricting elements
 
@@ -146,9 +146,9 @@ There are several optional arguments to the for tag that can influence which ite
 {% endraw %}
 ```
 
-## Handling empty collection
+## Handling an empty collection
 
-A for loop can take an optional else clause to display a block of text when there are no items in the collection:
+A `for` loop can take an optional `else` clause to display a block of text when there are no items in the collection:
 
 #### items => []
 
@@ -164,11 +164,11 @@ A for loop can take an optional else clause to display a block of text when ther
 
 ## cycle
 
-Loops through a group of strings and outputs them in the order that they were passed as parameters. Each time cycle is called, the next string that was passed as a parameter is output.
+Loops through a group of strings and outputs them in the order that they were passed as parameters. Each time `cycle` is called, the next string that was passed as a parameter is output.
 
-cycle must be used within a `for` loop block.
+`cycle` must be used within a `for` loop block.
 
-Often you have to alternate between different colors or similar tasks. Liquid has built-in support for such operations, using the cycle tag.
+Often, you have to alternate between different colors or similar tasks. Liquid has built-in support for such operations, using the `cycle` tag.
 
 ```liquid
 {% raw %}
@@ -188,9 +188,9 @@ three
 one
 ```
 
-If no name is supplied for the cycle group, then it's assumed that multiple calls with the same parameters are one group.
+If no name is supplied for the `cycle` group, then it's assumed that multiple calls with the same parameters are one group.
 
-If you want to have total control over cycle groups, you can optionally specify the name of the group. This can even be a variable.
+If you want to have total control over `cycle` groups, you can optionally specify the name of the group. This can even be a variable.
 
 ```liquid
 {% raw %}
@@ -211,7 +211,7 @@ one two one two three four
 
 ## tablerow
 
-Generates rows for an HTML table. Must be wrapped in an opening <table> and closing </table> HTML tags. For a full list of attributes available within a `tablerow`, see [tablerowloop](/api-reference/liquid/objects#tablerowloop) object.
+Generates rows for an HTML table. Must be wrapped in opening `<table>` and closing `</table>` HTML tags. For a full list of attributes available within a `tablerow`, see the [tablerowloop](/api-reference/liquid/objects#tablerowloop) object.
 
 #### Input
 ```liquid
@@ -276,7 +276,7 @@ Defines how many columns the tables should have.
 ```
 ### limit
 
-Exits the tablerow loop after a specific index.
+Exits the `tablerow` loop after a specific index.
 
 ```liquid
 {% raw %}
@@ -288,7 +288,7 @@ Exits the tablerow loop after a specific index.
 
 ### offset
 
-Starts the tablerow loop at a specific index.
+Starts the `tablerow` loop at a specific index.
 
 ```liquid
 {% raw %}
