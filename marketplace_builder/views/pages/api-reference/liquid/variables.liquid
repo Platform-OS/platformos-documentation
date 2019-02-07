@@ -6,7 +6,7 @@ metadata:
   title: 'API Reference - Tags: Variables'
 ---
 
-{% include 'alert/important', content: 'Variables (no matter how defined) in platformOS are local. This means that variable defined inside a partial are not available in page that includes it. To export variables from a partial read about [export tag](/api-reference/liquid/platformos-tags#export).' %}
+{% include 'alert/important', content: 'Variables (no matter how defined) in platformOS are local. This means that a variable defined inside a partial is not available in a page that includes it. To export variables from a partial read about the [export tag](/api-reference/liquid/platformos-tags#export).' %}
 
 ## assign
 
@@ -77,7 +77,7 @@ I am 35 and my favorite food is pizza.
 
 ## increment
 
-Creates a new number variable, and increases its value by 1 every time increment is called on the variable. The counter's initial value is 0.
+Creates a new number variable, and increases its value by 1 every time `increment` is called on the variable. The counter's initial value is 0.
 
 Here, an increment counter is used to create a unique numbered class for each list item:
 
@@ -105,10 +105,10 @@ Here, an increment counter is used to create a unique numbered class for each li
 </ul>
 ```
 
-Variables created using increment are separate from variables created using assign or capture.
+Variables created using `increment` are separate from variables created using `assign` or `capture`.
 
 In the example below, a variable named `my_number` is created using assign.
-The increment tag is then used several times on a variable with the same name. Note that the increment tag does not affect the value of `my_number` that was created through assign.
+The increment tag is then used several times on a variable with the same name. Note that the `increment` tag does not affect the value of `my_number` that was created through `assign`.
 
 #### Input
 
@@ -136,7 +136,7 @@ The increment tag is then used several times on a variable with the same name. N
 
 ## decrement
 
-Creates a new number variable, and decreases its value by 1 every time decrement is called on the variable. The counter's initial value is -1.
+Creates a new number variable, and decreases its value by 1 every time `decrement` is called on the variable. The counter's initial value is -1.
 
 #### Input
 ```liquid
