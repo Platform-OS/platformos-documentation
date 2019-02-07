@@ -95,3 +95,29 @@ You can achieve the same result in much shorter form by chaining the filters one
 {{ 'One,Two,Three,Four' | prepend: 'Zero,' | append: ',Five' | split: ',' }} => ZeroOneTwoThreeFourFive
 {% endraw %}
 ```
+
+### Raw
+
+If you want to use liquid text on your page but without executing it, use `{{ 'eyUgcmF3ICV9IC4uLiB7JSBlbmRyYXcgJX0=' | base64_decode }}` syntax.
+
+{% comment %} Dont ask... ^ ;) {% endcomment %}
+
+### Comment
+
+Allows you to leave un-rendered code inside a Liquid template. Any text within the opening and closing comment blocks will not be output, and any Liquid code within will not be executed.
+
+#### Input
+
+```liquid
+{% raw %}
+Anything you put between {% comment %} and {% endcomment %} tags
+is turned into a comment.
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+Anything you put between  tags
+is turned into a comment.
+```
