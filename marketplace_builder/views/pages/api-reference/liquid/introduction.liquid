@@ -9,7 +9,7 @@ metadata:
 Liquid is a template language used in platformOS to build dynamic pages, and to provide dynamic configuration (e.g. based on currently logged in user).
 Use Liquid to provide an authorization policy for forms and pages, or to specify notifications (email, SMS, API call). We have added a lot of filters and tags to make your life easier.
 
-### Output
+## Output
 
 Output markup (which may resolve to text) is surrounded by
 ```liquid
@@ -26,7 +26,7 @@ Output markup (which may resolve to text) is surrounded by
 {% endraw %}
 ```
 
-### Tags
+## Tags
 
 Tag markup (which cannot resolve to text) is surrounded by
 
@@ -50,7 +50,7 @@ Tag markup (which cannot resolve to text) is surrounded by
 
 Liquid filters are simple methods that modify the output of numbers, strings, variables, and objects.
 
-#### Simple use case
+### Simple use case
 
 ```liquid
 {% raw %}
@@ -58,7 +58,7 @@ Liquid filters are simple methods that modify the output of numbers, strings, va
 {% endraw %}
 ```
 
-#### Arguments
+### Arguments
 
 Some filters accept arguments, for example, the `replace` filter accepts two:
 
@@ -68,7 +68,7 @@ Some filters accept arguments, for example, the `replace` filter accepts two:
 {% endraw %}
 ```
 
-#### Chaining
+### Chaining
 
 Having a verbose version of code that will:
 
@@ -96,13 +96,13 @@ You can achieve the same result in much shorter form by chaining the filters one
 {% endraw %}
 ```
 
-### Raw
+## Raw
 
 If you want to use liquid text on your page but without executing it, use `{{ 'eyUgcmF3ICV9IC4uLiB7JSBlbmRyYXcgJX0=' | base64_decode }}` syntax.
 
 {% comment %} Dont ask... ^ ;) {% endcomment %}
 
-### Comment
+## Comment
 
 Allows you to leave un-rendered code inside a Liquid template. Any text within the opening and closing comment blocks will not be output, and any Liquid code within will not be executed.
 
