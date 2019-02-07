@@ -13,7 +13,7 @@ import(/* webpackChunkName: "vendor" */ 'ejs/ejs.min').then(ejs => {
 
     fetch(url)
       .then(res => res.json())
-      .then(items => ejs.render(template, { items }))
+      .then(items => ejs.render(template, { items })) // experiment with async: true
       .then(html => (container().innerHTML = html))
       .then(() => document.dispatchEvent(new CustomEvent('prism:reinitialize')))
       .then(() => document.dispatchEvent(new CustomEvent('deeplinks:reinitialize')))
