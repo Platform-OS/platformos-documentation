@@ -2,7 +2,7 @@
 converter: markdown
 metadata:
   title: Module Templates
-  description: This section describes module templates. 
+  description: This section describes module templates.
 slug: roadmap/2019-q1/module-templates
 searchable: true
 ---
@@ -33,11 +33,11 @@ A solution that is partially implemented uses the Marketplace Kit (Partner Porta
 
 The implementation uses mustache.js which is a lib with **logicless** templates for JavaScript. Some pros of this option:
 
-* The code is based on a descending parser and quite solid. 
-* Tags used can be configured (examples below use `(*|` and ` |*))`.
-* It handles error checking in the template format (missing/unmatched tags, etc.). 
-* It handles error checking in values provided for rendering. 
-* It has optional HTML escaping built in. 
+* The code is based on a descending parser and quite solid.
+* Tags used can be configured (examples below use `<%=` and `%>)`.
+* It handles error checking in the template format (missing/unmatched tags, etc.).
+* It handles error checking in values provided for rendering.
+* It has optional HTML escaping built in.
 
 ### Examples
 
@@ -45,12 +45,12 @@ Given a template like this:
 
 ```yaml
 ---
-slug: (*| &blog_root |*)
+slug: <%= &blog_root %>
 max_deep_level: 3
 layout_name: community
 authorization_policies:
   - modules/blog/blog_post_page
-metadata_title: (*| blog_title |*)
+metadata_title: <%= blog_title %>
 ---
 ```
 ```liquid
@@ -84,6 +84,6 @@ It's easy to see the K/V hash could be easily loaded from the *.json file
 Benefits of this solution:
 
 * It will not change the current workflow.
-* It will be easy to support. 
+* It will be easy to support.
 * The configuration for template values can be placed anywhere and can be passed in as a parameter to the Marketplace Kit (possibility of multiple configurations in development).
-* It is easy to use from the Partner Portal where upon clicking "Install", the user would be asked to provide values for keys registered by the module creator, who will be able to provide defaults. 
+* It is easy to use from the Partner Portal where upon clicking "Install", the user would be asked to provide values for keys registered by the module creator, who will be able to provide defaults.
