@@ -9,7 +9,7 @@ searchable: true
 
 Let's use the example to see exactly what is happening at each stage of Custom Model Type definition life cycle.
 
-## Step 1. Requirements
+## Step 1: Requirements
 
 I want to store my "todo list" in platformOS
 
@@ -21,14 +21,14 @@ I want to store my "todo list" in platformOS
 | Do the homework      | High     |
 
 
-## Step 2. Custom Model Type File
+## Step 2: Custom Model Type File
 Create definition file in your project repository that will describe my Custom Model Type:
 
 ```bash
   touch marketplace_builder/custom_model_types/todo.yml
 ```
 
-## Step 3. Definition of Custom Model Type
+## Step 3: Definition of Custom Model Type
 Using the editor of choice, add the definition of Custom Model Type.
 
 The code below is the description of properties that Customization will accept and the name of Custom Model Type object that is used to identify the object.
@@ -43,7 +43,7 @@ properties:
   type: string
 ```
 
-## Step 4. Sync/Deploy Custom Model Type definition.
+## Step 4: Sync/Deploy Custom Model Type definition.
 
 At the moment of deploy marketplace-kit is asking platformOS if Custom Model Type object with name `todo` already exists, if so it will be updated with given definition otherwise new object is created.
 
@@ -88,11 +88,11 @@ the result for that query depending on your instance state should be similar to:
 ```
 
 
-## Step 5. Customization Creation
+## Step 5: Customization Creation
 
 In [Building Contact Form With Customization tutorial](/tutorials/customizations/building-contact-form-with-customization) you will learn in details how to create Customizations.
 
-## Step 6. Custom Model Type change
+## Step 6: Custom Model Type change
 
   As you know by now Customizations and Custom Model Type objects are strictly related as the definition of properties allows for storing the data in platformOS backend systems.
   Once you have data persisted within Customization you need to be aware of how changes in CustomModelType affect your Customization objects:
@@ -112,7 +112,7 @@ In [Building Contact Form With Customization tutorial](/tutorials/customizations
   * **property edition** - is a valid change and is equal to the removal of property with old name and creation of new property, data is not migrated.
 
 
-## Step 7. Mutations
+## Step 7: Mutations
 
 What you have done in steps 2, 3 and 4 can be done with [admin_model_schema_create](/api-reference/graphql/g/mutation/admin_model_schema_create/) mutation.
 In your platformOS instance, the result would be exactly the same, but you can now create CMS system where the user can define their own models with a few clicks in the user interface.

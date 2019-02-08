@@ -16,8 +16,8 @@ test('Github contributors are not shown', async t => {
   await t.expect(Layout.Contributors.count).eql(0);
 });
 
-test('All 6 boxes are present', async t => {
-  await t.expect(Home.Boxes.count).eql(6);
+test('All 7 boxes are present', async t => {
+  await t.expect(Home.Boxes.count).eql(7);
 });
 
 test('Boxes have proper headers', async t => {

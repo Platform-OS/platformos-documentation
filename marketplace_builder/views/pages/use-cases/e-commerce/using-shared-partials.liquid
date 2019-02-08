@@ -34,7 +34,7 @@ Refactoring the views we’ve built so far is a five-step process:
 4. Create shared partials for form fields
 5. Update existing forms
 
-### Step 1. Create shared partial with current user data
+### Step 1: Create shared partial with current user data
 
 Some information is reused over and over in your application. When you’ve built the admin panel logic, you had to keep checking over and over again in different places if current user has admin access flag set to `true`. So far each time you needed to do that, you called the `current_user` query and checked the appropriate field value. Imagine though, that further down the road in the project, additional business logic is put in place, that changes this condition. You will have to go in, and update all of these places in code.
 
@@ -85,7 +85,7 @@ You will then have access to the `current_user.has_admin_access` variable. This 
 1. Every variable is defined explicitly. By generating / parsing JSON, you avoided creating a variable that magically appears in the parent template, leaving any future developers scratching their heads.
 2. You can extend the logic attached to the current user in one place, and make it available everywhere else.
 
-### Step 2. Rename `current_user` query
+### Step 2: Rename `current_user` query
 
 Rename query `marketplace_builder/graph_queries/user/current_user.liquid` to `marketplace_builder/graph_queries/user/get_current_user_data.liquid` and update the query name inside the file.
 
@@ -96,7 +96,7 @@ This variable is created every time, even if you do not use `for` or `with` keyw
 {% endcapture %}
 {% include 'alert/tip', content: content %}
 
-### Step 3. Update files fetching `current_user` data
+### Step 3: Update files fetching `current_user` data
 
 Make changes to the two files that had this logic before.
 
@@ -137,7 +137,7 @@ redirect_to: >
 {% endraw %}
 ```
 
-### Step 4. Create shared partials for form fields
+### Step 4: Create shared partials for form fields
 
 Another prime candidate for refactoring are form field inputs. Form components can be rendered using the `form_builder` variable, available inside of every form configuration html content section.
 
@@ -300,7 +300,7 @@ You should always reset values of all variables at the top of the partial. In ca
 
 3. Rendering: It’s recommended to split common components into their own separate partials. Whenever you want to make a change to either `label` or `error` elements, they will be used in all fields, so once more you do not have to repeat yourself.
 
-### Step 5. Update existing forms
+### Step 5: Update existing forms
 
 With partial in place you can now update your form `sign_in_form`:
 

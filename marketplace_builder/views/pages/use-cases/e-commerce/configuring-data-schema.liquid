@@ -42,7 +42,7 @@ Creating the data schema varies from one project to another. In this case it’s
 2. Configure user models
 3. Configure order models
 
-### Step 1. Configure product models
+### Step 1: Configure product models
 
 Every T-shirt in your store will be described by `product_type` and `brand`. Additionally every product may have one or more `photo`s attached. Finally, there are available variants of the product (in this case it’s T—shirt sizes). You will create `stock_level` that will hold information on the available amount of products in a specific variant (size).
 
@@ -125,7 +125,7 @@ properties:
     type: integer
 ```
 
-### Step 2. Configure user models
+### Step 2: Configure user models
 
 `User` is a built-in data type in platformOS. It has some predefined fields like `name` and `email`. You can extend `User` with additional Properties by using user profiles. The example below uses the `default` user profile to add a phone number field. You can [learn more about creating a user profile](/tutorials/users/creating-user-profile) in our documentation.
 
@@ -165,7 +165,7 @@ PlatformOS has a special field type called `CustomAddress`. It allows geolocatio
 {% endcapture %}
 {% include "alert/note", content: content %}
 
-### Step 3. Configure order models
+### Step 3: Configure order models
 
 Last part of your shop data schema is related to `order`s created by clients. Every order can have multiple products attached to it and a `shipping_option` selected during checkout. Order is finished with `payment`. You will store the history of all payments for a given order (usually it will be just one, but you would want to log every interaction with the payments API as a separate entry). Finally, you will store `order_history` describing any changes to order state (received, paid, shipped, etc.)
 
