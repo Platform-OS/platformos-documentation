@@ -7,7 +7,7 @@ slug: get-started/deploying-syncing-changes
 searchable: true
 ---
 
-This guide will help you deploy and sync changes you make in your codebase to your Instance. To demonstrate the process, you'll make a small change on your home page, and deploy it to your Instance. 
+This guide will help you deploy and sync changes you make in your codebase to your Instance. To demonstrate the process, you'll make a small change on your home page, and deploy it to your Instance.
 
 ## Requirements
 
@@ -21,13 +21,11 @@ In order to deploy and sync changes to your Instance, you will need an Instance 
 
 Deploying and syncing changes is a three-step process:
 
-1.  Change something in your codebase
-2.  Authenticate environments
-3.  Deploy or sync changes
+<div data-autosteps></div>
 
 ### Step 1: Change something in your codebase
 
-Locate the `home.liquid` file in your codebase (`marketplace_builder/views/pages/home.liquid`). 
+Locate the `home.liquid` file in your codebase (`marketplace_builder/views/pages/home.liquid`).
 
 ```liquid
 {% raw %}
@@ -53,7 +51,7 @@ layout_name: 1col
 {%- content_for 'pagetitle' -%}{{ name }}{%- endcontent_for -%}
 <h1>{{ name }}</h1>
 Hello, World!
-{% endraw %} 
+{% endraw %}
 ```
 
 Save your changes.
@@ -70,23 +68,23 @@ To add your environment to the config file, run the `env add` command, and authe
 marketplace-kit env add [environment] --email [your email] --url [your Instance URL]
 </code></pre>
 
-Example: 
+Example:
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
 marketplace-kit env add staging --email myemail@example.com --url https://example.com
 </code></pre>
 
-A message _"Environment [your Instance URL] as staging has been added successfully."_ is displayed. 
+A message _"Environment [your Instance URL] as staging has been added successfully."_ is displayed.
 
 ### Step 3: Deploy or sync changes
 
-To be able to see your changes on your site, you have to deploy those changes to your Instance. 
+To be able to see your changes on your site, you have to deploy those changes to your Instance.
 {% capture content %}
 This step describes three different methods. If this is your first go, we recommend to follow the process described in the "Deploying" section.
 {% endcapture %}
 {% include 'alert/note', content: content %}
- 
-#### Deploying 
+
+#### Deploying
 
 To deploy all changes, run the `deploy` command:
 
@@ -102,9 +100,9 @@ marketplace-kit deploy staging
 
 A progress indicator shows that the deployment is in progress, and once it finishes, a _"Deploy succeeded after <time>"_ is displayed.
 
-We recommend to first deploy to staging, test, and only then trigger a deployment to production. In practice, deploy creates a zip file that contains all your files, and sends it to the API. It is then processed in the background. We store each zip file, so that you can roll back in case something goes wrong. 
+We recommend to first deploy to staging, test, and only then trigger a deployment to production. In practice, deploy creates a zip file that contains all your files, and sends it to the API. It is then processed in the background. We store each zip file, so that you can roll back in case something goes wrong.
 {% capture content %}
-Learn more about our recommendations for version control and deployment on platformOS in the <a href="/how-platformos-works/platformos-workflow/development-workflow">Development Workflow</a> topic. 
+Learn more about our recommendations for version control and deployment on platformOS in the <a href="/how-platformos-works/platformos-workflow/development-workflow">Development Workflow</a> topic.
 {% endcapture %}
 {% include 'alert/tip', content: content %}
 
@@ -139,7 +137,7 @@ marketplace-kit deploy staging -f
 </code></pre>
 
 <br>
-After you have deployed your Instance, refresh your site in your browser. The home page has changed to include the text you added.  
+After you have deployed your Instance, refresh your site in your browser. The home page has changed to include the text you added.
 
 ## Next steps
 

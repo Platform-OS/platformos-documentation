@@ -2,7 +2,7 @@
 converter: markdown
 metadata:
   title: Creating a Dynamic Sitemap
-  description: This guide will help you create a dynamic /sitemap.xml page. 
+  description: This guide will help you create a dynamic /sitemap.xml page.
 slug: tutorials/seo/creating-dynamic-sitemap
 searchable: true
 ---
@@ -19,8 +19,7 @@ This is an advanced tutorial. To follow it, you should be familiar with basic pl
 
 Creating a dynamic sitemap.xml is a two-step process:
 
-1. Prepare GraphQL query
-2. Setup page
+<div data-autosteps></div>
 
 ### Step 1: Prepare GraphQL query
 
@@ -49,7 +48,7 @@ query sitemap_pages($per_page: Int = 1000, $page: Int = 1) {
 
 ### Step 2: Setup page
 
-Create `views/pages/sitemap.xml.liquid` page. Use the GraphQL query defined above to iterate dynamically over all pages. 
+Create `views/pages/sitemap.xml.liquid` page. Use the GraphQL query defined above to iterate dynamically over all pages.
 
 ```yaml
 ---
@@ -78,6 +77,6 @@ metadata:
 {% endraw %}
 ```
 
-Using this template, you can explicitly exclude any page from the sitemap.xml by including the `skip_sitemap` key to a `metatag` property of the page. You can also use `metatag` to configure any sitemap properties like changefreq and priority. Please note, that the example above already uses static caching for 1 hour - you might want to remove it for development. 
+Using this template, you can explicitly exclude any page from the sitemap.xml by including the `skip_sitemap` key to a `metatag` property of the page. You can also use `metatag` to configure any sitemap properties like changefreq and priority. Please note, that the example above already uses static caching for 1 hour - you might want to remove it for development.
 
 {% include 'shared/questions_section' %}
