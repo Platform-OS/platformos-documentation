@@ -16,9 +16,10 @@ In order to update or create resources in a callback, you need to duplicate work
 
 ## Solution
 
-## Create a new User/Customization
+### Create a new User/Customization
 
 It would be much easier to write something like this in a callback:
+
 ```liquid
 {% raw %}
 {% parse_json car_properties %}
@@ -31,9 +32,10 @@ It would be much easier to write something like this in a callback:
 {{ car.properties.production_year }} # => "2002"
 {% endraw %}
 ```
-## Update one record
+### Update one record
 
 Assuming you have just created `car`, like in the previous example, you could then update it like this:
+
 ```liquid
 {% raw %}
 {% parse_json car_properties %}
@@ -47,24 +49,25 @@ Assuming you have just created `car`, like in the previous example, you could th
 {% endraw %}
 ```
 
-## Delete
+### Delete
 
 Deletion seems to be quite simple:
+
 ```liquid
 {% raw %}
 {% delete 'car', id: car.id result_name: 'car' %}
 {% endraw %}
 ```
 
-## Increment/Decrement value
+### Increment/Decrement value
 
 This issue is currently unsolved. Let's say you want to create a counter cache property. Currently, it is necessary to write a GraphQL query to take the total count of something and then write a GraphQL mutation to update the value. This is prone to various race condition issues, especially if done in an async callback. It would be easier and more reliable to be able to do it like this:
 
+```liquid
 {% raw %}
-```
 {% update_number 'car', id: car.id, property: 'number_of_views', value: 1 %}
-```
 {% endraw %}
+```
 
 This might not be the best name, suggestions are welcome.
 
@@ -72,9 +75,10 @@ This might not be the best name, suggestions are welcome.
 
 This is another issue which currently is solved in a non-ideal way. We are not yet sure how to ideally solve this, but we can improve this greatly, if we allow passing `ids` to `update` tag described above. We could get all ids of objects to be updated via GraphQL and then would update a bunch of records the same way as we do with one record.
 
-## Fetch object(s)
+### Fetch object(s)
 
 It would be a great shortcut for various scenarios if you could just write:
+
 ```liquid
 {% raw %}
 {% fetch 'car', id: context.params.slug2, result_name: 'car' %}
