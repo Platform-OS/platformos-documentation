@@ -1,0 +1,20 @@
+---
+converter: markdown
+metadata:
+  title: Improve implementation of base GraphQL queries
+  description: This section describes the benefits of a new implementation of GraphQL queries.
+  skip_contribute_button: true
+slug: roadmap/2019-q1/improve-implementation-of-base-graphql-queries
+searchable: true
+---
+This section contains information about the benefits of a new implementation of GraphQL queries.
+
+## Problem
+
+Currently, some of the GraphQL queries like `customizations`, `people`, or `listings` are powered with data from a different data source than `transactables` and `users`. It means, that for most of the cases there is more than one way of receiving the data, and in some rare cases there might be some inconsistencies. Moreover, one of the data sources has some additional restrictions, which we need to respect - like you are not able to have a property with the same name but different type.
+
+## Solution
+
+What we are working on internally is to seamlessly update deep internals of our code. As the end result, without changing anything from the developer's perspective, we will start using one data source for all of the current GraphQL endpoints. This will allow also us to remove some extra unintuitive restrictions (we provide an example in the section above).
+
+This is the first step necessary to properly introduce a feature for very advanced users who would want to build very complex searches on our platform - [ElasticSearch Views](/roadmap/2019-q1/elastic-search-views).
