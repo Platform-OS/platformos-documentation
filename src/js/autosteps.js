@@ -1,12 +1,11 @@
 import { getHeadings, parseHeadings } from './helpers/headings';
-// import { stringToDOM } from './helpers/stringToDOM';
 
 const getContent = () => document.querySelector('[data-autosteps]');
 
 const generateSteps = headings => {
   return headings
     .map(h => {
-      return `<li class="heading-${h.type}">
+      return `<li>
         <a href="${h.href}" data-turbolinks="false">${h.text}</a>
       </li>`;
     })
@@ -27,8 +26,6 @@ const initialize = () => {
       ${stepsList}
     </ul>
   `;
-
-  // const stepsDOM = stringToDOM(stepsHtml);
 
   container.innerHTML = stepsHtml;
 };

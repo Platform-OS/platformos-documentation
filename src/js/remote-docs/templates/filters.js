@@ -1,4 +1,4 @@
-const returns = `<h4>Returns:</h4>
+const returns = `<h4>Returns</h4>
 <%_ item.returns.map(function(r) { _%>
   <p>
     <%_ if (r.types) { _%><%= JSON.parse(r.types) _%><%_ } _%>
@@ -6,7 +6,7 @@ const returns = `<h4>Returns:</h4>
   </p>
 <%_ }) _%>`;
 
-const params = `<h4>Params:</h4>
+const params = `<h4>Params</h4>
 <ul>
   <%_ item.params.map(function(p) { _%>
     <li>
@@ -16,7 +16,7 @@ const params = `<h4>Params:</h4>
   <%_ }) _%>
 </ul>`;
 
-const examples = `<h4>Examples:</h4>
+const examples = `<h4>Examples</h4>
 <%_ item.examples.map(function(e) { _%>
   <pre><code class="language-liquid line-numbers">
     <%= e %>

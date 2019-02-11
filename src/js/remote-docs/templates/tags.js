@@ -1,4 +1,4 @@
-const params = `<h4>Params:</h4>
+const params = `<h4>Params</h4>
 <ul>
   <%_ item.params.map(function(p) { _%>
     <li>
@@ -8,7 +8,7 @@ const params = `<h4>Params:</h4>
   <%_ }) _%>
 </ul>`;
 
-const examples = `<h4>Examples:</h4>
+const examples = `<h4>Examples</h4>
 <%_ item.examples.map(function(e) { _%>
   <pre><code class="language-liquid line-numbers">
     <%= e %>
