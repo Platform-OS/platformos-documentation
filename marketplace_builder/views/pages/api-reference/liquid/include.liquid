@@ -1,0 +1,204 @@
+---
+converter: markdown
+slug: api-reference/liquid/include
+searchable: true
+metadata:
+  title: 'API Reference - Tags: Include'
+---
+
+`Include` tag is what allows you to make your code more maintainable by including templates within other templates.
+
+Simplest example of include looks like this:
+
+#### views/pages/include.liquid
+
+```liquid
+{% raw %}
+---
+slug: include
+---
+{% include 'mypartial' %}
+<br/>
+{% include 'mypartial2' %}
+{% endraw %}
+```
+
+#### views/partials/mypartial.liquid
+
+```liquid
+This is first partial
+```
+
+#### views/partials/mypartial2.liquid
+
+```liquid
+This is second partial
+```
+
+This will become after expanding include:
+
+```liquid
+---
+slug: include
+---
+This is first partial
+<br/>
+This is second partial
+```
+
+You can include the same partial multiple times in multiple places for code reusability.
+
+## Local variable using `with`
+
+Liquid has troubles When you try to use variable that is named exactly the same as the partial.
+For example, for `product.liquid` file you would name variable `product`.
+To fix this issue, include has a method of dealing with that, at least when you pass data to the partial.
+
+Anything after `with` keyword will be assigned to a variable that is called the same as this partial.
+
+```liquid
+{% raw %}
+{% parse_json cars %}
+[{
+  "maker": "Honda",
+  "model": "CRX"
+}]
+{% endparse_json %}
+{% include 'product' with cars[0] %}
+{% endraw %}
+```
+
+Partial:
+
+```liquid
+{% raw %}
+{{ product }}
+{% endraw %}
+```
+
+This will create variable called `product` with hash inside of it.
+
+```json
+{"maker"=>"Honda", "model"=>"CRX"}
+```
+
+Properties of hash are accessible using `object["key"]` syntax, example:
+
+```liquid
+{% raw %}
+{{ product["maker"] }} => Honda
+{% endraw %}
+```
+
+## Iterating over collection using `for`
+
+
+```liquid
+{% raw %}
+{% parse_json cars %}
+[{
+  "maker": "Honda",
+  "model": "CRX"
+}, {
+  "maker": "Subaru",
+  "model": "Forester"
+}, {
+  "maker": "Lexus",
+  "model": "LFA"
+}]
+{% endparse_json %}
+
+{% include 'product' for cars %}
+{% endraw %}
+```
+
+This will iterate over the collection and render partial for each item and each iteration will have `product` variable populated with current item.
+
+Having partial that looks like that:
+
+#### views/partials/product.liquid
+
+```liquid
+{% raw %}
+{{ product }}
+{% endraw %}
+```
+
+Will render (whitespace has been changed for readability):
+
+```liquid
+{"maker"=>"Honda", "model"=>"CRX"}
+{"maker"=>"Subaru", "model"=>"Forester"}
+{"maker"=>"Lexus", "model"=>"LFA"}
+```
+
+## Private variables and exporting them
+
+Our Liquid implementation is 99% compatible with official one, but we couldn't ignore issue of only global variables in Liquid.
+
+In platformOS when you define a variable in partial, it is not visible by default in a page that is including that partial.
+
+It works from top to bottom though: If you define variable on a page and then include partial, it will be accessible in the partial.
+
+That means that given this partial:
+
+#### views/partials/variable.liquid
+
+```liquid
+{% raw %}
+{% assign myproduct = "Honda" %}
+{% endraw %}
+```
+
+And page using it:
+
+#### views/pages/include.liquid
+
+```liquid
+{% raw %}
+---
+slug: include
+---
+{% include 'variable' %}
+This is empty: {{ myproduct }}
+{% endraw %}
+```
+
+Will not return `Honda` in the page. `myproduct` variable can be accessed only inside `product` partial.
+
+To use variable defined inside partial outside of it, you need to use `[export](https://pawel-docs.staging.oregon.platform-os.com/api-reference/liquid/platformos-tags#export)` tag and `[context.exports](https://pawel-docs.staging.oregon.platform-os.com/tutorials/variables/context-variable#exposing-a-local-variable-within-the-context-object)`.
+
+#### views/partials/export.liquid
+
+```liquid
+{% capture honda %}
+{
+  "maker": "Honda",
+  "model": "CRX",
+  "year": "1991"
+}
+{% endcapture %}
+{% export honda, namespace: "cars" %}
+```
+
+#### views/pages/include.liquid
+
+```liquid
+{% raw %}
+---
+slug: include
+---
+{% include 'export' %}
+Car: {{ context.exports.cars.honda }}
+{% endraw %}
+```
+
+This should render string stored in the variable:
+
+```json
+Car: { "maker": "Honda", "model": "CRX", "year": "1991" }
+```
+
+### Live demo and source code
+
+You can find live demo of this page at our [examples pages](https://examplesplatform-os.com/include) and source code at [examples Github page](https://github.com/mdyd-dev/marketplace-nearme-example).
