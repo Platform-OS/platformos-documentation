@@ -72,7 +72,7 @@ Concatenates two strings and returns the concatenated value.
 {{ "hello" | append: ".html" }}
 ```
 
-append can also be used with variables:
+`append` can also be used with variables:
 
 #### Input
 
@@ -90,7 +90,7 @@ append can also be used with variables:
 {{ "website.com" | append: filename }}
 ```
 
-can be used with number, it will return a string:
+`append` can be used with a number, it will return a string:
 
 #### Input
 
@@ -188,7 +188,7 @@ Makes the first character of a string capitalized.
 {{ "title" | capitalize }}
 ```
 
-capitalize only capitalizes the first character of the string, so later words are not affected:
+`capitalize` only capitalizes the first character of the string, so later words are not affected:
 
 #### Input
 
@@ -350,7 +350,7 @@ Concatenates (joins together) multiple arrays. The resulting array contains all 
 - potatoes
 ```
 
-You can string together concat filters to join more than two arrays:
+You can string together `concat` filters to join more than two arrays:
 
 #### Input
 
@@ -382,7 +382,7 @@ You can string together concat filters to join more than two arrays:
 
 ## date
 
-Converts a timestamp into another date format. The format for this syntax is the same as strftime. The input uses the same format as Ruby’s `[Time.parse](https://apidock.com/ruby/Time/parse/class)`.
+Converts a timestamp into another date format. The format for this syntax is the same as `strftime`. The input uses the same format as Ruby’s `[Time.parse](https://apidock.com/ruby/Time/parse/class)`.
 
 #### Input
 
@@ -412,7 +412,7 @@ Fri, Jul 17, 15
 2015
 ```
 
-date works on strings if they contain well-formatted dates:
+`date` works on strings if they contain well-formatted dates:
 
 #### Input
 
@@ -484,7 +484,7 @@ In this example, `product_price` is defined, so the default value is not used.
 {{ product_price | default: 2.99 }}
 ```
 
-In this example, product_price is empty, so the default value is used.
+In this example, `product_price` is empty, so the default value is used.
 
 #### Input
 
@@ -574,9 +574,9 @@ Here it is a float:
 
 ### Changing variable types
 
-You might want to use a variable as a divisor, in which case you can’t simply add .0 to convert it to a float. In these cases, you can assign a version of your variable converted to a float using the times filter.
+You might want to use a variable as a divisor, in which case you can’t simply add .0 to convert it to a float. In these cases, you can assign a version of your variable converted to a float using the `times` filter.
 
-In this example, we’re dividing by a variable that contains an integer, so we get an integer:
+In this example, you’re dividing by a variable that contains an integer, so you get an integer:
 
 #### Input
 
@@ -594,7 +594,7 @@ In this example, we’re dividing by a variable that contains an integer, so we 
 {{ 20 | divided_by: my_integer }}
 ```
 
-Here, we multiply the variable by `1.0` to get a `float`, then divide by the `float` instead:
+Here, you multiply the variable by `1.0` to get a `float`, then divide by the `float` instead:
 
 #### Input
 
@@ -887,7 +887,7 @@ Removes all whitespaces (tabs, spaces, and newlines) from the beginning of a str
 
 Creates an array of values by extracting the values of a named property from another object.
 
-In this example, assume the object site.pages contains all the metadata for a website. Using assign with the map filter creates a variable that contains only the values of the category properties of everything in the site.pages object.
+In this example, assume the object `site.pages` contains all the metadata for a website. Using assign with the `map` filter creates a variable that contains only the values of the category properties of everything in the `site.pages` object.
 
 #### Input
 
@@ -1186,7 +1186,7 @@ Replaces only the first occurrence of the first argument in a string with the se
 
 ## reverse
 
-Reverses the order of the items in an array. reverse cannot reverse a string.
+Reverses the order of the items in an array. `reverse` cannot reverse a string.
 
 #### Input
 
@@ -1204,7 +1204,7 @@ Reverses the order of the items in an array. reverse cannot reverse a string.
 {{ my_array | reverse | join: ", " }}
 ```
 
-`reverse` cannot be used directly on a string, but you can split a string into an array, `reverse` the array, and rejoin it by chaining together filters:
+`reverse` cannot be used directly on a string, but you can split a string into an array, `reverse` the array and rejoin it by chaining together filters:
 
 #### Input
 
@@ -1286,7 +1286,7 @@ Removes all whitespace (tabs, spaces, and newlines) from the right side of a str
 
 ## size
 
-Returns the number of characters in a string or the number of items in an array. size can also be used with dot notation (for example, {{ my_string.size }}). This allows you to use size inside tags such as conditionals.
+Returns the number of characters in a string or the number of items in an array. `size` can also be used with dot notation (for example, {{ my_string.size }}). This allows you to use size inside tags such as conditionals.
 
 #### Input
 
@@ -1434,7 +1434,7 @@ Sorts items in an array by a property of an item in the array.
 
 ## split
 
-Divides an input string into an array using the argument as a separator. split is commonly used to convert comma-separated items from a string to an array.
+Divides an input string into an array using the argument as a separator. `split` is commonly used to convert comma-separated items from a string to an array.
 
 #### Input
 
@@ -1566,7 +1566,7 @@ Multiplies a number by another number.
 
 ## truncate
 
-truncate shortens a string down to the number of characters passed as a parameter. If the number of characters specified is less than the length of the string, an ellipsis (…) is appended to the string and is included in the character count.
+`truncate` shortens a string down to the number of characters passed as a parameter. If the number of characters specified is less than the length of the string, an ellipsis (…) is appended to the string and is included in the character count.
 
 #### Input
 
@@ -1584,10 +1584,10 @@ truncate shortens a string down to the number of characters passed as a paramete
 
 ### Custom ellipsis
 
-truncate takes an optional second parameter that specifies the sequence of characters to be appended to the truncated string. By default this is an ellipsis (…), but you can specify a different sequence.
+`truncate` takes an optional second parameter that specifies the sequence of characters to be appended to the truncated string. By default, this is an ellipsis (…), but you can specify a different sequence.
 
 The length of the second parameter counts against the number of characters specified by the first parameter.
-For example, if you want to truncate a string to exactly 10 characters, and use a 3-character ellipsis, use 13 for the first parameter of truncate, since the ellipsis counts as 3 characters.
+For example, if you want to truncate a string to exactly 10 characters, and use a 3-character ellipsis, use 13 for the first parameter of `truncate`, since the ellipsis counts as 3 characters.
 
 #### Input
 
@@ -1639,7 +1639,7 @@ Shortens a string down to the number of words passed as the argument. If the spe
 
 ### Custom ellipsis
 
-truncatewords takes an optional second parameter that specifies the sequence of characters to be appended to the truncated string. By default this is an ellipsis (…), but you can specify a different sequence.
+`truncatewords` takes an optional second parameter that specifies the sequence of characters to be appended to the truncated string. By default this is an ellipsis (…), but you can specify a different sequence.
 
 #### Input
 
@@ -1728,7 +1728,7 @@ Makes each character in a string uppercase. It has no effect on strings which ar
 
 ## url_decode
 
-Decodes a string that has been encoded as a URL or by url_encode.
+Decodes a string that has been encoded as a URL or by `url_encode`.
 
 #### Input
 
