@@ -20,3 +20,14 @@ test('Autosteps are generated and have link', async t => {
   await t.expect(await firstLink.textContent).eql(await firstStep.textContent);
   await t.expect(firstLinkId).eql(firstStepId);
 });
+
+test('Autosteps generate as many links as there are headings with steps', async t => {
+  await t.navigateTo('/get-started/setting-up-site');
+
+  const container = await Selector('[data-autosteps]');
+  const stepHeadings = await Selector('h3').filter(h => /^Step \d+:/.test(h.textContent));
+  const generatedLinks = await container.find('a');
+
+  await t.expect(await stepHeadings.count).eql(await generatedLinks.count);
+  await t.expect(await stepHeadings.count).eql(2);
+});
