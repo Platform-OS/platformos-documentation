@@ -168,7 +168,7 @@ Enables sync mode: it checks what's different between the server and the local e
 * [Deploying and Syncing Changes](/get-started/deploying-syncing-changes)
 
 #### modules
-Manage modules
+Manage modules.
 
 | Command   | Usage                   | Example                 |
 |---------  |-----------------------  |-----------------------  |
@@ -177,16 +177,15 @@ Manage modules
 
 ##### module templates
 
-Templates provide automatic processing which will allows easier configuration of modules. For example it is possible upon installing a module to specify URIs under which pages will be available after the module is installed.
-This work both in sync and deploy mode.
+Templates provide automatic processing for easier module configuration. For example, upon installing a module, it is possible to specify URIs under which pages will be available after the module has been installed. This works both in sync and deploy mode.
 
-Markup is very simple ERB styke: `<%=` `=%>` there is no logic supported, only available filter is `&` which will unescape the value provided by the user (by default they are all escaped).
+Markup is the commonly used ERB/EJS stye: `<%=` `=%>` there is no logic supported, the only available filter is `&` which will unescape the value provided by the user (by default they are all escaped).
 
-Values for variables have to be provided in toplevel `"template-values.json"` but the location of configuration file can be set using `TEMPLATE_VALUES_FILE_PATH` variable.
+Values for variables have to be provided in the top-level `"template-values.json"`, but the location of the configuration file can be set using the `TEMPLATE_VALUES_FILE_PATH` variable.
 
 **Example**
 
-Having a page with this code:
+A page with this code:
 
 ```
 ---
@@ -207,7 +206,7 @@ And a `template-values.json`
 
 ```
 
-During deploy/sync this will get turned into:
+will turn into this during deploy/sync:
 
 ```
 ---
