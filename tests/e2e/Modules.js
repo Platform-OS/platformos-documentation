@@ -6,7 +6,7 @@ const Layout = new LayoutPO();
 
 fixture('Modules').page(`${Layout.URL.staging}`);
 
-test.only('Autosteps are generated and have link', async t => {
+test('Autosteps are generated and have link', async t => {
   await t.navigateTo('/get-started/setting-up-site');
 
   const container = await Selector('[data-autosteps]');
