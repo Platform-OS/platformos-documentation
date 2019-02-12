@@ -13,9 +13,10 @@ const generateTOCList = headings => {
 };
 
 const initialize = () => {
+  const container = getContainer();
   const headings = getHeadings();
-  if (!headings) {
-    return false;
+  if (!container || headings.length < 2) {
+    return;
   }
 
   const tocHTML = generateTOCList(parseHeadings(headings));

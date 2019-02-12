@@ -1,6 +1,6 @@
 import { getHeadings, parseHeadings } from './helpers/headings';
 
-const getContent = () => document.querySelector('[data-autosteps]');
+const getContainer = () => document.querySelector('[data-autosteps]');
 
 const generateSteps = headings => {
   return headings
@@ -13,11 +13,11 @@ const generateSteps = headings => {
 };
 
 const initialize = () => {
-  const container = getContent();
+  const container = getContainer();
   const stepsHeadings = getHeadings().filter(heading => /^Step \d+:/.test(heading.textContent));
 
-  if (!stepsHeadings || !container) {
-    return false;
+  if (!container || stepsHeadings.length < 2) {
+    return;
   }
 
   const stepsList = generateSteps(parseHeadings(stepsHeadings));
