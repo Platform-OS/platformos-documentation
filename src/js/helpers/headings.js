@@ -1,5 +1,3 @@
-const getHeadings = () => [...document.querySelectorAll('.content h2[id]')] || [];
-
 const parseHeadings = headings => {
   return headings.map(heading => {
     return {
@@ -9,4 +7,4 @@ const parseHeadings = headings => {
   });
 };
 
-export { getHeadings, parseHeadings };
+export { parseHeadings };
