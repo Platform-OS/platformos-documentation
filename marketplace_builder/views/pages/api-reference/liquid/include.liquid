@@ -92,7 +92,6 @@ Properties of hash are accessible using `object["key"]` syntax, example:
 
 ## Iterating over collection using `for`
 
-
 ```liquid
 {% raw %}
 {% parse_json cars %}
@@ -146,7 +145,7 @@ That means that given this partial:
 
 ```liquid
 {% raw %}
-{% assign myproduct = "Honda" %}
+{% assign my_car = "Honda" %}
 {% endraw %}
 ```
 
@@ -160,25 +159,25 @@ And page using it:
 slug: include
 ---
 {% include 'variable' %}
-This is empty: {{ myproduct }}
+This is empty: {{ my_car }}
 {% endraw %}
 ```
 
-Will not return `Honda` in the page. `myproduct` variable can be accessed only inside `product` partial.
+Will not return `Honda` in the page. `my_car` variable can be accessed only inside `variable` partial.
 
-To use variable defined inside partial outside of it, you need to use `[export](https://pawel-docs.staging.oregon.platform-os.com/api-reference/liquid/platformos-tags#export)` tag and `[context.exports](https://pawel-docs.staging.oregon.platform-os.com/tutorials/variables/context-variable#exposing-a-local-variable-within-the-context-object)`.
+To use variable defined inside partial outside of it, you need to use `[export](/api-reference/liquid/platformos-tags#export)` tag and `[context.exports](/tutorials/variables/context-variable#exposing-a-local-variable-within-the-context-object)`.
 
 #### views/partials/export.liquid
 
 ```liquid
-{% capture honda %}
+{% parse_json honda %}
 {
   "maker": "Honda",
   "model": "CRX",
   "year": "1991"
 }
-{% endcapture %}
-{% export honda, namespace: "cars" %}
+{% endparse_json %}
+{% export honda, namespace: "my_car" %}
 ```
 
 #### views/pages/include.liquid
@@ -189,16 +188,16 @@ To use variable defined inside partial outside of it, you need to use `[export](
 slug: include
 ---
 {% include 'export' %}
-Car: {{ context.exports.cars.honda }}
+Car: {{ context.exports.my_car }}
 {% endraw %}
 ```
 
 This should render string stored in the variable:
 
 ```json
-Car: { "maker": "Honda", "model": "CRX", "year": "1991" }
+Car: {"honda"=>{"maker"=>"Honda", "model"=>"CRX", "year"=>"1991"}}
 ```
 
 ### Live demo and source code
 
-You can find live demo of this page at our [examples pages](https://examplesplatform-os.com/include) and source code at [examples Github page](https://github.com/mdyd-dev/marketplace-nearme-example).
+You can find live demo of this page at our [examples pages](https://examples.platform-os.com/include) and source code at [examples Github page](https://github.com/mdyd-dev/marketplace-nearme-example/tree/master/modules/include).
