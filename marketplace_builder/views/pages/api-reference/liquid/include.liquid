@@ -6,9 +6,9 @@ metadata:
   title: 'API Reference - Tags: Include'
 ---
 
-`Include` tag is what allows you to make your code more maintainable by including templates within other templates.
+The `include` tag allows you to make your code more maintainable by including templates within other templates.
 
-Simplest example of include looks like this:
+The simplest example of `include` looks like this:
 
 #### views/pages/include.liquid
 
@@ -35,7 +35,7 @@ This is first partial
 This is second partial
 ```
 
-This will become after expanding include:
+After expanding `include`, it becomes:
 
 ```liquid
 ---
@@ -46,15 +46,15 @@ This is first partial
 This is second partial
 ```
 
-You can include the same partial multiple times in multiple places for code reusability.
+You can include the same partial multiple times in multiple places for code reuse.
 
 ## Local variable using `with`
 
-Liquid has troubles When you try to use variable that is named exactly the same as the partial.
-For example, for `product.liquid` file you would name variable `product`.
-To fix this issue, include has a method of dealing with that, at least when you pass data to the partial.
+Liquid has some issues when you try to use a variable that is named exactly the same as the partial.
+For example, for the `product.liquid` file, you would name the variable `product`.
+`include` has a method to deal with this issue, at least when you pass data to the partial. 
 
-Anything after `with` keyword will be assigned to a variable that is called the same as this partial.
+Anything after the `with` keyword will be assigned to a variable that is called the same as this partial. 
 
 ```liquid
 {% raw %}
@@ -76,13 +76,13 @@ Partial:
 {% endraw %}
 ```
 
-This will create variable called `product` with hash inside of it.
+This will create the variable called `product` with hash inside of it.
 
 ```json
 {"maker"=>"Honda", "model"=>"CRX"}
 ```
 
-Properties of hash are accessible using `object["key"]` syntax, example:
+The properties of hash are accessible using the `object["key"]` syntax, for example:
 
 ```liquid
 {% raw %}
@@ -90,7 +90,7 @@ Properties of hash are accessible using `object["key"]` syntax, example:
 {% endraw %}
 ```
 
-## Iterating over collection using `for`
+## Iterating over a collection using `for`
 
 ```liquid
 {% raw %}
@@ -111,9 +111,9 @@ Properties of hash are accessible using `object["key"]` syntax, example:
 {% endraw %}
 ```
 
-This will iterate over the collection and render partial for each item and each iteration will have `product` variable populated with current item.
+This will iterate over the collection and render the partial for each item. Each iteration will have the `product` variable populated with the current item.
 
-Having partial that looks like that:
+Having a partial that looks like this:
 
 #### views/partials/product.liquid
 
@@ -133,11 +133,11 @@ Will render (whitespace has been changed for readability):
 
 ## Private variables and exporting them
 
-Our Liquid implementation is 99% compatible with official one, but we couldn't ignore issue of only global variables in Liquid.
+Our Liquid implementation is 99% compatible with the official one, but we couldn't ignore the issue that you can only use global variables in Liquid.
 
-In platformOS when you define a variable in partial, it is not visible by default in a page that is including that partial.
+In platformOS, when you define a variable in a partial, it is not visible by default in a page that is including that partial.
 
-It works from top to bottom though: If you define variable on a page and then include partial, it will be accessible in the partial.
+It works from top to bottom though: If you define a variable on a page and then include it in a partial, it will be accessible in the partial.
 
 That means that given this partial:
 
@@ -149,7 +149,7 @@ That means that given this partial:
 {% endraw %}
 ```
 
-And page using it:
+And this page using it:
 
 #### views/pages/include.liquid
 
@@ -163,9 +163,9 @@ This is empty: {{ my_car }}
 {% endraw %}
 ```
 
-Will not return `Honda` in the page. `my_car` variable can be accessed only inside `variable` partial.
+Will not return `Honda` in the page. The `my_car` variable can be accessed only inside the `variable` partial.
 
-To use variable defined inside partial outside of it, you need to use `[export](/api-reference/liquid/platformos-tags#export)` tag and `[context.exports](/tutorials/variables/context-variable#exposing-a-local-variable-within-the-context-object)`.
+To use a variable that has been defined inside a partial, outside of it, you need to use the `[export](/api-reference/liquid/platformos-tags#export)` tag and `[context.exports](/tutorials/variables/context-variable#exposing-a-local-variable-within-the-context-object)`.
 
 #### views/partials/export.liquid
 
@@ -192,7 +192,7 @@ Car: {{ context.exports.my_car }}
 {% endraw %}
 ```
 
-This should render string stored in the variable:
+This should render the string stored in the variable:
 
 ```json
 Car: {"honda"=>{"maker"=>"Honda", "model"=>"CRX", "year"=>"1991"}}
@@ -200,4 +200,4 @@ Car: {"honda"=>{"maker"=>"Honda", "model"=>"CRX", "year"=>"1991"}}
 
 ### Live demo and source code
 
-You can find live demo of this page at our [examples pages](https://examples.platform-os.com/include) and source code at [examples Github page](https://github.com/mdyd-dev/marketplace-nearme-example/tree/master/modules/include).
+You can find a live demo of this page among our [example pages](https://examples.platform-os.com/include), and source code at the [examples GitHub page](https://github.com/mdyd-dev/marketplace-nearme-example/tree/master/modules/include).
