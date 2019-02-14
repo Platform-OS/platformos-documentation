@@ -68,7 +68,7 @@ Include the AMP dependencies in the layout file `marketplace_builder/views/layou
 #### Notes
 * The data source for `<amp-list>` is `products.json`.
 * `amp-mustache` enables the 'mustache' (double curly braces) templating syntax.
-* The `{{ "{% raw" }} %}` tag instructs the liquid preprocessor not to interpret the liquid tags, and leaves them to AMP/mustache to process.
+* The `{{ "{% raw" }} %}` tag instructs the liquid preprocessor not to interpret the liquid tags and leaves them to AMP/mustache to process.
 
 
 ### Step 2: Create JSON endpoint
@@ -174,7 +174,7 @@ layout_name: application
 #### Notes
 
 * The page at `/product-list` passes the product slug to this page through the URL, which is formed as `/product-details/<listing_slug>`
-* Then we pass on the product's slug to the GraphQL query (`slug: params.slug2`), to find the product details.
-* This is the same GraphQL query that you used in the other page to retrieve all products, but this time you call it with the product slug to find just one product.
+* Then you pass on the product's slug to the GraphQL query (`slug: params.slug2`), to find the product details.
+* This is the same GraphQL query that you used on the other page to retrieve all products, but this time you call it with the product slug to find just one product.
 
 {% include 'shared/questions_section' %}
