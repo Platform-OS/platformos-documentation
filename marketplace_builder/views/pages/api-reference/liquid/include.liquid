@@ -165,11 +165,12 @@ This is empty: {{ my_car }}
 
 Will not return `Honda` in the page. The `my_car` variable can be accessed only inside the `variable` partial.
 
-To use a variable that has been defined inside a partial, outside of it, you need to use the `[export](/api-reference/liquid/platformos-tags#export)` tag and `[context.exports](/tutorials/variables/context-variable#exposing-a-local-variable-within-the-context-object)`.
+To use a variable that has been defined inside a partial, outside of it, you need to use the [export](/api-reference/liquid/platformos-tags#export) tag and [context.exports](/tutorials/variables/context-variable#exposing-a-local-variable-within-the-context-object).
 
 #### views/partials/export.liquid
 
 ```liquid
+{% raw %}
 {% parse_json honda %}
 {
   "maker": "Honda",
@@ -178,6 +179,7 @@ To use a variable that has been defined inside a partial, outside of it, you nee
 }
 {% endparse_json %}
 {% export honda, namespace: "my_car" %}
+{% endraw %}
 ```
 
 #### views/pages/include.liquid
