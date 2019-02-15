@@ -14,8 +14,7 @@ Data to be imported needs to be in JSON format:
 ```json
 {
   "users": [...],
-  "models": [...],
-  "transactables": [...]
+  "models": [...]
 }
 ```
 
@@ -47,13 +46,12 @@ Under the hood, the CLI uses the GraphQL import API that's described in the next
 
 ### Input format
 
-The required data format is a JSON file with users, models, and Transactable keys that have an array of maps. Each of those collections needs to be in the same format as a corresponding GraphQL mutation. Under the hood import is just a set of mutations: `import_users()`, `import_models()`, `import_transactables()`. When importing data using the CLI, the file should contain data in a format that matches the following structure:
+The required data format is a JSON file with users, models keys that have an array of maps. Each of those collections needs to be in the same format as a corresponding GraphQL mutation. Under the hood import is just a set of mutations: `import_users()`, `import_models()`. When importing data using the CLI, the file should contain data in a format that matches the following structure:
 
 ```json
 {
   "users": [<UserImport],
   "models": [<CustomizationImport>],
-  "transactables": [<TransactableImport>]
 }
 ```
 
@@ -69,16 +67,14 @@ marketplace-kit data import --path=data.json staging-instance
 
 It is possible to import data using GraphQL mutations. This gives you more flexibility, and even allows you to create your own import tool as a website feature. Please remember to handle authentication properly.
 
-There are three main mutations for importing [import_users](), [import_models]() and [import_transactables](). You can create a page that will import sent data.
+There are three main mutations for importing [import_users](), [import_models](). You can create a page that will import sent data.
 
 ```graphql
 mutation import_data(
     $users: [UserImport!]!,
-    $transactables: [TransactableImport!]!,
     $models: [CustomizationImport!]!
   ) {
   import_users(users: $users) { ids }
-  import_transactables(transactables: $transactables) { ids }
   import_models(models: $models) { ids }
 }
 ```
@@ -92,7 +88,6 @@ method: post
 ---
 {% execute_query "import_data",
   users: context.params.users,
-  transactables: context.params.transactables,
   models: context.params.models
 %}
 
