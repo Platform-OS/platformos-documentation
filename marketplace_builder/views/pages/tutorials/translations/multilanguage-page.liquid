@@ -2,24 +2,24 @@
 converter: markdown
 metadata:
   title: Translations
-  description: Example usage of translations to create multilanguage page.
+  description: Example usage of translations to create multi-language pages.
 slug: tutorials/translations/multilanguage-page
 searchable: true
 ---
 
 ## Defaults
 
-English is a default language.
+English is the default language.
 
-If there is `language` query param in the url it will respect its value. For example `/contact?language=de`.
+If there is a `language` query param in the URL, it will respect its value. For example `/contact?language=de`.
 
-Language can also be set in [`context.session`](/tutorials/variables/context-variable#context-session).
+The language can also be set in [`context.session`](/tutorials/variables/context-variable#context-session).
 
 ## Simple usage
 
-To be able use `translations` feature there has to be at least one translation file present.
+To be able to use the `translations` feature, there has to be at least one translation file present.
 
-In this example we will use page, translation key in two languages to demonstrate the mechanism.
+In this example, we will use the page translation key in two languages to demonstrate the mechanism.
 
 ```liquid
 {% raw %}
@@ -35,7 +35,7 @@ slug: multilanguage
 ```yaml
 en:
   general:
-    greeting: Hello world!
+    greeting: Hello, World!
 ```
 
 #### translations/pl.yml
@@ -46,15 +46,15 @@ pl:
     greeting: Witaj świecie!
 ```
 
-Having those two files enables us to use [`t`](/api-reference/liquid/platformos-filters#t) filter. `t` stands for `translate` and you can use both.
+Having these two files enables you to use the [`t`](/api-reference/liquid/platformos-filters#t) filter. `t` stands for `translate`, and you can use both.
 
-For example opening `/multilanguage` will default to English. Opening `/multilanguage?language=pl` will try to use Polish and fallback to English for keys that hasn't been found.
+For example, opening `/multilanguage` will default to English. Opening `/multilanguage?language=pl` will try to use Polish and fall back to English for keys that haven't been found.
 
 
 #### /multilanguage
 
 ```liquid
-Hello world!
+Hello, World!
 ```
 
 #### /multilanguage?language=pl
@@ -65,11 +65,11 @@ Witaj świecie!
 
 ## Arrays
 
-Inside YAML it is possible to include any data structure that is possible in JSON, including arrays.
+Inside YAML, it is possible to include any data structure that is usable in JSON, including arrays.
 
 See [json2yaml](https://www.json2yaml.com/) to see how YAML will convert to JSON or vice-versa if you feel more comfortable in JSON.
 
-You can use this feature along side other filters to store collections in a readable form.
+You can use this feature alongside other filters to store collections in a readable form.
 
 #### translations/en.yml
 
@@ -129,9 +129,9 @@ jp:
 
 ## Parameterization (variables)
 
-Sometimes there's need to keep whole sentence in a translation and some of the content should be parameterized.
+Sometimes you'll need to translate parts of a sentence, but keep others (e.g. names). In these cases, some of the content should be parameterized.
 
-Translate filter accepts named arguments and `%{variable}` syntax is available in translations keys.
+The translate filter accepts named arguments and `%{variable}` syntax is available in translations keys.
 
 #### translations/en.yml
 
@@ -174,7 +174,7 @@ Czesc Pawel. Zerknij na moja strone www: https://platform-os.com
 
 ### Live example and source code
 
-Compilation of all examples above
+Compilation of all examples above:
 
 * [No language set](https://examples.platform-os.com/multilanguage?name=John)
 * [English language](https://examples.platform-os.com/multilanguage?language=en&name=John&url=https://documentation.platform-os.com)
