@@ -1,0 +1,122 @@
+---
+converter: markdown
+metadata:
+  title: Translating system messages
+  description: Learn how to internationalize form errors, authorization policies and other system messages.
+slug: tutorials/translations/translating-system-messages
+searchable: true
+---
+
+## Form validation messages
+
+You can provide messages that will be applied to different validation errors in different languages.
+
+There are special variables available to use inside translation keys to make your messages look more complete.
+
+#### Always available
+
+* model - resource name, f.e. `car`
+* attribute - attribute name, f.e. `maker`
+* value - value of attribute provided by user, which failed validation, f.e. `h000nda`
+
+#### Contextual
+
+* count - available in cases where there is a numeric limit/range, f.e. 180 characters passed in a field that has character limit of 140.
+
+The default error messages are:
+
+```yaml
+en:
+  errors:
+    format: "%{attribute} %{message}"
+    messages:
+      model_invalid: "Validation failed: %{errors}"
+      inclusion: "is not included in the list"
+      exclusion: "is reserved"
+      invalid: "is invalid"
+      confirmation: "doesn't match %{attribute}"
+      accepted: "must be accepted"
+      empty: "can't be empty"
+      blank: "can't be blank"
+      present: "must be blank"
+      too_long:
+        one: "is too long (maximum is 1 character)"
+        other: "is too long (maximum is %{count} characters)"
+      too_short:
+        one: "is too short (minimum is 1 character)"
+        other: "is too short (minimum is %{count} characters)"
+      wrong_length:
+        one: "is the wrong length (should be 1 character)"
+        other: "is the wrong length (should be %{count} characters)"
+      not_a_number: "is not a number"
+      not_an_integer: "must be an integer"
+      greater_than: "must be greater than %{count}"
+      greater_than_or_equal_to: "must be greater than or equal to %{count}"
+      equal_to: "must be equal to %{count}"
+      less_than: "must be less than %{count}"
+      less_than_or_equal_to: "must be less than or equal to %{count}"
+      other_than: "must be other than %{count}"
+      odd: "must be odd"
+      even: "must be even"
+```
+
+To override those messages, just create your own `translations/en.yml` file in marketplace_builder or your module directory.
+
+You can override only one message if you wish.
+
+#### translations/en.yml
+
+```yaml
+en:
+  errors:
+    empty: "%{attribute} cannot be empty"
+    blank: "Please fill %{attribute}"
+```
+
+## Authorization policies
+
+You can also use translations to internationalize `flash_alert` property in authorization policies.
+
+#### authorization_policies/always_fail
+
+```liquid
+{% raw %}
+---
+name: always_fail
+flash_alert: "{{ 'access.fail' | t }}"
+redirect_to: /multilanguage-unauthorized
+---
+false
+{% endraw %}
+```
+
+#### views/pages/unauthorized
+
+```liquid
+---
+slug: multilanguage-unauthorized
+authorization_policies:
+- modules/multilanguage/always_fail
+---
+```
+
+#### translations/en.yml
+
+```yaml
+en:
+  access:
+    fail: You do not have permission to access this page.
+```
+
+#### translations/pl.yml
+
+```yaml
+pl:
+  access:
+    fail: Nie masz dostępu do tej strony.
+```
+
+See how it works live:
+
+* [English message](https://examples.platform-os.com/multilanguage-unauthorized)
+* [Polish message](https://examples.platform-os.com/multilanguage-unauthorized?language=pl)
