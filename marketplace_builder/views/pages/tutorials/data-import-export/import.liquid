@@ -27,7 +27,14 @@ Before import, your model schemas need to be deployed.
 
 When importing data, the `id` fields will be changed. Relations will be kept. If you have your own relations defined in properties, you need to first describe them in model schema files - [read more about this here](/tutorials/data-import-export/model-relations).
 
-Importing always adds data to the Instance. When you run import twice, it will try to add data to the existing set. If you test your imports and need to clean Instance data, use the `marketplace-kit data clean` command. Note, that this command will work only on staging Instances.
+If you test your imports and need to clean Instance data, use the `marketplace-kit data clean` command. Note, that this command will work only on staging Instances.
+
+When you run import twice, it will try to match previously imported data without removing existing changes. Lets see example:
+1. We do have model `shirt` with properties: `color`, `size`
+2. First import adds new `shirt` with json: `{ "id": 1, "properties": { "color": "red" }}`
+3. User set attributs this shirt, now shirt has those properties: `{ "color": "green", "size": "large" }`
+4. Second import with the same file changes shirt object to: `{ "color": "red", "size": "large" }`
+
 
 Import will do only basic validations, such us email uniqueness on users, existence of properties, and type validation. It doesn't check any of the validations defined on forms.
 
