@@ -1,23 +1,6 @@
 import templates from './templates';
 
-const appVersion = () => document.querySelector('body').dataset.version;
 const container = () => document.querySelector('[data-remote-docs-content]');
-
-const VERSION_URL = `https://deidcfp1yn7c2.cloudfront.net/platform_docs/${appVersion()}`;
-
-// TODO: Move urls to liquid?
-const docsTypes = {
-  portal: 'https://portal.apps.near-me.com/api_doc.json',
-  filters: `${VERSION_URL}/filters.json`,
-  tags: `${VERSION_URL}/tags.json`,
-  'graphql-queries': `${VERSION_URL}/graphql/operations.json`,
-  'graphql-mutations': `${VERSION_URL}/graphql/mutations.json`,
-  'graphql-objects': `${VERSION_URL}/graphql/objects.json`,
-  'graphql-scalars': `${VERSION_URL}/graphql/scalars.json`,
-  'graphql-interfaces': `${VERSION_URL}/graphql/interfaces.json`,
-  'graphql-enums': `${VERSION_URL}/graphql/enums.json`,
-  'graphql-inputs': `${VERSION_URL}/graphql/inputs.json`
-};
 
 import(/* webpackChunkName: "vendor" */ 'ejs/ejs.min').then(ejs => {
   const initialize = () => {
@@ -25,15 +8,16 @@ import(/* webpackChunkName: "vendor" */ 'ejs/ejs.min').then(ejs => {
       return false;
     }
     const docsType = container().dataset.remoteDocsContent;
-    const url = docsTypes[docsType];
+    const url = container().dataset.remoteDocsUrl;
     const template = templates[docsType];
 
     fetch(url)
       .then(res => res.json())
-      .then(items => ejs.render(template, { items }))
+      .then(items => ejs.render(template, { items })) // experiment with async: true
       .then(html => (container().innerHTML = html))
       .then(() => document.dispatchEvent(new CustomEvent('prism:reinitialize')))
       .then(() => document.dispatchEvent(new CustomEvent('deeplinks:reinitialize')))
+      .then(() => document.dispatchEvent(new CustomEvent('toc:reinitialize')))
       .catch(console.log);
   };
 

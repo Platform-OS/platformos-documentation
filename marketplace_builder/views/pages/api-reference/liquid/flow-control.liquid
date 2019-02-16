@@ -1,0 +1,189 @@
+---
+converter: markdown
+slug: api-reference/liquid/flow-control
+searchable: true
+metadata:
+  title: 'API Reference - Tags: Flow Control'
+---
+
+<div data-autotoc></div>
+
+## If / Else
+if / else statements should be familiar from other programming languages. Liquid implements them with the following tags:
+
+* {% raw %}`{% if <CONDITION> %} ... {% endif %}`{% endraw %}:  Encloses a section of a template which will only be run if the condition is true.
+* {% raw %}`{% elsif <CONDITION> %}`{% endraw %}: Can optionally be used within an `if` ... `endif` block. Specifies another condition; if the initial "if" fails, Liquid tries the "elsif", and runs the following section of the template if it succeeds. You can use any number of elsifs in an if block.
+* {% raw %}`{% else %}`{% endraw %}: Can optionally be used within an `if` ... `endif` block, after any "elsif" tags. If all preceding conditions fail, Liquid will run the section of template following the "else" tag.
+* {% raw %}`{% unless <CONDITION> %} ... {% endunless %}`{% endraw %}: The reverse of an "if" statement. Don't use "elsif" or "else" with an unless statement.
+
+The condition of an if, elsif, or unless tag should be either a normal Liquid expression or a comparison using Liquid expressions.
+Note that the comparison operators are implemented by the "if"-like tags; they don't work anywhere else in Liquid.
+
+## Operators
+
+The available comparison operators are:
+
+* `==`, `!=`, `and` `<>`: equality and inequality (the latter two are synonyms)
+* `<`, `<=`, `>`, `>=`: less/greater-than
+* There are also special values `empty` and `blank` (unquoted) that you can compare arrays to; the comparison is `true` if the array has no members.
+* contains: similar to Ruby's `include?` method, implemented on strings, arrays, and hashes. If the left argument is a string and the right isn't, it stringifies the right.
+
+## Boolean operators
+
+The available Boolean operators are:
+
+* `and`
+* `or`
+
+You can use the `and` and `or` operators to include more than one condition in a control flow tag. `and` and `or` can be chained together to create complex conditionals.
+
+If you use multiple `and` or `or` operators, note that `and` operators will be evaluated first, then `or` operators. You cannot use parentheses to simulate an order of operations and control the order of operator evaluation. Parentheses are invalid characters within Liquid tags and prevent your tags from working.
+
+{% include 'alert/important', content: 'Commonly used in other languages `&&` and `||` DO NOT work in liquid.' %}
+
+### and
+
+The `and` operator lets you add additional conditions to a tag. A condition with an `and` will only be true if both the left and the right side of the condition are true.
+
+#### Input
+
+```liquid
+{% raw %}
+{% if line_item.grams > 20000 and customer_address.city == 'Ottawa' %}
+  You're buying a heavy item, and are in the same city as our store. Choose local pick-up as a shipping option to avoid paying high shipping costs.
+{% endif %}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{% raw %}
+You're buying a heavy item, and are in the same city as our store. Choose local pick-up as a shipping option to avoid paying high shipping costs.
+{% endraw %}
+```
+
+### or
+
+The `or` operator lets you add additional conditions to a tag. A condition with an `or` will be true if either the left or the right side of the condition is true.
+
+```liquid
+{% raw %}
+{% if customer.tags contains 'VIP' or customer.email contains 'mycompany.com' %}
+  Welcome! We're pleased to offer you a special discount of 15% on all products.
+{% else %}
+  Welcome to our store!
+{% endif %}
+{% endraw %}
+```
+
+#### Output
+```liquid
+Welcome! We're pleased to offer you a special discount of 15% on all products.
+```
+
+{% capture content %}
+Note that there is NO `not` operator. Also note that you CANNOT use parentheses to control the order of operations, and the precedence of the operators appears to be unspecified. So when in doubt, use nested "if" statements.
+{% endcapture %}
+{% include 'alert/note', content: content %}
+
+## Types and truthiness
+
+{% include 'reference/liquid/truthiness' %}
+
+```liquid
+{% raw %}
+{% if user %}
+  Hello {{ user.name }}
+{% endif %}
+
+{% comment %} Same as above {% endcomment %}
+{% if user != null %}
+  Hello {{ user.name }}
+{% endif %}
+
+{% if user.name == 'tobi' %}
+  Hello tobi
+{% elsif user.name == 'bob' %}
+  Hello bob
+{% endif %}
+
+{% if user.name == 'tobi' or user.name == 'bob' %}
+  Hello tobi or bob
+{% endif %}
+
+{% if user.name == 'bob' and user.age > 45 %}
+  Hello old bob
+{% endif %}
+
+{% if user.name != 'tobi' %}
+  Hello non-tobi
+{% endif %}
+
+{% comment %} Same as above {% endcomment %}
+{% unless user.name == 'tobi' %}
+  Hello non-tobi
+{% endunless %}
+
+
+{% comment %} Check for the size of an array {% endcomment %}
+{% if user.payments == empty %}
+  you never paid !
+{% endif %}
+
+{% if user.payments.size > 0  %}
+  you paid !
+{% endif %}
+
+{% if user.age > 18 %}
+  Login here
+{% else %}
+  Sorry, you are too young
+{% endif %}
+
+{% comment %} array = 1,2,3 {% endcomment %}
+{% if array contains 2 %}
+  array includes 2
+{% endif %}
+
+{% comment %} string = 'hello world' {% endcomment %}
+{% if string contains 'hello' %}
+  string includes 'hello'
+{% endif %}
+{% endraw %}
+```
+
+## Case Statement
+
+If you need more conditions, you can use the `case` statement:
+
+```liquid
+{% raw %}
+{% case condition %}
+{% when 1 %}
+  hit 1
+{% when 2 or 3 %}
+  hit 2 or 3
+{% else %}
+  ... else ...
+{% endcase %}
+{% endraw %}
+```
+
+#### Example
+
+```liquid
+{% raw %}
+{% case template %}
+
+{% when 'label' %}
+  {{ label.title }}
+{% when 'product' %}
+  {{ product.vendor }} / {{ product.title }}
+{% else %}
+  {{ page_title }}
+{% endcase %}
+{% endraw %}
+```
+
+{% include 'reference/liquid/resource-note-shopify' %}

@@ -1,0 +1,209 @@
+---
+converter: markdown
+slug: api-reference/liquid/objects
+searchable: true
+metadata:
+  title: API Reference - Liquid Objects
+---
+
+<div data-autotoc></div>
+
+## forloop
+
+### forloop.first
+
+Returns true if it's the first iteration of the `for` loop. Returns false if it is not the first iteration.
+
+#### Input
+
+```liquid
+{% raw %}
+{% for product in collections.frontpage.products %}
+  {% if forloop.first == true %}
+    First time through!
+  {% else %}
+    Not the first time.
+  {% endif %}
+{% endfor %}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+First time through!
+Not the first time.
+Not the first time.
+Not the first time.
+Not the first time.
+```
+
+### forloop.index
+
+Returns the current index of the `for` loop, starting at 1.
+
+#### Input
+
+```liquid
+{% raw %}
+{% for product in collections.frontpage.products %}
+  {{ forloop.index }}
+{% else %}
+  // no products in your frontpage collection
+{% endfor %}
+{% endraw %}
+```
+
+#### Output
+```liquid
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
+```
+
+### forloop.index0
+Returns the current index of the `for` loop, starting at 0.
+
+#### Input
+```liquid
+{% raw %}
+{% for product in collections.frontpage.products %}
+  {{ forloop.index0 }}
+{% endfor %}
+{% endraw %}
+```
+
+#### Output
+```liquid
+0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
+```
+
+### forloop.last
+Returns true if it's the last iteration of the `for` loop. Returns false if it is not the last iteration.
+
+#### Input
+
+```liquid
+{% raw %}
+{% for product in collections.frontpage.products %}
+  {% if forloop.last == true %}
+    This is the last iteration!
+  {% else %}
+    Keep going...
+  {% endif %}
+{% endfor %}
+{% endraw %}
+```
+
+#### Output
+```liquid
+Keep going...
+Keep going...
+Keep going...
+Keep going...
+Keep going...
+This is the last iteration!
+```
+
+### forloop.length
+Returns the number of iterations of the loop.
+
+#### Input
+
+```liquid
+{% raw %}
+{% comment %} if collections.frontpage.products contains 4 products {% endcomment %}
+{% for product in collections.frontpage.products %}
+  {% if forloop.first %}
+  <p>This collection has {{ forloop.length }} products:</p>
+  {% endif %}
+  <p>{{ product.title }}</p>
+{% endfor %}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+This collection has 4 products:
+Apple
+Orange
+Peach
+Plum
+```
+
+### forloop.rindex
+
+Returns `forloop.index` in reverse order.
+
+#### Input
+
+```liquid
+{% raw %}
+{% for product in collections.frontpage.products %}
+  {{ forloop.rindex }}
+{% endfor %}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1
+```
+
+### forloop.rindex0
+
+Returns `forloop.index0` in reverse order.
+
+#### Input
+
+```liquid
+{% raw %}
+{% for product in collections.frontpage.products %}
+  {{ forloop.rindex0 }}
+{% endfor %}
+{% endraw %}
+```
+
+#### Output
+```liquid
+15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 0
+```
+
+## tablerowloop
+
+The tablerow object is used within the `tablerow` tag. It contains attributes of its parent `for` loop.
+
+### tablerowloop.length
+Returns the number of iterations of the `tablerow` loop.
+
+### tablerowloop.index
+Returns the current index of the `tablerow` loop, starting at 1.
+
+### tablerowloop.index0
+Returns the current index of the `tablerow` loop, starting at 0.
+
+### tablerowloop.rindex
+Returns `tablerowloop.index` in reverse order.
+
+### tablerowloop.rindex0
+Returns `tablerowloop.index0` in reverse order.
+
+### tablerowloop.first
+Returns `true` if it's the first iteration of the `tablerow` loop. Returns `false` if it is not the first iteration.
+
+### tablerowloop.last
+Returns `true` if it's the last iteration of the `tablerow` loop. Returns `false` if it is not the last iteration.
+
+### tablerowloop.col
+Returns the index of the current row, starting at 1.
+
+### tablerowloop.col0
+Returns the index of the current row, starting at 0.
+
+### tablerowloop.col_first
+Returns `true` if the current column is the first column in a row, returns `false` if it is not.
+
+### tablerowloop.col_last
+Returns `true` if the current column is the last column in a row, returns `false` if it is not.
+
+{% include 'reference/liquid/resource-note-shopify' %}

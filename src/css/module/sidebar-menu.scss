@@ -1,19 +1,42 @@
 .sidebar-menu {
   padding-left: 0;
-  font-weight: 500;
-}
 
-.sidebar-menu li a {
-  padding: .35rem 0;
-}
+  & > li > a {
+    font-weight: 500;
+  }
 
-.sidebar-menu > li > a {
-  padding: 1.2rem 0;
-}
+  & > li > ul {
+    padding-left: 0;
+  }
 
-.collapse {
-  list-style-type: disc;
-  margin-left: .5rem;
+  ul {
+    list-style-type: none;
+  }
+
+  .last-level-nested.active a {
+    color: $green !important;
+  }
+
+  & > li:last-child {
+    border-bottom: 0;
+  }
+
+  li a {
+    text-decoration: none;
+    display: block;
+    transition: color 0.2s;
+    color: $black;
+    font-size: 0.92rem;
+    padding: 0.3rem 0;
+
+    &:hover {
+      color: $green;
+    }
+  }
+
+  & > li > a {
+    padding: 1rem 0;
+  }
 }
 
 .sidebar-menu > li {
@@ -24,63 +47,38 @@
 
   > a:after {
     @extend .fa;
-    content: "\f054";
+    content: '\f054';
 
     position: absolute;
     right: 0;
     transform: translateY(50%);
-    font-size: .75rem;
+    font-size: 0.75rem;
   }
 
   &.active > a:after {
-    content: "\f078";
-  }
-}
-
-.sidebar-menu li a {
-  text-decoration: none;
-  display: block;
-  transition: color .2s;
-  color: $black;
-  &:hover {
-    color: $green;
-  }
-}
-
-.sidebar-menu .active.last-level-nested a {
-  color: $green;
-  text-decoration: underline;
-  &:hover {
-    text-decoration: none;
+    content: '\f078';
   }
 }
 
 .sidebar-menu .has-submenu .has-submenu .sub-menu {
   position: relative;
-  list-style-type: none;
   li a {
     color: #6f6f6f;
-  }
-  li.active a {
-    color: $green;
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }
 
-.sidebar-menu .has-submenu .has-submenu .sub-menu:before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 12px;
-  width: 1px;
-  background: #e1e1e1;
-  height: calc(100% - 25px);
+.sidebar-menu .has-submenu .has-submenu:last-child {
+  margin-bottom: 1em;
 }
 
 /* Speed up some transitions */
 .metismenu .collapsing {
-  transition-duration: .2s;
+  transition-duration: 0.2s;
 }
 
 .metismenu .has-arrow::after {
-  transition: all .2s ease-out;
+  transition: all 0.2s ease-out;
 }

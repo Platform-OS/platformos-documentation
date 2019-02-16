@@ -19,6 +19,7 @@ pipeline {
     stage('Staging') {
       environment {
         MP_URL = "https://documentation-staging.staging.oregon.platform-os.com"
+        GITHUB_URL = "https://github.com/mdyd-dev/nearme-documentation"
       }
 
       when {
@@ -31,7 +32,7 @@ pipeline {
           commitAuthor = sh(returnStdout: true, script: 'git log --format="%an" -1').trim()
           commitMsg = sh(returnStdout: true, script: 'git log --format="%B" -1 ${commitSha}').trim()
 
-          commitInfo = "<${env.GIT_URL}/commit/${commitSha}|${commitSha}> - ${commitAuthor} - ${commitMsg}"
+          commitInfo = "<${GITHUB_URL}/commit/${commitSha}|${commitSha}> - ${commitAuthor} - ${commitMsg}"
         }
 
         slackSend (channel: "#notifications-docs", message: "BUILD START: <${env.BUILD_URL}|Build #${env.BUILD_NUMBER}> (<${MP_URL}|Staging>) \n ${commitInfo}")

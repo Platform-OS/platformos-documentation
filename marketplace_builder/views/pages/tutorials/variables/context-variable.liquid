@@ -1,7 +1,7 @@
 ---
 converter: markdown
 metadata:
-  title: The Context Variable
+  title: Context Variable
   description: Detailed description of the context variable with examples.
 slug: tutorials/variables/context-variable
 searchable: true
@@ -111,9 +111,10 @@ The street is {{ params.street }}.
 `context.page` contains information about the [page](/tutorials/pages/pages) on which it is included.
 
 Available attributes are:
-{% raw %}
 ```liquid
+{% raw %}
 {{ context.page }}
+{% endraw %}
 ```
 ```json
 {
@@ -124,7 +125,6 @@ Available attributes are:
   "metadata" => {}
 }
 ```
-{% endraw %}
 
 ### context.params
 `context.params` contains user data provided in forms and query params.
@@ -136,18 +136,19 @@ Most common use cases are:
 * Data validation in Authorization Policies
 
 **Example 1: site path params mapping**
-{% raw %}
-When visiting the page with path `www.mysite.com/app/admin/content/nyc/brooklyn/main`
-the value of `context.params` would be:
+When visiting the page with path `www.mysite.com/app/admin/content/nyc/brooklyn/main` the value of `context.params` would be:
+
 ```json
+{% raw %}
 {
   "slug": "app",
   "slug2": "admin",
   "slug3": "content",
   "slugs": "nyc/brooklyn/main"
 }
-```
 {% endraw %}
+```
+
 *Another way of extracting page params is using [context.location.pathname](#context-location) as shown in Example 1.*
 
 ### context.session
@@ -162,7 +163,7 @@ the value of `context.params` would be:
 ```liquid
 {{ context.useragent }}
 
-Morzilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebkKit/537.36
+Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebkKit/537.36
 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36
 ```
 {% endraw %}

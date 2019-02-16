@@ -1,0 +1,1775 @@
+---
+converter: markdown
+slug: api-reference/liquid/filters
+searchable: true
+metadata:
+  title: API Reference - Liquid Filters
+---
+
+## abs
+
+Returns the absolute value of a number.
+
+#### Input
+
+```liquid
+{% raw %}
+{{ -17 | abs }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ -17 | abs }}
+```
+
+#### Input
+
+```liquid
+{% raw %}
+{{ 4 | abs }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ 4 | abs }}
+```
+
+`abs` will also work on a string if the string only contains a number.
+
+#### Input
+
+```liquid
+{% raw %}
+{{ "-19.86" | abs }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ "-19.86" | abs }}
+```
+
+## append
+
+Concatenates two strings and returns the concatenated value.
+
+#### Input
+
+```liquid
+{% raw %}
+{{ "/my/fancy/url" | append: ".html" }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ "hello" | append: ".html" }}
+```
+
+`append` can also be used with variables:
+
+#### Input
+
+```liquid
+{% raw %}
+{% assign filename = "/index.html" %}
+{{ "website.com" | append: filename }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{% assign filename = "/index.html" %}
+{{ "website.com" | append: filename }}
+```
+
+`append` can be used with a number, it will return a string:
+
+#### Input
+
+```liquid
+{% raw %}
+{{ 3 | append: ' stooges' }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ 3 | append: ' stooges' }}
+```
+
+## at_least
+
+Limits a number to a minimum value.
+
+#### Input
+
+```liquid
+{% raw %}
+{{ 4 | at_least: 5 }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ 4 | at_least: 5 }}
+```
+
+#### Input
+
+```liquid
+{% raw %}
+{{ 4 | at_least: 3 }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ 4 | at_least: 3 }}
+```
+
+## at_most
+
+Limits a number to a maximum value.
+
+#### Input
+
+```liquid
+{% raw %}
+{{ 4 | at_most: 5 }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ 4 | at_most: 5 }}
+```
+
+#### Input
+
+```liquid
+{% raw %}
+{{ 4 | at_most: 3 }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ 4 | at_most: 3 }}
+```
+
+## capitalize
+
+Makes the first character of a string capitalized.
+
+#### Input
+
+```liquid
+{% raw %}
+{{ "title" | capitalize }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ "title" | capitalize }}
+```
+
+`capitalize` only capitalizes the first character of the string, so later words are not affected:
+
+#### Input
+
+```liquid
+{% raw %}
+{{ "my great title" | capitalize }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ "my great title" | capitalize }}
+```
+
+## ceil
+
+Rounds the input up to the nearest whole number. Liquid tries to convert the input to a number before the filter is applied.
+
+#### Input
+
+```liquid
+{% raw %}
+{{ 1.2 | ceil }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ 1.2 | ceil }}
+```
+
+#### Input
+
+```liquid
+{% raw %}
+{{ 2.0 | ceil }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ 2.0 | ceil }}
+```
+
+#### Input
+
+```liquid
+{% raw %}
+{{ 183.357 | ceil }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ 183.357 | ceil }}
+```
+
+Here the input value is a string:
+
+#### Input
+
+```liquid
+{% raw %}
+{{ "3.5" | ceil }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ "3.5" | ceil }}
+```
+
+## compact
+
+Removes any `nil` values from an array.
+
+For this example, assume `site.pages` is an array of content pages for a website, and some of these pages have an attribute called category that specifies their content category.
+If we map those categories to an array, some of the array items might be nil if any pages do not have a category attribute.
+
+#### Input
+
+```liquid
+{% raw %}
+{% assign site_categories = site.pages | map: 'category' %}
+
+{% for category in site_categories %}
+  {{ category }}
+{% endfor %}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+  business
+  celebrities
+
+  lifestyle
+  sports
+
+  technology
+```
+
+By using compact when we create our `site_categories` array, we can remove all the `nil` values in the array.
+
+#### Input
+
+```liquid
+{% raw %}
+{% assign site_categories = site.pages | map: 'category' | compact %}
+
+{% for category in site_categories %}
+  {{ category }}
+{% endfor %}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+  business
+  celebrities
+  lifestyle
+  sports
+  technology
+```
+
+## concat
+
+Concatenates (joins together) multiple arrays. The resulting array contains all the items from the input arrays.
+
+#### Input
+
+```liquid
+{% raw %}
+{% assign fruits = "apples, oranges, peaches" | split: ", " %}
+{% assign vegetables = "carrots, turnips, potatoes" | split: ", " %}
+
+{% assign everything = fruits | concat: vegetables %}
+
+{% for item in everything %}
+- {{ item }}
+{% endfor %}
+{% endraw %}
+```
+#### Output
+
+```liquid
+- apples
+- oranges
+- peaches
+- carrots
+- turnips
+- potatoes
+```
+
+You can string together `concat` filters to join more than two arrays:
+
+#### Input
+
+```liquid
+{% raw %}
+{% assign furniture = "chairs, tables, shelves" | split: ", " %}
+
+{% assign everything = fruits | concat: vegetables | concat: furniture %}
+
+{% for item in everything %}
+- {{ item }}
+{% endfor %}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+- apples
+- oranges
+- peaches
+- carrots
+- turnips
+- potatoes
+- chairs
+- tables
+- shelves
+```
+
+## date
+
+Converts a timestamp into another date format. The format for this syntax is the same as `strftime`. The input uses the same format as Ruby’s `[Time.parse](https://apidock.com/ruby/Time/parse/class)`.
+
+#### Input
+
+```liquid
+{% raw %}
+{{ article.published_at | date: "%a, %b %d, %y" }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+Fri, Jul 17, 15
+```
+
+#### Input
+
+```liquid
+{% raw %}
+{{ article.published_at | date: "%Y" }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+2015
+```
+
+`date` works on strings if they contain well-formatted dates:
+
+#### Input
+
+```liquid
+{% raw %}
+{{ "March 14, 2016" | date: "%b %d, %y" }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ "March 14, 2016" | date: "%b %d, %y" }}
+```
+
+To get the current time, pass the special word `"now"` (or `"today"`) to date:
+
+#### Input
+
+```liquid
+{% raw %}
+This page was last updated at {{ "now" | date: "%Y-%m-%d %H:%M" }}.
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+This page was last updated at {{ "now" | date: "%Y-%m-%d %H:%M" }}.
+```
+
+Note that the value will be the current time of when the page was last generated from the template, not when the page is presented to a user if caching or static site generation is involved.
+
+## default
+
+Allows you to specify a fallback in case a value doesn’t exist. `default` will show its value if the left side is `nil`, `false`, or `empty`.
+
+In this example, `product_price` is not defined, so the default value is used.
+
+#### Input
+
+```liquid
+{% raw %}
+{{ product_price | default: 2.99 }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ product_price | default: 2.99 }}
+```
+
+In this example, `product_price` is defined, so the default value is not used.
+
+#### Input
+
+```liquid
+{% raw %}
+{% assign product_price = 4.99 %}
+{{ product_price | default: 2.99 }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{% assign product_price = 4.99 %}
+{{ product_price | default: 2.99 }}
+```
+
+In this example, `product_price` is empty, so the default value is used.
+
+#### Input
+
+```liquid
+{% raw %}
+{% assign product_price = "" %}
+{{ product_price | default: 2.99 }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{% assign product_price = "" %}
+{{ product_price | default: 2.99 }}
+```
+
+## divided_by
+
+Divides a number by the specified number.
+
+The result is rounded down to the nearest integer (that is, the floor) if the divisor is an integer.
+
+#### Input
+
+```liquid
+{% raw %}
+{{ 16 | divided_by: 4 }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ 16 | divided_by: 4 }}
+```
+
+#### Input
+
+```liquid
+{% raw %}
+{{ 5 | divided_by: 3 }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ 5 | divided_by: 3 }}
+```
+
+### Controlling rounding
+
+`divided_by` produces a result of the same type as the divisor — that is, if you divide by an integer, the result will be an integer. If you divide by a float (a number with a decimal in it), the result will be a float.
+
+For example, here the divisor is an integer:
+
+#### Input
+
+```liquid
+{% raw %}
+{{ 20 | divided_by: 7 }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ 20 | divided_by: 7 }}
+```
+
+Here it is a float:
+
+#### Input
+
+```liquid
+{% raw %}
+{{ 20 | divided_by: 7.0 }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ 20 | divided_by: 7.0 }}
+```
+
+### Changing variable types
+
+You might want to use a variable as a divisor, in which case you can’t simply add .0 to convert it to a float. In these cases, you can assign a version of your variable converted to a float using the `times` filter.
+
+In this example, you’re dividing by a variable that contains an integer, so you get an integer:
+
+#### Input
+
+```liquid
+{% raw %}
+{% assign my_integer = 7 %}
+{{ 20 | divided_by: my_integer }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{% assign my_integer = 7 %}
+{{ 20 | divided_by: my_integer }}
+```
+
+Here, you multiply the variable by `1.0` to get a `float`, then divide by the `float` instead:
+
+#### Input
+
+```liquid
+{% raw %}
+{% assign my_integer = 7 %}
+{% assign my_float = my_integer | times: 1.0 %}
+{{ 20 | divided_by: my_float }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{% assign my_integer = 7 %}
+{% assign my_float = my_integer | times: 1.0 %}
+{{ 20 | divided_by: my_float }}
+```
+
+## downcase
+
+Makes each character in a string lowercase. It has no effect on strings which are already all lowercase.
+
+#### Input
+
+```liquid
+{% raw %}
+{{ "Parker Moore" | downcase }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ "Parker Moore" | downcase }}
+```
+
+#### Input
+
+```liquid
+{% raw %}
+{{ "apple" | downcase }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ "apple" | downcase }}
+```
+
+## escape
+
+Escapes a string by replacing characters with escape sequences (so that the string can be used in a URL, for example). It doesn’t change strings that don’t have anything to escape.
+
+#### Input
+
+```liquid
+{% raw %}
+{{ "Have you read 'James & the Giant Peach'?" | escape }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ "Have you read 'James & the Giant Peach'?" | escape }}
+```
+
+#### Input
+
+```liquid
+{% raw %}
+{{ "Nikola Tesla" | escape }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ "Nikola Tesla" | escape }}
+```
+
+## escape_once
+
+Escapes a string without changing existing escaped entities. It doesn’t change strings that don’t have anything to escape.
+
+#### Input
+
+```liquid
+{% raw %}
+{{ "1 < 2 & 3" | escape_once }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ "1 < 2 & 3" | escape_once }}
+```
+
+#### Input
+
+```liquid
+{% raw %}
+{{ "1 &lt; 2 &amp; 3" | escape_once }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ "1 &lt; 2 &amp; 3" | escape_once }}
+```
+
+## first
+
+Returns the first item of an array.
+
+#### Input
+
+```liquid
+{% raw %}
+{% assign my_array = "apples, oranges, peaches, plums" | split: ", " %}
+{{ my_array.first }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{% assign my_array = "apples, oranges, peaches, plums" | split: ", " %}
+{{ my_array.first }}
+```
+
+#### Input
+
+```liquid
+{% raw %}
+{% assign my_array = "zebra, octopus, giraffe, tiger" | split: ", " %}
+{{ my_array.first }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{% assign my_array = "zebra, octopus, giraffe, tiger" | split: ", " %}
+{{ my_array.first }}
+```
+
+## floor
+
+Rounds a number down to the nearest whole number. Liquid tries to convert the input to a number before the filter is applied.
+
+#### Input
+
+```liquid
+{% raw %}
+{{ 1.2 | floor }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ 1.2 | floor }}
+```
+
+#### Input
+
+```liquid
+{% raw %}
+{{ 2.0 | floor }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ 2.0 | floor }}
+```
+
+#### Input
+
+```liquid
+{% raw %}
+{{ 183.357 | floor }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ 183.357 | floor }}
+```
+
+Here the input value is a string:
+
+#### Input
+
+```liquid
+{% raw %}
+{{ "3.5" | floor }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ "3.5" | floor }}
+```
+
+## join
+
+Combines the items in an array into a single string using the argument as a separator.
+
+#### Input
+
+```liquid
+{% raw %}
+{% assign beatles = "John, Paul, George, Ringo" | split: ", " %}
+
+{{ beatles | join: " and " }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{% assign beatles = "John, Paul, George, Ringo" | split: ", " %}
+{{ beatles | join: " and " }}
+```
+
+## last
+
+Returns the last item of an array.
+
+#### Input
+
+```liquid
+{% raw %}
+{% assign my_array = "apples, oranges, peaches, plums" | split: ", " %}
+{{ my_array.last }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{% assign my_array = "apples, oranges, peaches, plums" | split: ", " %}
+{{ my_array.last }}
+```
+
+#### Input
+
+```liquid
+{% raw %}
+{% assign my_array = "zebra, octopus, giraffe, tiger" | split: ", " %}
+{{ my_array.last }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{% assign my_array = "zebra, octopus, giraffe, tiger" | split: ", " %}
+{{ my_array.last }}
+```
+
+## lstrip
+
+Removes all whitespaces (tabs, spaces, and newlines) from the beginning of a string. The filter does not affect spaces between words.
+
+#### Input
+
+```liquid
+{% raw %}
+{{ "          So much room for activities!          " | lstrip }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ "          So much room for activities!          " | lstrip }}
+```
+
+## map
+
+Creates an array of values by extracting the values of a named property from another object.
+
+In this example, assume the object `site.pages` contains all the metadata for a website. Using assign with the `map` filter creates a variable that contains only the values of the category properties of everything in the `site.pages` object.
+
+#### Input
+
+```liquid
+{% raw %}
+{% assign all_categories = site.pages | map: "category" %}
+{% for item in all_categories %}
+{{ item }}
+{% endfor %}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+business
+celebrities
+lifestyle
+sports
+technology
+```
+
+## minus
+
+Subtracts a number from another number.
+
+#### Input
+
+```liquid
+{% raw %}
+{{ 4 | minus: 2 }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ 4 | minus: 2 }}
+```
+#### Input
+
+```liquid
+{% raw %}
+{{ 16 | minus: 4 }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ 16 | minus: 4 }}
+```
+
+#### Input
+
+```liquid
+{% raw %}
+{{ 183.357 | minus: 12 }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ 183.357 | minus: 12 }}
+```
+
+## modulo
+
+Returns the remainder of a division operation.
+
+#### Input
+
+```liquid
+{% raw %}
+{{ 3 | modulo: 2 }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ 3 | modulo: 2 }}
+```
+
+#### Input
+
+```liquid
+{% raw %}
+{{ 24 | modulo: 7 }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ 24 | modulo: 7 }}
+```
+
+#### Input
+
+```liquid
+{% raw %}
+{{ 183.357 | modulo: 12 }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ 183.357 | modulo: 12 }}
+```
+
+## newline_to_br
+
+Replaces every newline (`\n`) with an HTML line break (`<br>`).
+
+#### Input
+
+```liquid
+{% raw %}
+{% capture string_with_newlines %}
+Hello
+there
+{% endcapture %}
+{{ string_with_newlines | newline_to_br }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{% capture string_with_newlines %}
+Hello
+there
+{% endcapture %}
+{{ string_with_newlines | newline_to_br }}
+```
+
+
+## plus
+
+Adds a number to another number.
+
+#### Input
+
+```liquid
+{% raw %}
+{{ 4 | plus: 2 }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ 4 | plus: 2 }}
+```
+
+#### Input
+
+```liquid
+{% raw %}
+{{ 16 | plus: 4 }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ 16 | plus: 4 }}
+```
+
+#### Input
+
+```liquid
+{% raw %}
+{{ 183.357 | plus: 12 }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ 183.357 | plus: 12 }}
+```
+
+## prepend
+
+Adds the specified string to the beginning of another string.
+
+#### Input
+
+```liquid
+{% raw %}
+{{ "apples, oranges, and bananas" | prepend: "Some fruit: " }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ "apples, oranges, and bananas" | prepend: "Some fruit: " }}
+```
+
+You can also prepend variables:
+
+#### Input
+
+```liquid
+{% raw %}
+{% assign url = "example.com" %}
+{{ "/index.html" | prepend: url }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{% assign url = "example.com" %}
+{{ "/index.html" | prepend: url }}
+```
+
+## remove
+
+Removes every occurrence of the specified substring from a string.
+
+#### Input
+
+```liquid
+{% raw %}
+{{ "I strained to see the train through the rain" | remove: "rain" }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ "I strained to see the train through the rain" | remove: "rain" }}
+```
+
+## remove_first
+
+Removes only the first occurrence of the specified substring from a string.
+
+#### Input
+
+```liquid
+{% raw %}
+{{ "I strained to see the train through the rain" | remove_first: "rain" }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ "I strained to see the train through the rain" | remove_first: "rain" }}
+```
+
+## replace
+
+Replaces every occurrence of an argument in a string with the second argument.
+
+#### Input
+
+```liquid
+{% raw %}
+{{ "Take my protein pills and put my helmet on" | replace: "my", "your" }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ "Take my protein pills and put my helmet on" | replace: "my", "your" }}
+```
+
+## replace_first
+
+Replaces only the first occurrence of the first argument in a string with the second argument.
+
+#### Input
+
+```liquid
+{% raw %}
+{% assign my_string = "Take my protein pills and put my helmet on" %}
+{{ my_string | replace_first: "my", "your" }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{% assign my_string = "Take my protein pills and put my helmet on" %}
+{{ my_string | replace_first: "my", "your" }}
+```
+
+## reverse
+
+Reverses the order of the items in an array. `reverse` cannot reverse a string.
+
+#### Input
+
+```liquid
+{% raw %}
+{% assign my_array = "apples, oranges, peaches, plums" | split: ", " %}
+{{ my_array | reverse | join: ", " }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{% assign my_array = "apples, oranges, peaches, plums" | split: ", " %}
+{{ my_array | reverse | join: ", " }}
+```
+
+`reverse` cannot be used directly on a string, but you can split a string into an array, `reverse` the array and rejoin it by chaining together filters:
+
+#### Input
+
+```liquid
+{% raw %}
+{{ "Ground control to Major Tom." | split: "" | reverse | join: "" }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ "Ground control to Major Tom." | split: "" | reverse | join: "" }}
+```
+
+## round
+
+Rounds an input number to the nearest `integer` or, if a number is specified as an argument, to that number of decimal places.
+
+#### Input
+
+```liquid
+{% raw %}
+{{ 1.2 | round }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ 1.2 | round }}
+```
+
+#### Input
+
+```liquid
+{% raw %}
+{{ 2.7 | round }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ 2.7 | round }}
+```
+
+#### Input
+
+```liquid
+{% raw %}
+{{ 183.357 | round: 2 }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ 183.357 | round: 2 }}
+```
+
+## rstrip
+
+Removes all whitespace (tabs, spaces, and newlines) from the right side of a string.
+
+#### Input
+
+```liquid
+{% raw %}
+{{ "          So much room for activities!          " | rstrip }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ "          So much room for activities!          " | rstrip }}
+```
+
+## size
+
+Returns the number of characters in a string or the number of items in an array. `size` can also be used with dot notation (for example, {{ my_string.size }}). This allows you to use size inside tags such as conditionals.
+
+#### Input
+
+```liquid
+{% raw %}
+{{ "Ground control to Major Tom." | size }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ "Ground control to Major Tom." | size }}
+```
+
+#### Input
+
+```liquid
+{% raw %}
+{% assign my_array = "apples, oranges, peaches, plums" | split: ", " %}
+{{ my_array | size }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{% assign my_array = "apples, oranges, peaches, plums" | split: ", " %}
+{{ my_array | size }}
+```
+
+Using dot notation:
+
+```liquid
+{% raw %}
+{% if site.pages.size > 10 %}
+  This is a big website!
+{% endif %}
+{% endraw %}
+```
+
+## slice
+
+Returns a substring of 1 character beginning at the index specified by the argument passed in. An optional second argument specifies the length of the substring to be returned.
+
+String indices are numbered starting from 0.
+
+#### Input
+
+```liquid
+{% raw %}
+{{ "Liquid" | slice: 0 }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ "Liquid" | slice: 0 }}
+```
+
+#### Input
+
+```liquid
+{% raw %}
+{{ "Liquid" | slice: 2 }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ "Liquid" | slice: 2 }}
+```
+
+#### Input
+
+```liquid
+{% raw %}
+{{ "Liquid" | slice: 2, 5 }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ "Liquid" | slice: 2, 5 }}
+```
+
+If the first parameter is a negative number, the indices are counted from the end of the string:
+
+#### Input
+
+```liquid
+{% raw %}
+{{ "Liquid" | slice: -3, 2 }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ "Liquid" | slice: -3, 2 }}
+```
+
+## sort
+
+Sorts items in an array by a property of an item in the array. The order of the sorted array is case-sensitive.
+
+#### Input
+
+```liquid
+{% raw %}
+{% assign my_array = "zebra, octopus, giraffe, Sally Snake" | split: ", " %}
+{{ my_array | sort | join: ", " }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{% assign my_array = "zebra, octopus, giraffe, Sally Snake" | split: ", " %}
+{{ my_array | sort | join: ", " }}
+```
+
+## sort_natural
+
+Sorts items in an array by a property of an item in the array.
+
+#### Input
+
+```liquid
+{% raw %}
+{% assign my_array = "zebra, octopus, giraffe, Sally Snake" | split: ", " %}
+{{ my_array | sort_natural | join: ", " }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{% assign my_array = "zebra, octopus, giraffe, Sally Snake" | split: ", " %}
+{{ my_array | sort_natural | join: ", " }}
+```
+
+## split
+
+Divides an input string into an array using the argument as a separator. `split` is commonly used to convert comma-separated items from a string to an array.
+
+#### Input
+
+```liquid
+{% raw %}
+{% assign beatles = "John, Paul, George, Ringo" | split: ", " %}
+{% for member in beatles %}
+  {{ member }}
+{% endfor %}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{% assign beatles = "John, Paul, George, Ringo" | split: ", " %}
+{% for member in beatles %}
+  {{ member }}
+{% endfor %}
+```
+
+## strip
+
+Removes all whitespace (tabs, spaces, and newlines) from both the left and right side of a string. It does not affect spaces between words.
+
+#### Input
+
+```liquid
+{% raw %}
+{{ "          So much room for activities!          " | strip }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ "          So much room for activities!          " | strip }}
+```
+
+## strip_html
+
+Removes any HTML tags from a string.
+
+#### Input
+
+```liquid
+{% raw %}
+{{ "Have <em>you</em> read <strong>Ulysses</strong>?" | strip_html }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ "Have <em>you</em> read <strong>Ulysses</strong>?" | strip_html }}
+```
+
+## strip_newlines
+
+Removes any newline characters (line breaks) from a string.
+
+#### Input
+
+```liquid
+{% raw %}
+{% capture string_with_newlines %}
+Hello
+there
+{% endcapture %}
+{{ string_with_newlines | strip_newlines }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{% capture string_with_newlines %}
+Hello
+there
+{% endcapture %}
+{{ string_with_newlines | strip_newlines }}
+```
+
+## times
+
+Multiplies a number by another number.
+
+#### Input
+
+```liquid
+{% raw %}
+{{ 3 | times: 2 }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ 3 | times: 2 }}
+```
+
+#### Input
+
+```liquid
+{% raw %}
+{{ 24 | times: 7 }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ 24 | times: 7 }}
+```
+
+#### Input
+
+```liquid
+{% raw %}
+{{ 183.357 | times: 12 }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ 183.357 | times: 12 }}
+```
+
+## truncate
+
+`truncate` shortens a string down to the number of characters passed as a parameter. If the number of characters specified is less than the length of the string, an ellipsis (…) is appended to the string and is included in the character count.
+
+#### Input
+
+```liquid
+{% raw %}
+{{ "Ground control to Major Tom." | truncate: 20 }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ "Ground control to Major Tom." | truncate: 20 }}
+```
+
+### Custom ellipsis
+
+`truncate` takes an optional second parameter that specifies the sequence of characters to be appended to the truncated string. By default, this is an ellipsis (…), but you can specify a different sequence.
+
+The length of the second parameter counts against the number of characters specified by the first parameter.
+For example, if you want to truncate a string to exactly 10 characters, and use a 3-character ellipsis, use 13 for the first parameter of `truncate`, since the ellipsis counts as 3 characters.
+
+#### Input
+
+```liquid
+{% raw %}
+{{ "Ground control to Major Tom." | truncate: 25, ", and so on" }}
+{% endraw %}
+```
+#### Output
+
+```liquid
+{{ "Ground control to Major Tom." | truncate: 25, ", and so on" }}
+```
+
+### No ellipsis
+
+You can truncate to the exact number of characters specified by the first parameter and show no trailing characters by passing a blank string as the second parameter:
+
+#### Input
+
+```liquid
+{% raw %}
+{{ "Ground control to Major Tom." | truncate: 20, "" }}
+{% endraw %}
+```
+#### Output
+
+```liquid
+{{ "Ground control to Major Tom." | truncate: 20, "" }}
+```
+
+## truncatewords
+
+Shortens a string down to the number of words passed as the argument. If the specified number of words is less than the number of words in the string, an ellipsis (…) is appended to the string.
+
+#### Input
+
+```liquid
+{% raw %}
+{{ "Ground control to Major Tom." | truncatewords: 3 }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ "Ground control to Major Tom." | truncatewords: 3 }}
+```
+
+### Custom ellipsis
+
+`truncatewords` takes an optional second parameter that specifies the sequence of characters to be appended to the truncated string. By default this is an ellipsis (…), but you can specify a different sequence.
+
+#### Input
+
+```liquid
+{% raw %}
+{{ "Ground control to Major Tom." | truncatewords: 3, "--" }}
+{% endraw %}
+
+```
+
+#### Output
+
+```liquid
+{{ "Ground control to Major Tom." | truncatewords: 3, "--" }}
+```
+
+### No ellipsis
+
+You can avoid showing trailing characters by passing a blank string as the second parameter:
+
+#### Input
+
+```liquid
+{% raw %}
+{{ "Ground control to Major Tom." | truncatewords: 3, "" }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ "Ground control to Major Tom." | truncatewords: 3, "" }}
+```
+
+## uniq
+
+Removes any duplicate elements in an array.
+
+#### Input
+
+```liquid
+{% raw %}
+{% assign my_array = "ants, bugs, bees, bugs, ants" | split: ", " %}
+{{ my_array | uniq | join: ", " }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{% assign my_array = "ants, bugs, bees, bugs, ants" | split: ", " %}
+{{ my_array | uniq | join: ", " }}
+```
+
+## upcase
+
+Makes each character in a string uppercase. It has no effect on strings which are already all uppercase.
+
+#### Input
+
+```liquid
+{% raw %}
+{{ "Parker Moore" | upcase }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ "Parker Moore" | upcase }}
+```
+
+#### Input
+
+```liquid
+{% raw %}
+{{ "TESLA" | upcase }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ "TESLA" | upcase }}
+```
+
+## url_decode
+
+Decodes a string that has been encoded as a URL or by `url_encode`.
+
+#### Input
+
+```liquid
+{% raw %}
+{{ "%27Stop%21%27+said+Fred" | url_decode }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ "%27Stop%21%27+said+Fred" | url_decode }}
+```
+
+## url_encode
+
+Converts any URL-unsafe characters in a string into percent-encoded characters.
+
+#### Input
+
+```liquid
+{% raw %}
+{{ "john@liquid.com" | url_encode }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ "john@liquid.com" | url_encode }}
+#### Input
+
+```liquid
+{% raw %}
+{{ "Nikola Tesla" | url_encode }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{{ "Nikola Tesla" | url_encode }}
+```

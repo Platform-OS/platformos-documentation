@@ -10,5 +10,7 @@ import './js/deepLinks';
 import './js/scrollToContent';
 import './js/feedback';
 import './js/remote-docs';
+import './js/toc';
+import './js/autosteps';
 
 Turbolinks.start();

@@ -2,55 +2,8 @@
 converter: markdown
 ---
 
-**Liquid filters** are simple methods that modify the output of numbers, strings, variables and objects. They are placed within an output tag `{% raw %}{{  }}{% endraw %}` and are denoted by a pipe character `|`.
+#### Liquid filters in platformOS
 
-Example:
-
-```liquid
-{% raw %}
-{{ "honda crx" | upcase }} => HONDA CRX
-{% endraw %}
-```
-
-Some filters accept arguments, for example replace filter accepts two:
-
-```liquid
-{% raw %}
-{{ 'Hello liquid' | replace: 'liquid', 'world!' }} => Hello world!
-{% endraw %}
-```
-
-Having verbose version of code that will:
-
-1. Create string with words
-2. Prepend "Zero," in front of the string
-3. Append ",Five" string at the end
-4. Split it by comma to create an array of strings
-5. Print it to the source
-
-```liquid
-{% raw %}
-{% assign numbers = 'One,Two,Three,Four' %}
-{% assign numbersWithZero = 'One,Two,Three,Four' | prepend: 'Zero,' %}
-{% assign all_numbers = numbersWithZero | append: ',Five' %}
-{% assign all_numbers_array = all_numbers | split: ',' %}
-{{ all_numbers_array }} => ZeroOneTwoThreeFourFive
-{% endraw %}
-```
-
-You can achieve the same result in much shorter form by chaining the filters one after another:
-
-```liquid
-{% raw %}
-{{ 'One,Two,Three,Four' | prepend: 'Zero,' | append: ',Five' | split: ',' }} => ZeroOneTwoThreeFourFive
-{% endraw %}
-```
-
-## Liquid filters in platformOS
-
-In platformOS you can use all standard Liquid filters:
-
-* [Official Liquid Documentation](https://shopify.github.io/liquid/)
-* [List of standard Liquid filters](https://github.com/Shopify/liquid/wiki/Liquid-for-Designers#standard-filters)
+In platformOS you can use all [standard Liquid filters](./api-reference/liquid/filters).
 
 Besides standard Liquid filters, you can also use custom Liquid filters we added.

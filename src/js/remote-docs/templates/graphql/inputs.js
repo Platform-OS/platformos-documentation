@@ -9,26 +9,26 @@ const inputFields = `<h4>Input fields</h4>
     </tr>
   </thead>
   <tbody>
-    <% item.input_fields.map(function(i) { %>
+    <%_ item.input_fields.map(function(i) { _%>
       <tr>
         <td>
-          <%= i.name %>
+          <%= i.name _%>
         </td>
         <td>
-          <% if (i.type) { %><%= i.type.name %><% } %>
+          <%_ if (i.type) { _%><%= i.type.name _%><%_ } _%>
         </td>
         <td class="text-capitalize">
-          <% if (i.description) { %><%= i.description %><% } %>
+          <%_ if (i.description) { _%><%= i.description _%><%_ } _%>
         </td>
       </tr>
-    <% }) %>
+    <%_ }) _%>
   </tbody>
 </table>
 `;
 
 const template = `<%_ items.map(function(item) { _%>
   <h3>
-    <%= item.name %>
+    <%= item.name _%>
   </h3>
 
   <div class="border-bottom mb-5 pb-4">
