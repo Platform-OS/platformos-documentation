@@ -1,7 +1,7 @@
 import { parseHeadings } from './helpers/headings';
 
 const getContainer = () => document.querySelector('[data-autotoc]');
-const getHeadings = () => [...document.querySelectorAll('.content h2[id]')] || [];
+const getHeadings = () => Array.prototype.slice.call(document.querySelectorAll('.content h2[id]')) || [];
 
 const generateTOCList = headings => {
   return headings

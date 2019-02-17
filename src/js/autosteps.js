@@ -2,7 +2,10 @@ import { parseHeadings } from './helpers/headings';
 
 const isStep = h => /^Step \d+:/.test(h.textContent);
 const getContainer = () => document.querySelector('[data-autosteps]');
-const getSteps = () => [...document.querySelectorAll('.content h3')].filter(isStep);
+const getSteps = () => {
+  const headings = Array.prototype.slice.call(document.querySelectorAll('.content h3')) || [];
+  return headings.filter(isStep);
+};
 
 const generateSteps = headings => {
   return headings
