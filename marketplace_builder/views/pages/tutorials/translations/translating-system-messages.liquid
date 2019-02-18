@@ -1,27 +1,29 @@
 ---
 converter: markdown
 metadata:
-  title: Translating system messages
-  description: Learn how to internationalize form errors, authorization policies and other system messages.
-slug: tutorials/translations/translating-system-messages
+  title: Translations: System Messages
+  description: This topic describes how to internationalize form errors, authorization policies, and other system messages.
+slug: tutorials/translations/system-messages
 searchable: true
 ---
+
+This topic describes how to internationalize form errors, authorization policies, and other system messages.
 
 ## Form validation messages
 
 You can provide messages that will be applied to different validation errors in different languages.
 
-There are special variables available to use inside translation keys to make your messages look more complete.
+There are special variables available to use inside the translation keys to make your messages look more complete.
 
 #### Always available
 
-* model - resource name, f.e. `car`
-* attribute - attribute name, f.e. `maker`
-* value - value of attribute provided by user, which failed validation, f.e. `h000nda`
+* model: resource name, e.g. `car`
+* attribute: attribute name, e.g. `maker`
+* value: value of attribute provided by the user, which failed validation, e.g. `h000nda`
 
 #### Contextual
 
-* count - available in cases where there is a numeric limit/range, f.e. 180 characters passed in a field that has character limit of 140.
+* count: available in cases where there is a numeric limit/range, f.e. 180 characters passed in a field that has character limit of 140.
 
 The default error messages are:
 
@@ -60,7 +62,7 @@ en:
       even: "must be even"
 ```
 
-To override those messages, just create your own `translations/en.yml` file in marketplace_builder or your module directory.
+To override these messages, just create your own `translations/en.yml` file in the `marketplace_builder` folder or your module directory.
 
 You can override only one message if you wish.
 
@@ -70,12 +72,12 @@ You can override only one message if you wish.
 en:
   errors:
     empty: "%{attribute} cannot be empty"
-    blank: "Please fill %{attribute}"
+    blank: "Please fill in %{attribute}"
 ```
 
 ## Authorization policies
 
-You can also use translations to internationalize `flash_alert` property in authorization policies.
+You can also use translations to internationalize the `flash_alert` property in authorization policies.
 
 #### authorization_policies/always_fail
 
