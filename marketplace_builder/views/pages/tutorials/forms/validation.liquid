@@ -34,12 +34,15 @@ A form with the above configuration will not be valid without title property pas
 You can use the following validation types:
 
 ### presence
+
 ```yaml
 title:
   validation:
     presence: true
 ```
+
 ### unique
+
 ```yaml
 fields:
   properties:
@@ -51,13 +54,30 @@ fields:
             - other_property
           message: Must be uniq
 ```
+
 ### confirmation
+
+This validation is used when the same value needs to be entered twice.
+
+When you set it to true, the system will require a second form value to be sent to validate. The field will be named `<field_name>_confirmation.`
+
+For example, a `password` field with `confirmation: true` will expect both the `password` and the `password_confirmation` fields to be equal.
+
+This means you need to add the `password_confirmation` field to your form configuration. Because it does not have to be saved into the database, it can be virtual.
+
+The default error message for this validator is the "doesn't match %{attribute}".
+
 ```yaml
-email:
+password:
   validation:
     confirmation: true
+password_confirmation:
+  property_options:
+    virtual: true
 ```
+
 ### inclusion / exclusion
+
 ```yaml
    malpractice_history:
       validation:
@@ -67,17 +87,19 @@ email:
 ```
 
 ### format
+
 ```yaml
 phone:
   validation:
     presence: true
     format:
-      with: !ruby/regexp /\A[+]?[\d \-()]+\z/
+      with: \A[+]?[\d \-()]+\z
       allow_blank: true
       message: This seems to be an invalid phone number. Please try using numbers only
 ```
 
 ### file_content_type
+
 ```yaml
 custom_attachments:
   document:
@@ -95,7 +117,7 @@ custom_attachments:
 
 ### file_extension
 
-Validation of file extension uploaded as custom_attachement:
+Validation of file extension uploaded as `custom_attachment`:
 
 Example:
 
@@ -111,6 +133,7 @@ custom_attachments:
 ```
 
 ### length
+
 ```yaml
 attachments:
   validation:
@@ -121,10 +144,11 @@ attachments:
 
 The possible length constraint options are:
 
-* minimum - The attribute cannot have less than the specified length.
-* maximum - The attribute cannot have more than the specified length.
-* in (or within) - The attribute length must be included in a given interval. The value for this option must be a range.
-* is - The attribute length must be equal to the given value.
+| Validation | Description | Default error message |
+|-----------|-------------|------------------------|
+| minimum | Cannot have less than the specified number | is too short (minimum is %{count} characters) |
+| maximum | Cannot have more than the specified number | is too long (maximum is %{count} characters) |
+| is | The attribute length must be equal to the given number. | is the wrong length (should be %{count} characters) |
 
 ### numericality
 
@@ -135,17 +159,19 @@ rate_amount:
     numericality:
       greater_than_or_equal_to: 0
 ```
+
 Available options are:
 
-* only_integer
-* greater_than - Specifies that the value must be greater than the supplied value. The default error message for this option is "must be greater than %{count}".
-* greater_than_or_equal_to - Specifies that the value must be greater than or equal to the supplied value. The default error message for this option is "must be greater than or equal to %{count}".
-* equal_to - Specifies that the value must be equal to the supplied value. The default error message for this option is "must be equal to %{count}".
-* less_than - Specifies that the value must be less than the supplied value. The default error message for this option is "must be less than %{count}".
-* less_than_or_equal_to - Specifies that the value must be less than or equal to the supplied value. The default error message for this option is "must be less than or equal to %{count}".
-* other_than - Specifies that the value must be other than the supplied value. The default error message for this option is "must be other than %{count}".
-* odd - Specifies that the value must be an odd number if set to true. The default error message for this option is "must be odd".
-* even - Specifies that the value must be an even number if set to true. The default error message for this option is "must be even".
+| Validation | Description | Default error message |
+|-----------|-------------|------------------------|
+| greater_than | Input must be greater than the set value | must be greater than %{count} |
+| greater_than_or_equal_to | Input must be greater than or equal to the set value | must be greater than or equal to %{count} |
+| equal_to | Input must be equal to the set value | must be equal to %{count} |
+| less_than | Input must be less than the set value | must be less than %{count} |
+| less_than_or_equal_to | Input must be less than or equal to the set value | must be less than or equal to %{count} |
+| other_than | Input must be other than the set value | must be other than %{count} |
+| odd | Input must be an odd number if set to true | must be odd |
+| even | Input must be an even number if set to true | must be even |
 
 ## Conditional Validation
 
@@ -162,6 +188,7 @@ expiry_year:
 ## Common Validation Options
 
 ### message
+
 It is possible to overwrite the default message with additional fields:
 
 ```yaml
@@ -173,9 +200,11 @@ customizations:
 ```
 
 ### allow_nil
+
 The `allow_nil` option skips the validation when the value being validated is nil.
 
 ### allow_blank
+
 Allows passing an empty string.
 
 ### Validation Errors
