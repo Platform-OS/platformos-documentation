@@ -53,7 +53,9 @@ For example, the following mutation can be put into the file created by the comm
 
 ### Step 3: Run migration
 
-Deployment will try to run migrations one by one (ordered by timestamp) and it will fail if one of the migrations fails.
+{% include 'alert/note', content: 'You can use deploy or sync but the migration you want to be executed has to be delivered to target environment first' %}
+
+Deployment will upload and try to run migrations one by one (ordered by timestamp) and it will fail if one of the migrations fails.
 
 The `marketplace-kit migrations run` command runs a single migration:
 
