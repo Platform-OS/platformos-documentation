@@ -8,10 +8,8 @@ import(/* webpackChunkName: "vendor" */ 'ejs/ejs.min').then(ejs => {
       return false;
     }
 
-    const userProvidedSource = document.location.search.split('=').pop();
-
     const docsType = container().dataset.remoteDocsContent;
-    const url = userProvidedSource ? userProvidedSource : container().dataset.remoteDocsUrl;
+    const url = container().dataset.remoteDocsUrl;
     const template = templates[docsType];
 
     fetch(url)

@@ -1,4 +1,20 @@
-<link rel="stylesheet" type="text/css" href="{{ 'app.css' | asset_url }}" data-turbolinks-track="reload" />
+{% comment %}
+  See critical.scss for source, assets/critical.css for built product to copy
+{% endcomment %}
+<style>{% include 'layouts/critical_css' %}</style>
+{% comment %} <link rel="stylesheet" type="text/css" href="{{ 'critical.css' | asset_url }}" data-turbolinks-track="reload" /> {% endcomment %}
 
-{% comment %} Migrate to FA JS version with treeshaking {% endcomment %}
-{% comment %} <link rel="stylesheet" type="text/css" href="{{ 'css/fa.min.css' | asset_url }}" /> {% endcomment %}
+<link rel="preload" href="{{ 'app.css' | asset_url }}" as="style">
+
+<noscript>
+  <link rel="stylesheet" type="text/css" href="{{ 'app.css' | asset_url }}" data-turbolinks-track="reload" />
+</noscript>
+
+<script type="text/javascript">
+  var css = document.createElement('link');
+  css.rel = 'stylesheet';
+  css.href = '{{ "app.css" | asset_url }}';
+  css.type = 'text/css';
+  var godefer = document.getElementsByTagName('link')[0];
+  godefer.parentNode.insertBefore(css, godefer);
+</script>

@@ -9,5 +9,7 @@ metadata:
 <div data-autotoc></div>
 
 {%- include 'reference/remote-docs-path', file: 'tags.json' -%}
-
+{% content_for 'page-specific' %}
+<link rel="preload" href="{{ url }}" as="fetch" crossorigin="anonymous">
+{% endcontent_for %}
 <div data-remote-docs-content="tags" data-remote-docs-url="{{ url }}"></div>

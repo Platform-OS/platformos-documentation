@@ -7,4 +7,7 @@ searchable: true
 ---
 
 {%- include 'reference/remote-docs-path', file: 'graphql/operations.json' -%}
+{% content_for 'page-specific' %}
+<link rel="preload" href="{{ url }}" as="fetch" crossorigin="anonymous">
+{% endcontent_for %}
 <div data-remote-docs-content="graphql-queries" data-remote-docs-url="{{ url }}"></div>
