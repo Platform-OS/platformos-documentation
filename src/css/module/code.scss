@@ -5,7 +5,10 @@ code {
 }
 
 p > code {
-  word-break: break-all; // prevent code stretching layout on mobile
+  word-break: break-all;
+  @include media-breakpoint-up(md) {
+    word-break: keep-all;
+  }
 }
 
 pre code {
