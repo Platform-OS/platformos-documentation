@@ -1,6 +1,9 @@
 {% comment %}
   See critical.scss for source, assets/critical.css for built product to copy
 {% endcomment %}
+
+{% unless context.is_xhr %}
+
 <style>{% include 'layouts/critical_css' %}</style>
 
 <link rel="preload" href="{{ 'app.css' | asset_url }}" as="style">
@@ -17,3 +20,5 @@
   var godefer = document.getElementsByTagName('link')[0];
   godefer.parentNode.insertBefore(css, godefer);
 </script>
+
+{% endunless %}
