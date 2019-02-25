@@ -9,7 +9,7 @@ searchable: true
 
 This topic describes **data import** from the new stack.
 
-Data to be imported needs to be in JSON format:
+Data to be imported needs to be in JSON format, it is array of [user data](/api-reference/graphql/inputs#userimport) and array of [models data](/api-reference/graphql/inputs#customizationimport):
 
 ```json
 {
@@ -22,19 +22,19 @@ You can generate data from an existing Instance with the `marketplace-kit data e
 
 ## General information
 
-Before import, your model schemas need to be deployed.
+- Before import, your model schemas need to be deployed.
 
-When importing data, the `id` fields will be changed. Relations will be kept. If you have your own relations defined in properties, you need to first describe them in model schema files - [read more about this here](/tutorials/data-import-export/model-relations).
+- When importing data, the `id` fields will be changed. Relations will be kept. If you have your own relations defined in properties, you need to first describe them in model schema files - [read more about this here](/tutorials/data-import-export/model-relations).
 
-If you test your imports and need to clean Instance data, use the `marketplace-kit data clean` command. Note, that this command will work only on staging Instances.
+- If you test your imports and need to clean Instance data, use the `marketplace-kit data clean` command. Note, that this command will work only on staging Instances.
 
-When you run import twice, it will try to match previously imported data without removing existing changes. For example:
-1. You have a model `shirt` with properties: `color`, `size`
-2. First import adds new `shirt` with JSON: `{ "id": 1, "properties": { "color": "red" }}`
-3. User sets attributes of `shirt`, now `shirt` has the following properties: `{ "color": "green", "size": "large" }`
-4. Second import with the same file changes `shirt` object to: `{ "color": "red", "size": "large" }`
+- When you run import twice, it will try to match previously imported data without removing existing changes. Example:
+  1. You have a model `shirt` with properties: `color`, `size`
+  2. First import adds new `shirt` with JSON: `{ "id": 1, "properties": { "color": "red" }}`
+  3. User sets attributes of `shirt`, now `shirt` has the following properties: `{ "color": "green", "size": "large" }`
+  4. Second import with the same file changes `shirt` object to: `{ "color": "red", "size": "large" }`
 
-Import will only do basic validations, such us email uniqueness on users, the existence of properties, and type validation. It doesn't check any of the validations defined on forms.
+- Import will only do basic validations, such us email uniqueness on users, the existence of properties, and type validation. It doesn't check any of the validations defined on forms.
 
 ## Data Import with CLI
 
@@ -52,7 +52,7 @@ Under the hood, the CLI uses the GraphQL import API that's described in the next
 
 ### Input format
 
-The required data format is a JSON file with users and models keys that have an array of maps. Each of those collections needs to be in the same format as a corresponding GraphQL mutation. Under the hood import is just a set of mutations: `import_users()`, `import_models()`. When importing data using the CLI, the file should contain data in a format that matches the following structure:
+The required data format is a JSON file with users and models keys that have an array of maps. Each of those collections needs to be in the same format as a corresponding GraphQL mutation. Under the hood import is just a set of mutations: [`import_users()`](/api-reference/graphql/mutations#import_users), [`import_models()`](/api-reference/graphql/mutations#import_models). When importing data using the CLI, the file should contain data in a format that matches the following structure:
 
 ```json
 {
@@ -73,7 +73,7 @@ marketplace-kit data import --path=data.json staging-instance
 
 It is possible to import data using GraphQL mutations. This gives you more flexibility, and even allows you to create your own import tool as a website feature. Please remember to handle authentication properly.
 
-There are two main mutations for importing `import_users` and `import_models`. You can create a page that will import sent data.
+There are two main mutations for importing [`import_users()`](/api-reference/graphql/mutations#import_users) and [`import_models()`](/api-reference/graphql/mutations#import_models). You can create a page that will import sent data.
 
 ```graphql
 mutation import_data(

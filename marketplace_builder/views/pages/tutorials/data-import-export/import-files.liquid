@@ -1,0 +1,58 @@
+---
+converter: markdown
+metadata:
+  title: Data Import Files
+  description: Importing images and attachments
+slug: tutorials/data-import-export/import-files
+searchable: true
+---
+
+This topic describes importing files: **images** and **attachments**.
+
+Models and Users can store [images](/tutorials/properties/custom-attachments) and [attachments](/tutorials/properties/custom-images) in properties. To import them you need to have proper data model in [*.yml files](/tutorials/properties/user-defined). Here is example model with images and attachments:
+
+```yml
+name: car
+properties:
+- name: color
+  type: string
+- name: car_document
+  type: file
+- name: car_photo
+  type: image
+```
+
+## Uploading files with cli
+
+To import files with `marketplace-kit` you need to prepare `json` file with paths to existing files. You need to have those files on your disk. More info about structure in [reference docs](/api-reference/graphql/inputs#customizationimport). Here is example json that assumes you have files in `import_files/` directory:
+
+```json
+{
+  "models": [
+    {
+      "id": "id",
+      "type_name": "car"
+      "user_id": null,
+      "properties": {
+        "color": "red"
+      },
+      "attachments": [
+        {
+          "url": "import_files/offer.pdf",
+          "name": "car_document"
+        }
+      ],
+      "images": [
+        {
+        "url": "import_files/car.png",
+        "name": "car_photo"
+        }
+      ]
+    }
+  ]
+}
+```
+
+During the import `marketplace-kit` will upload the files to our storage and match them with corresponding records.
+
+{% include 'shared/questions_section' %}
