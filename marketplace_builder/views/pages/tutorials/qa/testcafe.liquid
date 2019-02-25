@@ -1,0 +1,148 @@
+---
+slug: tutorials/qa/testcafe
+metadata:
+  title: Introduction to the test framework Test Cafe
+  description: TO DO
+searchable: true
+converter: markdown
+---
+
+## Introduction
+The end-2-end tests are part of a quality process, which should be maintained while developing an application. These tests, together with unit and integration ones, play a very important role, because they check the functioning of the application from the beginning to the end. Thanks to them, we gain the confirmation that the application works as expected, and that individual components cooperate with each other.
+
+[TestCafe](https://devexpress.github.io/testcafe/documentation/using-testcafe/installing-testcafe.html) is an open-source, Node.js-based end-to-end testing framework for web apps, unlike other solutions, it doesn't use WebDriver to work with browsers. That's why it requires minimal testing environment and it's installed with a single command.
+
+Presented tool will work perfectly for writing e2e tests in the JavaScript language. It has a very good documentation and a constantly increasing community. It's perfect for integrating with the continuous integration systems
+
+In this guide, I will present:
+* Framework installation
+* A guide showing a simple test
+* Test using the Page Object pattern
+
+## TestCafe installation
+First, the Node.js and npm should be installed, then install the TestCafe with a command.
+
+<pre class="command-line" data-output="2-4" data-user="user" data-host="host"><code class="language-bash">
+npm install -g testcafe
+</code></pre>
+
+## Writing a Test
+To write the first test, we will use a site with examples from the platformOS documentation.
+
+First, we will determine the fixture declaration. A fixture is a test category and each test file requires its determination.
+
+```liquid
+{% raw %}
+fixture `My First Fixture`
+    .page `https://examples.platform-os.com/full-form-example`;
+{% endraw %}
+```
+
+The whole test will look as following
+
+```liquid
+{% raw %}
+import {
+  Selector
+} from 'testcafe';
+
+fixture `My first fixture`
+  .page `https://examples.platform-os.com/full-form-example`;
+
+test('My first test', async t => {
+
+  const successNotification = Selector('.alert.alert-success')
+
+  await t
+    .typeText('#form_email', 'user_test@test.com')
+    .click('button.btn.btn-primary')
+    .expect(successNotification.innerText).eql('This is flash notice (success)');
+});
+{% endraw %}
+```
+
+The test will execute the following scenario:
+1. Go to the indicated URL address
+2. Enter an e-mail address
+3. Click the Save button
+4. The expected result will be the appearance of a notification with the text
+This is flash notice (success)
+
+In order to launch the test in the terminal window you should perform
+
+<pre class="command-line" data-output="2-4" data-user="user" data-host="host"><code class="language-bash">
+testcafe chrome test.js
+</code></pre>
+
+TestCafe will automatically find and start the test in the Chrome browser.
+
+To list the browsers available in your system, you can use the command
+
+<pre class="command-line" data-output="2-4" data-user="user" data-host="host"><code class="language-bash">
+testcafe --list-browsers
+</code></pre>
+
+<img src="{{ 'images/tutorials/qa/list_browsers.png' | asset_url }}" alt="List browsers" />
+
+## Page Object Model
+A good practice is to use the Page Object Model (POM) pattern. It consists of selectors, URL addresses and constants, which we will use in a separate "page" file. We will import this file to our test, and then assign the action to be executed on each element.
+Thanks to this approach, it will be easier to maintain the tests, because if there is a necessity to make some changes, the test itself will remain intact, and it will be possible to modify the selectors or URL addresses alone in one "page" file.
+
+In the catalog with an example test, create a /pages folder, and in it, a page-object.js file together with a Page class.
+
+```liquid
+{% raw %}
+export default class Page {
+    constructor () {
+    }
+}
+{% endraw %}
+```
+Next thing will be to add three selectors used in the test in the Page class.
+
+```liquid
+{% raw %}
+import {
+  Selector
+} from 'testcafe';
+
+export default class Page {
+  constructor() {
+    this.successNotification = Selector('#developer-name');
+    this.emailInput = Selector('#form_email')
+    this.submitButton = Selector('button.btn.btn-primary');
+  }
+}
+{% endraw %}
+```
+
+The page-object.js link has to be created in the test file, as well as the instance of the Page class. 
+Then, we will use these fields in the test actions:
+
+```liquid
+{% raw %}
+import Page from './pages/page-object';
+
+const page = new Page();
+
+fixture `My first fixture`
+  .page `https://examples.platform-os.com/full-form-example`;
+
+test('My first test', async t => {
+
+  await t
+    .typeText(page.emailInput, 'user_test@test.com')
+    .click(page.submitButton)
+    .expect(page.successNotification.innerText).eql('This is flash notice (success)');
+});
+{% endraw %}
+```
+
+Let's start the test again and check its result.
+
+<img src="{{ 'images/tutorials/qa/test_results.png' | asset_url }}" alt="Test results" />
+
+I hope that the above article explained the possibilities of writing tests using Test Cafe. 
+If you want to share your comments or observations, you are welcome to contact me.
+
+{% include 'shared/questions_section' %}
