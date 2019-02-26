@@ -1,7 +1,7 @@
 import MetisMenu from 'metismenujs';
 import getParentsUntil from './helpers/getParentsUntil';
 
-const getActiveLink = ({ menu, path }) => menu.querySelector(`a[href="${path}"]`);
+const getActiveLink = menu => menu.querySelector(`a[href="${location.pathname}"]`);
 
 const markActiveLink = activeLink => {
   activeLink.closest('li').classList.add('last-level-nested', 'active');
@@ -19,17 +19,19 @@ const markActiveParents = activeLink => {
 
 const initialize = () => {
   const menu = document.querySelector('.sidebar-menu');
-  const path = location.pathname;
-  const activeLink = getActiveLink({ menu, path });
 
-  new MetisMenu('.sidebar-menu');
-
-  if (!menu || !activeLink) {
+  if (!menu) {
     return;
   }
 
-  markActiveParents(activeLink);
-  markActiveLink(activeLink);
+  new MetisMenu('.sidebar-menu');
+
+  const activeLink = getActiveLink(menu);
+
+  if (activeLink) {
+    markActiveParents(activeLink);
+    markActiveLink(activeLink);
+  }
 };
 
 document.addEventListener('turbolinks:load', initialize);
