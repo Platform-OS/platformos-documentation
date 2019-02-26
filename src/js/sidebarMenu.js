@@ -1,36 +1,33 @@
 import MetisMenu from 'metismenujs';
 import getParentsUntil from './helpers/getParentsUntil';
 
-const getActiveLink = menu => menu.querySelector(`a[href="${location.pathname}"]`);
+const MENU_CLASS = '.sidebar-menu';
 
-const markActiveLink = activeLink => {
-  activeLink.closest('li').classList.add('last-level-nested', 'active');
-};
+const addActiveClasses = link => {
+  link.closest('li').classList.add('last-level-nested', 'active');
 
-const markActiveParents = activeLink => {
-  getParentsUntil(activeLink, '.sidebar-menu')
+  getParentsUntil(link, MENU_CLASS)
     .filter(el => el.matches('.sub-menu'))
     .map(el => el.classList.add('in'));
 
-  getParentsUntil(activeLink, '.sidebar-menu')
+  getParentsUntil(link, MENU_CLASS)
     .filter(el => el.matches('.has-submenu'))
     .map(el => el.classList.add('active'));
 };
 
 const initialize = () => {
-  const menu = document.querySelector('.sidebar-menu');
+  const menu = document.querySelector(MENU_CLASS);
 
   if (!menu) {
     return;
   }
 
-  new MetisMenu('.sidebar-menu');
+  new MetisMenu(MENU_CLASS);
 
-  const activeLink = getActiveLink(menu);
+  const activeLink = menu.querySelector(`a[href="${location.pathname}"]`);
 
   if (activeLink) {
-    markActiveParents(activeLink);
-    markActiveLink(activeLink);
+    addActiveClasses(activeLink);
   }
 };
 
