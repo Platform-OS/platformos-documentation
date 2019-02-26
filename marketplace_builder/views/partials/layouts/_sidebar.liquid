@@ -10,6 +10,11 @@
 </form>
 
 {% include 'shared/nav-links' %}
+
+{% assign navCacheKey = navLinks | json | sha1 %}
+
+{% cache navCacheKey %}
 <ul class="metismenu sidebar-menu">
   {% include 'shared/navigation', links: navLinks %}
 </ul>
+{% endcache %}
