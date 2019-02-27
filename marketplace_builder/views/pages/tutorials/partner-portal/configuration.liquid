@@ -1,0 +1,93 @@
+---
+converter: markdown
+metadata:
+  title: Instance configuration description
+  description: This guide will describe what certain configuration options do.
+slug: tutorials/partner-portal/instance-configuration-description
+searchable: true
+---
+
+This guide will describe what certain configuration options do.
+
+## Introduction
+
+This is advanced topic. Do not attempt to change any configuration if you don't know what you are doing. Incorrect changes make your instance unusable for users.
+
+On the Partner Portal, go to _Instances_, select your Instance, and click on _Update configuration_ button.
+
+This will present show you Instance configuration in read-only mode in form of a JSON snapshot.
+
+This section is describing _attributes_ part of this JSON.
+
+## Attributes
+
+### enable_sms_and_api_workflow_alerts_on_staging
+
+We do not send real text messages on staging by default.
+
+Because any error with sending real text messages on staging might be more costly than sending emails.
+
+{% include 'alert/important', content: "Using real SMS will affect your billing." %}
+
+Default value: `false`
+
+#### Example
+
+```json
+"enable_sms_and_api_workflow_alerts_on_staging": true
+```
+
+### include_tag_with_private_scope
+
+By default Liquid variables defined inside a partial leak outside of them, which means, any variable is a global variable.
+
+We received a lot of requests to make it better, so we changed that behavior and introduced [export tag](/api-reference/liquid/platformos-tags#export).
+
+From that point in time all newly created instances have variables scoped to the partials and this flag set to `true`.
+
+Flag was added to keep backwards compatibility of instances that have been written with standard Liquid behavior in mind.
+
+We strongly recommend keeping it `true` and migrating your projects to use private scopes to increase predictability and
+
+Default value: `true`
+
+#### Example
+
+```json
+"include_tag_with_private_scope": true
+```
+
+### maintenance_mode
+
+This settings redirects all incoming requests to `/maintenance` path on your instance, with HTTP status code `503`.
+Page contains message: `Temporarily down for maintenance.`.
+
+{% comment %} TODO: Add information how to customize this page  {% endcomment %}
+
+Default value: `false`
+
+#### Example
+
+```json
+"maintenance_mode": true
+```
+
+### test_email
+
+By default emails on staging are not going to the email recipient defined inside the email notification, but to email(s) defined in this attribute.
+
+You can enter multiple emails, comma-separated.
+
+Default value: `""`
+
+#### Example
+
+```json
+"test_email": "sales@platform-os.com,developer@platform-os.com,support@platform-os.com"
+```
+
+
+## Deprecated attributes
+
+* test_mode
+* skip_action_types_and_pricings
