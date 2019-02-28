@@ -1,0 +1,82 @@
+---
+slug: tutorials/qa/using-pom-testcafe
+metadata:
+  title: Using the Page Object Model with TestCafe 
+  description: This guide will help you use the Page Object Model (POM) pattern with TestCafe. 
+searchable: true
+converter: markdown
+---
+
+This guide will help you use the Page Object Model (POM) pattern with TestCafe. 
+
+The Page Object Model (POM) pattern consists of selectors, URL addresses, and constants, which you can use in a separate "page" file. You import this file to your test, and then assign the action to be executed on each element.
+
+Thanks to this approach, it will be easier to maintain the tests, because if there is a necessity to make some changes, the test itself will remain intact, and it will be possible to only modify the selectors or URL addresses in one "page" file.
+
+## Requirements
+To follow the steps in this tutorial, you should be familiar with writing TestCafe tests:
+
+* [Writing a TestCafe Test](/tutorials/qa/writing-testcafe-test)
+
+## Steps
+Using the Page Object Model with TestCafe is a four-step process:
+
+<div data-autosteps></div>
+
+### Step 1: Create page-object.js 
+
+In the catalog with an example test, create a `/pages` folder, and in it, a `page-object.js` file with a Page class.
+
+```js
+export default class Page {
+    constructor () {
+    }
+}
+```
+
+### Step 2: Add selectors 
+
+Add three selectors used in the test in the Page class.
+
+```js
+import {
+  Selector
+} from 'testcafe';
+
+export default class Page {
+  constructor() {
+    this.successNotification = Selector('#developer-name');
+    this.emailInput = Selector('#form_email')
+    this.submitButton = Selector('button.btn.btn-primary');
+  }
+}
+```
+
+### Step 3: Create page-object.js links and use them
+
+Create page-object.js links in the test file, as well as in the instance of the Page class. Then, use these fields in the test actions:
+
+```js
+import Page from './pages/page-object';
+
+const page = new Page();
+
+fixture `My first fixture`
+  .page `https://examples.platform-os.com/full-form-example`;
+
+test('My first test', async t => {
+
+  await t
+    .typeText(page.emailInput, 'user_test@test.com')
+    .click(page.submitButton)
+    .expect(page.successNotification.innerText).eql('This is flash notice (success)');
+});
+```
+
+### Step 4: Start test
+Start the test and check its result.
+
+<img src="{{ 'images/tutorials/qa/test_results.png' | asset_url }}" alt="Test results" />
+
+
+{% include 'shared/questions_section' %}
