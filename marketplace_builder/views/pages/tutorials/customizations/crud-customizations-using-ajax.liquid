@@ -24,7 +24,7 @@ Managing Customizations using AJAX by implementing the full CRUD cycle is a five
 
 Create required files for your implementation:
 
-#### marketplace_builder/custom_model_types/feedback.yml
+#### custom_model_types/feedback.yml
 
 ```yaml
 name: feedback
@@ -35,7 +35,7 @@ properties:
   type: string
 ```
 
-#### marketplace_builder/form_configurations/feedback.liquid
+#### form_configurations/feedback.liquid
 
 ``` yaml
 ---
@@ -50,16 +50,16 @@ fields:
       validation: { presence: false }
 ---
 {%- raw -%}
-{% include 'feedback/create' %}
-{% include 'feedback/read' %}
-{% include 'feedback/update' %}
-{% include 'feedback/delete' %}
+{% include 'modules/feedback/create' %}
+{% include 'modules/feedback/read' %}
+{% include 'modules/feedback/update' %}
+{% include 'modules/feedback/delete' %}
 {% endraw %}
 ```
 
 {% include 'alert/warning', content: 'For example purposes `resource_owner` is set to `anyone`, which means on live example page you will be able to edit any record. In real life scenario it is recommended to set <a href="/tutorials/authorization-policy/authorization-policy">Authorization Policy</a> to prevent even not logged in user to submit a form.' %}
 
-#### marketplace_builder/assets/Feedback.js
+#### assets/Feedback.js
 ```javascript
 const request = ({ url, form }) => {
   fetch(url, {
@@ -76,7 +76,7 @@ const request = ({ url, form }) => {
 
 First, create a simple form that works without JavaScript:
 
-#### marketplace_builder/views/partials/feedback/create.liquid
+#### views/partials/create.liquid
 
 ```liquid
 {%- raw -%}
@@ -107,7 +107,7 @@ First, create a simple form that works without JavaScript:
 
 Then add JavaScript to make it work in the background:
 
-#### marketplace_builder/assets/Feedback.js
+#### assets/Feedback.js
 
 ```javascript
 [...]
@@ -129,7 +129,7 @@ createForm.addEventListener("submit", Create);
 
 First, you'll need a GraphQL query to pull out the data:
 
-#### marketplace_builder/graph_queries/feedback.graphql
+#### graph_queries/feedback.graphql
 
 ```graphql
 query feedback($per_page: Int = 10) {
@@ -151,7 +151,7 @@ query feedback($per_page: Int = 10) {
 
 Then you need to create a page that returns JSON with the data:
 
-#### marketplace_builder/views/pages/feedback/feedback_list.liquid
+#### views/pages/feedback_list.liquid
 
 ```liquid
 ---
@@ -160,14 +160,14 @@ layout_name: ''
 format: json
 ---
 {%- raw -%}
-{%- query_graph "feedback", result_name: 'recent', per_page: 10 -%}
+{%- query_graph "modules/feedback/feedback", result_name: 'recent', per_page: 10 -%}
 {{ recent.customizations.results | json }}
 {% endraw %}
 ```
 
 You also need some HTML that will contain the data, and a button that will trigger data download:
 
-#### marketplace_builder/views/partials/feedback/read.liquid
+#### views/partials/read.liquid
 
 ```html
 <button type="button" data-button="refreshRead">Refresh content from the server</button>
@@ -185,7 +185,7 @@ You also need some HTML that will contain the data, and a button that will trigg
 
 You also need JavaScript to get the data from the server and render it into the HTML:
 
-#### marketplace_builder/assets/Feedback.js
+#### assets/Feedback.js
 
 ```javascript
 const updateReadTable = data => {
@@ -219,7 +219,7 @@ The update form is similar to Create, with a couple of differences:
 1. Add hidden input with `_method` set to PUT
 2. Send ID of Customization you want to edit
 
-#### marketplace_builder/views/partials/feedback/update.liquid
+#### views/partials/update.liquid
 
 ```html
 {%- raw -%}
@@ -254,7 +254,7 @@ The update form is similar to Create, with a couple of differences:
 
 JavaScript is also very similar, but it takes ID from input defined above and puts it into the URL.
 
-#### marketplace_builder/assets/Feedback.js
+#### assets/Feedback.js
 
 ```javascript
 [...]
@@ -277,7 +277,7 @@ updateForm.addEventListener("submit", Update);
 
 The delete operation also needs `method` and `id` because underneath it all, it is just an update.
 
-#### marketplace_builder/views/partials/feedback/delete.liquid
+#### views/partials/delete.liquid
 
 ```liquid
 {%- raw -%}
@@ -290,7 +290,7 @@ The delete operation also needs `method` and `id` because underneath it all, it 
 {% endraw %}
 ```
 
-#### marketplace_builder/assets/Feedback.js
+#### assets/Feedback.js
 
 ```javascript
 const Delete = event => {
@@ -311,7 +311,7 @@ deleteForm.addEventListener("submit", Delete);
 
 To play with a live example (in much fuller form and with additional information) go to [feedback example](https://examples.platform-os.com/feedback) page.
 
-[Source code](https://github.com/mdyd-dev/marketplace-nearme-example) can be found on GitHub. You can also review [example code commit](https://github.com/mdyd-dev/marketplace-nearme-example/commit/ee636cb8903d11f860abb13b8fc6c4cc352ffabb) for this particular article.
+[Source code](https://github.com/mdyd-dev/marketplace-nearme-example/tree/release_candidate/modules/feedback) can be found on GitHub.
 
 ## Next steps
 
