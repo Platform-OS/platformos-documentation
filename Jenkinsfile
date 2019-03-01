@@ -44,7 +44,7 @@ pipeline {
 
       post {
         success {
-          slackSend (channel: "#notifications-docs", color: '#00FF00', message: "BUILD SUCCESS: <${MP_URL}|Preview site>")
+          slackSend (channel: "#notifications-docs", color: '#00FF00', message: "SUCCESS: <${MP_URL}|Preview site> <${env.BUILD_URL}|Build #${env.BUILD_NUMBER}> \n ${commitInfo}")
         }
 
         failure {
