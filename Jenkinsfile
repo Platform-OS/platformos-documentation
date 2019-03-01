@@ -35,7 +35,7 @@ pipeline {
           commitInfo = "<${GITHUB_URL}/commit/${commitSha}|${commitSha}> - ${commitAuthor} - ${commitMsg}"
         }
 
-        slackSend (channel: "#notifications-docs", message: "BUILD START: <${env.BUILD_URL}|Build #${env.BUILD_NUMBER}> (<${MP_URL}|Staging>) \n ${commitInfo}")
+        // slackSend (channel: "#notifications-docs", message: "BUILD START: <${env.BUILD_URL}|Build #${env.BUILD_NUMBER}> (<${MP_URL}|Staging>) \n ${commitInfo}")
 
         sh 'bash -l ./scripts/build.sh'
         sh 'bash -l ./scripts/deploy.sh'
@@ -48,7 +48,7 @@ pipeline {
         }
 
         failure {
-          slackSend (channel: "#notifications-docs", color: '#FF0000', message: "BUILD FAIL: <${env.BUILD_URL}|Open build details>")
+          slackSend (channel: "#notifications-docs", color: '#FF0000', message: "BUILD FAIL: <${env.BUILD_URL}console|Open build details>")
         }
       }
     }
