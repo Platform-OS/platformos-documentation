@@ -95,7 +95,7 @@ In [Building Contact Form With Customization tutorial](/tutorials/customizations
   As you know by now Customizations and Custom Model Type objects are strictly related as the definition of properties allows for storing the data in platformOS backend systems.
   Once you have data persisted within Customization you need to be aware of how changes in CustomModelType affect your Customization objects:
 
-  * **custom model type definition delete** - you can only delete your Custom Model Type object if there is no related Customization objects. Use [customizations_delete_all](/api-reference/graphql/g/mut/customizations_delete_all) mutation to delete all related Customization objects.
+  * **custom model type definition delete** - you can only delete your Custom Model Type object if there is no related Customization object. Use [customizations_delete_all](/api-reference/graphql/g/mut/customizations_delete_all) mutation to delete all related Customization objects.
 
       If you try to deploy with orphaned Customization, you will see the following message:
 
@@ -105,7 +105,7 @@ In [Building Contact Form With Customization tutorial](/tutorials/customizations
       mutation { customizations_delete_all(custom_model_type_name: "todo") { count } }
       ```
   * **name change** - as platformOS detects CustomModelType definition by its name, if you change it is equal with adding new CustomModelType, please note that Customization objects are not automatically migrated and will be treated as orphaned with next deploy attempt, see error message above.
-  * **add new custom model type property** - adding new properties is a valid change that do not need additional actions, the data remains untouched.
+  * **add new custom model type property** - adding new properties is a valid change that does not need additional actions, the data remains untouched.
   * **delete of custom model type property** - deletion of the property is a valid change, data stored in related Customization properties will remain saved but will not be accessible. Use migration to remove the data prior to the change.
   * **property edition** - is a valid change and is equal to the removal of property with old name and creation of new property, data is not migrated.
 
