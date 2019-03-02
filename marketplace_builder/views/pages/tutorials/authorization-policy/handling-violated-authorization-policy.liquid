@@ -9,7 +9,7 @@ searchable: true
 
 This guide will help you handle a violated Authorization Policy.
 
-When an Authorization Policy is violated, the server by default will return an empty page with the `403 Forbidden` status code. You can redirect the user to a different page or display an alert message.
+When an Authorization Policy is violated, the server by default will return head `403 Forbidden` status code. Alternatively, you can customize 403 error page, render `404 Not Found` page or redirect the user to a different page. On top of that, you can specify flash alert message, which you will be able to display.
 
 ## Requirements
 So that you can follow the steps in this tutorial, you should understand the concept of Authorization Policy. This guide refers to an Authorization Policy created in a previous tutorial (`only_allowed_by_johns`).
@@ -23,9 +23,9 @@ Handling a violated Authorization Policy is a two-step process:
 
 <div data-autosteps></div>
 
-### Step 1: Redirect user to a page
-To redirect user to a page after violation set the `redirect_to` key. For example, to redirect to page `/login`:
+### Step 1: Define whether you want to redirect the user to other page or display 403 or 404 page
 
+To redirect user to a page after violation set the `redirect_to` key. For example, to redirect to page `/login`:
 
 ```yaml
 {% raw %}
@@ -37,10 +37,23 @@ redirect_to: /login
 {% endraw %}
 ```
 
+If instead you would like to render [customized 404 page ](tutorials/pages/customizing-error-pages), set `http_status` to `404`:
+```yaml
+{% raw %}
+---
+name: only_allowed_by_johns
+http_status: 404
+redirect_to: ''
+---
+...
+{% endraw %}
+```
 
+The default behavior is equivalent of setting `http_status` to `403`.
 
 ### Step 2: Display alert message
-To generate flash alert message on the page that you defined as `redirect_to`, use the `flash_alert` property:
+
+To generate flash alert message, use the `flash_alert` property:
 
 {% raw %}
 
@@ -52,10 +65,8 @@ flash_alert: Please login to access this page.
 ---
 ...
 ```
-
-
 {% endraw %}
 
-As with normal flash messages, you can access it in Liquid using the `{{ context.flash }}` variable.
+As with all flash messages, you can access it in Liquid using the `{{ context.flash }}` variable.
 
 {% include 'shared/questions_section' %}

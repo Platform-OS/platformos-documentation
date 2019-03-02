@@ -1,0 +1,66 @@
+---
+converter: markdown
+metadata:
+  title: Error Pages
+  description: You can create your own customized error pages
+slug: tutorials/pages/customizing-error-pages
+searchable: true
+---
+
+There are four error pages you can customize: 403, 404, 500 and 503. In order to do it, all you need to do is to [create a Page](/tutorials/pages/creating-page) with slug equal to the status code.
+
+## 403 - Forbidden
+
+This error page is used only for [violated authorization policy](/tutorials/authorization-policy/handling-violated-authorization-policy). To customize it, set slug to 403:
+```yaml
+---
+slug: 403
+---
+```
+```liquid
+You do not have access.
+```
+
+## 404 - Not Found
+
+This error page is rendered in multiple scenarios. Most commonly it is rendered when you try to access or modify an object that does not exist. You can also set http_status for authorization policy to 404 to force rendering this page instead of default 403. To customize it, set slug to 404:
+
+```yaml
+---
+slug: 404
+---
+```
+```liquid
+The resource you were looking for does not exist.
+```
+
+## 500 - Server Error
+
+If there is an error which cannot be handled gracefully, a server error page is displayed. To customize it, set slug to 500:
+
+```yaml
+---
+slug: 500
+---
+```
+```liquid
+Something went wrong. We will fix the issue as soon as possible.
+```
+
+## 503 - Maintenance
+
+Maintenance site can be enabled through Partner Portal. To customize it, set slug to 503:
+
+```yaml
+---
+slug: 503
+---
+```
+```liquid
+The service is temporarily down due to the maintenance. Please check in soon.
+```
+
+## Related topics
+* [Pages](/tutorials/pages/pages)
+
+{% include 'shared/questions_section' %}
