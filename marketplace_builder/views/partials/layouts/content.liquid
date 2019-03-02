@@ -1,5 +1,9 @@
 {% include 'layouts/breadcrumbs' %}
 
 <h1>{{ page.metadata.title }}</h1>
+
+{% unless page.metadata.exclude_contributors %}
 {% include 'layouts/contributors' %}
+{% endunless %}
+
 {{ content_for_layout }}

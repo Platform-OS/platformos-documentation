@@ -1,0 +1,84 @@
+---
+slug: tutorials/qa/writing-testcafe-test
+metadata:
+  title: Writing a TestCafe Test
+  description: This guide will help you write your first test using TestCafe. This tutorial uses an example from the platformOS documentation site. 
+searchable: true
+converter: markdown
+---
+
+This guide will help you write your first test using TestCafe. This tutorial uses an example from the platformOS documentation site. 
+
+## Requirements
+To follow the steps in this tutorial, you need TestCafe installed on your computer. 
+
+* [Installing TestCafe](/tutorials/qa/installing-testcafe)
+
+## Steps
+Writing a test using TestCafe is a two-step process:
+
+<div data-autosteps></div>
+
+### Step 1: Determine fixture declaration
+
+A fixture is a test category and each test file requires its determination. Create a file called `test.js` in your `tests` folder: 
+
+```js
+{% raw %}
+fixture `My First Fixture`
+    .page `https://examples.platform-os.com/full-form-example`;
+{% endraw %}
+```
+
+The whole test will look like this: 
+
+```js
+import {
+  Selector
+} from 'testcafe';
+
+fixture `My first fixture`
+  .page `https://examples.platform-os.com/full-form-example`;
+
+test('My first test', async t => {
+
+  const successNotification = Selector('.alert.alert-success')
+
+  await t
+    .typeText('#form_email', 'user_test@test.com')
+    .click('button.btn.btn-primary')
+    .expect(successNotification.innerText).eql('This is flash notice (success)');
+});
+```
+
+The test will execute the following scenario:
+
+1. Go to the indicated URL.
+2. Enter an email address.
+3. Click the Save button.
+4. The expected result is a notification displayed with the text `This is flash notice (success)`. 
+
+### Step 2: Launch the test
+
+Run the following command in your command line:
+
+<pre class="command-line" data-output="2-4" data-user="user" data-host="host"><code class="language-bash">
+testcafe chrome test.js
+</code></pre>
+
+TestCafe will automatically find and start the test in the Chrome browser.
+
+To list the browsers available in your system, use the following command:
+
+<pre class="command-line" data-output="2-4" data-user="user" data-host="host"><code class="language-bash">
+testcafe --list-browsers
+</code></pre>
+
+<img src="{{ 'images/tutorials/qa/list_browsers.png' | asset_url }}" alt="List browsers" />
+
+## Next steps
+Congratulations! You wrote your first test using TestCafe. Now you can learn about writing tests using the Page Object Model (POM) pattern:
+
+* [Using the Page Object Model with TestCafe](/tutorials/qa/using-pom-testcafe)
+
+{% include 'shared/questions_section' %}

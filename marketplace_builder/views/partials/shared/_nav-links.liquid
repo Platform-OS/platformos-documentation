@@ -1,4 +1,4 @@
-{% capture "navLinks" %}
+{% parse_json navLinks %}
 [
    {
       "href":"/how-platformos-works",
@@ -37,10 +37,6 @@
          {
             "href":"/how-platformos-works/technologies",
             "name":"Technologies"
-         },
-         {
-            "href":"/how-platformos-works/basic-building-blocks",
-            "name":"Basic Building Blocks"
          },
          {
             "href":"/how-platformos-works/glossary",
@@ -607,6 +603,10 @@
                   "name":"Data Import"
               },
               {
+                  "href":"/tutorials/data-import-export/import-files",
+                  "name":"Data Import Files"
+              },
+              {
                   "href":"/tutorials/data-import-export/export",
                   "name":"Data Export"
               },
@@ -629,6 +629,10 @@
                   "name":"Integrating SendGrid Using API Call Notifications"
               },
               {
+                  "href":"/tutorials/integrations/integrating-twilio-api-call-notifications",
+                  "name":"Integrating Twilio Using API Call Notifications"
+              },
+              {
                   "href":"/tutorials/integrations/adding-recaptcha-spam-protection",
                   "name":"Adding reCAPTCHA Spam Protection"
               }
@@ -641,6 +645,22 @@
                   {
                   "href":"/tutorials/qa/testing",
                   "name":"Testing"
+                  },
+                  {
+                  "href":"/tutorials/qa/testcafe",
+                  "name":"TestCafe"
+                  },
+                  {
+                  "href":"/tutorials/qa/installing-testcafe",
+                  "name":"Installing TestCafe"
+                  },
+                  {
+                  "href":"/tutorials/qa/writing-testcafe-test",
+                  "name":"Writing a TestCafe Test"
+                  },
+                  {
+                  "href":"/tutorials/qa/using-pom-testcafe",
+                  "name":"Using the Page Object Model with TestCafe"
                   },
                   {
                   "href":"/tutorials/qa/creating-marketplace-kit-logs",
@@ -718,7 +738,11 @@
                   },
                   {
                       "href":"/tutorials/translations/multilanguage-page",
-                      "name":"Multilanguage page"
+                      "name":"Multi-Language Page"
+                  },
+                  {
+                      "href":"/tutorials/translations/system-messages",
+                      "name":"System Messages"
                   }
               ]
           },
@@ -890,5 +914,4 @@
       ]
    }
  ]
-{% endcapture %}
-{% assign navLinks = navLinks | to_hash %}
+{% endparse_json %}

@@ -13,7 +13,7 @@ pipeline {
   options {
     disableConcurrentBuilds()
     timeout(time: 10, unit: 'MINUTES')
-    buildDiscarder(logRotator(daysToKeepStr: '30', artifactDaysToKeepStr: '7'))
+    buildDiscarder(logRotator(daysToKeepStr: '7', artifactDaysToKeepStr: '7'))
   }
   stages {
     stage('Staging') {
@@ -35,7 +35,7 @@ pipeline {
           commitInfo = "<${GITHUB_URL}/commit/${commitSha}|${commitSha}> - ${commitAuthor} - ${commitMsg}"
         }
 
-        slackSend (channel: "#notifications-docs", message: "BUILD START: <${env.BUILD_URL}|Build #${env.BUILD_NUMBER}> (<${MP_URL}|Staging>) \n ${commitInfo}")
+        // slackSend (channel: "#notifications-docs", message: "BUILD START: <${env.BUILD_URL}|Build #${env.BUILD_NUMBER}> (<${MP_URL}|Staging>) \n ${commitInfo}")
 
         sh 'bash -l ./scripts/build.sh'
         sh 'bash -l ./scripts/deploy.sh'
@@ -44,11 +44,11 @@ pipeline {
 
       post {
         success {
-          slackSend (channel: "#notifications-docs", color: '#00FF00', message: "BUILD SUCCESS: <${MP_URL}|Preview site>")
+          slackSend (channel: "#notifications-docs", color: '#00FF00', message: "SUCCESS: <${env.BUILD_URL}|Build #${env.BUILD_NUMBER}> - <${MP_URL}|Preview site> \n ${commitInfo}")
         }
 
         failure {
-          slackSend (channel: "#notifications-docs", color: '#FF0000', message: "BUILD FAIL: <${env.BUILD_URL}|Open build details>")
+          slackSend (channel: "#notifications-docs", color: '#FF0000', message: "BUILD FAIL: <${env.BUILD_URL}console|Open build details>")
         }
       }
     }

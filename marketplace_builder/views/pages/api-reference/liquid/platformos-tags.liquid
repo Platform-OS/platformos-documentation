@@ -1,13 +1,16 @@
 ---
-converter: markdown
+converter: ''
 slug: api-reference/liquid/platformos-tags
 searchable: true
 metadata:
   title: API reference - platformOS Liquid Tags
   skip_contribute_button: true
+  exclude_contributors: true
 ---
 <div data-autotoc></div>
 
 {%- include 'reference/remote-docs-path', file: 'tags.json' -%}
-
+{% content_for 'page-specific' %}
+<link rel="preload" href="{{ url }}" as="fetch" crossorigin="anonymous">
+{% endcontent_for %}
 <div data-remote-docs-content="tags" data-remote-docs-url="{{ url }}"></div>

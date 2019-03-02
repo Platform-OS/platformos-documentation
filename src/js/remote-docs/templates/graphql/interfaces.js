@@ -31,9 +31,9 @@ const fields = `<h4>Fields</h4>
 `;
 
 const template = `<%_ items.map(function(item) { _%>
-  <h3>
+  <h2>
     <%= item.name _%>
-  </h3>
+  </h2>
 
   <div class="border-bottom mb-5 pb-4">
     <%_ if (item.description) { _%>

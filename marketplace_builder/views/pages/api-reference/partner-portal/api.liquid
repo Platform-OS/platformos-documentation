@@ -4,8 +4,17 @@ searchable: true
 metadata:
   title: Partner Portal API
   description: This documentation will help you manage your instances programmatically using Partner Portal API.
+  exclude_contributors: true
+
 ---
+
+<div data-autotoc></div>
 
 <p>{{ page.metadata.description }}</p>
 
-<div data-remote-docs-content="portal" data-remote-docs-url="https://portal.apps.near-me.com/api_doc.json"></div>
+{% assign url = context.params.source | default: 'https://partners.platform-os.com/api_doc.json' %}
+
+{% content_for 'page-specific' %}
+<link rel="preload" href="{{ url }}" as="fetch" crossorigin="anonymous">
+{% endcontent_for %}
+<div data-remote-docs-content="portal" data-remote-docs-url="{{ url }}"></div>

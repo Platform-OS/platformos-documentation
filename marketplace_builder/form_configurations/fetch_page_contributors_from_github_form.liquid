@@ -18,6 +18,6 @@ async_callback_actions:
   content: |-
     {%- query_graph "get_page_contributors", result_name: "pc", slug: form.properties.slug -%}
     {%- assign page_contributors = pc.customizations.results.last -%}
-    {%- include "shared/contributors/update_callback", page_contributors: page_contributors -%}
+    {%- include "shared/contributors/update_callback", id: form.id, page_contributors: page_contributors -%}
 ---
 

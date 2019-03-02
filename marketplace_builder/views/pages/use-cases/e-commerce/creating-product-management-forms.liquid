@@ -90,7 +90,7 @@ default_payload: >
   {% if form %}
     {
       "properties_attributes": {
-        "price": {{ params.properties_attributes.price | times: 100 | round: 0 }}
+        "price": {{ context.params.properties_attributes.price | times: 100 | round: 0 }}
       }
     }
   {% endif %}
@@ -297,7 +297,7 @@ default_payload: >
   {% if form %}
     {
       "properties_attributes": {
-        "price": {{ params.properties_attributes.price | times: 100 | round: 0 }}
+        "price": {{ context.params.properties_attributes.price | times: 100 | round: 0 }}
       }
     }
   {% endif %}

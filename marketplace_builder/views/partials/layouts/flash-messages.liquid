@@ -1,8 +1,8 @@
 {%- capture _flash -%}
 {
-  "notice": "{% if flash.notice %}{{ flash.notice }}{% elsif params.flash.notice %}{{ params.flash.notice }}{% else %}{% endif %}",
-  "alert": "{% if flash.alert %}{{ flash.alert }}{% elsif params.flash.alert %}{{ params.flash.alert }}{% else %}{% endif %}",
-  "error": "{% if flash.error %}{{ flash.error }}{% elsif params.flash.error %}{{ params.flash.error }}{% else %}{% endif %}"
+  "notice": "{% if flash.notice %}{{ flash.notice }}{% elsif context.params.flash.notice %}{{ context.params.flash.notice }}{% else %}{% endif %}",
+  "alert": "{% if flash.alert %}{{ flash.alert }}{% elsif context.params.flash.alert %}{{ context.params.flash.alert }}{% else %}{% endif %}",
+  "error": "{% if flash.error %}{{ flash.error }}{% elsif context.params.flash.error %}{{ context.params.flash.error }}{% else %}{% endif %}"
 }
 {%- endcapture -%}
 

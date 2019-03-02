@@ -7,6 +7,7 @@ import(/* webpackChunkName: "vendor" */ 'ejs/ejs.min').then(ejs => {
     if (!container()) {
       return false;
     }
+
     const docsType = container().dataset.remoteDocsContent;
     const url = container().dataset.remoteDocsUrl;
     const template = templates[docsType];

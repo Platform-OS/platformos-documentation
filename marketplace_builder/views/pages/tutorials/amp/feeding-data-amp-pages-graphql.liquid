@@ -68,7 +68,7 @@ Include the AMP dependencies in the layout file `marketplace_builder/views/layou
 #### Notes
 * The data source for `<amp-list>` is `products.json`.
 * `amp-mustache` enables the 'mustache' (double curly braces) templating syntax.
-* The `{{ "{% raw" }} %}` tag instructs the liquid preprocessor not to interpret the liquid tags, and leaves them to AMP/mustache to process.
+* The `{{ "{% raw" }} %}` tag instructs the liquid preprocessor not to interpret the liquid tags and leaves them to AMP/mustache to process.
 
 
 ### Step 2: Create JSON endpoint
@@ -82,18 +82,18 @@ format: json
 ```
 ```liquid
 {% raw %}
-{% query_graph 'get_listings', result_name: g %}
-{% assign results = g.listings.results %}
+{% query_graph 'get_products', result_name: 'g' %}
+{% assign results = g.products.results %}
 
 {
   "items": [
-    {% for listing in results %}
+    {% for product in results %}
       {
-        "name": {{ listing.name | json }},
-        "slug": {{ listing.slug | json }},
-        "description": {{ listing.description | json }},
-        "image": {{ listing.photos[0].url | json }},
-        "price": {{ listing.price }}
+        "name": {{ product.name | json }},
+        "slug": {{ product.slug | json }},
+        "description": {{ product.description | json }},
+        "image": {{ product.photo.url | json }},
+        "price": {{ product.price }}
       }{% unless forloop.last %},{% endunless %}
     {% endfor %}
   ]
@@ -103,27 +103,28 @@ format: json
 
 #### Notes
 
-* The GraphQL query is not given any argument, thus it retrieves all the listings (products) which are then sorted by price in ascending order with the `sort:` liquid filter.
+* The GraphQL query is not given any argument, thus it retrieves all the products which are then sorted by price in ascending order with the `sort:` liquid filter.
 * Then the `for` loop populates the `"items"` list with JSON data that contains the info for each product.
 * The loop puts a comma after each element except for the last in the list.
 
-### Step 3: Fetch listing data
-Create the GraphQL query that fetches listing data `marketplace_builder/graph_queries/get_listings.graphql`:
+### Step 3: Fetch product data
+Create the GraphQL query that fetches product data `marketplace_builder/graph_queries/get_products.graphql`:
 
 ```graphql
-query get_listings($slug: String) {
-  listings(
-    listing: {
-      is_deleted: false
-      slug: $slug
-    }
+query get_products($slug: String) {
+  products: customizations(
+    name: "product"
+    is_deleted: false
+    properties: [
+      { name: "slug", value: $slug }
+    ]
   ) {
     total_entries
     results {
-      name
-      slug
-      description
-      photos { url }
+      name: property(name: "name")
+      slug: property(name: "slug")
+      description: property(name: "description")
+      photo: custom_image(name: "photo") { url }
       price: property(name: "price")
     }
   }
@@ -131,14 +132,22 @@ query get_listings($slug: String) {
 ```
 
 #### Notes
-* If the optional slug argument is omitted, then it returns all listings.
-* `price` is a property defined in the Transactable Type's .yml file, which is found in the `transactable_types` directory:
+* If the optional slug argument is omitted, then it returns all products.
+* `price` is a property defined in the product Custom Model Type's .yml file, which is found in the `custom_model_types` directory:
 
 ```yaml
-[...]
+name: product
 properties:
+- name: name
+  type: string
+- name: slug
+  type: string
+- name: description
+  type: string
 - name: price
   type: float
+- name: photo
+  type: photo
 ```
 
 ### Step 4: Display product details
@@ -152,11 +161,11 @@ layout_name: application
 ```
 ```liquid
 {% raw %}
-{% query_graph 'get_listings', result_name: g, slug: params.slug2 %}
-{% assign product = g.listings.results.first %}
+{% query_graph 'get_products', result_name: g, slug: params.slug2 %}
+{% assign product = g.products.results.first %}
 
 <h1>{{ product.name }}</h1>
-<amp-img src="{{ product.photos[0].url }}" layout="responsive"></amp-img>
+<amp-img src="{{ product.photo.url }}" layout="responsive"></amp-img>
 <p>${{ product.price }}</p>
 <p>{{ product.description }}</p>
 {% endraw %}
@@ -164,8 +173,8 @@ layout_name: application
 
 #### Notes
 
-* The page at `/product-list` passes the listing (product) slug to this page through the URL, which is formed as `/product-details/<listing_slug>`
-* Then we pass on the listing's slug to the GraphQL query (`slug: params.slug2`), to find the product details.
-* This is the same GraphQL query that you used in the other page to retrieve all listings, but this time you call it with the listing slug to find just one listing.
+* The page at `/product-list` passes the product slug to this page through the URL, which is formed as `/product-details/<listing_slug>`
+* Then you pass on the product's slug to the GraphQL query (`slug: params.slug2`), to find the product details.
+* This is the same GraphQL query that you used on the other page to retrieve all products, but this time you call it with the product slug to find just one product.
 
 {% include 'shared/questions_section' %}

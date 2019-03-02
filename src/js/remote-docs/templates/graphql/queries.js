@@ -23,14 +23,14 @@ const args = `<h4>Arguments</h4>
 `;
 
 const template = `<%_ items[0].fields.map(function(item) { _%>
-  <h3>
+  <h2>
     <%= item.name _%>
     <%_ if (item.type) { _%>
       <small>
         (type: <a href="/api-reference/graphql/objects#<%= item.type.name.toLowerCase() _%>"><%= item.type.name _%></a>)
       </small>
     <%_ } _%>
-  </h3>
+  </h2>
 
   <div class="border-bottom mb-5 pb-4">
     <%_ if (item.description) { _%>

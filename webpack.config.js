@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const WebpackRequireFrom = require('webpack-require-from');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 const BUILD_DIR = path.join(__dirname, process.env.npm_package_config_build_dir);
 
@@ -30,6 +31,7 @@ const config = {
   entry: {
     app: './src/app',
     raven: './src/raven',
+    critical: './src/critical',
     webfonts: './src/webfonts'
   },
   output: {
@@ -63,6 +65,35 @@ const config = {
         test: /\.(eot|ttf|otf|svg|woff(2))?$/,
         loader: 'file-loader?name=fonts/[name].[ext]'
       }
+    ]
+  },
+  optimization: {
+    minimizer: [
+      new UglifyJsPlugin({
+        parallel: true,
+        uglifyOptions: {
+          warnings: false,
+          parse: {},
+          compress: {
+            sequences: true,
+            dead_code: true,
+            conditionals: true,
+            booleans: true,
+            unused: true,
+            if_return: true,
+            join_vars: true,
+            drop_console: true
+          },
+          mangle: true,
+          output: {
+            comments: false
+          },
+          toplevel: false,
+          nameCache: null,
+          ie8: false,
+          keep_fnames: false
+        }
+      })
     ]
   },
   plugins: plugins,

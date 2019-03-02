@@ -31,3 +31,17 @@ test('Autosteps generate as many links as there are headings with steps', async 
   await t.expect(await stepHeadings.count).eql(await generatedLinks.count);
   await t.expect(await stepHeadings.count).eql(2);
 });
+
+test('Table of Contents is autogenerating', async t => {
+  await t.navigateTo('/api-reference/liquid/objects');
+
+  const container = await Selector('[data-autotoc]');
+
+  await t
+    .expect(await container.textContent)
+    .contains('On this page')
+    .expect(await container.textContent)
+    .contains('forloop')
+    .expect(await container.textContent)
+    .contains('tablerowloop');
+});

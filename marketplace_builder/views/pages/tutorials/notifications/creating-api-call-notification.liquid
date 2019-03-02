@@ -64,7 +64,7 @@ api_call_notifications:
 
 Whenever a user successfully sign ups, the `https://example.com/endpoint/{% raw %}{{ form.id }}{% endraw %}` endpoint will be notified.
 
-{% include 'alert/important', content: 'We do not send API calls on staging by default. Please <a href="/contact">contact us</a> if you want to change this behavior.' %}
+{% include 'alert/important', content: 'We do not send real text messages on staging by default. Because any error with sending real text messages on staging might be more costly than sending emails. If you want to test SMS on staging, please change `enable_sms_and_api_workflow_alerts_on_staging` flag to `true` in your Partner Portal instance configuration.' %}
 
 ## Next steps
 
