@@ -30,13 +30,16 @@ slug: context_example
 {% endraw %}
 
 ### context.constants
-`context.constants` gives you access to sensitive data like API credentials and tokens. You will be able to set them on the Partner Portal. (coming soon)
+`context.constants` gives you access to sensitive data like API credentials and tokens. To protect you from leaking them, you need to explicitly call `{% raw %}{{ context.constants }}`{% endraw %}, as they will be hidden for `{% raw %}{{ context }}{% endraw %}`. You will be able to set them on the Partner Portal. (coming soon)
 
 ### context.cookies
 `context.cookies` returns an object with all cookies of the site.
 
 ### context.current_user
 `context.current_user` returns basic data of currently logged in user. Available attributes are: `first_name`, `last_name`, `email`, `id` and `slug`. It will return `nil` instead of object if user is not logged in.
+
+### context.device
+`context.device` returns hash with useful information based on UserAgent. Most notably `context.device.device_type` returns one of the following: desktop, smartphone, tablet, console, portable media player, tv, car browser, camera
 
 ### context.environment
 `context.environment` returns a string: `staging` or `production`. A common use case is to hide some functionalities on production without blocking the release.
