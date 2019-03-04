@@ -29,14 +29,15 @@ In order to correctly communicate with the platformOS engine and API, your codeb
 | views/partials         	| Liquid    	| Directory for partials  &ndash;  reusable snippets of Liquid code usually used to render HTML.                                                                                                                                                                                                                                  	| [Views](#views-pages-layouts-and-partials)                                                                                       	|
 | translations           	| YAML      	| Directory for .yml files of Translations for multilingual sites, also used to define date format, or flash messages. Each file is a map of translations which can be used in your pages via Liquid.                                                                                                                              	| [Translations](#translations)                                   	|
 | user_profile_types     	| YAML      	| Directory for .yml files that define User Profiles. Each instance includes one user role, called ‘default’, so each instance needs to include the default.yml file inside this directory.                                                                                                                                        	| [Users](#users)                                                        	|
+| user.yml     	| YAML      	| A yml file containing properties for all users  | [Users](#users)                                                        	|
 
 ## Files in your codebase
 
 ### Views: pages, layouts, and partials
 
-Views are divided into three categories in your codebase, each with a mandatory subdirectory: layouts, pages, and partials. 
+Views are divided into three categories in your codebase, each with a mandatory subdirectory: layouts, pages, and partials.
 
-**Pages** are the most essential building blocks of a platformOS site, that define content displayed at a given path. Each page is represented by a single file with a .liquid extension. 
+**Pages** are the most essential building blocks of a platformOS site, that define content displayed at a given path. Each page is represented by a single file with a .liquid extension.
 
 platformOS allows Liquid pages to be used to create many different types of endpoints beyond HTML, such as JavaScript, JSON, PDF, RSS, XML, etc. The page type can be specified in the page configuration.
 
@@ -44,7 +45,7 @@ platformOS allows Liquid pages to be used to create many different types of endp
 
 **Partials** (partial templates) allow you to easily organize and reuse your code by extracting pieces of code to their own files. They help you improve code readability and follow the principle of DRY (Don’t Repeat Yourself). You can parameterize partials and use them in various places, e.g. layouts, pages, Authorization Policies, Form Configurations.
 
-Example directory structure of `views` with sample files: 
+Example directory structure of `views` with sample files:
 
 
 ```shell
@@ -54,7 +55,7 @@ marketplace_builder
     │   ├── 1col.html.liquid
     └── pages
     │   ├── home.html.liquid
-    │   ├── unauthorized.html.liquid   
+    │   ├── unauthorized.html.liquid
     └── partials
         ├── layout
             ├── constants.liquid
@@ -66,13 +67,13 @@ marketplace_builder
 
 {% include "alert/tutorial", content: "Follow our step-by-step tutorials to learn more about <a href='/tutorials/pages/pages'>pages</a> and <a href='/tutorials/pages/layouts'>layouts</a>." %}
 
-### Assets 
+### Assets
 
 **Assets** are files that can be served by an HTTP web server without any backend/server processing. They are usually Javascript files, stylesheets (CSS), documents (HTML, pdf, doc), fonts, or media (audio, video) files.
 
 Although only the assets directory is required and you can put your assets there, we recommend you further organize your assets into subdirectories inside the assets directory, e.g. `images`, `scripts` for Javascript files, `styles` for CSS files, etc. This is also how the `marketplace-kit init` command will create the codebase.
 
-Example directory structure of `assets` with sample files: 
+Example directory structure of `assets` with sample files:
 
 ```shell
 marketplace_builder
@@ -105,7 +106,7 @@ They give you full control when defining:
 
 On top of that, you can define callbacks (either synchronous or asynchronous) for further modifications to the system using GraphQL mutations. For example, you can define a signup form that creates User records, and if the user input is valid, also creates a few sample products for them, so that they don’t have to start from scratch.
 
-Example directory structure of `form_configurations` with sample files: 
+Example directory structure of `form_configurations` with sample files:
 
 ```shell
 marketplace_builder
@@ -118,14 +119,15 @@ marketplace_builder
 
 ### Users
 
-**Users** are accounts that any of your users can have. Users are identified by their unique email addresses.
+**Users** are accounts that any of your users can have. Users are identified by their unique email addresses. You can define your properties for all users in the user.yml file.
 
-**User Profiles** are roles in the application. Each User Profile can be associated with any number of Properties and Custom Model Types. All users are assigned a User Profile named Default. The difference between User Profile and Custom Model Type is that each user can have maximum one profile of a given name (but can have many different profiles), whereas they can have many custom models with the same name. From a practical perspective, it is very simple to create an `upsert` operation on a UserProfile (i.e. create user profile, or if it exists, update it). 
+**User Profiles** are roles in the application. Each User Profile can be associated with any number of Properties and Custom Model Types. All users are assigned a User Profile named Default. The difference between User Profile and Custom Model Type is that each user can have maximum one profile of a given name (but can have many different profiles), whereas they can have many custom models with the same name. From a practical perspective, it is very simple to create an `upsert` operation on a UserProfile (i.e. create user profile, or if it exists, update it).
 
-Example directory structure of `user_profile_types` with sample files: 
+Example directory structure of `user_profile_types` with sample files:
 
 ```shell
 marketplace_builder
+└── user.yml
 └── user_profile_types
     ├── developer.yml
     ├── client.yml
@@ -133,13 +135,13 @@ marketplace_builder
 
 {% include "alert/tutorial", content: "Follow our step-by-step tutorials to learn more about <a href='/tutorials/users/users'>users</a>." %}
 
-### Models 
+### Models
 
 **Custom Model Type** is an object that describes all Customization objects that belong to it. Think of Custom Model Types as a custom database table, which allows you to build highly customized features. Use them to group Properties, and allow the user to provide multiple values for each of them.
 
 **Properties** are fields that you attach to a User Profile, Custom Model Type, etc. Think of them as custom database columns (though complex types, like files, photos, and addresses should be treated as separate database tables). We also provide some Properties to jumpstart your development.
 
-Example directory structure of `custom_model_types` with sample files: 
+Example directory structure of `custom_model_types` with sample files:
 
 ```shell
 marketplace_builder
@@ -149,13 +151,13 @@ marketplace_builder
 
 {% include "alert/tutorial", content: "Follow our step-by-step tutorials to learn more about <a href='/tutorials/custom-model-types/custom-model-types'>Custom Model Types</a> and <a href='/tutorials/properties/properties'>Properties</a>." %}
 
-### Notifications 
+### Notifications
 
 **Notifications** are messages sent to platformOS users (including admins) when something happens. A message can be an email, SMS, or programmatic call to a 3rd party API.
 
 Notifications can be delayed, and you can use Liquid, GraphQL, and trigger conditions to decide if a notification should be sent. They are a powerful mechanism used for example to welcome new users, follow up after they've added their first item, or reach out to them if they have been inactive for a while.
 
-Example directory structure of `notifications` with sample files: 
+Example directory structure of `notifications` with sample files:
 
 ```shell
 marketplace_builder
@@ -176,7 +178,7 @@ marketplace_builder
 
 Each policy is parsed using Liquid, and the system checks them in order of their appearance in the code. Depending on policy configuration, it redirects the user to a URL provided by the developer if the condition is not met or renders error status, for example 403. You can also add a flash message for the user who failed authorization.
 
-Example directory structure of `authorization_policies` with sample files: 
+Example directory structure of `authorization_policies` with sample files:
 
 ```shell
 marketplace_builder
@@ -186,11 +188,11 @@ marketplace_builder
 
 {% include "alert/tutorial", content: "Follow our step-by-step tutorials to learn more about <a href='/tutorials/authorization-policy/authorization-policy'>Authorization Policies</a>." %}
 
-### Translations 
+### Translations
 
 You can use platformOS to build sites in any language, and each site can have multiple language versions. **Translations** are yml files used for multilingual sites but also used to define date formats, flash messages or system-wide default error messages like "can't be blank".
 
-Example directory structure of `translations` with sample files: 
+Example directory structure of `translations` with sample files:
 
 ```shell
 marketplace_builder
@@ -201,19 +203,19 @@ marketplace_builder
 
 {% include "alert/tutorial", content: "Follow our step-by-step tutorials to learn more about <a href='/tutorials/translations/translations'>translations</a>." %}
 
-### Modules 
+### Modules
 
 **Modules** allow code reuse and sharing, while protecting the IP of creators.
 
-Module code is split into 2 directories to protect IP. To create a module, split module code into `public` and `private` folders, and place all that code into the `modules/MODULE_NAME` directory. 
+Module code is split into 2 directories to protect IP. To create a module, split module code into `public` and `private` folders, and place all that code into the `modules/MODULE_NAME` directory.
 
 These directories have the same structure as the standard `marketplace_builder` folder, but if developers try to download files after the module has been deployed to an Instance (`marketplace-kit pull`), they will only see the files from the `public` folder.
 
-Example directory structure of `modules` with sample files: 
+Example directory structure of `modules` with sample files:
 
 ```shell
 marketplace_builder
-├── modules 
+├── modules
     ├──admincms
 		├── private
 		│   └── graph_queries
