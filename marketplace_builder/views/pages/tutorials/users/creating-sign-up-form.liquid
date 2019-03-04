@@ -1,11 +1,11 @@
 ---
 converter: markdown
 metadata:
-  title: Creating a Sign Up Form
+  title: Creating a Sign-Up Form
 slug: tutorials/users/creating-sign-up-form
 ---
 
-This guide will help you create sign up forms for users.
+This guide will help you create sign-up forms for users.
 
 ## Requirements
 
@@ -88,13 +88,13 @@ fields:
 * `name`: the name of the form, written in snake case. It is used to embed the form in a page.
 * `resource`: defines what is the root resource in this form. In our example it is User.
 * `redirect_to`: defines the url to which the user will be redirected after success. You can use liquid. In our example, you will redirect the user to /sign-in.
-* `configuration`: defines which fields should be acceptable by the form, and it's possible to define validation of each field. Depending on the `resource`, some fields are available without having to create Properties. Some of them have pre-defined validation due to the backend requirements. In this example, such fields are `email`, with validation that ensures uniqueness (no two user can sign up with the same email address), it has to be a valid email, and it can't be blank; and `password`, which has to be minimum 6 characters long(this is default validation).
+* `configuration`: defines which fields should be acceptable by the form, and it's possible to define validation of each field. Depending on the `resource`, some fields are available without having to create Properties. Some of them have pre-defined validation due to the backend requirements. In this example, such fields are `email`, with validation that ensures uniqueness (no two users can sign up with the same email address), it has to be a valid email, and it can't be blank; and `password`, which has to be minimum 6 characters long(this is default validation).
 
 #### Configuration
 
 * `first_name`:  marked as required.
-* `profiles`: this is a special abstraction, to easily create the `UserProfile` resource associated with the newly signed up `User`. You'll see a similar concept later on. Within `profiles` you can specify names of the profiles created in `user_profile_types` directory. In our example, you have two choices: `developer` and `client`. Since you created the sign up for developer, this is what you used. Now, the `developer` is a `UserProfile` resource, so you have access to its field. If you take a look at UserProfile resource documentation, you will notice that one of the available fields is `enabled`, this is the field used here.
-* `property_options`: a special construction to add special behavior to the field. Here you used `default`, which provides the default value (i.e. the value that will be used if user does not fill in this field); `readonly` on the other hand ignores the user's input. This combination is useful, if you want to set something in a background, and don't want the user to be able to override it. Because any input by the user will be ignored, the default value will always be used.
+* `profiles`: this is a special abstraction, to easily create the `UserProfile` resource associated with the newly signed up `User`. You'll see a similar concept later on. Within `profiles`, you can specify names of the profiles created in `user_profile_types` directory. In our example, you have two choices: `developer` and `client`. Since you created the sign up for developer, this is what you used. Now, the `developer` is a `UserProfile` resource, so you have access to its field. If you take a look at UserProfile resource documentation, you will notice that one of the available fields is `enabled`, this is the field used here.
+* `property_options`: a special construction to add special behavior to the field. Here you used `default`, which provides the default value (i.e. the value that will be used if user does not fill in this field); `readonly` on the other hand ignores the user's input. This combination is useful if you want to set something in a background, and don't want the user to be able to override it. Because any input by the user will be ignored, the default value will always be used.
 
 All of this might be a bit confusing at first sight, like what really is this `enabled` field. All should be clearer, once you realize that the last part of the configuration, which is
 
@@ -121,7 +121,7 @@ fields:
 ...
 ```
 
-In other words, forms are nested in each other &ndash; you can access them as 'nested forms'. In this example you want to create a User and a corresponding UserProfile at the same time. This behavior is desired if in your UI you have a page with a button that says "Sign up as a Developer". User provides first name, email, password and that's it-the user registers as a developer.
+In other words, forms are nested in each other &ndash; you can access them as 'nested forms'. In this example, you want to create a User and a corresponding UserProfile at the same time. This behavior is desired if in your UI you have a page with a button that says "Sign up as a Developer". User provides first name, email, password and that's it-the user registers as a developer.
 
 Alternatively, the UI can split the process into two separate actions. It can first ask the user to register, so the button would be just 'Sign up', and only ask after registration if the user wants to become a developer or a client. In this scenario, the first form would look like this:
 
@@ -159,19 +159,19 @@ The end result would be the same. The point is, that with platformOS, you have t
 
 #### Rendering inputs
 
-The second part of the form is the actual html that will be presented to the user. There are few things that you will want to include in every form.
+The second part of the form is the actual HTML that will be presented to the user. There are few things that you will want to include in every form.
 
 * **form tag**: {% raw %}{% form %}{% endraw %} form tag renders the `<form>` html tag with `action` set based on the `resource` provided in configuration. It also adds a bunch of hidden inputs. The most important are CSRF token (called `authenticity-token`) and `_method` - depending whether you want to create or update the resource, it will be either `post` or `patch`. In case you want to allow users to destroy their resources, you would need to manually pass `method` as argument to tag with value `delete`. Another set of hidden inputs are `resource_id` - the one that you passed in `include_form` if any, and `slug`, `slug2`, `slug3` - in case of validation errors, you most likely will need those to be available. Please note: If you want to invoke our write API manually (for example via AJAX or even from third-party API) we recommend to take a look at [full API Endpoints documentation](/api-reference/rest-api).
 
 #### Optional inputs
 
-* {% raw %}<input value="{{ page.id }}" type="hidden" name="page_id" />{% endraw %}: `page` is used to notify the API which page should be rendered if submission of the form fails (most likely due to validation error). This allows to re-display user's input for all fields and display validation errors where applicable. By default it renders the page from which the form was submitted.
+* {% raw %}<input value="{{ page.id }}" type="hidden" name="page_id" />{% endraw %}: `page` is used to notify the API which page should be rendered if submission of the form fails (most likely due to validation error). This allows to re-display user's input for all fields and display validation errors where applicable. By default, it renders the page from which the form was submitted.
 
 #### Inputs
 
 Proceeding with rendering proper inputs that the user will be expected to fill:
 
-* `input`: utility liquid tag that can save quite a bit of work-by default it is configured to generate html that is compatible with bootstrap 3 framework. Moreover, in case of validation errors, it automatically adds 'error' css class to the input and renders a validation error message below the input. If bootstrap 3 is not the framework of your choice, in the How-To Guides  section we explain how to create your own re-usable set of inputs.
+* `input`: utility liquid tag that can save quite a bit of work-by default it is configured to generate HTML that is compatible with Bootstrap 3 framework. Moreover, in case of validation errors, it automatically adds 'error' CSS class to the input and renders a validation error message below the input. If bootstrap 3 is not the framework of your choice, in the How-To Guides  section we explain how to create your own re-usable set of inputs.
 
 #### Nested fields
 
@@ -186,7 +186,8 @@ The last part is the rendering of nested forms. As explained in the configuratio
 
 
 * `fields_for` tag expects the first argument to be a string that represents nested object.
-* The second one is a hash, where key is always `form` and value is the name of the parent form. If none provided, it will assume that the parent is the root form. In this example, you create not one level deep nested object, but actually two level deep. You first create `profiles` form the root form, and then `developer` for the `profiles` form. Then you create a hidden input `enabled` for `developer` form. The idea here is that if you wouldn't provide it, then the profile wouldn't be created-the nested configuration is ignored, if you don't send attributes via html. In other words, setting the configuration for UserForm to allow creating `developer` profile is not enough-the configuration just defines what is allowed to be submitted to the API endpoint. To actually create the developer profile along with user, you need to send value for at least one field that belongs to the user profile-in this example, you provide value for the `enabled` field.
+* The second one is a hash, where key is always `form` and value is the name of the parent form. If none provided, it will assume that the parent is the root form. In this example, you create not one level deep nested object, but actually two level deep. You first create `profiles` form the root form, and then `developer` for the `profiles` form. Then you create a hidden input `enabled` for `developer` form. The idea here is that if you wouldn't provide it, then the profile wouldn't be created-the nested configuration is ignored, if you don't send attributes via HTML. In other words, setting the configuration for UserForm to allow creating `developer` profile is not enough-the configuration just defines what is allowed to be submitted to the API endpoint. To actually create the developer profile along with user, you need to send value for at least one field that belongs to the user profile – in this example, you provide value for the `enabled` field.
+
 
 #### Client form
 
@@ -244,7 +245,7 @@ fields:
 ```
 
 ## Next steps
-Congratulations! You now know how to create sign up forms for your users. Now you can embed the sign up form in a page:
+Congratulations! You now know how to create sign-up forms for your users. Now you can embed the sign up form in a page:
 
 * [Embedding a Sign-Up Form in a Page](/tutorials/users/embedding-sign-up-form)
 
