@@ -7,29 +7,28 @@ slug: tutorials/data-import-export/update
 searchable: true
 ---
 
-This topic describes **data update** from existing data in instance.
+This topic describes **updating existing data** in an Instance.
 
-Data to be updateed needs to be in JSON format witch is similar to use used in [data import](/tutorials/data-import-export/import).
-Update is very similar to the `import`, the main difference from `import` tool is that update can only change exising data on instance. In order to use this tool you have to export data from instance, see [data export](/tutorials/data-import-export/import). Once you have data modify it with your own tools(still keeping right format) and update them to an instance.
+The data to be updated needs to be in JSON format, similarly to what you use when [importing data](/tutorials/data-import-export/import).
+Update is very similar to `import`, the main difference from the `import` tool is that update can only change existing data on an Instance. In order to use this tool, you have to first export data from the Instance (see [data export](/tutorials/data-import-export/import)). Once you have the data, modify it with your own tools (while keeping the right format), and update them to the Instance.
 
 ## General information
 
 - Before update, your model schemas need to be deployed.
 
-- When updating data, the `id` fields must match objects that exisits in instance. Update tool will not create new objects, in order to do this use [data import tool](/tutorials/data-import-export/import).
+- When updating data, the `id` fields must match objects that exisit on the Instance. The update tool will not create new objects, in order to do this use the [data import tool](/tutorials/data-import-export/import).
 
-- No data will be deleted, update will only change existings values.
+- No data will be deleted, update will only change existing values.
 
 - In order to clean value on property set the `null` value explicitly.
 
-
-- Update will only do basic validations the existence of properties, and type validation. It doesn't check any of the validations defined on forms.
+- Update will only do basic validations — it validates types and the existence of properties. It doesn't check any of the validations defined on forms.
 
 ## Data Update with CLI
 
-platformOS CLI provides the `marketplace-kit data update` command for updating data from a JSON file. It accepts one option:
+The platformOS CLI provides the `marketplace-kit data update` command for updating data from a JSON file. It accepts one option:
 
-- --path (short: -p): A path to a JSON data file to be updateed
+- --path (short: -p): path to a JSON data file to be updated
 
 Under the hood, the CLI uses the GraphQL update API that's described in the next section. However, using the CLI provides some major benefits:
 
@@ -38,11 +37,11 @@ Under the hood, the CLI uses the GraphQL update API that's described in the next
 
 ### Input format
 
-Input format is the same as for [data import](/tutorials/data-import-export/import)
+Input format is the same as for [data import](/tutorials/data-import-export/import#input-format). 
 
 ### Example
 
-To update the data from a file, simply run the following command in the terminal:
+To update the data from a file, run the following command in the terminal:
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
 marketplace-kit data update --path=data.json staging-instance
@@ -98,6 +97,6 @@ curl -d @data.json \
   -X POST https://example.com/api/marketplace_builder/data_updates
 </code></pre>
 
-{% include 'alert/note', content: 'You can find your API Token in [Partner Portal](https://partners.platform-os.com/me) under "Access Key".' %}
+{% include 'alert/note', content: 'You can find your API Token in the [Partner Portal](https://partners.platform-os.com/me) under "Access Key".' %}
 
 {% include 'shared/questions_section' %}
