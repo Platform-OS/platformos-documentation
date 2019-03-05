@@ -1,10 +1,6 @@
 import { Selector } from 'testcafe';
 
-import LayoutPO from './page-objects/Layout';
-
-const Layout = new LayoutPO();
-
-fixture('Modules').page(`${Layout.URL.staging}`);
+fixture('Modules').page(process.env.MP_URL);
 
 test('Autosteps are generated and have link', async t => {
   await t.navigateTo('/get-started/setting-up-site');

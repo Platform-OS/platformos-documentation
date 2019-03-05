@@ -14,24 +14,28 @@ pipeline {
   options {
     disableConcurrentBuilds()
     timeout(time: 10, unit: 'MINUTES')
+    buildDiscarder(logRotator(daysToKeepStr: '1', artifactDaysToKeepStr: '1'))
   }
 
   stages {
     stage('Build') {
       when { branch 'master' }
+
       agent { docker { image 'node:10-alpine'; args '-u root' } }
 
       steps {
-        sh 'scripts/build.sh'
+        sh 'npm run build'
       }
     }
 
     stage('Deploy staging') {
       when { branch 'master' }
-      agent { docker { image 'platformos/marketplace-kit:2.0' } }
+
       environment {
         MPKIT_URL = "${staging_url}"
       }
+
+      agent { docker { image 'platformos/marketplace-kit:2.0' } }
 
       steps {
         sh 'marketplace-kit deploy'
@@ -39,19 +43,26 @@ pipeline {
     }
 
     stage('Test staging') {
-      agent { docker { image "platformos/testcafe" } }
       when { branch 'master' }
 
+      environment {
+        MP_URL = "${staging_url}"
+      }
+
+      agent { docker { image "platformos/testcafe" } }
+
       steps {
-        sh 'scripts/test-e2e.sh'
+        sh 'npm run test-ci'
       }
     }
 
     stage('Deploy production') {
       when { branch 'master' }
+
       environment {
         MPKIT_URL = "${production_url}"
       }
+
       agent { docker { image 'platformos/marketplace-kit:2.0' } }
 
       steps {
@@ -59,6 +70,7 @@ pipeline {
       }
     }
   }
+
   post {
     success {
       slackSend (channel: "#notifications-docs", color: '#00FF00', message: "SUCCESS: <${env.BUILD_URL}|Build #${env.BUILD_NUMBER}> \n ${commitInfo()}")

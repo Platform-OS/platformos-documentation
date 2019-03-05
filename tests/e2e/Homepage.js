@@ -6,7 +6,7 @@ import HomepagePO from './page-objects/Homepage';
 const Home = new HomepagePO();
 const Layout = new LayoutPO();
 
-fixture('Homepage').page(Layout.URL.staging);
+fixture('Homepage').page(process.env.MP_URL);
 
 test('There are no liquid errors on the page', async () => {
   await Layout.checkLiquidErrors();
