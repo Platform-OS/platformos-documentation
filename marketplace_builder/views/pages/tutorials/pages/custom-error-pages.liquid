@@ -7,33 +7,20 @@ slug: tutorials/pages/custom-error-pages
 searchable: true
 ---
 
-Instead of returning standard error pages, you can set up **custom error pages** that match your site's design and include information you'd like to convey to your users (e.g. helpful content, relevant links, encouragement to search or browse further). 
+Instead of returning standard error pages, you can set up **custom error pages** that match your site's design and include information you'd like to convey to your users (e.g. helpful content, relevant links, encouragement to search or browse further).
 
 You can customize the following error pages: 
 
 * 403
 * 404 
 * 500 
-* 503 
+* 503  
 
-To  customize an error page, [create a Page](/tutorials/pages/creating-page) with the slug equal to the status code.
+## Creating a custom error page
 
-## 403 - Forbidden
+Error pages are normal platformOS pages, so you can use all features of a page (e.g. layouts). To create a customized error page, [create a Page](/tutorials/pages/creating-page) and set the slug to the status code. 
 
-This error page is solely used for a [violated Authorization Policy](/tutorials/authorization-policy/handling-violated-authorization-policy). To customize it, set the slug to 403:
-
-```yaml
----
-slug: 403
----
-```
-```liquid
-You do not have access.
-```
-
-## 404 - Not Found
-
-This error page is rendered in multiple scenarios. Most commonly, it is rendered when you try to access or modify an object that does not exist. You can also set an Authorization Policy's `http_status` to 404 to force render this page instead of the default 403. To customize it, set the slug to 404:
+**Example:** 
 
 ```yaml
 ---
@@ -44,31 +31,15 @@ slug: 404
 The resource you were looking for does not exist.
 ```
 
-## 500 - Server Error
+## Error pages
 
-If there is an error that cannot be handled gracefully, a server error page is displayed. To customize it, set the slug to 500:
+| Status Code 	| Name         	| Usage                                                                                                                                                                                                                                                                                     	|
+|-------------	|--------------	|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|
+| 403         	| Forbidden    	| Solely used for a [violated Authorization Policy](/tutorials/authorization-policy/handling-violated-authorization-policy).                                                                                                                           	|
+| 404         	| Not Found    	| Rendered in multiple scenarios. Most commonly, it is rendered when you try to access or modify an object that does not exist. You can also set an Authorization Policy's `http_status` to 404 to force render this page instead of the default 403. 	|
+| 500         	| Server Error 	| If there is an error that cannot be handled gracefully, a server error page is displayed.                                                                                                                                                           	|
+| 503         	| Maintenance  	| You can [enable maintenance mode through the Partner Portal](/tutorials/partner-portal/updating-instance-configuration) (see `maintenance_mode` attribute).                                                                                        	|
 
-```yaml
----
-slug: 500
----
-```
-```liquid
-Something went wrong. We will fix the issue as soon as possible.
-```
-
-## 503 - Maintenance
-
-You can [enable maintenance mode through the Partner Portal](/tutorials/partner-portal/updating-instance-configuration) (see `maintenance_mode` attribute). To customize it, set the slug to 503:
-
-```yaml
----
-slug: 503
----
-```
-```liquid
-The service is temporarily down due to the maintenance. Please check in soon.
-```
 
 ## Related topics
 * [Pages](/tutorials/pages/pages)
