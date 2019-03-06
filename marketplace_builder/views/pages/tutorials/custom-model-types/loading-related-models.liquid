@@ -30,6 +30,8 @@ Loading related models in this demonstrative scenario is a five-step process:
 ### Step 1: Create models
 The data schema in this scenario consists of two models: `company` and `programmer`. The programmer model has a `company_id` property which references a corresponding company model [foreign key].
 
+##### custom_model_types/company.yml
+
 ```yaml
 name: company
 properties:
@@ -40,6 +42,8 @@ properties:
 - name: url
   type: string
 ```
+
+##### custom_model_types/programmer.yml
 
 ```yaml
 name: programmer
@@ -87,10 +91,11 @@ The goal is to load programmers' data along with related company by joining prog
 ### Step 2: Load related model for each record (not recommended)
 In this approach, you use two GraphQL queries:
 
-#### programmers.grapqhl
+##### graph_queries/programmers.grapqhl
+
 ```graphql
 query programmers {
-  programmers: customizations(name: "programmer"){
+  programmers: customizations(name: "modules/n_plus_one/programmer"){
     total_entries
     results {
       properties
@@ -99,10 +104,11 @@ query programmers {
 }
 ```
 
-#### company.graphql
+##### graph_queries/company.graphql
+
 ```graphql
 query company($id: ID) {
-  companies: customizations(name: "company", id: $id){
+  companies: customizations(name: "modules/n_plus_one/company", id: $id){
     results {
       name
       id
@@ -117,20 +123,20 @@ While displaying the programmer collection — for each programmer record — yo
 
 ```liquid
 {% raw %}
-{% query_graph 'programmers' %}
+{% query_graph 'modules/n_plus_one/programmers' %}
 
 {% for programmer in g.programmers.results %}
   <tr>
-    <td> {{ programmer.properties.email }} </td>
-    <td> {{ programmer.properties.title }} </td>
-      {% if programmer.properties.company_id %}
-        {% query_graph 'company', id: programmer.properties.company_id, result_name: 'company' %}
-        <td> {{ company.companies.results.first.properties.name }} </td>
-        <td> {{ company.companies.results.first.properties.url }} </td>
-      {% endif  %}
-</tr>
+    <td>{{ programmer.properties.email }}</td>
+    <td>{{ programmer.properties.title }}</td>
+    {% if programmer.properties.company_id %}
+      {% query_graph 'modules/n_plus_one/company', id: programmer.properties.company_id, result_name: 'company' %}
+      <td>{{ company.companies.results.first.properties.name }}</td>
+      <td>{{ company.companies.results.first.properties.url }}</td>
+    {% endif %}
+  </tr>
 {% endfor %}
-{%endraw%}
+{% endraw %}
 ```
 
 ### Step 3: Test approach
@@ -153,7 +159,7 @@ The results show that this approach produces slow output. The n+1 queries slow d
 To avoid n+1 queries, request company data within the `programmers` GraphQL query. Load related data at once along with the programmer collection using new GraphQL field called `model`.
 
 ```graphql
-   model(join_on_property: "company_id") { properties }
+model(join_on_property: "company_id") { properties }
 ```
 
 `join_on_property` argument is required and is used as a foreign key of the company collection. In SQL language this could look similarly:
@@ -162,11 +168,11 @@ To avoid n+1 queries, request company data within the `programmers` GraphQL quer
 select * from programmers joins companies on (programmers.company_id = companies.id)
 ```
 
-and after updating your graphql query looks like this now:
+and after updating your GraphQL query looks like this now:
 
 ```graphql
 query programmers {
-  programmers: customizations(name: "programmer", per_page: 200){
+  programmers: customizations(name: "modules/n_plus_one/programmer", per_page: 200) {
     total_entries
     results {
       properties
@@ -180,6 +186,8 @@ query programmers {
 ```
 
 Update the `programmers/index` page. The page looks much simpler now:
+
+##### views/pages/programmers/index.liquid
 
 ```liquid
 {% raw %}
@@ -212,6 +220,6 @@ Requesting data from the related model within the GraphQL query delivers results
 
 To see how it works on a real webpage go to the [live example](https://examples.platform-os.com/companies/index) page.
 
-[Source code](https://github.com/mdyd-dev/marketplace-nearme-example) can be found on GitHub.
+[Source code](https://github.com/mdyd-dev/marketplace-nearme-example/tree/master/modules/n_plus_one) can be found on GitHub.
 
 {% include 'shared/questions_section' %}
