@@ -73,10 +73,12 @@ pipeline {
 
   post {
     success {
+      when { branch 'master' }
       slackSend (channel: "#notifications-docs", color: '#00FF00', message: "SUCCESS: <${env.BUILD_URL}|Build #${env.BUILD_NUMBER}> \n ${commitInfo()}")
     }
 
     failure {
+      when { branch 'master' }
       slackSend (channel: "#notifications-docs", color: '#FF0000', message: "BUILD FAIL: <${env.BUILD_URL}console|Open build details>")
     }
   }
