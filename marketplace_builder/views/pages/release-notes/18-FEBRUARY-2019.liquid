@@ -14,15 +14,14 @@ searchable: true
 
 ## What's new
 
-* **Properties for all users**: You can now set properties directly in the user object, no need to go through the user profile. You can define properties all users should have via the marketplace_builder/user.yml file.
+* **Properties for all users**: You can now set properties directly in the user object, no need to go through the user profile. You can define properties all users should have via the `marketplace_builder/user.yml` file. 
+
+{% include "alert/tutorial", content: "Follow our step-by-step tutorial to learn more about <a href='/tutorials/users/creating-user-property'>Creating a Property for All Users</a>." %}
+
 * **Liquid in page metadata**: Page metadata now accepts Liquid and it will evaluate it for each page render. Same for layout.
 * **Migration invoked during module installation**: Migrations added to the module will now be invoked during module installation, no need to do the full deploy.
 
 ## Improvements
 
 * **Bulk update all data**: We have pushed some data import/export improvements. Now, you should be able to use data import to actually bulk update all data, not only the ones which were imported initially.
-
-
-## Fixes 
-
 * **Deleting line in yml file**: Deleting line in a yml file will work as expected - as if it never has been there, instead of pretending it was not deleted. This bug forced you to explicitly set the property to a blank string instead of just removing it, like for `callback_actions` in Form Configuration, etc. It will be applied only to new Instances, because we did not want to risk breaking your Instances with the next deploy if for some reason you unknowingly relied on this bug. We will add a flag to the Partner Portal soon which would allow you to leverage the bug fix in a controlled way for existing Instances.
