@@ -24,6 +24,7 @@ pipeline {
       agent { docker { image 'node:10-alpine'; args '-u root' } }
 
       steps {
+        sh 'npm ci'
         sh 'npm run build'
       }
     }
