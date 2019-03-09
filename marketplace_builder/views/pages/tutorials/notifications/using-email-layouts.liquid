@@ -18,7 +18,7 @@ As the concept of an email layout is the same as the concept of a layout for pag
 
 ## Steps
 
-Using email layouts is a two-step process:
+Using email layouts is a three-step process:
 
 <div data-autosteps></div>
 
@@ -32,7 +32,6 @@ The content of an email layout is slightly different from the content of a layou
 
 Add the following to your email layout file `mailer.html.liquid`:
 
-
 ```liquid
 {% raw %}
   Header
@@ -43,8 +42,15 @@ Add the following to your email layout file `mailer.html.liquid`:
 {% endraw %}
 ```
 
-
 Where {% raw %}`{{ content_for_layout }}`{% endraw %} injects the body defined in the email notification into the layout. Without it, you would be sending a layout without actual content.
+
+## Step 3: Use layout in email
+
+To make your email notification use newly created layout, set `layout_path`.
+
+```yaml
+layout_path: mailer
+```
 
 ## Next steps
 
