@@ -4,7 +4,7 @@ import LayoutPO from './page-objects/Layout';
 
 const Layout = new LayoutPO();
 
-fixture('Layout').page(`${Layout.URL.staging}`);
+fixture('Layout').page(process.env.MP_URL);
 
 test('Sidebar menu is collapsed on page load', async t => {
   await t.expect(Layout.SidebarItemExpanded.count).eql(0);

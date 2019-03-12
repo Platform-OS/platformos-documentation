@@ -1,6 +1,6 @@
 import { init, captureException } from '@sentry/browser';
 
-const ERROR_SIGNATURE = new RegExp('(Liquid|RenderFormTag|QueryGraphTag) Error');
+const ERROR_SIGNATURE = new RegExp('(Liquid|RenderFormTag|QueryGraphTag|ExecuteQueryTag) Error');
 
 init({
   dsn: 'https://7c0394dd2d324d6cae3cc42900ee1119@sentry.io/1303430',

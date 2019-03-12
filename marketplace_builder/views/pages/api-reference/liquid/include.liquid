@@ -193,13 +193,15 @@ slug: include
 ---
 {% include 'export' %}
 Car: {{ context.exports.my_car }}
+My car maker: {{ context.exports.my_car.honda.maker }}
 {% endraw %}
 ```
 
-This should render the string stored in the variable:
+This should render the stringified hash stored inside the variable in the first line, and nested key in the second:
 
 ```json
 Car: {"honda"=>{"maker"=>"Honda", "model"=>"CRX", "year"=>"1991"}}
+My car maker: Honda
 ```
 
 ### Live demo and source code

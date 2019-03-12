@@ -2,15 +2,15 @@
 slug: tutorials/qa/writing-testcafe-test
 metadata:
   title: Writing a TestCafe Test
-  description: This guide will help you write your first test using TestCafe. This tutorial uses an example from the platformOS documentation site. 
+  description: This guide will help you write your first test using TestCafe. This tutorial uses an example from the platformOS documentation site.
 searchable: true
 converter: markdown
 ---
 
-This guide will help you write your first test using TestCafe. This tutorial uses an example from the platformOS documentation site. 
+This guide will help you write your first test using TestCafe. This tutorial uses an example from the platformOS documentation site.
 
 ## Requirements
-To follow the steps in this tutorial, you need TestCafe installed on your computer. 
+To follow the steps in this tutorial, you need TestCafe installed on your computer.
 
 * [Installing TestCafe](/tutorials/qa/installing-testcafe)
 
@@ -21,7 +21,7 @@ Writing a test using TestCafe is a two-step process:
 
 ### Step 1: Determine fixture declaration
 
-A fixture is a test category and each test file requires its determination. Create a file called `test.js` in your `tests` folder: 
+A fixture is a test category and each test file requires its determination. Create a file called `test.js` in your `tests` folder:
 
 ```js
 {% raw %}
@@ -30,12 +30,10 @@ fixture `My First Fixture`
 {% endraw %}
 ```
 
-The whole test will look like this: 
+The whole test will look like this:
 
 ```js
-import {
-  Selector
-} from 'testcafe';
+import { Selector } from 'testcafe';
 
 fixture `My first fixture`
   .page `https://examples.platform-os.com/full-form-example`;
@@ -56,7 +54,7 @@ The test will execute the following scenario:
 1. Go to the indicated URL.
 2. Enter an email address.
 3. Click the Save button.
-4. The expected result is a notification displayed with the text `This is flash notice (success)`. 
+4. The expected result is a notification displayed with the text `This is flash notice (success)`.
 
 ### Step 2: Launch the test
 

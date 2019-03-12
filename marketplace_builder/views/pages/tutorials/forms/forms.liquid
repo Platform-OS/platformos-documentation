@@ -15,7 +15,11 @@ To delve into forms, you should be familiar with:
 
 ## Basic concept
 
-Form configuration is defined as Liquid files and is located within the `marketplace_builder/form_configurations` directory.
+Form configuration is defined as Liquid files and is located within the `form_configurations`.
+
+If you develop your code as module `form_configurations` directory should be placed inside `public` or `private` directory of your module.
+
+If your code is not a module, `form_configurations` is placed directly inside `marketplace_builder` directory.
 
 Each file is divided into two sections: configuration and implementation.
 
@@ -56,11 +60,17 @@ To display the form within a page, use the [include_form tag](/api-reference/liq
 ---
 slug: car
 ---
-{% include_form "car_form" %}
+{% include_form "modules/minimal_form/car_form" %}
 ```
 {% endraw %}
 
 Now head to the `/car` page and see the form with text input followed by a submit button.
+
+
+## Live example and source code
+
+To see how it works on a real webpage go to the [live example](https://examples.platform-os.com/car) page.
+[Source code](https://github.com/mdyd-dev/marketplace-nearme-example/tree/master/modules/minimal_form) can be found on GitHub.
 
 
 ## Related topics

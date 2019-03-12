@@ -31,7 +31,7 @@ Assuming there is a problem somewhere, you have to decide which parts to measure
 
 ```liquid
 {% raw %}
-{% query_graph 'n1_programmers' %}
+{% query_graph 'modules/n_plus_one/n1_programmers' %}
 
 {% for programmer in g.programmers.results %}
   <tr>
@@ -57,7 +57,7 @@ The `graph_duration` and `render_duration` variables store partial execution tim
 {% raw %}
 {% assign __start = "now" | to_time %}
 
-{% query_graph 'programmers' %}
+{% query_graph 'modules/n_plus_one/programmers' %}
 
 {% assign __graph = "now" | to_time %}
 
@@ -89,7 +89,7 @@ Test results are sent to your instance log stream and can be accessed by using t
 ## Live example and source code
 
 To see how it works on a real webpage go to the [live example](https://examples.platform-os.com/programmers/with_companies_2) page.
-[Source code](https://github.com/mdyd-dev/marketplace-nearme-example) can be found on GitHub.
+[Source code](https://github.com/mdyd-dev/marketplace-nearme-example/tree/master/modules/n_plus_one) can be found on GitHub.
 
 ## Next steps
 Congratulations! You know how to measure the execution time of Liquid code fragments using the time_diff filter. Check out another tutorial that uses this method for testing two different solutions.

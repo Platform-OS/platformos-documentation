@@ -27,7 +27,7 @@ This is an advanced tutorial. To follow it, you should be familiar with basic pl
 
 This guide assumes that there is a user profile called `developer` which is defined as such:
 
-#### marketplace_builder/user_profile_types/developer.yml
+#### user_profile_types/developer.yml
 
 ```yaml
 name: developer
@@ -44,7 +44,7 @@ properties:
 
 This guide uses the following form configuration that is used to update developers profile:
 
-#### marketplace_builder/form_configurations/developer/update_profile.liquid
+#### form_configurations/developer/update_profile.liquid
 
 ```yaml
 {% raw %}
@@ -76,7 +76,7 @@ fields:
 
 A simple page renders the form mentioned above:
 
-#### marketplace_builder/views/pages/developer/update_profile.liquid
+#### views/pages/developer/update_profile.liquid
 
 ```liquid
 {% raw %}
@@ -126,7 +126,7 @@ Example for property of custom attachment type:
 
 Set up action and all required data in hidden inputs:
 
-#### marketplace_builder/form_configurations/developer/update_profile.liquid
+#### form_configurations/developer/update_profile.liquid
 
 ```liquid
 {% raw %}
@@ -141,9 +141,6 @@ Set up action and all required data in hidden inputs:
     <input type="hidden" name="{{ input[0] }}" value="{{ input[1] }}" />
   {% endfor %}
 
-  {% comment %} Obligatory metadata key, even though not used in this case {% endcomment %}
-
-  {% comment %} Partial with  {% endcomment %}
   <h4>Upload your image</h4>
   <input name="file" type="file" />
 

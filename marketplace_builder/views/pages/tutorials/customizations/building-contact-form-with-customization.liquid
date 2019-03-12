@@ -13,9 +13,9 @@ This guide will help you understand the process of building a contact form backe
 
 * [Liquid Markup](/api-reference/liquid/introduction)
 * [YAML](https://en.wikipedia.org/wiki/YAML)
-* [cURL](https://curl.haxx.se/docs/manpage.html)
 * [GraphQL](https://graphql.org/learn/)
 * [Enable sync option with marketplace-kit to apply changes on your site](https://github.com/mdyd-dev/marketplace-kit#syncing-changes)
+* [Modules](/tutorials/modules)
 
 ## Steps
 
@@ -25,9 +25,9 @@ Building a Contact Form with Customization is a nine-step process:
 
 ### Step 1: Define Contact &ndash; Custom Model Type
 
-To define a new Custom Model Type, use YAML files placed in the `custom_model_types` directory. In the key-value format, you can define a name for your Customization, and an array of Properties for the Customization object. To build a Contact Form, you'll need email, name, and description attributes on the Customization that you can call a `Contact`.
+To define a new Custom Model Type, use YAML files placed in the `custom_model_types` directory. In the key-value format, you can define a name for your Customization, and an array of Properties for the Customization object. To build a Contact Form, you'll need email, name, and description attributes on the Customization that you can call a `contact`.
 
-Create a file `custom_model_types/contact.yml` with the following content:
+#### custom_model_types/contact.yml
 
 ```yaml
 name: contact
@@ -53,7 +53,7 @@ Now that you have the definition of a `Contact` in place, you can create a Form 
 ```yaml
 ---
 name: contact_form
-resource: contact
+resource: modules/contacts/contact
 resource_owner: anyone
 fields:
   properties:
@@ -70,34 +70,7 @@ fields:
 ---
 ```
 
-The above definition whitelists name, email, and description attributes and defines validation for each attribute. You can now use this form, and send requests to the [Customization create endpoint](/api-reference/rest-api/customizations_post)
-
-<pre class="command-line" data-output="2-50" data-user="user" data-host="host"><code class="language-bash">
- curl -X POST https://example.com/api/customizations.json \
-   -H "Authorization: Token token=[YOUR API TOKEN]" \
-   -H "Accept: application/vnd.nearme.v4+json"\
-   -H "Content-type: application/json"\
-   -d \
-   '
-   {
-     "form_configuration_name": "contact_form",
-     "parent_resource_id": "contact",
-     "customization": {
-       "properties_attributes" : {
-         "name": "User Name",
-         "email": "user@example.com",
-         "description": "Please contact me."
-       }
-     }
-   }
-   '
-</code></pre>
-
-* Please note that when you use curl you need to set proper headers. To obtain an API token, go to your site admin panel `/instance_admin/settings/api_keys`, and click on generate token.
-* From the example above you are sending the following parameters in the request:
-  * `form_configuration_name`: name of the form object that you have created before
-  * `parent_resource_id`: parameterized name of Custom Model Type, `Contact` becomes `contact`
-  * `customization`: json attributes that correspond with structure of form and customization. Please note that Properties are nested within "properties_attributes" node.
+The above definition whitelists name, email, and description attributes and defines validation for each attribute.
 
 ### Step 3: Fetch saved data with GraphQL
 
@@ -105,7 +78,7 @@ Now that you have created the `Contact` custom model type in the previous step, 
 
 ```graphql
 query get_contacts($id: ID) {
-  customizations(name: "contact", id: $id) {
+  customizations(name: "modules/contacts/contact", id: $id) {
     results {
       id
       name: property(name: "name")
@@ -124,8 +97,8 @@ To see if the above query works properly you can head to the next section to lea
 Display contacts as a list with the possibility to get to the contact details view.
 As a first step, you need a page that will respond to given paths:
 
-`GET /contacts` for list view
-`GET /contacts/[ID]` for detail view
+* `GET /contacts` for list view
+* `GET /contacts/[ID]` for detail view
 
 Page slug for the above URL map will simply be `contacts` as the ID passed in the URL is dynamically assigned to the `context.params.slug2` variable. For more information, see [Pages](/tutorials/pages/pages) documentation.
 
@@ -135,17 +108,18 @@ Page slug for the above URL map will simply be `contacts` as the ID passed in th
 slug: contacts
 ---
 {%- assign id = context.params.slug2 -%}
-{%- query_graph "get_contacts", result_name: "g", id: id -%}
+{%- query_graph "modules/contacts/get_contacts", result_name: "g", id: id -%}
 
 {%- if id == blank -%}
-  {% include 'contacts/list', contacts: g.customizations.results %}
+  {% include 'modules/contacts/contacts/list', contacts: g.customizations.results %}
 {%- else -%}
-  {% include 'contacts/show', contact: g.customizations.results.first %}
+  {% include 'modules/contacts/contacts/show', contact: g.customizations.results.first %}
 {%- endif -%}
 {% endraw %}
 ```
 
-`views/partials/contacts/list.liquid`
+#### views/partials/contacts/list.liquid
+
 ```liquid
 {% raw %}
 <h1>List View</h1>
@@ -167,17 +141,14 @@ slug: contacts
 {% endraw %}
 ```
 
-`views/partials/contacts/show.liquid`
+#### views/partials/contacts/show.liquid
+
 ```liquid
 {% raw %}
-
 <h1>Detail view</h1>
 <p>{{ contact.name }}</p>
 <p>{{ contact.email }}</p>
-<p>
-  {{ contact.description }}
-</p>
-
+<p>{{ contact.description }}</p>
 {% endraw %}
 ```
 
@@ -189,7 +160,7 @@ In Step 2: Define Contact Form-Data Creation, you have created a form file calle
 ```yaml
 ---
 name: contact_form
-resource: Customization
+resource: modules/contacts/contact
 resource_owner: anyone
 redirect_to: /contacts
 fields:
@@ -241,11 +212,11 @@ To display the form on the previously created `contacts` page you have to includ
 
 ```liquid
 {% raw %}
-{% include_form 'contact_form' %}
+{% include_form 'modules/contacts/contact_form' %}
 {% endraw %}
 ```
 
-Similarly to the `curl` request in step 2, you have to pass the Custom Model Type parameterized name as parent_resource_id, and point to the name of the form to include it properly in the page. As a result, you should be able to create Customization objects, called Contact with simple form submission, and list them after fetching with GraphQL. You are not setting up headers and API keys with this approach, as those are included automagically with the `form` tag.
+As a result, you should be able to create Customization objects, called Contact with simple form submission, and list them after fetching with GraphQL.
 
 ### Step 6: Delete contact
 
@@ -255,7 +226,7 @@ In order to remove record from the database, create `delete_contact_form`:
 ```liquid
 ---
 name: delete_contact_form
-resource: contact
+resource: modules/contacts/contact
 resource_owner: anyone
 redirect_to: /contacts
 fields: {}
@@ -270,7 +241,7 @@ To display delete button on the list of contacts, include the form as follows:
 {% raw %}
 ```liquid
 <td>
-  {% include_form "delete_contact_form", id: contact.id %}
+  {% include_form "modules/contacts/delete_contact_form", id: contact.id %}
 </td>
 ```
 {% endraw %}
@@ -278,14 +249,14 @@ To display delete button on the list of contacts, include the form as follows:
 
 ### Step 7: Edit Contact
 
-As you already have the form to create contacts, you can simply reuse it for the purpose of record update. In order to prefill the form with proper data, add id to include_form tag.
+As you already have the form to create contacts, you can simply reuse it for the purpose of record update. In order to prefill the form with proper data, add `id` to `include_form` tag.
 
 {% raw %}
 ```liquid
 ---
 slug: contacts/edit
 ---
-{% include_form "contact_edit_form", id: context.params.slug3 %}
+{% include_form "modules/contacts/contact_edit_form", id: context.params.slug3 %}
 ```
 {% endraw %}
 
@@ -326,7 +297,7 @@ At this point, you might want to restrict access to the forms and views you have
 
 To play with a live example (in much fuller form and with additional information) go to the [contact example](https://examples.platform-os.com/contacts) page.
 
-[Source code](https://github.com/mdyd-dev/marketplace-nearme-example) can be found on GitHub. You can also review [example code commit](https://github.com/mdyd-dev/marketplace-nearme-example/commit/6532e06e8e7a7b9185f5680e46669353bbc8d32c) for this particular article.
+[Source code](https://github.com/mdyd-dev/marketplace-nearme-example/tree/master/modules/contacts) can be found on GitHub.
 
 ## Next steps
 

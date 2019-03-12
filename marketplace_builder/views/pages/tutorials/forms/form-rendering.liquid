@@ -19,8 +19,6 @@ To understand this topic, you should be familiar with:
 Form implementation example from [Full Form Configuration example](tutorials/forms/configuration-options)
 {% raw %}
 ```liquid
-<p>{{ context.flash.notice }}</p>
-<p>{{ context.flash.alert }}</p>
 <p>{{ form_builder.fields.properties.greeting.value }}</p>
 
 {% form html-class: 'w-50' %}
@@ -32,12 +30,12 @@ Form implementation example from [Full Form Configuration example](tutorials/for
     <input
       class="form-control"
       name="{{ form_builder.fields.properties.email.name }}"
-      value="{{ form_builder.fields.properties.email.value}}"
+      value="{{ form_builder.fields.properties.email.value }}"
       id="form_email"
       type="email"
      >
 
-     {{ form_builder.fields.properties.email.validation.rules.presence.message }}
+     <p>{{ form_builder.errors['properties.email'] }}</p>
   </div>
 
   <button class="btn btn-primary">Save</button>
@@ -54,7 +52,7 @@ Example:
 
 {% raw %}
 ```liquid
-{% include_form 'full_form_example', id: params.id %}
+{% include_form 'modules/full_form/full_form_example', id: params.id %}
 ```
 {% endraw %}
 
@@ -78,7 +76,7 @@ Using the [`form tag`](/api-reference/liquid/platformos-tags#form) is the easies
   return_to: dashboard/blog
   ---
   {% form method: 'delete' %}
-    <input type="Submit" class='btn btn-link' value="Delete" data-confirmation='You will delete this post permanently. Are you sure?'>
+    <button class="btn btn-link">Delete</button>
   {% endform %}
 
   ```
@@ -103,7 +101,7 @@ Using the [`form tag`](/api-reference/liquid/platformos-tags#form) is the easies
   Make sure to add necessary information if you create your HTML form manually or when you use third-party tools like curl to construct your request. Required request parameters are:
 
   * `form_configuration_name` or `form_configuration_id` is telling platformOS which form to use when processing request
-  * `parent_resource_id` identifies form object type
+  * `parent_resource_id` identifies form object type (which is usually the name of your Custom Model Type)
   * 'authenticity_token` is required when authorization header is not set, otherwise can be skipped
 
 ## Form Builder Object
@@ -121,7 +119,7 @@ List of `form_builder` properties:
     * validation: validation rules and errors
     * property_options: field property options
 * **name**: name of form configuration
-* **resource**: form configuration resource name
+* **resource**: form configuration resource name (usually your Custom Model Type name)
 * **resource_owner**: form configuration resource owner
 * **system_fields**: an object containing data rendered within the form tag
 
