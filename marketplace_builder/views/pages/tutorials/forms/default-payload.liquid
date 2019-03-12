@@ -12,7 +12,7 @@ before validation. All attributes passed this way must be defined in the Form Co
 
 ## Why and where to use default_payload
 
-Default Payload can be used in all forms that need to include data not directly sent by a user in a form submission. Request data is processed in Liquid, and then merged with request data as new or original attribute. A good example can be a slug property that is formatted based on title/name property.
+Default Payload can be used in all forms that need to include data not directly sent by a user in a form submission. Request data is processed in Liquid and then merged with request data as new or original attribute. A good example can be a slug property that is formatted based on title/name property.
 
 Another important feature is that default_payload allows you to overwrite/extend user input on the server side. You can use it, for example, to store references, calculate prices, etc., because users have no way to maliciously change the value, even if they try to malform a form's HTML.
 
@@ -23,7 +23,7 @@ Liquid Template provides you with a `form` variable that is populated with vario
 ## Example
 
 Default Payload can help with setting action timestamp, states, or modification of request state.
-In the example below you can see the custom property `cancelled_at` set with each from submission:
+In the example below you can see the custom property `cancelled_at` set with each form submission:
 
 ```yaml
 {% raw %}
