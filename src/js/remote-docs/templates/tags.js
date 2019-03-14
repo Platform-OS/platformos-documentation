@@ -23,11 +23,11 @@ const template = `<%_ items.tags.map(function(item) { _%>
       <p><%= item.description %></p>
     <%_ } _%>
 
-    <%_ if (item.params.length > 0) { _%>
+    <%_ if (item.params && item.params.length > 0) { _%>
       ${params}
     <%_ } _%>
 
-    <%_ if (item.examples.length > 0) { _%>
+    <%_ if (item.examples && item.examples.length > 0) { _%>
       ${examples}
     <%_ } _%>
   </div>
