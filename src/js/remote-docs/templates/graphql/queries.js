@@ -27,7 +27,7 @@ const template = `<%_ items[0].fields.map(function(item) { _%>
     <%= item.name _%>
     <%_ if (item.type) { _%>
       <small>
-        (type: <a href="/api-reference/graphql/objects#<%= item.type.name.toLowerCase() _%>"><%= item.type.name _%></a>)
+        (type: <a href="./objects#<%= item.type.name.toLowerCase() _%>"><%= item.type.name _%></a>)
       </small>
     <%_ } _%>
   </h2>

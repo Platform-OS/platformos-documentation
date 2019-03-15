@@ -27,7 +27,7 @@ const template = `<%_ items.filters.map(function(item) { _%>
   <h2><%= item.name %></h2>
 
   <div class="border-bottom mb-5 pb-4">
-    <%_ if (item.returns.length > 0) { _%>
+    <%_ if (item.returns) { _%>
       ${returns}
     <%_ } _%>
 
