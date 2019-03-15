@@ -30,8 +30,8 @@ const response = `<%_ let res = value.response _%>
   <%_ } _%>
 `;
 
-const template = `<%_ for (let item in items) { _%>
-  <%_ let examples = items[item] _%>
+const template = `<%_ for (let item in items.api) { _%>
+  <%_ let examples = items.api[item] _%>
   <h2><%= item _%></h2>
 
   <%_ for (let example in examples) { _%>
