@@ -23,8 +23,21 @@ const examples = `<h4>Examples</h4>
   </code></pre>
 <%_ }) _%>`;
 
+const aliases = `<h4 class="mb-3">Aliases:
+  <small>
+    <% item.aliases.map(a => { %>
+      <code class="mr-3"><%= a %></code>
+    <% }) %>
+  </small>
+</h4>`;
+
 const template = `<%_ items.filters.map(function(item) { _%>
   <h2><%= item.name %></h2>
+
+
+  <%_ if (item.aliases.length > 0) { _%>
+    ${aliases}
+  <%_ } _%>
 
   <div class="border-bottom mb-5 pb-4">
     <%_ if (item.returns) { _%>
