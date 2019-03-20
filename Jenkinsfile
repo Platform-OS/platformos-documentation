@@ -108,7 +108,8 @@ pipeline {
     success {
       script {
         if (env.GIT_BRANCH == 'master') {
-          slackSend (channel: "#notifications-docs", color: '#00FF00', message: "SUCCESS: <${env.BUILD_URL}|Build #${env.BUILD_NUMBER}> \n ${commitInfo()}")
+
+          slackSend (channel: "#notifications-docs", color: '#00FF00', message: "SUCCESS: <${env.BUILD_URL}|Build #${env.BUILD_NUMBER}> - ${buildDuration()}. ${commitInfo()}")
         }
       }
     }
@@ -116,7 +117,7 @@ pipeline {
     failure {
       script {
         if (env.GIT_BRANCH == 'master') {
-          slackSend (channel: "#notifications-docs", color: '#FF0000', message: "BUILD FAIL: <${env.BUILD_URL}console|Open build details>")
+          slackSend (channel: "#notifications-docs", color: '#FF0000', message: "FAILED: <${env.BUILD_URL}|Open build details> - ${buildDuration()}")
         }
       }
     }
@@ -130,5 +131,5 @@ def commitInfo() {
   commitAuthor = sh(returnStdout: true, script: 'git log --format="%an" -1').trim()
   commitMsg = sh(returnStdout: true, script: 'git log --format="%B" -1 ${commitSha}').trim()
 
-  return "<${GITHUB_URL}/commit/${commitSha}|${commitSha}> - ${commitAuthor} - ${commitMsg}"
+  return "<${GITHUB_URL}/commit/${commitSha}|${commitSha}> - ${commitMsg}"
 }
