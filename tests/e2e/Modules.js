@@ -49,57 +49,40 @@ fixture('Remote docs').page(process.env.MP_URL);
 test('platformOS Liquid Filters', async t => {
   await t.navigateTo('/api-reference/liquid/platformos-filters');
 
-  await t.expect(Selector('h2').withText('extract_url_params').exists).ok();
   await t.expect(Selector('h2').withText('uuid').exists).ok();
 });
 
 test('platformOS Liquid Tags', async t => {
   await t.navigateTo('/api-reference/liquid/platformos-tags');
 
-  await t.expect(Selector('h2').withText('cache').exists).ok();
   await t.expect(Selector('h2').withText('yield').exists).ok();
 });
 
 test('Partner Portal', async t => {
   await t.navigateTo('/api-reference/partner-portal/api');
 
-  await t.expect(Selector('h2').withText('POST /api/authenticate').exists).ok();
   await t.expect(Selector('h2').withText('GET /api/partners/[[ID]]').exists).ok();
 });
 
 test('GraphQL', async t => {
   await t.navigateTo('/api-reference/graphql/queries');
-
-  await t.expect(Selector('h2').withText('activities').exists).ok();
   await t.expect(Selector('h2').withText('users').exists).ok();
 
   await t.navigateTo('/api-reference/graphql/mutations');
-
-  await t.expect(Selector('h2').withText('activity_create').exists).ok();
   await t.expect(Selector('h2').withText('user_update').exists).ok();
 
   await t.navigateTo('/api-reference/graphql/objects');
-
-  await t.expect(Selector('h2').withText('Activity').exists).ok();
   await t.expect(Selector('h2').withText('UserProfileSchema').exists).ok();
 
   await t.navigateTo('/api-reference/graphql/scalars');
-
-  await t.expect(Selector('h2').withText('ActivityPayload').exists).ok();
   await t.expect(Selector('h2').withText('String').exists).ok();
 
   await t.navigateTo('/api-reference/graphql/interfaces');
-
-  await t.expect(Selector('h2').withText('CustomAttributeInterface').exists).ok();
   await t.expect(Selector('h2').withText('RemoteModelInterface').exists).ok();
 
   await t.navigateTo('/api-reference/graphql/enums');
-
-  await t.expect(Selector('h2').withText('AsyncCallbackPriority').exists).ok();
   await t.expect(Selector('h2').withText('SpamProtection').exists).ok();
 
   await t.navigateTo('/api-reference/graphql/inputs');
-
-  await t.expect(Selector('h2').withText('ActiveRecordReference').exists).ok();
   await t.expect(Selector('h2').withText('UsersSortInput').exists).ok();
 });
