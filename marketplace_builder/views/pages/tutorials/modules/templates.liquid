@@ -7,7 +7,7 @@ slug: tutorials/modules/templates
 searchable: true
 ---
 
-With **module templates**, you can configure modules before getting deployed to an environment. For example, you can specify the slug for a page (where the page will be available after the module is installed) upon installing the module.
+With **module templates**, you can configure modules before deploying them to an environment. For example, you can specify the slug for a page (where the page will be available after the module is installed) upon installing the module.
 
 # Adding templates to module code
 
@@ -21,7 +21,21 @@ Everything between `<%=` and `=%>` is interpreted as a key to be found in the te
 
 {% include "alert/note", content: "This section is work in progress, so it is likely to keep changing - we are adding support for the template configuration file on module toplevel (separate configuration file per module)." %}
 
-Values for variables have to be provided in the "template-values.json" file which should be placed at the toplevel of the module (the same level public and private folders are at).
+Values for variables have to be provided in the "template-values.json" file placed at the toplevel of the module: 
+
+```
+modules
+    ├──admincms
+       ├── template-values.json
+		   ├── private
+	   	 │   └── graph_queries
+		   │       ├── get_customizations.graphql
+		   │       └── get_pages.graphql
+		   └── public
+		       └── views
+		           └── pages
+		               └── admin.liquid 
+```
 
 ## Example
 
@@ -55,11 +69,3 @@ layout_name: "modules/contact_form/main"
 
 <h1> Contact Page title </h1>
 ```
-
-# Using module with template from Partner Portal
-
-If Partner Portal detects that a module has configuration template it allow users to edit it before the module is deployed. This will happen after "Install" or "Update" link for module is clicked, and it will show a screen similar to this one:
-
-<img src="{{ 'images/tutorials/modules/configure_templates.png' | asset_url }}" alt="Configure template" />
-
-Values on that screen are the defaults provided by the module author and can be changed freely.
