@@ -1,5 +1,4 @@
 const path = require('path');
-const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const WebpackRequireFrom = require('webpack-require-from');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
@@ -17,15 +16,6 @@ const plugins = [
     variableName: 'window.__CONTEXT__.cdnUrl'
   })
 ];
-
-if (production) {
-  plugins.push(
-    new webpack.SourceMapDevToolPlugin({
-      filename: '[file].map',
-      include: ['app.js']
-    })
-  );
-}
 
 const config = {
   entry: {

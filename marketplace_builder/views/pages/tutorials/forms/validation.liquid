@@ -52,7 +52,7 @@ fields:
         unique:
           scope:
             - other_property
-          message: Must be uniq
+          message: Must be unique
 ```
 
 ### confirmation
@@ -88,10 +88,14 @@ password_confirmation:
 
 ### format
 
+Tries to match provided value with regexp defined in `with`.
+
+When `presence` is set to `false`, blank value will produce validation error. To avoid that, use `allow_blank: true`.
+
 ```yaml
 phone:
   validation:
-    presence: true
+    presence: false
     format:
       with: \A[+]?[\d \-()]+\z
       allow_blank: true

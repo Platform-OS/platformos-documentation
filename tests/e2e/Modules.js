@@ -1,8 +1,8 @@
 import { Selector } from 'testcafe';
 
-fixture('Modules').page(process.env.MP_URL);
+fixture('Autosteps').page(process.env.MP_URL);
 
-test('Autosteps are generated and have link', async t => {
+test('Are generated and linked', async t => {
   await t.navigateTo('/get-started/setting-up-site');
 
   const container = await Selector('[data-autosteps]');
@@ -17,7 +17,7 @@ test('Autosteps are generated and have link', async t => {
   await t.expect(firstLinkId).eql(firstStepId);
 });
 
-test('Autosteps generate as many links as there are headings with steps', async t => {
+test('Generate as many links as there are headings with steps', async t => {
   await t.navigateTo('/get-started/setting-up-site');
 
   const container = await Selector('[data-autosteps]');
@@ -28,7 +28,9 @@ test('Autosteps generate as many links as there are headings with steps', async 
   await t.expect(await stepHeadings.count).eql(2);
 });
 
-test('Table of Contents is autogenerating', async t => {
+fixture('Table of Contents').page(process.env.MP_URL);
+
+test('Is generated', async t => {
   await t.navigateTo('/api-reference/liquid/objects');
 
   const container = await Selector('[data-autotoc]');
@@ -40,4 +42,47 @@ test('Table of Contents is autogenerating', async t => {
     .contains('forloop')
     .expect(await container.textContent)
     .contains('tablerowloop');
+});
+
+fixture('Remote docs').page(process.env.MP_URL);
+
+test('platformOS Liquid Filters', async t => {
+  await t.navigateTo('/api-reference/liquid/platformos-filters');
+
+  await t.expect(Selector('h2').withText('uuid').exists).ok();
+});
+
+test('platformOS Liquid Tags', async t => {
+  await t.navigateTo('/api-reference/liquid/platformos-tags');
+
+  await t.expect(Selector('h2').withText('yield').exists).ok();
+});
+
+test('Partner Portal', async t => {
+  await t.navigateTo('/api-reference/partner-portal/api');
+
+  await t.expect(Selector('h2').withText('GET /api/partners/[[ID]]').exists).ok();
+});
+
+test('GraphQL', async t => {
+  await t.navigateTo('/api-reference/graphql/queries');
+  await t.expect(Selector('h2').withText('users').exists).ok();
+
+  await t.navigateTo('/api-reference/graphql/mutations');
+  await t.expect(Selector('h2').withText('user_update').exists).ok();
+
+  await t.navigateTo('/api-reference/graphql/objects');
+  await t.expect(Selector('h2').withText('UserProfileSchema').exists).ok();
+
+  await t.navigateTo('/api-reference/graphql/scalars');
+  await t.expect(Selector('h2').withText('String').exists).ok();
+
+  await t.navigateTo('/api-reference/graphql/interfaces');
+  await t.expect(Selector('h2').withText('RemoteModelInterface').exists).ok();
+
+  await t.navigateTo('/api-reference/graphql/enums');
+  await t.expect(Selector('h2').withText('SpamProtection').exists).ok();
+
+  await t.navigateTo('/api-reference/graphql/inputs');
+  await t.expect(Selector('h2').withText('UsersSortInput').exists).ok();
 });
