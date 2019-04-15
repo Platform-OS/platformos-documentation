@@ -11,7 +11,7 @@ searchable: true
 
 ## Directory structure
 
-Module code is split into 2 directories to protect IP. To create a module, split module code into `public` and `private` folders, and place all that code into the `modules/MODULE_NAME` directory.
+Module code can be split into 2 directories to protect IP (Intellectual Property). To create a module, split module code into `public` and `private` folders, and place all that code into the `modules/MODULE_NAME` directory.
 
 ```shell
 modules
@@ -42,40 +42,39 @@ admincms
             └── admin.liquid
 ```
 
-
 ## Resource naming conventions and paths
 
 Configuration files placed in a module are treated a bit differently than regular files.
 To avoid conflicts between the code of a module and regular code (or between modules) a namespacing strategy is used.
 
-### Namespacing rules
+## Namespacing rules
 
-### 1. Assets
+### Assets
 
-You can access assets placed at `assets` directory in a module using `asset_url` filter.
+You can access assets placed at `assets` directory in a module using [asset_url](/api-reference/liquid/platformos-filters#asset_url) filter.
 
 Paths for those files are prefixed with `modules/MODULE_NAME`
 
-#### Example for `modules/admin/assets/app.css`:
+#### Example for modules/admin/assets/app.css:
 
-```liquid
+```html
 {% raw %}
 <link rel="stylesheet" media="screen" href="{{ 'modules/admin/app.css' | asset_url }}">
 {% endraw %}
 ```
 
-#### Example for `modules/admin/assets/admin.js`:
+#### Example for modules/admin/assets/admin.js:
 
-```liquid
+```html
 {% raw %}
 <script src="{{ 'modules/admin/admin.js' | asset_url }}"></script>
 {% endraw %}
 ```
 
-### 2. Partials
+### Partials
 
-Partials can be referenced with their shorter name - the same as the regular ones. For example, to include
-partial saved as `modules/admin/private/views/partials/comments.liquid`, you should use:
+Partials can be referenced with their shorter name - the same as the regular ones.
+For example, to include partial saved as `modules/admin/private/views/partials/comments.liquid`, you should use:
 
 ```liquid
 {% raw %}
@@ -83,7 +82,7 @@ partial saved as `modules/admin/private/views/partials/comments.liquid`, you sho
 {% endraw %}
 ```
 
-### 3. Layouts
+### Layouts
 
 Layout name has the same prefix when referenced within a page:
 
@@ -92,10 +91,9 @@ slug: admin/settings
 layout_name: modules/admin/settings
 ```
 
-### 4. Other resources (Authorization Policy, Graph Query, etc.)
+### Other resources (Authorization Policies, Graph Queries, etc.)
 
-When creating a module you don't have to add prefix to the name but when you use it (inside or outside of module scope) you have to provide
-the `modules/module_name/` prefix.
+When creating a module you don't have to add prefix to the name but when you use it (inside or outside of module scope) you have to provide the `modules/module_name/` prefix.
 
 ### Examples
 
@@ -110,7 +108,6 @@ name: can_view_blog_posts
 redirect_to: /blog
 flash_alert: Please log in to access this page.
 ---
-{% query_graph "modules/admin/get_blog_user", result_name: "g" %}
 true
 {% endraw %}
 ```
@@ -142,7 +139,7 @@ But it is referenced with the prefix:
 
 ```liquid
 {% raw %}
-{%- query_graph 'modules/admin/get_blog_instance', scope: 'blog', result_name: 'bi', slug: url_params.slug -%}
+{%- query_graph 'modules/admin/get_blog_instance', result_name: 'bi' -%}
 {% endraw %}
 ```
 
