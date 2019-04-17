@@ -39,13 +39,13 @@ Please note that the name you provide will be prefixed with a UTC timestamp, tha
 This value is used to keep the migrations in order in all environments.
 
 ### Step 2: Implement migration
-Use the Liquid markup in migration files, that includes executing GraphQL mutations (execute_query tag). A migration file can be synced many times.
+Use the Liquid markup in migration files, that includes executing GraphQL mutations (graphql tag). A migration file can be synced many times.
 
 For example, the following mutation can be put into the file created by the command in step 1:
 
 ```liquid
 {% raw %}
-{% execute_query 'create_book', name: "Animal Farm", author: "George Orwell" %}
+{% graphql res = 'create_book', name: "Animal Farm", author: "George Orwell" %}
 {% endraw %}
 ```
 

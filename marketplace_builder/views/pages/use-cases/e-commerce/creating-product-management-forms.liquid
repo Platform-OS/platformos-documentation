@@ -96,7 +96,7 @@ default_payload: >
   {% endif %}
 ---
 
-{% query_graph "get_brands", result_name: "gb" %}
+{% graphql gb = "get_brands" %}
 {% parse_json brand_options %}
 {
   {% for brand in gb.customizations.results %}
@@ -106,7 +106,7 @@ default_payload: >
 }
 {% endparse_json %}
 
-{% query_graph "get_product_types", result_name: "gpt" %}
+{% graphql gpt = "get_product_types" %}
 {% parse_json product_type_options %}
 {
   {% for product_type in gpt.customizations.results %}
@@ -704,7 +704,7 @@ metadata:
 ---
 {% include "common" %}
 
-{% query_graph "get_products", result_name: "g" %}
+{% graphql g = "get_products" %}
 
 <div class="row">
   <div class="col-10">
@@ -778,7 +778,7 @@ redirect_to: /404
   true
 {% comment %} Fetch product by id {% endcomment %}
 {% elsif params.slug3 != blank %}
-  {% query_graph "get_products", id: context.params.slug3, result_name: "g" %}
+  {% graphql g = "get_products", id: context.params.slug3 %}
   {% if g.customizations.results.first != blank %}
     true
   {% endif %}
@@ -834,7 +834,7 @@ The router you’ve created also handles displaying details of the given product
 {% endcomment %}
 
 {% comment %} Fetch product data {% endcomment %}
-{% query_graph "get_products", id: id, result_name: "g" %}
+{% graphql g = "get_products", id: id %}
 {% assign product = g.customizations.results.first %}
 
 <p><a href="/admin/products">&laquo; Products listing</a></p>

@@ -74,7 +74,7 @@ enabled: true
 format: http
 trigger_condition: true
 request_type: GET
-callback: "{%- assign response_json = response.body | to_hash -%}{% execute_query 'persist_in_custom_attribute', user_id: form.id, third_party_api_id: response_json.third_party_api_id %}"
+callback: "{%- assign response_json = response.body | to_hash -%}{% graphql res = 'persist_in_custom_attribute', user_id: form.id, third_party_api_id: response_json.third_party_api_id %}"
 headers: '{
   "Content-Type": "application/json"
 }'
@@ -87,7 +87,7 @@ headers: '{
 
 ### Step 4: Create GraphQL mutation
 
-In the callback, the `execute_query` tag invokes a GraphQL mutation with the provided arguments. The query accepts two arguments: the `user_id`, the ID of the user we want to update, and the `third_party_api_id` which is the value we want to store. The content of the GraphQL mutation file:
+In the callback, the `graphql` tag invokes a GraphQL mutation with the provided arguments. The query accepts two arguments: the `user_id`, the ID of the user we want to update, and the `third_party_api_id` which is the value we want to store. The content of the GraphQL mutation file:
 
 #### graph_queries/persist_in_custom_attribute.graphql
 
@@ -201,7 +201,7 @@ slug: test-result
 ```
 ```liquid
 {% raw %}
-{% query_graph 'get_current_user_third_party_api_value', result_name: 'graph_current_user'  %}
+{% graphql graph_current_user = 'get_current_user_third_party_api_value'  %}
 Third Party Api Value: for {{ graph_current_user.current_user.email }}: {{ graph_current_user.current_user.test_profile.third_party_api_value }}
 {% endraw %}
 ```

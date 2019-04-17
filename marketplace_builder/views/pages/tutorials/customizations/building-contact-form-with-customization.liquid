@@ -108,7 +108,7 @@ Page slug for the above URL map will simply be `contacts` as the ID passed in th
 slug: contacts
 ---
 {%- assign id = context.params.slug2 -%}
-{%- query_graph "modules/contacts/get_contacts", result_name: "g", id: id -%}
+{%- graphql g = "modules/contacts/get_contacts", id: id -%}
 
 {%- if id == blank -%}
   {% include 'modules/contacts/contacts/list', contacts: g.customizations.results %}

@@ -45,7 +45,7 @@ Start with moving the part that fetches data to a separate partial in the `share
 
 ```liquid
 {% raw %}
-{% query_graph 'get_current_user_data', result_name: "current_user_g" %}
+{% graphql current_user_g = 'get_current_user_data' %}
 
 {% if current_user_g.current_user %}
   {{

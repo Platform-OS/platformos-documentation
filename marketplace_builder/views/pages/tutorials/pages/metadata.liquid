@@ -89,7 +89,7 @@ Some examples of using the above query from a Liquid template to find metadata:
 
 ```liquid
 {% raw %}
-{% execute_query 'find_page', page: 1, per_page: 20, metadata: "TITLE", result_name: 'q' %}
+{% graphql q = 'find_page', page: 1, per_page: 20, metadata: "TITLE" %}
 {% endraw %}
 ```
 
@@ -97,7 +97,7 @@ Some examples of using the above query from a Liquid template to find metadata:
 
 ```liquid
 {% raw %}
-{% execute_query 'find_page', exclude: 'true', metadata: "TITLE", result_name: 'q' %}
+{% graphql q = 'find_page', exclude: 'true', metadata: "TITLE" %}
 {% endraw %}
 ```
 
@@ -105,7 +105,7 @@ Some examples of using the above query from a Liquid template to find metadata:
 
 ```liquid
 {% raw %}
-{% execute_query 'find_page', has_key: 'tags', result_name: 'q' %}
+{% graphql q = 'find_page', has_key: 'tags' %}
 {% endraw %}
 ```
 
@@ -113,7 +113,7 @@ Some examples of using the above query from a Liquid template to find metadata:
 
 ```liquid
 {% raw %}
-{% execute_query 'find_page', exclude: 'true', has_key: 'tags', result_name: 'q' %}
+{% graphql q = 'find_page', exclude: 'true', has_key: 'tags' %}
 {% endraw %}
 ```
 
@@ -121,7 +121,7 @@ Some examples of using the above query from a Liquid template to find metadata:
 
 ```liquid
 {% raw %}
-{% execute_query 'find_page', name: 'tags', value: 'bar', result_name: 'q' %}
+{% graphql q = 'find_page', name: 'tags', value: 'bar' %}
 {% endraw %}
 ```
 
@@ -129,7 +129,7 @@ Some examples of using the above query from a Liquid template to find metadata:
 
 ```liquid
 {% raw %}
-{% execute_query 'find_page', exclude: 'true', name: 'tags', value: 'bar', result_name: 'q' %}
+{% graphql q = 'find_page', exclude: 'true', name: 'tags', value: 'bar' %}
 {% endraw %}
 ```
 

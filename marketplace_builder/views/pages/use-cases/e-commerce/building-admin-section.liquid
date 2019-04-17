@@ -45,10 +45,9 @@ This should create a new file in your `migrations` folder.
 
 ```liquid
 {% raw %}
-{% query_graph 'get_user', result_name: g, email: "your-email@example.com" %}
-{% assign user_id = g.users.first.id %}
-{% execute_query "promote_user_to_admin", id: user_id %}
-{% execute_query "set_user_password", id: user_id, password: 'admin' %}
+{% graphql user_id = 'get_user', email: "your-email@example.com" | fetch: "users" | first | fetch: "id" %}
+{% graphql res = "promote_user_to_admin", id: user_id %}
+{% graphql res = "set_user_password", id: user_id, password: 'admin' %}
 {% endraw %}
 ```
 
@@ -173,7 +172,7 @@ redirect_to: /unauthorized
 flash_alert: Sorry, you have to be an admin user to access this page.
 ---
 {% raw %}
-{% query_graph 'current_user', result_name: "g" %}
+{% graphql g = 'current_user' %}
 {% if g.current_user.profile.properties.admin %}true{% endif %}
 {% endraw %}
 ```
@@ -259,7 +258,7 @@ name: sign_in_form
 resource: Session
 flash_notice: 'You are now logged in'
 redirect_to: >
-  {%- query_graph 'current_user', result_name: "g" -%}
+  {%- graphql g = 'current_user' -%}
   {%- if g.current_user.profile.properties.admin -%}
     /admin
   {%- else -%}

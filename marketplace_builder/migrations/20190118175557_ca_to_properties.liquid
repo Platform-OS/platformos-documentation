@@ -25,9 +25,10 @@
 
 {% assign page_dir = "marketplace_builder/views/pages/" %}
 {% for page in pages %}
-  {% query_graph "get_page_contributors", slug: page.slug %}
+  {% graphql g = "get_page_contributors", slug: page.slug %}
   {% assign id = g.customizations.results.first.id %}
   {% if id != blank %}
-    {% execute_query "update_page_contributors", id: id, slug: page.new_slug %} 
+    {% graphql res = "update_page_contributors", id: id, slug: page.new_slug %} 
   {% endif %}
 {% endfor %}
+

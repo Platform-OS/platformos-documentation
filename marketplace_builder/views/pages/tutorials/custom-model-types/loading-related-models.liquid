@@ -123,14 +123,14 @@ While displaying the programmer collection — for each programmer record — yo
 
 ```liquid
 {% raw %}
-{% query_graph 'modules/n_plus_one/programmers' %}
+{% graphql g = 'modules/n_plus_one/programmers' %}
 
 {% for programmer in g.programmers.results %}
   <tr>
     <td>{{ programmer.properties.email }}</td>
     <td>{{ programmer.properties.title }}</td>
     {% if programmer.properties.company_id %}
-      {% query_graph 'modules/n_plus_one/company', id: programmer.properties.company_id, result_name: 'company' %}
+      {% graphql company = 'modules/n_plus_one/company', id: programmer.properties.company_id %}
       <td>{{ company.companies.results.first.properties.name }}</td>
       <td>{{ company.companies.results.first.properties.url }}</td>
     {% endif %}

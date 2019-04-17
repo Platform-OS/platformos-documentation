@@ -114,14 +114,14 @@ Processor files are supposed to be included inside of the migration file and sho
 
 ```liquid
 {% raw %}
-{% query_graph 'get_brands', result_name: 'existing' %}
+{% graphql existing = 'get_brands' %}
 {% parse_json brand_names %}{% include "data/brand.json" %}{% endparse_json %}
 
 {% assign existing_names = existing.customizations.results | map: "name" %}
 
 {% for name in brand_names %}
   {% unless existing_names contains name %}
-    {% execute_query "create_brand", name: name %}
+    {% graphql res = "create_brand", name: name %}
   {% endunless %}
 {% endfor %}
 {% endraw %}
@@ -131,14 +131,14 @@ Processor files are supposed to be included inside of the migration file and sho
 
 ```liquid
 {% raw %}
-{% query_graph 'get_product_types', result_name: 'existing' %}
+{% graphql existing = 'get_product_types' %}
 {% parse_json product_type_names %}{% include "data/product_type.json" %}{% endparse_json %}
 
 {% assign existing_names = existing.customizations.results | map: "name" %}
 
 {% for name in product_type_names %}
   {% unless existing_names contains name %}
-    {% execute_query "create_product_type", name: name %}
+    {% graphql res = "create_product_type", name: name %}
   {% endunless %}
 {% endfor %}
 {% endraw %}

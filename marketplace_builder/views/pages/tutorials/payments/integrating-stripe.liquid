@@ -111,7 +111,7 @@ default_payload: |-
     "with_charge": true
   }
 ---
-{%- query_graph 'get_payment_gateway', result_name: "p" -%}
+{%- graphql p = 'get_payment_gateway' -%}
 
 {% assign pub_key = p.payment_gateways.first.test_publishable_key %}
 {% assign payment_method_id = p.payment_gateways[0].payment_methods[0].id %}
@@ -201,7 +201,7 @@ Make sure that payment states in the list match those in your
 {% raw %}
 ```liquid
   <h4>List of last five test payments:</h4>
-  {% query_graph "get_payments" %}
+  {% graphql g = "get_payments" %}
   <table>
       <tr>
         <th>ID</th>

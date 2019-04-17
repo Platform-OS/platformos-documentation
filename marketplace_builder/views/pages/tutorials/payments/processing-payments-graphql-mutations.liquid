@@ -76,7 +76,7 @@ fields:
 Now create invoice object with mutation execution:
 ```liquid
 {% raw %}
-{% execute_query "create_invoice", amount: "10", result_name: "i" %}
+{% graphql i = "create_invoice", amount: "10" %}
 {% assign invoice = i.customization_create %}
 {% endraw %}
 ```
@@ -90,7 +90,7 @@ The following lines assign that data to `cc` variable:
 
 ```liquid
 {% raw %}
-{% query_graph "get_credit_cards", user_id: context.current_user.id %}
+{% graphql g = "get_credit_cards", user_id: context.current_user.id %}
 {% assign cc = g.credit_cards.last %}
 {% endraw %}
 ```
@@ -168,7 +168,7 @@ With the definition above, execute the query with the data that you've previousl
 
 ```liquid
 {% raw %}
-{% execute_query "create_payment",
+{% graphql res = "create_payment",
   credit_card_id: cc.id,
   payment_method_id: cc.payment_method_id,
   payable_id: invoice.id,
@@ -213,7 +213,7 @@ Result of mutation is saved to `p` variable, so you can inspect if `paid_at` was
 
 {% raw %}
 ```liquid
-{% execute_query "charge_payment", result_name: "p", id: payment_id %}
+{% graphql p = "charge_payment", id: payment_id %}
 ```
 {% endraw %}
 

@@ -62,7 +62,7 @@ name: instance_blog_edition
 redirect_to: /blog
 flash_alert: Please log in to access this page.
 ---
-{% query_graph "get_blog_user", result_name: g %}
+{% graphql g = "get_blog_user" %}
 {% if g.current_user and g.current_user.admin_profile %}true{% endif %}
 {% endraw %}
 ```

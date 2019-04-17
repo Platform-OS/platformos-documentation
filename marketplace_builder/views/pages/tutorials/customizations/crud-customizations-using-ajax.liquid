@@ -160,7 +160,7 @@ layout_name: ''
 format: json
 ---
 {%- raw -%}
-{%- query_graph "modules/feedback/feedback", result_name: 'recent', per_page: 10 -%}
+{%- graphql recent = "modules/feedback/feedback", per_page: 10 -%}
 {{ recent.customizations.results | json }}
 {% endraw %}
 ```

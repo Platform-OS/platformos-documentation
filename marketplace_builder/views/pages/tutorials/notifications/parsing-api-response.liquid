@@ -87,7 +87,7 @@ Extend the API call notification by adding the proper callback, which executes t
 ---
 name: ping_example_com_on_user_sign_up
 to: 'https://example.com/endpoint/{{ form.id }}'
-callback: "{%- assign response_json = response.body | to_hash -%}{% execute_query 'persist_custom_attribute', id: form.id, third_party_api_id: response_json.third_party_api_id %}"
+callback: "{%- assign response_json = response.body | to_hash -%}{% graphql res = 'persist_custom_attribute', id: form.id, third_party_api_id: response_json.third_party_api_id %}"
 ---
 {% endraw %}
 ```

@@ -35,7 +35,7 @@ Create form, and set up all required data in hidden inputs (those will be read b
 ```liquid
 {% raw %}
 {% if context.current_user.id %}
-  {% query_graph 'get_developer_images', result_name: 'g', user_id: context.current_user.id %}
+  {% graphql g = 'get_developer_images', user_id: context.current_user.id %}
 {% endif %}
 {% assign profile = g.user.profile %}
 {% assign avatar_url = profile.avatar.url %}
