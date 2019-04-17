@@ -1,5 +1,5 @@
 {%- if context.location.href != "/" -%}
-  {%- query_graph "get_page_contributors", slug: context.location.href -%}
+  {%- graphql g = "get_page_contributors", slug: context.location.href -%}
   {%- assign page_contributors = g.customizations.results.last -%}
   {%- assign key = context.page.slug -%}
 
@@ -10,12 +10,12 @@
 
   {%- cache key, expire: 86400 -%}
     {%- if page_contributors.id != blank -%}
-      {%- execute_query "fetch_page_contributors_from_github", id: page_contributors.id -%}
+      {%- graphql res = "fetch_page_contributors_from_github", id: page_contributors.id -%}
       {%- assign page_contributors = g.customization_update -%}
     {%- else -%}
       {%- capture "page_path" -%}marketplace_builder/views/pages{{ context.location.href }}.liquid{%- endcapture -%}
       {%- assign slug = context.location.href -%}
-      {%- execute_query "create_page_contributors", slug: slug, paths: page_path -%}
+      {%- graphql res = "create_page_contributors", slug: slug, paths: page_path -%}
       {%- assign page_contributors = g.customization_create -%}
     {%- endif -%}
   {%- endcache -%}

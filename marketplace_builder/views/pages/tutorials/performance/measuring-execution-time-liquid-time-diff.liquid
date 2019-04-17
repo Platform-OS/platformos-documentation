@@ -31,7 +31,7 @@ Assuming there is a problem somewhere, you have to decide which parts to measure
 
 ```liquid
 {% raw %}
-{% query_graph 'modules/n_plus_one/n1_programmers' %}
+{% graphql g = 'modules/n_plus_one/n1_programmers' %}
 
 {% for programmer in g.programmers.results %}
   <tr>
@@ -57,7 +57,7 @@ The `graph_duration` and `render_duration` variables store partial execution tim
 {% raw %}
 {% assign __start = "now" | to_time %}
 
-{% query_graph 'modules/n_plus_one/programmers' %}
+{% graphql g = 'modules/n_plus_one/programmers' %}
 
 {% assign __graph = "now" | to_time %}
 

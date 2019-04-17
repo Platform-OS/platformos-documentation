@@ -82,7 +82,7 @@ format: json
 ```
 ```liquid
 {% raw %}
-{% query_graph 'get_products', result_name: 'g' %}
+{% graphql g = 'get_products' %}
 {% assign results = g.products.results %}
 
 {
@@ -161,7 +161,7 @@ layout_name: application
 ```
 ```liquid
 {% raw %}
-{% query_graph 'get_products', result_name: g, slug: params.slug2 %}
+{% graphql g = 'get_products', slug: params.slug2 %}
 {% assign product = g.products.results.first %}
 
 <h1>{{ product.name }}</h1>

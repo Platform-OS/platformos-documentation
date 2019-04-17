@@ -87,7 +87,7 @@ Add the GraphQL query you created to your page, and pass extracted params to it:
 
 ```liquid
 {% raw %}
-{% query_graph 'get_catalogue_listings', result_name: 'g',
+{% graphql g = 'get_catalogue_listings',
   country: url_params.country,
   city: url_params.city,
   is_deleted: false
@@ -104,7 +104,7 @@ Add the GraphQL query you created to your page, and pass extracted params to it:
 
 <div class="results">
   <form action="." method="GET">
-    {% query_graph 'demo_search_listings', result_name: 'g',
+    {% graphql g = 'demo_search_listings',
       country: url_params.country,
       city: url_params.city,
       is_deleted: false

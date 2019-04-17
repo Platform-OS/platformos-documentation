@@ -9,7 +9,7 @@ metadata:
 {% include 'shared/pagination-variables' %}
 {% assign page = context.exports.search.page %}
 {% assign per_page = context.exports.search.per_page %}
-{% query_graph "search", query: context.params.query, per_page: per_page, page: page %}
+{% graphql g = "search", query: context.params.query, per_page: per_page, page: page %}
 
 <h2>
   {{ g.pages.total_entries }} result{% if g.pages.total_entries != 1 %}s{% endif %} for: {{ context.params.query }}

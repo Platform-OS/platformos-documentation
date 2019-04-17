@@ -70,7 +70,7 @@ to add activity to database by executing:
 
 ```liquid
 {% raw %}
-{% execute_query 'activity_create', payload: payload, result_name: 'ga' %}
+{% graphql ga = 'activity_create', payload: payload %}
 {% endraw %}
 ```
 
@@ -99,7 +99,7 @@ and use it in Liquid like
 {% assign recipients = "" | split: "|" %}
 {% assign recipients = recipients | add_to_array: user_id %}
 
-{% execute_query 'activity_publish', uuid: ga.activity.uuid, feed_ids: recipients, feed_type: 'UserNotifications', result_name: 'gp' %}
+{% graphql gp = 'activity_publish', uuid: ga.activity.uuid, feed_ids: recipients, feed_type: 'UserNotifications' %}
 {% endraw %}
 ```
 
@@ -122,7 +122,7 @@ query activities($type: String!, $id: ID!, $per_page: Int, $page: Int) {
 ```
 ```liquid
 {% raw %}
-{% query_graph 'activities', type: 'UserNotifications', id: user_id, result_name: 'g' %}
+{% graphql g = 'activities', type: 'UserNotifications', id: user_id %}
 
 total entries: {{ g.streams.total_entries }}
 

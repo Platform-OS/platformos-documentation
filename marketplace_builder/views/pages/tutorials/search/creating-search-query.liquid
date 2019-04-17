@@ -56,8 +56,7 @@ slug: demo_search
 ---
 {% assign query = params.query | default: nil %}
 <form action="/demo_search" method="GET">
-  {% query_graph 'demo_search_transactables',
-    result_name: 'g',
+  {% graphql g = 'demo_search_transactables',
     query: query
   %}
   <input name="query" value="{{ query }}" />

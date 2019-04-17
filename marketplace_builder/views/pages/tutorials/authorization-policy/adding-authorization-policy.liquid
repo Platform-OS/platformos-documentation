@@ -36,7 +36,7 @@ Assuming you have previously prepared the GraphQL query `current_user`, an examp
 ---
 name: only_allowed_by_johns
 ---
-{% query_graph 'current_user', result_name: 'g' %}
+{% graphql g = 'current_user' %}
 {% if g.current_user.first_name == 'John' %}true{% endif %}
 {% endraw %}
 ```
