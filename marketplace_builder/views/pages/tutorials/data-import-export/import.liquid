@@ -63,6 +63,101 @@ The required data format is a JSON file with users and models keys that have an 
 
 ### Example
 
+Example data import file `data.json`
+
+```json
+{
+  "users": [
+    {
+      "id": 1000,
+      "email": "tom@example.com",
+      "first_name": "Tom",
+      "slug": "tom"
+    },
+    {
+      "id": 1001,
+      "email": "mike@example.com",
+      "first_name": "mike",
+      "slug": "mike",
+      "created_at": "2010-10-10 10:00:00",
+      "profiles": [
+        {
+          "type_name": "student",
+          "id": 2001,
+          "properties": {
+            "age": 21
+          },
+          "attachments": [
+            {
+              "name": "document",
+              "url": "files/document.pdf"
+            }
+          ],
+          "images": [
+            {
+              "name": "avatar",
+              "url": "files/avatar.png"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "models": [
+    {
+      "id": 1,
+      "user_id": 1000,
+      "type_name": "house",
+      "customizable_id": 1000,
+      "customizable_type": "User",
+      "properties": {
+        "color": "red"
+      }
+    },
+    {
+      "id": 2,
+      "user_id": 1001,
+      "type_name": "house",
+      "customizable_id": 1001,
+      "customizable_type": "User",
+      "properties": {
+        "color": "green",
+        "buyer_id": 1000,
+        "beach_house_id": 1
+      },
+      "addresses": [
+        {
+          "name": "foo_address",
+          "address": "Warsaw",
+          "postcode": "01-001"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "user_id": 1001,
+      "type_name": "house",
+      "properties": {
+        "buyer_id": 1000,
+        "beach_house_id": 2
+      },
+      "attachments": [
+        {
+          "name": "driver_licence",
+          "url": "files/licence.pdf"
+        }
+      ],
+      "images": [
+        {
+          "name": "headshot",
+          "url": "files/headshot.png"
+        }
+      ]
+    }
+  ]
+}
+```
+
 To import the data from a file, simply run the following command in the terminal:
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
