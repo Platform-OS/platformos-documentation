@@ -1,9 +1,9 @@
 ---
 converter: markdown
 metadata:
-  title: Attachments in Email Notification
+  title: Adding Attachments to an Email Notification
   description: This guide will help you attach files to an Email Notification.
-slug: tutorials/notifications/attachments-in-email-notification
+slug: tutorials/notifications/adding-attachments-to-email-notification
 searchable: true
 ---
 This guide will help you attach files to an Email Notification.
@@ -15,13 +15,13 @@ To follow the steps in this tutorial, you should understand the concept of Email
 
 ## Steps
 
-Attaching file to an Email Notification is a one-step process:
+Attaching a file to an Email Notification is a one-step process:
 
 <div data-autosteps></div>
 
 ### Step 1: Include `attachments` JSON in Email Notification
 
-Add `attachments` JSON to the email notifcation `notifications/email_notifications/welcome_user.liquid` created in a previous step:
+Add the `attachments` JSON to the Email Notification `notifications/email_notifications/welcome_user.liquid` created in a previous tutorial:
 
 ```liquid
 {% raw %}
@@ -48,7 +48,7 @@ attachments: >
 
 Now, when you send an email, the attachment will be included.
 
-You can use `liquid` in the `attachments` field, as long as it evaluates to valid JSON. The expected JSON is in a format:
+You can use `liquid` in the `attachments` field, as long as it evaluates to valid JSON. The expected JSON is in the following format:
 
 ```json
 {
@@ -61,7 +61,7 @@ You can use `liquid` in the `attachments` field, as long as it evaluates to vali
 }
 ```
 
-You can also mark any attachment `inline`:
+You can also mark any attachment as `inline`:
 
 ```json
 {
@@ -71,11 +71,11 @@ You can also mark any attachment `inline`:
  }
 ```
 
-{% include "alert/note", content: "You can include up to 9 attachments and the total size cannot exceed 20MB." %
+{% include "alert/note", content: "You can include up to 9 attachments, and the total size cannot exceed 20MB." %
 
 ## Next steps
 
-Congratulations! You have sent Email Notification with attachment. Now you can learn about creating an SMS Notification.
+Congratulations! You have sent an Email Notification with an attachment. Now you can learn about creating an SMS Notification.
 
 * [Creating an SMS Notification](/tutorials/notifications/creating-sms-notification)
 
