@@ -53,9 +53,9 @@ slug: test-endpoint
 {% endraw %}
 ```
 
-### Step 3: Create API call notification
+### Step 3: Create API Call Notification
 
-Create an API call notification that should:
+Create an API Call Notification that should:
 
 1. send a request to `https://<your_domain>.com/test-endpoint.json`
 2. store the value from the response in a property
@@ -130,7 +130,7 @@ fields:
 
 ### Step 5: Create page to embed form
 
-Once you have an API call notification defined, you should associate it with a form to trigger it. Create a page for embedding this form.
+Once you have an API Call Notification defined, you should associate it with a form to trigger it. Create a page for embedding this form.
 
 #### views/pages/test-form.liquid
 
@@ -147,7 +147,7 @@ slug: test-form
 
 ### Step 6: Create and embed form
 
-Create the form and associate it with the API call notification. It can be a signup form, that creates the `test_profile` in the background:
+Create the form and associate it with the API Call Notification. It can be a signup form, that creates the `test_profile` in the background:
 
 
 #### form_configurations/test-form.liquid
@@ -186,7 +186,7 @@ api_call_notifications:
 {% endraw %}
 ```
 
-Once the user fills the signup form without validation errors, the system will proceed to trigger the API call notification. If it is successful, it will trigger the callback, in which you will have access to the server's response via the `response` variable. You will be able to access various things, like `response.code`, and the most important, `response.body`. The callback will run the GraphQL mutation, which will use `form_configuration` to persist the data.
+Once the user fills the signup form without validation errors, the system will proceed to trigger the API Call Notification. If it is successful, it will trigger the callback, in which you will have access to the server's response via the `response` variable. You will be able to access various things, like `response.code`, and the most important, `response.body`. The callback will run the GraphQL mutation, which will use `form_configuration` to persist the data.
 
 ### Step 7: Display results
 
