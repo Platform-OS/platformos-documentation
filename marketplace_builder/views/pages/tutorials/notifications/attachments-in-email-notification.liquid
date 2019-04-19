@@ -1,0 +1,82 @@
+---
+converter: markdown
+metadata:
+  title: Attachments in Email Notification
+  description: This guide will help you attach files to an email notification.
+slug: tutorials/notifications/attachments-in-email-notification
+searchable: true
+---
+This guide will help you attach files to an email notification.
+
+## Requirements
+To follow the steps in this tutorial, you should understand the concept of email notifications. You'll use the email notification you created in a previous tutorial.
+
+* [Email Notifications](/tutorials/notifications/creating-email-notification)
+
+## Steps
+
+Attaching file to an email notification is a one-step process:
+
+<div data-autosteps></div>
+
+### Step 1: Include `attachments` JSON in email notification
+
+Add `attachments` JSON to the email notifcation `notifications/email_notifications/welcome_user.liquid` created in a previous step:
+
+```liquid
+{% raw %}
+---
+name: welcome_user
+to: '{{ form.email }}'
+enabled: true
+trigger_condition: true
+from: 'Example Marketplace <info@example.com>'
+reply_to: no-reply@example.com
+subject: 'Welcome {{ form.first_name }} in our marketplace!'
+layout_path: mailer
+attachments: >
+  "logo.jpg": {
+    "url": "https://uploads.prod01.oregon.platform-os.com/instances/1/assets/images/svg/platformos-logo.svg"
+  }
+}
+---
+<h1>Hi {{ form.first_name }}!</h1>
+
+<p>Welcome in our marketplace!</p>
+{% endraw %}
+```
+
+Now, when you send an email, the attachment will be included.
+
+You can use `liquid` in the `attachments` field, as long as it evaluates to valid JSON. The expected JSON is in a format:
+
+```json
+{
+ "<file_name_user_will_see1>": {
+   "url": "<url to the attachment>"
+ },
+ "<file_name_user_will_see2>": {
+   "url": "<another url to the attachment>"
+ }
+}
+```
+
+You can also mark any attachment `inline`:
+
+```json
+{
+ "my_file": {
+   "url": "<url to the attachment>",
+   "inline": "true"
+ }
+```
+
+{% include "alert/note", content: "You can include up to 9 attachments and the total size cannot exceed 20MB." %
+
+## Next steps
+
+Congratulations! You have sent email notification with attachment. Now you can learn about creating an SMS notification.
+
+* [Creating an SMS Notification](/tutorials/notifications/creating-sms-notification)
+
+{% include 'shared/questions_section' %}
