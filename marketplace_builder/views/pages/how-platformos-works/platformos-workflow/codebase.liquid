@@ -207,6 +207,8 @@ marketplace_builder
 
 **Modules** allow code reuse and sharing, while protecting the IP of creators.
 
+In your codebase, the `modules` directory needs to be at the same level as the `marketplace_builder` directory. 
+
 Module code is split into 2 directories to protect IP. To create a module, split module code into `public` and `private` folders, and place all that code into the `modules/MODULE_NAME` directory.
 
 These directories have the same structure as the standard `marketplace_builder` folder, but if developers try to download files after the module has been deployed to an Instance (`marketplace-kit pull`), they will only see the files from the `public` folder.
@@ -215,16 +217,16 @@ Example directory structure of `modules` with sample files:
 
 ```shell
 marketplace_builder
-├── modules
-    ├──admincms
-		├── private
-		│   └── graph_queries
-		│       ├── get_customizations.graphql
-		│       └── get_pages.graphql
-		└── public
-		    └── views
-		        └── pages
-		            └── admin.liquid
+modules
+├──admincms
+	├── private
+	│   └── graph_queries
+	│       ├── get_customizations.graphql
+	│       └── get_pages.graphql
+	└── public
+	    └── views
+		    └── pages
+		        └── admin.liquid
 ```
 
 {% include "alert/tutorial", content: "Follow our step-by-step tutorials to learn more about <a href='/tutorials/modules/modules'>Modules</a>." %}
