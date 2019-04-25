@@ -29,7 +29,7 @@ resource_owner: anyone
 return_to: /full-form-example
 flash_alert: This is flash alert (fail)
 flash_notice: This is flash notice (success)
-spam_protection: "" # e.g. recaptcha - needs to be configured
+spam_protection: "" # e.g. { recaptcha_v2: {} } - needs to be configured
 fields:
   properties:
     email:
@@ -206,6 +206,23 @@ This is very useful when you want to restrict user permissions to modify only re
 Array of short text message notification names that will be executed after the form is successfully submitted.
 
 ### spam_protection
-String, type of spam protection that will be used. Needs to be configured in Partner Portal. A separate topic explains how to add [reCaptcha Spam Protection](/tutorials/integrations/adding-recaptcha-spam-protection).
+Object, strategy and configuration for strategy. There are available strategies `recaptcha_v2` and `recaptcha_v3`
+
+Config for `recaptcha_v2`:
+```yaml
+spam_protection:
+  "recaptcha_v2":
+```
+
+Config for `recaptcha_v3`:
+
+```yaml
+spam_protection:
+  "recaptcha_v3":
+    action: signup         # required, action for recaptcha V3
+    minimum_score: 0.5       # optional, minimum score that we accept for recaptcha V3, default: 0.5
+```
+
+A separate topic explains how to add [reCaptcha Spam Protection](/tutorials/integrations/adding-recaptcha-spam-protection).
 
 {% include 'shared/questions_section' %}
