@@ -81,7 +81,7 @@ test('GraphQL', async t => {
   await t.expect(Selector('h2').withText('RemoteModelInterface').exists).ok();
 
   await t.navigateTo('/api-reference/graphql/enums');
-  await t.expect(Selector('h2').withText('SpamProtection').exists).ok();
+  await t.expect(Selector('h2').withText('SortOrderEnum').exists).ok();
 
   await t.navigateTo('/api-reference/graphql/inputs');
   await t.expect(Selector('h2').withText('UsersSortInput').exists).ok();
