@@ -1,0 +1,45 @@
+---
+converter: markdown
+metadata:
+  title: Inspecting installed modules
+  description: Using Liquid to list modules installed on an instance
+slug: tutorials/modules/context-modules
+searchable: true
+---
+
+## Listing installed modules using Liquid
+
+Information about version and subscription status is available for modules using the `context.modules` Liquid tag.
+We also provide, in our marketplace, a module named `about:modules`. After installing it, visitng `/about_modules` path
+will show a list of all modules on the instance along with information about version, and subscription status.
+
+## Example
+
+Below you can find an example of using the `context.modules` tag in view code.
+
+```liquid
+<section>
+{% for module in context.modules %}
+  Module name: {{ module[0] }}
+  <table>
+    <tbody>
+      {% for properties in module[1] %}
+        <tr>
+          <th> {{ properties[0] }} </th>
+          <td> {{ properties[1] }} </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endfor %}
+</section>
+
+```
+
+## Related topics
+
+* [Creating a Module](/tutorials/modules/creating-module)
+* [Sharing a Module](/tutorials/modules/sharing-module)
+* [Installing a Module](/tutorials/modules/installing-module)
+
+{% include 'shared/questions_section' %}
