@@ -89,7 +89,7 @@ test('Deep linking is working with utf8 characters in the heading id/href', asyn
   await t.expect(await heading.visible).ok();
 });
 
-test('Contributors are showing up', async t => {
+test.skip('Contributors are showing up', async t => {
   await t.navigateTo('/how-platformos-works');
 
   await t.expect(Layout.Contributors.count).eql(1);
