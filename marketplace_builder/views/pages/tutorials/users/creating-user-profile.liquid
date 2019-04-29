@@ -35,12 +35,14 @@ Create two yml files for the two User Profiles (developer and client) in the `ma
 ```yaml
 name: developer
 properties:
-- name: bio
-  type: string
-- name: years_of_experience
-  type: integer
-- name: hourly_rate
-  type: float
+  - name: enabled
+    type: boolean
+  - name: bio
+    type: string
+  - name: years_of_experience
+    type: integer
+  - name: hourly_rate
+    type: float
 ```
 
 Explanation:
@@ -52,6 +54,9 @@ Similarly, add content to the `client.yml` User Profile:
 
 ```yaml
 name: client
+properties:
+  - name: enabled
+    type: boolean
 ```
 
 Save your User Profiles.

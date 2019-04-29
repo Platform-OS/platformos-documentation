@@ -9,26 +9,43 @@ searchable: true
 
 A **User** is an account that any of your users can have. Each user is assumed to have a unique email address. You can define properties for all users in the user.yml file.
 
-**User Profiles** are roles in the marketplace. Each User Profile can be associated with any number of Properties, Categories, and Custom Model Types.
-
-## The default User Profile
-
-All users are assigned a User Profile named Default. If you don't want to distinguish one type of user from the other, you don't need to create any other user profiles.
+**User Profiles** are roles in the marketplace. Each User Profile can be associated with any number of Properties, Images, Attachments and Custom Model Types.
 
 ## Sharing attributes across multiple profiles
 
-If your multiple profiles happen to have the same Properties, you can extract them to a container profile which will group them and could be used in different profiles.
+If your multiple profiles happen to have the same Properties, you can extract them to a container profile which will group them.
 
 ### Example
 
-A company has a lot of employees, but all of them have the same attributes like name, email, emergency contact, so it would be a good idea to make a default profile for employee, and then use more specific ones for specific roles in the company.
+A company has a lot of employees, but all of them have the same attributes like name, email, emergency contact, so it would be a good idea to make a profile for employee, and then use more specific ones for specific roles in the company.
 
 ```yaml
-Employee: name, email, emergency_contact
-  - Software Developer: programming_languages
-  - Project Manager: projects
+# user_profil_types/employee.yml
+name: employee
+properties:
+  - name: name
+    type: string
+  - name: email
+    type: string
+  - name: emergency_contact
+    type: string
 ```
 
+```yaml
+# user_profil_types/software_developer.yml
+name: software_developer
+properties:
+  - name: programming_languages
+    type: string
+```
+
+```yaml
+# user_profil_types/project_manager.yml
+name: project_manager
+properties:
+  - name: projects
+    type: string
+  ```
 {% include 'alert/note', content: 'Read more about [sharing attributes across multiple profiles](/tutorials/users/sharing-attributes-across-multiple-profiles).' %}
 
 ## Sign up forms
