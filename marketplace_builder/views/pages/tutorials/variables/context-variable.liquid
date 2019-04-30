@@ -110,6 +110,33 @@ The street is {{ context.params.street }}.
 ```
 {% endraw %}
 
+### context.modules
+
+Information about version and subscription status for installed modules.
+
+**Example: List all properties for installed modules**
+{% raw %}
+```liquid
+<section>
+{% for module in context.modules %}
+  Module name: {{ module[0] }}
+  <table>
+    <tbody>
+      {% for properties in module[1] %}
+        <tr>
+          <th> {{ properties[0] }} </th>
+          <td> {{ properties[1] }} </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endfor %}
+</section>
+
+```
+{% endraw %}
+
+
 ### context.page
 `context.page` contains information about the [page](/tutorials/pages/pages) on which it is included.
 
