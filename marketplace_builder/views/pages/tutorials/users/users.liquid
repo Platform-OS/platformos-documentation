@@ -9,7 +9,7 @@ searchable: true
 
 A **User** is an account that any of your users can have. Each user is assumed to have a unique email address. You can define properties for all users in the user.yml file.
 
-**User Profiles** are roles in the marketplace. Each User Profile can be associated with any number of Properties, Images, Attachments and Custom Model Types.
+**User Profiles** are roles in your application. Each User Profile can be associated with any number of Properties, Images, Attachments, and Custom Model Types.
 
 ## Sharing attributes across multiple profiles
 
@@ -17,10 +17,11 @@ If your multiple profiles happen to have the same Properties, you can extract th
 
 ### Example
 
-A company has a lot of employees, but all of them have the same attributes like name, email, emergency contact, so it would be a good idea to make a profile for employee, and then use more specific ones for specific roles in the company.
+A company has a lot of employees, but all of them have the same attributes like name, email, emergency contact, so it would be a good idea to create a profile for "employee", and then use more specific ones for specific roles in the company.
+
+#### user_profile_types/employee.yml
 
 ```yaml
-# user_profil_types/employee.yml
 name: employee
 properties:
   - name: name
@@ -31,16 +32,18 @@ properties:
     type: string
 ```
 
+#### user_profile_types/software_developer.yml
+
 ```yaml
-# user_profil_types/software_developer.yml
 name: software_developer
 properties:
   - name: programming_languages
     type: string
 ```
 
+#### user_profile_types/project_manager.yml
+
 ```yaml
-# user_profil_types/project_manager.yml
 name: project_manager
 properties:
   - name: projects
