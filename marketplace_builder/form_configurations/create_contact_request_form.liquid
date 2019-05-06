@@ -2,6 +2,10 @@
 name: create_contact_request_form
 resource: contact_request
 resource_owner: anyone
+spam_protection:
+  recpatcha_v3:
+    action: contact
+    minimum_score: 0.7
 fields:
   properties:
     name:
@@ -26,6 +30,7 @@ email_notifications:
 flash_notice: Thank you for your request. We will contact you shortly.
 ---
 {% form html-class: 'contact-form' %}
+  {% spam_protection "recaptcha_v3", action: "contact" %}
   {% assign f = form_builder.fields.properties %}
   {% include 'forms/errors' %}
 
