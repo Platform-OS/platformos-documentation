@@ -679,7 +679,7 @@ Escapes a string by replacing characters with escape sequences (so that the stri
 ```liquid
 {{ "Nikola Tesla" | escape }}
 ```
-
+<!---
 ## escape_once
 
 Escapes a string without changing existing escaped entities. It doesn’t change strings that don’t have anything to escape.
@@ -711,7 +711,7 @@ Escapes a string without changing existing escaped entities. It doesn’t change
 ```liquid
 {{ "1 &lt; 2 &amp; 3" | escape_once }}
 ```
-
+--->
 ## first
 
 Returns the first item of an array.
@@ -875,14 +875,14 @@ Removes all whitespaces (tabs, spaces, and newlines) from the beginning of a str
 
 ```liquid
 {% raw %}
-{{ "          So much room for activities!          " | lstrip }}
+A sentence before. {{ "          So much room for activities!          " | lstrip }} A sentence after.
 {% endraw %}
 ```
 
 #### Output
 
 ```liquid
-{{ "          So much room for activities!          " | lstrip }}
+A sentence before. {{ "          So much room for activities!          " | lstrip }} A sentence after.
 ```
 
 ## map
@@ -1276,14 +1276,14 @@ Removes all whitespace (tabs, spaces, and newlines) from the right side of a str
 
 ```liquid
 {% raw %}
-{{ "          So much room for activities!          " | rstrip }}
+A sentence before. {{ "          So much room for activities!          " | rstrip }} A sentence after.
 {% endraw %}
 ```
 
 #### Output
 
 ```liquid
-{{ "          So much room for activities!          " | rstrip }}
+A sentence before. {{ "          So much room for activities!          " | rstrip }} A sentence after.
 ```
 
 ## size
@@ -1396,7 +1396,7 @@ If the first parameter is a negative number, the indices are counted from the en
 
 ## sort
 
-Sorts items in an array by a property of an item in the array. The order of the sorted array is case-sensitive.
+Sorts items in an array by a property of an item in the array. The order of the sorted array is case-*sensitive*, meaning all capitalized strings will come before any lowercase strings.
 
 #### Input
 
@@ -1416,7 +1416,7 @@ Sorts items in an array by a property of an item in the array. The order of the 
 
 ## sort_natural
 
-Sorts items in an array by a property of an item in the array.
+Sorts items in an array by a property of an item in the array. The order of the sorted array is case-*insensitive*.
 
 #### Input
 
@@ -1466,14 +1466,14 @@ Removes all whitespace (tabs, spaces, and newlines) from both the left and right
 
 ```liquid
 {% raw %}
-{{ "          So much room for activities!          " | strip }}
+A sentence before. {{ "          So much room for activities!          " | strip }} A sentence after.
 {% endraw %}
 ```
 
 #### Output
 
 ```liquid
-{{ "          So much room for activities!          " | strip }}
+A sentence before. {{ "          So much room for activities!          " | strip }} A sentence after.
 ```
 
 ## strip_html
