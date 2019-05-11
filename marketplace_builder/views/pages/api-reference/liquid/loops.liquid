@@ -229,28 +229,30 @@ will result in
 {% cycle 'group 1': 'one', 'two', 'three', 'four' %}
 ```
 
-If no name is supplied for the `cycle` group, then it's assumed that multiple calls with the same parameters are one group. For example:
+Liquid assumes that each `cycle` tag without a name is part of the same nameless group. For example:
 
 ```liquid
 {% raw %}
-{% cycle 'one', 'two', 'three', 'four' %}
+{% cycle 'A', 'B', 'C', 'D' %}
 {% cycle 'group 3': 'one', 'two', 'three', 'four' %}
 {% cycle 'group 4': 'one', 'two', 'three', 'four' %}
 {% cycle 'group 4': 'one', 'two', 'three', 'four' %}
 {% cycle 'group 3': 'one', 'two', 'three', 'four' %}
 {% cycle 'group 3': 'one', 'two', 'three', 'four' %}
+{% cycle 'A', 'B', 'C', 'D' %}
 {% endraw %}
 ```
 
 will result in
 
 ```liquid
-{% cycle 'one', 'two', 'three', 'four' %}
+{% cycle 'A', 'B', 'C', 'D' %}
 {% cycle 'group 3': 'one', 'two', 'three', 'four' %}
 {% cycle 'group 4': 'one', 'two', 'three', 'four' %}
 {% cycle 'group 4': 'one', 'two', 'three', 'four' %}
 {% cycle 'group 3': 'one', 'two', 'three', 'four' %}
 {% cycle 'group 3': 'one', 'two', 'three', 'four' %}
+{% cycle 'A', 'B', 'C', 'D' %}
 ```
 
 ## tablerow
