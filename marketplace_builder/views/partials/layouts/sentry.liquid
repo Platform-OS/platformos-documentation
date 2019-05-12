@@ -8,10 +8,10 @@ var t=c[p];c[p]=function(a){m({p:a.reason});t&&t.apply(c,arguments)};f||setTimeo
 </script>
 
 <script>
-var ERROR_SIGNATURE = new RegExp('(Liquid|RenderFormTag|QueryGraphTag|ExecuteQueryTag) Error');
+var _ERROR_SIGNATURE = new RegExp('(Liquid|RenderFormTag|QueryGraphTag|ExecuteQueryTag) Error');
 
 Sentry.init({
-  environment: window.__CONTEXT__.environment,
+  environment: "{{ context.environment }}",
   captureUnhandledRejections: false,
   ignoreErrors: ['Script error.', /Blocked a frame with origin/],
   ignoreUrls: [
@@ -20,10 +20,10 @@ Sentry.init({
   ]
 });
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', function() {
   var bodyText = document.body.textContent;
 
-  if (ERROR_SIGNATURE.test(bodyText)) {
+  if (_ERROR_SIGNATURE.test(bodyText)) {
     Sentry.captureException(new Error('Liquid/Form/GraphQL error found on the page', location.href));
   }
 });
