@@ -20,7 +20,6 @@ const plugins = [
 const config = {
   entry: {
     app: './src/app',
-    raven: './src/raven',
     critical: './src/critical',
     webfonts: './src/webfonts'
   },

@@ -1,5 +1,4 @@
 import Turbolinks from 'turbolinks';
-
 import './app.scss';
 
 import './js/sidebarMenu';

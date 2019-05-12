@@ -1,0 +1,22 @@
+<script src="https://js.sentry-cdn.com/7c0394dd2d324d6cae3cc42900ee1119.min.js" crossorigin="anonymous" />
+<script>
+var ERROR_SIGNATURE = new RegExp('(Liquid|RenderFormTag|QueryGraphTag|ExecuteQueryTag) Error');
+
+Sentry.init({
+  environment: window.__CONTEXT__.environment,
+  captureUnhandledRejections: false,
+  ignoreErrors: ['Script error.', /Blocked a frame with origin/],
+  ignoreUrls: [
+    /^chrome:\/\//i, // Chrome extensions
+    /^resource:\/\//i // Firefox extensions
+  ]
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  var bodyText = document.body.textContent;
+
+  if (ERROR_SIGNATURE.test(bodyText)) {
+    Sentry.captureException(new Error('Liquid/Form/GraphQL error found on the page', location.href));
+  }
+});
+</script>
