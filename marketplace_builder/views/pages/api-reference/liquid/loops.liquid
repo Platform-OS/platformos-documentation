@@ -169,14 +169,28 @@ A `for` loop can take an optional `else` clause to display a block of text when 
 
 Loops through a group of strings and outputs them in the order that they were passed as parameters. Each time `cycle` is called, the next string that was passed as a parameter is output.
 
-`cycle` must be used within a `for` loop block.
+```liquid
+{% raw %}
+{% for i in (1..4) -%}
+  {% cycle 'one', 'two', 'three' %}
+{% endfor -%}
+{% endraw %}
+```
 
-Often, you have to alternate between different colors or similar tasks. Liquid has built-in support for such operations, using the `cycle` tag.
+will result in
+
+```liquid
+{% for i in (1..4) -%}
+  {% cycle 'demo1': 'one', 'two', 'three' %}
+{% endfor -%}
+```
+
+Though `cycle` is often used within a `for` loop block, it also works on its own by placing multiple copies of the tag on the page. Liquid treats each tag as part of the same group, even if their contents are different.
 
 ```liquid
 {% raw %}
 {% cycle 'one', 'two', 'three' %}
-{% cycle 'one', 'two', 'three' %}
+{% cycle 'banana', 'apple', 'orange' %}
 {% cycle 'one', 'two', 'three' %}
 {% cycle 'one', 'two', 'three' %}
 {% endraw %}
@@ -185,13 +199,11 @@ Often, you have to alternate between different colors or similar tasks. Liquid h
 will result in
 
 ```liquid
-one
-two
-three
-one
+{% cycle 'demo2': 'one', 'two', 'three' %}
+{% cycle 'demo2': 'banana', 'apple', 'orange' %}
+{% cycle 'demo2': 'one', 'two', 'three' %}
+{% cycle 'demo2': 'one', 'two', 'three' %}
 ```
-
-If no name is supplied for the `cycle` group, then it's assumed that multiple calls with the same parameters are one group.
 
 If you want to have total control over `cycle` groups, you can optionally specify the name of the group. This can even be a variable.
 
@@ -209,7 +221,38 @@ If you want to have total control over `cycle` groups, you can optionally specif
 will result in
 
 ```liquid
-one two one two three four
+{% cycle 'group 1': 'one', 'two', 'three', 'four' %}
+{% cycle 'group 1': 'one', 'two', 'three', 'four' %}
+{% cycle 'group 2': 'one', 'two', 'three', 'four' %}
+{% cycle 'group 2': 'one', 'two', 'three', 'four' %}
+{% cycle 'group 1': 'one', 'two', 'three', 'four' %}
+{% cycle 'group 1': 'one', 'two', 'three', 'four' %}
+```
+
+Liquid assumes that each `cycle` tag without a name is part of the same nameless group. For example:
+
+```liquid
+{% raw %}
+{% cycle 'A', 'B', 'C', 'D' %}
+{% cycle 'group 3': 'one', 'two', 'three', 'four' %}
+{% cycle 'group 4': 'one', 'two', 'three', 'four' %}
+{% cycle 'group 4': 'one', 'two', 'three', 'four' %}
+{% cycle 'group 3': 'one', 'two', 'three', 'four' %}
+{% cycle 'group 3': 'one', 'two', 'three', 'four' %}
+{% cycle 'A', 'B', 'C', 'D' %}
+{% endraw %}
+```
+
+will result in
+
+```liquid
+{% cycle 'A', 'B', 'C', 'D' %}
+{% cycle 'group 3': 'one', 'two', 'three', 'four' %}
+{% cycle 'group 4': 'one', 'two', 'three', 'four' %}
+{% cycle 'group 4': 'one', 'two', 'three', 'four' %}
+{% cycle 'group 3': 'one', 'two', 'three', 'four' %}
+{% cycle 'group 3': 'one', 'two', 'three', 'four' %}
+{% cycle 'A', 'B', 'C', 'D' %}
 ```
 
 ## tablerow
