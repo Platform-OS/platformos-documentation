@@ -3,8 +3,6 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const WebpackRequireFrom = require('webpack-require-from');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
-const BUILD_DIR = path.join(__dirname, process.env.npm_package_config_build_dir);
-
 const production = process.env.NODE_ENV === 'production';
 
 const plugins = [
@@ -27,7 +25,7 @@ const config = {
     filename: '[name].js',
     chunkFilename: '[name].[chunkhash:3].js',
     publicPath: '',
-    path: BUILD_DIR
+    path: path.resolve('marketplace_builder/assets')
   },
   bail: true,
   stats: {
