@@ -19,7 +19,8 @@ const config = {
   entry: {
     app: './src/app',
     critical: './src/critical',
-    webfonts: './src/webfonts'
+    webfonts: './src/webfonts',
+    home: './src/home'
   },
   output: {
     filename: '[name].js',

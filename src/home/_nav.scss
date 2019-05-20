@@ -1,0 +1,125 @@
+/* ------------------------------------------------------------ *\
+	Nav Header
+\* ------------------------------------------------------------ */
+
+.nav-header {
+	padding-top: 9px; 
+	ul {
+		display: flex; 
+		font-weight: 500; 
+
+		a {
+			text-decoration: none; 
+			letter-spacing: .04em; 
+			color: #4a4a4a; 
+			transition: color .2s;
+		}
+
+		li {
+			& + li {
+				margin-left: 70px; 
+			}
+		}
+	}
+}
+
+
+/* ------------------------------------------------------------ *\
+	Nav Footer
+\* ------------------------------------------------------------ */
+
+.nav-footer {
+	a {
+		text-decoration: none;
+		letter-spacing: .03em;  
+		transition: color .2s;
+
+		&:hover {
+			color: #2173C4; 
+		}
+	}
+
+	li {
+		& + li {
+			margin-top: 5px; 
+		}
+	}
+
+	&--padding-left {
+		padding-left: 15px; 
+	}
+}
+
+/* ------------------------------------------------------------ *\
+	Nav Sidebar
+\* ------------------------------------------------------------ */
+
+.nav-sidebar {
+	font-size: 16px; 
+	letter-spacing: .04em; 
+
+	ul {
+		a {
+			text-decoration: none; 
+			display: block; 
+			color: #404040; 
+		}
+
+		li {
+			& + li {
+				margin-top: -1px; 
+			}
+
+			&.has-dropdown {
+				position: relative; 
+
+				i {
+					display: inline-block; 
+					position: absolute; 
+					top: 18px; 
+					right: 5px; 
+					width: 10px; 
+					height: 2px; 
+					background-color: #888; 
+					border-radius: 1px;
+					pointer-events: none;
+					transition: background-color .2s;
+
+					&:after {
+						content: ''; 
+						position: absolute;
+						width: 90%; 
+						background-color: #888; 
+						top: 50%; 
+						left: 50%; 
+						transform: translate(-50%, -50%); 
+						width: 2px; 
+						height: 0px; 
+						transition: height .4s;
+
+					}
+				}
+
+				& > a {
+					&.collapsed {
+						& + i {
+							&:after {
+								height: 8px; 
+							}
+						}
+					}
+				}
+			}
+		}
+
+		.collapse__menu {
+			font-size: 14px; 
+			margin-bottom: 0; 
+			padding: 5px 0 6px 27px; 
+
+			li {
+				& + li { margin-top: 5px; }
+			}
+		}
+	}
+}

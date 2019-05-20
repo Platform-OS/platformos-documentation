@@ -1,0 +1,44 @@
+/* ------------------------------------------------------------ *\
+	Breadcrumbs
+\* ------------------------------------------------------------ */
+
+.breadcrumbs {
+	width: 100%; 
+	padding: 16px 0 19px; 
+
+	ul {
+		display: flex; 
+		justify-content: flex-end;
+		list-style-type: none; 
+		letter-spacing: .05em; 
+		margin-bottom: 0; 
+
+		a {
+			text-decoration: none; 
+			font-size: 12px; 
+		}
+
+		li {
+			&:last-child {
+				a {
+					color: #2173C4; 
+				}
+			}
+
+			& + li {
+				&:before {
+					content: ''; 
+					display: inline-block; 
+					background-image: url('../images/temp/ico-arrow-right-dark.png'); 
+					width: 5px; 
+					height: 7px; 
+					background-size: cover;
+					background-repeat: no-repeat;  
+					background-position: center center; 
+					vertical-align: middle; 
+					margin: 0 10px 0 7px; 
+				}
+			}
+		}
+	}
+}

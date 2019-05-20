@@ -1,96 +1,181 @@
 ---
-metadata:
-  title: Documentation
-  description: Welcome to the platformOS documentation!
-  exclude_feedback: true
 slug: /
 searchable: false
-converter: markdown
+converter: ''
+layout_name: empty
 static_cache:
-  expire: 60
+  expire: 0
 ---
+<!DOCTYPE html>
+<html lang="en">
+  {% include 'layouts/home/head' %}
+<body>
+	<div class="wrapper">
+    {% include 'layouts/home/header' %}
 
-<p>Welcome to our docs!</p>
+		<div class="main">
+			<div class="intro" style="background-image: url({{ 'images/layout/background@2x.png' | asset_url }});">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-8 offset-md-2">
+							<div class="intro__content">
+								<h1> Documentation </h1>
 
-<p>
-  We are continuously improving and extending our documentation. Although it's still very much a work in progress, for the sake of transparency in our process, and getting feedback from the community, we are releasing it as we write it.
-</p>
+								<p> Examples, tutorials, and APIs to help you start building on platformOS </p>
 
-<div class="container">
-  <div class="row">
-    <a href="/how-platformos-works" class="content__box">
-      <div class="row">
-        <div class="col-12 col-md-3">
-          {% include 'shared/svg/svg_image', name: "settings" %}
-        </div>
-        <div class="col-12 col-md-9">
-          <h4>How platformOS Works</h4>
-          <p>Get familiar with the key concepts behind platformOS, learn about how it works, and what it can do for your project.</p>
-        </div>
-      </div>
-    </a>
-    <a href="/get-started" class="content__box">
-      <div class="row">
-        <div class="col-12 col-md-3 align-content-center">
-          {% include 'shared/svg/svg_image', name: "path" %}
-        </div>
-        <div class="col-12 col-md-9">
-          <h4>Get Started</h4>
-          <p>The "Hello World" of platformOS. Follow step-by-step tutorials to set up your development environment and deploy your first site.</p>
-        </div>
-      </div>
-    </a>
-    <a href="/tutorials" class="content__box">
-      <div class="row">
-        <div class="col-12 col-md-3 align-content-center">
-          {% include 'shared/svg/svg_image', name: "open-book" %}
-        </div>
-        <div class="col-12 col-md-9">
-          <h4>Tutorials</h4>
-          <p>Learn how to implement a wide variety of features by following these step-by-step tutorials.</p>
-        </div>
-      </div>
-    </a>
-    <a href="/api-reference/rest-api" class="content__box">
-      <div class="row">
-        <div class="col-12 col-md-3 align-content-center">
-          {% include 'shared/svg/svg_image', name: "api" %}
-        </div>
-        <div class="col-12 col-md-9">
-          <h4>APIs</h4>
-          <p>Consult our comprehensive documentation for the platformOS API including GraphQL API reference, and Liquid filters.</p>
-        </div>
-      </div>
-    </a>
-    <a href="/use-cases" class="content__box">
-      <div class="row">
-        <div class="col-12 col-md-3 align-content-center">
-          {% include 'shared/svg/svg_image', name: "people" %}
-        </div>
-        <div class="col-12 col-md-9">
-          <h4>Use Cases</h4>
-          <p>Explore how to implement real-life use cases.</p>
-        </div>
-      </div>
-    </a>
-    <a href="/help" class="content__box">
-      <div class="row">
-        <div class="col-12 col-md-3 align-content-center">
-          {% include 'shared/svg/svg_image', name: "help" %}
-        </div>
-        <div class="col-12 col-md-9">
-          <h4>Need Help?</h4>
-          <p>Search our docs, join our Slack channel, or get in touch with us. We are always happy to help with any questions you have.</p>
-        </div>
-      </div>
-    </a>
-    <a href="/roadmap" class="content__box special-box">
-      <div class="row">
-        <div class="col-12">
-          <h4>Roadmap</h4>
-          <p>Learn about features we are implementing or planning to implement.</p>
-        </div>
-      </div>
-    </a>
-  </div>
-</div>
+								<div class="form-search">
+									<form action="/search" method="get">
+										<div class="form__controls">
+											<input type="text" name="search" class="form-control" placeholder="Search documentation…" />
+
+											<button class="form-btn">
+												{% include 'svg/search', width: '32px' %}
+											</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="section-options">
+				<div class="container">
+					<div class="options">
+						<div class="row justify-content-center">
+							<div class="col-md-4">
+								<div class="option border-radius">
+									<div class="option__image">
+										{% include 'svg/how-platformos-work', width: '48px' %}
+									</div>
+
+									<div class="option__content">
+										<h4>
+											<a href="#"> How PlatformOS Work </a>
+										</h4>
+
+										<p> Get familiar with the key concepts behind platformOS, learn about how it works, and what it can do for your project. </p>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-4">
+								<div class="option border-radius">
+									<div class="option__image">
+										{% include 'svg/get-started', width: '48px' %}
+									</div>
+
+									<div class="option__content">
+										<h4>
+											<a href="#"> Get Started </a>
+										</h4>
+
+										<p> The "Hello World" of platformOS. Follow step-by-step tutorials to set up your environment and deploy your first site. </p>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-4">
+								<div class="option">
+									<div class="option__image">
+										{% include 'svg/tutorials', width: '48px' %}
+									</div>
+
+									<div class="option__content">
+										<h4>
+											<a href="#"> Tutorials </a>
+										</h4>
+
+										<p> Learn how to implement a wide variety of features by following these step-by-step tutorials. </p>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-4">
+								<div class="option">
+									<div class="option__image">
+										{% include 'svg/apis', width: '48px' %}
+									</div>
+
+									<div class="option__content">
+										<h4>
+											<a href="#"> APIs </a>
+										</h4>
+
+										<p> Consult our comprehensive documentation for the platformOS API including GraphQL API reference, and Liquid filters. </p>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-4">
+								<div class="option">
+									<div class="option__image">
+										{% include 'svg/use-cases', width: '48px' %}
+									</div>
+
+									<div class="option__content">
+										<h4>
+											<a href="#"> Use Cases </a>
+										</h4>
+
+										<p> Explore how to implement real-life use cases. </p>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-4">
+								<div class="option">
+									<div class="option__image">
+										{% include 'svg/contributor-guide', width: '48px' %}
+									</div>
+
+									<div class="option__content">
+										<h4>
+											<a href="#"> Contributor Guide </a>
+										</h4>
+
+										<p> We value your feedback, and appreciate any improvement suggestions or extensions. </p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="section-links">
+				<div class="container">
+					<div class="row justify-content-center">
+						<div class="col-md-6">
+							<h3> Roadmap </h3>
+
+							<p> This section contains information about features we are implementing or planning to implement. </p>
+
+							<a href="#" class="section__link">
+								find out roadmap
+                {% include 'svg/arrow-right', height: '15px' %}
+							</a>
+						</div>
+
+						<div class="col-md-6">
+							<h3> Latest Release Notes </h3>
+
+							<p> Our release notes tell you about new features, improvements, and fixes in platformOS. </p>
+
+							<a href="#" class="section__link">
+								find out new release notes
+                {% include 'svg/arrow-right', height: '15px' %}
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+    {% include 'layouts/home/callout' %}
+
+
+    {% include 'layouts/home/footer' %}
+	</div>
+</body>
+</html>

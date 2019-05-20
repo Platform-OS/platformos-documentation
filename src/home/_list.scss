@@ -1,0 +1,68 @@
+/* ------------------------------------------------------------ *\
+	List
+\* ------------------------------------------------------------ */
+
+[class^="list-"] {
+	list-style: none outside none;
+}
+
+/* ------------------------------------------------------------ *\
+	List Ordered
+\* ------------------------------------------------------------ */
+
+.list-simple {
+	color: #2173C4; 
+	counter-reset: count;
+	padding-left: 11px; 
+	margin-bottom: 12px; 
+	letter-spacing: .02em; 
+
+
+	li {
+		position: relative; 
+		padding: 4px 0 4px 25px; 
+	}
+
+	a {
+		transition: color .2s;
+
+		&:hover {
+			text-decoration: none; 
+			color: #143556; 
+		}
+	}
+
+	&--ordered {
+		li {
+			counter-increment: count;
+
+			&:before {
+				content: counter(count) '.'; 
+				color: #4A4A4A; 
+				position: absolute; 
+				top: 5px; 
+				left: 0; 
+			}
+		}
+	}
+
+	&--unordered {
+		li {
+			&:before {
+				content: ''; 
+				position: absolute; 
+				left: 2px; 
+				top: 13px; 
+				border-radius: 50%;
+				width: 4px; 
+				height: 4px; 
+				background-color: #4A4A4A; 
+			}
+		}
+	}
+}
+
+/* ------------------------------------------------------------ *\
+	List Unordered
+\* ------------------------------------------------------------ */
+
