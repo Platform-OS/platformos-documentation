@@ -8,10 +8,11 @@ static_cache:
 ---
 <!DOCTYPE html>
 <html lang="en">
-  {% include 'layouts/home/head' %}
+{% include 'layouts/redesign/home-head' %}
+
 <body>
 	<div class="wrapper">
-    {% include 'layouts/home/header' %}
+    {% include 'layouts/redesign/header' %}
 
 		<div class="main">
 			<div class="intro" style="background-image: url({{ 'images/layout/background@2x.png' | asset_url }});">
@@ -29,7 +30,7 @@ static_cache:
 											<input type="text" name="search" class="form-control" placeholder="Search documentation…" />
 
 											<button class="form-btn">
-												{% include 'svg/search', width: '32px' %}
+												{% include 'svg/icons/search', width: '32px' %}
 											</button>
 										</div>
 									</form>
@@ -45,9 +46,9 @@ static_cache:
 					<div class="options">
 						<div class="row justify-content-center">
 							<div class="col-md-4">
-								<a href="/how-platformos-works" class="option border-radius">
+								<a href="/how-platformos-works" class="option">
 									<div class="option__image">
-										{% include 'svg/how-platformos-work', width: '48px' %}
+										{% include 'svg/categories/how-platformos-works', width: '48px' %}
 									</div>
 
 									<div class="option__content">
@@ -58,9 +59,9 @@ static_cache:
 							</div>
 
 							<div class="col-md-4">
-								<a href="/get-started" class="option border-radius">
+								<a href="/get-started" class="option">
 									<div class="option__image">
-										{% include 'svg/get-started', width: '48px' %}
+										{% include 'svg/categories/get-started', width: '48px' %}
 									</div>
 
 									<div class="option__content">
@@ -73,7 +74,7 @@ static_cache:
 							<div class="col-md-4">
 								<a href="/tutorials" class="option">
 									<div class="option__image">
-										{% include 'svg/tutorials', width: '48px' %}
+										{% include 'svg/categories/tutorials', width: '48px' %}
 									</div>
 
 									<div class="option__content">
@@ -86,7 +87,7 @@ static_cache:
 							<div class="col-md-4">
 								<a href="/apis" class="option">
 									<div class="option__image">
-										{% include 'svg/apis', width: '48px' %}
+										{% include 'svg/categories/apis', width: '48px' %}
 									</div>
 
 									<div class="option__content">
@@ -99,7 +100,7 @@ static_cache:
 							<div class="col-md-4">
 								<a href="/use-cases" class="option">
 									<div class="option__image">
-										{% include 'svg/use-cases', width: '48px' %}
+										{% include 'svg/categories/use-cases', width: '48px' %}
 									</div>
 
 									<div class="option__content">
@@ -112,7 +113,7 @@ static_cache:
 							<div class="col-md-4">
 								<a href="/contributor-guide" class="option">
 									<div class="option__image">
-										{% include 'svg/contributor-guide', width: '48px' %}
+										{% include 'svg/categories/contributor-guide', width: '48px' %}
 									</div>
 
 									<div class="option__content">
@@ -136,7 +137,7 @@ static_cache:
 
 							<a href="/roadmap" class="section__link">
 								find out roadmap
-                {% include 'svg/arrow-right', height: '11px' %}
+                {% include 'svg/icons/arrow-right', height: '11px' %}
 							</a>
 						</div>
 
@@ -146,17 +147,15 @@ static_cache:
 
 							<a href="/release-notes" class="section__link">
 								find out new release notes
-                {% include 'svg/arrow-right', height: '11px' %}
+                {% include 'svg/icons/arrow-right', height: '11px' %}
 							</a>
 						</div>
 					</div>
 				</div>
 			</div>
 
-    {% include 'layouts/home/callout' %}
-
-
-    {% include 'layouts/home/footer' %}
+    {% include 'layouts/redesign/callout' %}
+    {% include 'layouts/redesign/footer' %}
 	</div>
 </body>
 </html>

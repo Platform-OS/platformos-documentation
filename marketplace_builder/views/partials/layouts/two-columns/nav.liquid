@@ -1,0 +1,22 @@
+{% capture nav_links_path %}shared/nav/links/{{ context.exports.nav.category_slug }}{% endcapture %}
+{% include nav_links_path %}
+
+<nav class="nav-sidebar">
+  <ul>
+    {% for link in context.exports.nav.links %}
+      <li>
+        <a href="{{ link.href }}">{{ link.name }}</a>
+
+        {% if link.children != null %}
+          <ul class="submenu">
+            {% for submenuLink in link.children %}
+              <li>
+                <a href="{{ link.href }}">{{ submenuLink.name }}</a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+</nav>

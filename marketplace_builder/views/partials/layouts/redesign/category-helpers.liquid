@@ -1,0 +1,16 @@
+{% parse_json categories_map %}
+{
+  "how-platformos-works": "How platformOS Works",
+  "get-started": "Get Started",
+  "tutorials": "Tutorials",
+  "apis": "APIs",
+  "use-cases": "Use Cases",
+  "contributor-guide": "Contributor Guide"
+}
+{% endparse_json %}
+
+{% assign category_slug = context.params.slug | default: '' %}
+{% assign category_name = categories_map | fetch: category_slug %}
+
+
+{% export category_slug, category_name, namespace: 'nav' %}

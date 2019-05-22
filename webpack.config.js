@@ -18,9 +18,7 @@ const plugins = [
 const config = {
   entry: {
     app: './src/app',
-    critical: './src/critical',
-    webfonts: './src/webfonts',
-    home: './src/home'
+    redesign: './src/redesign'
   },
   output: {
     filename: '[name].js',
