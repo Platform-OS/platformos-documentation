@@ -2,14 +2,14 @@
 converter: markdown
 metadata:
   title: Using the GeoJSON format for Geolocation
-  description: 
+  description:
 slug: tutorials/custom-model-types/using-geojson-format-geolocation
 searchable: true
 ---
 
-This guide will help you use the GeoJSON format to find all models in a maximum distance of X km's from latitude "ln".
+This guide will help you build working site on which one can find models in a maximum distance of X km's from given geo point coordinates.
 
-**GeoJSON** is a geospatial data interchange format based on JSON for encoding a variety of geographic data structures. It defines several types of JSON objects and the manner in which they are combined to represent data about geographic features, their properties, and their spatial extents. 
+**GeoJSON** is a geospatial data interchange format based on JSON for encoding a variety of geographic data structures. It defines several types of JSON objects and the manner in which they are combined to represent data about geographic features, their properties, and their spatial extents.
 
 The following geometry types are supported:
 
@@ -21,24 +21,39 @@ The following geometry types are supported:
       "coordinates": [100.0, 0.0]
     }
     ```
-    
+
 * LineString [[long, lan], [long, lan]]
+
+    ```json
+    {
+      "type": "LineString",
+      "coordinates": [ [100.0, 0.0], [10.0, 10.0] ]
+    }
+    ```
+
 * Polygon [[[long, lan], [long, lan]]]
 
     ```json
     {
       "type": "Polygon",
-      "coordinates": [[[100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0]]]
+      "coordinates": [
+        [[100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0]]
+       ]
     }
     ```
-    
+
 * MultiPoint [[long, lan], [long, lan]]
 
-
-To learn more, read the [official GeoJSON documentation](https://tools.ietf.org/html/rfc7946). 
+    ```json
+    {
+      "type": "MultiPoint",
+      "coordinates": [ [100.0, 0.0], [10.0, 10.0] ]
+    }
+    ```
+To learn more, read the [official GeoJSON documentation](https://tools.ietf.org/html/rfc7946).
 
 ## Requirements
-To follow the steps in this tutorial, you should be familiar with Custom Model Types, data imports, and Form Configuration. 
+To follow the steps in this tutorial, you should be familiar with Custom Model Types, data imports, and Form Configuration.
 
 * [Custom Model Types](/tutorials/custom-model-types/custom-model-types)
 * [Data Import](/tutorials/data-import-export/import)
@@ -46,13 +61,13 @@ To follow the steps in this tutorial, you should be familiar with Custom Model T
 
 ## Steps
 
-Using the GeoJSON format to find all models in a maximum distance from latitude "ln" is  a four-step process:
+Using the GeoJSON format to find all models in a maximum distance from geopoint coordinates is a four-step process:
 
 <div data-autosteps></div>
 
 ### Step 1: Prepare Custom Model Type definition
 
-Create `custom_model_types/company.yaml`: 
+Create `custom_model_types/company.yaml`:
 
 ```yaml
 name: company
@@ -102,27 +117,6 @@ Create a `payload`:
   }
 }
 ```
-
-### Step 3: Prepare GraphQL query
-
-Create the GraphQL query `graph_queries/search.graphql`:
-
-```graphql
-query search($point: GeometryJSON, $distance: Int) {
-  companies: models(
-    per_page: 100
-    filter: {
-      properties: [
-        { name: "location", distance_sphere: {center: $point, distance_in_km: $distance}}
-      ]
-    }) {
-    results {
-      properties
-    }
-  }
-}
-```
-
 Alternatively, you can create the record using a Form Configuration:
 
 ```yaml
@@ -148,13 +142,33 @@ The HTML field snippet for geometry JSON is just a textarea:
   <textarea required="true" id="location" type="text" class="form-control" name="{{ form_builder.fields.properties.location.name }}">
       {{- context.params.form.properties_attributes.location }}
   </textarea>
-</div> 
+</div>
 ```
 
 {% capture content %}
 This example is for presentation only. In a real scenario, no one would provide a raw JSON as a location address — there would be a JavaScript function using external geolocation services for getting coordinates and then building the required GeometryJSON structure.
 {% endcapture %}
 {% include 'alert/note', content: content %}
+
+### Step 3: Prepare GraphQL query
+
+Create the GraphQL query `graph_queries/search.graphql`:
+
+```graphql
+query search($point: GeometryJSON, $distance: Int) {
+  companies: models(
+    per_page: 20
+    filter: {
+      properties: [
+        { name: "location", distance_sphere: {center: $point, distance_in_km: $distance}}
+      ]
+    }) {
+    results {
+      properties
+    }
+  }
+}
+```
 
 ### Step 4: Create page
 
@@ -201,4 +215,3 @@ slug: search
 * [graph_queries/search.graphql](https://github.com/mdyd-dev/marketplace-nearme-example/blob/model-has-many-models/modules/n_plus_one/public/graph_queries/search.graphql)
 
 {% include 'shared/questions_section' %}
-
