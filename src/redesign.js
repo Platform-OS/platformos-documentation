@@ -3,8 +3,8 @@ import './redesign.scss';
 import { $q } from './js/helpers/dom';
 
 import './js/redesign/sidebarMenu';
-import './js/autosteps';
 import './js/deepLinks';
+import './js/autosteps'; // this HAS to be after deepLinks
 import './js/toc';
 
 if ($q('code[class*="language-"]')) {
