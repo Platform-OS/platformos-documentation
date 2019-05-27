@@ -1,16 +1,16 @@
-{% parse_json categories_map %}
+{%- parse_json categories_map -%}
 {
   "how-platformos-works": "How platformOS Works",
   "get-started": "Get Started",
   "tutorials": "Tutorials",
-  "apis": "APIs",
+  "api-reference": "API Reference",
   "use-cases": "Use Cases",
   "contributor-guide": "Contributor Guide"
 }
-{% endparse_json %}
+{%- endparse_json -%}
+{%- assign category_slug = context.params.slug | default: '' -%}
+{%- assign category_name = categories_map | fetch: category_slug -%}
 
-{% assign category_slug = context.params.slug | default: '' %}
-{% assign category_name = categories_map | fetch: category_slug %}
-
-
-{% export category_slug, category_name, namespace: 'nav' %}
+{% if category_name %}
+{%- export category_slug, category_name, namespace: 'nav' -%}
+{% endif %}

@@ -1,31 +1,111 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  {% include 'layouts/head' %}
-  {% include 'layouts/sentry' %}
-  <body class="{{ context.page.metadata.body_css_class }}">
-    {% include 'layouts/header' %}
+<head>
+  {% include 'layouts/redesign/home-head' %}
+  <script src="{{ 'redesign.js' | asset_url }}" defer></script>
+  <!--
+  {%- include 'layouts/redesign/category-helpers' -%}
+  -->
+</head>
+<body>
+	<div class="wrapper">
+    {% include 'layouts/redesign/header' %}
 
-    <main class="main">
-      {%- include 'layouts/flash-messages', flash: context.flash -%}
+		<div class="main main--mt">
+      <div class="section-search">
+				<div class="container">
+					<div class="form-search form-search--alt">
+						<form action="/search" method="get">
+							<div class="form__controls">
+								<input type="text" name="search" class="form-control" placeholder="Search documentation…" />
+
+								<button type="button" class="form-btn">
+                  <svg width="24" height="24"><use xlink:href="#search"></use></svg>
+								</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+
       <div class="container">
         <div class="row">
-          {% if context.page.metadata.hide_sidebar != true %}
-            <aside class="sidebar col-12 col-md-3">
-              {% include 'layouts/sidebar' %}
-            </aside>
-            <section class="content col-12 col-md-9">
-          {% else %}
-            <section class="content col-12 col-md-12">
-          {% endif %}
-          {% include 'layouts/content' %}
-          {% if page.metadata.exclude_feedback == blank %}
-            {% include 'shared/feedback' %}
-          {% endif %}
-          </section>
+          <div class="col-sm-3">
+            <div class="sidebar">
+							<div class="sidebar__title">
+                {% if context.exports.nav.category_name %}
+                  {% capture icon_path %}svg/categories/{{ context.exports.nav.category_slug }}{% endcapture %}
+                  {% include icon_path, width: '32px', height: '32px' %}
+                  <h4>{{ context.exports.nav.category_name }}</h4>
+                {% endif %}
+							</div>
+
+              {% include 'layouts/two-columns/nav' %}
+						</div>
+          </div>
+
+          <div class="col-sm-9">
+            <div class="content">
+              <div class="breadcrumbs">
+                {% comment %}
+                  TODO: Generate
+                {% endcomment %}
+                {% comment %} <ul>
+                  <li>
+                    <a href="/">Documentation</a>
+                    <svg width="8" height="8"><use xlink:href="#arrow-right"></use></svg>
+                  </li>
+
+                  <li>
+                    <a href="/{{ context.exports.nav.category_slug }}">How platformOS Works</a>
+                    <svg width="8" height="8"><use xlink:href="#arrow-right"></use></svg>
+                  </li>
+
+                  <li>
+                    <a href="#">Sample of Innerpage</a>
+                  </li>
+                </ul> {% endcomment %}
+              </div>
+
+              <div class="col-sm-8">
+                <div class="content__main">
+                  {% if context.page.metadata.title %}
+                    <h1>{{ context.page.metadata.title }}</h1>
+                  {% endif %}
+
+                  {% unless context.page.metadata.exclude_contributors %}
+                    {% include 'layouts/two-columns/contributors' %}
+                  {% endunless %}
+
+                  {{ content_for_layout }}
+
+                  {% comment %} {% unless context.page.metadata.skip_feedback %}
+                    {% include 'layouts/redesign/feedback' %}
+                  {% endunless %} {% endcomment %}
+                </div>
+              </div>
+              <div class="col-sm-4">
+                {% comment %}
+                  Populate with js. Auto ToC.
+
+                  <div class="content__aside">
+                    <h4>On This Page</h4>
+                    <ul>
+                      <li></li>
+                    </ul>
+                  </div>
+                {% endcomment %}
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
-    </main>
+    </div>
 
-    {% include 'layouts/footer' %}
-  </body>
+    {% include 'layouts/redesign/questions' %}
+    {% include 'layouts/redesign/footer' %}
+	</div>
+  {% include 'svg/icons/sprite' %}
+</body>
 </html>

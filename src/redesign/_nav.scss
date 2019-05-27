@@ -55,27 +55,36 @@
 
 .nav-sidebar {
   font-size: 15px;
-  letter-spacing: 0.02em;
+  // letter-spacing: 0.02em;
   margin-top: 1em;
   padding-top: 1em;
   padding-bottom: 3em;
   border-top: 1px solid #ebebeb;
 
   ul {
+    li + li {
+      margin-top: 5px;
+    }
+
     a {
       text-decoration: none;
       display: block;
       color: #404040;
     }
 
-    li + li {
-      margin-top: 5px;
+    a.active, li.active > a {
+      color: #2173c4;
     }
 
     .submenu {
       font-size: 13px;
       margin-bottom: 0;
-      padding: 5px 0 6px 27px;
+      padding: .35em 0 .35em 1.25em;
+      display: none;
+    }
+
+    li.active .submenu {
+      display: block;
     }
   }
 }

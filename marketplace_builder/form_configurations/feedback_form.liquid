@@ -31,31 +31,32 @@ flash_notice: Thank you for your feedback.
 
   <input name="{{ p.path.name }}" type='hidden' value='{{ context.location.pathname }}'>
 
-  <div class="feedback-main col p-4">
+  <div class="feedback-main">
     <div class="row">
-      <div class="col-12 pb-3">
+      <div class="col-12 feedback__title">
         <h4>Was this page helpful?</h4>
       </div>
     </div>
     <div class="row">
-      <div class="col-12 col-md-7">
-        <ul class="list-unstyled mb-0 d-flex justify-content-around">
+      <div class="col-12 col-md-7 feedback__ratings">
+        <ul class="">
           <li>
             <label>
               <input type="radio" name='{{ p.rate.name }}' value="5" data-feedback-selected-value="5" hidden>
-              {% include "shared/svg/svg_image", name: "smile" %}
+              <svg width="60" height="60" class="feedback-smile"><use xlink:href="#feedback-smile"></use></svg>
             </label>
           </li>
           <li>
             <label>
               <input type="radio" name='{{ p.rate.name }}' value="3" data-feedback-selected-value="3" hidden>
-              {% include "shared/svg/svg_image", name: "weird" %}
+              <svg width="60" height="60" class="feedback-weird"><use xlink:href="#feedback-weird"></use></svg>
+
             </label>
           </li>
           <li>
             <label>
               <input type="radio" name='{{ p.rate.name }}' value="1" data-feedback-selected-value="1" hidden>
-              {% include "shared/svg/svg_image", name: "sad" %}
+              <svg width="60" height="60" class="feedback-sad"><use xlink:href="#feedback-sad"></use></svg>
             </label>
           </li>
         </ul>
@@ -65,7 +66,7 @@ flash_notice: Thank you for your feedback.
           {% assign github_path = "https://github.com/mdyd-dev/nearme-documentation/blob/master/" %}
           {% assign pages_path = github_path | append: "marketplace_builder/views/pages/" %}
           <a href="{{ pages_path }}{{ page.slug }}.liquid" target="_blank" rel="noopener">
-            {% include "shared/svg/svg_image", name: "github" %}
+            <svg width="30" height="30" class="github"><use xlink:href="#github"></use></svg>
             Contribute to this page
           </a>
         </div>
