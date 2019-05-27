@@ -1,7 +1,9 @@
-const form = () => document.querySelector('[data-feedback="form"]');
-const selectedValues = () => Array.prototype.slice.call(document.querySelectorAll('[data-feedback-selected-value]') || []);
-const questionsContainer = () => document.querySelector('[data-feedback="questions"]');
-const questionValues = () => Array.prototype.slice.call(document.querySelectorAll('[data-feedback-value]') || []);
+import { $q, $qa } from './helpers/dom';
+
+const form = () => $q('[data-feedback="form"]');
+const selectedValues = () => $qa('[data-feedback-selected-value]');
+const questionsContainer = () => $q('[data-feedback="questions"]');
+const questionValues = () => $qa('[data-feedback-value]');
 
 const toggleQuestionsContainer = addOrRemove =>
   questionsContainer().classList.toggle('hidden', addOrRemove);

@@ -1,4 +1,4 @@
-const scrollToContent = () => {
+const initialize = () => {
   if (location.hash.indexOf('#') !== -1) {
     return false; // let deep links do its thing
   }
@@ -11,6 +11,5 @@ const scrollToContent = () => {
   }
 };
 
-document.addEventListener('turbolinks:load', scrollToContent);
-
-scrollToContent();
+initialize();
+document.addEventListener('turbolinks:load', initialize);

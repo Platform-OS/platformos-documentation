@@ -1,9 +1,10 @@
+import { $q, $qa } from './helpers/dom';
 import { parseHeadings } from './helpers/headings';
 
 const isStep = h => /^Step \d+:/.test(h.textContent);
-const getContainer = () => document.querySelector('[data-autosteps]');
+const getContainer = () => $q('[data-autosteps]');
 const getSteps = () => {
-  const headings = Array.prototype.slice.call(document.querySelectorAll('.content h3')) || [];
+  const headings = $qa('.content h3');
   return headings.filter(isStep);
 };
 
@@ -34,6 +35,8 @@ const initialize = () => {
 
   container.innerHTML = stepsHtml;
 };
+
+initialize();
 
 document.addEventListener('turbolinks:load', initialize);
 document.addEventListener('autosteps:reinitialize', initialize);

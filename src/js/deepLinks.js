@@ -4,17 +4,19 @@ import scrollToHash from './scrollToHash';
 let anchors;
 const isMobile = document.body.dataset.viewportSize === 'xs';
 
-const initializeDeepLinks = () => {
+const initialize = () => {
   anchors = new AnchorJS();
   anchors.options = {
     visible: isMobile ? 'always' : 'hover',
     placement: isMobile ? 'right' : 'left'
   };
 
-  anchors.add('.content h2, .content h3');
+  anchors.add('.content__main h2, .content__main h3');
 
   scrollToHash();
 };
 
-document.addEventListener('turbolinks:load', initializeDeepLinks);
-document.addEventListener('deeplinks:reinitialize', initializeDeepLinks);
+
+initialize();
+document.addEventListener('turbolinks:load', initialize);
+document.addEventListener('deeplinks:reinitialize', initialize);
