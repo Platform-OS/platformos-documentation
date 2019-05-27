@@ -17,7 +17,6 @@ const plugins = [
 
 const config = {
   entry: {
-    app: './src/app',
     redesign: './src/redesign'
   },
   output: {
