@@ -187,28 +187,26 @@ Values for variables have to be provided in the top-level `"template-values.json
 
 A page with this code:
 
-```
+```liquid
 ---
 slug: <%= &desired_location =%>
 ---
 
 This is using templates <%= what =%> !
-
 ```
 
 And a `template-values.json`
 
-```
+```liquid
 {
   "desired_location": "index",
   "what": "magic"
 }
-
 ```
 
 will turn into this during deploy/sync:
 
-```
+```liquid
 ---
 slug: index
 ---
@@ -217,6 +215,7 @@ This is using templates magic !
 ```
 
 #### help
+
 Display help for command.
 
 | Command 	| Usage                 	| Example               	|

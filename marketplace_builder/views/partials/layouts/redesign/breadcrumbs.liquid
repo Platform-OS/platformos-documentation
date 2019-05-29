@@ -1,0 +1,18 @@
+<div class="breadcrumbs">
+  <ul>
+    <li>
+      <a href="/">Documentation</a>
+      <svg width="8" height="8"><use xlink:href="#arrow-right"></use></svg>
+    </li>
+
+    <li>
+      <a href="/{{ category.slug }}">{{ category.name }}</a>
+      <svg width="8" height="8"><use xlink:href="#arrow-right"></use></svg>
+    </li>
+
+    {% assign currentPage = context.page.metadata.title | default: "This Page" %}
+    <li>
+      <a href="#">{{ currentPage }}</a>
+    </li>
+  </ul>
+</div>

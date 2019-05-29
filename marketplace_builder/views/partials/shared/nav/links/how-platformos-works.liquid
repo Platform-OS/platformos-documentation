@@ -1,37 +1,42 @@
-<li>
-  <a href="/how-platformos-works/about-platform-os">About platformOS</a>
-</li>
+{% comment %} Current path {% endcomment %}
+{% assign cp = context.headers.REQUEST_URI %}
 
-<li>
-  <a href="/how-platformos-works/platformos-workflow">platformOS Worfklow</a>
+<ul>
+  <li>
+    <a href="/how-platformos-works/about-platform-os">About platformOS</a>
+  </li>
 
-  <ul class="submenu">
-    <li>
-      <a href="/how-platformos-works/platformos-workflow/setup">Setup</a>
-    </li>
+  <li class="{% if cp contains '/how-platformos-works/platformos-workflow' %}active{% endif %}">
+    <a href="/how-platformos-works/platformos-workflow">platformOS Worfklow</a>
 
-    <li>
-      <a href="/how-platformos-works/platformos-workflow/development-workflow">Development Workflow</a>
-    </li>
+    <ul class="submenu">
+      <li>
+        <a href="/how-platformos-works/platformos-workflow/setup">Setup</a>
+      </li>
 
-    <li>
-      <a href="/how-platformos-works/platformos-workflow/partner-portal">Partner Portal</a>
-    </li>
+      <li>
+        <a href="/how-platformos-works/platformos-workflow/development-workflow">Development Workflow</a>
+      </li>
 
-    <li>
-      <a href="/how-platformos-works/platformos-workflow/marketplace-kit">Marketplace Kit</a>
-    </li>
+      <li>
+        <a href="/how-platformos-works/platformos-workflow/partner-portal">Partner Portal</a>
+      </li>
 
-    <li>
-      <a href="/how-platformos-works/platformos-workflow/codebase">Codebase</a>
-    </li>
-  </ul>
-</li>
+      <li>
+        <a href="/how-platformos-works/platformos-workflow/marketplace-kit">Marketplace Kit</a>
+      </li>
 
-<li>
-  <a href="/how-platformos-works/technologies">Technologies</a>
-</li>
+      <li>
+        <a href="/how-platformos-works/platformos-workflow/codebase">Codebase</a>
+      </li>
+    </ul>
+  </li>
 
-<li>
-  <a href="/how-platformos-works/glossary">Glossary</a>
-</li>
+  <li>
+    <a href="/how-platformos-works/technologies">Technologies</a>
+  </li>
+
+  <li>
+    <a href="/how-platformos-works/glossary">Glossary</a>
+  </li>
+</ul>

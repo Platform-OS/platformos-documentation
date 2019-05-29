@@ -5,7 +5,7 @@ metadata:
   date: February 25, 2019
   description: context.device key, user session timeout
   hide_sidebar: true
-  exclude_contributors: true
+  contributors: false
 slug: release-notes/25-FEBRUARY-2019
 searchable: true
 ---
@@ -16,11 +16,10 @@ searchable: true
 
 * **Added `context.device` key**: It includes information about device type, like desktop, smartphone, etc. Should save you some work.
 * **Search by ID for `admin_*` queries**: Added the possibility to search by ID for `admin_*` queries. Also, added metadata to all `admin_*` resources (possible to set them via GraphQL).
-* **User session timeout**: You can now change the duration of a user session to control when the user timeouts. 
+* **User session timeout**: You can now change the duration of a user session to control when the user timeouts.
 
 {% include "alert/tutorial", content: "Follow our step-by-step tutorial to learn more about <a href='/tutorials/partner-portal/updating-instance-configuration'>Updating Instance Configuration and setting the duration of a user session</a>." %}
 
 ## Improvements
 
 * **Protected context.constants**: `context.constants` are now properly protected from accidental leaking. They won’t be visible when you do {% raw %}`{{ context }}`{% endraw %}, you have to explicitly call {% raw %}`{{ context.constants }}`{% endraw %}. Soon, we will add a UI to add/remove them via the Partner Portal.
-
