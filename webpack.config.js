@@ -40,7 +40,17 @@ const config = {
       },
       {
         test: /(\.css|\.scss)$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader?url=false', 'postcss-loader', 'sass-loader']
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader?url=false',
+          'postcss-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              implementation: require('sass')
+            }
+          }
+        ]
       },
       {
         test: /\.gif$/,
