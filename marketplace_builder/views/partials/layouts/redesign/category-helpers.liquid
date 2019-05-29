@@ -8,9 +8,11 @@
   "contributor-guide": "Contributor Guide"
 }
 {%- endparse_json -%}
-{%- assign slug = context.params.slug | default: '' -%}
+
+{%- assign default_name = context.params.slug | titleize -%}
+{%- assign slug = context.params.slug -%}
 {%- assign name = categories_map | fetch: slug -%}
 
 {% if name %}
-{%- export slug, name, namespace: 'category' -%}
+{%- export slug, name, default_name, namespace: 'category' -%}
 {% endif %}
