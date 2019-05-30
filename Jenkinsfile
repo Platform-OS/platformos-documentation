@@ -49,7 +49,7 @@ pipeline {
       steps {
         sh 'npm run test-ci'
       }
-      post { always { archiveArtifacts "screenshots/" } }
+      post { failure { archiveArtifacts "screenshots/" } }
     }
 
 
