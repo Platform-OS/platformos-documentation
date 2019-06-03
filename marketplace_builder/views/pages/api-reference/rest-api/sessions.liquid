@@ -1,9 +1,11 @@
 ---
 converter: markdown
 metadata:
-  title: Login User
-slug: api-reference/rest-api/sessions_post
+  title: Login and Logout User
+slug: api-reference/rest-api/sessions
 ---
+
+## Create
 
 To login user, send a POST request to /api/sessions
 
@@ -20,12 +22,11 @@ POST /api/sessions
 
 **Session Parameters**
 
-{% include 'generated/resources/SessionForm' %}
+{% include 'reference/resources/SessionForm' %}
 
 **Example request**
 
 {% include 'reference/request_headers' %}
-
 
 ```json
 {
@@ -50,8 +51,39 @@ POST /api/sessions
 {}
 ```
 
-| Element                             | Type                                       | Description                                                    |
-| ----------------------------------- | ------------------------------------------ | -------------------------------------------------------------- |
-| […]                                 | […]                                        | […]                                                            |
-
 {% include 'reference/error_and_status_codes_post' %}
+
+## Delete
+
+
+To logout user, send a DELETE request to /api/sessions
+
+**HTTP request**
+
+DELETE /api/sessions
+
+**Parameters**
+
+| Parameter               | Type   | Description                    | Required | Notes |
+| ----------------------- | ------ | ------------------------------ | -------- | ----- |
+| form_configuration_name | String | Name of the form configuration | Required |       |
+
+**Example request**
+
+{% include 'reference/request_headers' %}
+
+
+```json
+{
+  "form_configuration_name": "reference_rest_api_delete_sessions"
+}
+```
+
+| Element                 | Type   | Description                           | Required? |
+| ----------------------- | ------ | ------------------------------------- | --------- |
+| form_configuration_name | String | Name of the defined FormConfiguration | Required  |
+
+**Example response**
+
+{% include 'reference/response_headers' %}
+{% include 'reference/error_and_status_codes_delete' %}
