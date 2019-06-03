@@ -1,0 +1,85 @@
+{% comment %} const args = `<h4>Arguments</h4>
+<table class="table table-sm">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%_ item.arguments.map(function(a) { _%>
+      <tr>
+        <td><%= a.name _%></td>
+        <td><%_ if (a.type) { _%><%= a.type.name _%><%_ } _%></td>
+        <td class="text-capitalize">
+          <%_ if (a.description) { _%><%= a.description _%> <%_ } _%>
+          <%_ if (a.default_value) { _%>Default: <code><%= a.default_value _%></code><%_ } _%>
+        </td>
+      </tr>
+    <%_ }) _%>
+  </tbody>
+</table>
+`; {% endcomment %}
+
+{% for item in data %}
+  {% assign name = item.name %}
+  {% assign type = item.type %}
+  {% assign description = item.description %}
+  {% assign arguments = item.arguments %}
+
+  <h2>{{ item.name }}</h2>
+
+  {% if type %}
+    <p>
+      Type: <a href="./objects#{{ type.name | downcase }}">{{ type.name }}</a>
+    </p>
+  {% endif %}
+
+  <h4>Arguments</h4>
+  <table class="table table-sm">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for a in arguments %}
+        <tr>
+          <td>{{ a.name }}</td>
+          <td>{% if a.type %}{{ a.type.name }}{% endif %}</td>
+          <td class="text-capitalize">
+            {% if a.description %}{{ a.description }}{% endif %}
+            {% if a.default_value %}Default: <code>{{ a.default_value }}</code>{% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+{% endfor %}
+
+
+{% comment %}
+const template = `<%_ items[0].fields.map(function(item) { _%>
+  <h2>
+    <%= item.name _%>
+    <%_ if (item.type) { _%>
+      <small>
+        (type: <a href="./objects#<%= item.type.name.toLowerCase() _%>"><%= item.type.name _%></a>)
+      </small>
+    <%_ } _%>
+  </h2>
+
+  <div class="border-bottom mb-5 pb-4">
+    <%_ if (item.description) { _%>
+     <p><%= item.description _%></p>
+    <%_ } _%>
+
+    <%_ if (item.arguments.length > 0) { _%>
+      ${args}
+    <%_ } _%>
+  </div>
+<%_ }) _%>`; {% endcomment %}
