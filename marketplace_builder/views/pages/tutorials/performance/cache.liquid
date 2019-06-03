@@ -26,8 +26,6 @@ static_cache:
 {% endraw %}
 ```
 
-{% include 'alert/note', content: 'In the old infrastructure of platformOS, you used `cache_for`. See the example above for the new infrastructure.' %}
-
 ## Action caching
 
 Action caching works similarly to page caching, you can use it to cache the whole page, but the difference is that it triggers authorization, so it works also for logged in users.
@@ -63,7 +61,7 @@ dynamic_cache:
 {% endraw %}
 ```
 
-* **`key`** allows you to define a unique identifier for the page. By default, it's the full page URL. If you cache a page for 10 seconds, and the `cache_expiration_key` is blank, cache will be generated for the whole URL. If the user changes anything in the URL, the cache will not be taken into consideration.
+* **`key`** allows you to define a unique identifier for the page. By default, it's the full page URL. If you cache a page for 10 seconds, and the `key` is blank, cache will be generated for the whole URL. If the user changes anything in the URL, the cache will not be taken into consideration.
 * If **`expire`** is set to 0 and `key` is set, the cache will never expire by itself (updating the file would invalidate the cache though). If `key` is blank and `expire` is 0, the page won't be cached at all.
 * The default for **`layout`** is `false`.
 
@@ -75,9 +73,9 @@ You can cache specific parts of a page or layout using fragment caching, where y
 
 ```liquid
 {% raw %}
-{% assign key = context.page.slug %}
-{% cache key, expire: 5 %}
-   {% include 'very_big_graph_query' %}
+{% capture key %}{{ context.page.slug }}-v1{% endcapture %}
+{% cache key, expire: 10 %}
+   {% include 'partial_with_long_running_graphql_query' %}
    {% for ... %}
       ...
    {% endfor %}
