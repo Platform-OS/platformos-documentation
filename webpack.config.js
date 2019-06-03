@@ -2,6 +2,7 @@ const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const WebpackRequireFrom = require('webpack-require-from');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 const production = process.env.NODE_ENV === 'production';
 
@@ -64,6 +65,7 @@ const config = {
   },
   optimization: {
     minimizer: [
+      new OptimizeCSSAssetsPlugin({}),
       new UglifyJsPlugin({
         parallel: true,
         uglifyOptions: {
