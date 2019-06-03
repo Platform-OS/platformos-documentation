@@ -16,12 +16,8 @@ import(/* webpackChunkName: "vendor" */ 'ejs/ejs.min').then(ejs => {
       .then(res => res.json())
       .then(items => ejs.render(template, { items })) // experiment with async: true
       .then(html => (container().innerHTML = html))
-      .then(() => document.dispatchEvent(new CustomEvent('prism:reinitialize')))
-      .then(() => document.dispatchEvent(new CustomEvent('deeplinks:reinitialize')))
-      .then(() => document.dispatchEvent(new CustomEvent('toc:reinitialize')))
       .catch(console.log);
   };
 
-  document.addEventListener('turbolinks:load', initialize);
   initialize();
 });

@@ -1,4 +1,4 @@
-import { $qa } from '../helpers/dom';
+import { $qa } from './helpers/dom';
 
 const currentPath = location.pathname;
 

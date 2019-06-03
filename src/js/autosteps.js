@@ -37,6 +37,3 @@ const initialize = () => {
 };
 
 initialize();
-
-document.addEventListener('turbolinks:load', initialize);
-document.addEventListener('autosteps:reinitialize', initialize);

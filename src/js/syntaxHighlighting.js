@@ -18,12 +18,7 @@ import 'prismjs/components/prism-yaml';
 import 'prismjs/components/prism-liquid';
 import 'prismjs/components/prism-twig';
 
-const initialize = () => {
-  Prism.languages.liquid = Prism.languages.twig;
-  // Prism.languages.liquid.keyword = liquidKeywords;
+Prism.languages.liquid = Prism.languages.twig;
+// Prism.languages.liquid.keyword = liquidKeywords;
 
-  document.addEventListener('load', Prism.highlightAll);
-  document.addEventListener('prism:reinitialize', Prism.highlightAll);
-}
-
-export default initialize;
+Prism.highlightAll();

@@ -6,14 +6,12 @@ const breakpointsSizes = {
   1200: 'xl'
 };
 
-document.addEventListener('turbolinks:load', () => {
-  const breakpoint = Object.keys(breakpointsSizes)
-    .filter(breakpointWidth => window.innerWidth > Number(breakpointWidth))
-    .pop();
+const breakpoint = Object.keys(breakpointsSizes)
+  .filter(breakpointWidth => window.innerWidth > Number(breakpointWidth))
+  .pop();
 
-  const currentBreakpoint = breakpointsSizes[breakpoint];
+const currentBreakpoint = breakpointsSizes[breakpoint];
 
-  if (document.body.dataset.viewportSize != currentBreakpoint) {
-    document.body.dataset.viewportSize = currentBreakpoint;
-  }
-});
+if (document.body.dataset.viewportSize != currentBreakpoint) {
+  document.body.dataset.viewportSize = currentBreakpoint;
+}
