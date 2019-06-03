@@ -35,6 +35,3 @@ const initialize = () => {
 };
 
 initialize();
-
-document.addEventListener('turbolinks:load', initialize);
-document.addEventListener('toc:reinitialize', initialize);

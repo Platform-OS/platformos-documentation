@@ -1,6 +1,8 @@
-const externalLinks = () => Array.prototype.slice.call(document.querySelectorAll('a[href^="http"]') || []);
+import { $qa } from './helpers/dom';
 
-document.addEventListener('turbolinks:load', () => {
+const externalLinks = () => $qa('a[href^="http"]');
+
+document.addEventListener('load', () => {
   if (externalLinks().length) {
     externalLinks().map(link => {
       link.setAttribute('target', '_blank');

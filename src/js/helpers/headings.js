@@ -2,7 +2,7 @@ const parseHeadings = headings => {
   return headings.map(heading => {
     return {
       href: `#${heading.id}`,
-      text: heading.textContent
+      text: heading.childNodes[1].textContent.trim()
     };
   });
 };

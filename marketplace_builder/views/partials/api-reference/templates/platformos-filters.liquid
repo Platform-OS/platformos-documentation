@@ -1,0 +1,55 @@
+{%- for item in data.filters -%}
+  {%- assign aliases = item.aliases -%}
+  {%- assign returns = item.returns -%}
+  {%- assign params = item.params -%}
+  {%- assign examples = item.examples -%}
+
+  <h2>
+    {{ item.name }}
+    {%- if aliases.size > 0 -%}
+      <small>(aliases:
+        {% for a in aliases -%}
+          <a href="#{{- a -}}">{{- a -}}</a>
+        {%- endfor -%})
+      </small>
+    {%- endif -%}
+  </h2>
+
+  {% if returns.size > 0 %}
+    <h4>
+      Returns:
+      {% for r in returns %}
+        {% for t in r.types %}
+          {{ t | escape }}{% unless forloop.last %},{% endunless %}
+        {% endfor %}
+      {% endfor %}
+    </h4>
+  {% endif %}
+
+  {% if params.size > 0 %}
+    <h4>Params</h4>
+    <ul>
+      {% for p in params %}
+        <li>
+          {{ p.name }}
+
+          ({%- for t in p.types -%}
+              {{- t | escape -}}
+            {%- endfor -%})
+          {% if p.description.length > 0 %} - {{ p.description }}{% endif %}
+          {% if p.default %} - default: {{ p.default }}{% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  {% if examples.size > 0 %}
+    <h4>Examples</h4>
+    {% for e in examples %}
+      <pre><code class="language-liquid">
+        {{ e | escape }}
+      </code></pre>
+    {% endfor %}
+  {% endif %}
+
+{%- endfor -%}

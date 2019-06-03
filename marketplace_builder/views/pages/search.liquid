@@ -1,7 +1,7 @@
 ---
 slug: search
 metadata:
-  title: Search
+  title: Search results
   exclude_feedback: true
   contributors: false
 ---
@@ -11,11 +11,11 @@ metadata:
 {% assign per_page = context.exports.search.per_page %}
 {% graphql g = "search", query: context.params.query, per_page: per_page, page: page %}
 
-<h2>
-  {{ g.pages.total_entries }} result{% if g.pages.total_entries != 1 %}s{% endif %} for: {{ context.params.query }}
-</h2>
+<p>
+  {{ g.pages.total_entries }} result{% if g.pages.total_entries != 1 %}s{% endif %} for <strong>{{ context.params.query }}</strong>
+</p>
 
-<ul class="search-results">
+<ul class="list-unstyled">
   {% for result in g.pages.results %}
     <li>
       <a href="{{ result.slug }}">{{ result.metadata.title }}</a>
@@ -23,7 +23,5 @@ metadata:
     </li>
   {% endfor %}
 </ul>
-
-<br>
 
 {% include 'shared/pagination', total_pages: g.pages.total_pages, total_entries: g.pages.total_entries %}

@@ -6,9 +6,10 @@ metadata:
   title: API reference - platformOS Liquid Filters
   skip_contribute_button: true
   contributors: false
+  autotoc: true
 ---
 
 {% include 'reference/liquid_filters_overview' %}
 
-{%- include 'reference/remote-docs-path', file: 'filters.json' -%}
-<div data-remote-docs-content="filters" data-remote-docs-url="{{ url }}"></div>
+{% include 'api-reference/data/platformos-filters' %}
+{% include 'api-reference/templates/platformos-filters', data: context.exports.api_reference.platformos_filters %}

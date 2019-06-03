@@ -17,7 +17,7 @@
 					<div class="form-search form-search--alt">
 						<form action="/search" method="get">
 							<div class="form__controls">
-								<input type="text" name="search" class="form-control" placeholder="Search documentation…" />
+								<input type="text" name="query" class="form-control" placeholder="Search documentation…" />
 
 								<button type="button" class="form-btn">
                   <svg width="24" height="24"><use xlink:href="#search"></use></svg>
@@ -48,7 +48,7 @@
             <div class="content">
               {% include 'layouts/redesign/breadcrumbs', category: context.exports.category %}
               <div class="row">
-                <div class="col{% if context.exports.category.slug == 'api-reference' %}-8{% endif %} content__main">
+                <div class="col{% if context.page.metadata.autotoc == true %}-9{% endif %} content__main">
                   {% if context.page.metadata.title %}
                     <h1>{{ context.page.metadata.title }}</h1>
                   {% endif %}
@@ -64,8 +64,8 @@
                   {% endunless %} {% endcomment %}
                 </div>
 
-                {% if context.exports.category.slug == 'api-reference' %}
-                  <div class="col-4" data-autotoc></div>
+                {% if context.page.metadata.autotoc == true %}
+                  <div class="col-3" data-autotoc></div>
                 {% endif %}
               </div>
             </div>
