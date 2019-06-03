@@ -1,0 +1,20 @@
+{% for item in data %}
+  {% assign name = item.name %}
+  {% assign description = item.description %}
+  {% assign values = item.values %}
+
+  <h2>{{ item.name }}</h2>
+
+  {% if description %}
+    <p>{{ description }}</p>
+  {% endif %}
+
+  {% if values %}
+    <h4>Values</h4>
+    <ul>
+      {% for v in values %}
+        <li><strong>{{ v.name }}</strong> - {{ v.description }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endfor %}

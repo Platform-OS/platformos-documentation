@@ -1,0 +1,499 @@
+{% parse_json graphql_interfaces %}
+{% raw %}
+[
+  {
+    "notices": [],
+    "name": "AdminPropertiesInterface",
+    "description": null,
+    "fields": [
+      {
+        "notices": [],
+        "name": "fields",
+        "description": "Deprecated, use properties instead.",
+        "is_deprecated": true,
+        "deprecation_reason": "Use properties",
+        "type": { "name": "Property", "path": "object/property", "info": "[Property!]!" },
+        "arguments": []
+      },
+      {
+        "notices": [],
+        "name": "properties",
+        "description": "List of properties attributes to be included in the results",
+        "type": { "name": "Property", "path": "object/property", "info": "[Property!]!" },
+        "arguments": []
+      }
+    ],
+    "connections": [],
+    "implemented_by": ["ModelSchema", "TransactableSchema", "UserProfileSchema"]
+  },
+  {
+    "notices": [],
+    "name": "AdminSharedAttributesInterface",
+    "description": null,
+    "fields": [
+      {
+        "notices": [],
+        "name": "created_at",
+        "description": null,
+        "type": { "name": "JSONDate", "path": "scalar/jsondate", "info": "JSONDate!" },
+        "arguments": []
+      },
+      { "notices": [], "name": "id", "description": null, "type": { "name": "ID", "path": "scalar/id", "info": "ID!" }, "arguments": [] },
+      {
+        "notices": [],
+        "name": "metadata",
+        "description": null,
+        "type": { "name": "HashObject", "path": "scalar/hashobject", "info": "HashObject" },
+        "arguments": []
+      },
+      {
+        "notices": [],
+        "name": "physical_file_path",
+        "description": "defines where the file definition will be available after pull; should start\nwith the module name follow by private/public scope, for example\nmanual/public/<rest of the path, same as in marketplace_builder>",
+        "type": { "name": "String", "path": "scalar/string", "info": "String" },
+        "arguments": []
+      },
+      {
+        "notices": [],
+        "name": "updated_at",
+        "description": null,
+        "type": { "name": "JSONDate", "path": "scalar/jsondate", "info": "JSONDate!" },
+        "arguments": []
+      }
+    ],
+    "connections": [],
+    "implemented_by": [
+      "ApiCallNotification",
+      "Asset",
+      "AuthorizationPolicy",
+      "EmailNotification",
+      "FormConfiguration",
+      "LiquidLayout",
+      "LiquidPartial",
+      "ModelSchema",
+      "Page",
+      "Property",
+      "SmsNotification",
+      "TransactableSchema",
+      "UserProfileSchema"
+    ]
+  },
+  {
+    "notices": [],
+    "name": "CustomAttributeInterface",
+    "description": "Fields available in all model types",
+    "fields": [
+      {
+        "notices": [],
+        "name": "address",
+        "description": "Fetch address by name, e.g: address: address(name: \"office_address\")",
+        "type": { "name": "CustomAddrress", "path": "object/customaddrress", "info": "CustomAddrress" },
+        "arguments": [{ "name": "name", "description": null, "type": { "name": "String", "path": "scalar/string", "info": "String!" } }]
+      },
+      {
+        "notices": [],
+        "name": "addresses",
+        "description": "Fetch all addresses, optionally you can filter results by name, e.g: home: addresses(name: \"home\")",
+        "type": { "name": "CustomAddrress", "path": "object/customaddrress", "info": "[CustomAddrress]" },
+        "arguments": [{ "name": "name", "description": null, "type": { "name": "String", "path": "scalar/string", "info": "String" } }]
+      },
+      {
+        "notices": [],
+        "name": "attachment",
+        "description": "Fetch attachment by name, e.g: sales_report: attachment(name: \"sales_report\")",
+        "type": { "name": "PrivateFile", "path": "object/privatefile", "info": "PrivateFile" },
+        "arguments": [{ "name": "name", "description": null, "type": { "name": "String", "path": "scalar/string", "info": "String!" } }]
+      },
+      {
+        "notices": [],
+        "name": "attachments",
+        "description": "Fetch all attachments, optionally you can filter results by name, e.g: sales_reports: attachments(name: \"sales_report\")",
+        "type": { "name": "PrivateFile", "path": "object/privatefile", "info": "[PrivateFile]" },
+        "arguments": [{ "name": "name", "description": null, "type": { "name": "String", "path": "scalar/string", "info": "String" } }]
+      },
+      {
+        "notices": [],
+        "name": "custom_address",
+        "description": "Fetch address by name, e.g: address: custom_address(name: \"office_address\")",
+        "is_deprecated": true,
+        "deprecation_reason": "Use address",
+        "type": { "name": "CustomAddrress", "path": "object/customaddrress", "info": "CustomAddrress" },
+        "arguments": [{ "name": "name", "description": null, "type": { "name": "String", "path": "scalar/string", "info": "String!" } }]
+      },
+      {
+        "notices": [],
+        "name": "custom_addresses",
+        "description": "Fetch all addresses, optionaly you can filter results by name, e.g: home: custom_addresses(name: \"home\")",
+        "is_deprecated": true,
+        "deprecation_reason": "Use addresses",
+        "type": { "name": "CustomAddrress", "path": "object/customaddrress", "info": "[CustomAddrress]" },
+        "arguments": [{ "name": "name", "description": null, "type": { "name": "String", "path": "scalar/string", "info": "String" } }]
+      },
+      {
+        "notices": [],
+        "name": "custom_attachment",
+        "description": "Fetch attachment by name, e.g: sales_report: custom_attachment(name: \"sales_report\")",
+        "is_deprecated": true,
+        "deprecation_reason": "Use attachment",
+        "type": { "name": "PrivateFile", "path": "object/privatefile", "info": "PrivateFile" },
+        "arguments": [{ "name": "name", "description": null, "type": { "name": "String", "path": "scalar/string", "info": "String!" } }]
+      },
+      {
+        "notices": [],
+        "name": "custom_attachments",
+        "description": "Fetch all attachments, optionally you can filter results by name, e.g:\nsales_reports: custom_attachments(name: \"sales_report\")",
+        "is_deprecated": true,
+        "deprecation_reason": "Use attachments",
+        "type": { "name": "PrivateFile", "path": "object/privatefile", "info": "[PrivateFile]" },
+        "arguments": [{ "name": "name", "description": null, "type": { "name": "String", "path": "scalar/string", "info": "String" } }]
+      },
+      {
+        "notices": [],
+        "name": "custom_image",
+        "description": "Fetch image by name, e.g: header: custom_image(name: \"header\")",
+        "is_deprecated": true,
+        "deprecation_reason": "Use image",
+        "type": { "name": "Image", "path": "object/image", "info": "Image" },
+        "arguments": [{ "name": "name", "description": null, "type": { "name": "String", "path": "scalar/string", "info": "String!" } }]
+      },
+      {
+        "notices": [],
+        "name": "custom_images",
+        "description": "Fetch all images, optionaly you can filter results by name, e.g: cat_images: custom_images(name: \"cat\")",
+        "is_deprecated": true,
+        "deprecation_reason": "Use images",
+        "type": { "name": "Image", "path": "object/image", "info": "[Image]" },
+        "arguments": [{ "name": "name", "description": null, "type": { "name": "String", "path": "scalar/string", "info": "String" } }]
+      },
+      {
+        "notices": [],
+        "name": "id",
+        "description": "ID of an object.",
+        "type": { "name": "ID", "path": "scalar/id", "info": "ID!" },
+        "arguments": []
+      },
+      {
+        "notices": [],
+        "name": "image",
+        "description": "Fetch image by name, e.g: header: image(name: \"header\")",
+        "type": { "name": "Image", "path": "object/image", "info": "Image" },
+        "arguments": [{ "name": "name", "description": null, "type": { "name": "String", "path": "scalar/string", "info": "String!" } }]
+      },
+      {
+        "notices": [],
+        "name": "images",
+        "description": "Fetch all images, optionaly you can filter results by name, e.g: cat_images: images(name: \"cat\")",
+        "type": { "name": "Image", "path": "object/image", "info": "[Image]" },
+        "arguments": [{ "name": "name", "description": null, "type": { "name": "String", "path": "scalar/string", "info": "String" } }]
+      },
+      {
+        "notices": [],
+        "name": "properties",
+        "description": "List of all properties assigned to the object.",
+        "type": { "name": "HashObject", "path": "scalar/hashobject", "info": "HashObject" },
+        "arguments": []
+      },
+      {
+        "notices": [],
+        "name": "property",
+        "description": "Fetch any property by name, e.g: hair_color: property(name: \"hair_color\")",
+        "type": { "name": "String", "path": "scalar/string", "info": "String" },
+        "arguments": [{ "name": "name", "description": null, "type": { "name": "String", "path": "scalar/string", "info": "String!" } }]
+      },
+      {
+        "notices": [],
+        "name": "property_array",
+        "description": "Fetch any property of Array type by name, it returns Array in contrast to\n\"property\" which returns String. E.g: todo_list: property_array(name: \"todo_list\")",
+        "type": { "name": "String", "path": "scalar/string", "info": "[String]" },
+        "arguments": [{ "name": "name", "description": null, "type": { "name": "String", "path": "scalar/string", "info": "String!" } }]
+      }
+    ],
+    "connections": [],
+    "implemented_by": ["Customization", "Profile", "Relationship", "RelationshipUser", "User"]
+  },
+  {
+    "notices": [],
+    "name": "ListingCustomAttributeInterface",
+    "description": null,
+    "fields": [
+      {
+        "notices": [],
+        "name": "custom_address",
+        "description": "Fetch address by name, e.g: address: custom_address(name: \"office_address\")",
+        "type": { "name": "ListingAddress", "path": "object/listingaddress", "info": "ListingAddress" },
+        "arguments": [{ "name": "name", "description": null, "type": { "name": "String", "path": "scalar/string", "info": "String!" } }]
+      },
+      {
+        "notices": [],
+        "name": "custom_addresses",
+        "description": "Fetch all addresses, optionaly you can filter results by name, e.g: home: custom_addresses(name: \"home\")",
+        "type": { "name": "ListingAddress", "path": "object/listingaddress", "info": "[ListingAddress]" },
+        "arguments": [{ "name": "name", "description": null, "type": { "name": "String", "path": "scalar/string", "info": "String" } }]
+      },
+      {
+        "notices": [],
+        "name": "custom_attachment",
+        "description": "Fetch attachment by name, e.g: sales_report: custom_attachment(name: \"sales_report\")",
+        "type": { "name": "ListingsPrivateFile", "path": "object/listingsprivatefile", "info": "ListingsPrivateFile" },
+        "arguments": [{ "name": "name", "description": null, "type": { "name": "String", "path": "scalar/string", "info": "String!" } }]
+      },
+      {
+        "notices": [],
+        "name": "custom_attachments",
+        "description": "Fetch all attachments, optionaly you can filter results by name, e.g:\nsales_reports: custom_attachments(name: \"sales_report\")",
+        "type": { "name": "ListingsPrivateFile", "path": "object/listingsprivatefile", "info": "[ListingsPrivateFile]" },
+        "arguments": [{ "name": "name", "description": null, "type": { "name": "String", "path": "scalar/string", "info": "String" } }]
+      },
+      {
+        "notices": [],
+        "name": "custom_image",
+        "description": "Fetch image by name, e.g: header: custom_image(name: \"header\")",
+        "type": { "name": "ListingImage", "path": "object/listingimage", "info": "ListingImage" },
+        "arguments": [{ "name": "name", "description": null, "type": { "name": "String", "path": "scalar/string", "info": "String!" } }]
+      },
+      {
+        "notices": [],
+        "name": "custom_images",
+        "description": "Fetch all images, optionaly you can filter results by name, e.g: cat_images: custom_images(name: \"cat\")",
+        "type": { "name": "ListingImage", "path": "object/listingimage", "info": "[ListingImage]" },
+        "arguments": [{ "name": "name", "description": null, "type": { "name": "String", "path": "scalar/string", "info": "String" } }]
+      },
+      {
+        "notices": [],
+        "name": "id",
+        "description": "ID of an object.",
+        "type": { "name": "ID", "path": "scalar/id", "info": "ID!" },
+        "arguments": []
+      },
+      {
+        "notices": [],
+        "name": "properties",
+        "description": "List of all properties assigned to the object.",
+        "type": { "name": "HashObject", "path": "scalar/hashobject", "info": "HashObject" },
+        "arguments": []
+      },
+      {
+        "notices": [],
+        "name": "property",
+        "description": "Fetch any custom attribute by name, ex: hair_color: property(name: \"hair_color\")",
+        "type": { "name": "String", "path": "scalar/string", "info": "String" },
+        "arguments": [{ "name": "name", "description": null, "type": { "name": "String", "path": "scalar/string", "info": "String!" } }]
+      },
+      {
+        "notices": [],
+        "name": "property_array",
+        "description": "Fetch any property of Array type by name, it returns Array in contrast to\n\"property\" which returns String. E.g: todo_list: property_array(name: \"todo_list\")",
+        "type": { "name": "String", "path": "scalar/string", "info": "[String]" },
+        "arguments": [{ "name": "name", "description": null, "type": { "name": "String", "path": "scalar/string", "info": "String!" } }]
+      },
+      {
+        "notices": [],
+        "name": "property_json",
+        "description": "Fetch any property of JSON type by name, it returns JSON in contrast to\n\"property\" which returns String. E.g: todo_list: property_json(name: \"todo_list\")",
+        "type": { "name": "JSONPayload", "path": "scalar/jsonpayload", "info": "JSONPayload" },
+        "arguments": [{ "name": "name", "description": null, "type": { "name": "String", "path": "scalar/string", "info": "String!" } }]
+      }
+    ],
+    "connections": [],
+    "implemented_by": ["Listing", "ListingUserProfile", "ListingsCustomization", "UserListing"]
+  },
+  {
+    "notices": [],
+    "name": "ListingsMetadata",
+    "description": null,
+    "fields": [
+      {
+        "notices": [],
+        "name": "sort_score",
+        "description": "when sorting by distance - field contains distance to target location",
+        "is_deprecated": true,
+        "deprecation_reason": "not supported everywhere",
+        "type": { "name": "Int", "path": "scalar/int", "info": "[Int]" },
+        "arguments": []
+      }
+    ],
+    "connections": [],
+    "implemented_by": ["Customization", "Listing", "UserListing"]
+  },
+  {
+    "notices": [],
+    "name": "PropertiesInterface",
+    "description": null,
+    "fields": [
+      {
+        "notices": [],
+        "name": "address",
+        "description": "Fetch address by name, e.g: address: address(name: \"office_address\")",
+        "type": { "name": "CustomAddrress", "path": "object/customaddrress", "info": "CustomAddrress" },
+        "arguments": [{ "name": "name", "description": null, "type": { "name": "String", "path": "scalar/string", "info": "String!" } }]
+      },
+      {
+        "notices": [],
+        "name": "addresses",
+        "description": "Fetch all addresses, optionally you can filter results by name, e.g: home_address: addresses(name: \"home\")",
+        "type": { "name": "CustomAddrress", "path": "object/customaddrress", "info": "[CustomAddrress!]" },
+        "arguments": [{ "name": "name", "description": null, "type": { "name": "String", "path": "scalar/string", "info": "String" } }]
+      },
+      {
+        "notices": [],
+        "name": "attachment",
+        "description": "Fetch attachment by name, e.g: sales_report: attachment(name: \"sales_report\")",
+        "type": { "name": "PrivateFile", "path": "object/privatefile", "info": "PrivateFile" },
+        "arguments": [{ "name": "name", "description": null, "type": { "name": "String", "path": "scalar/string", "info": "String!" } }]
+      },
+      {
+        "notices": [],
+        "name": "attachments",
+        "description": "Fetch all attachments, optionally you can filter results by name, e.g: sales_reports: attachments(name: \"sales_report\")",
+        "type": { "name": "PrivateFile", "path": "object/privatefile", "info": "[PrivateFile!]" },
+        "arguments": [{ "name": "name", "description": null, "type": { "name": "String", "path": "scalar/string", "info": "String" } }]
+      },
+      {
+        "notices": [],
+        "name": "id",
+        "description": "ID of an object.",
+        "type": { "name": "ID", "path": "scalar/id", "info": "ID!" },
+        "arguments": []
+      },
+      {
+        "notices": [],
+        "name": "image",
+        "description": "Fetch image by name, e.g: header: image(name: \"header\")",
+        "type": { "name": "Image", "path": "object/image", "info": "Image" },
+        "arguments": [{ "name": "name", "description": null, "type": { "name": "String", "path": "scalar/string", "info": "String!" } }]
+      },
+      {
+        "notices": [],
+        "name": "images",
+        "description": "Fetch all images, optionally you can filter results by name, e.g: cat_images: images(name: \"cat\")",
+        "type": { "name": "Image", "path": "object/image", "info": "[Image!]" },
+        "arguments": [{ "name": "name", "description": null, "type": { "name": "String", "path": "scalar/string", "info": "String" } }]
+      },
+      {
+        "notices": [],
+        "name": "properties",
+        "description": "List of all properties assigned to the object.",
+        "type": { "name": "HashObject", "path": "scalar/hashobject", "info": "HashObject" },
+        "arguments": []
+      },
+      {
+        "notices": [],
+        "name": "property",
+        "description": "Fetch any property by name, ex: hair_color: property(name: \"hair_color\")",
+        "type": { "name": "String", "path": "scalar/string", "info": "String" },
+        "arguments": [{ "name": "name", "description": null, "type": { "name": "String", "path": "scalar/string", "info": "String!" } }]
+      },
+      {
+        "notices": [],
+        "name": "property_array",
+        "description": "Fetch any property of Array type by name, it returns Array in contrast to\n\"property\" which returns String. E.g: todo_list: property_array(name: \"todo_list\")",
+        "type": { "name": "String", "path": "scalar/string", "info": "[String!]" },
+        "arguments": [{ "name": "name", "description": null, "type": { "name": "String", "path": "scalar/string", "info": "String!" } }]
+      },
+      {
+        "notices": [],
+        "name": "property_json",
+        "description": "Fetch property of JSON type by name, it returns JSON in contrast to \"property\" which returns String.",
+        "type": { "name": "JSONPayload", "path": "scalar/jsonpayload", "info": "JSONPayload" },
+        "arguments": [{ "name": "name", "description": null, "type": { "name": "String", "path": "scalar/string", "info": "String!" } }]
+      }
+    ],
+    "connections": [],
+    "implemented_by": ["Model"]
+  },
+  {
+    "notices": [],
+    "name": "RelationOnDemandInterface",
+    "description": null,
+    "fields": [
+      {
+        "notices": [],
+        "name": "model",
+        "description": "Defines belongs-to relation with other model, e.g: parent: model(model_name:\n\"parent\", join_on_property: \"parent_id\") { id }",
+        "type": { "name": "ListingsCustomization", "path": "object/listingscustomization", "info": "ListingsCustomization" },
+        "arguments": [
+          {
+            "name": "join_on_property",
+            "description": "Load remote resource with id == join_on_property",
+            "type": { "name": "String", "path": "scalar/string", "info": "String!" }
+          },
+          {
+            "name": "model_name",
+            "description": "Joins model [formaly customization] with custom-model-type-name == model_name",
+            "type": { "name": "String", "path": "scalar/string", "info": "String" }
+          }
+        ]
+      },
+      {
+        "notices": [],
+        "name": "models",
+        "description": "Defines has-many relation with other model, e.g: children: models(model_name:\n\"child\", join_on_property: \"parent_id\", foreign_property: \"parent_id\") { id }",
+        "type": { "name": "ListingsCustomization", "path": "object/listingscustomization", "info": "[ListingsCustomization]" },
+        "arguments": [
+          {
+            "name": "foreign_property",
+            "description": "Load resources with foreign_property == join_on_property",
+            "type": { "name": "String", "path": "scalar/string", "info": "String!" }
+          },
+          {
+            "name": "join_on_property",
+            "description": "Load resources with foreign_property == join_on_property",
+            "type": { "name": "String", "path": "scalar/string", "info": "String!" }
+          },
+          {
+            "name": "model_name",
+            "description": "Joins model [formaly customization] with custom-model-type-name == model_name",
+            "type": { "name": "String", "path": "scalar/string", "info": "[String]" }
+          }
+        ]
+      },
+      {
+        "notices": [],
+        "name": "user",
+        "description": "Defines relation with other user, e.g: invited_by: user(join_on_property: \"invited_by_id\") { id }",
+        "type": { "name": "User", "path": "object/user", "info": "User" },
+        "arguments": [
+          {
+            "name": "join_on_property",
+            "description": null,
+            "type": { "name": "String", "path": "scalar/string", "info": "String" },
+            "default_value": "user_id"
+          }
+        ]
+      }
+    ],
+    "connections": [],
+    "implemented_by": ["Customization", "Listing", "ListingUserProfile", "ListingsCustomization", "Profile", "Transactable", "UserListing"]
+  },
+  {
+    "notices": [],
+    "name": "RemoteModelInterface",
+    "description": null,
+    "fields": [
+      {
+        "notices": [],
+        "name": "remote_model",
+        "description": "Defines relation object accessible over HTTP in JSON collection identified by it's ID.",
+        "type": { "name": "Customization", "path": "object/customization", "info": "Customization" },
+        "arguments": [
+          {
+            "name": "endpoint",
+            "description": "Endpoint that will return resources for given ids in json format",
+            "type": { "name": "Endpoint", "path": "input_object/endpoint", "info": "Endpoint!" }
+          },
+          {
+            "name": "join_on_property",
+            "description": "Load remote resource with id == join_on_property",
+            "type": { "name": "String", "path": "scalar/string", "info": "String!" }
+          }
+        ]
+      }
+    ],
+    "connections": [],
+    "implemented_by": ["Customization", "Listing", "ListingUserProfile", "ListingsCustomization", "Profile", "UserListing"]
+  }
+]
+{% endraw %}
+{% endparse_json %}
+
+{% export graphql_interfaces, namespace: 'api_reference' %}

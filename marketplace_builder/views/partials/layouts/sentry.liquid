@@ -1,16 +1,13 @@
 <script src="https://js.sentry-cdn.com/7c0394dd2d324d6cae3cc42900ee1119.min.js" crossorigin="anonymous"></script>
 
 <script>
-var _ERROR_SIGNATURE = new RegExp('(Liquid|RenderFormTag|QueryGraphTag|ExecuteQueryTag) Error');
+var _ERROR_SIGNATURE = new RegExp('(Liquid|RenderFormTag) Error');
 
 Sentry.init({
   environment: "{{ context.environment }}",
   captureUnhandledRejections: false,
   ignoreErrors: ['Script error.', /Blocked a frame with origin/],
-  ignoreUrls: [
-    /^chrome:\/\//i, // Chrome extensions
-    /^resource:\/\//i // Firefox extensions
-  ]
+  ignoreUrls: [/^chrome:\/\//i, /^resource:\/\//i]
 });
 
 document.addEventListener('load', function() {

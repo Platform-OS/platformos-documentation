@@ -1,0 +1,44 @@
+{% for item in data %}
+  {% assign name = item.name %}
+  {% assign description = item.description %}
+  {% assign fields = item.fields %}
+  {% assign implemented_by = item.implemented_by %}
+
+  <h2>{{ item.name }}</h2>
+
+  {% if description %}
+    <p>{{ description }}</p>
+  {% endif %}
+
+  {% if implemented_by %}
+    <h4>Implemented by</h4>
+    <ul>
+      {% for i in implemented_by %}
+        <li><a href="/api-reference/graphql/objects#{{ i | downcase }}">{{ i }}</a></li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  <h4>Fields</h4>
+  <table class="table table-sm">
+    <thead>
+      <tr>
+        <th class="w-25">Name</th>
+        <th>Type</th>
+        <th class="w-50">Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for f in fields %}
+        <tr>
+          <td>{{ f.name }}</td>
+          <td>{% if f.type %}{{ f.type.name }}{% endif %}</td>
+          <td>
+            {% if f.description %}{{ f.description }} {% endif %}
+            {% if f.default_value %}Default: <code>{{ f.default_value }}</code>{% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endfor %}

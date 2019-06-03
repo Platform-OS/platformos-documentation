@@ -1,0 +1,53 @@
+{% parse_json graphql_scalars %}
+{% raw %}
+[
+  { "notices": [], "name": "ActivityPayload", "description": "Represents ActivityPayload objects" },
+  { "notices": [], "name": "Any", "description": "Could be any of String Number Object Date and so on. Anytype" },
+  { "notices": [], "name": "Boolean", "description": "Represents `true` or `false` values." },
+  {
+    "notices": [],
+    "name": "Float",
+    "description": "Represents signed double-precision fractional values as specified by [IEEE 754](http://en.wikipedia.org/wiki/IEEE_floating_point)."
+  },
+  {
+    "notices": [],
+    "name": "GeometryJSON",
+    "description": "GeometryJSON is a JSON format for encoding a variety of geographic data\nstructures. It supports the following geometry types: Point [long, lan],\nLineString [[long, lan], [long, lan]], Polygon [[[long, lan], [long, lan]]] and\nMultiPoint [[long, lan], [long, lan]]. Point example:  {\"type\": \"Point\",\n\"coordinates\": [100.0, 0.0]}, Polygon exaple: {\"type\": \"Polygon\", \"coordinates\":\n[[[100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0]]]}. More\ninformation: https://tools.ietf.org/html/rfc7946"
+  },
+  {
+    "notices": [],
+    "name": "HashObject",
+    "description": "Represents data as a collection of unique keys and their values. Also known as\nassociative arrays, maps or dictionaries. You can create it by converting JSON\nobject with to_hash filter or parse_json tag. It can be any level deep."
+  },
+  { "notices": [], "name": "HeadersObject", "description": "Represents data defined by platformOS stored in context.headers variable." },
+  {
+    "notices": [],
+    "name": "ID",
+    "description": "Represents a unique identifier that is Base64 obfuscated. It is often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `\"VXNlci0xMA==\"`) or integer (such as `4`) input value will be accepted as an ID."
+  },
+  { "notices": [], "name": "ISO8601DateTime", "description": "An ISO 8601-encoded datetime" },
+  {
+    "notices": [],
+    "name": "Int",
+    "description": "Represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1."
+  },
+  {
+    "notices": [],
+    "name": "JSONDate",
+    "description": "Represents Date and time data expressed according to ISO 8601 format to which values are automatically converted."
+  },
+  { "notices": [], "name": "JSONPayload", "description": "Represents data structures formatted as JSON standard." },
+  { "notices": [], "name": "LatDegree", "description": "Must be within range -90.0..90.0" },
+  { "notices": [], "name": "LngDegree", "description": "Must be within range -180.0..180.0" },
+  { "notices": [], "name": "ParamsObject", "description": "Represents data defined by platformOS stored in context.params variable." },
+  { "notices": [], "name": "PropertyName", "description": "Model Property Name" },
+  {
+    "notices": [],
+    "name": "String",
+    "description": "Represents textual data as UTF-8 character sequences. This type is most often used by GraphQL to represent free-form human-readable text."
+  }
+]
+{% endraw %}
+{% endparse_json %}
+
+{% export graphql_scalars, namespace: 'api_reference' %}
