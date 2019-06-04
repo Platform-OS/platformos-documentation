@@ -27,7 +27,7 @@ const sendFeedback = () => {
     body: new FormData(form()),
     credentials: 'same-origin'
   })
-    .then(response => (response.status === 201 ? response.json() : {}))
+    .then(response => (response.status === 201 ? response.json() : { id: null }))
     .then(customization => updateFormForCustomizationUpdate(customization.id))
     .catch(e => {
       throw new Error(e);
@@ -45,8 +45,6 @@ const onRatingSelected = event => {
   });
 };
 
-document.addEventListener('turbolinks:load', () => {
-  if (form()) {
-    selectedValues().map(el => el.addEventListener('change', onRatingSelected));
-  }
-});
+if (form()) {
+  selectedValues().map(el => el.addEventListener('change', onRatingSelected));
+}

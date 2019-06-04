@@ -1,126 +1,54 @@
-// /* ------------------------------------------------------------ *\
-// 	Feedback
-// \* ------------------------------------------------------------ */
-
-// .feedback {
-// 	border: 1px solid #EBEBEB;
-// 	.feedback__head {
-// 		background-color: #F4F7F9;
-// 		padding: 34px 10px 34px 41px;
-
-// 		h4 {
-// 			margin-bottom: 27px;
-// 		}
-
-// 		ul {
-// 			list-style-type: none;
-// 			display: flex;
-// 			align-items: center;
-// 			margin-bottom: 0;
-
-// 			li {
-// 				& + li {
-// 					margin-left: 35px;
-// 				}
-// 			}
-
-// 			a {
-// 				text-decoration: none;
-// 				font-size: 14px;
-// 				display: flex;
-
-// 				i {
-// 					flex: 0 0 auto;
-// 				}
-
-
-// 				span {
-// 					margin-left: 10px;
-// 					letter-spacing: .03em;
-// 					display: inline-block;
-// 				}
-
-// 			}
-// 		}
-// 	}
-
-// 	.feedback__body {
-// 		padding: 28px 10px 28px 20px;
-
-// 		.feedback__message {
-// 			padding: 25px;
-// 			background-color: rgba(36,190,141,.15);
-// 			letter-spacing: .036em;
-// 			font-size: 14px;
-// 			margin-bottom: 13px;
-
-// 			h5 {
-// 				margin-bottom: 11px;
-// 			}
-
-// 			p {
-// 				margin-bottom: 0;
-// 			}
-// 		}
-// 	}
-// }
-
 .feedback-form {
   margin-top: 2em;
+  border: 1px solid #EBEBEB;
 
   textarea {
-    width: 100%;
-    border: 1px solid #ccc;
-    padding: 10px;
     height: 100px;
+    margin: 1rem 0;
   }
 
   input#email {
-    width: 100%;
-    border: 1px solid #ccc;
-    padding: 10px;
-  }
-
-  label {
-    width: 100%;
-    margin-bottom: 0;
-  }
-
-  button {
-    background-color: blue;
-    color: blue;
-    border: 0;
-    width: 100%;
-    border: 1px solid #ccc;
-    padding: 10px;
+    margin: 1rem 0;
   }
 
   a {
     text-decoration: none;
   }
 
-  .feedback-main {
-    background-color: #F4F7F9;
-    border: 1px solid #EBEBEB;
-    color: #333;
-    padding: 1.5em;
+  .feedback__title {
+    padding-bottom: 1rem;
+  }
 
-    .feedback__title {
-      padding-bottom: 1em;
-    }
-
-    .feedback__ratings {
-      ul {
-        display: flex;
-        justify-content: around;
+  .feedback__ratings {
+    ul {
+      display: flex;
+      justify-content: start;
+      margin-bottom: 0;
+      padding: 0;
+      list-style-type: none;
+      li {
+        flex: 1 1 0%;
         margin-bottom: 0;
-        padding: 0;
-        list-style-type: none;
-        li + li {
-          margin-left: 1em;
-        }
+        height: 60px;
+      }
+      li + li {
+        margin-left: 1em;
       }
     }
+  }
+
+  .contribute-to-page {
+    line-height: 60px;
+    a {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .feedback-main {
+    background-color: #F4F7F9;
+    color: #4A4A4A;
+    padding: 2em 1.5em;
 
     svg {
       width: 60px;
@@ -128,17 +56,13 @@
       margin-right: 10px;
 
       &.github {
-        width: 30px;
-        height: 30px;
+        width: 20px;
+        height: 20px;
       }
     }
 
-    .contribute-to-page {
-      line-height: 60px;
-    }
-
     svg[class*="feedback-"] {
-      opacity: 0.7;
+      opacity: 0.75;
     }
 
     input:checked ~ .feedback-smile, .feedback-smile:hover {
@@ -148,7 +72,7 @@
 
     input:checked ~ .feedback-weird, .feedback-weird:hover {
       opacity: 1;
-      color: #333;
+      color: #4A4A4A;
     }
 
     input:checked ~ .feedback-sad, .feedback-sad:hover {
@@ -160,5 +84,9 @@
       cursor: pointer;
       color: #0277bd;
     }
+  }
+
+  .feedback__questions {
+    padding: 0 1.5em;
   }
 }

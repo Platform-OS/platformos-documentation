@@ -34,12 +34,12 @@ flash_notice: Thank you for your feedback.
   <div class="feedback-main">
     <div class="row">
       <div class="col-12 feedback__title">
-        <h4>Was this page helpful?</h4>
+        <h3>Was this page helpful?</h3>
       </div>
     </div>
     <div class="row">
       <div class="col-12 col-md-7 feedback__ratings">
-        <ul class="">
+        <ul>
           <li>
             <label>
               <input type="radio" name='{{ p.rate.name }}' value="5" data-feedback-selected-value="5" hidden>
@@ -66,47 +66,47 @@ flash_notice: Thank you for your feedback.
           {% assign github_path = "https://github.com/mdyd-dev/nearme-documentation/blob/master/" %}
           {% assign pages_path = github_path | append: "marketplace_builder/views/pages/" %}
           <a href="{{ pages_path }}{{ page.slug }}.liquid" target="_blank" rel="noopener">
-            <svg width="30" height="30" class="github"><use xlink:href="#github"></use></svg>
+            <svg class="github"><use xlink:href="#github"></use></svg>
             Contribute to this page
           </a>
         </div>
       {% endif %}
     </div>
   </div>
-  <div data-feedback="questions" class="hidden col p-4">
-    <div class="row">
-      <div class="col">
-        <div class="alert alert-success" role="alert">
-          <h6>Thank you. We have received your feedback.</h6>
-          <hr>
-          <p class="mb-0">If you would like to give us more details, please do so below.</p>
+  <div class="row feedback__questions">
+    <div data-feedback="questions" class="hidden col">
+      <div class="row">
+        <div class="col">
+          <div class="alert alert-success" role="alert">
+            <p>Thank you. We have received your feedback. If you would like to give us more details, please do so below.</p>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col mt-2">
-        <label class="hidden" data-feedback-value="5">
-          We’re glad you liked our documentation page!<br />
-          Why did you like it? How could we make it even better?
-        </label>
-        <label class="hidden" data-feedback-value="3">
-          We are continuously working on our docs to make them better.<br />
-          How do you think we could improve this page?
-        </label>
-        <label class='hidden' data-feedback-value="1">
-          We’re sorry you didn’t like our documentation page.<br />
-          What was the problem? How do you think we could fix it?
-        </label>
-        <textarea type='text' id="message" name='{{ p.message.name }}'></textarea>
+      <div class="row">
+        <div class="col">
+          <label class="hidden" for="message" data-feedback-value="5">
+            We’re glad you liked our documentation page!<br />
+            Why did you like it? How could we make it even better?
+          </label>
+          <label class="hidden" for="message" data-feedback-value="3">
+            We are continuously working on our docs to make them better.<br />
+            How do you think we could improve this page?
+          </label>
+          <label class='hidden' for="message" data-feedback-value="1">
+            We’re sorry you didn’t like our documentation page.<br />
+            What was the problem? How do you think we could fix it?
+          </label>
+          <textarea type='text' id="message" name='{{ p.message.name }}'></textarea>
+        </div>
       </div>
-    </div>
-    <div class="row mt-4">
-      <div class="col-12">
-        <label for="email">Would you like to get an answer from us?</label>
-      </div>
-      <div class="col-12">
-        <input type='text' id="email" name='{{ p.email.name }}' placeholder='E-mail' class="col-8 mr-2">
-        <button class="btn btn-primary float-right col-3">Send</button>
+      <div class="row">
+        <div class="col-12">
+          <label for="email">Would you like to get an answer from us?</label>
+        </div>
+        <div class="col-12">
+          <input type='text' id="email" name='{{ p.email.name }}' placeholder='E-mail' class="col-8">
+          <button class="btn btn-primary col-3">Send</button>
+        </div>
       </div>
     </div>
   </div>

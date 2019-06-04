@@ -46,6 +46,7 @@
 
           <div class="col-sm-9">
             <div class="content">
+              {% include 'layouts/flash-messages' %}
               {% include 'layouts/redesign/breadcrumbs', category: context.exports.category %}
               <div class="row">
                 <div class="col{% if context.page.metadata.autotoc == true %}-8{% endif %} content__main">
@@ -59,9 +60,9 @@
 
                   {{ content_for_layout }}
 
-                  {% comment %} {% unless context.page.metadata.skip_feedback %}
+                  {% unless context.page.metadata.feedback == false %}
                     {% include 'layouts/redesign/feedback' %}
-                  {% endunless %} {% endcomment %}
+                  {% endunless %}
                 </div>
 
                 {% if context.page.metadata.autotoc == true %}

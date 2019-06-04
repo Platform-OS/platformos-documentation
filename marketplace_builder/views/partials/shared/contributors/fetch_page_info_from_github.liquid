@@ -7,6 +7,7 @@
 {%- graphql api = 'api_call', template: 'get_page_contributors_from_github', data: data -%}
 {%- assign response = api.api_call_send.response.body | to_hash -%}
 {%- assign authors = response | map: "author" | uniq -%}
+{% comment %} {{ author | json }} ??? {% endcomment %}
 {
   "contributors": [
     {% for author in authors %}

@@ -1,7 +1,7 @@
 {% if total_entries > per_page %}
   {% assign per_page_default = per_page_default | default: 10 %}
-  {% if params.query %}
-    {% assign query_param = "query=" | append: params.query | append: '&' %}
+  {% if context.params.query %}
+    {% assign query_param = "query=" | append: context.params.query | append: '&' %}
   {% endif %}
   {% if per_page != per_page_default %}
     {% assign per_page_param = "&per_page=" | append: per_page %}
