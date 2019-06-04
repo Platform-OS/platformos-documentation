@@ -1,135 +1,18 @@
-/* ------------------------------------------------------------ *\
-	Helpers
-\* ------------------------------------------------------------ */
-
-/*  Clear  */
-
-.clear {
-  @util clearfix;
-}
-
-/*  Notext  */
-
-.notext {
-  @util text-hide;
-}
-
-/*  Hidden  */
-
 [hidden],
 .hidden {
   display: none !important;
 }
-
-/*  Disabled  */
 
 [disabled],
 .disabled {
   cursor: default;
 }
 
-/*  Grid  */
+// More granular sizings - sometimes helpful with table columns
 
-.col {
-  max-width: 100%;
-  flex: 1;
-
-  &s {
-    display: flex;
-    flex-flow: row wrap;
-  }
-
-  &--1of2 {
-    max-width: 50%;
-    flex: 0 0 50%;
+$widths: 10 20 25 30 40 50 60 70 75 80 90 100;
+@each $width in $widths {
+  .w-#{$width} {
+    width: #{$width}#{"%"};
   }
 }
-
-.w-25 {
-  width: 25%;
-}
-
-.w-50 {
-  width: 50%;
-}
-
-.w-75 {
-  width: 75%;
-}
-
-// /*  Responsive Helpers  */
-
-// .visible-xs-block,
-// .visible-xs-inline,
-// .visible-xs-inline-block,
-// .visible-sm-block,
-// .visible-sm-inline,
-// .visible-sm-inline-block,
-// .visible-md-block,
-// .visible-md-inline,
-// .visible-md-inline-block,
-// .visible-lg-block,
-// .visible-lg-inline,
-// .visible-lg-inline-block {
-// 	display: none !important;
-// }
-
-// @media (max-width: $responsive-xs) {
-// 	.hidden-xs {
-// 		display: none !important;
-// 	}
-// 	.visible-xs-block {
-// 		display: block !important;
-// 	}
-// 	.visible-xs-inline {
-// 		display: inline !important;
-// 	}
-// 	.visible-xs-inline-block {
-// 		display: inline-block !important;
-// 	}
-// }
-
-// @media (min-width: $responsive-xs + 1) and (max-width: $responsive-sm) {
-// 	.hidden-sm {
-// 		display: none !important;
-// 	}
-// 	.visible-sm-block {
-// 		display: block !important;
-// 	}
-// 	.visible-sm-inline {
-// 		display: inline !important;
-// 	}
-// 	.visible-sm-inline-block {
-// 		display: inline-block !important;
-// 	}
-// }
-
-// @media (min-width: $responsive-sm + 1) and (max-width: $responsive-md) {
-// 	.hidden-md {
-// 		display: none !important;
-// 	}
-// 	.visible-md-block {
-// 		display: block !important;
-// 	}
-// 	.visible-md-inline {
-// 		display: inline !important;
-// 	}
-// 	.visible-md-inline-block {
-// 		display: inline-block !important;
-// 	}
-// }
-
-// @media (min-width: $responsive-md + 1) {
-// 	.hidden-lg {
-// 		display: none !important;
-// 	}
-// 	.visible-lg-block {
-// 		display: block !important;
-// 	}
-// 	.visible-lg-inline {
-// 		display: inline !important;
-// 	}
-// 	.visible-lg-inline-block {
-// 		display: inline-block !important;
-// 	}
-// }

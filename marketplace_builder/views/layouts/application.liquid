@@ -53,9 +53,9 @@
                     <h1>{{ context.page.metadata.title }}</h1>
                   {% endif %}
 
-                  {% if context.page.metadata.contributors == "false" %}
+                  {% unless context.page.metadata.contributors == false %}
                     {% include 'layouts/two-columns/contributors' %}
-                  {% endif %}
+                  {% endunless %}
 
                   {{ content_for_layout }}
 

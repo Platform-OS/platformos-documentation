@@ -8,23 +8,11 @@ spam_protection:
     minimum_score: 0.7
 fields:
   properties:
-    name:
-      validation: { presence: true }
     email:
       validation: { presence: true }
     message:
       validation: { presence: true }
     topic:
-      validation:
-        presence: true
-        inclusion:
-          in:
-            - Documentation
-            - Community
-            - Product
-            - Pricing
-    company:
-      validation: { presence: true }
 email_notifications:
   - new_contact_request
 flash_notice: Thank you for your request. We will contact you shortly.
@@ -34,42 +22,8 @@ flash_notice: Thank you for your request. We will contact you shortly.
   {% assign f = form_builder.fields.properties %}
   {% include 'forms/errors' %}
 
-  <div class="row mb-3">
-    <div class="col-6">
-      {% include 'forms/input', field: f.email, placeholder: 'Email', label: false %}
-    </div>
+  {% include 'forms/input', field: f.email, placeholder: 'Email', label: false %}
+  {% include 'forms/textarea', type: 'text', field: f.message %}
 
-    <div class="col-6">
-      {% include 'forms/input', field: f.name, placeholder: 'Name', label: false %}
-    </div>
-  </div>
-
-  <div class="row mb-3">
-    <div class="col-6">
-      {%- capture topics -%}
-      [
-        { "value": "", "text": "-- Select Topic --", "selected": true },
-        { "value": "Documentation", "text": "Documentation" },
-        { "value": "Community", "text": "Community" },
-        { "value": "Product", "text": "Product" },
-        { "value": "Pricing", "text": "Pricing" }
-      ]
-      {%- endcapture -%}
-
-
-      {% include 'forms/select', field: f.topic, options: topics, label: "Topic", placeholder: "Please Select" %}
-    </div>
-
-    <div class="col-6">
-      {% include 'forms/input', field: f.company, placeholder: "Company", label: false %}
-    </div>
-  </div>
-
-  <div class="row mb-3">
-    <div class="col-12">
-      {% include 'forms/textarea', type: 'text', field: f.message %}
-    </div>
-  </div>
-
-  <button class="btn btn-primary float-right">Send</button>
+  <button class="btn btn-primary">Send</button>
 {% endform %}
