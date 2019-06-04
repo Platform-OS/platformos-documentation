@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  {%- include 'layouts/redesign/home-head' -%}
+  {%- include 'layouts/home-head' -%}
   {%- include 'layouts/context-variables' -%}
   <script src="{{ 'redesign.js' | asset_url }}" defer></script>
 
-  {%- include 'layouts/redesign/category-helpers' -%}
+  {%- include 'layouts/category-helpers' -%}
 </head>
 <body>
 	<div class="wrapper">
-    {% include 'layouts/redesign/header' %}
+    {% include 'layouts/header' %}
 
 		<div class="main main--mt">
       <div class="section-search">
@@ -40,14 +40,14 @@
                 {% endif %}
 							</div>
 
-              {% include 'layouts/two-columns/nav' %}
+              {% include 'layouts/nav' %}
 						</div>
           </div>
 
           <div class="col-sm-9">
             <div class="content">
               {% include 'layouts/flash-messages' %}
-              {% include 'layouts/redesign/breadcrumbs', category: context.exports.category %}
+              {% include 'layouts/breadcrumbs', category: context.exports.category %}
               <div class="row">
                 <div class="col{% if context.page.metadata.toc == true %}-8{% endif %} content__main">
                   {% if context.page.metadata.title %}
@@ -55,13 +55,13 @@
                   {% endif %}
 
                   {% unless context.page.metadata.contributors == false %}
-                    {% include 'layouts/two-columns/contributors' %}
+                    {% include 'layouts/contributors' %}
                   {% endunless %}
 
                   {{ content_for_layout }}
 
                   {% unless context.page.metadata.feedback == false %}
-                    {% include 'layouts/redesign/feedback' %}
+                    {% include 'layouts/feedback' %}
                   {% endunless %}
                 </div>
 
@@ -76,9 +76,9 @@
       </div>
     </div>
 
-    {% include 'layouts/redesign/questions', content: context.page.metadata.questions %}
+    {% include 'layouts/questions', content: context.page.metadata.questions %}
 
-    {% include 'layouts/redesign/footer' %}
+    {% include 'layouts/footer' %}
 	</div>
   {%- include 'svg/icons/sprite' -%}
   {%- include 'layouts/sentry' -%}
