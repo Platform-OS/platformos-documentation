@@ -1,7 +1,7 @@
 const returns = `<h4>Returns</h4>
 <%_ item.returns.map(function(r) { _%>
   <p>
-    <%_ if (r.types) { _%><%= JSON.parse(r.types) _%><% } %>
+    <%_ if (r.types) { _%><%= r.types.join(', ') _%><% } %>
     <% if (r.description) { %> - <%= r.description %> <%_ } _%>
   </p>
 <%_ }) _%>`;
