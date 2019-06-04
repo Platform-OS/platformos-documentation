@@ -49,7 +49,7 @@
               {% include 'layouts/flash-messages' %}
               {% include 'layouts/redesign/breadcrumbs', category: context.exports.category %}
               <div class="row">
-                <div class="col{% if context.page.metadata.autotoc == true %}-8{% endif %} content__main">
+                <div class="col{% if context.page.metadata.toc == true %}-8{% endif %} content__main">
                   {% if context.page.metadata.title %}
                     <h1>{{ context.page.metadata.title }}</h1>
                   {% endif %}
@@ -65,7 +65,7 @@
                   {% endunless %}
                 </div>
 
-                {% if context.page.metadata.autotoc == true %}
+                {% if context.page.metadata.toc == true %}
                   <div class="col-4" data-autotoc></div>
                 {% endif %}
               </div>
