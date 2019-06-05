@@ -1,0 +1,47 @@
+{%- capture has_sidebar -%}
+{%- if context.exports.category.name.size > 0 -%}true{%- endif -%}
+{%- endcapture -%}
+
+{% if has_sidebar == 'true' %}
+  <div class="col-sm-3">
+    <div class="sidebar">
+      <div class="sidebar__title">
+        {% if context.exports.category.name %}
+          {% capture icon_path %}svg/{{ context.exports.category.slug }}{% endcapture %}
+          {% include icon_path, width: '32px', height: '32px' %}
+          <h4>{{ context.exports.category.name }}</h4>
+        {% endif %}
+      </div>
+
+      {% include 'layouts/nav' %}
+    </div>
+  </div>
+{% endif %}
+
+<div class="{% if has_sidebar == 'true' %}col-sm-9{% else %}col-sm-12{% endif %}">
+  <div class="content">
+    {% include 'layouts/content/flash-messages' %}
+    {% include 'layouts/content/breadcrumbs', category: context.exports.category %}
+    <div class="row">
+      <div class="col{% if context.page.metadata.toc == true %}-8{% endif %} content__main">
+        {% if context.page.metadata.title %}
+          <h1>{{ context.page.metadata.title }}</h1>
+        {% endif %}
+
+        {% unless context.page.metadata.contributors == false %}
+          {% include 'layouts/content/contributors' %}
+        {% endunless %}
+
+        {{ content_for_layout }}
+
+        {% unless context.page.metadata.feedback == false %}
+          {% include 'layouts/content/feedback' %}
+        {% endunless %}
+      </div>
+
+      {% if context.page.metadata.toc == true %}
+        <div class="col-4" data-autotoc></div>
+      {% endif %}
+    </div>
+  </div>
+</div>
