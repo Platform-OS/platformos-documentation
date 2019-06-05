@@ -1,10 +1,8 @@
 import { Selector } from 'testcafe';
 
-fixture('Autosteps').page(process.env.MP_URL);
+fixture('Autosteps').page(`${process.env.MP_URL}/get-started/setting-up-site`);
 
 test('Are generated and linked', async t => {
-  await t.navigateTo('/get-started/setting-up-site');
-
   const container = await Selector('[data-autosteps]');
   const firstStep = await Selector('h3[id]').nth(0);
   const firstStepId = await firstStep.getAttribute('id');
@@ -18,8 +16,6 @@ test('Are generated and linked', async t => {
 });
 
 test('Generate as many links as there are headings with steps', async t => {
-  await t.navigateTo('/get-started/setting-up-site');
-
   const container = await Selector('[data-autosteps]');
   const stepHeadings = await Selector('h3').filter(h => /^Step \d+:/.test(h.textContent));
   const generatedLinks = await container.find('a');
@@ -28,61 +24,52 @@ test('Generate as many links as there are headings with steps', async t => {
   await t.expect(await stepHeadings.count).eql(2);
 });
 
-fixture('Table of Contents').page(process.env.MP_URL);
+fixture('Table of Contents').page(`${process.env.MP_URL}/api-reference/liquid/types`);
 
 test('Is generated', async t => {
-  await t.navigateTo('/api-reference/liquid/objects');
-
   const container = await Selector('[data-autotoc]');
 
-  await t
-    .expect(await container.textContent)
-    .contains('On this page')
-    .expect(await container.textContent)
-    .contains('forloop')
-    .expect(await container.textContent)
-    .contains('tablerowloop');
+  await t.expect(await container.textContent).contains('On this page');
+  await t.expect(await container.textContent).contains('String');
+  await t.expect(await container.textContent).contains('Array');
 });
 
-fixture('Remote docs').page(process.env.MP_URL);
+fixture('Syntax highlighting').page(`${process.env.MP_URL}/get-started/quickstart-guide`);
 
-test('platformOS Liquid Filters', async t => {
-  await t.navigateTo('/api-reference/liquid/platformos-filters');
-
-  await t.expect(Selector('h2').withText('uuid').exists).ok();
+test('Is working', async t => {
+  await t.expect(Selector('span.token').exists).ok();
+  await t.expect(Selector('span.operator').exists).ok();
 });
 
-test('platformOS Liquid Tags', async t => {
-  await t.navigateTo('/api-reference/liquid/platformos-tags');
+// I have no idea why it doesnt work. Doesnt detect target but does other atrs.
+// fixture.skip('External links').page(process.env.MP_URL);
 
-  await t.expect(Selector('h2').withText('yield').exists).ok();
+// test('Have target and rel attributes', async t => {
+//   const blogLink = await Selector('a').withText('Blog');
+
+//   console.log(await blogLink.getAttribute('href'));
+//   console.log(await blogLink.getAttribute('target'));
+
+//   await t.expect(await blogLink.withAttribute('target', '_blank').exists).ok();
+//   await t.expect(await blogLink.withAttribute('rel', 'external').exists).ok();
+//   await t.expect(await blogLink.withAttribute('rel', 'noopener').exists).ok();
+// });
+
+fixture('Deep links').page(`${process.env.MP_URL}/get-started/quickstart-guide`);
+
+test('Deep linking to headers is working', async t => {
+  const deepLinks = Selector('.content__main').find('.anchorjs-element');
+
+  await t.expect(deepLinks.count).gte(7);
 });
 
-test('Partner Portal', async t => {
-  await t.navigateTo('/api-reference/partner-portal/api');
+test('Deep linking is working with utf8 characters in the heading id/href', async t => {
+  const heading = await Selector('#step-2-define-contact-form-–-form-object');
 
-  await t.expect(Selector('h2').withText('GET /api/partners/[[ID]]').exists).ok();
-});
+  await t.navigateTo(
+    '/tutorials/customizations/building-contact-form-with-customization#step-2-define-contact-form-–-form-object'
+  );
 
-test('GraphQL', async t => {
-  await t.navigateTo('/api-reference/graphql/queries');
-  await t.expect(Selector('h2').withText('users').exists).ok();
-
-  await t.navigateTo('/api-reference/graphql/mutations');
-  await t.expect(Selector('h2').withText('user_update').exists).ok();
-
-  await t.navigateTo('/api-reference/graphql/objects');
-  await t.expect(Selector('h2').withText('UserProfileSchema').exists).ok();
-
-  await t.navigateTo('/api-reference/graphql/scalars');
-  await t.expect(Selector('h2').withText('String').exists).ok();
-
-  await t.navigateTo('/api-reference/graphql/interfaces');
-  await t.expect(Selector('h2').withText('RemoteModelInterface').exists).ok();
-
-  await t.navigateTo('/api-reference/graphql/enums');
-  await t.expect(Selector('h2').withText('SortOrderEnum').exists).ok();
-
-  await t.navigateTo('/api-reference/graphql/inputs');
-  await t.expect(Selector('h2').withText('UsersSortInput').exists).ok();
+  await t.expect(await heading.exists).ok();
+  await t.expect(await heading.visible).ok();
 });

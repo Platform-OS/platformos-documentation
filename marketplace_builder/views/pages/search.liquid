@@ -11,11 +11,12 @@ metadata:
 {% assign per_page = context.exports.search.per_page %}
 {% graphql g = "search", query: context.params.query, per_page: per_page, page: page %}
 
+
 <p>
   {{ g.pages.total_entries }} result{% if g.pages.total_entries != 1 %}s{% endif %} for <strong>{{ context.params.query }}</strong>
 </p>
 
-<ul class="list-unstyled">
+<ul class="list-unstyled search-results">
   {% for result in g.pages.results %}
     <li>
       <a href="{{ result.slug }}">{{ result.metadata.title }}</a>

@@ -5,19 +5,15 @@ export default class LayoutPO {
     this.txt = {
       about: 'About platformOS',
       howItWorks: 'How platformOS Works',
-      contributorGuide: 'Contributor Guide'
+      contact: 'Contact'
     };
 
     this.Body = Selector('body');
-    this.Content = this.Body.find('section.content');
+    this.Content = this.Body.find('.content__main');
     this.Contributors = Selector('.contributors');
-    this.Sidebar = Selector('.sidebar-menu', { visibilityCheck: true });
+    this.Questions = Selector('.callout__actions');
+    this.Sidebar = Selector('.sidebar', { visibilityCheck: true });
     this.Feedback = Selector('.feedback-main');
-    this.SidebarItem = this.Sidebar.find('.has-submenu');
-    this.SidebarItemExpanded = this.SidebarItem.filter('.active');
-    this.SidebarItemActive = this.Sidebar.find('li.active');
-
-    this.TOSLink = Selector('a').withText('Terms & Conditions');
   }
 
   async checkLiquidErrors() {

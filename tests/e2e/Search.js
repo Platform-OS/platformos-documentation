@@ -17,14 +17,14 @@ test('There are no Liquid errors on the page', async () => {
 
 test('Proper results are returned', async t => {
   await Search.go(Search.existingPhrase);
-  await t.expect(Selector('h2').withText(Search.existingPhrase).count).eql(1);
-  await t.expect(Search.ResultsItems.count).eql(10);
+  await t.expect(Selector('p strong').withText(Search.existingPhrase).count).eql(1);
+  await t.expect(Search.ResultsItems.count).gte(10);
 });
 
 test('Pagination is working', async t => {
-  await t.expect(Search.PaginationItems.nth(0).hasClass('disabled')).ok();
+  await t.expect(Search.PaginationItems.nth(0).hasClass('active')).ok();
   await t.click(Search.PaginationNext);
-  await t.expect(Search.PaginationItems.nth(0).hasClass('disabled')).notOk();
+  await t.expect(Search.PaginationItems.nth(0).hasClass('active')).notOk();
   await t.expect(Search.PaginationItems.filter('.active').textContent).contains('2');
 });
 

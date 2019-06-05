@@ -6,8 +6,8 @@ export default class SearchPO {
     this.nonExistingPhrase = `${+new Date()} ## ${+new Date()}`;
     this.nonSearchablePhrase = 'Our usual response time is 1-2 business days.';
 
-    this.Input = Selector('.search__field');
-    this.SubmitButton = Selector('.search__btn');
+    this.Input = Selector('.form-search input');
+    this.SubmitButton = Selector('.form-search button');
     this.ResultsList = Selector('.search-results');
     this.ResultsItems = this.ResultsList.find('li');
     this.Pagination = Selector('.pagination');

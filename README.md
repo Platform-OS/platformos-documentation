@@ -1,5 +1,4 @@
-<img alt="Tested with TestCafe" src="https://img.shields.io/badge/tested%20with-TestCafe-2fa4cf.svg">
-<img alt="Tested with TestCafe" src="https://img.shields.io/david/mdyd-dev/nearme-documentation.svg">
+<img alt="Tested with TestCafe" src="https://img.shields.io/badge/tested%20with-TestCafe-2fa4cf.svg"><img alt="Tested with TestCafe" src="https://img.shields.io/david/mdyd-dev/nearme-documentation.svg">
 
 ## Contribute content
 
