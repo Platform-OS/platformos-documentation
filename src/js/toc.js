@@ -19,7 +19,7 @@ const initialize = () => {
   const container = getContainer();
   const headings = getHeadings();
 
-  if (!container || headings.length < 2) {
+  if (!container || headings.length < 3) {
     return;
   }
 
