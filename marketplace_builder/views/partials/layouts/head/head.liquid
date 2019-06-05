@@ -1,5 +1,18 @@
-
 {% include 'layouts/head/metatags' %}
 {% include 'layouts/head/favicon' %}
 
+{% comment %}
+  TODO: Enable when critical path is ready and stable
+{% endcomment %}
+
+{% comment %}
+  <script>
+  /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+  !function(c){"use strict";function e(e,t,n,o){var r,i=c.document,d=i.createElement("link");if(t)r=t;else{var a=(i.body||i.getElementsByTagName("head")[0]).childNodes;r=a[a.length-1]}var f=i.styleSheets;if(o)for(var l in o)o.hasOwnProperty(l)&&d.setAttribute(l,o[l]);d.rel="stylesheet",d.href=e,d.media="only x",function e(t){if(i.body)return t();setTimeout(function(){e(t)})}(function(){r.parentNode.insertBefore(d,t?r:r.nextSibling)});var s=function(e){for(var t=d.href,n=f.length;n--;)if(f[n].href===t)return e();setTimeout(function(){s(e)})};function u(){d.addEventListener&&d.removeEventListener("load",u),d.media=n||"all"}return d.addEventListener&&d.addEventListener("load",u),(d.onloadcssdefined=s)(u),d}"undefined"!=typeof exports?exports.loadCSS=e:c.loadCSS=e}("undefined"!=typeof global?global:this);
+  </script>
+  <link rel="preload" href="{{ 'redesign.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" type="text/css" href="{{ 'redesign.css' | asset_url }}" /></noscript>
+  <script>loadCSS("{{ 'redesign.css' | asset_url }}");</script>
+{% endcomment %}
+<link rel="preload" href="{{ 'redesign.css' | asset_url }}" as="style">
 <link rel="stylesheet" type="text/css" href="{{ 'redesign.css' | asset_url }}" />
