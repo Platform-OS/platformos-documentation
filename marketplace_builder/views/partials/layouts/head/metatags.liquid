@@ -1,0 +1,23 @@
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+{% comment %} Description {% endcomment %}
+{%- assign default_desc = 'platformOS Documentation' -%}
+{%- capture content_for_desc -%}{{ page.metadata.description }}{% endcapture -%}
+{%- assign description = content_for_desc | default: default_desc -%}
+
+<meta name="description" content="{{ description }}">
+
+
+
+{% comment %} Title {% endcomment %}
+{% capture meta_title -%}{{ page.metadata.title | strip_html }}{%- endcapture -%}
+
+{%- if meta_title.size > 0 -%}
+  {%- capture title -%}{{ meta_title }} | platformOS Docs{%- endcapture -%}
+{%- else -%}
+  {%- capture title -%}{{ project_name }}{%- endcapture -%}
+{%- endif -%}
+
+<title>{{ title }}</title>

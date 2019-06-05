@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  {%- include 'layouts/home-head' -%}
+  {%- include 'layouts/head' -%}
   {%- include 'layouts/context-variables' -%}
   <script src="{{ 'redesign.js' | asset_url }}" defer></script>
 
@@ -17,7 +17,7 @@
 					<div class="form-search form-search--alt">
 						<form action="/search" method="get">
 							<div class="form__controls">
-								<input type="text" name="query" class="form-control" placeholder="Search documentation…" />
+								<input type="text" name="query" class="form-control" placeholder="Search documentation…" value="{{ context.params.query }}" />
 
 								<button type="button" class="form-btn">
                   <svg width="24" height="24"><use xlink:href="#search"></use></svg>
