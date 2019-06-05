@@ -1,16 +1,15 @@
-import { $q, $qa } from './helpers/dom';
-import { parseHeadings } from './helpers/headings';
+import { $q } from './helpers/dom';
+import { parseHeadings, getHeadings } from './helpers/headings';
 
 // TODO: Extract getHeadings to helpers/headings
 
 const getContainer = () => $q('[data-autotoc]');
-const getHeadings = () => $qa('.content__main h2[id]');
 
 const generateTOCList = headings => {
   return headings
     .map(h => {
       return `<li>
-        <a href="${h.href}" data-turbolinks="false">${h.text}</a>
+        <a href="${h.href}">${h.text}</a>
       </li>`;
     })
     .join('');
@@ -31,7 +30,7 @@ const initialize = () => {
       <ul>${tocHTML}</ul>
     </div>`;
 
-  getContainer().innerHTML = tocDOM;
+  container.innerHTML = tocDOM;
 };
 
 initialize();

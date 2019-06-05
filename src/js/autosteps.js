@@ -12,7 +12,7 @@ const generateSteps = headings => {
   return headings
     .map(h => {
       return `<li>
-        <a href="${h.href}" data-turbolinks="false">${h.text}</a>
+        <a href="${h.href}">${h.text}</a>
       </li>`;
     })
     .join('');
