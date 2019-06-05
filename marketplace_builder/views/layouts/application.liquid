@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  {%- include 'layouts/head' -%}
-  {%- include 'layouts/context-variables' -%}
-  <script src="{{ 'redesign.js' | asset_url }}" defer></script>
-
-  {%- include 'layouts/category-helpers' -%}
+  {% include 'layouts/head/head' -%}
+  {% include 'layouts/lib/context-variables' -%}
+  {% include 'layouts/lib/category-helpers' -%}
 </head>
 <body>
 	<div class="wrapper">
@@ -34,7 +32,7 @@
             <div class="sidebar">
 							<div class="sidebar__title">
                 {% if context.exports.category.name %}
-                  {% capture icon_path %}svg/categories/{{ context.exports.category.slug }}{% endcapture %}
+                  {% capture icon_path %}svg/{{ context.exports.category.slug }}{% endcapture %}
                   {% include icon_path, width: '32px', height: '32px' %}
                   <h4>{{ context.exports.category.name }}</h4>
                 {% endif %}
@@ -46,8 +44,8 @@
 
           <div class="col-sm-9">
             <div class="content">
-              {% include 'layouts/flash-messages' %}
-              {% include 'layouts/breadcrumbs', category: context.exports.category %}
+              {% include 'layouts/content/flash-messages' %}
+              {% include 'layouts/content/breadcrumbs', category: context.exports.category %}
               <div class="row">
                 <div class="col{% if context.page.metadata.toc == true %}-8{% endif %} content__main">
                   {% if context.page.metadata.title %}
@@ -55,13 +53,13 @@
                   {% endif %}
 
                   {% unless context.page.metadata.contributors == false %}
-                    {% include 'layouts/contributors' %}
+                    {% include 'layouts/content/contributors' %}
                   {% endunless %}
 
                   {{ content_for_layout }}
 
                   {% unless context.page.metadata.feedback == false %}
-                    {% include 'layouts/feedback' %}
+                    {% include 'layouts/content/feedback' %}
                   {% endunless %}
                 </div>
 
@@ -76,11 +74,12 @@
       </div>
     </div>
 
-    {% include 'layouts/questions', content: context.page.metadata.questions %}
+    {% include 'layouts/content/questions', content: context.page.metadata.questions %}
 
     {% include 'layouts/footer' %}
 	</div>
-  {%- include 'svg/icons/sprite' -%}
-  {%- include 'layouts/sentry' -%}
+  {%- include 'layouts/body/icons' -%}
+
+  {% include 'layouts/body/javascripts' %}
 </body>
 </html>

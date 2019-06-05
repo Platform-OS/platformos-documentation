@@ -7,7 +7,7 @@ slug: tutorials/search/filtering-sorting
 searchable: true
 ---
 
-Filtering using Elasticsearch is a slightly different operation from [Search](/tutorials/search/search), but they are easy to confuse. This topic explains filtering and sorting using GraphQL queries. 
+Filtering using Elasticsearch is a slightly different operation from [Search](/tutorials/search/search), but they are easy to confuse. This topic explains filtering and sorting using GraphQL queries.
 
 ## Filtering
 
@@ -32,9 +32,9 @@ listings(listing: { slug: "transactable-slug" }){
     slug
   }
 }
-``` 
+```
 
-Please note, that there is no filter argument in the customizations entry point. You specify filtering operations directly. 
+Please note, that there is no filter argument in the customizations entry point. You specify filtering operations directly.
 
 ```graphql
 {
@@ -58,8 +58,8 @@ Please note, that there is no filter argument in the customizations entry point.
 
 ## Sorting
 
-Use `sort` to change your the ordering of your collection. 
-When sorting automatically, the `raw` field is used. 
+Use `sort` to change your the ordering of your collection.
+When sorting automatically, the `raw` field is used.
 
 ```graphql
 {
@@ -69,7 +69,7 @@ When sorting automatically, the `raw` field is used.
     sort: [
       { name: "properties.url", order: "ASC" }
       { name: "properties.name", order: "DESC" }
-    ]  	
+    ]
     name: "company"
   ) {
     total_entries
@@ -82,6 +82,3 @@ When sorting automatically, the `raw` field is used.
   }
 }
 ```
-
-{% include 'shared/questions_section' %}
-
