@@ -11,12 +11,5 @@ dynamic_cache:
   layout: false
 ---
 
-<!--
-{% capture url %}https://deidcfp1yn7c2.cloudfront.net/platform_docs/{{ context.version }}/graphql/enums.json{% endcapture %}
-
-{% assign data = url | download | parse_json %}
-{{ data | json }}
--->
-
 {% include 'api-reference/data/graphql-enums' %}
 {% include 'api-reference/templates/graphql-enums', data: context.exports.api_reference.graphql_enums %}
