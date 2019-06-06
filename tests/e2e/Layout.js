@@ -46,5 +46,6 @@ test('Images are working fine', async t => {
 test('Contributors are showing up', async t => {
   await t.navigateTo('/how-platformos-works');
 
-  await t.expect(Layout.Contributors.find('ul a').count).gt(0);
+  await t.expect(Layout.Contributors.find('a').count).gt(0);
+  await t.expect(Layout.Contributors.find('img').count).gt(0);
 });
