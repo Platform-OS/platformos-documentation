@@ -136,6 +136,27 @@ custom_attachments:
           - .docx
 ```
 
+
+### file_size
+
+file_size validation makes it possible to validate image size in Bytes. Available options are:
+`less_than`, `greater_than`, 'greater_than_or_equal_to', 'less_than_or_equal_to'.
+
+Example:
+
+```yml
+custom_images:
+  main_image:
+    image:
+      validation:
+        file_content_type:
+          allow: ['image/jpeg', 'image/png', 'image/gif']
+        file_size:
+          less_than: 3145728
+          message: "image size must be less than 3MB"
+```
+
+
 ### length
 
 ```yaml

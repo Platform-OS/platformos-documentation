@@ -36,7 +36,7 @@ pipeline {
     stage('Deploy to URL') {
       when { expression { return !params.MP_URL.isEmpty() } }
       environment { MPKIT_URL = "${params.MP_URL}" }
-      agent { docker { image 'platformos/marketplace-kit:2.0' } }
+      agent { docker { image 'platformos/marketplace-kit' } }
       steps {
         sh 'marketplace-kit deploy'
       }
@@ -49,6 +49,7 @@ pipeline {
       steps {
         sh 'npm run test-ci'
       }
+      post { failure { archiveArtifacts "screenshots/" } }
     }
 
 
@@ -62,7 +63,7 @@ pipeline {
         MPKIT_URL = "${staging_url}"
       }
 
-      agent { docker { image 'platformos/marketplace-kit:2.0' } }
+      agent { docker { image 'platformos/marketplace-kit' } }
 
       steps {
         sh 'marketplace-kit deploy'
@@ -84,6 +85,7 @@ pipeline {
       steps {
         sh 'npm run test-ci'
       }
+      post { failure { archiveArtifacts "screenshots/" } }
     }
 
     stage('Deploy production') {
@@ -96,7 +98,7 @@ pipeline {
         MPKIT_URL = "${production_url}"
       }
 
-      agent { docker { image 'platformos/marketplace-kit:2.0' } }
+      agent { docker { image 'platformos/marketplace-kit' } }
 
       steps {
         sh 'marketplace-kit deploy'
