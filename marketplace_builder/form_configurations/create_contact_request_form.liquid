@@ -14,6 +14,7 @@ fields:
       validation: { presence: true }
 email_notifications:
   - new_contact_request
+redirect_to: /contact
 flash_notice: Thank you for your request. We will contact you shortly.
 ---
 {% form html-class: 'contact-form' %}
@@ -21,7 +22,7 @@ flash_notice: Thank you for your request. We will contact you shortly.
   {% assign f = form_builder.fields.properties %}
   {% include 'forms/errors' %}
 
-  {% include 'forms/input', field: f.email, placeholder: 'Your contact email', label: false %}
+  {% include 'forms/input', field: f.email, type: 'email', placeholder: 'Your contact email', label: false %}
   {% include 'forms/textarea', type: 'text', field: f.message %}
 
   <button class="btn btn-primary">Send</button>
