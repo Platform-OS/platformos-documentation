@@ -43,7 +43,7 @@ test('Images are working fine', async t => {
   await t.expect(loadedImages.length).gte(2);
 });
 
-test('Contributors are showing up', async t => {
+test.skip('Contributors are showing up', async t => {
   await t.navigateTo('/how-platformos-works');
 
   await t.expect(Layout.Contributors.find('a').count).gt(0);
