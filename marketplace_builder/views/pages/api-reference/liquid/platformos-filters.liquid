@@ -2,9 +2,6 @@
 converter: ''
 slug: api-reference/liquid/platformos-filters
 searchable: true
-dynamic_cache:
-  expire: 600
-  layout: false
 metadata:
   title: Liquid - platformOS Liquid Filters
   skip_contribute_button: true
@@ -18,5 +15,9 @@ In platformOS you can use all <a href="/api-reference/liquid/filters">standard L
 
 Besides standard Liquid filters, you can also use platformOS-specific Liquid filters we added.
 
-{% include 'api-reference/data/platformos-filters' %}
-{% include 'api-reference/templates/platformos-filters', data: context.exports.api_reference.platformos_filters %}
+{% cache context.version %}
+{%- capture url -%}https://deidcfp1yn7c2.cloudfront.net/platform_docs/{{ context.version }}/filters.json{%- endcapture -%}
+
+{% assign data = url | download_file | parse_json %}
+{% include 'api-reference/templates/platformos-filters', data: data %}
+{% endcache %}

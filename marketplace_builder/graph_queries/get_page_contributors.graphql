@@ -1,19 +1,12 @@
 query get_page_contributors($slug: String!) {
- customizations (
-   name: "page_contributors"
-   is_deleted: false
-   properties: [
-     { name:"slug", value: $slug }
-   ]
- )
- {
-   results {
-     id
-     deleted_at
-     contributors: property(name: "contributors")
-     last_edit: property(name: "last_edit")
-     paths: property_array(name: "paths")
-     slug: property(name: "slug")
-   }
- }
+  customizations(name: "page_contributors", is_deleted: false, properties: [{ name: "slug", value: $slug }]) {
+    results {
+      id
+      deleted_at
+      contributors: property(name: "contributors")
+      last_edit: property(name: "last_edit")
+      paths: property_array(name: "paths")
+      slug: property(name: "slug")
+    }
+  }
 }

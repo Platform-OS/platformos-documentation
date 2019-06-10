@@ -12,5 +12,9 @@ metadata:
   toc: true
 ---
 
-{% include 'api-reference/data/platformos-tags' %}
-{% include 'api-reference/templates/platformos-tags', data: context.exports.api_reference.platformos_tags %}
+{% cache context.version %}
+{%- capture url -%}https://deidcfp1yn7c2.cloudfront.net/platform_docs/{{ context.version }}/tags.json{%- endcapture -%}
+
+{% assign data = url | download_file | parse_json %}
+{% include 'api-reference/templates/platformos-tags', data: data %}
+{% endcache %}

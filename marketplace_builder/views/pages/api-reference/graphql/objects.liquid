@@ -1,14 +1,15 @@
 ---
 converter: ''
+slug: api-reference/graphql/objects
+searchable: true
 metadata:
   title: GraphQL - Objects
   contributors: false
-slug: api-reference/graphql/objects
-searchable: true
-dynamic_cache:
-  expire: 600
-  layout: false
 ---
 
-{% include 'api-reference/data/graphql-objects' %}
-{% include 'api-reference/templates/graphql-objects', data: context.exports.api_reference.graphql_objects %}
+{% cache context.version %}
+{%- capture url -%}https://deidcfp1yn7c2.cloudfront.net/platform_docs/{{ context.version }}/graphql/objects.json{%- endcapture -%}
+
+{% assign data = url | download_file | parse_json %}
+{% include 'api-reference/templates/graphql-objects', data: data %}
+{% endcache %}
