@@ -1,15 +1,16 @@
 ---
 converter: ''
+slug: api-reference/graphql/queries
+searchable: true
 metadata:
   title: GraphQL - Queries
   contributors: false
   toc: true
-slug: api-reference/graphql/queries
-searchable: true
-dynamic_cache:
-  expire: 600
-  layout: false
 ---
 
-{% include 'api-reference/data/graphql-queries' %}
-{% include 'api-reference/templates/graphql-queries', data: context.exports.api_reference.graphql_queries %}
+{% cache context.version %}
+{%- capture url -%}https://deidcfp1yn7c2.cloudfront.net/platform_docs/{{ context.version }}/graphql/queries.json{%- endcapture -%}
+
+{% assign data = url | download_file | parse_json %}
+{% include 'api-reference/templates/graphql-queries', data: data %}
+{% endcache %}

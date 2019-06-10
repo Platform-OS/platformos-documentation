@@ -1,14 +1,15 @@
 ---
 converter: ''
+slug: api-reference/graphql/mutations
+searchable: true
 metadata:
   title: GraphQL - Mutations
   contributors: false
-slug: api-reference/graphql/mutations
-searchable: true
-dynamic_cache:
-  expire: 600
-  layout: false
 ---
 
-{% include 'api-reference/data/graphql-mutations' %}
-{% include 'api-reference/templates/graphql-mutations', data: context.exports.api_reference.graphql_mutations %}
+{% cache context.version %}
+{%- capture url -%}https://deidcfp1yn7c2.cloudfront.net/platform_docs/{{ context.version }}/graphql/mutations.json{%- endcapture -%}
+
+{% assign data = url | download_file | parse_json %}
+{% include 'api-reference/templates/graphql-mutations', data: data %}
+{% endcache %}

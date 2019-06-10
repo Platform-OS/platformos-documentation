@@ -1,14 +1,15 @@
 ---
 converter: ''
+slug: api-reference/graphql/interfaces
+searchable: true
 metadata:
   title: GraphQL - Interfaces
   contributors: false
-slug: api-reference/graphql/interfaces
-searchable: true
-dynamic_cache:
-  expire: 600
-  layout: false
 ---
 
-{% include 'api-reference/data/graphql-interfaces' %}
-{% include 'api-reference/templates/graphql-interfaces', data: context.exports.api_reference.graphql_interfaces %}
+{% cache context.version %}
+{%- capture url -%}https://deidcfp1yn7c2.cloudfront.net/platform_docs/{{ context.version }}/graphql/interfaces.json{%- endcapture -%}
+
+{% assign data = url | download_file | parse_json %}
+{% include 'api-reference/templates/graphql-interfaces', data: data %}
+{% endcache %}

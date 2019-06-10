@@ -1,14 +1,15 @@
 ---
 converter: ''
+slug: api-reference/graphql/inputs
+searchable: true
 metadata:
   title: GraphQL - Inputs
   contributors: false
-slug: api-reference/graphql/inputs
-searchable: true
-dynamic_cache:
-  expire: 600
-  layout: false
 ---
 
-{% include 'api-reference/data/graphql-inputs' %}
-{% include 'api-reference/templates/graphql-inputs', data: context.exports.api_reference.graphql_inputs %}
+{% cache context.version %}
+{%- capture url -%}https://deidcfp1yn7c2.cloudfront.net/platform_docs/{{ context.version }}/graphql/inputs.json{%- endcapture -%}
+
+{% assign data = url | download_file | parse_json %}
+{% include 'api-reference/templates/graphql-inputs', data: data %}
+{% endcache %}
