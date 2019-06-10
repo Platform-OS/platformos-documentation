@@ -15,7 +15,7 @@ In platformOS you can use all <a href="/api-reference/liquid/filters">standard L
 
 Besides standard Liquid filters, you can also use platformOS-specific Liquid filters we added.
 
-{% cache context.version %}
+{% cache "filters" + context.version %}
 {%- capture url -%}https://deidcfp1yn7c2.cloudfront.net/platform_docs/{{ context.version }}/filters.json{%- endcapture -%}
 
 {% assign data = url | download_file | parse_json %}

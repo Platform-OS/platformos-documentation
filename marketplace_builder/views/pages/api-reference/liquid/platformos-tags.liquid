@@ -12,7 +12,7 @@ metadata:
   toc: true
 ---
 
-{% cache context.version %}
+{% cache "tags" + context.version %}
 {%- capture url -%}https://deidcfp1yn7c2.cloudfront.net/platform_docs/{{ context.version }}/tags.json{%- endcapture -%}
 
 {% assign data = url | download_file | parse_json %}

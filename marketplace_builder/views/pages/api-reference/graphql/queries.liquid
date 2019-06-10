@@ -8,7 +8,7 @@ metadata:
   toc: true
 ---
 
-{% cache context.version %}
+{% cache "queries" + context.version %}
 {%- capture url -%}https://deidcfp1yn7c2.cloudfront.net/platform_docs/{{ context.version }}/graphql/queries.json{%- endcapture -%}
 
 {% assign data = url | download_file | parse_json %}
