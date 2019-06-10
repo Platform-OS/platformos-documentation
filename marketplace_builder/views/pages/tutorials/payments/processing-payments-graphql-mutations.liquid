@@ -21,203 +21,84 @@ Processing payments with GraphQL mutations is a four-step process:
 
 <div data-autosteps></div>
 
-### Step 1: Create Invoice Model
+### Step 1: Basics
 
-Usually, when you create a payment in your system, you want to associate it with another object.
-This association is saved on the payment object and it's called `payable`.
-In this example, you will create a custom model called `Invoice` - that accepts only an amount,
-and you will use it as payment payable. Payable can have only one payment when you try to create
-multiple payments to the same object you will get an error. Start with a simple definition of the Custom Model:
+It's up to you where and how you want to use gateway_request mutation call. In this scenario we will present simple scenario of mutation execution that can be placed anywhere. Each [Request Type](https://github.com/mdyd-dev/platformos-payments-stripe#request-types) can be called with mutation insteead of including a form as it was presented in [Integrating Stripe](/tutorials/payments/integrating-stripe) tutorial.
 
-```yaml
-name: invoice
-properties:
-- name: amount
-  type: float
+First create test page where you can follow the example.
+
+```liquid
+---
+slug: payments-mutation-test
+---
 ```
 
-You now need to create the object of the Invoice model, you can do that with a mutation:
+Make sure that [Payment Module](https://github.com/mdyd-dev/platformos-payments) and [Stripe Module](https://github.com/mdyd-dev/platformos-payments-stripe) is installed on your site.
 
-```graphql
-mutation create_invoice(
-  $form_configuration_name: String = "create_invoice_form"
-  $amount: String!
-) {
-  customization_create(
-    form_configuration_name: $form_configuration_name
-    customization: {
-      properties: [{ name: "amount", value: $amount }]
-      custom_model_type_name: "invoice"
-    }
-  ) {
-    id
+### Step 2: Configuration and Data
+
+Any gateway request mutation call needs to know what gateway to use and what kind of request should be processed. To do that, you need to create `config` object as you did with include_form version.
+
+```liquid
+{%- parse_json 'config' -%}
+  {
+    "request_type": "refund_payment",
+    "gateway": "stripe"
   }
-}
+{%- endparse_json -%}
 ```
 
-The form for the above mutation is:
+Next one is `data`, please see the [documentation](https://github.com/mdyd-dev/platformos-payments-stripe#refund_payment) for ther request_type you are calling. Refund payment requires `charge`, `payment_id` and the `amount` that is being refunded.
 
-```yaml
----
-name: create_invoice_form
-resource: Customization
-resource_owner: anyone
-fields:
-  customizable_type:
-  customizable_id:
-  user_id:
-  properties:
-    amount:
-      validates:
-        presence: true
----
-````
 
-Now create invoice object with mutation execution:
-```liquid
-{% raw %}
-{% graphql i = "create_invoice", amount: "10" %}
-{% assign invoice = i.customization_create %}
-{% endraw %}
-```
-
-### Step 2: Fetch stored Credit Card
-
-In Step 5 of [Integrating Stripe](/tutorials/payments/integrating-stripe) you have learned how to
-fetch data of Credit Cards saved on your instance. You will now use this data to create a new payment.
-To do that, you need the `id` and `payment_method_id` that are saved on the CreditCard object.
-The following lines assign that data to `cc` variable:
+For the simplicity we use payments created in [Integrating Stripe](/tutorials/payments/integrating-stripe) tutorial.
 
 ```liquid
-{% raw %}
-{% graphql g = "get_credit_cards", user_id: context.current_user.id %}
-{% assign cc = g.credit_cards.last %}
-{% endraw %}
-```
+{% query_graph "modules/payments/get_payments", per_page: 1 %}
+{% assign payment = g.payments.results.last %}
 
-### Step 3: Create payment
-
-As you now have all the data required to create a new payment, you need to create the proper mutation and form:
-
-```graphql
-mutation create_payment(
-  $credit_card_id: ID
-  $credit_card_token: String
-  $payment_method_id: ID!
-  $payable_id: ID!
-  $payable_type: String = "Customization"
-  $payer_id: ID!
-  $total_amount: Float!
-  $form_configuration_name: String = "create_payment_form"
-) {
-  payment_create(
-    payment: {
-      amount: {
-        currency: "USD"
-        total_amount: $total_amount
-      }
-      credit_card_id: $credit_card_id
-      credit_card_token: $credit_card_token
-      payment_method_id: $payment_method_id
-      payable_type: $payable_type
-      payable_id: $payable_id
-      payer_id: $payer_id
-    }
-    form_configuration_name: $form_configuration_name
-  ) {
-    errors
-    result {
-      id
-    }
+{%- parse_json 'data' -%}
+  {
+    "charge" : "{{ payment.properties.gateway_id }}",
+    "payment_id": "{{ payment.id }}",
+    "amount": "{{ payment.properties.amount_cents }}"
   }
-}
+{%- endparse_json -%}
 ```
 
-To make things simpler, USD is the default currency, but feel free to change it.
+### Step 3: Migration execution
 
-```yaml
----
-name: create_payment_form
-resource: Payment
-fields:
-  credit_card_id:
-  payment_method_id:
-    validation:
-      presence: true
-  payable_type:
-    validation:
-      presence: true
-  payable_id:
-    validation:
-      presence: true
-  payer_id:
-    validation:
-      presence: true
-  currency:
-    validation:
-      presence: true
-  total_amount:
-    validation:
-      presence: true
-      numericality:
-        greater_than: 0
----
-```
-
-With the definition above, execute the query with the data that you've previously assigned to proper variables.
+The configuration and data is prepared. You now need to wrap it in the form readable to the `create_customization` mutation:
 
 ```liquid
-{% raw %}
-{% graphql res = "create_payment",
-  credit_card_id: cc.id,
-  payment_method_id: cc.payment_method_id,
-  payable_id: invoice.id,
-  payable_type: "Customization",
-  payer_id: context.current_user.id,
-  total_amount: 10,
-  result_name: "p"
-%}
 
-{% assign payment_id = p.payment_create.result.id %}
-{% endraw %}
-```
-
-The result of the mutation will be saved to variable `p` as defined in the last line of query execution.
-What you need to extract is `payment_id` that is used in the next step.
-
-### Step 4: Charge payment with GrahpQL mutation
-
-As you now have payment saved in the system, you can at any time send a request to actually process and
-charge the credit card assigned to it. In order to do it define `charge_payment` mutation and form:
-
-```graphql
-mutation charge_payment($id: ID!) {
-  payment_charge(id: $id, form_configuration_name: "charge_payment_form") {
-    id
-    paid_at
+{% parse_json "refund_data" %}
+  {
+    "properties": [
+       { "name": "config", "value": "{{ config | json | escape_javascript }}" },
+       { "name": "data", "value":  "{{ data | json | escape_javascript }}" }
+     ]
   }
-}
+{% endparse_json %}
 ```
 
-```yaml
----
-name: charge_payment_form
-resource: Payment
-fields: {}
-resource_owner: anyone
----
-```
+And simply pass `refund_data` object to GraphQA tag:
 
-Now as everything is in place, execute the mutation and see the results on the Stripe dashboard.
-Result of mutation is saved to `p` variable, so you can inspect if `paid_at` was set correctly.
-
-{% raw %}
 ```liquid
-{% graphql p = "charge_payment", id: payment_id %}
+{% graphql g = "modules/payments/create_customization", form: "modules/payments/gateway_request_mutation_form", data: refund_data %}
+{% parse_json "payment_properties" %}
+  {{ g.customization_create.properties.data }}
+{% endparse_json %}
 ```
-{% endraw %}
 
-Congratulations! You now know how to use stored credit cards to process new payments.
+### Step 4: Results
+
+To confirm that your first mutation is executed correctly, sync or deploy the page to your instance and visit the page that you've just created. It should be available under `/payments-mutation-test` path.
+
+You should see the properties of the `modules/payments/refund` object that was created with page render. Visit your Stripe dashboard to confirm the last payment was refunded.
+
+
+Congratulations! You now know how to use any request_type with GraphQL mutations.
 
 ## Live example and source code
 
