@@ -10,29 +10,34 @@ searchable: true
 This guide will help you configure a Stripe payment gateway.
 
 ## Requirements
-To follow this tutorial, you should be familiar with the Stripe API and the Stripe Dashboard. You also need to have access to the Partner Portal.
-* [Updating Instance Configuration](/tutorials/partner-portal/updating-instance-configuration)
+To follow this tutorial, you should be familiar with the Payments Module, the Stripe Module, the Stripe API and the Stripe Dashboard. You also need to have access to the Partner Portal, and know how to install a module. 
+* [Payments Module](https://github.com/mdyd-dev/platformos-payments)
+* [Stripe Module](https://github.com/mdyd-dev/platformos-payments-stripe)
 * [Stripe API Keys](https://stripe.com/docs/keys)
+* [Updating Instance Configuration](/tutorials/partner-portal/updating-instance-configuration)
+* [Installing a Module](/tutorials/modules/installing-module)
+
 
 ## Steps
 
-Integrating and configuring a Stripe payment gateway is a 4-step process:
+Integrating and configuring a Stripe payment gateway is a 3-step process:
 
 <div data-autosteps></div>
 
-### Step 1: Install Payments and Stripe Modules in Partner Portal
+### Step 1: Install the Payments and Stripe Modules in Partner Portal
 
-1. Go to [modules marketplace](https://portal.apps.near-me.com/module_marketplace) and click on "Buy" (It's FREE) next to "PlatformOS Payments" and "PlatformOS Payments Stripe" modules.
-2. Go to your Instance view and install both modules
-3. In the installation process set up Stripe public and secret keys
-4. Make sure enable_sms_and_api_workflow_alerts_on_staging in your instance configuration is set to true
+Install the following free modules:
 
+* Payments
+* Stripe
 
-Read the manual for [Payment Module](https://github.com/mdyd-dev/platformos-payments) and [Stripe Module](https://github.com/mdyd-dev/platformos-payments-stripe) in order to understand the basics.
+During the installation process, set up Stripe public and secret keys. 
+
+Make sure that `enable_sms_and_api_workflow_alerts_on_staging` in your Instance configuration is set to true. 
 
 ### Step 2: Create minimal working payment example
 
-On the page of your choice, use predefined `gateway_request_form` and configure it with your data:
+On the page of your choice, use the predefined `gateway_request_form` and configure it with your data:
 
 ```liquid
 {% raw %}
@@ -67,14 +72,13 @@ On the page of your choice, use predefined `gateway_request_form` and configure 
 {% endraw %}
 ```
 
-Predefined `create_payment` template will be rendered on your page.
+The predefined `create_payment` template will be rendered on your page.
 
-For more information read [create_payment request](https://github.com/mdyd-dev/platformos-payments-stripe#create_payment) documentation.
+For more information read the [create_payment request](https://github.com/mdyd-dev/platformos-payments-stripe#create_payment) documentation.
 
+### Step 3: List payments
 
-### Step 3: List Payments
-
-To check the state of the payment, use predefined [`modules/payments/get_payments`](https://github.com/mdyd-dev/platformos-payments/blob/master/public/graph_queries/get_payments.graphql) query.
+To check the state of the payment, use the predefined [`modules/payments/get_payments`](https://github.com/mdyd-dev/platformos-payments/blob/master/public/graph_queries/get_payments.graphql) query.
 
 <div class="mt-4">
   <h4>List of last payments:</h4>
@@ -101,16 +105,16 @@ To check the state of the payment, use predefined [`modules/payments/get_payment
 </div>
 ```
 
-### Step 4. Other Payment Examples
+## Live example and source code
 
-You will find more payment examples in dedicated project:
+You will find more payment examples in the following project:
 
 - [Payment Examples Repository](https://github.com/mdyd-dev/platformos-payment-examples)
 - [Payment Examples Page](https://payment-examples.staging.oregon.platform-os.com)
 
 List of examples:
-- Integrating Stripe payments - example presented in this article
-- Stripe Elements	- explains how to integrate [Stripe Element Components](https://stripe.com/docs/stripe-js/elements/quickstart) with Payment Module
+- Integrating Stripe payments - the example presented in this article
+- Stripe Elements	- explains how to integrate [Stripe Element Components](https://stripe.com/docs/stripe-js/elements/quickstart) with the Payments Module
 - Saving Account - goes through all the details of [Stripe Connect](https://stripe.com/docs/connect) integration
 - Saving Customer - example of reusing saved customer credit cards for future payments
 
