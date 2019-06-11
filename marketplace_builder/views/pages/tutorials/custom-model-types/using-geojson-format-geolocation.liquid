@@ -158,6 +158,7 @@ Create the GraphQL query `graph_queries/search.graphql`:
 query search($point: GeometryJSON, $distance: Int) {
   companies: models(
     per_page: 20
+    name: { value: "modules/geo_models/company" }
     filter: {
       properties: [
         { name: "location", distance_sphere: {center: $point, distance_in_km: $distance}}
