@@ -23,9 +23,9 @@ Processing payments with GraphQL mutations is a four-step process:
 
 ### Step 1: Basics
 
-It's up to you where and how you want to use gateway_request mutation call. In this scenario we will present simple scenario of mutation execution that can be placed anywhere. Each [Request Type](https://github.com/mdyd-dev/platformos-payments-stripe#request-types) can be called with mutation insteead of including a form as it was presented in [Integrating Stripe](/tutorials/payments/integrating-stripe) tutorial.
+It's up to you where and how you want to use the gateway_request mutation call. In this tutorial, we will present a simple scenario of mutation execution that can be placed anywhere. Each [Request Type](https://github.com/mdyd-dev/platformos-payments-stripe#request-types) can be called with mutation instead of including a form as it was presented in the [Integrating Stripe](/tutorials/payments/integrating-stripe) tutorial.
 
-First create test page where you can follow the example.
+First create a test page where you can follow the example.
 
 ```liquid
 ---
@@ -33,11 +33,11 @@ slug: payments-mutation-test
 ---
 ```
 
-Make sure that [Payment Module](https://github.com/mdyd-dev/platformos-payments) and [Stripe Module](https://github.com/mdyd-dev/platformos-payments-stripe) is installed on your site.
+Make sure that the [Payments Module](https://github.com/mdyd-dev/platformos-payments) and [Stripe Module](https://github.com/mdyd-dev/platformos-payments-stripe) are installed on your site.
 
 ### Step 2: Configuration and Data
 
-Any gateway request mutation call needs to know what gateway to use and what kind of request should be processed. To do that, you need to create `config` object as you did with include_form version.
+Any gateway request mutation call needs to know what gateway to use and what kind of request to process. To do that, create a `config` object as you did with the include_form version.
 
 ```liquid
 {%- parse_json 'config' -%}
@@ -48,10 +48,9 @@ Any gateway request mutation call needs to know what gateway to use and what kin
 {%- endparse_json -%}
 ```
 
-Next one is `data`, please see the [documentation](https://github.com/mdyd-dev/platformos-payments-stripe#create_refund) for ther request_type you are calling. Refund payment requires `charge`, `payment_id` and the `amount` that is being refunded.
+Next one is `data`, please see the [documentation](https://github.com/mdyd-dev/platformos-payments-stripe#create_payment) for the request_type you are calling. Refund payment requires `charge`, `payment_id` and the `amount` that is being refunded.
 
-
-For the simplicity we use payments created in [Integrating Stripe](/tutorials/payments/integrating-stripe) tutorial.
+To keep it simple, use payments created in the [Integrating Stripe](/tutorials/payments/integrating-stripe) tutorial.
 
 ```liquid
 {% query_graph "modules/payments/get_payments", per_page: 1 %}
@@ -66,9 +65,9 @@ For the simplicity we use payments created in [Integrating Stripe](/tutorials/pa
 {%- endparse_json -%}
 ```
 
-### Step 3: Migration execution
+### Step 3: Execute migration
 
-The configuration and data is prepared. You now need to wrap it in the form readable to the `create_customization` mutation:
+The configuration and data are prepared. You now need to wrap it in the format that's readable to the `create_customization` mutation:
 
 ```liquid
 
@@ -82,7 +81,7 @@ The configuration and data is prepared. You now need to wrap it in the form read
 {% endparse_json %}
 ```
 
-And simply pass `refund_data` object to GraphQA tag:
+And simply pass `refund_data` object to the GraphQL tag:
 
 ```liquid
 {% graphql g = "modules/payments/create_customization", form: "modules/payments/gateway_request_mutation_form", data: refund_data %}
@@ -91,12 +90,11 @@ And simply pass `refund_data` object to GraphQA tag:
 {% endparse_json %}
 ```
 
-### Step 4: Results
+### Step 4: Test results
 
-To confirm that your first mutation is executed correctly, sync or deploy the page to your instance and visit the page that you've just created. It should be available under `/payments-mutation-test` path.
+To confirm that your first mutation is executed correctly, sync or deploy the page to your instance and visit the page that you've just created. It should be available under the `/payments-mutation-test` path.
 
-You should see the properties of the `modules/payments/refund` object that was created with page render. Visit your Stripe dashboard to confirm the last payment was refunded.
-
+You should see the properties of the `modules/payments/refund` object that was created with page render. Visit your Stripe Dashboard to confirm that the last payment was refunded.
 
 Congratulations! You now know how to use any request_type with GraphQL mutations.
 
