@@ -1,0 +1,44 @@
+{% for item in data.api %}
+  {% assign endpoint_name = item[0] %}
+  {% assign examples = data.api[endpoint_name] %}
+
+  <h2>{{ endpoint_name }}</h2>
+
+  {% for example in examples %}
+
+    {% assign req = example.request %}
+
+    {% if req %}
+      <h3>Request</h3>
+      {% if req.params.size > 0 %}
+        <p>Params</p>
+        <pre><code class="language-json">
+          {{ req.params }}
+        </code></pre>
+      {% endif %}
+
+      <p class="mt-4">cURL example</p>
+      <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+        {{ req.curl }}
+      </code></pre>
+    {% endif %}
+
+
+    {% assign res = example.response %}
+
+    {% if res %}
+      <h3 class="mt-5">Response [{{ res.status }}]</h3>
+
+      <p>Body</p>
+      <pre><code class="language-json">
+        {%- if res.body.size > 0 -%}
+          {{ res.body }}
+        {%- else -%}
+          -
+        {%- endif %}
+      </code></pre>
+    {% endif %}
+
+    <hr class="hr" />
+  {% endfor %}
+{% endfor %}

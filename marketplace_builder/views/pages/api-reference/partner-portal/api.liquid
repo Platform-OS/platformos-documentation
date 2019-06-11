@@ -1,14 +1,24 @@
 ---
 slug: api-reference/partner-portal/api
-searchable: true
+searchable: false
 metadata:
   title: Partner Portal API
   description: This documentation will help you manage your instances programmatically using Partner Portal API.
   contributors: false
+  feedback: false
+  toc: false
 ---
 
 <p>{{ page.metadata.description }}</p>
 
-{% assign url = context.params.source | default: 'https://partners.platform-os.com/doc.json' %}
+{% capture cache_key -%}
+partner-portal-api
+{%- if context.params.cache -%}-{{ 5 | random_string }}{%- endif -%}
+{%- endcapture %}
 
-<div data-remote-docs-content="portal" data-remote-docs-url="{{ url }}"></div>
+{% cache cache_key %}
+{% assign url = context.params.source | default: 'https://partners.platform-os.com/doc.json' %}
+{% assign data = url | download_file | parse_json %}
+
+{% include 'api-reference/templates/partner-portal', data: data %}
+{% endcache %}
