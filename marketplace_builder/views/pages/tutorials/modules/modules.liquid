@@ -25,7 +25,7 @@ modules
 
 These directories have the same structure as the standard `marketplace_builder` folder, but if developers try to download files after the module has been deployed to an Instance (`marketplace-kit pull`), they will only see the files from the public folder.
 
-In general, when referencing files that are part of a module, platform uses a prefix which does not include `public` or `private` folders (for example: `modules/admin/app.css` not `modules/admin/private/app.css`). This means that creators should not create files with the same name in both folders, as one will overwrite the other. This behavior gives creators flexibility if they want to change the scope of the file they can move it between private and public folders without changing the code.
+In general, when referencing files that are part of a module, platformOS uses a prefix which does not include any `public` or `private` folders (for example: `modules/admin/app.css` instead of `modules/admin/private/app.css`). This means that creators should not create files with the same name in both folders, as one will overwrite the other. This behavior gives creators flexibility: if they want to change the scope of the file, they can move it between the private and public folders without changing the code. 
 
 You can create an Instance and deploy the code as you would usually do, and you still can have the `marketplace_builder` folder on the top level (this code will not be part of the module but you can use it while developing).
 
