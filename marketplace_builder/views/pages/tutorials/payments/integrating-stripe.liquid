@@ -10,233 +10,113 @@ searchable: true
 This guide will help you configure a Stripe payment gateway.
 
 ## Requirements
-To follow this tutorial, you should be familiar with the Stripe API and the Stripe Dashboard. You also need to have access to the Partner Portal.
-* [Updating Instance Configuration](/tutorials/partner-portal/updating-instance-configuration)
+To follow this tutorial, you should be familiar with the Payments Module, the Stripe Module, the Stripe API and the Stripe Dashboard. You also need to have access to the Partner Portal, and know how to install a module. 
+* [Payments Module](https://github.com/mdyd-dev/platformos-payments)
+* [Stripe Module](https://github.com/mdyd-dev/platformos-payments-stripe)
 * [Stripe API Keys](https://stripe.com/docs/keys)
+* [Updating Instance Configuration](/tutorials/partner-portal/updating-instance-configuration)
+* [Installing a Module](/tutorials/modules/installing-module)
+
 
 ## Steps
 
-Integrating and configuring a Stripe payment gateway is a 5-step process:
+Integrating and configuring a Stripe payment gateway is a 3-step process:
 
 <div data-autosteps></div>
 
-### Step 1: Configure payment on the Partner Portal
+### Step 1: Install the Payments and Stripe Modules in Partner Portal
 
-platformOS handles the communication with many payment gateways for you behind the scenes.
-This guide shows you how to properly configure and process payments with [Stripe](https://www.stripe.com).
+Install the following free modules:
 
-First of all you need to establish a connection between platformOS and Stripe.
-To do that, you first need to [obtain your Stripe API keys](https://stripe.com/docs/keys#api-keys).
+* Payments
+* Stripe
 
-Knowing your Stripe API Keys, head to your instance details in Partner Portal and click on the
-`Integrations` button at the top. On the next page click on the `Manage Stripe` button.
-Fill out the form with your test API keys and save it. Alternatively you can use the JSON example below to update your configuration manually.
+During the installation process, set up Stripe public and secret keys. 
 
-```json
-"payment_gateways": {
-  "stripe": {
-    "countries": ["US"],
-    "currencies": ["USD"],
-    "live_login": "",
-    "test_login": null,
-    "live_mode_enabled": false,
-    "test_mode_enabled": "",
-    "live_publishable_key": "",
-    "test_publishable_key": ""
-    }
-  }
-```
+Make sure that `enable_sms_and_api_workflow_alerts_on_staging` in your Instance configuration is set to true. 
 
-### Step 2: Fetch information about payment gateway with GraphQL
+### Step 2: Create minimal working payment example
 
-Under the hood Partner Portal created a new [PaymentGateway](/api-reference/graphql/g/object/paymentgateway) object, that can be accessed with GraphQL.
-Fetch `publishable_key` add pass it to the [Stripe Checkout](https://stripe.com/docs/checkout) script to properly generate the credit card token.
-
-```graphql
-query get_payment_gateway {
-  payment_gateways(
-    mode: test
-    for_current_mode: false
-  ) {
-    id
-    payment_methods {
-      id
-    }
-    test_publishable_key
-    current_mode_publishable_key
-  }
-}
-```
-
-If your instance operates in test mode, you can use `current_mode_publishable_key`, but it is fine to use
-`test_publishable_key` which should return the same value (which was previously set in Partner Portal).
-You also need to fetch the `id` of payment method that is used to separate different types of payments like Credit Card, ACH, PayPal, etc.
-
-### Step 3: Create minimal working payment example
-
-Create a basic form that accepts the token from [Stripe Checkout](https://stripe.com/docs/checkout)
-script and use it to charge the provided Credit Card.
-
-You will find the code for the following example in the [platformOS example project](https://github.com/mdyd-dev/marketplace-nearme-example/tree/master/modules/payments) repository.
-Web version to play with the example is accessible [here](https://examples.platform-os.com/payments).
+On the page of your choice, use the predefined `gateway_request_form` and configure it with your data:
 
 ```liquid
 {% raw %}
----
-name: simple_payment_form
-resource: Payment
-redirect_to: /payments
-fields:
-  credit_card_token:
-  with_charge:
-  payer_id:
-    validation:
-      presence: true
-  payment_method_id:
-    validation:
-      presence: true
-  currency:
-    validation:
-      presence: true
-  total_amount:
-    validation:
-      presence: true
-      numericality:
-        greater_than: 0
-flash_notice: Payment successful!
-flash_alert: Please fix validation errors
-default_payload: |-
+{% assign gateway_name = 'stripe' %}
+{% export gateway_name, namespace: "payments"  %}
+
+{%- parse_json 'data' -%}
   {
-    "credit_card_token": "{{ context.params.stripeToken }}",
-    "with_charge": true
+    "email": "{{ context.current_user.email }}",
+    "currency": "USD",
+    "description": "Charge Example",
+    "statement_descriptor": "Example 1.",
+    "capture": "true",
+    "amount": "500"
   }
----
-{%- graphql p = 'get_payment_gateway' -%}
+{%- endparse_json -%}
 
-{% assign pub_key = p.payment_gateways.first.test_publishable_key %}
-{% assign payment_method_id = p.payment_gateways[0].payment_methods[0].id %}
-{% assign amount = 5.99 %}
-{% assign amount_cents = amount | times: 100 %}
+{%- parse_json 'config' -%}
+  {
+    "button": "Pay Now",
+    "request_type": "create_payment",
+    "require_zip": "true"
+  }
+{%- endparse_json -%}
 
-{%- form -%}
-  {% if form_builder.errors.base != blank %}
-    <div class="form-error">{{ form_builder.errors.base }}</div>
-  {% endif %}
+{%-
+  include_form 'modules/payments/gateway_request_form',
+  config: config,
+  data: data
+%}
 
-  <input name="{{ form_builder.fields.payment_method_id.name }}" type="hidden" value="{{ p.payment_gateways[0].payment_methods[0].id }}">
-  <input name="{{ form_builder.fields.currency.name }}" type="hidden" value="USD">
-  <input name="{{ form_builder.fields.total_amount.name }}" type="hidden" value="{{amount}}">
-  <input name="{{ form_builder.fields.payer_id.name }}" type="hidden" value="{{current_user.id }}">
-
-  <script async
-    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-    data-key="{{ pub_key }}"
-    data-amount="{{ amount_cents }}"
-    data-name="Example platformOS Marketplace"
-    data-description="Example charge"
-    data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
-    data-locale="auto"
-    data-zip-code="true">
-  </script>
-{% endform %}
 {% endraw %}
 ```
 
-In the example above you can see `script` tag inserted at the end of the `form` filter.
-It is provided by Stripe and can be found in the [Integrating Checkout Guide](https://stripe.com/docs/checkout#integration).
-There are multiple custom options that you can use to fit the desired user experience.
-The main purpose of this script is sending provided credit card details to Stripe and pass over the token generated by Stripe.
-Token is inserted as hidden input `stripeToken` that is then converted in `default_payload` to required `credit_card_token`.
-Another attribute set in the default payload: `"with_charge": true` tells our platform to immediately send
-[Charge Request](https://stripe.com/docs/charges), otherwise, payment would remain authorized but not captured.
-This is useful in two-step type payment processes when you first authorize payment and capture/release at a later time.
+The predefined `create_payment` template will be rendered on your page.
 
-Payment form configuration has multiple configuration options. The essentials used in the example are as follows:
+For more information read the [create_payment request](https://github.com/mdyd-dev/platformos-payments-stripe#create_payment) documentation.
 
-| Attribute | Required | Description |
-| ----------| ---------| ------------|
-| credit_card_token | required | token generated by Stripe script |
-| with_charge | optional | flag telling platformOS to charge payment or just authorized it |
-| payer_id | required | platformOS user ID|
-| payment_method_id | required | id of payment method used to identify processing protocol |
-| currency | required | Currency in which you want your payment amount to be processed |
-| total_amount | required | the amount charged. Note that this is **not** amount cents. |
+### Step 3: List payments
 
-For more information about attributes of payment see the documentation for the
-[Payment object](/api-reference/graphql/g/object/payment).
+To check the state of the payment, use the predefined [`modules/payments/get_payments`](https://github.com/mdyd-dev/platformos-payments/blob/master/public/graph_queries/get_payments.graphql) query.
 
-Stripe checkout has its own methods of validation and verification of credit cards that are encoded within
-the JavaScript plugin, but some validation is processed upon authorization. All errors are appended to
-the `form_builder.errors.base` object and can be accessed as in the example above.
-Visit the [Stripe Testing page](https://stripe.com/docs/testing) to find credit card numbers
-that can be used to test your integration and payment validation.
-
-### Step 4: Create payment list
-
-To check the state of the payment, use the (payments)[/api-reference/graphql/g/operation/query#payments] query.
-Example below demonstrates how to fetch the last five payments together with the payment status and payer.
-
-```graphql
-query get_payments {
-  payments(
-    per_page: 5
-    ) {
-      results {
-        id
-        state
-        total_amount_cents
-        payer {
-          id
-          name
-      }
-    }
-  }
-}
-```
-
-The query above can be used within any page or partial as in the exapmle below.
-Make sure that payment states in the list match those in your
-[Stripe Dashboard Payments panel](https://dashboard.stripe.com/test/payments) to confirm your integration is working properly.
-
-{% raw %}
 ```liquid
-  <h4>List of last five test payments:</h4>
-  {% graphql g = "get_payments" %}
-  <table>
-      <tr>
-        <th>ID</th>
-        <th>State</th>
-        <th>Payer</th>
-        <th>Amount</th>
-      </tr>
-    {% for payment in  g.payments.results %}
+{% raw %}
+<div class="mt-4">
+  <h4>List of last payments:</h4>
+  {% graphql g = "modules/payments/get_payments" %}
+
+  <table class="table">
+    <tr>
+      <th>ID</th>
+      <th>State</th>
+      <th>Payer</th>
+      <th>Amount</th>
+      <th>Actions</th>
+    </tr>
+    {% for payment in g.payments.results  %}
       <tr>
         <td>{{ payment.id }}</td>
-        <td>{{ payment.state }}</td>
-        <td>{{ payment.payer.name }}</td>
-        <td>{{ payment.total_amount_cents | pricify_cents }}</td>
+        <td>{{ payment.properties.state | capitalize }}</td>
+        <td>{{ payment.user.name }}</td>
+        <td>{{ payment.properties.amount_cents | pricify_cents }}</td>
+        <td>{% include 'modules/payments/create_refund', payment: payment %}</td>
       </tr>
     {% endfor %}
   </table>
-```
+</div>
 {% endraw %}
-
-### Step 5: Fetch Credit Card
-
-When you created the payment in step 2, you used the Stripe token to store a Credit Card first,
-then use the stored credit card to process payment. This approach let's you reuse the card for future payments.
-You can fetch [CreditCard](/api-reference/graphql/g/object/creditcard) attribues with a GraphQL query:
-
-```graphql
-  query get_credit_cards($user_id: ID) {
-    credit_cards(user_id: $user_id) {
-      id
-      token
-      payment_method_id
-    }
-  }
 ```
+## Live example and source code
 
-In the example above you fetch `payment_method_id`, `id`, and `token` that you can use to create future payments with this credit card stored in Stripe.
+You will find more payment examples in the following project:
 
-Alternative way of payment using stored credit card is described in: [Processing Payments with GraphQL Mutations](/tutorials/payments/processing-payments-graphql-mutations)
+- [Payment Examples Repository](https://github.com/mdyd-dev/platformos-payment-examples)
+- [Payment Examples Page](https://payment-examples.staging.oregon.platform-os.com)
+
+List of examples:
+- Integrating Stripe payments - the example presented in this article
+- Stripe Elements	- explains how to integrate [Stripe Element Components](https://stripe.com/docs/stripe-js/elements/quickstart) with the Payments Module
+- Saving Account - goes through all the details of [Stripe Connect](https://stripe.com/docs/connect) integration
+- Saving Customer - example of reusing saved customer credit cards for future payments
+
