@@ -1,7 +1,7 @@
 @Library('pipeline-utils')_
 
 def staging_url = "https://documentation-staging.staging.oregon.platform-os.com"
-def production_url = "https://documentation.platform-os.com"
+def production_url = "https://documentation.platformos.com"
 
 pipeline {
   agent any
