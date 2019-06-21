@@ -25,7 +25,7 @@ I want to store my "todo list" in platformOS
 Create definition file in your project repository that will describe my Model Schema:
 
 ```bash
-touch marketplace_builder/custom_model_types/todo.yml
+touch marketplace_builder/model_schemas/todo.yml
 ```
 
 ## Step 3: Definition of Model Schema
@@ -102,7 +102,7 @@ In [Building Contact Form With Customization tutorial](/tutorials/customizations
       ```bash
       Cannot delete record because of dependent customization of type: todo
       Use the mutation below to remove dependent objects:
-      mutation { customizations_delete_all(custom_model_type_name: "todo") { count } }
+      mutation { customizations_delete_all(model_schema_name: "todo") { count } }
       ```
   * **name change** - as platformOS detects CustomModelType definition by its name, if you change it is equal with adding new CustomModelType, please note that Customization objects are not automatically migrated and will be treated as orphaned with next deploy attempt, see error message above.
   * **add new custom model type property** - adding new properties is a valid change that does not need additional actions, the data remains untouched.

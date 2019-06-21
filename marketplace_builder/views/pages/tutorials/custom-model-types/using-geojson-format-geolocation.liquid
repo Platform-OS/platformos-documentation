@@ -67,7 +67,7 @@ Using the GeoJSON format to find all models in a maximum distance from geopoint 
 
 ### Step 1: Prepare Model Schema definition
 
-Create `custom_model_types/company.yaml`:
+Create `model_schemas/company.yaml`:
 
 ```yaml
 name: company
@@ -90,7 +90,7 @@ Create a GraphQL mutation `createCompany.graphql`:
 mutation createCompany($location: JSONPayload, $city: String, $timezone: String, $name: String){
   customization_create(
     customization: {
-      custom_model_type_name: "company"
+      model_schema_name: "company"
       properties: [
         { name: "name" value: $name }
         { name: "city" value: $city }
@@ -218,5 +218,5 @@ You can do this by appending a plus filter with a `0` argument - literally addin
 * [views/pages/geo/company-new.liquid](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/geo_models/public/views/pages/geo/company-new.liquid)
 * [views/pages/geo/programmer-new.liquid](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/geo_models/public/views/pages/geo/programmer-new.liquid)
 * [views/pages/geo/company-search.liquid](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/geo_models/public/views/pages/geo/company-search.liquid)
-* [custom_model_types/company.yml](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/geo_models/public/custom_model_types/company.yml)
+* [model_schemas/company.yml](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/geo_models/public/model_schemas/company.yml)
 * [graph_queries/search.graphql](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/geo_models/public/graph_queries/search.graphql)

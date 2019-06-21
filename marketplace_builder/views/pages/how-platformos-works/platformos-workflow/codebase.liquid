@@ -20,7 +20,7 @@ In order to correctly communicate with the platformOS engine and API, your codeb
 | .marketplace-kit        |             | Configuration file that specifies available endpoints. Usually, you want to have at least two endpoints &ndash; staging and production.                                                                                                                                                                                                   | [Development Workflow](/how-platformos-works/platformos-workflow/development-workflow)  |
 | assets                  | asset       | Directory for static assets, like fonts, images, stylesheets, and scripts.                                                                                                                                                                                    | [Assets](#assets)                                                       |
 | authorization_policies  | Liquid      | Directory for .liquid files that contains Authorization Policy configuration files. Authorization Policies define rules that control whether a user has access to a form or page.                                                                                                                                                 | [Authorization Policies](#authorization-policies)           |
-| custom_model_types      | YAML        | Directory for .yml files that define Model Schemas. Model Schemas define custom objects, including their fields and associations and allow you to create persistence containers for your custom forms.                                                                                                                  | [Models](#models)                   |
+| model_schemas      | YAML        | Directory for .yml files that define Model Schemas. Model Schemas define custom objects, including their fields and associations and allow you to create persistence containers for your custom forms.                                                                                                                  | [Models](#models)                   |
 | form_configurations     | Liquid      | Directory for .liquid files that define Form Configurations. Form Configurations define forms including their fields, validation, redirects, and callbacks. Each of the Liquid files should include configuration (including associated Authorization Policies, Notifications, etc.), along with Liquid code which renders HTML.  | [Forms](#forms)                               |
 | graph_queries           | GraphQL     | Directory for .graphql files, each defining one GraphQL Query. GraphQL queries retrieve information from or insert information into the databases. Retrieved information is made available in Liquid.                                                                                                                                               | [GraphQL](https://graphql.org/learn/)                                                   |
 | notifications           | Liquid      | Directory for files that define Notifications, which then can be associated with Form Configuration.                                                                                                                                                                                                                              | [Notifications](#notifications)                                 |
@@ -141,11 +141,11 @@ marketplace_builder
 
 **Properties** are fields that you attach to a User Profile, Model Schema, etc. Think of them as custom database columns (though complex types, like files, photos, and addresses should be treated as separate database tables). We also provide some Properties to jumpstart your development.
 
-Example directory structure of `custom_model_types` with sample files:
+Example directory structure of `model_schemas` with sample files:
 
 ```shell
 marketplace_builder
-└── custom_model_types
+└── model_schemas
     ├── blog_post.yml
 ```
 

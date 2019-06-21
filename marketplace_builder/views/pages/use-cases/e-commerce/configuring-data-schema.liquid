@@ -44,7 +44,7 @@ Creating the data schema varies from one project to another. In this case it’s
 
 Every T-shirt in your store will be described by `product_type` and `brand`. Additionally every product may have one or more `photo`s attached. Finally, there are available variants of the product (in this case it’s T—shirt sizes). You will create `stock_level` that will hold information on the available amount of products in a specific variant (size).
 
-#### marketplace_builder/custom_model_types/product.yml
+#### marketplace_builder/model_schemas/product.yml
 
 ```yaml
 name: product
@@ -66,7 +66,7 @@ Notes:
 - Price will be stored as an integer, representing cents, so \$1.00 is stored as `100`. This helps to avoid problematic computations and rounding problems that sometimes happen with the `float` data type.
 - External ids are integer numbers, but since variable types are important and `"100" != 100`, it’s easier to store all IDs as strings.
 
-#### marketplace_builder/custom_model_types/brand.yml
+#### marketplace_builder/model_schemas/brand.yml
 
 ```yaml
 name: brand
@@ -75,7 +75,7 @@ properties:
     type: string
 ```
 
-#### marketplace_builder/custom_model_types/product_type.yml
+#### marketplace_builder/model_schemas/product_type.yml
 
 ```yaml
 name: product_type
@@ -84,7 +84,7 @@ properties:
     type: string
 ```
 
-#### marketplace_builder/custom_model_types/photo.yml
+#### marketplace_builder/model_schemas/photo.yml
 
 ```yaml
 name: photo
@@ -110,7 +110,7 @@ properties:
 
 The `photo` model uses a special field type called `photo`. It helps automating upload and versions creation. You can [read more on `Custom Images` here](/tutorials/properties/custom-images).
 
-#### marketplace_builder/custom_model_types/stock_level.yml
+#### marketplace_builder/model_schemas/stock_level.yml
 
 ```yaml
 name: stock_level
@@ -140,7 +140,7 @@ properties:
 
 Every user will also be able to save multiple `addresses` to his contact book.
 
-#### marketplace_builder/custom_model_types/address.yml
+#### marketplace_builder/model_schemas/address.yml
 
 ```yaml
 name: address
@@ -167,7 +167,7 @@ platformOS has a special field type called `CustomAddress`. It allows geolocatio
 
 Last part of your shop data schema is related to `order`s created by clients. Every order can have multiple products attached to it and a `shipping_option` selected during checkout. Order is finished with `payment`. You will store the history of all payments for a given order (usually it will be just one, but you would want to log every interaction with the payments API as a separate entry). Finally, you will store `order_history` describing any changes to order state (received, paid, shipped, etc.)
 
-#### marketplace_builder/custom_model_types/order.yml
+#### marketplace_builder/model_schemas/order.yml
 
 ```yaml
 name: order
@@ -188,7 +188,7 @@ properties:
     type: string
 ```
 
-#### marketplace_builder/custom_model_types/order_product.yml
+#### marketplace_builder/model_schemas/order_product.yml
 
 ```yaml
 name: order_product
@@ -209,7 +209,7 @@ properties:
 
 You’ve probably noticed that some fields are duplicated (shipping) or not referencing other custom types by `id` (addresses). You want to ensure that order data is persistent and does not change after an order has been created. If at any point in time the admin removed the shipping option used in this order, or the user updated his address in the address book, the order would no longer represent the state at the moment of creation. Therefore, you should copy any piece of information prone to being manipulated, when the new order is created. Same logic applies to the `order_product` table where information on the ordered products is stored, along with the reference to the product itself. In case a product is removed or updated, you do not lose any data.
 
-#### marketplace_builder/custom_model_types/order_history.yml
+#### marketplace_builder/model_schemas/order_history.yml
 
 ```yaml
 name: order_history
@@ -220,7 +220,7 @@ properties:
     type: string
 ```
 
-#### marketplace_builder/custom_model_types/payment.yml
+#### marketplace_builder/model_schemas/payment.yml
 
 ```yaml
 name: payment
@@ -236,7 +236,7 @@ The data diagram mentions a `timestamp` field for both the `payment` and the `or
 {% endcapture %}
 {% include "alert/note", content: content %}
 
-#### marketplace_builder/custom_model_types/shipping_option.yml
+#### marketplace_builder/model_schemas/shipping_option.yml
 
 ```yaml
 name: shipping_option
