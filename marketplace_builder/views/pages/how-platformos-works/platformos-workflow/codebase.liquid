@@ -15,21 +15,21 @@ In order to correctly communicate with the platformOS engine and API, your codeb
 
 ### Recommended directories and files inside the `marketplace_builder` and `modules/<module name>` directories
 
-| Directory/file         	| File type 	| Explanation                                                                                                                                                                                                                                                                                                                     	| Learn more                                                                             	|
-|------------------------	|-----------	|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|----------------------------------------------------------------------------------------	|
-| .marketplace-kit       	|           	| Configuration file that specifies available endpoints. Usually, you want to have at least two endpoints &ndash; staging and production.                                                                                                                                                                                                  	| [Development Workflow](/how-platformos-works/platformos-workflow/development-workflow) 	|
-| assets                 	| asset     	| Directory for static assets, like fonts, images, stylesheets, and scripts.                                                                                                                                                                                   	| [Assets](#assets)                                                     	|
-| authorization_policies 	| Liquid    	| Directory for .liquid files that contains Authorization Policy configuration files. Authorization Policies define rules that control whether a user has access to a form or page.                                                                                                                                                	| [Authorization Policies](#authorization-policies)         	|
-| custom_model_types     	| YAML      	| Directory for .yml files that define Custom Model Types. Custom Model Types define custom objects, including their fields and associations and allow you to create persistence containers for your custom forms.                                                                                                                 	| [Models](#models)                 	|
-| form_configurations    	| Liquid    	| Directory for .liquid files that define Form Configurations. Form Configurations define forms including their fields, validation, redirects, and callbacks. Each of the Liquid files should include configuration (including associated Authorization Policies, Notifications, etc.), along with Liquid code which renders HTML. 	| [Forms](#forms)                             	|
-| graph_queries          	| GraphQL   	| Directory for .graphql files, each defining one GraphQL Query. GraphQL queries retrieve information from or insert information into the databases. Retrieved information is made available in Liquid.                                                                                                                                              	| [GraphQL](https://graphql.org/learn/)                                                  	|
-| notifications          	| Liquid    	| Directory for files that define Notifications, which then can be associated with Form Configuration.                                                                                                                                                                                                                            	| [Notifications](#notifications)                                	|
-| views/pages            	| Liquid    	| Directory for files that define pages, the most essential building blocks of a platformOS site.                                                                                 	| [Views](#views-pages-layouts-and-partials)                                                        	|
-| views/layouts          	| Liquid    	| Directory for layouts. Layouts are wrappers around your page content. They ensure consistent outer content for similarly designed pages.                                                                                                                                                                                        	| [Views](#views-pages-layouts-and-partials)                                                     	|
-| views/partials         	| Liquid    	| Directory for partials  &ndash;  reusable snippets of Liquid code usually used to render HTML.                                                                                                                                                                                                                                  	| [Views](#views-pages-layouts-and-partials)                                                                                       	|
-| translations           	| YAML      	| Directory for .yml files of Translations for multilingual sites, also used to define date format, or flash messages. Each file is a map of translations which can be used in your pages via Liquid.                                                                                                                              	| [Translations](#translations)                                   	|
-| user_profile_types     	| YAML      	| Directory for .yml files that define User Profiles. Each instance includes one user role, called ‘default’, so each instance needs to include the default.yml file inside this directory.                                                                                                                                        	| [Users](#users)                                                        	|
-| user.yml     	| YAML      	| A yml file containing properties for all users  | [Users](#users)                                                        	|
+| Directory/file          | File type   | Explanation                                                                                                                                                                                                                                                                                                                       | Learn more                                                                              |
+|------------------------ |-----------  |---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  |---------------------------------------------------------------------------------------- |
+| .marketplace-kit        |             | Configuration file that specifies available endpoints. Usually, you want to have at least two endpoints &ndash; staging and production.                                                                                                                                                                                                   | [Development Workflow](/how-platformos-works/platformos-workflow/development-workflow)  |
+| assets                  | asset       | Directory for static assets, like fonts, images, stylesheets, and scripts.                                                                                                                                                                                    | [Assets](#assets)                                                       |
+| authorization_policies  | Liquid      | Directory for .liquid files that contains Authorization Policy configuration files. Authorization Policies define rules that control whether a user has access to a form or page.                                                                                                                                                 | [Authorization Policies](#authorization-policies)           |
+| custom_model_types      | YAML        | Directory for .yml files that define Model Schemas. Model Schemas define custom objects, including their fields and associations and allow you to create persistence containers for your custom forms.                                                                                                                  | [Models](#models)                   |
+| form_configurations     | Liquid      | Directory for .liquid files that define Form Configurations. Form Configurations define forms including their fields, validation, redirects, and callbacks. Each of the Liquid files should include configuration (including associated Authorization Policies, Notifications, etc.), along with Liquid code which renders HTML.  | [Forms](#forms)                               |
+| graph_queries           | GraphQL     | Directory for .graphql files, each defining one GraphQL Query. GraphQL queries retrieve information from or insert information into the databases. Retrieved information is made available in Liquid.                                                                                                                                               | [GraphQL](https://graphql.org/learn/)                                                   |
+| notifications           | Liquid      | Directory for files that define Notifications, which then can be associated with Form Configuration.                                                                                                                                                                                                                              | [Notifications](#notifications)                                 |
+| views/pages             | Liquid      | Directory for files that define pages, the most essential building blocks of a platformOS site.                                                                                   | [Views](#views-pages-layouts-and-partials)                                                          |
+| views/layouts           | Liquid      | Directory for layouts. Layouts are wrappers around your page content. They ensure consistent outer content for similarly designed pages.                                                                                                                                                                                          | [Views](#views-pages-layouts-and-partials)                                                      |
+| views/partials          | Liquid      | Directory for partials  &ndash;  reusable snippets of Liquid code usually used to render HTML.                                                                                                                                                                                                                                    | [Views](#views-pages-layouts-and-partials)                                                                                        |
+| translations            | YAML        | Directory for .yml files of Translations for multilingual sites, also used to define date format, or flash messages. Each file is a map of translations which can be used in your pages via Liquid.                                                                                                                               | [Translations](#translations)                                     |
+| user_profile_types      | YAML        | Directory for .yml files that define User Profiles. Each instance includes one user role, called ‘default’, so each instance needs to include the default.yml file inside this directory.                                                                                                                                         | [Users](#users)                                                         |
+| user.yml      | YAML        | A yml file containing properties for all users  | [Users](#users)                                                         |
 
 ## Files in your codebase
 
@@ -121,7 +121,7 @@ marketplace_builder
 
 **Users** are accounts that any of your users can have. Users are identified by their unique email addresses. You can define  properties for all users in the user.yml file.
 
-**User Profiles** are roles in the application. Each User Profile can be associated with any number of Properties and Custom Model Types. All users are assigned a User Profile named Default. The difference between User Profile and Custom Model Type is that each user can have maximum one profile of a given name (but can have many different profiles), whereas they can have many custom models with the same name. From a practical perspective, it is very simple to create an `upsert` operation on a UserProfile (i.e. create user profile, or if it exists, update it).
+**User Profiles** are roles in the application. Each User Profile can be associated with any number of Properties and Model Schemas. All users are assigned a User Profile named Default. The difference between User Profile and Model Schema is that each user can have maximum one profile of a given name (but can have many different profiles), whereas they can have many custom models with the same name. From a practical perspective, it is very simple to create an `upsert` operation on a UserProfile (i.e. create user profile, or if it exists, update it).
 
 Example directory structure of `user_profile_types` with sample files:
 
@@ -137,9 +137,9 @@ marketplace_builder
 
 ### Models
 
-**Custom Model Type** is an object that describes all Customization objects that belong to it. Think of Custom Model Types as a custom database table, which allows you to build highly customized features. Use them to group Properties, and allow the user to provide multiple values for each of them.
+**Model Schema** is an object that describes all Customization objects that belong to it. Think of Model Schemas as a custom database table, which allows you to build highly customized features. Use them to group Properties, and allow the user to provide multiple values for each of them.
 
-**Properties** are fields that you attach to a User Profile, Custom Model Type, etc. Think of them as custom database columns (though complex types, like files, photos, and addresses should be treated as separate database tables). We also provide some Properties to jumpstart your development.
+**Properties** are fields that you attach to a User Profile, Model Schema, etc. Think of them as custom database columns (though complex types, like files, photos, and addresses should be treated as separate database tables). We also provide some Properties to jumpstart your development.
 
 Example directory structure of `custom_model_types` with sample files:
 
@@ -149,7 +149,7 @@ marketplace_builder
     ├── blog_post.yml
 ```
 
-{% include "alert/tutorial", content: "Follow our step-by-step tutorials to learn more about <a href='/tutorials/custom-model-types/custom-model-types'>Custom Model Types</a> and <a href='/tutorials/properties/properties'>Properties</a>." %}
+{% include "alert/tutorial", content: "Follow our step-by-step tutorials to learn more about <a href='/tutorials/custom-model-types/custom-model-types'>Model Schemas</a> and <a href='/tutorials/properties/properties'>Properties</a>." %}
 
 ### Notifications
 
@@ -219,14 +219,14 @@ Example directory structure of `modules` with sample files:
 marketplace_builder
 modules
 ├──admincms
-	├── private
-	│   └── graph_queries
-	│       ├── get_customizations.graphql
-	│       └── get_pages.graphql
-	└── public
-	    └── views
-		    └── pages
-		        └── admin.liquid
+  ├── private
+  │   └── graph_queries
+  │       ├── get_customizations.graphql
+  │       └── get_pages.graphql
+  └── public
+      └── views
+        └── pages
+            └── admin.liquid
 ```
 
 {% include "alert/tutorial", content: "Follow our step-by-step tutorials to learn more about <a href='/tutorials/modules/modules'>Modules</a>." %}
