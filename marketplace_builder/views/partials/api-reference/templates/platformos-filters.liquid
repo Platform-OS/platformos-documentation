@@ -36,7 +36,7 @@
           ({%- for t in p.types -%}
               {{- t | escape -}}
             {%- endfor -%})
-          {% if p.description.length > 0 %} - {{ p.description }}{% endif %}
+          {% if p.description.size > 1 %} - {{ p.description }}{% endif %}
           {% if p.default %} - default: {{ p.default }}{% endif %}
         </li>
       {% endfor %}

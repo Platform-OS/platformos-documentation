@@ -2,9 +2,6 @@
 converter: ''
 slug: api-reference/liquid/platformos-tags
 searchable: true
-dynamic_cache:
-  expire: 600
-  layout: false
 metadata:
   title: Liquid - platformOS Liquid Tags
   skip_contribute_button: true
@@ -12,7 +9,9 @@ metadata:
   toc: true
 ---
 
-{% cache "tags" + context.version %}
+{% assign key = context.params.slug3 | append: context.version %}
+
+{% cache key %}
 {%- capture url -%}https://deidcfp1yn7c2.cloudfront.net/platform_docs/{{ context.version }}/tags.json{%- endcapture -%}
 
 {% assign data = url | download_file | parse_json %}

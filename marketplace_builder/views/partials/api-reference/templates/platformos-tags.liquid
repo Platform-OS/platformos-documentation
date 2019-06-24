@@ -17,9 +17,9 @@
       <li>
         {{ p.name | escape }} -
         {% for t in p.types %}
-          {{ t  | escape }}
-        {% endfor %} -
-        {{ p.description | escape }}
+          {{ t | escape }}
+        {% endfor %}
+        {% if p.description.size > 1 %} - {{ p.description | escape }}{% endif %}
       </li>
     {% endfor %}
     </ul>
