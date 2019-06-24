@@ -171,15 +171,15 @@ api_call_notifications:
 {% raw %}
 {% form url: "/api/users/{{ current_user.id }}" %}
   <label for="email">Email</label>
-  <input name="{{ form_builder.fields.email.name }}" value="{{ form_builder.fields.email.value}}" id="email" type="email">
+  <input name="{{ form.fields.email.name }}" value="{{ form.fields.email.value}}" id="email" type="email">
 
   <label for="password">Password</label>
-  <input name="{{ form_builder.fields.password.name }}" id="password" type="password">
-  {% if form_builder.errors.password %}
-    <p>{{ form_builder.errors.password }}</p>
+  <input name="{{ form.fields.password.name }}" id="password" type="password">
+  {% if form.errors.password %}
+    <p>{{ form.errors.password }}</p>
   {% endif %}
 
-  <input name="{{ form_builder.fields.profiles.test_profile.enabled.name }}" value="1" type="hidden">
+  <input name="{{ form.fields.profiles.test_profile.enabled.name }}" value="1" type="hidden">
 
   <button>Save</button>
 {% endform %}

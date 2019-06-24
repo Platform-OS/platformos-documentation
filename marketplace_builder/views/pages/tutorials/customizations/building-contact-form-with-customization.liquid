@@ -181,21 +181,21 @@ fields:
 {% raw %}
 {% form %}
   <label for="name">Name</label>
-  <input name="{{ form_builder.fields.properties.name.name }}" value="{{ form_builder.fields.properties.name.value }}" id="name" type="text">
-  {% if form_builder.errors['properties.name'] %}
-    <p>{{ form_builder.errors['properties.name'] }}</p>
+  <input name="{{ form.fields.properties.name.name }}" value="{{ form.fields.properties.name.value }}" id="name" type="text">
+  {% if form.errors['properties.name'] %}
+    <p>{{ form.errors['properties.name'] }}</p>
   {% endif %}
 
   <label for="email">Email</label>
-  <input name="{{ form_builder.fields.properties.email.name }}" value="{{ form_builder.fields.properties.email.value }}" id="email" type="email">
-  {% if form_builder.errors['properties.email'] %}
-    <p>{{ form_builder.errors['properties.email'] }}</p>
+  <input name="{{ form.fields.properties.email.name }}" value="{{ form.fields.properties.email.value }}" id="email" type="email">
+  {% if form.errors['properties.email'] %}
+    <p>{{ form.errors['properties.email'] }}</p>
   {% endif %}
 
   <label for="description">Description</label>
-  <textarea name="{{ form_builder.fields.properties.description.name }}" id="description">{{ form_builder.fields.properties.description.value }}</textarea>
-  {% if form_builder.errors['properties.description'] %}
-    <p>{{ form_builder.errors['properties.description'] }}</p>
+  <textarea name="{{ form.fields.properties.description.name }}" id="description">{{ form.fields.properties.description.value }}</textarea>
+  {% if form.errors['properties.description'] %}
+    <p>{{ form.errors['properties.description'] }}</p>
   {% endif %}
 
   <button>Submit</button>

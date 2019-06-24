@@ -120,21 +120,21 @@ default_payload: >
 
   <input type="hidden" name="slugs" value="{{ context.params.slugs | default: "" | raw_escape_string }}">
 
-  {% unless form_builder.fields.id.value %}
-    <input type="hidden" name="{{ form_builder.fields.new_record.name }}" value="1">
+  {% unless form.fields.id.value %}
+    <input type="hidden" name="{{ form.fields.new_record.name }}" value="1">
   {% endunless %}
 
-  {% include "forms/errors_summary", errors: form_builder.errors %}
+  {% include "forms/errors_summary", errors: form.errors %}
 
   {%
     include "forms/fields/text",
       label: 'Product name',
-      field: form_builder.fields.properties.name,
+      field: form.fields.properties.name,
       hint: 'Provider a descriptive name for your product'
   %}
 
   {%
-    assign price = form_builder.fields.properties.price.value
+    assign price = form.fields.properties.price.value
       | default: 0
       | plus: 0.00
       | divided_by: 100
@@ -145,7 +145,7 @@ default_payload: >
     include "forms/fields/text",
       label: "Price",
       type: "number",
-      field: form_builder.fields.properties.price,
+      field: form.fields.properties.price,
       addon_prepend: "$",
       step: 0.01,
       min: 0.01,
@@ -155,7 +155,7 @@ default_payload: >
   {%
     include "forms/fields/select",
       label: "Brand",
-      field: form_builder.fields.properties.brand_id,
+      field: form.fields.properties.brand_id,
       include_blank: "Select a Brand",
       options: brand_options
   %}
@@ -163,7 +163,7 @@ default_payload: >
   {%
     include "forms/fields/radio_group",
       label: "Type",
-      field: form_builder.fields.properties.product_type_id,
+      field: form.fields.properties.product_type_id,
       options: product_type_options
   %}
 
@@ -171,15 +171,15 @@ default_payload: >
   {%
     include "forms/fields/textarea",
       label: "Description",
-      field: form_builder.fields.properties.description,
+      field: form.fields.properties.description,
       rows: 5
   %}
 
   <p>
     <button type="submit" class="btn btn-primary mr-sm-3">Save</button>
 
-    {% if form_builder.fields.id.value != blank %}
-      <a href="/admin/product/{{ form_builder.fields.id.value }}">Cancel</a>
+    {% if form.fields.id.value != blank %}
+      <a href="/admin/product/{{ form.fields.id.value }}">Cancel</a>
     {% else %}
       <a href="/admin/products">Cancel</a>
     {% endif %}
@@ -212,14 +212,14 @@ fields:
 
 ...
 
-{% unless form_builder.fields.id.value %}
-  <input type="hidden" name="{{ form_builder.fields.new_record.name }}" value="1">
+{% unless form.fields.id.value %}
+  <input type="hidden" name="{{ form.fields.new_record.name }}" value="1">
 {% endunless %}
 
 {% endraw %}
 ```
 
-Forms in platformOS map their fields to the resource they are attached to. In this case `Product` model has a defined `name`, `description` etc. Whenever you want to use an extra field, that is not directly accessible on the model but is used for calculations or as in this case, to determine where to redirect the user, you can add a `virtual` field. It then can be accessed as any other field via the `form_builder` object.
+Forms in platformOS map their fields to the resource they are attached to. In this case `Product` model has a defined `name`, `description` etc. Whenever you want to use an extra field, that is not directly accessible on the model but is used for calculations or as in this case, to determine where to redirect the user, you can add a `virtual` field. It then can be accessed as any other field via the `form` object.
 
 In the snippet above, you’ve:
 
@@ -251,12 +251,12 @@ price:
       message: Price must be larger than 0
 ```
 
-Next, read the current value from the `form_builder` object. Keep in mind that at any point it can be either `null`, `string` or `integer` so you should account for all of these cases and make sure you always deal with the same format at the end.
+Next, read the current value from the `form` object. Keep in mind that at any point it can be either `null`, `string` or `integer` so you should account for all of these cases and make sure you always deal with the same format at the end.
 
 ```liquid
 {% raw %}
 {%
-  assign price = form_builder.fields.properties.price.value
+  assign price = form.fields.properties.price.value
     | default: 0
     | plus: 0.00
     | divided_by: 100
@@ -273,7 +273,7 @@ Next, include field control in the form. You can use a shared partial, created i
   include "forms/fields/text",
     label: "Price",
     type: "number",
-    field: form_builder.fields.properties.price,
+    field: form.fields.properties.price,
     addon_prepend: "$",
     step: 0.01,
     min: 0.01,
@@ -628,7 +628,7 @@ You can improve usability of any long form (and in most cases anything more than
 
 ```liquid
 {% raw %}
-{% include "forms/errors_summary", errors: form_builder.errors %}
+{% include "forms/errors_summary", errors: form.errors %}
 {% endraw %}
 ```
 

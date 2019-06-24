@@ -50,13 +50,13 @@ After setting up attachments as described above, you can further customize them 
 {% raw %}
 <label>
   <span>Select file...</span>
-  <input accept=".pdf,.jpg,.jpeg,.png" name="{{ form_builder.fields.custom_attachments.agreement.file.name }}" type="file">
+  <input accept=".pdf,.jpg,.jpeg,.png" name="{{ form.fields.custom_attachments.agreement.file.name }}" type="file">
 </label>
 
 <button>Submit file</button>
 
-{% if form_builder.errors['custom_attachments.agreement.file'] %}
-  <p>{{ form_builder.errors['custom_attachments.agreement.file'] }}</p>
+{% if form.errors['custom_attachments.agreement.file'] %}
+  <p>{{ form.errors['custom_attachments.agreement.file'] }}</p>
 {% endif %}
 {% endraw %}
 ```

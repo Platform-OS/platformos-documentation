@@ -1,7 +1,7 @@
-{% if form_builder.errors != blank %}
+{% if form.errors != blank %}
   <div class="alert alert-warning">
     <ul>
-      {% for error in form_builder.errors %}
+      {% for error in form.errors %}
         {% assign default_label = error[0] | split: '.' | last | titleize %}
         <li>{{ error[0] | t: default: default_label }} {{ error[1] }}</li>
       {% endfor %}

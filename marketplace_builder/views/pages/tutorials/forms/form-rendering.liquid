@@ -19,7 +19,7 @@ To understand this topic, you should be familiar with:
 Form implementation example from [Full Form Configuration example](tutorials/forms/configuration-options)
 {% raw %}
 ```liquid
-<p>{{ form_builder.fields.properties.greeting.value }}</p>
+<p>{{ form.fields.properties.greeting.value }}</p>
 
 {% form html-class: 'w-50' %}
   <div class="form-group">
@@ -29,13 +29,13 @@ Form implementation example from [Full Form Configuration example](tutorials/for
 
     <input
       class="form-control"
-      name="{{ form_builder.fields.properties.email.name }}"
-      value="{{ form_builder.fields.properties.email.value }}"
+      name="{{ form.fields.properties.email.name }}"
+      value="{{ form.fields.properties.email.value }}"
       id="form_email"
       type="email"
      >
 
-     <p>{{ form_builder.errors['properties.email'] }}</p>
+     <p>{{ form.errors['properties.email'] }}</p>
   </div>
 
   <button class="btn btn-primary">Save</button>
@@ -106,9 +106,9 @@ Using the [`form tag`](/api-reference/liquid/platformos-tags#form) is the easies
 
 ## Form Builder Object
 
-The `form_builder` object is only accessible within the form configuration file because this configuration defines its state.
+The `form` object is only accessible within the form configuration file because this configuration defines its state.
 
-List of `form_builder` properties:
+List of `form` properties:
 
 * **action**: URL of form configuration API endpoint usually passed as form action
 * **errors**: list of validation errors raised on failed form submission. For more information about validation errors visit [Form Validation Tutorial](/tutorials/forms/validation)

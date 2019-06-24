@@ -2,12 +2,12 @@
 converter: markdown
 metadata:
   title: Uploading Files Directly to Amazon S3 Using HTML Form
-  description: This guide will help you use the Amazon S3 direct upload from the front-end by adding the files from `form_builder` that are exposed to you for each file/image property.
+  description: This guide will help you use the Amazon S3 direct upload from the front-end by adding the files from `form` that are exposed to you for each file/image property.
 slug: tutorials/user-uploads/uploading-files-directly-amazons3-using-html-form
 searchable: true
 ---
 
-This guide will help you use the Amazon S3 direct upload from the front-end by adding the files from `form_builder` that are exposed to you for each file uploader.
+This guide will help you use the Amazon S3 direct upload from the front-end by adding the files from `form` that are exposed to you for each file uploader.
 
 This guide presents a low-tech demonstration without any JavaScript. It only uses a standard HTML form to show you what exactly you need to include in the request to be able to directly upload to S3.
 
@@ -108,7 +108,7 @@ Example for property of image type:
 
 ```liquid
 {% raw %}
-{{ form_builder.fields.profiles.expert.custom_images.photo.image.s3_upload }}
+{{ form.fields.profiles.expert.custom_images.photo.image.s3_upload }}
 {% endraw %}
 ```
 
@@ -116,7 +116,7 @@ Example for property of custom attachment type:
 
 ```liquid
 {% raw %}
-{{ form_builder.fields.profiles.expert.custom_attachments.cv.file.s3_upload }}
+{{ form.fields.profiles.expert.custom_attachments.cv.file.s3_upload }}
 {% endraw %}
 ```
 
@@ -130,7 +130,7 @@ Set up action and all required data in hidden inputs:
 
 ```liquid
 {% raw %}
-{% assign profile = form_builder.fields.profiles.developer %}
+{% assign profile = form.fields.profiles.developer %}
 {% assign avatar = profile.custom_images.avatar %}
 {% assign image_s3_upload = avatar.image.s3_upload %}
 

@@ -61,11 +61,11 @@ fields:
   password:
 ---
 {% form %}
-    <input name="{{ form_builder.fields.email.name }}" value="{{ form_builder.fields.email.value}}" type="email">
-    <input name="{{ form_builder.fields.password.name }}" type="password">
+    <input name="{{ form.fields.email.name }}" value="{{ form.fields.email.value}}" type="email">
+    <input name="{{ form.fields.password.name }}" type="password">
 
   <div class="form-group">
-    {{ form_builder.errors.base }}
+    {{ form.errors.base }}
     {% spam_protection "recaptcha_v2" %}
   </div>
 
@@ -92,10 +92,10 @@ callback_actions: >
   {% graphql res = "clear_failed_signin_attempts" %}
 ---
 {% form %}
-    <input name="{{ form_builder.fields.email.name }}" value="{{ form_builder.fields.email.value}}" type="email">
-    <input name="{{ form_builder.fields.password.name }}" type="password">
+    <input name="{{ form.fields.email.name }}" value="{{ form.fields.email.value}}" type="email">
+    <input name="{{ form.fields.password.name }}" type="password">
 
-  {% if form_builder.errors != empty %}
+  {% if form.errors != empty %}
     {% assign attempts = context.session.failed_attempts | default: 1 | plus: 1 %}
     {% graphql res = "set_failed_signin_attempts", attempts: attempts %}
   {% endif %}

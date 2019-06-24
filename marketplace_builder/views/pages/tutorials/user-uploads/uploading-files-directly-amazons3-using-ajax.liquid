@@ -7,7 +7,7 @@ slug: tutorials/user-uploads/uploading-files-directly-amazons3-using-ajax
 searchable: true
 ---
 
-This guide will help you use the Amazon S3 direct upload from the front-end by adding the files from `form_builder` that are exposed to you for each file uploader.
+This guide will help you use the Amazon S3 direct upload from the front-end by adding the files from `form` that are exposed to you for each file uploader.
 
 This guide presents a different approach to the [Uploading Files Directly to Amazon S3 Using HTML Form](/tutorials/user-uploads/uploading-files-directly-amazons3-using-html-form) tutorial by uploading a file directly to the AWS S3 bucket using AJAX.
 
@@ -31,7 +31,7 @@ Create variables for quicker access later on:
 
 ```liquid
 {% raw %}
-{% assign profile = form_builder.fields.profiles.developer %}
+{% assign profile = form.fields.profiles.developer %}
 {% assign avatar = profile.custom_images.avatar %}
 {% assign image_s3_upload = avatar.image.s3_upload %}
 {% endraw %}
