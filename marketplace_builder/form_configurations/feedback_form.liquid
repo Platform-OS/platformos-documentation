@@ -61,7 +61,7 @@ flash_notice: Thank you for your feedback.
           </li>
         </ul>
       </div>
-      {% if context.page.metadata.skip_contribute_button != true %}
+      {% unless context.page.metadata.skip_contribute_button == true %}
         <div class="col-12 col-md-5 contribute-to-page">
           {% assign github_path = "https://github.com/mdyd-dev/nearme-documentation/blob/master/" %}
           {% assign pages_path = github_path | append: "marketplace_builder/views/pages/" %}
@@ -70,7 +70,7 @@ flash_notice: Thank you for your feedback.
             Contribute to this page
           </a>
         </div>
-      {% endif %}
+      {% endunless %}
     </div>
   </div>
   <div class="row feedback__questions">
