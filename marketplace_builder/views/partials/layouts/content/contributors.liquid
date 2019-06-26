@@ -27,26 +27,26 @@
           <span>Last edit: {{ page_contributors.last_edit | date: "%b %d, %Y" }}</span>
         </div>
 
-      <div class="col-sm-7">
-        <ul>
-          <li>Contributors:</li>
-          {%- assign c = page_contributors.contributors | default: "[]" | to_hash | reverse -%}
-          {%- for contributor in c -%}
-            {%- if contributor.login != blank -%}
-              <li>
-                <a href="https://github.com/{{ contributor.login }}" target="_blank">
-                  {% comment %}
-                    Github uses round robin to choose CDN. This causes N different SSL handshakes. Breaks browsers cache (SIC).
-                  {% endcomment %}
-                  {% assign avatar_url = "https://avatars0.githubusercontent.com/u/" | append: contributor.id | append: "?v=4&s=20" %}
-                  <img src="{{ avatar_url }}" width="20" height="20" alt="{{ contributor.login }}" lazy>
-                </a>
-              </li>
-            {%- endif -%}
-          {%- endfor -%}
-        </ul>
+        <div class="col-sm-7">
+          <ul>
+            <li>Contributors:</li>
+            {%- assign c = page_contributors.contributors | default: "[]" | to_hash | reverse -%}
+            {%- for contributor in c -%}
+              {%- if contributor.login != blank -%}
+                <li>
+                  <a href="https://github.com/{{ contributor.login }}" target="_blank">
+                    {% comment %}
+                      Github uses round robin to choose CDN. This causes N different SSL handshakes. Breaks browsers cache (SIC).
+                    {% endcomment %}
+                    {% assign avatar_url = "https://avatars0.githubusercontent.com/u/" | append: contributor.id | append: "?v=4&s=20" %}
+                    <img src="{{ avatar_url }}" width="20" height="20" alt="{{ contributor.login }}" lazy>
+                  </a>
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        </div>
       </div>
     </div>
-  </div>
   {%- endif -%}
 {%- endif -%}
