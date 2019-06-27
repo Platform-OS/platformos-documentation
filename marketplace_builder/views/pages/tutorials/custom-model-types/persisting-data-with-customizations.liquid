@@ -104,7 +104,7 @@ In [Building Contact Form With Customization tutorial](/tutorials/customizations
       Use the mutation below to remove dependent objects:
       mutation { customizations_delete_all(model_schema_name: "todo") { count } }
       ```
-  * **name change** - as platformOS detects CustomModelType definition by its name, if you change it is equal with adding new CustomModelType, please note that Customization objects are not automatically migrated and will be treated as orphaned with next deploy attempt, see error message above.
+  * **name change** - as platformOS detects ModelSchema definition by its name, if you change it is equal with adding new ModelSchema, please note that Customization objects are not automatically migrated and will be treated as orphaned with next deploy attempt, see error message above.
   * **add new custom model type property** - adding new properties is a valid change that does not need additional actions, the data remains untouched.
   * **delete of custom model type property** - deletion of the property is a valid change, data stored in related Customization properties will remain saved but will not be accessible. Use migration to remove the data prior to the change.
   * **property edition** - is a valid change and is equal to the removal of property with old name and creation of new property, data is not migrated.
