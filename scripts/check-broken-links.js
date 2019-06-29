@@ -36,7 +36,7 @@ const siteChecker = new blc.SiteChecker(options, {
       report = `Found ${results.failed.length} bad links.`;
     }
 
-    fs.writeFileSync('test-summary.txt', report);
+    fs.writeFileSync('/tmp/test-summary.txt', report);
     process.exit(0);
   }
 });
