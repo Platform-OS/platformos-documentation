@@ -116,7 +116,7 @@ pipeline {
 
       steps {
         sh 'npm i broken-link-checker'
-        sh 'node ./scripts/check-broken-links.js'
+        sh 'time node ./scripts/check-broken-links.js'
       }
     }
   }

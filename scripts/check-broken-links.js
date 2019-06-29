@@ -10,7 +10,6 @@ const options = {
   honorRobotExclusions: false,
   excludedKeywords: ['localhost', '*tablesgenerator.com*', '*sendgrid.api-docs.io*'],
   maxSocketsPerHost: 20,
-  maxSockets: 50,
   userAgent:
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36'
 };
@@ -27,9 +26,6 @@ const siteChecker = new blc.SiteChecker(options, {
     }
 
     if (!result.broken && !result.http.cached) {
-      // if (process.env.CI) {
-      //   console.log(`[OK] ${result.url.original}`);
-      // }
       results.succeeded.push(result);
     }
   },
