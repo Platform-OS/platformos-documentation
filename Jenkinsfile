@@ -106,7 +106,7 @@ pipeline {
     }
 
     stage('Broken links checker') {
-      when { branch 'links-checker' }
+      when { branch 'master' }
       agent { docker { image 'node:10-alpine'; args '-u root' } }
 
       environment {
