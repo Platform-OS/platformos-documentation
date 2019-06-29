@@ -104,14 +104,30 @@ pipeline {
         sh 'marketplace-kit deploy'
       }
     }
+
+    stage('Broken links checker') {
+      when { branch 'links-checker' }
+      agent { docker { image 'node:10-alpine'; args '-u root' } }
+
+      environment {
+        MP_URL = "${production_url}"
+        CI = true
+      }
+
+      steps {
+        sh 'npm i broken-link-checker'
+        sh 'time node ./scripts/check-broken-links.js'
+      }
+    }
   }
 
   post {
     success {
       script {
         if (env.GIT_BRANCH == 'master') {
-
+          testOutput = sh(returnStdout: true, script: 'cat test-summary.txt').trim()
           slackSend (channel: "#notifications-docs", color: '#00FF00', message: "SUCCESS: <${env.BUILD_URL}|Build #${env.BUILD_NUMBER}> - ${buildDuration()}. ${commitInfo()}")
+          slackSend (channel: "#notifications-docs", color: '#00FF00', message: "${testOutput}")
         }
       }
     }
@@ -119,7 +135,9 @@ pipeline {
     failure {
       script {
         if (env.GIT_BRANCH == 'master') {
+          testOutput = sh(returnStdout: true, script: 'cat test-summary.txt').trim()
           slackSend (channel: "#notifications-docs", color: '#FF0000', message: "FAILED: <${env.BUILD_URL}|Open build details> - ${buildDuration()}")
+          slackSend (channel: "#notifications-docs", color: '#FF0000', message: "${testOutput}")
         }
       }
     }
