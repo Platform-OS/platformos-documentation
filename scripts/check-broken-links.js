@@ -27,9 +27,9 @@ const siteChecker = new blc.SiteChecker(options, {
     }
 
     if (!result.broken && !result.http.cached) {
-      if (process.env.CI) {
-        console.log(`[OK] ${result.url.original}`);
-      }
+      // if (process.env.CI) {
+      //   console.log(`[OK] ${result.url.original}`);
+      // }
       results.succeeded.push(result);
     }
   },
