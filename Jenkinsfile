@@ -107,7 +107,7 @@ pipeline {
 
     stage('Broken links checker') {
       when { branch 'master' }
-      agent { docker { image 'node:10-alpine'; args '-u root' } }
+      agent { docker { image 'node:10-alpine'; args '-u root -v $HOME/tmp:/tmp' } }
 
       environment {
         MP_URL = "${production_url}"
@@ -125,7 +125,7 @@ pipeline {
     success {
       script {
         if (env.GIT_BRANCH == 'master') {
-          testOutput = sh(returnStdout: true, script: 'cat /tmp/test-summary.txt').trim()
+          testOutput = sh(returnStdout: true, script: 'cat $HOME/tmp/test-summary.txt').trim()
           slackSend (channel: "#notifications-docs", color: '#00FF00', message: "SUCCESS: <${env.BUILD_URL}|Build #${env.BUILD_NUMBER}> - ${buildDuration()}. ${commitInfo()}")
           slackSend (channel: "#notifications-docs", color: '#00FF00', message: "${testOutput}")
         }
@@ -135,7 +135,7 @@ pipeline {
     failure {
       script {
         if (env.GIT_BRANCH == 'master') {
-          testOutput = sh(returnStdout: true, script: 'cat /tmp/test-summary.txt').trim()
+          testOutput = sh(returnStdout: true, script: 'cat $HOME/tmp/test-summary.txt').trim()
           slackSend (channel: "#notifications-docs", color: '#FF0000', message: "FAILED: <${env.BUILD_URL}|Open build details> - ${buildDuration()}")
           slackSend (channel: "#notifications-docs", color: '#FF0000', message: "${testOutput}")
         }
