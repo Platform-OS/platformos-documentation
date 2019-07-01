@@ -3,7 +3,7 @@ converter: markdown
 metadata:
   title: Using the GeoJSON format for Geolocation
   description: This guide will help you build a working site on which one can find models in a maximum distance of X km's from given geo point coordinates.
-slug: tutorials/custom-model-types/using-geojson-format-geolocation
+slug: tutorials/model-schemas/using-geojson-format-geolocation
 searchable: true
 ---
 
@@ -53,9 +53,9 @@ The following geometry types are supported:
 To learn more, read the [official GeoJSON documentation](https://tools.ietf.org/html/rfc7946).
 
 ## Requirements
-To follow the steps in this tutorial, you should be familiar with Custom Model Types, data imports, and Form Configuration.
+To follow the steps in this tutorial, you should be familiar with Model Schemas, data imports, and Form Configuration.
 
-* [Custom Model Types](/tutorials/custom-model-types/custom-model-types)
+* [Model Schemas](/tutorials/model-schemas/model-schemas)
 * [Data Import](/tutorials/data-import-export/import)
 * [Form Configuration](/tutorials/forms/form-configuration)
 
@@ -65,9 +65,9 @@ Using the GeoJSON format to find all models in a maximum distance from geopoint 
 
 <div data-autosteps></div>
 
-### Step 1: Prepare Custom Model Type definition
+### Step 1: Prepare Model Schema definition
 
-Create `custom_model_types/company.yaml`:
+Create `model_schemas/company.yaml`:
 
 ```yaml
 name: company
@@ -90,7 +90,7 @@ Create a GraphQL mutation `createCompany.graphql`:
 mutation createCompany($location: JSONPayload, $city: String, $timezone: String, $name: String){
   customization_create(
     customization: {
-      custom_model_type_name: "company"
+      model_schema_name: "company"
       properties: [
         { name: "name" value: $name }
         { name: "city" value: $city }
@@ -218,5 +218,5 @@ You can do this by appending a plus filter with a `0` argument - literally addin
 * [views/pages/geo/company-new.liquid](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/geo_models/public/views/pages/geo/company-new.liquid)
 * [views/pages/geo/programmer-new.liquid](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/geo_models/public/views/pages/geo/programmer-new.liquid)
 * [views/pages/geo/company-search.liquid](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/geo_models/public/views/pages/geo/company-search.liquid)
-* [custom_model_types/company.yml](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/geo_models/public/custom_model_types/company.yml)
+* [model_schemas/company.yml](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/geo_models/public/model_schemas/company.yml)
 * [graph_queries/search.graphql](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/geo_models/public/graph_queries/search.graphql)

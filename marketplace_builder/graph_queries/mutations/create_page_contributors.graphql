@@ -2,7 +2,7 @@ mutation create_page_contributors($slug: String!, $paths: String, $contributors:
   customization_create(
     form_configuration_name: "create_page_contributors_form"
     customization: {
-      custom_model_type_name: "page_contributors"
+      model_schema_name: "page_contributors"
       properties: [
         { name: "paths", value: $paths }
         { name: "slug", value: $slug }
@@ -18,4 +18,3 @@ mutation create_page_contributors($slug: String!, $paths: String, $contributors:
     paths: property_array(name: "paths")
   }
 }
-
