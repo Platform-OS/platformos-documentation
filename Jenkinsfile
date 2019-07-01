@@ -135,9 +135,7 @@ pipeline {
     failure {
       script {
         if (env.GIT_BRANCH == 'master') {
-          testOutput = sh(returnStdout: true, script: 'cat $HOME/tmp/test-summary.txt').trim()
           slackSend (channel: "#notifications-docs", color: '#FF0000', message: "FAILED: <${env.BUILD_URL}|Open build details> - ${buildDuration()}")
-          slackSend (channel: "#notifications-docs", color: '#FF0000', message: "${testOutput}")
         }
       }
     }
