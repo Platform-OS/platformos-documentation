@@ -274,14 +274,14 @@ fields:
 
     <input
       type="email"
-      class="form-control{% if form_builder.errors.email != blank %} is-invalid{% endif %}"
+      class="form-control{% if form.errors.email != blank %} is-invalid{% endif %}"
       id="sign-in-email"
-      value="{{ form_builder.fields.email.value }}"
-      name="{{ form_builder.fields.email.name }}"
+      value="{{ form.fields.email.value }}"
+      name="{{ form.fields.email.name }}"
     />
 
-    {% if form_builder.errors.email %}
-      <div class="invalid-feedback">{{ form_builder.errors.email }}</div>
+    {% if form.errors.email %}
+      <div class="invalid-feedback">{{ form.errors.email }}</div>
     {% endif %}
   </div>
   <div class="form-group">
@@ -289,13 +289,13 @@ fields:
 
     <input
       type="password"
-      class="form-control{% if form_builder.errors.email != blank %} is-invalid{% endif %}"
+      class="form-control{% if form.errors.email != blank %} is-invalid{% endif %}"
       id="sign-in-password"
-      name="{{ form_builder.fields.password.name }}"
+      name="{{ form.fields.password.name }}"
     />
 
-    {% if form_builder.errors.password %}
-      <div class="invalid-feedback">{{ form_builder.errors.password }}</div>
+    {% if form.errors.password %}
+      <div class="invalid-feedback">{{ form.errors.password }}</div>
     {% endif %}
   </div>
 

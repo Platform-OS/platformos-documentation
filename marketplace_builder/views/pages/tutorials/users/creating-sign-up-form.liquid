@@ -65,30 +65,30 @@ fields:
 ```liquid
 {% form %}
   <label for="first_name">First name</label>
-  <input name="{{ form_builder.fields.first_name.name }}" value="{{ form_builder.fields.first_name.value }}" id="first_name" type="text">
-  {% if form_builder.errors.first_name %}
-    <p>{{ form_builder.errors.first_name }}</p>
+  <input name="{{ form.fields.first_name.name }}" value="{{ form.fields.first_name.value }}" id="first_name" type="text">
+  {% if form.errors.first_name %}
+    <p>{{ form.errors.first_name }}</p>
   {% endif %}
 
   <label for="email">Email</label>
-  <input name="{{ form_builder.fields.email.name }}" value="{{ form_builder.fields.email.value }}" id="email" type="email">
-  {% if form_builder.errors.email %}
-    <p>{{ form_builder.errors.email }}</p>
+  <input name="{{ form.fields.email.name }}" value="{{ form.fields.email.value }}" id="email" type="email">
+  {% if form.errors.email %}
+    <p>{{ form.errors.email }}</p>
   {% endif %}
 
   <label for="password">Password</label>
-  <input name="{{ form_builder.fields.password.name }}" id="password" type="password">
-  {% if form_builder.errors.password %}
-    <p>{{ form_builder.errors.password }}</p>
+  <input name="{{ form.fields.password.name }}" id="password" type="password">
+  {% if form.errors.password %}
+    <p>{{ form.errors.password }}</p>
   {% endif %}
 
   <label for="first_name">Phone Number</label>
-  <input name="{{ form_builder.fields.properties.phone_number.name }}" value="{{ form_builder.fields.properties.phone_number.value }}" id="phone_number" type="text">
-  {% if form_builder.errors.properties.phone_number %}
-    <p>{{ form_builder.errors.properties.phone_number }}</p>
+  <input name="{{ form.fields.properties.phone_number.name }}" value="{{ form.fields.properties.phone_number.value }}" id="phone_number" type="text">
+  {% if form.errors.properties.phone_number %}
+    <p>{{ form.errors.properties.phone_number }}</p>
   {% endif %}
 
-  <input value="{{ form_builder.fields.profiles.developer.properties.enabled.value }}" name="{{ form_builder.fields.profiles.developer.properties.enabled.name }}" type="hidden">
+  <input value="{{ form.fields.profiles.developer.properties.enabled.value }}" name="{{ form.fields.profiles.developer.properties.enabled.name }}" type="hidden">
 
   <button>Create</button>
 {% endform %}
@@ -220,24 +220,24 @@ fields:
 
 {% form %}
   <label for="first_name">First name</label>
-  <input name="{{ form_builder.fields.first_name.name }}" value="{{ form_builder.fields.first_name.value }}" id="first_name" type="text">
-  {% if form_builder.errors.first_name %}
-    <p>{{ form_builder.errors.first_name }}</p>
+  <input name="{{ form.fields.first_name.name }}" value="{{ form.fields.first_name.value }}" id="first_name" type="text">
+  {% if form.errors.first_name %}
+    <p>{{ form.errors.first_name }}</p>
   {% endif %}
 
   <label for="email">Email</label>
-  <input name="{{ form_builder.fields.email.name }}" value="{{ form_builder.fields.email.value }}" id="email" type="email">
-  {% if form_builder.errors.email %}
-    <p>{{ form_builder.errors.email }}</p>
+  <input name="{{ form.fields.email.name }}" value="{{ form.fields.email.value }}" id="email" type="email">
+  {% if form.errors.email %}
+    <p>{{ form.errors.email }}</p>
   {% endif %}
 
   <label for="password">Password</label>
-  <input name="{{ form_builder.fields.password.name }}" id="password" type="password">
-  {% if form_builder.errors.password %}
-    <p>{{ form_builder.errors.password }}</p>
+  <input name="{{ form.fields.password.name }}" id="password" type="password">
+  {% if form.errors.password %}
+    <p>{{ form.errors.password }}</p>
   {% endif %}
 
-  <input value="{{ form_builder.fields.profiles.client.properties.enabled.value }}" name="{{ form_builder.fields.profiles.client.properties.enabled.name }}" type="hidden">
+  <input value="{{ form.fields.profiles.client.properties.enabled.value }}" name="{{ form.fields.profiles.client.properties.enabled.name }}" type="hidden">
 
   <button>Create</button>
 {% endform %}

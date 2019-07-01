@@ -63,11 +63,11 @@ fields:
 ---
 {% form %}
   {% spam_protection "recaptcha_v3", action: "signup" %}
-  <input name="{{ form_builder.fields.email.name }}" value="{{ form_builder.fields.email.value}}" type="email">
-  <input name="{{ form_builder.fields.password.name }}" type="password">
+  <input name="{{ form.fields.email.name }}" value="{{ form.fields.email.value}}" type="email">
+  <input name="{{ form.fields.password.name }}" type="password">
 
   <div class="form-group">
-    {{ form_builder.errors.base }}
+    {{ form.errors.base }}
   </div>
 
   <button>Sign In</button>

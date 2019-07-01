@@ -56,7 +56,7 @@ fields:
 ---
 
 {% form %}
-  {% assign f = form_builder.fields %}
+  {% assign f = form.fields %}
 
   <input type="text" name="{{ f.name.name }}" value="{{ f.name.value }}">
   <input type="email" name="{{ f.email.name }}" value="{{ f.email.value }}">
@@ -135,7 +135,7 @@ fields:
         presence: true
 ---
 {% form %}
-  {% assign f = form_builder.fields %}
+  {% assign f = form.fields %}
   <input type="text" name="{{ f.properties.email.name }}" value="{{ f.properties.email.value }}">
   <button>Save</button>
 {% endform %}

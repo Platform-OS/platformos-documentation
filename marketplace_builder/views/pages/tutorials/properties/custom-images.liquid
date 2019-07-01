@@ -71,11 +71,11 @@ After setting up images as described above, you can further customize image edit
 
 ```liquid
 {% raw %}
-{% if form_builder.fields.profiles.seller.custom_images.avatar.image.value %}
+{% if form.fields.profiles.seller.custom_images.avatar.image.value %}
   <div class="preview">
     <figure>
-      <a href="{{ form_builder.fields.profiles.seller.custom_images.avatar.image.value }}">
-        <img src="{{ form_builder.fields.profiles.seller.custom_images.avatar.image.value }}">
+      <a href="{{ form.fields.profiles.seller.custom_images.avatar.image.value }}">
+        <img src="{{ form.fields.profiles.seller.custom_images.avatar.image.value }}">
       </a>
     </figure>
   </div>
@@ -85,11 +85,11 @@ After setting up images as described above, you can further customize image edit
   <label>
     <span>Select a new image...</span>
     <span>or drag photo here to upload</span>
-    <input accept="image/gif, image/jpeg, image/jpg, image/png" name="{{ form_builder.fields.profiles.seller.custom_images.avatar.image.name }}" type="file">
+    <input accept="image/gif, image/jpeg, image/jpg, image/png" name="{{ form.fields.profiles.seller.custom_images.avatar.image.name }}" type="file">
   </label>
 
-  {% if form_builder.errors['profiles.seller.custom_images.avatar.image'] %}
-    <p>{{ form_builder.errors['profiles.seller.custom_images.avatar.image'] }}</p>
+  {% if form.errors['profiles.seller.custom_images.avatar.image'] %}
+    <p>{{ form.errors['profiles.seller.custom_images.avatar.image'] }}</p>
   {% endif %}
 </div>
 {% endraw %}
