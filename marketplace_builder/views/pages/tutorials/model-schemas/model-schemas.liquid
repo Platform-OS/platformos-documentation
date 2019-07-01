@@ -1,0 +1,61 @@
+---
+converter: markdown
+metadata:
+  title: Model Schemas
+  description: Build your custom data structure without any limitations with Model Schemas.
+slug: tutorials/model-schemas/model-schemas
+searchable: true
+---
+
+## What is Model Schema?
+
+**Model Schema is an object that describes all Customization objects that belong to it.**
+
+You can think of it as a DB table, whereas Customizations are records inside this table - hence Customization must always be associated with exactly one CustomModelType.
+
+Example:
+Model Schemas define object types that will exist in your application. They describe the properties each object can have. For example, if you want your application to manage "books", you can create a Model Schema with the name "book" that will have the properties "title" and "author" (both having the type "string"). Individual books in your application will be "customization" objects tied to this custom model type, and you will be able to set actual values for the "title" and "author" of each book.
+
+To fully understand Model Schemas you first need to understand basic functions of Customization objects which is to create, read, update, and delete data. The organization of how this data is structured within Customization and persisted in our backend systems is defined by Model Schema files.
+
+Head to the [Persisting Data With Customization](/tutorials/model-schemas/persisting-data-with-customizations) tutorial to fully understand the process based on a todo list example.
+
+
+## Model Schemas use cases
+
+* Think of them as a custom DB table, which allows you to build highly customized features.
+* Use them to group Properties, and allow the user to provide multiple values for each of them.
+
+For example, you can build a table that will store a user's favorite books. Each book has an author, title and a number of pages. These three fields are Properties. That’s why you can use Model Schema to group Properties.
+
+Now you can build a form that allows users to add multiple books attached to their user profile (using GraphQL).
+
+[Custom Address](/tutorials/properties/custom-addresses), for example, is a Custom Model with Properties attached to it for your convenience. Custom Models you create are used in the same way as our built-in one.
+
+## Defining
+
+Model Schemas are placed in the `model_schemas` directory.
+
+The example below shows the BlogPost Model Schema `model_schemas/blog_post.yml`:
+
+```yaml
+name: blog_post
+properties:
+- name: title
+  type: string
+- name: content
+  type: text
+```
+
+## Configuration Properties
+
+| Property                 | Description | Required |
+| ------------------------ | ----------- | -------- |
+| name                     | Name of your model. Best practice is to keep it lower case. Example: `user_application` | Yes      |
+| properties               | Array of properties you want to contain within your models. Equivalent to a column in a database table. | No       |
+
+# Form Configuration
+
+Model Schemas work well with Form Configurations. For detailed description and all available options see the following topic:
+
+* [Default Payload](/tutorials/forms/default-payload#custom-model-example)

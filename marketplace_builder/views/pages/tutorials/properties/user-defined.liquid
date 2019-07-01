@@ -11,7 +11,7 @@ User-defined Properties are Properties you can create on demand.
 
 ## Defining user-defined Properties
 
-Properties are defined in YML configuration files for [CustomModelTypes](/tutorials/custom-model-types/custom-model-types).
+Properties are defined in YML configuration files for [CustomModelTypes](/tutorials/model-schemas/model-schemas).
 
 ```yaml
 properties:
@@ -48,7 +48,7 @@ The table below lists available data types for Property configuration, that are 
 
 ## Grouping into models
 
-You can group your Properties into [Custom Models](/tutorials/custom-model-types/custom-model-types).
+You can group your Properties into [Custom Models](/tutorials/model-schemas/model-schemas).
 
 ### FormConfiguration
 
@@ -70,9 +70,9 @@ fields:
 {% raw %}
 {% form %}
   <label for="name">Name</label>
-  <input value="{{ form_builder.fields.properties.name.value }}" name="{{ form_builder.fields.properties.name.name }}" id="name" type="text">
-  {% if form_builder.errors['properties.name'] %}
-    <p>{{ form_builder.errors['properties.name'] }}</p>
+  <input value="{{ form.fields.properties.name.value }}" name="{{ form.fields.properties.name.name }}" id="name" type="text">
+  {% if form.errors['properties.name'] %}
+    <p>{{ form.errors['properties.name'] }}</p>
   {% endif %}
 {% endform %}
 {% endraw %}

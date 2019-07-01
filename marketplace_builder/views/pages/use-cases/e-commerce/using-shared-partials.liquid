@@ -135,11 +135,11 @@ redirect_to: >
 
 ### Step 4: Create shared partials for form fields
 
-Another prime candidate for refactoring are form field inputs. Form components can be rendered using the `form_builder` variable, available inside of every form configuration html content section.
+Another prime candidate for refactoring are form field inputs. Form components can be rendered using the `form` variable, available inside of every form configuration html content section.
 
 This variable contains all information regarding every field - its name, current value, validation rules, and possible errors attached to the field.
 
-Having this in place you can easily build shared partials, that will accept a `form_builder.fields` entry and generate the required control in a consistent manner.
+Having this in place you can easily build shared partials, that will accept a `form.fields` entry and generate the required control in a consistent manner.
 
 {% capture content %}
 For the sake of brevity, this tutorial includes only one example, for regular `<input type="text">` field. You will probably need to create one partial per control type as the application grows.
@@ -147,10 +147,10 @@ For the sake of brevity, this tutorial includes only one example, for regular `<
 {% include 'alert/note', content: content %}
 
 {% comment %}
-TO BE ADDED: link to the form_builder beginners tutorial once it’s out
+TO BE ADDED: link to the form beginners tutorial once it’s out
 {% endcomment %}
 
-#### `form_builder.fields` sample entry
+#### `form.fields` sample entry
 
 ```json
 {
@@ -182,7 +182,7 @@ Properties explained:
 - `validation` contains both the rules that should be applied to the input (very useful to add validation on the frontend as you’ll see in just a moment) and actual validation errors if any occurred during the last form submit
 - `property_options` contains additional configuration options but these do not apply to building shared form input partials
 
-Take a look at how you could structure the shared partial, to make it configurable and use values provided by `form_builder`:
+Take a look at how you could structure the shared partial, to make it configurable and use values provided by `form`:
 
 #### marketplace_builder/views/partials/forms/fields/text.liquid
 
@@ -336,14 +336,14 @@ fields:
   {%
     include "forms/fields/text",
       label: 'Email',
-      field: form_builder.fields.email,
+      field: form.fields.email,
       type: "email"
   %}
 
   {%
     include "forms/fields/text",
       label: 'Password',
-      field: form_builder.fields.password,
+      field: form.fields.password,
       type: "password"
   %}
 
@@ -380,7 +380,7 @@ Congratulations! You’ve cleaned up the views and made it easier to reuse commo
 
 - add additional optional attributes like `autocomplete` or `placeholder`
 - add support for `data-` attributes by passing a hash of options
-- extend default HTML5 validation by parsing `validation` rules provided by `form_builder`
+- extend default HTML5 validation by parsing `validation` rules provided by `form`
 - use {% raw %}`{% log "error message", type: "error" %}`{% endraw %} to mark an error anytime a require parameter is missing in the partial - [`log` tag documentation](/api-reference/liquid/platformos-tags#log)
 
 With these simple changes you are now ready to start building the admin panel in earnest. In the next part you’ll [seed initial configuration data for your application](/use-cases/e-commerce/seeding-configuration-data).

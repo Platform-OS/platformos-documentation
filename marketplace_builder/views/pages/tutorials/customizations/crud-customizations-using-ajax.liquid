@@ -20,11 +20,11 @@ Managing Customizations using AJAX by implementing the full CRUD cycle is a five
 
 <div data-autosteps></div>
 
-### Step 1: Define prerequisites: Custom Model Type, Form Configuration, Page, javascript functions used in multiple places
+### Step 1: Define prerequisites: Model Schema, Form Configuration, Page, javascript functions used in multiple places
 
 Create required files for your implementation:
 
-#### custom_model_types/feedback.yml
+#### model_schemas/feedback.yml
 
 ```yaml
 name: feedback
@@ -81,7 +81,7 @@ First, create a simple form that works without JavaScript:
 ```liquid
 {%- raw -%}
 {% form html-data-form: "create" %}
-  {% assign p = form_builder.fields.properties %}
+  {% assign p = form.fields.properties %}
 
   <h2>Create new feedback (customization)</h2>
   <label>

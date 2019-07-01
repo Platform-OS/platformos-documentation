@@ -46,7 +46,7 @@ The next step is to extend/overwrite the user's input with `default_payload`. Th
 
 ## 6. Validating user input
 
-The result of merging user's input with default_payload is then run against validation rules defined for each field. If at least one validation fails, the server renders response based on the format. For HTML, the errors are added to the `form_builder` variable inside the relevant field and the server renders [Page](/tutorials/pages/pages) based on the `page_id` parameter passed to the server. Additionally, the flash_alert is evaluated and set if provided in the configuration. It is then accessible using the `context` variable. For JSON, a JSON object is returned with a populated `errors` key. The status code is 200 in both scenarios.
+The result of merging user's input with default_payload is then run against validation rules defined for each field. If at least one validation fails, the server renders response based on the format. For HTML, the errors are added to the `form` variable inside the relevant field and the server renders [Page](/tutorials/pages/pages) based on the `page_id` parameter passed to the server. Additionally, the flash_alert is evaluated and set if provided in the configuration. It is then accessible using the `context` variable. For JSON, a JSON object is returned with a populated `errors` key. The status code is 200 in both scenarios.
 
 ## 7. Calculating changes
 

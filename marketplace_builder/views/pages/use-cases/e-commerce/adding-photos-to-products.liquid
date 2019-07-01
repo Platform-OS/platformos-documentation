@@ -58,7 +58,7 @@ fields:
 {% endcomment %}
 
 {% form, html-class: "my-2", html-data-upload-form: "true" %}
-  <input type="hidden" name="{{ form_builder.fields.properties.product_id.name }}" value="{{ product_id }}">
+  <input type="hidden" name="{{ form.fields.properties.product_id.name }}" value="{{ product_id }}">
   <div class="form-row align-items-center">
     <div class="col-auto">
       <label for="photo-file">Upload a new photo</label>
@@ -66,7 +66,7 @@ fields:
     <div class="col-auto">
       <input
         class="form-control-file"
-        name="{{ form_builder.fields.custom_images.image.image.name }}"
+        name="{{ form.fields.custom_images.image.image.name }}"
         type="file"
         id="photo-file"
         accept="image/png, image/jpeg">
@@ -82,7 +82,7 @@ fields:
 ```
 ### Step 2: Add upload script
 
-The upload form should already be working, but it is less efficient than it could be. Your file will be uploaded to the application server and then again uploaded to the S3 bucket. You can eliminate the intermediate step using S3 credentials provided in the `form_builder` object for every `image` or `file` type field.
+The upload form should already be working, but it is less efficient than it could be. Your file will be uploaded to the application server and then again uploaded to the S3 bucket. You can eliminate the intermediate step using S3 credentials provided in the `form` object for every `image` or `file` type field.
 
 Create the upload script first:
 
@@ -91,7 +91,7 @@ Create the upload script first:
 {% raw %}
 {% comment %}
   Required params:
-    config: s3_upload object from form_builder
+    config: s3_upload object from form
 {% endcomment %}
 <script>
   (function(config){
@@ -178,7 +178,7 @@ Include the script at the end of the `create_photo_form` form.
 
 {%
   include "forms/upload/s3_script",
-    config: form_builder.fields.custom_images.image.image.s3_upload
+    config: form.fields.custom_images.image.image.s3_upload
 %}
 {% endraw %}
 ```
