@@ -38,7 +38,7 @@ Photo form will be included on the product details page. Photo upload is a two-s
 {% raw %}
 ---
 name: create_photo_form
-resource: Customization
+resource: photo
 redirect_to: "/admin/product/{{ context.params.form.properties_attributes.product_id }}"
 fields:
   properties:
@@ -200,7 +200,7 @@ Now that you can upload new photos, it’s time make it possible to remove them 
 {% raw %}
 ---
 name: destroy_photo_form
-resource: Customization
+resource: photo
 redirect_to: /admin/product/{{ form.properties.product_id }}
 flash_notice: Photo has been deleted
 fields:
@@ -288,16 +288,12 @@ It’s time to tie it all together. Create partial that will:
           alt="Product photo"
         />
       </a>
-      {% include_form "destroy_photo_form", resource_type: "photo", id: photo.id %}
+      {% include_form "destroy_photo_form", id: photo.id %}
     </div>
   {% endfor %}
 </div>
 
-{%
-  include_form "create_photo_form",
-    product_id: product_id,
-    resource_type: "photo"
-%}
+{% include_form "create_photo_form", product_id: product_id %}
 {% endraw %}
 ```
 
