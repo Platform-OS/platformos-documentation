@@ -25,7 +25,7 @@ pipeline {
     stage('Build') {
       when { branch 'master' }
 
-      agent { docker { image 'node:10-alpine'; args '-u root' } }
+      agent { docker { image 'node:12-alpine'; args '-u root' } }
 
       steps {
         sh 'npm ci'
@@ -107,7 +107,7 @@ pipeline {
 
     stage('Broken links checker') {
       when { branch 'master' }
-      agent { docker { image 'node:10-alpine'; args '-u root -v $HOME/tmp:/tmp' } }
+      agent { docker { image 'node:12-alpine'; args '-u root -v $HOME/tmp:/tmp' } }
 
       environment {
         MP_URL = "${production_url}"
