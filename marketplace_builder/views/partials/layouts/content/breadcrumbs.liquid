@@ -8,7 +8,7 @@
     </li>
 
     <li>
-      <a href="/{{ category.slug }}">{{ category.name | default: category.default_name | default: slugTitleized }}</a>
+      <a href="/{{ category.slug | default: context.params.slug }}">{{ category.name | default: category.default_name | default: slugTitleized }}</a>
       <svg width="8" height="8"><use xlink:href="#arrow-right"></use></svg>
     </li>
 
