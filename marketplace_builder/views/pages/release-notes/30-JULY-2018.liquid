@@ -1,15 +1,16 @@
 ---
 converter: markdown
 metadata:
-  title: July 30, 2018  &ndash;  Release Notes
-  date: July 30, 2018
-  description: New Liquid tags, deprecated render_form tag, deprecated log GraphQL mutation
-  hide_sidebar: true
+  description: July 30, 2018
+  title: New Liquid tags, deprecated render_form tag
   contributors: false
 slug: release-notes/30-JULY-2018
 searchable: true
 ---
-### {{ page.metadata.description }}
+
+#### {{ page.metadata.description }}
+
+<h4 class="release-note release-note__new">NEW</h4>
 
 ## include_form tag
 
@@ -17,7 +18,7 @@ New tag allows you to use normal liquid syntax to pass variables. `render_form` 
 
 ```liquid
 {% raw %}
-{% include_form edit_user, id: @user.id %}
+{% render_form edit_user, id: @user.id %}
 {% endraw %}
 ```
 
@@ -33,7 +34,9 @@ now should be written with
 
 ## log tag
 
-Use log tag to print something to logs.
+Until now you had `log mutation` at your disposal, but it was a lot of work to use for such a simple task.
+
+From now on please use `log tag` to print something to logs.
 
 ```liquid
 {% raw %}

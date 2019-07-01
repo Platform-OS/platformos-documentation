@@ -1,21 +1,20 @@
 ---
 converter: markdown
 metadata:
-  title: September 20, 2018  &ndash;  Release Notes
-  date: September 20, 2018
-  description: New liquid filters, sending files via API calls
-  hide_sidebar: true
+  title: New liquid filters, sending files via API calls
+  description: September 20, 2018
   contributors: false
 slug: release-notes/20-SEPTEMBER-2018
 searchable: true
 ---
-### {{ page.metadata.description }}
+
+#### {{ page.metadata.description }}
 
 In this release notes we will focus on new liquid filters, fixed filter and one new feature.
 
-## New filters
+<h4 class="release-note release-note__new">NEW</h4>
 
-### assign_to_hash_key
+### assign_to_hash_key filter
 
 This filter allows you to add new key-value pairs into existing hash.
 
@@ -40,7 +39,7 @@ Result:
 {"name"=>"Dunder Mifflin", "accountants"=>["Angela", "Kevin", "Oscar"], "management"=>["David", "Jan", "Michael"]}
 ```
 
-### sanitize
+### sanitize filter
 
 This filter allows you to sanitize user input before rendering it and at the same time decide which attributes should not be sanitized.
 
@@ -63,7 +62,7 @@ Result:
 <a href="" target="_blank">Link</a>
 ```
 
-### useragent
+### useragent filter
 
 There was a community request to make it easier to access useragent and parse it, so here it is.
 
@@ -86,7 +85,9 @@ You can use  `json` filter for readability:
 {% endraw %}
 ```
 
-## Fixed random_string filter
+<h4 class="release-note release-note__fixed">FIXED</h4>
+
+### random_string filter
 
 This filter was returning string that was longer than expected. Now it returns string of length that you want.
 
@@ -99,7 +100,9 @@ This filter was returning string that was longer than expected. Now it returns s
 {% endraw %}
 ```
 
-## New feature
+<h4 class="release-note release-note__improved">IMPROVED</h4>
+
+## Binary files over API call notifications
 
 You have the possibility to send binary files in API call. This might be useful when integrating your system with external APIs that require additional data from your users, for example photo.
 

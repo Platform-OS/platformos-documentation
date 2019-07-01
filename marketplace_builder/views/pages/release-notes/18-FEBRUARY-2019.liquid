@@ -1,18 +1,16 @@
 ---
 converter: markdown
 metadata:
-  title: February 18, 2019  &ndash;  Release Notes
-  date: February 18, 2019
-  description: Properties for all users, Liquid in page metadata
-  hide_sidebar: true
+  title: Properties for all users, Liquid in page metadata
+  description: February 18, 2019
   contributors: false
 slug: release-notes/18-FEBRUARY-2019
 searchable: true
 ---
 
-{{ page.metadata.description }}
+#### {{ page.metadata.description }}
 
-## What's new
+<h4 class="release-note release-note__new">NEW</h4>
 
 * **Properties for all users**: You can now set properties directly in the user object, no need to go through the user profile. You can define properties all users should have via the `marketplace_builder/user.yml` file.
 
@@ -21,7 +19,7 @@ searchable: true
 * **Liquid in page metadata**: Page metadata now accepts Liquid and it will evaluate it for each page render. Same for layout.
 * **Migration invoked during module installation**: Migrations added to the module will now be invoked during module installation, no need to do the full deploy.
 
-## Improvements
+<h4 class="release-note release-note__improved">IMPROVED</h4>
 
 * **Bulk update all data**: We have pushed some data import/export improvements. Now, you should be able to use data import to actually bulk update all data, not only the ones which were imported initially.
 * **Deleting line in yml file**: Deleting line in a yml file will work as expected - as if it never has been there, instead of pretending it was not deleted. This bug forced you to explicitly set the property to a blank string instead of just removing it, like for `callback_actions` in Form Configuration, etc. It will be applied only to new Instances, because we did not want to risk breaking your Instances with the next deploy if for some reason you unknowingly relied on this bug. We will add a flag to the Partner Portal soon which would allow you to leverage the bug fix in a controlled way for existing Instances.
