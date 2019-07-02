@@ -1,0 +1,74 @@
+---
+converter: markdown
+metadata:
+  title: Signing In a User Manually
+  description: This guide will help you create an authentication form for users to sign in manually.
+slug: tutorials/users/signing-in-user-manually
+searchable: true
+---
+
+This guide will help you create an authentication form for users to sign in manually.
+
+## Requirements
+
+To follow the steps in this tutorial, you should be familiar with the required directory structure for your codebase, and understand the concept of pages and users.
+
+* [Codebase](/how-platformos-works/platformos-workflow)
+* [Pages](/tutorials/pages/pages)
+* [Users](/tutorials/users/users)
+
+## Steps
+
+Signing in a user manually is a two-step process:
+
+<div data-autosteps></div>
+
+### Step 1: Create authentication form
+
+#### app/form_configurations/sign_in.liquid
+
+```liquid
+{% raw %}
+---
+name: sign_in
+resource: Session
+fields:
+  email:
+  password:
+---
+{% form %}
+  <label for="email">Email</label>
+  <input name="{{ form.fields.email.name }}" value="{{ form.fields.email.value }}" id="email" type="email">
+
+  <label for="password">Password</label>
+  <input name="{{ form.fields.password.name }}" id="password" type="password">
+  {% if form.errors.password %}
+    <p>{{ form.errors.password }}</p>
+  {% endif %}
+
+  <button>Log In</button>
+{% endform %}
+{% endraw %}
+```
+
+### Step 2: Create sign in page
+
+#### app/views/pages/sign_in.liquid
+
+```liquid
+{% raw %}
+---
+slug: sign-in
+---
+<h2>Sign in </h2>
+{% include_form 'sign_in' %}
+<p>New user? Create <a href="/developer/sign-up"> new developer account</a> or <a href="/client/sign-up">new client account</a></p>
+{% endraw %}
+```
+
+{% include 'alert/note', content: 'To set an expiration for user sessions, use the `"timeout_in_minutes":  0,` attribute in the Instance configuration settings JSON as described in the <a href="/tutorials/partner-portal/updating-instance-configuration">Updating Instance Configuration</a> tutorial. If you set the attribute to 15, for example, all users will get logged out automatically after 15 minutes of inactivity.' %}
+
+## Next steps
+Congratulations! You created a sign in page for users to sign in manually. Now you can learn about signing in a user automatically after sign up:
+
+* [Signing In a User Automatically after Sign Up](/tutorials/users/signing-in-user-automatically-after-sign-up)

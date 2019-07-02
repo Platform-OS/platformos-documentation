@@ -1,0 +1,249 @@
+---
+converter: markdown
+metadata:
+  title: GDPR Compliance in platformOS
+  description: Detailed information on GDPR compliance with examples.
+slug: tutorials/gdpr/gdpr-compliance
+searchable: true
+---
+
+The [General Data Protection Regulation (GDPR)](http://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32016R0679&from=EN) sets data protection and privacy guidelines for handling personal data of individuals within the European Union (EU). As such, it applies not only to all organizations established in the EU that handle personal data but also to any non-EU established organization that processes personal data of individuals who are in the EU. The GDPR came into force on 25 May 2018.
+
+**platformOS conforms with GDPR.** By design, it’s a technology framework built with the flexibility to adapt to any compliance standard. With many other standards in effect and new ones pending, this adaptability is key to ensuring long-term adherence to standards and regulations.
+
+## Definitions
+
+**Data controller:** a natural or legal person, public authority, agency or other body which, alone or jointly with others, determines the purposes and means of the processing of personal data. You are a data controller as soon as you do anything with other people’s personal data through your website (e.g. newsletter subscription, contact form, etc.).
+
+**Data processor:** a natural or legal person, public authority, agency or other body which processes personal data on behalf of the controller. If your platformOS sites use third-party applications that process personal data for you, they are considered data processors.
+
+**Personal data:** any information relating to an identified or identifiable natural person; an identifiable natural person is one who can be identified, directly or indirectly, in particular by reference to an identifier such as a name, an identification number, location data, an online identifier or to one or more factors specific to the physical, physiological, genetic, mental, economic, cultural or social identity of that natural person.
+
+**Sensitive data:** a sub-category of personal data that reveal any racial or ethnic origin, financial status, political opinion, philosophical belief, religion, trade-union membership, sexual orientation, concerns health or sex life, genetic data, or biometric data.
+
+## Handling and storing data
+
+Handling and storing personal data in accordance with GDPR requirements means that you have to keep personal data accurate, up-to-date, and secure. If users ask you to have their data fixed or deleted, you should respond promptly (in less than 30 days, but the sooner the better).
+
+To inform users about the way you handle personal data, you should write a Privacy Policy and make it available on your site, so that it’s easy to find. The Privacy Policy should include:
+
+* Why you collect the data (purpose)
+* What you do with the data
+* How you collect it
+* How you store it
+* How someone can get in touch with you (e.g. to delete their data)
+* Links to the privacy policies of third-party applications you use (e.g. chat, email provider)
+
+In platformOS, you gather and update data through Liquid forms. Let’s see an example of a user sign-up form for clients.
+
+#### app/form_configurations/client_sign_up.liquid
+
+```liquid
+{% raw %}
+---
+name: onboarding
+resource: User
+resource_owner: anyone
+redirect_to: /
+fields:
+  name:
+    validation: { presence: true }
+  email:
+  password:
+  profiles:
+    client:
+      properties:
+---
+
+{% form %}
+  {% assign f = form.fields %}
+
+  <input type="text" name="{{ f.name.name }}" value="{{ f.name.value }}">
+  <input type="email" name="{{ f.email.name }}" value="{{ f.email.value }}">
+  <input type="password" name="{{ f.password.name }}" value="{{ f.password.value }}">
+
+  <button>Register</button>
+{% endform %}
+{% endraw %}
+```
+
+You can use the same form with slight modifications to gather and update data: use the form with `resource_id: new` to store data, and `resource_id: [id]` to let a user update data.
+
+## Data erasure
+
+You are only allowed to store personal information for the required amount of time—then you have to take measures to securely erase it.
+
+When complying to the data erasure requirement, the main goal is to delete the personal data from production systems (live site). You should make sure to explain that the data may be stored in backup archives, that must be kept for a longer period of time. You have to ensure that data in backup archives is encrypted, and won’t be restored. You should also inform the users about how long you will retain the data in the backup. In platformOS, we keep backup archives for 7 days as a default.
+
+In platformOS, you can build your own data erasure solution using Customizations, GraphQL and Liquid: you can use a third-party API encryption service against our endpoint, and flag sensitive data for later deletion.
+
+## Getting consent
+
+You should inform your users about the purpose and way you will use their data. You should get their consent, and be able to prove later that you have, so keep a record of the consents (who, when, how, what they consented to, etc.).
+
+### Opt-in, not opt-out
+
+Consent should always be opt-in, and not opt-out. This means users should actively give their consent to you for using their data (e.g. by clicking a button or selecting a checkbox). Implied consent is not allowed, so you can’t use a pre-ticked checkbox and consider it consent if the user hasn’t unchecked it. You are not allowed to bundle checkboxes (users should  not be able to check more boxes at once), and you should make it easy for your users to withdraw their consent.
+
+If you are using a third-party email provider for newsletter subscription or a chat application, make sure they follow GDPR requirements as well.
+
+### platformOS example
+
+See some example code of a simple opt-in newsletter subscription form and an unsubscribe form implemented in platformOS.
+
+Model Schema
+
+#### app/model_schemas/newsletter.yml
+
+```yaml
+name: Newsletter
+properties:
+  - name: email
+    type: string
+```
+
+Page
+
+#### app/views/pages/newsletter/join.liquid
+
+```liquid
+{% raw %}
+---
+slug: newsletter
+layout_name: home
+---
+<h1>Join Newsletter</h1>
+{% include_form 'newsletter_form', resource_type: "newsletter" %}
+{% endraw %}
+```
+
+Form
+
+#### app/form_configurations/newsletter/join.liquid
+
+```liquid
+{% raw %}
+---
+name: newsletter_form
+resource: Customization
+flash_notice: Thank you for joining our newsletter
+return_to: '/newsletter/thank-you?email={{ form.properties.email }}'
+fields:
+  properties:
+    email:
+      validation:
+        presence: true
+---
+{% form %}
+  {% assign f = form.fields %}
+  <input type="text" name="{{ f.properties.email.name }}" value="{{ f.properties.email.value }}">
+  <button>Save</button>
+{% endform %}
+{% endraw %}
+```
+
+<img src="{{ 'images/tutorials/gdpr/join_newsletter.png' | asset_url }}" alt="Join newsletter" />
+
+Thank you page
+
+#### app/views/pages/newsletter/thankyou.liquid
+
+```liquid
+{% raw %}
+---
+slug: newsletter/thank-you
+layout_name: home
+---
+<h1>Newsletter</h1>
+
+You are now subscribed to our newsletter.
+If you wish to unsubscribe place click on <a href="/newsletter/unsubscribe?email={{ context.params.email }}">this link</a>
+{% endraw %}
+```
+
+<img src="{{ 'images/tutorials/gdpr/thankyou_page.png' | asset_url }}" alt="Thank you page" />
+
+Get newsletter graph for an email
+
+Query returning newsletters for particular user requires email as an argument.
+
+#### app/graph_queries/newsletter/get.graphql
+
+```graphql
+query get_newsletter(
+  $email: String
+)
+{
+  customizations (
+    name: "newsletter"
+    properties: [
+      {
+        name: "email"
+        value: $email
+      }
+    ]
+  )
+  {
+    results {
+      email: property(name: "email")
+      id
+    }
+  }
+}
+```
+
+Unsubscribe form
+
+#### app/form_configurations/newsletter/unsubscribe.liquid
+
+```liquid
+{% raw %}
+---
+name: unsubscribe_newsletter_form
+resource: Customization
+resource_owner: anyone
+flash_notice: You are now unsubscribed
+return_to: /
+fields:
+  properties:
+    email:
+      validation:
+        presence: true
+---
+{% form method: 'delete' %}
+  <button>Unsubscribe</button>
+{% endform %}
+{% endraw %}
+```
+
+<img src="{{ 'images/tutorials/gdpr/unsubscribe.png' | asset_url }}" alt="Unsubscribe form" />
+
+## Cookie notification
+
+The opt-in requirement applies to cookie notifications, too. Implied consent (e.g. user closing the cookie notification window) is not enough. Any new visitor to your website should click to opt-in, so the notification should have a button and a link to your cookie policy as well.
+
+The cookie policy should describe what you collect and why, even for third-party applications, like Google Analytics.
+
+platformOS Partners can implement a cookie notification in many ways, for example by adding a JavaScript cookie alert popup to their sites.  You can use available [cookie consent solutions](https://cookieconsent.insites.com/demos/) or reuse code from a [GitHub repository](https://github.com/insites/cookieconsent).
+
+## Data security
+The regulation expects data controllers to ensure the security of personal data. This means you should use some kind of encryption (e.g. SSL), and implement digital security measures. You should have the ability to recover and restore data from a disaster and implement a workflow for regular testing of security issues.
+
+You have to consider data breaches and their consequences, have a data breach response plan that ensures you can inform your users about the data breach promptly, and report the data breach to your supervisory authority in less than 72 hours.
+
+We use [Amazon Elastic Compute Cloud (Amazon EC2)](https://aws.amazon.com/ec2/) as server infrastructure, and [Amazon Simple Storage Service (Amazon S3)](https://aws.amazon.com/s3/) for data storage. All AWS services including these are GDPR compliant, learn more about them in detail in their [GDPR Center](https://aws.amazon.com/compliance/gdpr-center/).
+
+## Payment gateways
+
+From the perspective of GDPR, payment gateways are third-party applications that act as data processors. The regulation requires you to have legal contracts with these third-parties that describe:
+
+* the duration of the processing,
+* the nature of the processing,
+* the duty of confidence,
+* that data processors understand that nothing within the contract relieves the processor of its own direct responsibilities and liabilities under the GDPR.
+
+In your Privacy Policy, list the payment gateways you use, and link to their respective Privacy Policies.
+
+Most of our Partners use Stripe, a payment solution integrated into platformOS, so all sensitive information is processed through a payment gateway. See [Stripe’s GDPR guide](https://stripe.com/guides/general-data-protection-regulation) to learn more about the measures they take to ensure GDPR compliance.
+
+_Although the article covers the basics to answer the most fundamental questions, it’s not comprehensive, so you should look into the legislation and ask for legal advice about specific use cases or anything not covered in this guide. Also, there are different technical solutions or approaches to follow each requirement, so the tips we shared are usually not the only option._

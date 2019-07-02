@@ -16,7 +16,7 @@ Go to the file you would like to change, [click edit and commit changes](https:/
 
 1. [Fork the repository](https://guides.github.com/activities/forking/).
 2. Install dependencies (NPM).
-3. Change something or add a new topic. Please check if a [template](/tree/master/marketplace_builder/views/pages/doc-templates) is already available for the type of content you’d like to contribute. We have prepared templates for most content on our documentation page, to make contribution easier, and to ensure the consistency of contributed content. Please make sure to follow our [style guide](https://documentation.platform-os.com/style-guide/documentation-style-guide).
+3. Change something or add a new topic. Please check if a [template](/tree/master/app/views/pages/doc-templates) is already available for the type of content you’d like to contribute. We have prepared templates for most content on our documentation page, to make contribution easier, and to ensure the consistency of contributed content. Please make sure to follow our [style guide](https://documentation.platform-os.com/style-guide/documentation-style-guide).
 4. Create a pull request.
 5. We review your changes, and either get back to you with our feedback, or merge your changes.
 

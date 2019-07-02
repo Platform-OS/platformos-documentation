@@ -1,0 +1,119 @@
+---
+converter: markdown
+metadata:
+  title: Sharing Attributes Across Multiple Profiles
+  description: This guide will help you share Properties across multiple user profiles, if the profiles have the same attributes.
+slug: tutorials/users/sharing-attributes-across-multiple-profiles
+searchable: true
+---
+
+This guide will help you share attributes across multiple user profiles.
+If your profiles happen to have the same Properties, you can extract them to a container profile which will group them and could be used in different profiles.
+
+## Requirements
+To follow the steps in this tutorial, you should be familiar with users and user profiles. This guide builds on previous tutorials in the **Get Started: Users** section.
+
+* [Users](/tutorials/users/users)
+
+## Steps
+
+Sharing attributes across multiple user profiles is a three-step process:
+
+<div data-autosteps></div>
+
+### Step 1: Create profile template
+Create a general employee template. You can define other profiles that will have fields from the `employee` profile and some more.
+
+#### app/user_profile_types/employee.yml
+```yaml
+name: employee
+properties:
+  - name: name
+    type: string
+  - name: email
+    type: string
+  - name: emergency_contact
+    type: string
+```
+
+### Step 2: Create profiles
+
+#### app/user_profile_types/software_developer.yml
+```yaml
+name: software_developer
+properties:
+  - name: programming_languages
+    type: array
+```
+
+#### app/user_profile_types/project_manager.yml
+```yaml
+name: project_manager
+properties:
+  - name: projects_managed
+    type: array
+```
+
+### Step 3: Use profiles
+
+An example of using the software developer profile on a sign-up form:
+
+#### app/form_configurations/software_developer_signup.liquid
+```yaml
+---
+name: software_developer_signup
+return_to: /software-developer/sign-in
+resource: User
+fields:
+  profiles:
+    validation: { presence: true }
+    employee:
+      validation: { presence: true }
+      properties:
+        validation: { presence: true }
+        name: { validation: { presence: true } }
+        email: { validation: { presence: true } }
+        emergency_contact: { validation: { presence: true } }
+    software_developer:
+      validation: { presence: true }
+      properties:
+        validation: { presence: true }
+        programming_languages:  { validation: { presence: true } }
+---
+[...]
+```
+
+An example of using the project manager profile on a sign-up form:
+
+#### app/form_configurations/project_manager_signup.liquid
+```yaml
+---
+name: project_manager_signup
+return_to: /project-manager/sign-in
+resource: User
+fields:
+  profiles:
+    validation: { presence: true }
+    employee:
+      validation: { presence: true }
+      properties:
+        validation: { presence: true }
+        name: { validation: { presence: true } }
+        email: { validation: { presence: true } }
+        emergency_contact: { validation: { presence: true } }
+    project_manager:
+      validation: { presence: true }
+      properties:
+        validation: { presence: true }
+        projects:  { validation: { presence: true } }
+---
+[...]
+```
+
+{% include 'alert/note', content: 'If you would like to create a profile on sign up without assigning any property, please make sure that params would include at minimum form[profiles_attributes][<my_profile_name>_attributes]. You can achieve it with hidden input and `form` or via `default_payload` json.' %}
+{% include 'alert/note', content: 'To discover names that fields should have, explore the `form` variable by printing it on your page.' %}
+
+## Next steps
+Congratulations! You know how to share attributes across user profiles. You can learn more about Form Configurations here:
+
+* [Reference: Form Configurations](/tutorials/forms/form-configurations)

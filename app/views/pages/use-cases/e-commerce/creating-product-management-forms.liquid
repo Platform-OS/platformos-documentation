@@ -1,0 +1,999 @@
+---
+converter: markdown
+metadata:
+  title: Creating Product Management Forms
+  description: This guide will help you create forms for managing products in your store.
+slug: use-cases/e-commerce/creating-product-management-forms
+searchable: true
+---
+
+This guide will help you create forms for managing products in your store. Product management consists of three separate sections:
+
+1. **Product properties management** (described in this topic)
+2. Product images management
+3. Stock levels management
+
+## Requirements
+
+To follow this tutorial, you should be familiar with basic platformOS concepts, and the topics in the Get Started section. You should have followed this tutorial series up to the previous part "Seeding Configuration Data", where initial values for brands and product types were added to the database.
+
+- [How platformOS Works](/how-platformos-works)
+- [Get Started](/get-started)
+- [Seeding Configuration Data](/use-cases/e-commerce/seeding-configuration-data)
+- [Form Validation](/tutorials/forms/validation)
+- [Default Payload](/tutorials/forms/default-payload)
+- [Loading Related Models](/tutorials/model-schemas/loading-related-models)
+
+## Steps
+
+Creating the product properties management form is an eleven-step process:
+
+<div data-autosteps></div>
+
+### Step 1: Create the product form
+
+When building the product form you consider the following business rules:
+
+- product name is mandatory
+- price is mandatory, should be a number greater than 0
+- brand and product types are mandatory, should be selected from existing values
+- description is optional
+- when new product is created, redirect me to the details page for this product
+- when editing an existing product, redirect me back to edit form
+
+#### app/form_configurations/product/product_form.liquid
+
+```liquid
+{% raw %}
+---
+name: product_form
+resource: Customization
+redirect_to: |-
+  {%- if params.form.new_record -%}
+    /admin/product/{{ form.id }}
+  {% else %}
+    /admin/product/{{ form.id }}/edit
+  {% endif %}
+flash_notice: Product details have been saved
+fields
+  new_record:
+    property_options:
+      virtual: true
+
+  properties:
+    name:
+      validation:
+        presence:
+          message: Enter product name
+
+    description:
+
+    price:
+      validation:
+        presence:
+          message: Enter price
+        numericality:
+          greater_than: 0
+          message: Price must be larger than 0
+
+    brand_id:
+      validation:
+        presence:
+          message: Select brand
+
+    product_type_id:
+      validation:
+        presence:
+          message: Select product type
+
+default_payload: >
+  {% if form %}
+    {
+      "properties_attributes": {
+        "price": {{ context.params.properties_attributes.price | times: 100 | round: 0 }}
+      }
+    }
+  {% endif %}
+---
+
+{% graphql gb = "get_brands" %}
+{% parse_json brand_options %}
+{
+  {% for brand in gb.customizations.results %}
+    {% unless forloop.first %},{% endunless %}
+    "{{ brand.id }}": {{ brand.name | json }}
+  {% endfor %}
+}
+{% endparse_json %}
+
+{% graphql gpt = "get_product_types" %}
+{% parse_json product_type_options %}
+{
+  {% for product_type in gpt.customizations.results %}
+    {% unless forloop.first %},{% endunless %}
+    "{{ product_type.id }}": {{ product_type.name | json }}
+  {% endfor %}
+}
+{% endparse_json %}
+
+{% form, html-class: "mb-3", html-novalidate: "novalidate" %}
+
+  <input type="hidden" name="slugs" value="{{ context.params.slugs | default: "" | raw_escape_string }}">
+
+  {% unless form.fields.id.value %}
+    <input type="hidden" name="{{ form.fields.new_record.name }}" value="1">
+  {% endunless %}
+
+  {% include "forms/errors_summary", errors: form.errors %}
+
+  {%
+    include "forms/fields/text",
+      label: 'Product name',
+      field: form.fields.properties.name,
+      hint: 'Provider a descriptive name for your product'
+  %}
+
+  {%
+    assign price = form.fields.properties.price.value
+      | default: 0
+      | plus: 0.00
+      | divided_by: 100
+      | advanced_format: "%.2f"
+  %}
+
+  {%
+    include "forms/fields/text",
+      label: "Price",
+      type: "number",
+      field: form.fields.properties.price,
+      addon_prepend: "$",
+      step: 0.01,
+      min: 0.01,
+      value: price
+  %}
+
+  {%
+    include "forms/fields/select",
+      label: "Brand",
+      field: form.fields.properties.brand_id,
+      include_blank: "Select a Brand",
+      options: brand_options
+  %}
+
+  {%
+    include "forms/fields/radio_group",
+      label: "Type",
+      field: form.fields.properties.product_type_id,
+      options: product_type_options
+  %}
+
+
+  {%
+    include "forms/fields/textarea",
+      label: "Description",
+      field: form.fields.properties.description,
+      rows: 5
+  %}
+
+  <p>
+    <button type="submit" class="btn btn-primary mr-sm-3">Save</button>
+
+    {% if form.fields.id.value != blank %}
+      <a href="/admin/product/{{ form.fields.id.value }}">Cancel</a>
+    {% else %}
+      <a href="/admin/products">Cancel</a>
+    {% endif %}
+  </p>
+
+{% endform %}
+
+{% endraw %}
+```
+
+This is a long form, see important sections described one by one here:
+
+#### Handling redirect
+
+```liquid
+{% raw %}
+redirect_to: |-
+  {%- if params.form.new_record -%}
+    /admin/product/{{ form.id }}
+  {% else %}
+    /admin/product/{{ form.id }}/edit
+  {% endif %}
+
+...
+
+fields:
+  new_record:
+    property_options:
+      virtual: true
+
+...
+
+{% unless form.fields.id.value %}
+  <input type="hidden" name="{{ form.fields.new_record.name }}" value="1">
+{% endunless %}
+
+{% endraw %}
+```
+
+Forms in platformOS map their fields to the resource they are attached to. In this case `Product` model has a defined `name`, `description` etc. Whenever you want to use an extra field, that is not directly accessible on the model but is used for calculations or as in this case, to determine where to redirect the user, you can add a `virtual` field. It then can be accessed as any other field via the `form` object.
+
+In the snippet above, you’ve:
+
+- defined the `new_record` field
+- set its value to `1` whenever you have a new object (new objects do not have `id` set yet)
+- set in `redirect_to` to check request params, and decide where to redirect the user (do not worry about URLs right now, routing for product page is described in one of the next steps)
+
+{% capture content %}
+Whenever you add a new product, `redirect_to` is processed after the new database object has already been created. The ID of the newly created object can be accessed via `form.id`.
+{% endcapture %}
+{% include 'alert/note', content: content %}
+
+
+#### Handling price
+
+Entering and storing monetary values is tricky in any system. Using `float` as data type would be an intuitive way of storing values like $5.99. However, with `float` you open up your application to one major problem - unexpected rounding. You want to make sure that if you add `$5.99` and `$0.01` it does not become `$6.00000001` at any point.
+
+It’s much better to store all prices as cents, using the `integer` data type. This way `$5.99` becomes `599`, thus eliminating any issues with rounding. However, this approach comes with its own set of challenges when it comes to transforming user input to database entry.
+
+First, set basic validation rules for the price field. You can read more about [Form Validation](/tutorials/forms/validation) in our documentation.
+
+```yaml
+price:
+  validation:
+    presence:
+      message: Enter price
+    numericality:
+      greater_than: 0
+      message: Price must be larger than 0
+```
+
+Next, read the current value from the `form` object. Keep in mind that at any point it can be either `null`, `string` or `integer` so you should account for all of these cases and make sure you always deal with the same format at the end.
+
+```liquid
+{% raw %}
+{%
+  assign price = form.fields.properties.price.value
+    | default: 0
+    | plus: 0.00
+    | divided_by: 100
+    | advanced_format: "%.2f"
+%}
+{% endraw %}
+```
+
+Next, include field control in the form. You can use a shared partial, created in the [Using Shared Partials](/use-cases/e-commerce/using-shared-partials) topic.
+
+```liquid
+{% raw %}
+{%
+  include "forms/fields/text",
+    label: "Price",
+    type: "number",
+    field: form.fields.properties.price,
+    addon_prepend: "$",
+    step: 0.01,
+    min: 0.01,
+    value: price
+%}
+{% endraw %}
+```
+
+{% capture content %}
+You might have noticed additional options. Partial update is described in one of the next steps in this article.
+{% endcapture %}
+{% include 'alert/note', content: content %}
+
+Finally, transform the price value once again, just before committing it to the database. To do that, you should use [`default_payload` form configuration option](/tutorials/forms/default-payload).
+
+Price should be submitted as a `float` with two decimal spaces, so first, multiply it by 100 and then round it.
+
+```liquid
+{% raw %}
+default_payload: >
+  {% if form %}
+    {
+      "properties_attributes": {
+        "price": {{ context.params.properties_attributes.price | times: 100 | round: 0 }}
+      }
+    }
+  {% endif %}
+{% endraw %}
+```
+
+### Step 2: Extend text field partial
+
+Price field HTML control requires some additional options, that are not present yet:
+
+- display a dollar sign before input
+- set `min`, `max` and `step` attributes to enhance UX when entering data
+
+You can easily extend the existing partial to accommodate for the additional requirements.
+
+#### app/views/partials/forms/fields/text.liquid
+
+```liquid
+{% raw %}
+{% comment %}
+  Required params:
+    field: hash
+    label: string
+
+  Optional:
+    id: string
+    type: string
+    hint: string
+    readonly: boolean
+    disabled: boolean
+    addon_prepend: string
+    addon_append: string
+    min: number
+    max: number
+    step: number
+    value: string
+{% endcomment %}
+
+{%- assign _type = type | default: 'text' -%}
+{%- assign _error = field.validation.errors.first -%}
+{%- assign _default_id = field.name | slugify -%}
+{%- assign _id = id | default: _default_id -%}
+
+{%- assign _value = value | default: field.value -%}
+{%- if _type == 'password' %}
+  {% assign _value = '' %}
+{%- endif -%}
+
+{%- assign _readonly = readonly | default: false -%}
+{%- assign _disabled = disabled | default: false -%}
+
+{%- if field.validation.rules.presence != blank -%}
+  {%- assign _required = true -%}
+{%- else -%}
+  {%- assign _required = false -%}
+{%- endif -%}
+
+{% if addon_prepend %}
+  {% assign addon_prepend_id = _id | append: '-prepend-addon' %}
+{% endif %}
+
+{% if addon_append %}
+  {% assign addon_append_id = _id | append: '-append-addon' %}
+{% endif %}
+
+<div class="form-group">
+  {%
+    include 'forms/label' with label,
+      for_id: _id,
+      hint: hint,
+      required: _required
+  %}
+
+  {% if addon_prepend != blank or addon_append != blank %}
+    <div class="input-group">
+  {% endif %}
+
+  {% if addon_prepend != blank %}
+    <div class="input-group-prepend">
+      <span class="input-group-text" id="{{ addon_prepend_id }}">{{ addon_prepend }}</span>
+    </div>
+  {% endif %}
+
+  <input
+    type="{{ _type }}"
+    class="form-control{% if _error != blank %} is-invalid{% endif %}"
+    id="{{ _id }}"
+    name="{{ field.name }}"
+    value="{{ _value | default: '' | append: '' | raw_escape_string }}"
+    {% if _readonly %} readonly {% endif %}
+    {% if _required %} required {% endif %}
+    {% if _disabled %} disabled {% endif %}
+    {% if step != blank %}
+      step="{{ step }}"
+    {% endif %}
+    {% if addon_prepend or addon_append %}
+      aria-describedby="{{ addon_prepend_id }} {{ addon_append_id }}"
+    {% endif %}
+    {% if min != blank %}
+      min="{{ min }}"
+    {% endif %}
+    {% if max != blank %}
+      max="{{ max }}"
+    {% endif %}
+  />
+
+  {% if addon_append != blank %}
+    <div class="input-group-append">
+      <span class="input-group-text" id="{{ addon_append_id }}">{{ addon_append }}</span>
+    </div>
+  {% endif %}
+
+
+  {% if addon_prepend != blank or addon_append != blank %}
+    </div>
+  {% endif %}
+
+  {% include 'forms/error' with _error, id: _id %}
+</div>
+
+{% endraw %}
+```
+
+### Step 3: Add missing field types: textarea, select, radio group
+
+You are going to use some new form controls as well for collecting different types of data.
+
+#### app/views/partials/forms/fields/textarea.liquid
+
+```liquid
+{% raw %}
+{% comment %}
+  Required params:
+    field: hash
+    label: string
+
+  Optional:
+    id: string
+    hint: string
+    readonly: boolean
+    disabled: boolean
+    cols: integer
+    rows: integer
+{% endcomment %}
+
+{%- assign _error = field.validation.errors.first -%}
+{%- assign _default_id = field.name | slugify -%}
+{%- assign _id = id | default: _default_id -%}
+
+{%- assign _value = field.value -%}
+{%- assign _readonly = readonly | default: false -%}
+{%- assign _disabled = disabled | default: false -%}
+
+{%- assign _rows = rows | default: 10 -%}
+{%- assign _cols = cols | default: 70 -%}
+
+{%- if field.validation.rules.presence != blank -%}
+  {%- assign _required = true -%}
+{%- else -%}
+  {%- assign _required = false -%}
+{%- endif -%}
+
+<div class="form-group">
+  {%
+    include 'forms/label' with label,
+      for_id: _id,
+      hint: hint,
+      required: _required
+  %}
+
+  <textarea
+    class="form-control{% if _error != blank %} is-invalid{% endif %}"
+    id="{{ _id }}"
+    name="{{ field.name }}"
+    rows="{{ _rows }}"
+    cols="{{ _cols }}"
+    {% if _readonly %} readonly {% endif %}
+    {% if _required %} required {% endif %}
+    {% if _disabled %} disabled {% endif %}
+  >
+    {{- _value | default: '' | raw_escape_string -}}
+  </textarea>
+
+  {% include 'forms/error' with _error, id: _id %}
+</div>
+
+{% endraw %}
+```
+
+#### app/views/partials/forms/select.liquid
+
+```liquid
+{% raw %}
+{% comment %}
+  Required params:
+    field: hash
+    label: string
+    options: Array<{ [string]: string >}
+
+  Optional:
+    id: string
+    hint: string
+    readonly: boolean
+    disabled: boolean
+    include_blank: string
+{% endcomment %}
+
+{%- assign _error = field.validation.errors.first -%}
+{%- assign _default_id = field.name | slugify -%}
+{%- assign _id = id | default: _default_id -%}
+
+{%- assign _value = field.value -%}
+
+{%- assign _readonly = readonly | default: false -%}
+{%- assign _disabled = disabled | default: false -%}
+
+{%- if field.validation.rules.presence != blank -%}
+  {%- assign _required = true -%}
+{%- else -%}
+  {%- assign _required = false -%}
+{%- endif -%}
+
+<div class="form-group">
+  {%
+    include 'forms/label' with label,
+      for_id: _id,
+      hint: hint,
+      required: _required
+  %}
+
+  <select
+    class="custom-select{% if _error != blank %} is-invalid{% endif %}"
+    id="{{ _id }}"
+    name="{{ field.name }}"
+    {% if _readonly %} readonly {% endif %}
+    {% if _required %} required {% endif %}
+    {% if _disabled %} disabled {% endif %}
+  >
+    {% if include_blank != blank %}
+      {% if include_blank == true %}
+        {% assign include_blank_label = " - select - " %}
+      {% else %}
+        {% assign include_blank_label = include_blank %}
+      {% endif %}
+      <option value="">{{ include_blank_label }}</option>
+    {% endif %}
+
+    {% for option in options %}
+      {% assign _input_id = field.name | append: '-' | append: option[0] | slugify %}
+      <option  value="{{ option[0] | raw_escape_string }}" {% if option[0] == field.value %} selected{% endif %}>
+        {{ option[1] }}
+      </option>
+    {% endfor %}
+  </select>
+
+  {% include 'forms/error' with _error, id: _id %}
+</div>
+
+{% endraw %}
+```
+
+#### app/views/partials/forms/fields/radio_group.liquid
+
+```liquid
+{% raw %}
+{% comment %}
+  Required params:
+    field: hash
+    label: string
+    options: Array<{ [string]: string }>
+
+  Optional:
+    id: string
+    hint: string
+    readonly: boolean
+    disabled: boolean
+{% endcomment %}
+
+{%- assign _error = field.validation.errors.first -%}
+
+{%- assign _value = field.value -%}
+{%- assign _readonly = readonly | default: false -%}
+{%- assign _disabled = disabled | default: false -%}
+
+{%- if field.validation.rules.presence != blank -%}
+  {%- assign _required = true -%}
+{%- else -%}
+  {%- assign _required = false -%}
+{%- endif -%}
+
+<fieldset class="mb-4" id="{{ field.name | slugify }}">
+  <legend class="h6">
+    {{ label }}
+    {% unless _required == true %}<span>(Optional)</span>{% endunless %}
+  </legend>
+
+  {%- if hint != blank -%}
+    <p><small class="form-text text-muted">{{ hint | html_safe }}</small></p>
+  {%- endif -%}
+
+  <div class="mt-2">
+    {% for option in options %}
+      {% assign _input_id = field.name | append: '-' | append: option[0] | slugify %}
+      <div class="form-check form-check-inline">
+        <input
+          class="form-check-input"
+          type="radio"
+          name="{{ field.name }}"
+          id="{{ _input_id }}"
+          value="{{ option[0] }}"
+          {% if option[0] == _value %} checked {% endif %}
+          {% if _readonly %} readonly {% endif %}
+          {% if _disabled %} disabled {% endif %}
+        >
+        <label class="form-check-label" for="{{ _input_id }}">{{ option[1] }}</label>
+      </div>
+    {% endfor %}
+  </div>
+
+  {% include 'forms/error' with _error, id: _id %}
+</fieldset>
+{% endraw %}
+```
+
+### Step 4: Add errors summary
+
+You can improve usability of any long form (and in most cases anything more than three fields tends to become a long form on mobile) by adding errors summary on top of the form. After the form is submitted and any errors pop up, the user will be presented with an error box, where every error is linked to the appropriate input field via inline anchor link.
+
+```liquid
+{% raw %}
+{% include "forms/errors_summary", errors: form.errors %}
+{% endraw %}
+```
+
+#### app/views/partials/forms/error_summary.liquid
+```liquid
+{% raw %}
+{% comment %}
+  Required params:
+    errors: { [string]: string }
+{% endcomment %}
+
+{% if errors != empty %}
+  <div class="alert alert-danger mt-4 mb-4" role="alert">
+  <h4 class="alert-heading">There is a problem</h4>
+  <ul class="mb-0">
+    {%- for error in errors -%}
+      {% comment %} We have to connect error field name with input ID {% endcomment %}
+      {%- assign input_id = 'form-' | append: error[0] | replace: "properties.", "properties-attributes-" | slugify -%}
+      <li><a href="#{{ input_id }}">{{ error[1] }}</a></li>
+    {%- endfor -%}
+  </ul>
+</div>
+{% endif %}
+{% endraw %}
+```
+
+### Step 5: Create query to fetch products
+
+Now that the form for entering data is ready, you need a way to fetch them from the database. You should create a generic query that will be reused throughout the app to fetch lists of products.
+
+#### app/graph_queries/product/get_products.graphql
+
+```graphql
+query get_products($id: ID) {
+  customizations(id: $id, name: "product") {
+    results {
+      id
+      name: property(name: "name")
+      description: property(name: "description")
+      price: property(name: "price")
+      brand: model(join_on_property: "brand_id") {
+        name: property(name: "name")
+      }
+      product_type: model(join_on_property: "product_type_id") {
+        name: property(name: "name")
+      }
+    }
+  }
+}
+```
+
+Initially, the query will have only one parameter `$id`, but in the next topics you’ll extend it with different filters to implement filtering, pagination, etc.
+
+{% capture content %}
+`model(join_on_property: "propname")` is a useful method for [loading data from related models](/tutorials/model-schemas/loading-related-models)
+{% endcapture %}
+{% include 'alert/note', content: content %}
+
+### Step 6: Create products listing page
+
+Product management in the admin panel will consist of two controllers. First, you should create a page that handles displaying a listing with all products, that link to detail pages. For now, it will be a very simple list. In a later topic you will rebuild it to include pagination, filtering, etc.
+
+#### app/views/pages/admin/products.liquid
+
+```liquid
+{% raw %}
+---
+slug: admin/products
+layout_name: admin
+authorization_policies: [admin_user]
+metadata:
+  title: Products
+---
+{% include "common" %}
+
+{% graphql g = "get_products" %}
+
+<div class="row">
+  <div class="col-10">
+    <h1>{{ page.metadata.title }}</h1>
+  </div>
+  <div class="col-2 text-right">
+    <p><a href="/admin/product/new" class="btn btn-primary">Add a new product</a></p>
+  </div>
+</div>
+
+<ul>
+  {% for product in g.customizations.results %}
+    <li><a href="/admin/product/{{ product.id }}">{{ product.name }}</a></li>
+  {% endfor %}
+</ul>
+
+{% endraw %}
+```
+
+### Step 7: Create product management page
+
+Next page you should create will be used as a router for three different sections - details, new product form, and edit existing product form. All of these share a common URL base `/admin/product`, so it’s advisable to maintain these separate routes in one single file rather than creating separate files for each route. This way you achieve two things:
+
+1. You can have dynamic parts of the URL (product ID in this case)
+2. There is no risk of conflicts in resolving URLs that could happen if you tried to add pages where a slug for one matches the slug in the other page.
+
+#### app/views/pages/admin/product.liquid
+
+```liquid
+{% raw %}
+---
+slug: admin/product
+layout_name: admin
+authorization_policies:
+  - admin_user
+  - admin_product_page
+---
+{% comment %}
+  Supported urls:
+    /admin/product/:id
+    /admin/product/:id/edit
+    /admin/product/new
+{% endcomment %}
+
+{% include "common" %}
+
+{% if params.slug3 == "new" %}
+  {% include "admin/product/new" %}
+{% elsif params.slugs == "edit" %}
+  {% include "admin/product/edit", id: params.slug3 %}
+{% else %}
+  {% include "admin/product/show", id: params.slug3 %}
+{% endif %}
+{% endraw %}
+```
+
+_Supported urls_ comment is optional, it just helps you to identify expected URL formats handled by this router.
+
+### Step 8: Add Authorization Policy to handle 404 errors
+
+You should account for the situation where the user is trying to access an URL for a product that has been deleted (most common case for broken links). You can utilize an Authorization Policy to check if the product exists, and if not - redirect the user to a 404 page.
+
+```liquid
+{% raw %}
+---
+name: admin_product_page
+redirect_to: /404
+---
+{% comment %} New product form {% endcomment %}
+{% if params.slug3 == 'new' %}
+  true
+{% comment %} Fetch product by id {% endcomment %}
+{% elsif params.slug3 != blank %}
+  {% graphql g = "get_products", id: context.params.slug3 %}
+  {% if g.customizations.results.first != blank %}
+    true
+  {% endif %}
+{% endif %}
+
+{% endraw %}
+```
+
+### Step 9: Add product create and edit partials
+
+Once the router has been added, it’s time to add partials for specific views:
+
+#### app/views/partials/admin/product/new.liquid
+
+```liquid
+{% raw %}
+{% content_for "page_title" -%}Add a new product{%- endcontent_for %}
+
+<h1>Add a new product</h1>
+{% include_form "product_form", resource_type: "product" %}
+{% endraw %}
+```
+
+#### app/views/partials/admin/product/edit.liquid
+
+```liquid
+{% raw %}
+{% content_for "page_title" -%}Edit product{%- endcontent_for %}
+
+<h1>Edit product</h1>
+
+{%
+  include_form "product_form",
+  resource_type: "product",
+  id: context.params.slug3
+%}
+{% endraw %}
+```
+
+These partials are very similar, but it’s still advisable to keep every route in a separate file. This way it’s easier to maintain and split routing logic from actual presentation.
+
+### Step 10: Add product details partial
+
+The router you’ve created also handles displaying details of the given product.
+
+#### app/views/partials/admin/product/edit.liquid
+
+```liquid
+{% raw %}
+{% comment %}
+  Required params:
+    id: string
+{% endcomment %}
+
+{% comment %} Fetch product data {% endcomment %}
+{% graphql g = "get_products", id: id %}
+{% assign product = g.customizations.results.first %}
+
+<p><a href="/admin/products">&laquo; Products listing</a></p>
+<div class="d-flex mb-4">
+  <h1 class="flex-grow-1">{{ product.name }}</h1>
+
+  <div class="dropdown">
+    <button
+      class="btn btn-light dropdown-toggle"
+      type="button"
+      id="dropdownMenuUpload"
+      data-toggle="dropdown"
+      aria-haspopup="true"
+      aria-expanded="false"
+    >
+      Actions
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuUpload">
+      {% comment %} Edit product form link {% endcomment %}
+      <a class="dropdown-item" href="/admin/product/{{ product.id }}/edit">Edit</a>
+
+      <button
+        type="button"
+        class="dropdown-item"
+        data-toggle="modal"
+        data-target="#removeProductModal"
+      >
+        Remove
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="row mb-4">
+  <div class="col-sm-6">
+    <table class="table">
+      <tbody>
+        <tr>
+          <th scope="row">Brand</th>
+          <td>{{ product.brand.name }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Type</th>
+          <td>{{ product.product_type.name }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-sm-6 text-right">
+    {% comment %} Display price {% endcomment %}
+    <div class="display-4">{{ product.price | pricify_cents }}</div>
+  </div>
+</div>
+
+{% if product.description != blank %}
+<p>
+  <i>{{ product.description }}</i>
+</p>
+{% endif %}
+
+<div
+  class="modal fade"
+  id="removeProductModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="removeProductModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="removeProductModalLabel">
+          Danger zone
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>
+          Are you sure you want to remove this product? It will be removed
+          from your store catalogue but will still be visible in orders
+          history.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          data-dismiss="modal"
+        >
+          Cancel
+        </button>
+        {% comment %} Include form for deleting a product {% endcomment %}
+        {%
+          include_form "destroy_product_form",
+          resource_type: "product",
+          id: product.id,
+          product_name: product.name
+        %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endraw %}
+```
+
+That’s a lot of HTML, but most of it has to do with displaying a confirmation modal before you delete a product. There is one place worth mentioning:
+
+```liquid
+{% raw %}
+{{ product.price | pricify_cents }}
+{% endraw %}
+```
+
+platformOS has built-in filters for displaying monetary values: `pricify` and `pricify_cents`. The latter one assumes you provide price in cents, exactly as you’ve set up in your store.
+
+
+### Step 11: Create product delete form
+
+The last step is to add a form for deleting the product.
+
+#### app/form_configurations/product/destroy_product_form.liquid
+
+```liquid
+{% raw %}
+---
+name: destroy_product_form
+resource: Customization
+redirect_to: /admin/products
+flash_notice: Product has been deleted
+fields:
+---
+{% comment %}
+  Optional params:
+    product_name: string
+{% endcomment %}
+
+{% form method: 'DELETE' %}
+  <button type="submit" class="btn btn-danger">
+    Remove
+    {% if product_name != blank %}
+      {{ product_name }}
+    {% else %}
+      product
+    {% endif %}
+  </button>
+{% endform %}
+{% endraw %}
+```
+
+This form comes with no input fields, just one button. The important part is `method: DELETE`, which tells the server that, rather than updating a resource, you want to remove it.
+
+## Next steps
+
+Congratulations! You’ve created necessary forms to create, update, and delete your products. In the next part you’ll be [adding image management to products](/use-cases/e-commerce/adding-photos-to-products).

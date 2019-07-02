@@ -24,7 +24,7 @@ const config = {
     filename: '[name].js',
     chunkFilename: '[name].[chunkhash:3].js',
     publicPath: '',
-    path: path.resolve('marketplace_builder/assets')
+    path: path.resolve('app/assets')
   },
   bail: true,
   stats: {

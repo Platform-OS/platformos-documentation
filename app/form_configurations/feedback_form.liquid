@@ -1,0 +1,115 @@
+---
+name: feedback_form
+resource: Customization
+resource_owner: anyone
+fields:
+  properties:
+    path:
+      validation: { presence: true }
+    rate:
+      validation:
+        presence: true
+        inclusion:
+          in:
+            - 1
+            - 3
+            - 5
+    email:
+      validation: { presence: false }
+    message:
+      validation: { presence: false }
+email_notifications:
+  - new_feedback
+flash_notice: Thank you for your feedback.
+---
+{% form html-data-feedback: 'form', html-class: 'feedback-form' %}
+  <input type="hidden" name="redirect_to" value="{{ context.location.pathname }}">
+
+  {% assign p = form.fields.properties %}
+
+  {% include 'forms/shared/errors-notification' %}
+
+  <input name="{{ p.path.name }}" type='hidden' value='{{ context.location.pathname }}'>
+
+  <div class="feedback-main">
+    <div class="row">
+      <div class="col-12 feedback__title">
+        <h4>Was this page helpful?</h4>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-md-7 feedback__ratings">
+        <ul>
+          <li>
+            <label>
+              <input type="radio" name='{{ p.rate.name }}' value="5" data-feedback-selected-value="5" hidden>
+              <svg class="feedback-smile"><use xlink:href="#feedback-smile"></use></svg>
+            </label>
+          </li>
+          <li>
+            <label>
+              <input type="radio" name='{{ p.rate.name }}' value="3" data-feedback-selected-value="3" hidden>
+              <svg class="feedback-weird"><use xlink:href="#feedback-weird"></use></svg>
+            </label>
+          </li>
+          <li>
+            <label>
+              <input type="radio" name='{{ p.rate.name }}' value="1" data-feedback-selected-value="1" hidden>
+              <svg class="feedback-sad"><use xlink:href="#feedback-sad"></use></svg>
+            </label>
+          </li>
+        </ul>
+      </div>
+      {% unless context.page.metadata.skip_contribute_button == true %}
+        <div class="col-12 col-md-5 contribute-to-page">
+          {%- capture url -%}
+            https://github.com/mdyd-dev/nearme-documentation/blob/master/app/views/pages/{{ context.page.slug }}.liquid
+          {%- endcapture -%}
+          <a href="{{ url }}" target="_blank" rel="noopener">
+            <svg class="github"><use xlink:href="#github"></use></svg>
+            Contribute to this page
+          </a>
+        </div>
+      {% endunless %}
+    </div>
+  </div>
+  <div class="row feedback__questions">
+    <div data-feedback="questions" class="hidden col">
+      <div class="row">
+        <div class="col">
+          <div class="alert alert-success" role="alert">
+            <p><b>Thank you. We have received your feedback.</b></p>
+            <p>If you would like to give us more details, please do so below.</p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <label class="hidden" for="message" data-feedback-value="5">
+            We’re glad you liked our documentation page!<br />
+            Why did you like it? How could we make it even better?
+          </label>
+          <label class="hidden" for="message" data-feedback-value="3">
+            We are continuously working on our docs to make them better.<br />
+            How do you think we could improve this page?
+          </label>
+          <label class='hidden' for="message" data-feedback-value="1">
+            We’re sorry you didn’t like our documentation page.<br />
+            What was the problem? How do you think we could fix it?
+          </label>
+          <textarea type='text' id="message" name='{{ p.message.name }}'></textarea>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <label for="email">Would you like to get an answer from us?</label>
+        </div>
+        <div class="col-12">
+          <input type='email' id="email" name='{{ p.email.name }}' placeholder='Your e-mail'>
+        </div>
+      </div>
+
+      <button class="btn btn-primary mb-3">Send</button>
+    </div>
+  </div>
+{% endform %}

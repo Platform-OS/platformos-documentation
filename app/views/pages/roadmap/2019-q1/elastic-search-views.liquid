@@ -1,0 +1,111 @@
+---
+converter: markdown
+metadata:
+  title: ElasticSearch Views
+  description: This section describes a new feature - ElasticSearch Views
+  skip_contribute_button: true
+  contributors: false
+slug: roadmap/2019-q1/elastic-search-views
+searchable: true
+---
+
+This section describes a new feature: ElasticSearch Views.
+
+## Problem
+
+The problem this solves is caching complex data structures, often involving multiple levels of nesting of various models, in order to be able to quickly filter, sort, and then display the output on a certain page (mainly search pages). For example, you might want to have a search page, which displays users' names, their services, the name of the company they belong to with the logo of the company, the average review score, the number of components they have created, and so on. It should be possible to filter by company name, by their location, whether or not they provide certain services, and also to provide various sorting options.
+
+## Solution
+
+{% include "alert/note", content: "This section is work in progress, so it is likely to keep changing." %}
+
+The proposed solution is that instead of having generic `customizations` and `people` endpoints, you should be able to define your own data structures. Let's assume that you need a data structure like the following, to display a search page that displays programmers:
+
+```json
+[
+    {
+        "name": "John Doe",
+        "reviews_count": 3.5,
+        "company": {
+          "name": "platformOS",
+          "logo":  "https://example.com/pos.jpg"
+         },
+        "reviews": [
+          {
+            "stars": 3.5,
+            "author": {
+              "name": "Jane"
+            }
+          }
+        ],
+        "services": [
+          {
+            "name": "Coding"
+          }
+        ]
+    }
+]
+```
+
+We could have a directory in `app` called, for example, `cache_mappings`, and in there a file like `programmers_search.yml` with the following content:
+
+```yaml
+{% raw %}
+programmers_search:
+    programmers:
+        type: user
+        fields:
+            name:
+                type: raw
+                value: "{% user.first_name | append: ' ' | user.last_name %}"
+                depends_on:
+                  - field: first_name
+                  - field: last_name
+
+            reviews_count:
+                type: float
+                value: "{% graph_query get_reviews …, id: user.id %}"
+                depends_on:
+                  - count: review
+        belongs_to:
+            company:
+                foreign_key: "{% user.properties.company_id %}"
+                type: company
+                fields:
+                    name:
+                        type: raw
+                        value: "{% company.properties.name %}
+                        depends_on:
+                          - property: name
+                    logo:
+                        type: raw
+                        value: "{% company.custom_images.logo.url %}
+                        depends_on:
+                          - property: logo
+        collections:
+            reviews:
+                foreign_key: user_id
+                type: review
+                fields:
+                    stars:
+                        type: float
+                belongs_to:
+                    author:
+                        foreign_key: 'author_id'
+                        type: user
+                        fields:
+                            name:
+                                type: raw
+                                value: "{% author.fisrt_name | append: ' ' | append: author.last_name %}"
+            services:
+                type: service
+                fields:
+                    name:
+                        type: raw
+                        value: "{% service.properties.name %}"
+                        depends_on:
+                            - property: name
+{% endraw %}
+```
+
+The example is very verbose, but it does not need to be - it is just to show the flexibility and power of such a solution.

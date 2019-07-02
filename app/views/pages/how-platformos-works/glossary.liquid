@@ -1,0 +1,316 @@
+---
+converter: markdown
+metadata:
+  title: Glossary
+  description: Alphabetical list of platformOS-related terms.
+slug: how-platformos-works/glossary
+searchable: true
+---
+
+## Assets
+
+Assets are files that can be served by an HTTP web server without any backend/server processing. They are usually javascript, stylesheets, documents (HTML, pdf, doc), fonts, media (audio, video) etc. files.
+
+Learn more:
+
+* [Assets](/tutorials/assets/assets)
+
+## Assets, Asset Building Tools
+
+Use any tool you want to provide static assets. We prefer webpack, which is arguably the most powerful and flexible. You might want to use rollup or any other set of tools you are comfortable with, as long as the output is placed into the `assets/` directory.
+
+Learn more:
+
+* [Comparison of Build Tools (SurviveJS)](https://survivejs.com/webpack/appendices/comparison/)
+
+## Assets, Static Assets
+
+To upload a static asset into our Content Delivery Network (CDN), place your assets into the `app/assets/` directory. They will be propagated in the most efficient way for the user that is currently accessing them.
+
+Learn more:
+
+* [Using Static Assets on Your Pages](/tutorials/assets/using-static-assets-pages)
+
+## Authorization Policies
+
+Authorization Policies allow you to restrict access to forms and pages in a flexible way. Each form or page can have multiple policies attached to it.
+
+Each policy is parsed using Liquid and the system will check them in order of their appearance in the code.
+
+The system redirects the user to a URL provided by the developer if the condition is not met. You can also add a message for the user who has been rejected because of insufficient access rights.
+
+Learn more:
+
+* [Authorization Policy](/tutorials/authorization-policy/authorization-policy)
+
+## CDN
+
+We provide one of the best Content Delivery Networks in the world: CloudFront.
+
+Everything you place in the `assets/` directory will be served by this performant CDN. You can nest directories however you want, the directory structure will be kept.
+
+You access files using either the `asset_url` filter, `asset_url` hash, or composing the path yourself, since it is deterministic &ndash; it consists of cdnPath + path/to/asset.
+
+Learn more:
+
+* [Amazon CloudFront](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html)
+
+## content_for and yield
+
+Inject dynamic content into a layout from a page or partial using `content_for` and the `yield` tag. Use these to alter content that is higher from the structural point of view (layout). It is very often used when setting metadata for a particular page (i.e. title tag contents), loading per-page javascript, per-page stylesheet.
+
+Usage example:
+
+Define what you want to yield in your page:
+
+```liquid
+{% raw %}
+{% content_for 'page_title' %}platformOS Blog{% endcontent_for %}
+{% endraw %}
+```
+
+Then use yield inside the layout:
+
+```liquid
+{% raw %}
+<title>{{ yield 'page_title' }}</title>
+{% endraw %}
+```
+
+## Properties
+
+Properties are fields that you attach to a User Profile, Model Schema, etc.
+
+Some of them are provided by us to jumpstart your development &ndash; for example, we have a Model Schema called `custom_address` and it has multiple Properties baked in.
+
+Learn more:
+
+* [Properties](/tutorials/properties/properties)
+
+## Model Schemas
+
+Model Schemas have multiple use cases.
+Think of them as a custom DB table, which allows you to build highly customized features. Use them to group Properties, and allow the user to provide multiple values for each of them.
+
+For example, you can build a table that will store a user's favorite books. Each book has an author, title and a number of pages. These three fields are Properties. That’s why you can use Model Schema to group Properties.
+
+Now you can build a form that allows users to add multiple books attached to their user profile (using GraphQL).
+
+Custom address, for example, is a Custom Model with Properties attached to it for your convenience. Custom Models you create are used in the same way as our built-in one.
+
+Learn more:
+
+* [Model Schemas](/tutorials/model-schemas/model-schemas)
+
+## Environments
+
+Each marketplace has at least two environments: staging and production.
+
+Staging is used to develop and test your application before it goes live &ndash; it is a place to catch and fix bugs.
+
+If you are a Partner, you most likely will want to use a sandbox environment to develop your application and then use staging to show the client the progress, and get final sign-off before promoting changes to production.
+
+Learn more:
+
+* [Development Workflow](/how-platformos-works/platformos-workflow/development-workflow)
+
+## Form Configuration
+
+Form Configuration is a concept, which gives you full control over both the look & feel of a form, along with its behavior.
+
+Learn more:
+
+* [Form Configurations](/tutorials/forms)
+## FrontMatter (YAML)
+
+The triple dashes `---` you see in various places (e.g. Form Configurations) are called FrontMatter.
+
+They are used to define variables in a YML format. In our case, you can use Liquid and GraphQL in them, and they resolve before those variables are interpreted by the server.
+
+There are various implementations of FrontMatter, but they have one aspect in common: they parse YML embedded in a different file, and return configuration and content of that file. Configuration is between `---` & `---` and content is the rest of it.
+
+Learn more:
+
+* [YAML (Wikipedia)](https://en.wikipedia.org/wiki/YAML)
+* [FrontMatter implementation](https://www.npmjs.com/package/frontmatter)
+
+## GraphQL
+
+A query language used to communicate with our data storages.
+
+Learn more:
+
+* [Official GraphQL Documentation](https://graphql.org/learn/).
+
+## Instance
+
+The sites created on the Partner Portal are called Instances. Instances have a URL, and they represent different development environments, like staging or production.
+
+Learn more:
+
+* [Setting Up a Site on Our Platform](/get-started/setting-up-site)
+
+## Layout
+
+Layout is a special kind of Liquid view that stores code that would normally repeat on a lot of pages and is surrounding page content.
+
+The usual use case for layouts is storing HTML doctype, header, footer, javascripts.
+
+Learn more:
+
+* [Layouts](/tutorials/pages/layouts)
+
+## Liquid
+
+A template language used in platformOS to build dynamic pages, and to provide dynamic configuration (e.g. based on currently logged in user). Use Liquid to provide Authorization Policies for forms and pages, or to specify Notifications (email, SMS, API call).
+
+If you are not familiar with Liquid, our [Liquid Documentation](/api-reference/liquid/introduction) is a good starting point to learn. We have added a lot of filters and tags to make your life easier.
+
+Learn more:
+
+* [Liquid for Designers](https://github.com/Shopify/liquid/wiki/Liquid-for-Designers)
+
+## Marketplace Kit
+
+Marketplace Kit (marketplace-kit) is a tool that helps you quickly:
+
+1. develop your application (`sync` command)
+2. deploy your application (`deploy` command)
+
+Learn more:
+
+* [Marketplace Kit on GitHub](https://github.com/mdyd-dev/marketplace-kit)
+* [Installing the Marketplace Kit](/get-started/installing-marketplace-kit)
+
+## Node.js
+
+Node.js is a javascript runtime for servers based on Chrome's V8 engine. By itself, it allows developers to write and run javascript on the server.
+
+Currently, Long Term Support version is 8.x, and we always recommend you to use the newest LTS version of Node for both stability and security reasons.
+
+Learn more:
+
+* [NodeJS.org](https://nodejs.org/en/about/)
+
+## Notifications
+
+Notifications are messages sent to marketplace users (including admins) when something happens. A message can be an email, SMS or programmatic call to a 3rd party API.
+
+They can be delayed, you can use Liquid, GraphQL, and trigger conditions to decide if a Notification should be sent. It is a very powerful mechanism used for example to welcome your new users, and then follow up after they added their first item, or even if they have been inactive for some time.
+
+Learn more:
+
+* [Notifications](/tutorials/notifications/notifications)
+
+## NPM and NPM scripts
+
+NPM is a Node Package Manager that allows you to install packages published in the NPM registry. There are many different packages that you can install, some of them written by the platformOS team, like the Marketplace Kit.
+
+Learn more:
+
+* [NPM Official Documentation](https://www.npmjs.com/)
+
+## NVM
+
+Node Version Manager is an NPM package that helps you manage multiple versions of node in your system, and allows you to quickly switch between them. Install any version.
+
+Learn more:
+
+* [NVM on GitHub](https://github.com/creationix/nvm)
+
+## Page
+
+Pages are the most essential components of our platform, that define content displayed at a given path.
+
+Pages have to be located in the `views/pages` directory, and their content is rendered in place of `{{ content_for_layout }}` variable in the layout they’re using.
+
+Learn more:
+
+* [Pages](/tutorials/pages/pages)
+
+## Partial
+
+Partial is a piece of code extracted to its own file to maintain readability and rule of DRY &ndash; Don’t Repeat Yourself.
+
+Parameterize partials and use them in various places, e.g. layouts, pages, Authorization Policies, Form Configurations.
+
+Example usage:
+
+```liquid
+{% raw %}
+{% include 'layouts/blog/header' %}
+{% endraw %}
+```
+
+With variable passed to the partial:
+
+```liquid
+{% raw %}
+{% include 'layouts/shared/javascripts', include_analytics: false %}
+{% endraw %}
+```
+
+## Partner Portal
+
+The Partner Portal is an online interface where our Partners can create, manage, and configure sites built with platformOS, and manage other users of the Partner Portal. The site created on the Partner Portal will be the site you deploy and sync your changes to during development.
+
+Learn more:
+
+* [Accessing the Partner Portal](/get-started/accessing-partner-portal)
+
+## Partner
+
+Users of the Partner Portal are called Partners. Partners have the permissions to create, manage, and configure Instances. Partners can also create and manage other Partners.
+
+## Push (deploy)
+
+Pushing code to an Instance means it will pack your app into a zip file and send it to the server. In the future, only modified files will be compressed and pushed to the server.
+
+## Sync
+
+Syncing to any environment means that marketplace-kit is watching your filesystem for changes. Whenever you change a file, it automatically picks it up and sends it to the server. If this operation fails, you will see a message in your console &ndash; we have some validations on the server side to prevent you from deploying corrupted code and breaking your marketplace.
+
+## Translations
+
+Translations are yml files used for multilingual sites but also used to define date format, or flash messages.
+
+Learn more:
+
+* [Translations](/tutorials/translations/translations)
+
+## User Profiles
+
+User Profiles are roles in the marketplace. Each User Profile can be associated with any number of Properties, Categories, and Model Schemas. All users are assigned a User Profile named Default.
+
+Learn more:
+
+* [Users](/tutorials/users/users)
+* [Creating a User Profile](/tutorials/users/creating-user-profile)
+
+## Version Control System (Git)
+
+Version Control System is a tool that helps you store a history of your changes so that you can go back when things go wrong. Additionally, if you work in a team, they help you keep track of who did what, resolve potential code conflicts, discuss code, etc.
+
+platformOS recommends Git as it is decentralized and widely supported by many tools.
+
+Learn more:
+
+* [Version Control (Wikipedia)](https://en.wikipedia.org/wiki/Version_control)
+
+## Views
+
+The usual structure of a webpage with the possibility to use layouts, pages and partials:
+
+1. Create a layout: `app/views/layouts/application.liquid`
+2. Create pages with different slugs: `app/pages/about-us.liquid`
+3. Create partials that are used both in layout and pages: `app/views/layouts/shared/javascripts.liquid`, `app/views/partials/shared/contact-form.liquid`
+
+Because `_contact-form.liquid` is a partial it can be used in multiple places, about-us page, contact-us page, and in a configuration form.
+
+## YAML
+
+A human-friendly data serialization standard used in platformOS for setting properties in configuration files.
+
+Learn more:
+
+* [Official YAML Documentation](http://www.yaml.org/start.html)
