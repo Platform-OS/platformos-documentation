@@ -135,7 +135,7 @@ pipeline {
     failure {
       script {
         if (env.GIT_BRANCH == 'master') {
-          slackSend (channel: "#notifications-docs", color: '#FF0000', message: "FAILED: <${env.BUILD_URL}|Open build details> - ${buildDuration()}")
+          slackSend (channel: "#notifications-docs", color: '#FF0000', message: "FAILED: <${env.BUILD_URL}|Build #${env.BUILD_NUMBER}> - ${buildDuration()}. ${commitInfo()}")
         }
       }
     }

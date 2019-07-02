@@ -1,0 +1,19 @@
+{% capture callout_questions %}
+  <h2>Questions?</h2>
+
+  <p>We are always happy to help with any questions you may have.</p>
+
+  <div class="callout__actions">
+    <a href="/contact" class="btn btn-primary">contact us</a>
+  </div>
+{% endcapture %}
+
+<div class="callout callout--padding-sm callout--border-top">
+  <div class="container">
+    {% if context.page.metadata.questions == false %}
+      {% yield "callout_content" %}
+    {% else %}
+      {{ callout_questions }}
+    {% endif %}
+  </div>
+</div>
