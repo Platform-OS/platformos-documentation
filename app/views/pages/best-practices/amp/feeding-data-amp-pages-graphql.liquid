@@ -112,12 +112,15 @@ Create the GraphQL query that fetches product data `app/graph_queries/get_produc
 
 ```graphql
 query get_products($slug: String) {
-  products: customizations(
-    name: "product"
-    is_deleted: false
-    properties: [
-      { name: "slug", value: $slug }
-    ]
+  products: models(
+    filter: {
+      name: { value: "product" }
+      deleted_at: { value: null }
+      properties: [
+        { name: "slug", value: $slug }
+      ]
+    }
+    per_page: 100
   ) {
     total_entries
     results {

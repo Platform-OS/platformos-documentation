@@ -99,7 +99,7 @@ default_payload: >
 {% graphql gb = "get_brands" %}
 {% parse_json brand_options %}
 {
-  {% for brand in gb.customizations.results %}
+  {% for brand in gb.models.results %}
     {% unless forloop.first %},{% endunless %}
     "{{ brand.id }}": {{ brand.name | json }}
   {% endfor %}
@@ -109,7 +109,7 @@ default_payload: >
 {% graphql gpt = "get_product_types" %}
 {% parse_json product_type_options %}
 {
-  {% for product_type in gpt.customizations.results %}
+  {% for product_type in gpt.models.results %}
     {% unless forloop.first %},{% endunless %}
     "{{ product_type.id }}": {{ product_type.name | json }}
   {% endfor %}
@@ -663,7 +663,7 @@ Now that the form for entering data is ready, you need a way to fetch them from 
 
 ```graphql
 query get_products($id: ID) {
-  customizations(id: $id, name: "product") {
+  models(filter: { id: {value: $id }, { name: { exact: "product" }}, per_page: 100) {
     results {
       id
       name: property(name: "name")
@@ -716,7 +716,7 @@ metadata:
 </div>
 
 <ul>
-  {% for product in g.customizations.results %}
+  {% for product in g.models.results %}
     <li><a href="/admin/product/{{ product.id }}">{{ product.name }}</a></li>
   {% endfor %}
 </ul>
@@ -779,7 +779,7 @@ redirect_to: /404
 {% comment %} Fetch product by id {% endcomment %}
 {% elsif params.slug3 != blank %}
   {% graphql g = "get_products", id: context.params.slug3 %}
-  {% if g.customizations.results.first != blank %}
+  {% if g.models.results.first != blank %}
     true
   {% endif %}
 {% endif %}
@@ -834,7 +834,7 @@ The router you’ve created also handles displaying details of the given product
 
 {% comment %} Fetch product data {% endcomment %}
 {% graphql g = "get_products", id: id %}
-{% assign product = g.customizations.results.first %}
+{% assign product = g.models.results.first %}
 
 <p><a href="/admin/products">&laquo; Products listing</a></p>
 <div class="d-flex mb-4">

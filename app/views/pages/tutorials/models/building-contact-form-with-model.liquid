@@ -1,13 +1,13 @@
 ---
 converter: markdown
 metadata:
-  title: Building a Contact Form with Customization
-  description: This guide will help you understand the process of building a contact form backed up with Customization.
-slug: tutorials/customizations/building-contact-form-with-customization
+  title: Building a Contact Form with Model
+  description: This guide will help you understand the process of building a contact form backed up with Model.
+slug: tutorials/models/building-contact-form-with-model
 searchable: true
 ---
 
-This guide will help you understand the process of building a contact form backed up with Customization. Whenever you need to build a simple contact form, blog functionality, or complex API endpoint, you can define any data structure you need with Customizations.
+This guide will help you understand the process of building a contact form backed up with Model. Whenever you need to build a simple contact form, blog functionality, or complex API endpoint, you can define any data structure you need with Models.
 
 ## Requirements
 
@@ -19,13 +19,13 @@ This guide will help you understand the process of building a contact form backe
 
 ## Steps
 
-Building a Contact Form with Customization is a nine-step process:
+Building a Contact Form with Model is a nine-step process:
 
 <div data-autosteps></div>
 
 ### Step 1: Define Contact &ndash; Model Schema
 
-To define a new Model Schema, use YAML files placed in the `model_schemas` directory. In the key-value format, you can define a name for your Customization, and an array of Properties for the Customization object. To build a Contact Form, you'll need email, name, and description attributes on the Customization that you can call a `contact`.
+To define a new Model Schema, use YAML files placed in the `model_schemas` directory. In the key-value format, you can define a name for your Model, and an array of Properties for the Model object. To build a Contact Form, you'll need email, name, and description attributes on the Model that you can call a `contact`.
 
 #### model_schemas/contact.yml
 
@@ -40,7 +40,7 @@ properties:
   type: string
 ```
 
-The basic Configuration of the Customization consists of a name and the list of Properties. In the example above, you have defined three attributes of type `string`.
+The basic Configuration of the Model consists of a name and the list of Properties. In the example above, you have defined three attributes of type `string`.
 
 For more information on Properties please see [Properties Documentation](/tutorials/properties/properties/).
 
@@ -78,7 +78,7 @@ Now that you have created the `Contact` custom model type in the previous step, 
 
 ```graphql
 query get_contacts($id: ID) {
-  customizations(name: "modules/contacts/contact", id: $id) {
+  models(filter: { name: { exact: "modules/contacts/contact" }, id: { value: $id } }, per_page: 100) {
     results {
       id
       name: property(name: "name")
@@ -92,7 +92,7 @@ query get_contacts($id: ID) {
 To see if the above query works properly you can head to the next section to learn how to embed query results with page view or use [pos-cli gui](/best-practices/qa/developing-graphql-queries-using-pos-cli-gui)
 
 
-### Step 4: Render Customizations within page
+### Step 4: Render Models within page
 
 Display contacts as a list with the possibility to get to the contact details view.
 As a first step, you need a page that will respond to given paths:
@@ -111,9 +111,9 @@ slug: contacts
 {%- graphql g = "modules/contacts/get_contacts", id: id -%}
 
 {%- if id == blank -%}
-  {% include 'modules/contacts/contacts/list', contacts: g.customizations.results %}
+  {% include 'modules/contacts/contacts/list', contacts: g.models.results %}
 {%- else -%}
-  {% include 'modules/contacts/contacts/show', contact: g.customizations.results.first %}
+  {% include 'modules/contacts/contacts/show', contact: g.models.results.first %}
 {%- endif -%}
 {% endraw %}
 ```
@@ -153,7 +153,7 @@ slug: contacts
 
 ### Step 5: Build Contact Form with HTML
 
-In Step 2: Define Contact Form-Data Creation, you have created a form file called `contact_form`, that configures the form object. This was a minimal example to allow sending requests to our API endpoint, and create Customization objects. Now you can extend this file with HTML, that renders the form to our users. The HTML part of the file comes after the configuration part, i.e. after the closing `---` tag.
+In Step 2: Define Contact Form-Data Creation, you have created a form file called `contact_form`, that configures the form object. This was a minimal example to allow sending requests to our API endpoint, and create Model objects. Now you can extend this file with HTML, that renders the form to our users. The HTML part of the file comes after the configuration part, i.e. after the closing `---` tag.
 
 
 ```yaml
@@ -215,7 +215,7 @@ To display the form on the previously created `contacts` page you have to includ
 {% endraw %}
 ```
 
-As a result, you should be able to create Customization objects, called Contact with simple form submission, and list them after fetching with GraphQL.
+As a result, you should be able to create Model objects, called Contact with simple form submission, and list them after fetching with GraphQL.
 
 ### Step 6: Delete contact
 
@@ -300,7 +300,7 @@ To play with a live example (in much fuller form and with additional information
 
 ## Next steps
 
-Congratulations! You have learned how to build forms with Customization. You can now explore our reference documentation for Properties and Model Schemas:
+Congratulations! You have learned how to build forms with Model. You can now explore our reference documentation for Properties and Model Schemas:
 
 * [Properties](/tutorials/properties/properties)
 * [Model Schemas](/tutorials/model-schemas/model-schemas)

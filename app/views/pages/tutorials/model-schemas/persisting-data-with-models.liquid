@@ -1,9 +1,9 @@
 ---
 converter: markdown
 metadata:
-  title: Persisting Data With Customizations
+  title: Persisting Data With Models
   description: Build your custom data structure without any limitations with Model Schemas.
-slug: tutorials/model-schemas/persisting-data-with-customizations
+slug: tutorials/model-schemas/persisting-data-with-models
 searchable: true
 ---
 
@@ -31,7 +31,7 @@ touch app/model_schemas/todo.yml
 ## Step 3: Definition of Model Schema
 Using the editor of choice, add the definition of Model Schema.
 
-The code below is the description of properties that Customization will accept and the name of Model Schema object that is used to identify the object.
+The code below is the description of properties that Model will accept and the name of Model Schema object that is used to identify the object.
 For full list of Types that can be used see [CustomAttribute Types](/tutorials/properties/user-defined#property-types)
 
 ```yaml
@@ -86,27 +86,27 @@ the result for that query depending on your instance state should be similar to:
 }
 ```
 
-## Step 5: Customization Creation
+## Step 5: Model Creation
 
-In [Building Contact Form With Customization tutorial](/tutorials/customizations/building-contact-form-with-customization) you will learn in details how to create Customizations.
+In [Building Contact Form With Model tutorial](/tutorials/models/building-contact-form-with-model) you will learn in details how to create Models.
 
 ## Step 6: Model Schema change
 
-  As you know by now Customizations and Model Schema objects are strictly related as the definition of properties allows for storing the data in platformOS backend systems.
-  Once you have data persisted within Customization you need to be aware of how changes in CustomModelType affect your Customization objects:
+  As you know by now Models and Model Schema objects are strictly related as the definition of properties allows for storing the data in platformOS backend systems.
+  Once you have data persisted within Model you need to be aware of how changes in CustomModelType affect your Model objects:
 
-  * **custom model type definition delete** - you can only delete your Model Schema object if there is no related Customization object. Use [customizations_delete_all](/api-reference/graphql/mutations#customizations_delete_all) mutation to delete all related Customization objects.
+  * **custom model type definition delete** - you can only delete your Model Schema object if there is no related Model object. Use [models_delete_all](/api-reference/graphql/mutations#models_delete_all) mutation to delete all related Model objects.
 
-      If you try to deploy with orphaned Customization, you will see the following message:
+      If you try to deploy with orphaned Model, you will see the following message:
 
       ```bash
-      Cannot delete record because of dependent customization of type: todo
+      Cannot delete record because of dependent model of type: todo
       Use the mutation below to remove dependent objects:
-      mutation { customizations_delete_all(model_schema_name: "todo") { count } }
+      mutation { models_delete_all(model_schema_name: "todo") { count } }
       ```
-  * **name change** - as platformOS detects ModelSchema definition by its name, if you change it is equal with adding new ModelSchema, please note that Customization objects are not automatically migrated and will be treated as orphaned with next deploy attempt, see error message above.
+  * **name change** - as platformOS detects ModelSchema definition by its name, if you change it is equal with adding new ModelSchema, please note that Model objects are not automatically migrated and will be treated as orphaned with next deploy attempt, see error message above.
   * **add new custom model type property** - adding new properties is a valid change that does not need additional actions, the data remains untouched.
-  * **delete of custom model type property** - deletion of the property is a valid change, data stored in related Customization properties will remain saved but will not be accessible. Use migration to remove the data prior to the change.
+  * **delete of custom model type property** - deletion of the property is a valid change, data stored in related Model properties will remain saved but will not be accessible. Use migration to remove the data prior to the change.
   * **property edition** - is a valid change and is equal to the removal of property with old name and creation of new property, data is not migrated.
 
 
