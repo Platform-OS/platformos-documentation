@@ -11,13 +11,45 @@ searchable: true
 
 ## Fields
 
+**All Custom Address fields are optional.** This way it's possible to define the structure of a stored address in any way that makes sense for the application logic.
+
+For example, the address can be stored as one line in the `address` field:
+
+```yaml
+custom_addresses:
+  personal_address:
+    address:
+      validation: { presence: true }
+```
+
+In that case the address could be: `address: "455 Larkspur Dr. Apt 23, Baviera, CA 92908"`
+
+Or it can be stored in separate fields split into as many fields as needed, for example:
+
+```yaml
+custom_addresses:
+  personal_address:
+    street:
+      validation: { presence: true }
+    city:
+      validation: { presence: true }
+    state:
+      validation: { presence: true }
+    postcode:
+      validation: { presence: true }
+```
+
+In which case the address could be represented as: `street: "455 Larkspur Dr. Apt 23", city: "Baviera", state: "CA", postcode: "92908"`
+
+platformOS does not do any geolocation or processing of the Custom Address fields, all control is passed on to the frontend code.
+
 Each address supports the following self-descriptive fields:
 
 | Field name        | Type   | Note                                                                                                                                          |
 | ----------------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
 | address           | String | Address that has been sent via form &ndash; usually original input from user                                                                          |
-| latitude          | Float  | Latitude part of coordinate used for geo searching                                                                                            |
-| longitude         | Float  | Longitude part of coordinate used for geo searching                                                                                           |
+| latitude          | Float  | Latitude part of the coordinate used for geo searching. Has to be in the <-90, 90> range if present                                                                                           |
+| longitude         | Float  | Longitude part of the coordinate used for geo searching. Has to be in the <-180, 180> range if present                                                                                          |
 | formatted_address | String | Formatted address that you want to display on your site. E.g. you can send `address` to the Google API and get a more complete address to display. |
 | apartment         | String | Apartment number                                                                                                                              |
 | street            | String |
