@@ -44,7 +44,7 @@ pipeline {
 
     stage('Test on URL') {
       when { expression { return !params.MP_URL.isEmpty() } }
-      agent { docker { image "platformos/testcafe" } }
+      agent { docker { image "platformos/testcafe-pos-cli" } }
       environment { MP_URL = "${params.MP_URL}" }
       steps {
         sh 'npm run test-ci'
@@ -63,7 +63,7 @@ pipeline {
         MPKIT_URL = "${staging_url}"
       }
 
-      agent { docker { image 'platformos/pos-cli' } }
+      agent { docker { image 'platformos/testcafe-pos-cli' } }
 
       steps {
         sh 'pos-cli deploy'
@@ -98,7 +98,7 @@ pipeline {
         MPKIT_URL = "${production_url}"
       }
 
-      agent { docker { image 'platformos/pos-cli' } }
+      agent { docker { image 'platformos/testcafe-pos-cli' } }
 
       steps {
         sh 'pos-cli deploy'
