@@ -36,7 +36,7 @@ pipeline {
     stage('Deploy to URL') {
       when { expression { return !params.MP_URL.isEmpty() } }
       environment { MPKIT_URL = "${params.MP_URL}" }
-      agent { docker { image 'platformos/pos-cli' } }
+      agent { docker { image 'platformos/testcafe-pos-cli' } }
       steps {
         sh 'pos-cli deploy'
       }
