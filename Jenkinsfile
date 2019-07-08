@@ -9,6 +9,7 @@ pipeline {
   environment {
     MPKIT_TOKEN = credentials('POS_TOKEN')
     MPKIT_EMAIL = "darek+ci@near-me.com"
+    CI = true
   }
 
   parameters {
