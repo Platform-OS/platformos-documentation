@@ -36,9 +36,9 @@ pipeline {
     stage('Deploy to URL') {
       when { expression { return !params.MP_URL.isEmpty() } }
       environment { MPKIT_URL = "${params.MP_URL}" }
-      agent { docker { image 'platformos/marketplace-kit' } }
+      agent { docker { image 'platformos/pos-cli' } }
       steps {
-        sh 'marketplace-kit deploy'
+        sh 'pos-cli deploy'
       }
     }
 
@@ -63,10 +63,10 @@ pipeline {
         MPKIT_URL = "${staging_url}"
       }
 
-      agent { docker { image 'platformos/marketplace-kit' } }
+      agent { docker { image 'platformos/pos-cli' } }
 
       steps {
-        sh 'marketplace-kit deploy'
+        sh 'pos-cli deploy'
       }
     }
 
@@ -98,10 +98,10 @@ pipeline {
         MPKIT_URL = "${production_url}"
       }
 
-      agent { docker { image 'platformos/marketplace-kit' } }
+      agent { docker { image 'platformos/pos-cli' } }
 
       steps {
-        sh 'marketplace-kit deploy'
+        sh 'pos-cli deploy'
       }
     }
 
