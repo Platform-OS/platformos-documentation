@@ -1,0 +1,124 @@
+---
+converter: markdown
+metadata:
+  title: Code Quality and Performance Best Practices
+  description: In this article, we share our experience on how you can improve the code quality of your platformOS site, and test and improve performance. You’ll find best practices, examples of what not to do, and tips for tools to use. 
+slug: best-practices/performance/code-quality-performance
+searchable: true
+---
+
+In this article, we share our experience on how you can improve the code quality of your platformOS site, and test and improve performance. You’ll find best practices, examples of what not to do, and tips for tools to use. 
+
+**High-quality code** that’s clean, readable, and consistent is easier to understand, maintain, and extend. A well-designed software with less code complexity is easier to test, more robust, and more secure. All of these factors make sure that high-quality code has less technical debt and is more cost-efficient to work with in the long run. 
+
+On the other hand, your code should also **perform well**: it should be blazing fast to keep visitors on your site, provide the best user experience, and rank high in search results. According to the Google/SOASTA Research, 2017, as the page load time goes from 1 second to 3 seconds, the probability of bounce increases by 32%. The more page load time increases, the grimmer the outlook, as shown by the results of the [Google/SOASTA Research, 2017](https://www.thinkwithgoogle.com/marketing-resources/data-measurement/mobile-page-speed-new-industry-benchmarks/). 
+
+As page load time goes from:
+
+* 1s to 3s, the probability of bounce increases 32%
+* 1s to 5s, the probability of bounce increases 90%
+* 1s to 6s, the probability of bounce increases 106%
+* 1s to 10s, the probability of bounce increases 123%
+
+## Code quality
+
+When improving the code quality, you should consider many different factors. These are the basics — we’ll move on to back-end and front-end specific aspects later on:
+
+* Always aim for maintainability: make sure your code is simple and easy to read. 
+* Pay attention to naming: Consistent, logical naming helps when you return to your code after a break or hand it over to someone else.
+* Take advantage of the hash/object data structure: It’s often better to keep a couple of hashes as data containers than having too many variables. Hashes also act as an excellent name spacing technique.
+* Use a version control system. 
+
+## Front-end
+
+Let’s explore front-end related factors that contribute to code quality, performance, security, and some other aspects like SEO and accessibility.
+
+### Code quality
+
+Use modern front-end development techniques:
+
+* Mobile first
+* Progressive enhancement
+* Graceful degradation
+* Responsive web design
+* Progressive web apps
+* Web components
+* SVG
+* Code splitting to take advantage of http2 on CDN
+* Ideally, your code should be tested using End-to-End testing to make sure no regressions are introduced while maintaining the project/module. We recommend [TestCafe](/best-practices/qa/testcafe) for testing. 
+
+{% capture content %}
+Avoid these bad practices:
+
+* Obtrusive JavaScript
+* Synchronously loaded 3rd party scripts
+* Inline JavaScript performing DOM operations
+* Including a high number of helper dependencies
+* Including a lot more fonts than its necessary
+* Using font icons where an SVG alternative is available
+* Including big monolith dependencies (e.g.  jquery-ui - 280KB) instead of scripts that do one thing but do it well
+{% endcapture %}
+{% include 'alert/important', content: content %}
+
+### Performance
+
+Firstly, there’s a myth that highly dynamic pages, that need to load content that might have changed regularly can NOT meet high benchmark speeds.  This is definitely a myth.
+
+In fact, we have client sites that have dynamic content for User Profiles, Products and Projects Status Changes, Activity Count Summing - all on one page - and still achieve 99/100 Google Page speed scores.
+
+There are techniques for caching, removal of n+1 queries, summing aggregation, lazy loading and only loading DB data that’s immediately needed by the page viewer, to ensure that the most onerous, data-driven, dynamic page is blazing fast.
+
+Use [PageSpeed Insights](https://developers.google.com/speed/pagespeed/insights/). In benchmarks, aim for at least 75 for both mobile/desktop for new projects and 85+ for projects that have been launched to production already. Fixing recommendations from PageSpeed insights and long-running server-side code is very important.
+
+{% capture content %}
+Examples of bad practices:
+
+* Uncompressed images, wrong sizes of images, wrong format of images
+* Including whole frameworks/libraries when it can be tree-shaken to a fraction of the size
+* Loading everything synchronously when it is not needed on a page
+* Not utilizing browser cache
+{% endcapture %}
+{% include 'alert/important', content: content %}
+
+Besides running automated checks, click and scroll through the page manually to verify that it’s smooth and jank-free. 
+
+### Security
+
+Avoid 3rd party javascript code if possible - it can cause data leaks, MiTM attacks, and create other vectors of attacks. Tag managers are especially bad (Google tag manager being the most popular) — they allow marketing people to inject anything anywhere without technical knowledge. 99% of the time it ends in disaster regarding performance and UX.
+
+{% capture content %}
+Examples of bad practices:
+
+* Loading JavaScript libraries from 3rd party CDNs when a self-hosted, alternative is available
+* Sending sensitive user data in query params (ie. password) — it should be sent using POST/PUT methods and forms
+* Making files "private" by giving them long/random names — only a signed URL that expires after X minutes is secure.
+{% endcapture %}
+{% include 'alert/important', content: content %}
+
+### Other aspects to consider
+
+* Visit your site on a mobile device to evaluate if it is usable on a phone. Sometimes clients don't require a responsive webpage and that’s fine, but it should be somehow usable. The recommended approach to CSS is mobile first.
+* Basic SEO tags and OpenGraph metadata should be included for social media (rich media) optimization purposes. This includes the proper usage of HTML tags, especially headings.
+* An assets build process is required for many of the recommendations described above.
+* Your page should comply to [WCAG 2.0 guidelines](https://www.w3.org/TR/WCAG20/) at the AA level as a minimum and have no issues in [Lighthouse](https://developers.google.com/web/tools/lighthouse/) (page insights) in the accessibility section. 
+
+## Back-end
+
+### Code quality
+
+* Your code should be modular: placed in modules and divided by features/group of features.
+* Pay attention to indentation in your files. .editorconfig is a great and universal tool to keep it consistent across all team members.
+* Your codebase should not have "dead" or debugging code that’s active. This is especially true for logging (as it takes CPU time to log and DB space to store).
+* Do not keep commented code in your codebase. Remove it and if you need it, you will find it in your version control system if you need it again. 
+
+
+### Performance
+
+* Cache everything that you can, like pages or fragments. platformOS provides excellent [tools for caching](/best-practices/performance/cache), and they can make your webpage blazingly fast. You have huge flexibility in that regard, experiment and take advantage of it.
+* Lazy-load: Using front-end and back-end techniques (AJAX and pages respectively) you can prevent a page from being blocked for too long on the TTFB phase until you figure out a proper fix for your long-running blocks of code.
+* Asynchronous calls: Using our background job mechanisms (like [async callbacks](/tutorials/forms/form-configuration#async_callback_actions) or [API call notifications](/tutorials/notifications/creating-api-call-notification)) you can perform actions in the background without blocking the main thread (http request → response flow) which allows you to architect your application in a much more performant way than in the standard synchronous paradigm.
+* Lack of n+1: Observe your DB queries closely. Use profiler, logs, and the time_diff filter to measure the timing of your code block executions to find bottlenecks and remove them. We introduced [related models](/tutorials/custom-model-types/loading-related-models) in platformOS to make your life easier when it comes to removing n+1 issues.
+* Pull exactly what you need from the DB using GraphQL — and nothing more. Keep your queries tidy. As a side effect, this will make your partial caching easier.
+
+
+
