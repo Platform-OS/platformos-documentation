@@ -9,6 +9,7 @@ pipeline {
   environment {
     MPKIT_TOKEN = credentials('POS_TOKEN')
     MPKIT_EMAIL = "darek+ci@near-me.com"
+    CI = true
   }
 
   parameters {
@@ -36,15 +37,15 @@ pipeline {
     stage('Deploy to URL') {
       when { expression { return !params.MP_URL.isEmpty() } }
       environment { MPKIT_URL = "${params.MP_URL}" }
-      agent { docker { image 'platformos/marketplace-kit' } }
+      agent { docker { image 'platformos/testcafe-pos-cli' } }
       steps {
-        sh 'marketplace-kit deploy'
+        sh 'pos-cli deploy'
       }
     }
 
     stage('Test on URL') {
       when { expression { return !params.MP_URL.isEmpty() } }
-      agent { docker { image "platformos/testcafe" } }
+      agent { docker { image "platformos/testcafe-pos-cli" } }
       environment { MP_URL = "${params.MP_URL}" }
       steps {
         sh 'npm run test-ci'
@@ -63,10 +64,10 @@ pipeline {
         MPKIT_URL = "${staging_url}"
       }
 
-      agent { docker { image 'platformos/marketplace-kit' } }
+      agent { docker { image 'platformos/testcafe-pos-cli' } }
 
       steps {
-        sh 'marketplace-kit deploy'
+        sh 'pos-cli deploy'
       }
     }
 
@@ -98,10 +99,10 @@ pipeline {
         MPKIT_URL = "${production_url}"
       }
 
-      agent { docker { image 'platformos/marketplace-kit' } }
+      agent { docker { image 'platformos/testcafe-pos-cli' } }
 
       steps {
-        sh 'marketplace-kit deploy'
+        sh 'pos-cli deploy'
       }
     }
 
