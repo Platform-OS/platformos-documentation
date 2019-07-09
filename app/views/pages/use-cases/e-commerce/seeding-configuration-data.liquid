@@ -237,7 +237,7 @@ fields:
 ### Step 5: Create migrations
 
 ```shell
-marketplace-kit migrations generate development create_brands
+pos-cli migrations generate development create_brands
 ```
 
 #### app/migrations/TIMESTAMP_create_brands.liquid
@@ -248,7 +248,7 @@ marketplace-kit migrations generate development create_brands
 {% endraw %}
 
 ```shell
-marketplace-kit migrations generate development create_product_types
+pos-cli migrations generate development create_product_types
 ````
 
 #### app/migrations/TIMESTAMP_create_product_types.liquid
@@ -261,7 +261,7 @@ marketplace-kit migrations generate development create_product_types
 
 ### Step 6: Run migrations
 
-Deploying your code or executing migrations with the `marketplace-kit migration run` command will save all of the data to the database. In the future, in order to add new brands, you can simply edit `brand.yml` and add a new migration that includes the processor file.
+Deploying your code or executing migrations with the `pos-cli migration run` command will save all of the data to the database. In the future, in order to add new brands, you can simply edit `brand.yml` and add a new migration that includes the processor file.
 
 {% capture content %}
 There is quite a lot of overlap between `brand` and `product_type` models. Above example could be streamlined and optimized, to use common queries, Form Configurations, etc.

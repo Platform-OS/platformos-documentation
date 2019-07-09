@@ -22,14 +22,14 @@ When you install a module, there is no way to parametrize it other than by using
 
 A solution is needed that:
 
-* will work both from the Marketplace Kit and the Partner Portal
+* will work both from the pos-cli and the Partner Portal
 * will work before configuration records are created in the back-end
 * will allow unchanged development flow (*sync* and *deploy*)
 * will be configurable
 
 ## Solution
 
-A solution that is partially implemented uses the Marketplace Kit (Partner Portal internally uses the Marketplace Kit for module deployment, so internally it's commonplace). In Marketplace Kit, there is a piece of code run on the file before it gets synced or deployed that handles additional layer of templating.
+A solution that is partially implemented uses the pos-cli (Partner Portal internally uses the pos-cli for module deployment, so internally it's commonplace). In pos-cli, there is a piece of code run on the file before it gets synced or deployed that handles additional layer of templating.
 
 ### Technical details
 
@@ -87,5 +87,5 @@ Benefits of this solution:
 
 * It will not change the current workflow.
 * It will be easy to support.
-* The configuration for template values can be placed anywhere and can be passed in as a parameter to the Marketplace Kit (possibility of multiple configurations in development).
+* The configuration for template values can be placed anywhere and can be passed in as a parameter to the pos-cli (possibility of multiple configurations in development).
 * It is easy to use from the Partner Portal where upon clicking "Install", the user would be asked to provide values for keys registered by the module creator, who will be able to provide defaults.

@@ -22,15 +22,15 @@ Migrating data is a three-step process:
 <div data-autosteps></div>
 
 ### Step 1: Generate empty migration
-Generate an empty migration using the `marketplace-kit migrations` command:
+Generate an empty migration using the `pos-cli migrations` command:
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
-marketplace-kit migrations generate ENVIRONMENT MIGRATION_NAME
+pos-cli migrations generate ENVIRONMENT MIGRATION_NAME
 </code></pre>
 
 For example:
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
-marketplace-kit migrations generate local add_some_books
+pos-cli migrations generate local add_some_books
 </code></pre>
 
 On success, this generates an empty migration in the `app/migrations` directory.
@@ -38,7 +38,7 @@ On success, this generates an empty migration in the `app/migrations` directory.
 You can use the `list` command to see all migrations created on an environment:
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
-marketplace-kit migrations list local
+pos-cli migrations list local
 </code></pre>
 
 Please note that the name you provide will be prefixed with a UTC timestamp, that looks like this: `20180731120002`. In this example, the file created will be named something like this: `20180909123423_add_some_books.liquid`.
@@ -61,24 +61,24 @@ For example, the following mutation can be put into the file created by the comm
 
 {% include 'alert/note', content: 'You can use deploy or sync, but the migration you want to execute has to be delivered to the target environment first.' %}
 
-The deployment will upload and <b>try to run migrations one by one (ordered by timestamp)</b> and it will fail if one of the migrations fails. In the context of modules, migrations are run when the deployment is done through the Partner Portal or using the `marketplace-kit deploy -p` option.
+The deployment will upload and <b>try to run migrations one by one (ordered by timestamp)</b> and it will fail if one of the migrations fails. In the context of modules, migrations are run when the deployment is done through the Partner Portal or using the `pos-cli deploy -p` option.
 
-The `marketplace-kit migrations run` command starts a background process that runs a single migration:
+The `pos-cli migrations run` command starts a background process that runs a single migration:
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
-marketplace-kit migrations run ENVIRONMENT MIGRATION_TIMESTAMP
+pos-cli migrations run ENVIRONMENT MIGRATION_TIMESTAMP
 </code></pre>
 
 For example:
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
-marketplace-kit migrations run local 20180909123423
+pos-cli migrations run local 20180909123423
 </code></pre>
 
 {% include 'alert/note', content: 'For the command, you have to provide the timestamp, not the full name, for example: 20180731120002' %}
 
 A newly created migration is in pending status for as long as it has not been run. Once it's executed (either through a deploy or using the `migrations run` command), it progresses to either done (on success) or error status.
 
-You can check the status of all migrations using the `marketplace-kit migrations list` command.
+You can check the status of all migrations using the `pos-cli migrations list` command.
 
 Once a migration is in the done status, it can't be run anymore - this makes it safer to run the same queue of migrations on all environments.
 

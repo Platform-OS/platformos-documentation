@@ -36,7 +36,7 @@ Your admin panel should be accessible only to admin users, but you don’t have 
 Go to the terminal and run the following command to create your first migration:
 
 ```shell
-marketplace-kit migrations generate development add_admin
+pos-cli migrations generate development add_admin
 ```
 
 This should create a new file in your `migrations` folder.
@@ -153,10 +153,10 @@ Right now this form configuration is not secure. You had to set `resource_owner`
 {% endcapture %}
 {% include 'alert/important', content: content %}
 
-Once all of these files are ready, you can run the migration with the marketplace-kit command. Substitute `TIMESTAMP` with migration ID from your own file.
+Once all of these files are ready, you can run the migration with the pos-cli command. Substitute `TIMESTAMP` with migration ID from your own file.
 
 ```shell
-marketplace-kit migrations run development TIMESTAMP
+pos-cli migrations run development TIMESTAMP
 ```
 
 ### Step 2: Create an Authorization Policy

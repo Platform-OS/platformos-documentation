@@ -1,42 +1,42 @@
 ---
 converter: markdown
 metadata:
-  title: Developing GraphQL Queries Using marketplace-kit gui
-  description: This guide will help you quickly develop GraphQL queries using the `marketplace-kit gui serve` command.
-slug: best-practices/qa/developing-graphql-queries-using-marketplace-kit-gui
+  title: Developing GraphQL Queries Using pos-cli gui
+  description: This guide will help you quickly develop GraphQL queries using the `pos-cli gui serve` command.
+slug: best-practices/qa/developing-graphql-queries-using-pos-cli-gui
 searchable: true
 ---
 
-This guide will help you quickly develop GraphQL queries using the `marketplace-kit gui serve` command.
+This guide will help you quickly develop GraphQL queries using the `pos-cli gui serve` command.
 
-`marketplace-kit gui serve` command is very useful when:
+`pos-cli gui serve` command is very useful when:
 
 1) You are developing a new query and you want to be sure it is working - it communicates with the database directly, so you are eliminating errors stemming from other layers and features of the system.
 
 2) You are debugging an error - because you have direct control over a query and instant feedback after your changes, you can strip everything that you don't need, manipulate arguments passed, etc.
 
 ## Requirements
-So that you can follow the steps in this tutorial, you have to have the Marketplace Kit installed, an environment configured, and the codebase set up. You should be familiar with Pages, and the technologies behind platformOS, especially Liquid.
+So that you can follow the steps in this tutorial, you have to have the pos-cli installed, an environment configured, and the codebase set up. You should be familiar with Pages, and the technologies behind platformOS, especially Liquid.
 
-* [Quickstart Guide](/get-started/quickstart-guide) or [Get Started tutorials](/get-started): help you get access to our platform, set up a site, install the Marketplace Kit, set up the required directory structure, and deploy to your site.
+* [Quickstart Guide](/get-started/quickstart-guide) or [Get Started tutorials](/get-started): help you get access to our platform, set up a site, install the pos-cli, set up the required directory structure, and deploy to your site.
 * [Technologies](/how-platformos-works/technologies)
 
 ## Steps
 
-Developing GraphQL queries using marketplace-kit gui is a two-step process:
+Developing GraphQL queries using pos-cli gui is a two-step process:
 
 <div data-autosteps></div>
 
-### Step 1: Start marketplace-kit gui serve
+### Step 1: Start pos-cli gui serve
 
 <pre class="command-line" data-output="2-4" data-user="user" data-host="host"><code class="language-bash">
-marketplace-kit gui serve staging
+pos-cli gui serve staging
 Server is listening on 3333
 Resources Editor: http://localhost:3333/gui/editor
 GraphQL Browser: http://localhost:3333/gui/graphql
 </code></pre>
 
-{% include "alert/note", content: "Replace `staging` with the environment name you want to develop on. To list all available environments use `marketplace-kit env list`" %}
+{% include "alert/note", content: "Replace `staging` with the environment name you want to develop on. To list all available environments use `pos-cli env list`" %}
 
 ### Step 2: Write / update query
 
