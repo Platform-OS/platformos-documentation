@@ -12,7 +12,7 @@
     "start": "npx webpack-cli -w",
     "clean": "git clean -Xfq app/assets/*.{css,js}",
     "build": "NODE_ENV=production npx webpack-cli",
-    "deploy": "npm run clean && npm run build && marketplace-kit deploy -f",
+    "deploy": "npm run clean && npm run build && pos-cli deploy",
     "test": "docker run -v $PWD/tests/e2e:/tests -e \"MP_URL=$MP_URL\" -it platformos/testcafe 'testcafe \"chromium:headless --no-sandbox\" /tests'",
     "test-ci": "testcafe 'chromium:headless --no-sandbox' --screenshots-on-fails --screenshots=screenshots tests/e2e",
     "test-local": "npx testcafe \"chrome:headless\" tests/e2e"

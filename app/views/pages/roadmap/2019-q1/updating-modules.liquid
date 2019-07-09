@@ -17,8 +17,8 @@ It will be a rare scenario for developers to use other peoples' modules 'as is'.
 
 ## Current behavior
 
-Currently, you can use the `marketplace-kit modules *` helper command to pull public files. When you are done and you deploy changes, the original module files are overwritten. It means, that upgrading the module would overwrite your overwrites.
+Currently, you can use the `pos-cli modules *` helper command to pull public files. When you are done and you deploy changes, the original module files are overwritten. It means, that upgrading the module would overwrite your overwrites.
 
 ## Solution
 
-The `marketplace-kit deploy` command should not overwrite the original module files. Instead, it should create/update duplicates. Upgrading the module should overwrite the original module files, not the duplicates. Thanks to this, after upgrading the module, you will still see all your customizations and you will be able to update your overwrites to match the newest version. Sometimes, upgrading the module might not need any action from the user. We should make sure that overwrites have precedence over original files, for example if a partial, a page, or a form configuration exists as an original file and an overwrite, we should always use the overwrite first.
+The `pos-cli deploy` command should not overwrite the original module files. Instead, it should create/update duplicates. Upgrading the module should overwrite the original module files, not the duplicates. Thanks to this, after upgrading the module, you will still see all your customizations and you will be able to update your overwrites to match the newest version. Sometimes, upgrading the module might not need any action from the user. We should make sure that overwrites have precedence over original files, for example if a partial, a page, or a form configuration exists as an original file and an overwrite, we should always use the overwrite first.

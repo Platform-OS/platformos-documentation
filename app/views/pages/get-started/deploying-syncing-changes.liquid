@@ -11,10 +11,10 @@ This guide will help you deploy and sync changes you make in your codebase to yo
 
 ## Requirements
 
-In order to deploy and sync changes to your Instance, you will need an Instance set up on the Partner Portal, and the Marketplace Kit installed on your computer. You will also need to have the codebase for your Instance organized into the required directory structure.
+In order to deploy and sync changes to your Instance, you will need an Instance set up on the Partner Portal, and the pos-cli installed on your computer. You will also need to have the codebase for your Instance organized into the required directory structure.
 
 * [Setting Up a Site on Our Platform](/get-started/setting-up-site)
-* [Installing the Marketplace Kit](/get-started/installing-marketplace-kit)
+* [Installing the pos-cli](/get-started/installing-pos-cli)
 * [Creating the Codebase](/get-started/creating-codebase)
 
 ## Steps
@@ -69,7 +69,7 @@ To add your environment to the config file, run the `env add` command, and authe
 {% include 'alert/note', content: 'Run all commands discussed in this tutorial in the project root directory, i.e. one level above the `app` directory.' %}
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
-marketplace-kit env add [environment] --email [your email] --url [your Instance URL]
+pos-cli env add [environment] --email [your email] --url [your Instance URL]
 </code></pre>
 
 {% include 'alert/tip', content: 'You can copy this command pre-filled with your email and Instance URL from your Instance page on the Partner Portal.' %}
@@ -77,7 +77,7 @@ marketplace-kit env add [environment] --email [your email] --url [your Instance 
 Example:
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
-marketplace-kit env add staging --email myemail@example.com --url https://example.com
+pos-cli env add staging --email myemail@example.com --url https://example.com
 </code></pre>
 
 A message _"Environment [your Instance URL] as staging has been added successfully."_ is displayed.
@@ -95,13 +95,13 @@ This step describes two different methods. If this is your first go, we recommen
 To deploy all changes, run the `deploy` command:
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
-marketplace-kit deploy [environment]
+pos-cli deploy [environment]
 </code></pre>
 
 Example:
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
-marketplace-kit deploy staging
+pos-cli deploy staging
 </code></pre>
 
 A progress indicator shows that the deployment is in progress, and once it finishes, a _"Deploy succeeded after <time>"_ is displayed.
@@ -117,13 +117,13 @@ Learn more about our recommendations for version control and deployment on platf
 To immediately push changes in your codebase to the environment, run the `sync` command:
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
-marketplace-kit sync [environment]
+pos-cli sync [environment]
 </code></pre>
 
 Example:
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
-marketplace-kit sync staging
+pos-cli sync staging
 </code></pre>
 
 Using the sync command feels like working on localhost. It is recommended to use sync only for staging environments, as pushing changes immediately to production can be dangerous. Please note, that unlike deploy, this command will not delete resources when you delete the file.

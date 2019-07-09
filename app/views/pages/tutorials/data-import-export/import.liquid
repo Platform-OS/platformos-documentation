@@ -18,7 +18,7 @@ Data to be imported needs to be in JSON format, it is an array of [user data](/a
 }
 ```
 
-You can generate data from an existing Instance with the `marketplace-kit data export` command ([read more about this here](/tutorials/data-import-export/export#cli-export)). It will generate the `data.json` file. You can also import data from other sources (e.g. old stack, other systems) once you generate the proper JSON file. It is fairly easy to convert, for example, a CSV file into a JSON file.
+You can generate data from an existing Instance with the `pos-cli data export` command ([read more about this here](/tutorials/data-import-export/export#cli-export)). It will generate the `data.json` file. You can also import data from other sources (e.g. old stack, other systems) once you generate the proper JSON file. It is fairly easy to convert, for example, a CSV file into a JSON file.
 
 ## General information
 
@@ -26,7 +26,7 @@ You can generate data from an existing Instance with the `marketplace-kit data e
 
 - When importing data, the `id` fields will be changed. Relations will be kept. If you have your own relations defined in properties, you need to first describe them in model schema files - [read more about this here](/tutorials/data-import-export/model-relations).
 
-- If you test your imports and need to clean Instance data, use the `marketplace-kit data clean` command. Note, that this command will work only on staging Instances.
+- If you test your imports and need to clean Instance data, use the `pos-cli data clean` command. Note, that this command will work only on staging Instances.
 
 - When you run import twice, it will try to match previously imported data without removing existing changes. Example:
   1. You have a model `shirt` with properties: `color`, `size`
@@ -38,10 +38,10 @@ You can generate data from an existing Instance with the `marketplace-kit data e
 
 ## Data Import with CLI
 
-With marketplace-kit data, you can export/import Instance data (information entered by the users).
+With pos-cli data, you can export/import Instance data (information entered by the users).
 
 
-platformOS CLI provides the `marketplace-kit data import` command for uploading and importing data from a JSON file. It accepts one option:
+platformOS CLI provides the `pos-cli data import` command for uploading and importing data from a JSON file. It accepts one option:
 
 - --path (short: -p): A path to a JSON data file to be imported
 
@@ -161,7 +161,7 @@ Example data import file `data.json`
 To import the data from a file, simply run the following command in the terminal:
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
-marketplace-kit data import --path=data.json staging-instance
+pos-cli data import --path=data.json staging-instance
 </code></pre>
 
 ## Data Import with GraphQL mutations
