@@ -30,8 +30,8 @@ test('Breadcrumbs are showing up', async t => {
   await t.expect(Selector('.breadcrumbs a').withText('Introduction').exists).ok();
 });
 
-test('Images are working fine', async t => {
-  await t.navigateTo('/tutorials/qa/testing');
+test.only('Images are working fine', async t => {
+  await t.navigateTo('/best-practices/qa/testing');
   const contentImages = Layout.Content.find('img[src*="assets/image"]');
 
   const loadedImages = await t.wait(300).eval(() => {
