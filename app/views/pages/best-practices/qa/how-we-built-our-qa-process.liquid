@@ -1,0 +1,129 @@
+---
+slug: best-practices/qa/how-we-built-our-qa-process
+metadata:
+  title: How We Built Our QA Process
+  description: An in-depth look behind the scenes of our QA process including how we built and refined our process, the approaches we follow, and the tools we use.
+searchable: true
+converter: markdown
+---
+
+Quality assurance and testing ensure that you can fix errors, weed out inconsistencies, verify security and improve the user experience before shipping a new feature. In this article, we look behind the scenes of our QA process including how we built and refined our process, the approaches we follow, and the tools we use.
+
+## Building our QA process 
+
+### Initial considerations
+
+When we started building our QA process, the first challenge we faced was to ensure great quality without causing delays in future release dates. 
+
+Despite having a package of automatic tests, there were many critical areas, which had to be tested manually. So we started with selecting the areas to be covered with test cases and then worked on their automation. 
+
+Answers to the following questions turned out to be helpful:
+
+* Which parts of the software are the most complex and most vulnerable to errors?
+* Which functionalities are the most important?
+* Which functionalities are the most visible to the end client?
+* The lack of which functionality can be a reason for financial loss?
+* Which part of the software do programmers consider to be the riskiest?
+* What type of errors can cause frustration for the client?
+* By answering these questions, we pinpointed the areas that needed the most attention and could outline a list of priorities for QA.
+
+### Testing 
+
+Right in the beginning, we developed smoke tests for all projects. They usually contain 20 to 30 test cases that check the most important functionalities. The goal of these tests is to provide quick information on whether a given project is suitable for further testing.
+
+The next step in our process was developing sanity tests, which are more specific tests that check single functionalities, and check whether the application’s logic is consistent with the requirements.
+
+To create test plans and test cases, we use [TestRail](https://www.gurock.com/testrail). It has an intuitive, clear user interface, easy integration with JIRA and the possibility to create reports.  
+  
+<img src="{{ 'images/best-practices/qa/executed_tests.png' | asset_url }}" alt="Report of executed tests" />
+
+<p align="center"><em>A report of executed tests</em></p>
+
+<br />
+
+## Test Automation and Tools 
+
+### Ghost Inspector
+
+When we moved on to test automation, our priority was to automate all activities carried out before and after the release. Because we often make changes in projects, we needed a flexible tool that allows quick updates to tests and the possibility to conduct a large number of tests in parallel. Based on these criteria, we decided to use [Ghost Inspector](https://ghostinspector.com/). 
+
+<img src="{{ 'images/best-practices/qa/executed_suit.png' | asset_url }}" alt="Report of executed suit of tests" />
+
+<p align="center"><em>Example report of executed suit of tests</em></p>
+
+<br />
+Ghost Inspector provides a tool for registering tests in a browser. All tests are kept in the cloud, where you can browse and edit them. You can add JavaScript scripts to test steps, which makes it a lot easier to achieve various atypical actions on site elements.
+
+Ghost Inspector also allows you to create visual regression tests to compare the look of individual elements before and after the release. It creates a screenshot and compares it with the last available version to check for differences. In case of detecting a change, the test is marked as an error — this helps you avoid CSS errors.
+
+### TestCafe
+
+As the number of projects increased and we started planning to implement the DevOps concept, we decided to create end-to-end tests in the [TestCafe](https://testcafe.devexpress.com/Documentation/) framework, leaving only visual regression tests in Ghost Inspector.
+
+The following factors spoke in favor of the TestCafe framework:
+
+* Open source license
+* Simple and quick installation
+* Tests written in JavaScript
+* Support for many browsers
+* Possibility to launch tests in a container
+* Active community
+* Both programmers and QA can work on the tests
+
+Unlike other solutions, TestCafe is not built on Selenium, which allows it to provide features that are not available in Selenium-based tools (for example, testing on mobile devices, user roles, automatic waiting, etc.). As it doesn't use WebDriver to work with browsers, it only requires a minimal testing environment and is installed with a single command.
+
+To learn more about End-to-End testing and using TestCafe in platformOS, visit our documentation: 
+
+* [TestCafe](/best-practices/qa/testcafe): A description of End-to-End tests and TestCafe, with links to example tests in our public GitHub repositories.
+* [Installing TestCafe](/best-practices/qa/installing-testcafe): A step-by-step tutorial for installing TestCafe.
+* [Writing a TestCafe Test](/best-practices/qa/writing-testcafe-test): Follow a sample scenario and write your first test.
+* [Using the Page Object Model with TestCafe](/best-practices/qa/using-pom-testcafe): Delve in deeper and learn how to use POM.
+
+## The DevOps concept
+
+A significant step in the development of our QA process was implementing the DevOps concept. 
+
+DevOps is the combination of cultural philosophies, practices, and tools that increases an organization’s ability to deliver applications and services at high velocity: evolving and improving products at a faster pace than organizations using traditional software development and infrastructure management processes. 
+
+_Under a DevOps model, development and operations teams are no longer “siloed.” Sometimes, these two teams are merged into a single team where the engineers work across the entire application lifecycle, from development and test to deployment to operations, and develop a range of skills not limited to a single function._ 
+
+<img src="{{ 'images/best-practices/qa/devops.png' | asset_url }}" alt="Diagram of the DevOps process" />
+
+<p align="right"><em>from <a href="https://aws.amazon.com/devops/what-is-devops/" about="_blank">What is DevOps?</a> by Amazon AWS</em></p>
+
+<br />
+As this approach helps you release new features and changes to production faster, it’s no wonder that it became more and more popular in the last couple of years.
+
+We use the following components of the DevOps concept in platformOS:
+
+* Planning (action plan)
+* Implementation (selection of tools)
+* Building (continuous integration tools)
+* Tests (functional and nonfunctional tests)
+* Creating packages (files from the repository)
+* Releases (automated release process)
+* Environment configuration
+* Monitoring (monitoring the efficiency and experience of the end-user)
+
+Following the DevOps concept enabled us to implement new versions of our applications at any time, in a quick and completely automated way. We also noticed that thanks to implementing this process, the cooperation between developers, testers, administrators, and project managers improved. 
+
+Although the implementation takes time and effort, following the DevOps culture provides considerable benefits not only to programmers or the IT department but to the whole organization. 
+
+The key benefits that we achieved thanks to DevOps include:
+
+* A shorter time needed for building test, preproduction and production environments
+* Increasing the quality of created software at early stages (after each commit, the developer receives feedback from integration tests)
+* For each change, we meet the minimum acceptable quality level, thanks to acceptance tests.
+* Completely automated implementation chain (from tests to implementing in a specified environment)
+
+### Continuous Integration and Delivery 
+
+**Continuous Integration (CI)** is the process of automating the build and testing of code every time a team member commits changes to version control. We follow this approach to build and test changes every time a team member introduces a change to the code repository.
+
+Within a few minutes (after conducting different types of tests) the author receives feedback on the correctness of changes or information about possible errors. In case of errors, the author is obliged to first correct the error and is allowed to move on to implementing new tasks only after the correction is done.
+
+We added automatic implementation as part of our **Continuous Delivery** process. It enables quick and reliable installation of a specific software version with minimal manual intervention, which, based on our experience, is often the most common source of potential errors. With each change, even the smallest one, we perform a set of automated processes to confirm that our implementation meets our quality criteria. Thanks to continuous delivery, the software is practically always ready for a production release.
+
+Often, we handle production releases manually, because we leave decisions about it to release managers. It's the only difference between continuous delivery and continuous deployment.
+
+On some of our sites, like our documentation site, we fully support Continuous Deployment. Software development is automatic throughout the whole process, including implementing for production. Each change is installed automatically in sequence on each of the environments, tests appropriate for the given environment are performed, from unit tests to acceptance tests. If the tests don't detect errors, the change is deployed on the next environment in the delivery chain, along with launching the next package of tests. At the very end, a new release is automatically pushed to production. After production implementation, additional production tests are conducted as part of quality monitoring. 
