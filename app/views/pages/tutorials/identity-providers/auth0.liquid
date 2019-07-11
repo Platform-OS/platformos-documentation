@@ -1,0 +1,36 @@
+---
+converter: markdown
+metadata:
+  title: Identity provider - auth0
+  description: This guide will help you configure and integrate with Auth0
+slug: tutorials/identity-providers/auth0
+searchable: true
+---
+This guide will help you configure and integrate with Auth0
+
+## Requirements
+To follow the steps in this tutorial, you should be familiar with Users and Identity Providers. This guide builds on previous tutorials in the **Get Started: Identity Providers** section.
+
+* [Users](/tutorials/users/users)
+
+### Step 1: Create application on your auth0 account https://auth0.com/
+
+### Step 2: In auth0 admin set Allowed Callback URLs to https://<YOUR_DOMAIN>/auth/auth0/callback
+
+### Step 3: In auth0 admin set Allowed Web Origins to https://<YOUR_DOMAIN>
+
+### Step 4: Configure Partner Poral
+
+Copy `Client ID`, `Client Secret` and `Domain` from auth0, go to https://partners.platform-os.com/instances/<YOUR INSTANCE ID>/edit, switch to edit mode and add to `integrations` following json:
+```json
+"auth0": {
+  "client_id": "<CLIENT ID>",
+  "client_secret": "<CLIENT SECRET>",
+  "domain": "<domain>",
+}
+```
+
+### Step 5: Use /auth/auth0 on your Instance
+
+For example, you can add to the liquid page "Log In / Sign Up" link pointing to `/auth/auth0`
+
