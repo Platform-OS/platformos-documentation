@@ -37,7 +37,7 @@ Go to Partner Portal `https://partners.platform-os.com/instances/<YOUR INSTANCE 
 
 ### Step 4: Use /auth/<PROVIDER> endpoint on your Instance
 
-After those steps everything is up and running. You can add for example Log In / Sign Up link on your instance pointing to /auth/<PROVIDER>. It will redirect the User to provider's website and ask for login and password. Then it will redirect the User to /auth/<PROVIDER>/callback and verify the request to ensure user has successfully logged in on provider's site. platformOS will receive token, along with some extra parameters like User's email, first name etc. What happens next depends on the state:
+After those steps, everything is up and running. You can add for example Log In / Sign Up link on your instance pointing to `/auth/<PROVIDER>`. It will redirect the User to the provider's website and ask for login and password. Then it will redirect the User to `/auth/<PROVIDER>`/callback and verify the request to ensure the user has successfully logged in on provider's site. platformOS will receive token, along with some extra parameters like User's email, first name etc. What happens next depends on the state:
 
 1. If user is not logged in yet:
   * If Authentication for this provider does not exist yet, but the User with given email does - display error message to avoid potential account hijack.
