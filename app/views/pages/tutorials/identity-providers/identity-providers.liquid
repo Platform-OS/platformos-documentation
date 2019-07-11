@@ -1,16 +1,16 @@
 ---
 converter: markdown
 metadata:
-  title: Identity providers
+  title: Identity Providers
   description: This guide will help you configure third party identity providers like Facebook login, Auth0 etc.
 slug: tutorials/identity-providers/identity-providers
 searchable: true
 ---
 
 This guide will help you understand generic steps of configuring third party identity providers like Facebook login, Auth0 etc.
-Integration allows you to:
-* connect an User from external service with an User in your Instance via email
-* connect currently logged in User with User from an external service
+The integration allows you to:
+* connect a User from an external service with a User in your Instance via email
+* connect currently logged in User with a User from an external service
 * register new User with data (name, email) provided by an external service
 
 ## Requirements
@@ -20,46 +20,46 @@ To follow the steps in this tutorial, you should be familiar with users. This gu
 
 ## Steps
 
-All identity provider integrations work the same way and consist of few simple steps:
+All identity provider integrations work the same way and consist of a few simple steps:
 
 <div data-autosteps></div>
 
-### Step 1: Create application on Identity Provider website
-You go to third party website to create application
+### Step 1: Create application on the Identity Provider's website
+You have to go to the third party website to create an application.
 
 ### Step 2: Configure the application
 
-On Identity Provider website  configure application by setting whitelist of valid callback URL, which is `https://<YOUR_DOMAIN>/auth/<PROVIDER>/callback`
+On the Identity Provider's website,  configure the application by setting the whitelist of the valid callback URL, which is `https://<YOUR_DOMAIN>/auth/<PROVIDER>/callback`.
 
 ### Step 3: Partner Portal configuration
 
-Go to Partner Portal `https://partners.platform-os.com/instances/<YOUR INSTANCE ID>/edit` and add Client ID, Client Secret and other parameters required by specific provider to configuration -> integrations JSON.
+Go to the Partner Portal `https://partners.platform-os.com/instances/<YOUR INSTANCE ID>/edit` and add Client ID, Client Secret and other parameters required by the specific provider to configuration -> integrations JSON.
 
-### Step 4: Use /auth/<PROVIDER> endpoint on your Instance
+### Step 4: Use the /auth/<PROVIDER> endpoint on your Instance
 
-After those steps, everything is up and running. You can add for example Log In / Sign Up link on your instance pointing to `/auth/<PROVIDER>`. It will redirect the User to the provider's website and ask for login and password. Then it will redirect the User to `/auth/<PROVIDER>`/callback and verify the request to ensure the user has successfully logged in on provider's site. platformOS will receive token, along with some extra parameters like User's email, first name etc. What happens next depends on the state:
+After following the previous steps, everything is up and running. For example, you can add a Log In / Sign Up link on your instance pointing to `/auth/<PROVIDER>`. It will redirect the User to the provider's website and ask for login and password. Then it will redirect the User to the `/auth/<PROVIDER>`/callback and verify the request to ensure that the user has successfully logged in on the provider's site. platformOS will receive the token, along with some extra parameters like the User's email, first name etc. What happens next depends on the state:
 
-1. If user is not logged in yet:
+1. If the user is not logged in yet:
   * If Authentication for this provider does not exist yet, but the User with given email does - display error message to avoid potential account hijack.
   * If Authentication does not exist and the User with given email address does not exist - create a new User email and Authentication for chosen provider.
-  * IF Authentication exists, logs User in - that's the most common scenario, User just wants to Log In to existing account using Identity Provider
+  * IF Authentication exists, it logs the User in - that's the most common scenario, the User just wants to Log In to existing account using Identity Provider
 2. If user is logged in:
-  * If Authentication does not exist, create Authentication - this allows to add multiple Identity Provider to one User, for example User can connect Facebook, Twitter and LinkedIn accounts
-  * If Authentication exists and is associated with currnt user - do nothing
-  * If Authentication exists and is associated with different user - re-log User to the one associated with Authentication
+  * If Authentication does not exist, create Authentication - this allows to add multiple Identity Providers to one User, for example, the User can connect Facebook, Twitter and LinkedIn accounts
+  * If Authentication exists and is associated with the current user - do nothing
+  * If Authentication exists and is associated with a different user - re-log User to the one associated with Authentication
 
   After success, platformOS redirects User to path provided in `return_to` parameter (i.e. your Log In page can be `/auth/<PROVIDER>?return_to=/my-page`) or homepage (default).
 
-### Listing all configured Identity Providers on Instance
+### Listing all configured Identity Providers on the Instance
 
-In graphql we have endpoint which list configured providers [login_providers](/api-reference/graphql/queries#login_providers-type-string)
+In graphQL, we have an endpoint which lists configured providers [login_providers](/api-reference/graphql/queries#login_providers-type-string)
 ```graphql
 {
   login_providers
 }
 ```
 
-You can also use `admin_third_party_integrations` query to see current configuration of any third party integration:
+You can also use the `admin_third_party_integrations` query to see the current configuration of any third party integration:
 ```graphql
 {
   admin_third_party_integrations {
@@ -72,7 +72,7 @@ You can also use `admin_third_party_integrations` query to see current configura
 ```
 ## Authentications
 
-Authentication consists of a uinque pair `user_id` and `provider`, The first one stores the reference to particular User and `provider` contains information, which Identity Provider was used. You can use GraphQL to get all User's authentications and tokens returned by authentication provider, for example:
+Authentication consists of a unique pair: `user_id` and `provider`. The first one stores the reference to a particular User and `provider` contains information about which Identity Provider was used. You can use GraphQL to get all of the User's authentications and tokens returned by the authentication provider, for example:
 
 ```graphql
 query {
@@ -88,9 +88,9 @@ query {
 
 ### Deleting Authentications
 
-You can also remove authentication from user by sending `DELETE` request to `/api/authentications/:id`
+You can also remove authentication from the user by sending a `DELETE` request to `/api/authentications/:id`.
 
-For the user you can fetch created authentications
+For the user, you can fetch created authentications:
 ```graphql
 {
   current_user{
