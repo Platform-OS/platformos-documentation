@@ -12,25 +12,25 @@ searchable: true
 
 <h4 class="release-note release-note__new">NEW</h4>
 
-* `pos-cli`: the old `marketplace-kit` has been forked into a new package - [pos-cli](/get-started/installing-pos-cli). From now on `marketplace-kit` is in archive mode and will no longer be developed.
+* `pos-cli`: the old `marketplace-kit` has been forked into a new package - [pos-cli](/get-started/installing-pos-cli) ([see on github](https://github.com/mdyd-dev/pos-cli)). From now on `marketplace-kit` is in archive mode and will no longer be developed.
 
-   Follow these steps to migrate from `marketplace-kit` to `pos-cli`:
+  Follow these steps to migrate from `marketplace-kit` to `pos-cli`:
 
-   When using local node installation (for example installed using `nvm` or `brew`):
+  When using local node installation (for example installed using `nvm` or `brew`):
 
-   ```shell
-   npm r -g @platform-os/marketplace-kit
-   npm i -g @platformos/pos-cli
-   ```
+  ```shell
+  npm r -g @platform-os/marketplace-kit
+  npm i -g @platformos/pos-cli
+  ```
 
-   When using global node installation (use sudo if the version without it does not work):
+  When using global node installation (use sudo if the version without it does not work):
 
-   ```shell
-   sudo npm r -g @platform-os/marketplace-kit
-   sudo npm i -g @platformos/pos-cli
-   ```
+  ```shell
+  sudo npm r -g @platform-os/marketplace-kit
+  sudo npm i -g @platformos/pos-cli
+  ```
 
-   From now on, use the `pos-cli` command instead of the `marketplace-kit` command, and **remember to update your scripts if they used `marketplace-kit`**.
+  From now on, use the `pos-cli` command instead of the `marketplace-kit` command, and **remember to update your scripts if they used `marketplace-kit`**.
 
 * `form_submit` mutation was added to GraphQL: This new mutation will trigger a form submission along with invoking authorization policies and validation. It accepts two parameters: `form_configuration_name` and `params`. This way, you will be able to easily validate any user parameters against a given form configuration and persist it if valid. Most useful for creating API endpoints which re-use existing form configurations.
 * Added the possibility to fetch related `users` for the `models` GraphQL query - [Model](/api-reference/graphql/objects#model)
