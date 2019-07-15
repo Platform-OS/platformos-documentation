@@ -47,8 +47,8 @@ When building the product form you consider the following business rules:
 {% raw %}
 ---
 name: product_form
-resource: Customization
-redirect_to: |-
+resource: product
+redirect_to: >
   {%- if params.form.new_record -%}
     /admin/product/{{ form.id }}
   {% else %}
@@ -196,7 +196,7 @@ This is a long form, see important sections described one by one here:
 
 ```liquid
 {% raw %}
-redirect_to: |-
+redirect_to: >
   {%- if params.form.new_record -%}
     /admin/product/{{ form.id }}
   {% else %}
@@ -798,7 +798,7 @@ Once the router has been added, it’s time to add partials for specific views:
 {% content_for "page_title" -%}Add a new product{%- endcontent_for %}
 
 <h1>Add a new product</h1>
-{% include_form "product_form", resource_type: "product" %}
+{% include_form "product_form" %}
 {% endraw %}
 ```
 
@@ -812,7 +812,6 @@ Once the router has been added, it’s time to add partials for specific views:
 
 {%
   include_form "product_form",
-  resource_type: "product",
   id: context.params.slug3
 %}
 {% endraw %}
@@ -936,7 +935,6 @@ The router you’ve created also handles displaying details of the given product
         {% comment %} Include form for deleting a product {% endcomment %}
         {%
           include_form "destroy_product_form",
-          resource_type: "product",
           id: product.id,
           product_name: product.name
         %}
@@ -969,7 +967,7 @@ The last step is to add a form for deleting the product.
 {% raw %}
 ---
 name: destroy_product_form
-resource: Customization
+resource: product
 redirect_to: /admin/products
 flash_notice: Product has been deleted
 fields:

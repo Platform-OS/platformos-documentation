@@ -67,7 +67,7 @@ fields:
 {% endraw %}
 ```
 
-You can use the same form with slight modifications to gather and update data: use the form with `resource_id: new` to store data, and `resource_id: [id]` to let a user update data.
+You can use the same form with slight modifications to gather and update data: use the form with `resource_id: [id]` to let a user update data.
 
 ## Data erasure
 
@@ -113,7 +113,7 @@ slug: newsletter
 layout_name: home
 ---
 <h1>Join Newsletter</h1>
-{% include_form 'newsletter_form', resource_type: "newsletter" %}
+{% include_form 'newsletter_form' %}
 {% endraw %}
 ```
 
@@ -125,7 +125,7 @@ Form
 {% raw %}
 ---
 name: newsletter_form
-resource: Customization
+resource: newsletter
 flash_notice: Thank you for joining our newsletter
 return_to: '/newsletter/thank-you?email={{ form.properties.email }}'
 fields:
@@ -200,7 +200,7 @@ Unsubscribe form
 {% raw %}
 ---
 name: unsubscribe_newsletter_form
-resource: Customization
+resource: newsletter
 resource_owner: anyone
 flash_notice: You are now unsubscribed
 return_to: /
