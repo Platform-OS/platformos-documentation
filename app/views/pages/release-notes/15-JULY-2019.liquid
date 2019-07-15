@@ -1,0 +1,29 @@
+---
+converter: markdown
+metadata:
+  title: pos-cli, new graphql mutation - form_submit
+  description: July 15, 2019
+  contributors: false
+slug: release-notes/15-JULY-2019
+searchable: true
+---
+
+#### {{ page.metadata.description }}
+
+<h4 class="release-note release-note__new">NEW</h4>
+
+* `pos-cli`: the old `marketplace-kit` has been forked into a new package - [pos-cli](/get-started/installing-pos-cli). From now on `marketplace-kit` is in archive mode and will no longer be developed.
+* `form_submit` mutation was added to GraphQL: This new mutation will trigger a form submission along with invoking authorization policies and validation. It accepts two parameters: `form_configuration_name` and `params`. This way, you will be able to easily validate any user parameters against a given form configuration and persist it if valid. Most useful for creating API endpoints which re-use existing form configurations.
+* Added the possibility to fetch related `users` for the `models` GraphQL query - [Model](api-reference/graphql/objects#model)
+
+<h4 class="release-note release-note__improved">IMPROVED</h4>
+
+* `pos-cli`: the `gui serve` will return a user friendly message if the port is already taken.
+* `pos-cli`: the `audit` command will be automatically run during `deploy`; its performance has been greatly improved.
+* Redesigned emails for modules in Partner Portal
+* Renamed Customization to Model and CustomModelType to ModelSchema - all existing occurrences of deprecated namings were removed from examples, documentation and platform.
+
+<h4 class="release-note release-note__fixed">FIXED</h4>
+
+* Fixed a couple of issues related to ElasticSearch type collision removal - mainly for related models
+* Removed MIT license hardcoded text in Partner Portal
