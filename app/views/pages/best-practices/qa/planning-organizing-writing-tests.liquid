@@ -140,15 +140,19 @@ We protect users by only allowing them to access endpoints on staging, where we 
 
 In platformOS, it is very simple to do that in a quick and reusable way. Create an authorization_policy and use it on a page that you want to protect:
 
+#### authorization_policies/is_staging.liquid
+{% raw %}
 ```liquid
-// authorization_policies/is_staging.liquid
 ---
 name: is_staging
 ---
 {% if context.environment == "staging" %}true{% endif %}
+```
+{% endraw %}
 
-
-// modules/feedback/public/views/pages/clean.liquid
+#### modules/feedback/public/views/pages/clean.liquid
+{% raw %}
+```liquid
 ---
 slug: feedback/clean
 authorization_policies:
@@ -156,6 +160,7 @@ authorization_policies:
 ---
 {% graphql g = 'modules/feedback/clean' %}
 ```
+{% endraw %}
 
 Note: Actually, this is not necessary, because platformOS has another safety switch, which prevents executing the customizations_delete_all mutation on production. Still, it's a good practice to protect the endpoint, because the underlying implementation (usage of protected mutation) might change without the person managing the page knowing. See our [example implementation here](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/feedback/public/views/pages/clean.liquid).
 
