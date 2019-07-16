@@ -134,7 +134,7 @@ The only downside is that the second example will run slower, because it will lo
 
 ### Environments
 
-If you are like us, and you like to clear/seed the database from your tests using the browser, you will need to implement some safety switches, so that your users won't enter the page that will delete all their data by accident. Assuming you have a feature called feedback, you would create the feedback_clean endpoint to remove rows that have been created by the previous test.
+If you are like us, and you like to clear/seed the database from your tests using the browser, you will need to implement some safety switches, so that your users won't enter the page that will delete all their data by accident. Assuming you have a feature called feedback, you would create the clean endpoint to remove rows that have been created by the previous test.
 
 We protect users by only allowing them to access endpoints on staging, where we run tests before the code gets promoted to the production environment.
 
@@ -148,7 +148,7 @@ name: is_staging
 {% if context.environment == "staging" %}true{% endif %}
 
 
-// modules/feedback/public/views/pages/feedback_clean.liquid
+// modules/feedback/public/views/pages/clean.liquid
 ---
 slug: feedback/clean
 authorization_policies:
@@ -157,7 +157,7 @@ authorization_policies:
 {% graphql g = 'modules/feedback/clean' %}
 ```
 
-Note: Actually, this is not necessary, because platformOS has another safety switch, which prevents executing the customizations_delete_all mutation on production. Still, it's a good practice to protect the endpoint, because the underlying implementation (usage of protected mutation) might change without the person managing the page knowing. See our [example implementation here](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/feedback/public/views/pages/feedback_clean.liquid).
+Note: Actually, this is not necessary, because platformOS has another safety switch, which prevents executing the customizations_delete_all mutation on production. Still, it's a good practice to protect the endpoint, because the underlying implementation (usage of protected mutation) might change without the person managing the page knowing. See our [example implementation here](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/feedback/public/views/pages/clean.liquid).
 
 ### Page objects
 
