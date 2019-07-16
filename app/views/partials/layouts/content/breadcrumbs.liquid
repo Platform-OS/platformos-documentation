@@ -9,11 +9,16 @@
 
     <li>
       <a href="/{{ category.slug | default: context.params.slug }}">{{ category.name | default: category.default_name | default: slugTitleized }}</a>
-      <svg width="8" height="8"><use xlink:href="#arrow-right"></use></svg>
+
+      {% if context.params.slug2 %}
+        <svg width="8" height="8"><use xlink:href="#arrow-right"></use></svg>
+      {% endif %}
     </li>
 
-    <li>
-      <a href="#">{{ context.page.metadata.title | default: "This Page" }}</a>
-    </li>
+    {% if context.params.slug2 %}
+      <li>
+        <a href="#">{{ context.page.metadata.title | default: "This Page" }}</a>
+      </li>
+    {% endif %}
   </ul>
 </div>
