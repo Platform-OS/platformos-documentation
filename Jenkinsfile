@@ -62,6 +62,7 @@ pipeline {
 
       environment {
         MPKIT_URL = "${staging_url}"
+        CI = true
       }
 
       agent { docker { image 'platformos/testcafe-pos-cli' } }
