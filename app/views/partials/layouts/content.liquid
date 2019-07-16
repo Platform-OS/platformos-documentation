@@ -21,7 +21,11 @@
 <div class="{% if has_sidebar == 'true' %}col-sm-9{% else %}col-sm-12{% endif %}">
   <div class="content category__{{ context.params.slug }}">
     {% include 'layouts/content/flash-messages' %}
-    {% include 'layouts/content/breadcrumbs', category: context.exports.category %}
+
+    {% unless context.page.metadata.breadcrumbs == false %}
+      {% include 'layouts/content/breadcrumbs', category: context.exports.category %}
+    {% endunless %}
+
     <div class="row">
       <div class="col{% if context.page.metadata.toc == true %}-8{% endif %} content__main">
         {% if context.page.metadata.title %}
