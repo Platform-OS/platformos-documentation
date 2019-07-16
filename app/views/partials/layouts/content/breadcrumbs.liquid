@@ -1,4 +1,5 @@
 {% assign slugTitleized = context.params.slug | titleize %}
+{% assign %}
 
 <div class="breadcrumbs">
   <ul>
@@ -12,9 +13,8 @@
       <svg width="8" height="8"><use xlink:href="#arrow-right"></use></svg>
     </li>
 
-    {% assign currentPage = context.page.metadata.title | default: "This Page" %}
     <li>
-      <a href="#">{{ currentPage }}</a>
+      <a href="#">{{ context.page.metadata.title | default: "This Page" }}</a>
     </li>
   </ul>
 </div>
