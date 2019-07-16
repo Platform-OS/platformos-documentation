@@ -111,7 +111,10 @@ pipeline {
     }
 
     stage('Broken links checker') {
-      when { branch 'master' }
+      when {
+        branch 'master'
+        expression { return params.MP_URL.isEmpty() }
+      }
       agent { docker { image 'node:12-alpine'; args '-u root -v $HOME/tmp:/tmp' } }
 
       environment {
