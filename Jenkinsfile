@@ -9,7 +9,6 @@ pipeline {
   environment {
     MPKIT_TOKEN = credentials('POS_TOKEN')
     MPKIT_EMAIL = "darek+ci@near-me.com"
-    CI = true
   }
 
   parameters {
@@ -36,7 +35,10 @@ pipeline {
 
     stage('Deploy to URL') {
       when { expression { return !params.MP_URL.isEmpty() } }
-      environment { MPKIT_URL = "${params.MP_URL}" }
+      environment {
+        MPKIT_URL = "${params.MP_URL}"
+        CI = true
+      }
       agent { docker { image 'platformos/pos-cli' } }
       steps {
         sh 'pos-cli deploy'
@@ -98,6 +100,7 @@ pipeline {
 
       environment {
         MPKIT_URL = "${production_url}"
+        CI = true
       }
 
       agent { docker { image 'platformos/pos-cli' } }
