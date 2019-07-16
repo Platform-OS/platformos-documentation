@@ -30,7 +30,7 @@ test('Breadcrumbs are showing up', async t => {
   await t.expect(Selector('.breadcrumbs a').withText('Introduction').exists).ok();
 });
 
-test.only('Images are working fine', async t => {
+test('Images are working fine', async t => {
   await t.navigateTo('/best-practices/qa/testing');
   const contentImages = Layout.Content.find('img[src*="assets/image"]');
 
