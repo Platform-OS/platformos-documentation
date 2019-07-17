@@ -1,5 +1,9 @@
 query search($query: String, $per_page: Int = 20, $page: Int = 1) {
-  pages(per_page: $per_page, page: $page, filter: { content: { contains: $query } }) {
+  admin_pages(
+    per_page: $per_page
+    page: $page
+    filter: { searchable: { value: true }, content: { contains: $query } }
+  ) {
     total_entries
     total_pages
     results {
