@@ -25,7 +25,6 @@ Creating an API Call Notification is a two-step process:
 
 Create an API Call Notification `notifications/api_call_notifications/ping_example_com_on_user_sign_up.liquid`:
 
-
 ```json
 {% raw %}
 ---
@@ -35,6 +34,10 @@ delay: 0
 enabled: true
 format: http
 trigger_condition: true
+callback: >
+  {% log response, type: 'response object' %}
+  {% assign response_hash = response.body | parse_json %}
+  {% log response_hash, type: 'response body as hash' %}
 request_type: POST
 headers: '{
   "Content-Type": "application/json"
@@ -47,13 +50,31 @@ headers: '{
 {% endraw %}
 ```
 
+This defines a POST request to the endpoint with the newly created user's ID. In this example the body of the request is JSON, and to notify the endpoint about it, you set the `Content-Type` header to `application/json`. If the call is successful, then the code from `callback` property is triggered. You can access endpoint's response via [Response](/api-reference/graphql/objects#response) object - which includes headers, status and body. In the example we assume the server returns valid JSON, which we parse and log.
 
-This defines a POST request to the endpoint with the newly created user's ID. The response is not stored, it's fire and forget. In this example the body of the request is JSON, and to notify the endpoint about it, you set the `Content-Type` header to `application/json`.
+### Step 2a: Invoke notification directly via GraphQL [api_call_send](/api-reference/graphql/mutations#api_call_send)
 
-### Step 2: Connect notification to sign up form
+To easily test your newly created Api Call you can trigger it using following query:
+
+```graphql
+mutation send_api_call ($data: HashObject) {
+  api_call_send(
+    data: $data
+    template: { name: "ping_example_com_on_user_sign_up" }
+  ) {
+    response{ status body }
+    errors {
+      message
+    }
+  }
+}
+```
+
+All parameters provided via GraphQL as `data` argument, will be accessible in every Api Call Notification property as a `data` variable (or `form` to make it compatible with FormConfiguration).
+
+### Step 2b: Connect notification to sign up form
 
 Connect the API Call Notification you created with the sign up form `form_configurations/developer/sign_up.liquid`:
-
 
 ```yaml
 ---
