@@ -50,7 +50,7 @@ headers: '{
 {% endraw %}
 ```
 
-This defines a POST request to the endpoint with the newly created user's ID. In this example the body of the request is JSON, and to notify the endpoint about it, you set the `Content-Type` header to `application/json`. If the call is successful, then the code from `callback` property is triggered. You can access endpoint's response via [Response](/api-reference/graphql/objects#response) object - which includes headers, status and body. In the example, we assume the server returns valid JSON, which we parse and log.
+This defines a POST request to the endpoint with the newly created user's ID. In this example the body of the request is JSON, and to notify the endpoint about it, you set the `Content-Type` header to `application/json`. If the call is successful, then the code from the `callback` property is triggered. You can access the endpoint's response via the [Response](/api-reference/graphql/objects#response) object - which includes headers, status and body. In the example, we assume the server returns valid JSON, which we parse and log.
 
 ### Step 2a: Invoke notification directly via GraphQL [api_call_send](/api-reference/graphql/mutations#api_call_send)
 
@@ -83,7 +83,7 @@ api_call_notifications:
 ---
 ```
 
-Whenever a user successfully sign-ups, the `https://example.com/endpoint/{% raw %}{{ form.id }}{% endraw %}` endpoint will be notified.
+Whenever a user successfully signs up, the `https://example.com/endpoint/{% raw %}{{ form.id }}{% endraw %}` endpoint will be notified.
 
 {% include 'alert/important', content: 'We do not send real text messages on staging by default. Because any error with sending real text messages on staging might be more costly than sending emails. If you want to test SMS on staging, please change `enable_sms_and_api_workflow_alerts_on_staging` flag to `true` in your Partner Portal instance configuration.' %}
 
