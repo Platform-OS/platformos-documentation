@@ -18,7 +18,7 @@ searchable: true
 
 * **page slug can now consist from any components**: Previously the page slug had to be max three level deep. The improvement allows you to provide any slug you want, for example `/one/two/three/four/five`. However, please note that if you define page `/one/two/three/four` you won't be able to access `/one/two/three/four/five` - template slugs still work only for three level deep slugs.
 * **{% raw %}{{ form }}{% endraw %} output improved**: The `form` variable will not include magical keys anymore, the output now corresponds to the `fields` defined in form configuration.
-* **`{{ object }}` and `{{ array }}` will render proper json**: You don't need to use `json` filter. `{{ users | json }}` will simply become `{{ users }}`
+* **`{{ hash }}` and `{{ array }}` will render proper json**: You don't need to use `json` filter. `{{ users | json }}` will simply become `{{ users }}`. The change is backwards compatible, meaning the extra `| json` is just unnecessary, but does not break anything.
 * **added filter by `searchable` field to `admin_pages` graphql endpoint**: With new filter you can exclude some pages from being showed in search results.
 
 <h4 class="release-note release-note__fixed">FIXED</h4>
