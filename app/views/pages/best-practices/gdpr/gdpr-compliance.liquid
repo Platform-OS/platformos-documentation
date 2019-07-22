@@ -75,7 +75,7 @@ You are only allowed to store personal information for the required amount of ti
 
 When complying to the data erasure requirement, the main goal is to delete the personal data from production systems (live site). You should make sure to explain that the data may be stored in backup archives, that must be kept for a longer period of time. You have to ensure that data in backup archives is encrypted, and won’t be restored. You should also inform the users about how long you will retain the data in the backup. In platformOS, we keep backup archives for 7 days as a default.
 
-In platformOS, you can build your own data erasure solution using Customizations, GraphQL and Liquid: you can use a third-party API encryption service against our endpoint, and flag sensitive data for later deletion.
+In platformOS, you can build your own data erasure solution using Models, GraphQL and Liquid: you can use a third-party API encryption service against our endpoint, and flag sensitive data for later deletion.
 
 ## Getting consent
 
@@ -174,12 +174,14 @@ query get_newsletter(
   $email: String
 )
 {
-  customizations (
-    name: "newsletter"
-    properties: [
-      {
-        name: "email"
-        value: $email
+  models (
+    filter: {
+      name: { exact: "newsletter" }
+      properties: [
+        {
+          name: "email"
+          value: $email
+        }
       }
     ]
   )
@@ -201,7 +203,6 @@ Unsubscribe form
 ---
 name: unsubscribe_newsletter_form
 resource: newsletter
-resource_owner: anyone
 flash_notice: You are now unsubscribed
 return_to: /
 fields:

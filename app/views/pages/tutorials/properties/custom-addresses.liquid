@@ -2,12 +2,12 @@
 converter: markdown
 metadata:
   title: Custom Addresses
-  description: Custom Addresses are used to add one or more addresses to a Profile, or Customization.
+  description: Custom Addresses are used to add one or more addresses to a Profile, or Model.
 slug: tutorials/properties/custom-addresses
 searchable: true
 ---
 
-**Custom Addresses** are used to add one or more addresses to a Profile, or Customization.
+**Custom Addresses** are used to add one or more addresses to a Profile, or Model.
 
 ## Fields
 
@@ -101,10 +101,10 @@ profiles:
         postcode:
 ```
 
-Another example, adding CustomAddress for a Customization named "EmergencyContact":
+Another example, adding CustomAddress for a Model named "EmergencyContact":
 
 ```yaml
-customizations:
+models:
   emergency_contacts:
     custom_addresses:
       contact_address:
@@ -188,7 +188,7 @@ query geolocate_users(
   $geo_box_top_left: GeoPoint
   $geo_box_bottom_right: GeoPoint
   $geo_box_top_right_bottom_left: GeoBoxTopRightBottomLeft
-  $customizations_geo_points: [GeoPoint]
+  $models_geo_points: [GeoPoint]
   $street: String
 ) {
   users: people(
@@ -211,7 +211,7 @@ query geolocate_users(
               }
             }
           ]
-          customizations: [{ addresses: [{ geo_query: { polygon: { points: $customizations_geo_points } } }] }]
+          models: [{ addresses: [{ geo_query: { polygon: { points: $models_geo_points } } }] }]
         }
       ]
     }
@@ -255,7 +255,7 @@ query geolocate_users(
 }
 ```
 
-In the example above, you can see how you can query `CustomAddress` both at the `user_profile` and `customization` levels.
+In the example above, you can see how you can query `CustomAddress` both at the `user_profile` and `model` levels.
 
 If you wanted to find user profiles in the vicinity of (50, 20) geo point, you could do that using those parameters:
 

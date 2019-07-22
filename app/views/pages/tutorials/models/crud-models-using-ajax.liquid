@@ -1,13 +1,13 @@
 ---
 converter: markdown
 metadata:
-  title: Managing Customizations using AJAX (CRUD operations)
-  description: This guide will help you create, list, update, and delete Customizations using JavaScript.
-slug: tutorials/customizations/crud-customizations-using-ajax
+  title: Managing Models using AJAX (CRUD operations)
+  description: This guide will help you create, list, update, and delete Models using JavaScript.
+slug: tutorials/models/crud-models-using-ajax
 searchable: true
 ---
 
-This guide will help you create, list, update, and delete Customizations using JavaScript and GraphQL.
+This guide will help you create, list, update, and delete Models using JavaScript and GraphQL.
 
 ## Requirements
 
@@ -16,7 +16,7 @@ This guide will help you create, list, update, and delete Customizations using J
 
 ## Steps
 
-Managing Customizations using AJAX by implementing the full CRUD cycle is a five-step process:
+Managing Models using AJAX by implementing the full CRUD cycle is a five-step process:
 
 <div data-autosteps></div>
 
@@ -83,7 +83,7 @@ First, create a simple form that works without JavaScript:
 {% form html-data-form: "create" %}
   {% assign p = form.fields.properties %}
 
-  <h2>Create new feedback (customization)</h2>
+  <h2>Create new feedback (model)</h2>
   <label>
     <input type="radio" name='{{ p.rate.name }}' value="Excellent">
     Excellent
@@ -133,8 +133,8 @@ First, you'll need a GraphQL query to pull out the data:
 
 ```graphql
 query feedback($per_page: Int = 10) {
-  customizations(
-    name: "feedback"
+  models(
+    filter: { name: { exact: "feedback" } }
     per_page: $per_page
     sort: { name: "created_at", order: "desc" }
   ) {
@@ -161,7 +161,7 @@ format: json
 ---
 {%- raw -%}
 {%- graphql recent = "modules/feedback/feedback", per_page: 10 -%}
-{{ recent.customizations.results | json }}
+{{ recent.models.results | json }}
 {% endraw %}
 ```
 
@@ -217,7 +217,7 @@ refreshReadButton.addEventListener("click", Read);
 The update form is similar to Create, with a couple of differences:
 
 1. Add hidden input with `_method` set to PUT
-2. Send ID of Customization you want to edit
+2. Send ID of Model you want to edit
 
 #### views/partials/update.liquid
 
@@ -227,9 +227,9 @@ The update form is similar to Create, with a couple of differences:
   {% comment %} Set method using hidden input to tell the server we are updating {% endcomment %}
   <input type="hidden" name="_method" value="PUT" />
 
-  {% comment %} Let user decide which customization to edit {% endcomment %}
-  <label for="customization_id">Customization ID</label>
-  <input type="text" name='customization_id' value="" required>
+  {% comment %} Let user decide which model to edit {% endcomment %}
+  <label for="model_id">Model ID</label>
+  <input type="text" name='model_id' value="" required>
 
   <label>
     <input type="radio" name='{{ p.rate.name }}' value="Excellent">
@@ -261,7 +261,7 @@ JavaScript is also very similar, but it takes ID from input defined above and pu
 
 const Update = event => {
   event.preventDefault();
-  const id = event.target.querySelector('[name="customization_id"]').value;
+  const id = event.target.querySelector('[name="model_id"]').value;
 
   request({
     url: `${event.target.getAttribute("action")}/${id}`,
@@ -283,8 +283,8 @@ The delete operation also needs `method` and `id` because underneath it all, it 
 {%- raw -%}
 {% form html-data-form: "delete" %}
   <input type="hidden" name="_method" value="DELETE" />
-  <label for="customization_id">Customization ID</label>
-  <input type="text" name='customization_id' value="" required>
+  <label for="model_id">Model ID</label>
+  <input type="text" name='model_id' value="" required>
   <button>Delete</button>
 {% endform %}
 {% endraw %}
@@ -295,7 +295,7 @@ The delete operation also needs `method` and `id` because underneath it all, it 
 ```javascript
 const Delete = event => {
   event.preventDefault();
-  const id = event.target.querySelector('[name="customization_id"]').value;
+  const id = event.target.querySelector('[name="model_id"]').value;
 
   request({
     url: `${event.target.getAttribute("action")}/${id}`,
@@ -315,4 +315,4 @@ To play with a live example (in much fuller form and with additional information
 
 ## Next steps
 
-Congratulations! You know how to implement CRUD operations for Customizations.
+Congratulations! You know how to implement CRUD operations for Models.

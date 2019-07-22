@@ -240,9 +240,11 @@ Uploading and removing photo forms are ready, but before you can create the part
 
 ```graphql
 query get_photos($product_id: String) {
-  customizations(
-    name: "photo"
-    properties: [{ name: "product_id", value: $product_id }]
+  models(
+    filter: {
+      name: { exact: "photo" }
+      properties: [{ name: "product_id", value: $product_id }]
+    }
   ) {
     results {
       id
@@ -279,7 +281,7 @@ It’s time to tie it all together. Create partial that will:
 
 <h4>Photos</h4>
 <div class="row">
-  {% for photo in gp.customizations.results %}
+  {% for photo in gp.models.results %}
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-2">
       <a href="{{ photo.image.normal }}" target="_blank">
         <img

@@ -2,12 +2,12 @@
 converter: markdown
 metadata:
   title: Creating Items from an External API Call
-  description: This guide will help you create items from an external API call. The example shows the steps of creating a Customization from existing data through an API call to our service.
+  description: This guide will help you create items from an external API call. The example shows the steps of creating a Model from existing data through an API call to our service.
 slug: tutorials/apis/creating-items-from-external-api-call
 searchable: true
 ---
 
-This guide will help you create items from an external API call. The example shows the steps of creating a Customization from existing data through an API call to our service.
+This guide will help you create items from an external API call. The example shows the steps of creating a Model from existing data through an API call to our service.
 
 ## Requirements
 This is an advanced tutorial. To follow it, you should be familiar with basic platformOS concepts, HTML, Liquid, APIs and Form Configurations, and the topics in the Get Started section.
@@ -15,7 +15,7 @@ This is an advanced tutorial. To follow it, you should be familiar with basic pl
 * [How platformOS Works](/how-platformos-works)
 * [Get Started](/get-started)
 * [APIs and Form Configurations](/tutorials/forms/form-configurations)
-* [Building a Contact Form with Customization](/tutorials/customizations/building-contact-form-with-customization)
+* [Building a Contact Form with Model](/tutorials/models/building-contact-form-with-model)
 
 ## Steps
 
@@ -72,7 +72,7 @@ Here is an example POST request you need to send. You need to set:
 * data payload in a JSON format
 
 <pre class="command-line" data-output="2-50" data-user="user" data-host="host"><code class="language-bash">
-curl https://example.platform-os.com/api/user/customizations
+curl https://example.platform-os.com/api/user/models
   -H "Authorization: Token token=[YOUR API TOKEN]"
   -H 'Content-Type: application/json'
   --data '{"form": { "properties_attributes: {"name": "Red flowers", "creator_id":"1" }}, "form_configuration_name": "import_flowers", "parent_object_class":"CustomModelType","parent_object_id":"flower"}'

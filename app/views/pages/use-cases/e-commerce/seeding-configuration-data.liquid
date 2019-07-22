@@ -108,7 +108,7 @@ Many editors allow you to set syntax highlighting depending on more than just on
 
 ### Step 2: Create processor partials
 
-Processor files are supposed to be included inside of the migration file and should allow multiple execution without creating any duplicates. This way if you need to add more Customizations in the future, you can create a new migration, include processor partial without having to repeat the logic behind it.
+Processor files are supposed to be included inside of the migration file and should allow multiple execution without creating any duplicates. This way if you need to add more Models in the future, you can create a new migration, include processor partial without having to repeat the logic behind it.
 
 #### app/views/partials/migrations/create_brands.liquid
 
@@ -117,7 +117,7 @@ Processor files are supposed to be included inside of the migration file and sho
 {% graphql existing = 'get_brands' %}
 {% parse_json brand_names %}{% include "data/brand.json" %}{% endparse_json %}
 
-{% assign existing_names = existing.customizations.results | map: "name" %}
+{% assign existing_names = existing.models.results | map: "name" %}
 
 {% for name in brand_names %}
   {% unless existing_names contains name %}
@@ -134,7 +134,7 @@ Processor files are supposed to be included inside of the migration file and sho
 {% graphql existing = 'get_product_types' %}
 {% parse_json product_type_names %}{% include "data/product_type.json" %}{% endparse_json %}
 
-{% assign existing_names = existing.customizations.results | map: "name" %}
+{% assign existing_names = existing.models.results | map: "name" %}
 
 {% for name in product_type_names %}
   {% unless existing_names contains name %}
@@ -150,7 +150,7 @@ Processor files are supposed to be included inside of the migration file and sho
 
 ```graphql
 query get_brands {
-  customizations(name: "brand", per_page: 999) {
+  models(filter: { name: { exact: "brand"} }, per_page: 999) {
     results {
       id
       name: property(name: "name")
@@ -163,9 +163,9 @@ query get_brands {
 
 ```graphql
 mutation create_brand($name: String) {
-  customization_create(
+  model_create(
     form_configuration_name: "create_brand_form"
-    customization: {
+    model: {
       model_schema_name: "brand"
       properties: [{ name: "name", value: $name }]
     }
@@ -179,7 +179,7 @@ mutation create_brand($name: String) {
 
 ```graphql
 query get_product_types {
-  customizations(name: "product_type", per_page: 999) {
+  models(name: "product_type", per_page: 999) {
     results {
       id
       name: property(name: "name")
@@ -192,9 +192,9 @@ query get_product_types {
 
 ```graphql
 mutation create_product_type($name: String) {
-  customization_create(
+  model_create(
     form_configuration_name: "create_product_type_form"
-    customization: {
+    model: {
       model_schema_name: "product_type"
       properties: [{ name: "name", value: $name }]
     }
@@ -269,7 +269,7 @@ There is quite a lot of overlap between `brand` and `product_type` models. Above
 {% include 'alert/note', content: content %}
 
 {% capture content %}
-Be careful when creating processor files that either modify or delete existing Customizations. Make sure that you do not inadvertently create data inconsistencies with missing reference to existing models.
+Be careful when creating processor files that either modify or delete existing Models. Make sure that you do not inadvertently create data inconsistencies with missing reference to existing models.
 {% endcapture %}
 {% include 'alert/warning', content: content %}
 

@@ -78,15 +78,15 @@ fields:
 {% endraw %}
 ```
 
-For more information see our [Form Builder Reference](/tutorials/forms/form-configurations) and our [Building a Contact Form with Customization](/tutorials/customizations/building-contact-form-with-customization) tutorial.
+For more information see our [Form Builder Reference](/tutorials/forms/form-configurations) and our [Building a Contact Form with Model](/tutorials/models/building-contact-form-with-model) tutorial.
 
 ## Fetching Property with GraphQL
 
 Properties depend on their parent objects and are accessible in the query after mapping the name of the Property with the query attribute name, you can do that with the `property` method:
 
 ```graphql
-query get_customizations {
-  customizations(name: "customization_name") {
+query get_models {
+  models(name: "model_name") {
     results {
       name: property(name: "name")
       age: property(name: "age")
@@ -106,7 +106,7 @@ Each object in the properties array is connected with a Property through its nam
 
 ```graphql
 query get_all_johns {
-  customizations(
+  models(
     is_deleted: false
     properties: [{ name: "name", value: "John" }]
   ) {
@@ -121,7 +121,7 @@ query get_all_johns {
 
 ```graphql
 query get_all_johns_and_annas {
-  customizations(
+  models(
     is_deleted: false
     properties: [{ name: "name", values: ["John", "Anna"], values_operator: OR }]
   ) {
@@ -136,7 +136,7 @@ query get_all_johns_and_annas {
 
 ```graphql
 query get_all_adults_below_60 {
-  customizations(
+  models(
     is_deleted: false
     properties: [{ name: "age", range: { gte: $adult_age_treshold, lt: 60 } }]
   ) {
@@ -151,7 +151,7 @@ query get_all_adults_below_60 {
 
 ```graphql
 query get_all_with_name {
-  customizations(
+  models(
     is_deleted: false
     properties: [{ name: "name", exists: true }]
   ) {

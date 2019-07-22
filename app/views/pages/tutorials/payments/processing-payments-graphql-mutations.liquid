@@ -67,7 +67,7 @@ To keep it simple, use payments created in the [Integrating Stripe](/tutorials/p
 
 ### Step 3: Execute migration
 
-The configuration and data are prepared. You now need to wrap it in the format that's readable to the `create_customization` mutation:
+The configuration and data are prepared. You now need to wrap it in the format that's readable to the `create_model` mutation:
 
 ```liquid
 
@@ -84,9 +84,9 @@ The configuration and data are prepared. You now need to wrap it in the format t
 And simply pass `refund_data` object to the GraphQL tag:
 
 ```liquid
-{% graphql g = "modules/payments/create_customization", form: "modules/payments/gateway_request_mutation_form", data: refund_data %}
+{% graphql g = "modules/payments/create_model", form: "modules/payments/gateway_request_mutation_form", data: refund_data %}
 {% parse_json "payment_properties" %}
-  {{ g.customization_create.properties.data }}
+  {{ g.model_create.properties.data }}
 {% endparse_json %}
 ```
 
