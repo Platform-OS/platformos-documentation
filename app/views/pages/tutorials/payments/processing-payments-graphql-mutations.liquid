@@ -40,12 +40,14 @@ Make sure that the [Payments Module](https://github.com/mdyd-dev/platformos-paym
 Any gateway request mutation call needs to know what gateway to use and what kind of request to process. To do that, create a `config` object as you did with the include_form version.
 
 ```liquid
+{% raw %}
 {%- parse_json 'config' -%}
   {
     "request_type": "create_refund",
     "gateway": "stripe"
   }
 {%- endparse_json -%}
+{% endraw %}
 ```
 
 Next one is `data`, please see the [documentation](https://github.com/mdyd-dev/platformos-payments-stripe#create_payment) for the request_type you are calling. Refund payment requires `charge`, `payment_id` and the `amount` that is being refunded.
@@ -53,6 +55,7 @@ Next one is `data`, please see the [documentation](https://github.com/mdyd-dev/p
 To keep it simple, use payments created in the [Integrating Stripe](/tutorials/payments/integrating-stripe) tutorial.
 
 ```liquid
+{% raw %}
 {% graphql g = "modules/payments/get_payments", per_page: 1 %}
 {% assign payment = g.payments.results.first %}
 
@@ -63,6 +66,7 @@ To keep it simple, use payments created in the [Integrating Stripe](/tutorials/p
     "amount": "{{ payment.properties.amount_cents }}"
   }
 {%- endparse_json -%}
+{% endraw %}
 ```
 
 ### Step 3: Execute migration
@@ -70,7 +74,7 @@ To keep it simple, use payments created in the [Integrating Stripe](/tutorials/p
 The configuration and data are prepared. You now need to wrap it in the format that's readable to the `create_model` mutation:
 
 ```liquid
-
+{% raw %}
 {% parse_json "refund_data" %}
   {
     "properties": [
@@ -79,15 +83,18 @@ The configuration and data are prepared. You now need to wrap it in the format t
      ]
   }
 {% endparse_json %}
+{% endraw %}
 ```
 
 And simply pass `refund_data` object to the GraphQL tag:
 
 ```liquid
+{% raw %}
 {% graphql g = "modules/payments/create_model", form: "modules/payments/gateway_request_mutation_form", data: refund_data %}
 {% parse_json "payment_properties" %}
   {{ g.model_create.properties.data }}
 {% endparse_json %}
+{% endraw %}
 ```
 
 ### Step 4: Test results
