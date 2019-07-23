@@ -8,7 +8,7 @@ console.log(`CI mode: ${process.env.CI}`);
 const options = {
   filterLevel: 0,
   honorRobotExclusions: false,
-  excludedKeywords: ['localhost', '*tablesgenerator.com*', '*sendgrid.api-docs.io*'],
+  excludedKeywords: ['localhost', '*tablesgenerator.com*', '*sendgrid.api-docs.io*', '*rubydoc.info*'],
   maxSocketsPerHost: 20,
   userAgent:
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36'
