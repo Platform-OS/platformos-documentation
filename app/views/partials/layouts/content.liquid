@@ -2,6 +2,9 @@
 {%- if context.exports.category.name.size > 0 -%}true{%- endif -%}
 {%- endcapture -%}
 
+{%- graphql pagesUpdatedAt = 'pages_updated_at' | dig: 'admin_pages', 'results' -%}
+{%- export pagesUpdatedAt, namespace: 'nav' -%}
+
 {% if has_sidebar == 'true' %}
   <div class="col-sm-3">
     <div class="sidebar">

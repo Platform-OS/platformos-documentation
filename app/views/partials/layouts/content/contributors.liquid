@@ -21,10 +21,13 @@
   {%- endcache -%}
 
   {%- if page_contributors.contributors != blank -%}
+    {% assign slugFromHref = context.location.href | remove_first: '/' %}
+    {% assign updatedAt = context.exports.nav.pagesUpdatedAt | select: slug: slugFromHref | first | fetch: "updated_at" | date: "%b %d, %Y" %}
+
     <div class="contributors">
       <div class="row">
         <div class="col-sm-5">
-          <span>Last edit: {{ page_contributors.last_edit | date: "%b %d, %Y" }}</span>
+          <span>Last edit: {{ updatedAt }}</span>
         </div>
 
         <div class="col-sm-7">
