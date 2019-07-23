@@ -1,8 +1,20 @@
 {% if context.exports.category.name %}
 
-{% assign current_path = context.headers.REQUEST_URI %}
+{%- assign current_path = context.headers.REQUEST_URI -%}
 
 {%- capture nav_links_path %}shared/nav/{{ context.exports.category.slug }}{% endcapture %}
+
+{% comment %}
+  Bug?
+  If i wrap graphql results in cache, everything is marked as new, which is suspicious.
+{% endcomment %}
+{% comment %}
+{%- cache pagesUpdatedAt, expire: 600 -%}
+{%- endcache -%}
+{% endcomment %}
+
+{%- graphql pagesUpdatedAt = 'pages_updated_at' | dig: 'admin_pages', 'results' -%}
+{%- export pagesUpdatedAt, namespace: 'nav' -%}
 
 <nav class="nav-sidebar">
   <ul>

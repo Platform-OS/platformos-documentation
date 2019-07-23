@@ -1,32 +1,21 @@
-<li>
-  <a href="/get-started/accessing-partner-portal">1. Accessing the Partner Portal</a>
-</li>
-<li>
-  <a href="/get-started/setting-up-site">2. Setting Up a Site on Our Platform </a>
-</li>
-<li class="{% if cp contains '/get-started/installing-npm' %}active{% endif %}"><a
-    href="/get-started/installing-npm-mac">3. Installing NPM</a>
+{% include "shared/nav/link", href: "/get-started/accessing-partner-portal", text: "1. Accessing the Partner Portal" %}
+{% include "shared/nav/link", href: "/get-started/setting-up-site", text: "2. Setting Up a Site on Our Platform" %}
+
+<li class="{% if cp contains '/get-started/installing-npm' %}active{% endif %}">
+  <a href="/get-started/installing-npm-mac">3. Installing NPM</a>
   <ul class="submenu">
-    <li><a href="/get-started/installing-npm-mac">3.a. Installing NPM on a Mac</a></li>
-    <li>
-  <a href="/get-started/installing-npm-windows">3.b. Installing NPM on Windows</a>
-</li>
+    {% include "shared/nav/link", href: "/get-started/installing-npm-mac", text: "3.a. Installing NPM on a Mac" %}
+    {% include "shared/nav/link", href: "/get-started/installing-npm-windows", text: "3.b. Installing NPM on Windows" %}
   </ul>
 </li>
-<li class="{% if cp contains 'pos-cli' %}active{% endif %}"><a
-    href="/get-started/installing-pos-cli">4. Installing the pos-cli</a>
+
+<li class="{% if cp contains 'pos-cli' %}active{% endif %}">
+  <a href="/get-started/installing-pos-cli">4. Installing the pos-cli</a>
   <ul class="submenu">
-<li>
-  <a href="/get-started/installing-pos-cli">4.a. Installing the pos-cli</a>
-</li>
-<li>
-  <a href="/get-started/updating-pos-cli">4.b. Updating the pos-cli</a>
-</li>
+    {% include "shared/nav/link", href: "/get-started/installing-pos-cli", text: "4.a. Installing the pos-cli" %}
+    {% include "shared/nav/link", href: "/get-started/updating-pos-cli", text: "4.b. Updating the pos-cli" %}
   </ul>
 </li>
-<li>
-  <a href="/get-started/creating-codebase">5. Creating the Codebase</a>
-</li>
-<li>
-  <a href="/get-started/deploying-syncing-changes">6. Deploying and Syncing Changes</a>
-</li>
+
+{% include "shared/nav/link", href: "/get-started/creating-codebase", text: "5. Creating the Codebase" %}
+{% include "shared/nav/link", href: "/get-started/deploying-syncing-changes", text: "6. Deploying and Syncing Changes" %}
