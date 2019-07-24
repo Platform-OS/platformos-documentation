@@ -37,11 +37,10 @@ pipeline {
       when { expression { return !params.MP_URL.isEmpty() } }
       environment {
         MPKIT_URL = "${params.MP_URL}"
-        CI = true
       }
       agent { docker { image 'platformos/pos-cli' } }
       steps {
-        sh 'pos-cli deploy'
+        sh 'CI=true pos-cli deploy'
       }
     }
 
@@ -64,13 +63,12 @@ pipeline {
 
       environment {
         MPKIT_URL = "${staging_url}"
-        CI = true
       }
 
       agent { docker { image 'platformos/pos-cli' } }
 
       steps {
-        sh 'pos-cli deploy'
+        sh 'CI=true pos-cli deploy'
       }
     }
 
@@ -100,13 +98,12 @@ pipeline {
 
       environment {
         MPKIT_URL = "${production_url}"
-        CI = true
       }
 
       agent { docker { image 'platformos/pos-cli' } }
 
       steps {
-        sh 'pos-cli deploy'
+        sh 'CI=true pos-cli deploy'
       }
     }
 
@@ -119,7 +116,6 @@ pipeline {
 
       environment {
         MP_URL = "${production_url}"
-        CI = true
       }
 
       steps {
