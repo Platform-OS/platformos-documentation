@@ -1,0 +1,55 @@
+---
+converter: markdown
+metadata:
+  title: Managing Your SendGrid Integration through the Partner Portal
+  description: This guide will help you create SendGrid API keys using the Partner Portal API. 
+slug: tutorials/integrations/managing-sendgrid-partner-portal
+searchable: true
+---
+
+This guide will help you create SendGrid API keys using the Partner Portal API. 
+
+## Requirements
+To follow this tutorial, you should have access to SendGrid, and be familiar with the SendGrid API and know how to integrate SendGrid using API Call notifications. 
+
+* [SendGrid API Reference, Contacts API - Recipients: POST](https://sendgrid.api-docs.io/v3.0/contacts-api-recipients/add-recipients)
+* [Integrating SendGrid Using API Call Notifications](/tutorials/integrations/integrating-sendgrid-api-call-notifications)
+
+## Steps
+
+Managing SendGrid using the Partner Portal API is a three-step process:
+
+<div data-autosteps></div>
+
+### Step 1: Authenticate yourself
+
+Use the following command to authenticate yourself and receive an authorization token that you can use in the next requests: 
+
+```shell
+curl -X POST -H "Content-Type: application/json" -d '{"email":"user@example.com","password":"valid password"}' "https://partners.platform-os.com/api/authenticate"
+```
+
+### Step 2: Send POST request to create SendGrid account
+
+Send a POST request to create a SendGrid account including a webhook URL param. See the webhooks key in the [doc JSON](https://partners.platform-os.com/doc.json):
+
+```shell
+curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer [[auth_token]]" -d '{"instance_id":"9999", "_": { "notifications": { "webhook_url": "https://webhook.url" }}}' "https://partners.platform-os.com/api/tasks/instance/integrations/manage_sendgrid"
+```
+
+When the SendGrid account is created, the following data will be sendt to the passed webhook URL. See webhooks.manage-sendgrid key in the [doc JSON](https://partners.platform-os.com/doc.json):
+
+```json
+{
+   "event_name":"instance/integrations/manage-sendgrid",
+   "data":{
+      "password":"kacper1091091091091091@near-me.com",
+      "user_name":"instance-1957ab2c-747a-478d-bcdd-8d49e4ba8320"
+   },
+   "status":"success"
+}
+```
+
+### Step 3: Send POST request
+
+Send `POST https://api.sendgrid.com/v3/api_keys`. You'll receive the API key. To authenticate this request use credentials from the webhook above. You can also fetch them with the Partner Portal API using this [endpoint](/api-reference/partner-portal/api#get-api-instances-uuid-configuration).
