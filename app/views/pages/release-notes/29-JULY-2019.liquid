@@ -12,7 +12,20 @@ searchable: false
 
 <h4 class="release-note release-note__new">NEW</h4>
 
-* notifications - added `locale` attribute to Email/SMS/API Notifiations, which accepts liquid to evaluate to the locale which should be used for translations
+* **graphql `models()` can be filtered by related users**: for example you can filter `cars` by owner name
+  ```graphql
+    models(
+      per_page: 10
+      filter: {
+        name: { value: "cars" }
+        users: { join: { foreign_property: "car_id" }
+          filter: { properties: [{ name: "name" value: "Mike" }]
+          }
+        }
+      }
+    ) { ... }
+  ```
+* **multilingual notifications** - added `locale` attribute to Email/SMS/API Notifiations, which accepts liquid, to evaluate to the locale which should be used for translations
 
 <h4 class="release-note release-note__improved">IMPROVED</h4>
 
@@ -21,3 +34,8 @@ searchable: false
 <h4 class="release-note release-note__fixed">FIXED</h4>
 
 * todo
+
+
+## pos-cli changes
+
+`pos-cli` changelog is [kept separately](https://github.com/mdyd-dev/pos-cli/blob/master/CHANGELOG.md).
