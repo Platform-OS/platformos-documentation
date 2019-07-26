@@ -2,18 +2,18 @@
 slug: best-practices/qa/performance-testing
 metadata:
   title: Performance Testing with TestCafe
-  description: 
+  description:
 searchable: true
 converter: markdown
 ---
 
-Why test performance in TestCafe instead of timing curl execution? Mostly because measuring in a real browser can give you a lot more information than just network response time. You can read detailed explanations of all timestamps captured into the **_window.performance.timing_** object, detect slow running scripts or huge DOM trees (taking a long time to parse) and more. **Without the browser actually parsing, compiling and rendering a page, you are not able to do this** — and it will surely affect your users nowadays when [webpages are well over 3MB](https://speedcurve.com/blog/web-performance-page-bloat/) on average.  
+Why test performance in TestCafe instead of timing curl execution? Mostly because measuring in a real browser can give you a lot more information than just network response time. You can read detailed explanations of all timestamps captured into the **_window.performance.timing_** object, detect slow running scripts or huge DOM trees (taking a long time to parse) and more. **Without the browser actually parsing, compiling and rendering a page, you are not able to do this** — and it will surely affect your users nowadays when [webpages are well over 3MB](https://speedcurve.com/blog/web-performance-page-bloat/) on average.
 
 ## Helpers
 
 When writing a previous part of this series, we found a bug with TestCafe that we reported. A TestCafe team member replied very quickly showing a simple workaround, so we added _**getPerformanceMetrics**_ to our npm package [@platform-os/testcafe-helpers](https://www.npmjs.com/package/@platform-os/testcafe-helpers#getperformancemetrics) to abstract the workaround for now and add a couple computed values to help.
 
-If you don't want to use it as a dependency, take a look at this [implementation](https://github.com/mdyd-dev/platformos-testcafe-helpers/blob/master/index.js#L23-L64). In this post we will show you the example code that’s using it to make it shorter and to the point.  
+If you don't want to use it as a dependency, take a look at this [implementation](https://github.com/mdyd-dev/platformos-testcafe-helpers/blob/master/index.js#L23-L64). In this post we will show you the example code that’s using it to make it shorter and to the point.
 
 ## What to test
 
@@ -38,12 +38,12 @@ Remember this when setting thresholds for network speed metrics — because of t
 
 ## Example
 
-This example demonstrates the differences between testing on your local environment vs in CI. 
+This example demonstrates the differences between testing on your local environment vs in CI.
 
 ```js
 import { getPerformanceMetrics } from '@platform-os/testcafe-helpers';
 
-fixture('Homepage').page('https://documentation.platform-os.com');
+fixture('Homepage').page('https://documentation.platformos.com');
 
 test('Page is not too slow', async t => {
   const perf = await getPerformanceMetrics({ t });
@@ -70,9 +70,9 @@ The results on CI (which is on the same provider as the servers):
 Homepage TTFB: 7 ms - DOM Ready: 43 ms ✓ Page is not too slow
 ```
 
-As you can see, timings on my laptop are much slower because of differences in location and network speed.  
+As you can see, timings on my laptop are much slower because of differences in location and network speed.
 
-Make sure you run your tests consistently on similar devices so that you don’t assert results from a high-end machine with a low-end machine on a slow connection. Otherwise, you will either have false negatives or your tests won’t catch regressions when they happen. If you want to, you can resign from asserting altogether and just log the values to your Slack channel and keep an eye on them. You can also gather them, which we will circle back to at the end of this post.  
+Make sure you run your tests consistently on similar devices so that you don’t assert results from a high-end machine with a low-end machine on a slow connection. Otherwise, you will either have false negatives or your tests won’t catch regressions when they happen. If you want to, you can resign from asserting altogether and just log the values to your Slack channel and keep an eye on them. You can also gather them, which we will circle back to at the end of this post.
 
 You can use this technique with remote browsers using various devices (e.g. an old smartphone) to test if your web page is rendering fast enough on other devices. It is possible to [enable device emulation](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browsers/using-chrome-device-emulation.html) on chromium-based browsers. Emulation is not the real deal, but it’s better than nothing.
 
@@ -80,12 +80,12 @@ You can use this technique with remote browsers using various devices (e.g. an o
 
 Ideally, you have your own process handled by Continuous Integration. Having said that, TestCafe supports remote browsers which allow you to run your tests either using browsers provided by [BrowserStack](https://www.browserstack.com/) / [SauceLabs](https://saucelabs.com/) or any other supported browsers that you can get your hands on. This is especially helpful if you need cross browser testing on real devices and specific operating system versions, e.g. iPhone 7 with Mobile Safari or Google Pixel with Firefox on Android 8.
 
-## Cloud browsers  
+## Cloud browsers
 
-Both BrowserStack and SauceLabs have trial accounts for you to explore the pros and cons.  
-We tested TestCafe with BrowserStack and it was a very good experience, and we will certainly use it in the future for mobile testing.  
+Both BrowserStack and SauceLabs have trial accounts for you to explore the pros and cons.
+We tested TestCafe with BrowserStack and it was a very good experience, and we will certainly use it in the future for mobile testing.
 
-We collected a couple of links from the official TestCafe documentation to help you get started:  
+We collected a couple of links from the official TestCafe documentation to help you get started:
 
 *   [TestCafe cloud browsers support](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browsers/browser-support.html#browsers-in-cloud-testing-services)
 *   [TestCafe Plugin for BrowserStack](https://www.npmjs.com/package/testcafe-browser-provider-browserstack)
@@ -117,4 +117,4 @@ There are many ways to store, format and visualize your test results over time. 
 3.  Schedule AWS Lambda to aggregate results once a day. This will create a final JSON file and save it to the public S3 bucket. It will contain data points with a 1-day resolution.
 4.  The project will have a password protected site that uses simple charts (like Chart.js) as a visualization library and JSON from the public S3 bucket as an asynchronously loaded data source.
 
-With a little bit of work, you can add your application version to the report, or maybe even deploy dates, to know which release had what impact on the application. Something like _**git commit sha**_ can save you a lot of time when you get performance regression you want to hunt down and fix. 
+With a little bit of work, you can add your application version to the report, or maybe even deploy dates, to know which release had what impact on the application. Something like _**git commit sha**_ can save you a lot of time when you get performance regression you want to hunt down and fix.

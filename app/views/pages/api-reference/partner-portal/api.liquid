@@ -17,7 +17,7 @@ partner-portal-api
 {%- endcapture %}
 
 {% cache cache_key %}
-{% assign url = context.params.source | default: 'https://partners.platform-os.com/doc.json' %}
+{% assign url = context.params.source | default: 'https://partners.platformos.com/doc.json' %}
 {% assign data = url | download_file | parse_json %}
 
 {% include 'api-reference/templates/partner-portal', data: data %}
