@@ -1,7 +1,7 @@
 ---
 converter: markdown
 metadata:
-  title:
+  title: GraphQL models() filtering by users attributes, improved multilanguage support for notifications
   description: July 29, 2019
   contributors: false
 slug: release-notes/29-JULY-2019
@@ -12,12 +12,32 @@ searchable: false
 
 <h4 class="release-note release-note__new">NEW</h4>
 
-* todo
+* **graphql `models()` can be filtered by related users**: for example you can filter `cars` by owner name
+  ```graphql
+    models(
+      per_page: 10
+      filter: {
+        name: { value: "cars" }
+        users: { join: { foreign_property: "car_id" }
+          filter: { properties: [{ name: "name" value: "Mike" }]
+          }
+        }
+      }
+    ) { ... }
+  ```
+* **multilingual notifications** - added `locale` attribute to Email/SMS/API Notifications, which accepts liquid, to evaluate to the locale which should be used for translations
+* **auth0 integration** - added auth0 integration and documentation on how to integrate various Identity Providers (Auth0, Facebook, Twitter etc.) with platformOS
 
 <h4 class="release-note release-note__improved">IMPROVED</h4>
 
-* todo
+* **admin_ GraphQL mutations** - `modules/my_module_name` prefix will be automatically added to the name of notifications, authorization policies, etc., based on physical path, to make it consistent with the `pos-cli` behavior
+* **layout validation** - added validation to the `layout_name` property of Page to make it impossible to assign layout which does not exist
+* **validate Model belongs to the defined ModelSchema** - when defining a FormConfiguration with a concrete ModelSchema name as resource, it will not be possible to use it to update the Model, which belongs to the different ModelSchema
+* **`form` and `data` in the notifications** - previously `data` was accessible if the Notification was triggered via GraphQL and `form` if it was triggered via FormConfiguration. Now you can always use both, which should make it easier to re-use Notifications. Also, documentation for triggering an API Call Notifcation was updated accordingly to show both ways of triggering it.
+* **validation for related resources in GraphQL** - GraphQL will return an error if you try to use invalid values (for example property name which does not exist) for related models.
 
 <h4 class="release-note release-note__fixed">FIXED</h4>
 
-* todo
+## pos-cli changes
+
+`pos-cli` changelog is [kept separately](https://github.com/mdyd-dev/pos-cli/blob/master/CHANGELOG.md).
