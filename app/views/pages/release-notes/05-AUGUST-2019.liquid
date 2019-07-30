@@ -20,4 +20,12 @@ searchable: false
 
 <h4 class="release-note release-note__fixed">FIXED</h4>
 
-* todo
+* **filtering data by empty values** - `users` and `models` endpoints will properly filter items with values that are empty. ex. 
+  ```graphql
+  models(
+    filter: { 
+      properties: [{ name: "warning", value: "" }]
+     }
+   ) { ... }
+  ```
+  
