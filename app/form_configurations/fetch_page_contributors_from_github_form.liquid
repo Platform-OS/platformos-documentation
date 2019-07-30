@@ -17,7 +17,7 @@ async_callback_actions:
   delay: 0
   content: >
     {%- graphql pc = "get_page_contributors", slug: form.properties.slug -%}
-    {%- assign page_contributors = pc.customizations.results.last -%}
+    {%- assign page_contributors = pc.models.results.last -%}
     {%- include "shared/contributors/update_callback", id: form.id, page_contributors: page_contributors -%}
 ---
 
