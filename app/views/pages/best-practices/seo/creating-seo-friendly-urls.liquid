@@ -7,7 +7,6 @@ slug: best-practices/seo/creating-seo-friendly-urls
 searchable: true
 ---
 
-
 This guide will help you create SEO friendly URLs. The example shows category listings grouped by country, e.g.:
 
 * **/catalogue/Australia/Sydney**
@@ -49,33 +48,38 @@ Creating SEO friendly category listings is a three-step process:
 
 ### Step 2: Prepare GraphQL query
 
-Create a GraphQL query with country and city:
+Assuming you have a following Model Schema `model_schemas/catalogue_listings.yml` already in place:
+```yaml
+name: catalogue_listings
+properties:
+  - name: country
+    type: string
+  - name: city
+    type: string
+```
 
+Create a GraphQL query with country and city.
 ```graphql
-query get_catalogue_listings(
-  $query: String,
-  $is_deleted: Boolean = false
-  $country: String
-  $city: String
-) {
-  listings(
-    query: $query,
-    listing: {
-      is_deleted: $is_deleted
-      address: {
-        country: $country
-        city: $city
+query get_catalogue_listings($country: String, $city: String) {
+  models(
+    per_page: 20,
+    filter: {
+      name: {
+        value: "catalogue_listings"
       }
+      deleted_at: {exists: false},
+      properties: [
+        {name: "country", value: $country},
+        {name: "city", value: $city}
+      ]
     }
   ) {
     total_entries
     results {
-      slug
+      id
       name
-      address{
-        country
-        city
-      }
+      city: property(name: "city")
+      country: property(name: "country")
     }
   }
 }
@@ -89,8 +93,7 @@ Add the GraphQL query you created to your page, and pass extracted params to it:
 {% raw %}
 {% graphql g = 'get_catalogue_listings',
   country: url_params.country,
-  city: url_params.city,
-  is_deleted: false
+  city: url_params.city
 %}
 {% endraw %}
 ```
@@ -104,17 +107,17 @@ Add the GraphQL query you created to your page, and pass extracted params to it:
 
 <div class="results">
   <form action="." method="GET">
-    {% graphql g = 'demo_search_listings',
+    {% graphql g = 'get_catalogue_listings',
       country: url_params.country,
       city: url_params.city,
       is_deleted: false
     %}
 
-    <strong>{{ g.listings.total_entries }}</strong>
+    <strong>{{ g.models.total_entries }}</strong>
     <ul>
-    {% for item in g.listings.results %}
+    {% for item in g.models.results %}
       <li>
-        {{ item.slug }} - {{ item.name }} - {{ item.address.country }} - {{ item.address.city }}
+        {{ item.id }} - {{ item.name }} - {{ item.country }} - {{ item.city }}
       </li>
     {% endfor %}
     </ul>
