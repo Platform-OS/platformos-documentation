@@ -95,7 +95,7 @@ In this approach, you use two GraphQL queries:
 
 ```graphql
 query programmers {
-  programmers: customizations(name: "modules/n_plus_one/programmer"){
+programmers: models(per_page: 20, filter: { name: { value: "programmer" } }){
     total_entries
     results {
       properties
@@ -108,7 +108,7 @@ query programmers {
 
 ```graphql
 query company($id: ID) {
-  companies: customizations(name: "modules/n_plus_one/company", id: $id){
+  companies: models(per_page: 20, filter: { name: { value: "company" }, id: { value: $id } }){
     results {
       name
       id
@@ -119,18 +119,18 @@ query company($id: ID) {
 }
 ```
 
-While displaying the programmer collection — for each programmer record — you fetch the related company model using the `company` graphql query:
+While displaying the programmer collection — for each programmer record — you fetch the related company model using the `company` GraphQL query:
 
 ```liquid
 {% raw %}
-{% graphql g = 'modules/n_plus_one/programmers' %}
+{% graphql g = 'programmers' %}
 
 {% for programmer in g.programmers.results %}
   <tr>
     <td>{{ programmer.properties.email }}</td>
     <td>{{ programmer.properties.title }}</td>
     {% if programmer.properties.company_id %}
-      {% graphql company = 'modules/n_plus_one/company', id: programmer.properties.company_id %}
+      {% graphql company = 'company', id: programmer.properties.company_id %}
       <td>{{ company.companies.results.first.properties.name }}</td>
       <td>{{ company.companies.results.first.properties.url }}</td>
     {% endif %}
@@ -165,18 +165,18 @@ model(join_on_property: "company_id") { properties }
 `join_on_property` argument is required and is used as a foreign key of the company collection. In SQL language this could look similarly:
 
 ```sql
-select * from programmers joins companies on (programmers.company_id = companies.id)
+SELECT * FROM programmers JOINS companies ON (programmers.company_id = companies.id)
 ```
 
-and after updating your GraphQL query looks like this now:
+and after updating your GraphQL query would look like this:
 
 ```graphql
 query programmers {
-  programmers: customizations(name: "modules/n_plus_one/programmer", per_page: 200) {
+programmers: models(filter: { name: { value: "programmer" } }, per_page: 200) {
     total_entries
     results {
       properties
-      company: model(join_on_property: "company_id") {
+      company: model(model_name: "company", join_on_property: "company_id") {
         url: property(name: "url")
         properties
       }

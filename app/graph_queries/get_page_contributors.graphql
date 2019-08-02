@@ -1,5 +1,5 @@
 query get_page_contributors($slug: String!) {
-  customizations(name: "page_contributors", is_deleted: false, properties: [{ name: "slug", value: $slug }]) {
+  models(per_page: 20, filter: {name: {value: "page_contributors"}, deleted_at: {exists: false}, properties: [{name: "slug", value: $slug}]}) {
     results {
       id
       deleted_at

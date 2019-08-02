@@ -1,5 +1,15 @@
 query get_github_clients {
-  customizations(name: "github_client", is_deleted: false) {
+  models(
+    per_page: 100
+    filter: {
+      name:{
+        value: "github_client"
+      }
+      deleted_at: {
+        exists: false
+      }
+    }
+  ) {
     results {
       id
       client_id: property(name: "client_id")

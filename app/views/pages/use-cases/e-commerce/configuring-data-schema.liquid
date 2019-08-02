@@ -158,11 +158,6 @@ As you’ve probably noticed we’ve omitted the `user_id` attribute. Every Mode
 {% endcapture %}
 {% include "alert/note", content: content %}
 
-{% capture content %}
-platformOS has a special field type called `CustomAddress`. It allows geolocation and detailed validation of the address. You will not be using that in this example, but you can [read more on the `Custom Address` field](/tutorials/properties/custom-addresses) in our documentation.
-{% endcapture %}
-{% include "alert/note", content: content %}
-
 ### Step 3: Configure order models
 
 Last part of your shop data schema is related to `order`s created by clients. Every order can have multiple products attached to it and a `shipping_option` selected during checkout. Order is finished with `payment`. You will store the history of all payments for a given order (usually it will be just one, but you would want to log every interaction with the payments API as a separate entry). Finally, you will store `order_history` describing any changes to order state (received, paid, shipped, etc.)
