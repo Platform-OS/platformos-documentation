@@ -1,7 +1,7 @@
 ---
 converter: markdown
 metadata:
-  title:
+  title: headers in context.headers, customizations to models renaming, bugfixes
   description: August 05, 2019
   contributors: false
 slug: release-notes/05-AUGUST-2019
@@ -12,12 +12,25 @@ searchable: false
 
 <h4 class="release-note release-note__new">NEW</h4>
 
-* todo
+* **allow user to access their custom request headers via `context.headers`**
 
 <h4 class="release-note release-note__improved">IMPROVED</h4>
 
-* todo
+* **replaced `customizations` with `models` in examples**
+* **clean up output of `form` variable when custom_image/custom_attachment is provided**
 
 <h4 class="release-note release-note__fixed">FIXED</h4>
 
-* todo
+* **filtering data by empty values** - `users` and `models` endpoints will properly filter items with values that are empty. For example:
+  ```graphql
+  models(
+    filter: {
+      properties: [{ name: "warning", value: "" }]
+     }
+   ) { ... }
+  ```
+* **removed articles about CustomAttribute** - there is a better way now via `models` - https://documentation.platformos.com/tutorials/model-schemas/using-geojson-format-geolocation
+* **exception in data import** is no longer raised when item with given external id does not exist
+* **500 error when trying to include partial without a name ** - {% raw %}```liquid{% include '' %}```{% endraw % } will render user friendly error
+* **gracefully handle exception in jwt_decode filter**
+* **gracefully handle empty string provided to parse_json filter/tag**
