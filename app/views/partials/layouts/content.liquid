@@ -2,7 +2,14 @@
 {%- if context.exports.category.name.size > 0 -%}true{%- endif -%}
 {%- endcapture -%}
 
-{%- graphql pagesUpdatedAt = 'pages_updated_at' | dig: 'admin_pages', 'results' -%}
+{% comment %} This cache self-invalidates when deploy/sync changes any view/translation {% endcomment %}
+{% parse_json pagesUpdatedAt %}
+{%- cache pagesUpdatedAtCache -%}
+{%- graphql g = 'pages_updated_at' | dig: 'admin_pages', 'results' -%}
+{{- g -}}
+{%- endcache -%}
+{% endparse_json %}
+
 {%- export pagesUpdatedAt, namespace: 'nav' -%}
 
 {% if has_sidebar == 'true' %}
