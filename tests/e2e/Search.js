@@ -6,7 +6,7 @@ import SearchPO from './page-objects/Search';
 const Layout = new LayoutPO();
 const Search = new SearchPO();
 
-fixture.only('Search').page(`${process.env.MP_URL}/search`);
+fixture('Search').page(`${process.env.MP_URL}/search`);
 
 test('There are no Liquid errors on the page', async () => {
   await Search.go(Search.existingPhrase);
