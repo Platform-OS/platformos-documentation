@@ -98,12 +98,13 @@ pipeline {
 
       environment {
         MPKIT_URL = "${production_url}"
+        CI = true
       }
 
       agent { docker { image 'platformos/pos-cli' } }
 
       steps {
-        sh 'CI=true pos-cli deploy'
+        sh 'pos-cli deploy'
       }
     }
 
@@ -116,6 +117,7 @@ pipeline {
 
       environment {
         MP_URL = "${production_url}"
+        CI = true
       }
 
       steps {
