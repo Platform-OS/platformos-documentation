@@ -2,7 +2,7 @@ import { Selector, t } from 'testcafe';
 
 export default class SearchPO {
   constructor() {
-    this.existingPhrase = 'Form Configuration';
+    this.existingPhrase = 'Form';
     this.nonExistingPhrase = `${+new Date()} ## ${+new Date()}`;
     this.nonSearchablePhrase = 'Our usual response time is 1-2 business days.';
 

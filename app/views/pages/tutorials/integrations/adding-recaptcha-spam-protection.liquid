@@ -32,7 +32,7 @@ Go to our [Partner Portal](https://partners.platformos.com/instances), and add r
 {% raw %}
 Start with a simple sign-in page with spam protection enabled by default.
 Create a sign-in page and sign-in form configuration.
-Form configuration needs to have the attribute `spam_protection: { "recaptcha_v2": {} }` with configuration to enable protection, available options can be found in [Form Configuration tutorial](/tutorials/forms/form-configuration#spam_protection)
+Form configuration needs to have the attribute `spam_protection: { "recaptcha_v2": {} }` with configuration to enable protection, available options can be found in [Form tutorial](/tutorials/forms/form-configuration#spam_protection)
 Also use the [`{% spam_protection %}`](/api-reference/liquid/platformos-tags#spam_protection) tag to generate required JS (you can include required JS code on your own).
 {% endraw %}
 
@@ -48,7 +48,7 @@ slug: sign-in-recaptcha
 {% endraw %}
 ```
 
-#### form_configurations/sign_in_with_recaptcha.liquid
+#### forms/sign_in_with_recaptcha.liquid
 ```liquid
 {% raw %}
 ---
@@ -79,7 +79,7 @@ fields:
 In order to show reCAPTCHA only after a specified number of failed login attempts, you need to know how many times the user tried to log in. You can count this and store the number in a session. Use mutation `session_create_field`.
 You also need the sign-in form configuration without spam protection.
 
-#### form_configurations/sign_in_without_recaptcha.liquid
+#### forms/sign_in_without_recaptcha.liquid
 ```liquid
 {% raw %}
 ---
@@ -106,7 +106,7 @@ callback_actions: >
 
 ```
 
-#### graph_queries/set_failed_signin_attempts.graphql
+#### graphql/set_failed_signin_attempts.graphql
 ```graphql
 mutation set_failed_signin_attempts($attempts: Any!) {
   session_create_field(name: "failed_attempts", value: $attempts)
@@ -137,7 +137,7 @@ slug: sign-in-recaptcha
 
 After the user signed in successfully, you should clear session information with callback `{% raw %}{% graphql res = "clear_failed_signin_attempts" %}{% endraw %}`
 
-#### graph_queries/clear_failed_signin_attempts.graphql
+#### graphql/clear_failed_signin_attempts.graphql
 ```graphql
 mutation clear_failed_signin_attempts {
   session_delete_field(name: "failed_attempts")

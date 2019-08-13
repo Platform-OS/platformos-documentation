@@ -146,7 +146,7 @@ Processor files are supposed to be included inside of the migration file and sho
 
 ### Step 3: Create queries and mutations
 
-#### app/graph_queries/brand/get_brands.graphql
+#### app/graphql/brand/get_brands.graphql
 
 ```graphql
 query get_brands {
@@ -159,12 +159,12 @@ query get_brands {
 }
 ```
 
-#### app/graph_queries/brand/mutations/create_brand.graphql
+#### app/graphql/brand/mutations/create_brand.graphql
 
 ```graphql
 mutation create_brand($name: String) {
   model_create(
-    form_configuration_name: "create_brand_form"
+    form_name: "create_brand_form"
     model: {
       model_schema_name: "brand"
       properties: [{ name: "name", value: $name }]
@@ -175,7 +175,7 @@ mutation create_brand($name: String) {
 }
 ```
 
-#### app/graph_queries/product_type/get_product_types.graphql
+#### app/graphql/product_type/get_product_types.graphql
 
 ```graphql
 query get_product_types {
@@ -188,12 +188,12 @@ query get_product_types {
 }
 ```
 
-#### app/graph_queries/product_type/mutations/create_product_type.graphql
+#### app/graphql/product_type/mutations/create_product_type.graphql
 
 ```graphql
 mutation create_product_type($name: String) {
   model_create(
-    form_configuration_name: "create_product_type_form"
+    form_name: "create_product_type_form"
     model: {
       model_schema_name: "product_type"
       properties: [{ name: "name", value: $name }]
@@ -206,7 +206,7 @@ mutation create_product_type($name: String) {
 
 ### Step 4: Create form configurations
 
-#### app/form_configurations/brand/create_brand_form.liquid
+#### app/forms/brand/create_brand_form.liquid
 
 ```yaml
 name: create_brand_form
@@ -220,7 +220,7 @@ fields:
 
 ```
 
-#### app/form_configurations/brand/create_product_type_form.liquid
+#### app/forms/brand/create_product_type_form.liquid
 
 ```yaml
 name: create_product_type_form
@@ -264,7 +264,7 @@ pos-cli migrations generate development create_product_types
 Deploying your code or executing migrations with the `pos-cli migration run` command will save all of the data to the database. In the future, in order to add new brands, you can simply edit `brand.yml` and add a new migration that includes the processor file.
 
 {% capture content %}
-There is quite a lot of overlap between `brand` and `product_type` models. Above example could be streamlined and optimized, to use common queries, Form Configurations, etc.
+There is quite a lot of overlap between `brand` and `product_type` models. Above example could be streamlined and optimized, to use common queries, Forms, etc.
 {% endcapture %}
 {% include 'alert/note', content: content %}
 

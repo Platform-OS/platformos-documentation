@@ -83,7 +83,7 @@ You will then have access to the `current_user.has_admin_access` variable. This 
 
 ### Step 2: Rename `current_user` query
 
-Rename query `app/graph_queries/user/current_user.liquid` to `app/graph_queries/user/get_current_user_data.liquid` and update the query name inside the file.
+Rename query `app/graphql/user/current_user.liquid` to `app/graphql/user/get_current_user_data.liquid` and update the query name inside the file.
 
 {% capture content %}
 Liquid implementation comes with a certain feature you have to be aware of. The [documentation for the `include` tag](https://www.rubydoc.info/gems/liquid/Liquid/Include) mentions, that you can use `for` and `with` keywords to pass a variable that will be named after the partial name.
@@ -112,7 +112,7 @@ flash_alert: Sorry, you have to be an admin user to access this page.
 {% endraw %}
 ```
 
-#### app/form_configurations/session/sign_in_form.liquid
+#### app/forms/session/sign_in_form.liquid
 
 ```liquid
 {% raw %}
@@ -300,7 +300,7 @@ You should always reset values of all variables at the top of the partial. In ca
 
 With partial in place you can now update your form `sign_in_form`:
 
-#### app/form_configurations/session/sign_in_form.liquid
+#### app/forms/session/sign_in_form.liquid
 
 ```liquid
 {% raw %}

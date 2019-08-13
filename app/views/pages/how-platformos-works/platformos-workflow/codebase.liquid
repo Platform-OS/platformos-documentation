@@ -21,9 +21,9 @@ In order to correctly communicate with the platformOS engine and API, your codeb
 | assets                  | asset       | Directory for static assets, like fonts, images, stylesheets, and scripts.                                                                                                                                                                                    | [Assets](#assets)                                                       |
 | authorization_policies  | Liquid      | Directory for .liquid files that contains Authorization Policy configuration files. Authorization Policies define rules that control whether a user has access to a form or page.                                                                                                                                                 | [Authorization Policies](#authorization-policies)           |
 | model_schemas      | YAML        | Directory for .yml files that define Model Schemas. Model Schemas define custom objects, including their fields and associations and allow you to create persistence containers for your custom forms.                                                                                                                  | [Models](#models)                   |
-| form_configurations     | Liquid      | Directory for .liquid files that define Form Configurations. Form Configurations define forms including their fields, validation, redirects, and callbacks. Each of the Liquid files should include configuration (including associated Authorization Policies, Notifications, etc.), along with Liquid code which renders HTML.  | [Forms](#forms)                               |
-| graph_queries           | GraphQL     | Directory for .graphql files, each defining one GraphQL Query. GraphQL queries retrieve information from or insert information into the databases. Retrieved information is made available in Liquid.                                                                                                                                               | [GraphQL](https://graphql.org/learn/)                                                   |
-| notifications           | Liquid      | Directory for files that define Notifications, which then can be associated with Form Configuration.                                                                                                                                                                                                                              | [Notifications](#notifications)                                 |
+| forms     | Liquid      | Directory for .liquid files that define Forms. Forms define forms including their fields, validation, redirects, and callbacks. Each of the Liquid files should include configuration (including associated Authorization Policies, Notifications, etc.), along with Liquid code which renders HTML.  | [Forms](#forms)                               |
+| graphql           | GraphQL     | Directory for .graphql files, each defining one GraphQL Query. GraphQL queries retrieve information from or insert information into the databases. Retrieved information is made available in Liquid.                                                                                                                                               | [GraphQL](https://graphql.org/learn/)                                                   |
+| notifications           | Liquid      | Directory for files that define Notifications, which then can be associated with Form.                                                                                                                                                                                                                              | [Notifications](#notifications)                                 |
 | views/pages             | Liquid      | Directory for files that define pages, the most essential building blocks of a platformOS site.                                                                                   | [Views](#views-pages-layouts-and-partials)                                                          |
 | views/layouts           | Liquid      | Directory for layouts. Layouts are wrappers around your page content. They ensure consistent outer content for similarly designed pages.                                                                                                                                                                                          | [Views](#views-pages-layouts-and-partials)                                                      |
 | views/partials          | Liquid      | Directory for partials  &ndash;  reusable snippets of Liquid code usually used to render HTML.                                                                                                                                                                                                                                    | [Views](#views-pages-layouts-and-partials)                                                                                        |
@@ -43,7 +43,7 @@ platformOS allows Liquid pages to be used to create many different types of endp
 
 **Layouts** are Liquid views that store code that would normally repeat on a lot of pages and is surrounding page content (e.g. header, footer). Without layouts, pages would share a lot of duplicated code, and changing anything would become a very time consuming and error prone process. You can create as many layouts as you need, and decide which page uses which layout.
 
-**Partials** (partial templates) allow you to easily organize and reuse your code by extracting pieces of code to their own files. They help you improve code readability and follow the principle of DRY (Don’t Repeat Yourself). You can parameterize partials and use them in various places, e.g. layouts, pages, Authorization Policies, Form Configurations.
+**Partials** (partial templates) allow you to easily organize and reuse your code by extracting pieces of code to their own files. They help you improve code readability and follow the principle of DRY (Don’t Repeat Yourself). You can parameterize partials and use them in various places, e.g. layouts, pages, Authorization Policies, Forms.
 
 Example directory structure of `views` with sample files:
 
@@ -95,7 +95,7 @@ app
 
 Just like in every web application, HTML forms are essential in platformOS. Because using plain HTML forms can get difficult to maintain with complex data structures, we provide multiple tools that make working with forms much easier.
 
-**Form Configurations** are the main tool for rendering forms, persisting data, and sending notifications (email/SMS/API) in a secure and customizable way.
+**Forms** are the main tool for rendering forms, persisting data, and sending notifications (email/SMS/API) in a secure and customizable way.
 
 They give you full control when defining:
 
@@ -106,11 +106,11 @@ They give you full control when defining:
 
 On top of that, you can define callbacks (either synchronous or asynchronous) for further modifications to the system using GraphQL mutations. For example, you can define a signup form that creates User records, and if the user input is valid, also creates a few sample products for them, so that they don’t have to start from scratch.
 
-Example directory structure of `form_configurations` with sample files:
+Example directory structure of `forms` with sample files:
 
 ```shell
 app
-└── form_configurations
+└── forms
     ├── create_contact_request_form.liquid
     ├── feedback_form.liquid
 ```
@@ -220,7 +220,7 @@ app
 modules
 ├──admincms
   ├── private
-  │   └── graph_queries
+  │   └── graphql
   │       ├── get_models.graphql
   │       └── get_pages.graphql
   └── public

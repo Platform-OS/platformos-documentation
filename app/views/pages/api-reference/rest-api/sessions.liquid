@@ -17,7 +17,7 @@ POST /api/sessions
 
 | Parameter               | Type        | Description                    | Required | Notes |
 | ----------------------- | ----------- | ------------------------------ | -------- | ----- |
-| form_configuration_name | String      | Name of the form configuration | Required |       |
+| form_name | String      | Name of the form configuration | Required |       |
 | form                    | SessionForm | User email and password        | Required |       |
 
 **Session Parameters**
@@ -30,7 +30,7 @@ POST /api/sessions
 
 ```json
 {
-  "form_configuration_name": "reference_rest_api_create_sessions",
+  "form_name": "reference_rest_api_create_sessions",
   "form": {
     "email": "example1@example.com",
     "password": "somepassword"
@@ -40,7 +40,7 @@ POST /api/sessions
 
 | Element                 | Type        | Description                           | Required? |
 | ----------------------- | ----------- | ------------------------------------- | --------- |
-| form_configuration_name | String      | Name of the defined FormConfiguration | Required  |
+| form_name | String      | Name of the defined Form | Required  |
 | form                    | SessionForm | User email and password               | Required  |
 
 **Example response**
@@ -66,7 +66,7 @@ DELETE /api/sessions
 
 | Parameter               | Type   | Description                    | Required | Notes |
 | ----------------------- | ------ | ------------------------------ | -------- | ----- |
-| form_configuration_name | String | Name of the form configuration | Required |       |
+| form_name | String | Name of the form configuration | Required |       |
 
 **Example request**
 
@@ -75,13 +75,13 @@ DELETE /api/sessions
 
 ```json
 {
-  "form_configuration_name": "reference_rest_api_delete_sessions"
+  "form_name": "reference_rest_api_delete_sessions"
 }
 ```
 
 | Element                 | Type   | Description                           | Required? |
 | ----------------------- | ------ | ------------------------------------- | --------- |
-| form_configuration_name | String | Name of the defined FormConfiguration | Required  |
+| form_name | String | Name of the defined Form | Required  |
 
 **Example response**
 

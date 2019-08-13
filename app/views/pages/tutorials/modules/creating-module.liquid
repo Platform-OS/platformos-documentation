@@ -25,14 +25,14 @@ Creating a module is a three-step process:
 
 ### Step 1: Create directories
 
-Create two directories inside the `modules` directory called `admincms`, then create the `public` and `private` folders inside it. Place the `graph_queries` directory inside `private`, and the `views/pages` directories inside public.
+Create two directories inside the `modules` directory called `admincms`, then create the `public` and `private` folders inside it. Place the `graphql` directory inside `private`, and the `views/pages` directories inside public.
 
 See the structural overview of the module you'll create here for reference:
 
 ```shell
 admincms
 ├── private
-│   └── graph_queries
+│   └── graphql
 │       ├── get_models.graphql
 │       └── get_pages.graphql
 └── public
@@ -45,7 +45,7 @@ admincms
 
 Create a GraphQL query that pulls a list of Models.
 
-#### admincms/private/graph_queries/get_models.graphql
+#### admincms/private/graphql/get_models.graphql
 
 ```graphql
 query get_models {
@@ -63,7 +63,7 @@ query get_models {
 
 Create another GraphQL query that pulls a list of pages
 
-#### admincms/private/graph_queries/get_pages.graphql
+#### admincms/private/graphql/get_pages.graphql
 
 ```graphql
 query get_pages {
@@ -150,7 +150,7 @@ you would get a structure like this:
 .
 ├── app
 │   └── views
-|   └── graph_queries
+|   └── graphql
 │       ...
 └── modules
     └── admin

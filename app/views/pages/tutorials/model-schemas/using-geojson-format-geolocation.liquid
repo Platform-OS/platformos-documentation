@@ -53,11 +53,11 @@ The following geometry types are supported:
 To learn more, read the [official GeoJSON documentation](https://tools.ietf.org/html/rfc7946).
 
 ## Requirements
-To follow the steps in this tutorial, you should be familiar with Model Schemas, data imports, and Form Configuration.
+To follow the steps in this tutorial, you should be familiar with Model Schemas, data imports, and Form.
 
 * [Model Schemas](/tutorials/model-schemas/model-schemas)
 * [Data Import](/tutorials/data-import-export/import)
-* [Form Configuration](/tutorials/forms/form-configuration)
+* [Form](/tutorials/forms/form-configuration)
 
 ## Steps
 
@@ -117,7 +117,7 @@ Create a `payload`:
   }
 }
 ```
-Alternatively, you can create the record using a Form Configuration:
+Alternatively, you can create the record using a Form:
 
 ```yaml
 ---
@@ -152,7 +152,7 @@ This example is for presentation only. In a real scenario, no one would provide 
 
 ### Step 3: Prepare GraphQL query
 
-Create the GraphQL query `graph_queries/search.graphql`:
+Create the GraphQL query `graphql/search.graphql`:
 
 ```graphql
 query search($point: GeometryJSON, $distance: Int) {
@@ -214,9 +214,10 @@ You can do this by appending a plus filter with a `0` argument - literally addin
 
 **Code samples**
 
-* [form_configurations/create_company.liquid](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/geo_models/public/form_configurations/create_company.liquid)
+* [forms/create_company.liquid](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/geo_models/public/forms/create_company.liquid)
 * [views/pages/geo/company-new.liquid](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/geo_models/public/views/pages/geo/company-new.liquid)
 * [views/pages/geo/programmer-new.liquid](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/geo_models/public/views/pages/geo/programmer-new.liquid)
 * [views/pages/geo/company-search.liquid](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/geo_models/public/views/pages/geo/company-search.liquid)
 * [model_schemas/company.yml](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/geo_models/public/model_schemas/company.yml)
-* [graph_queries/search.graphql](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/geo_models/public/graph_queries/search.graphql)
+* [graphql/search.graphql](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/geo_models/public/graphql/search.graphql)
+

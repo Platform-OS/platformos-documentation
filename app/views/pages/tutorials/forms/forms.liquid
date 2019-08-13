@@ -15,15 +15,15 @@ To delve into forms, you should be familiar with:
 
 ## Basic concept
 
-Form configuration is defined as Liquid files and is located within the `form_configurations`.
+Form configuration is defined as Liquid files and is located within the `forms`.
 
-If you develop your code as module `form_configurations` directory should be placed inside `public` or `private` directory of your module.
+If you develop your code as module `forms` directory should be placed inside `public` or `private` directory of your module.
 
-If your code is not a module, `form_configurations` is placed directly inside `app` directory.
+If your code is not a module, `forms` is placed directly inside `app` directory.
 
 Each file is divided into two sections: configuration and implementation.
 
-* **Configuration section** is placed on top of the file marked with three dashes `---` at the start and end of the section. It is a definition written in [YAML](https://en.wikipedia.org/wiki/YAML) that is telling the platform to create/update the form endpoint with given name and settings. These settings determine where to store and how to validate the data. Head to the [Form Configuration Options](/tutorials/forms/form-configuration-options#list-of-required-form-configuration-options) section for a full list of configuration options.
+* **Configuration section** is placed on top of the file marked with three dashes `---` at the start and end of the section. It is a definition written in [YAML](https://en.wikipedia.org/wiki/YAML) that is telling the platform to create/update the form endpoint with given name and settings. These settings determine where to store and how to validate the data. Head to the [Form Options](/tutorials/forms/form-configuration-options#list-of-required-form-configuration-options) section for a full list of configuration options.
 {% raw %}
 * **Implementation section** is an HTML part that accepts Liquid Markup with all goodies from platformOS. This is where you construct the form displayed to users. You can construct the form in HTML but it's much easier to use the `{% form %}` tag that will handle many tasks behind the scenes, and will make it easier to write clean code. Learn more about it in the [Rendering Form Tutorial](/tutorials/forms/rendering-form).
 {% endraw %}
@@ -31,7 +31,7 @@ Each file is divided into two sections: configuration and implementation.
 
 ## Minimal form example
 
-Every form configuration is strictly connected with the resource that can be a static class predefined by platformOS or a dynamic model. The very basic example of the FormConfiguration that enables the possibility to create an object of CustomModelType named "Car" and accepts one property called "color", would look like this:
+Every form configuration is strictly connected with the resource that can be a static class predefined by platformOS or a dynamic model. The very basic example of the Form that enables the possibility to create an object of CustomModelType named "Car" and accepts one property called "color", would look like this:
 
 {% raw %}
 ```liquid
@@ -75,7 +75,7 @@ To see how it works on a real webpage go to the [live example](https://examples.
 
 ## Related topics
 
-* [Form Configuration](/tutorials/forms/form-configuration)
+* [Form](/tutorials/forms/form-configuration)
 * [Form Rendering](/tutorials/forms/form-rendering)
 * [Form Server Side Processing](/tutorials/forms/form-server-side-processing)
 * [Flash Messages](/tutorials/forms/flash-messages)

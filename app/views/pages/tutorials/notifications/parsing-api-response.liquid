@@ -42,7 +42,7 @@ As a first step, create a Property in the user profile. In this example, you wil
 ### Step 2: Add GraphQL mutation
 Add GraphQL mutation:
 
-#### graph_queries/store_third_party_api_id.graphql
+#### graphql/store_third_party_api_id.graphql
 
 ```graphql
 mutation store_third_party_api_id($user_id: ID!, $third_party_api_id: String!) {
@@ -53,17 +53,17 @@ mutation store_third_party_api_id($user_id: ID!, $third_party_api_id: String!) {
         { name: "default", values: { properties: [{ name: "third_party_api_id", value: $third_party_api_id }] } }
       ]
     }
-    form_configuration_name: "callback_third_party_api_id"
+    form_name: "callback_third_party_api_id"
   ) {
     id
   }
 }
 ```
 
-### Step 3: Create Form Configuration
-The mutation you created provides input for the Form Configuration called `callback_third_party_api_id`, so create this Form Configuration:
+### Step 3: Create Form
+The mutation you created provides input for the Form called `callback_third_party_api_id`, so create this Form:
 
-#### form_configurations/callback_third_party_api_id.liquid
+#### forms/callback_third_party_api_id.liquid
 
 ```yaml
 ---

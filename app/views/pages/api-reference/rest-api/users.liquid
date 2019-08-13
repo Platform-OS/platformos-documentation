@@ -17,8 +17,8 @@ POST /api/users
 
 | Parameter               | Type     | Description                                                               | Required | Notes |
 | ----------------------- | -------- | ------------------------------------------------------------------------- | -------- | ----- |
-| form_configuration_name | String   | Name of the form configuration                                            | Required |       |
-| form                    | UserForm | UserForm parameters that corresponds with FormConfiguration configuration | Required |       |
+| form_name | String   | Name of the form configuration                                            | Required |       |
+| form                    | UserForm | UserForm parameters that corresponds with Form configuration | Required |       |
 
 **User Parameters**
 
@@ -31,7 +31,7 @@ POST /api/users
 
 ```json
 {
-  "form_configuration_name": "reference_rest_api_create_user",
+  "form_name": "reference_rest_api_create_user",
   "form": {
     "first_name": "Example",
     "email": "example1@example.com",
@@ -42,8 +42,8 @@ POST /api/users
 
 | Element                 | Type     | Description                                                                                | Required? |
 | ----------------------- | -------- | ------------------------------------------------------------------------------------------ | --------- |
-| form_configuration_name | String   | Name of the defined FormConfiguration                                                      | Required  |
-| form                    | UserForm | Attributes for user, should match configuration defined in corresponding FormConfiguration | Required  |
+| form_name | String   | Name of the defined Form                                                      | Required  |
+| form                    | UserForm | Attributes for user, should match configuration defined in corresponding Form | Required  |
 
 **Example response**
 
@@ -66,8 +66,8 @@ PUT /api/users/:user_id
 
 | Parameter               | Type     | Description                                                               | Required | Notes |
 | ----------------------- | -------- | ------------------------------------------------------------------------- | -------- | ----- |
-| form_configuration_name | String   | Name of the form configuration                                            | Required |       |
-| form                    | UserForm | UserForm parameters that corresponds with FormConfiguration configuration | Required |       |
+| form_name | String   | Name of the form configuration                                            | Required |       |
+| form                    | UserForm | UserForm parameters that corresponds with Form configuration | Required |       |
 
 **User Parameters**
 
@@ -80,7 +80,7 @@ PUT /api/users/:user_id
 
 ```json
 {
-  "form_configuration_name": "reference_rest_api_update_user",
+  "form_name": "reference_rest_api_update_user",
   "form": {
     "first_name": "Example"
   }
@@ -89,8 +89,8 @@ PUT /api/users/:user_id
 
 | Element                 | Type     | Description                                                                                | Required? |
 | ----------------------- | -------- | ------------------------------------------------------------------------------------------ | --------- |
-| form_configuration_name | String   | Name of the defined FormConfiguration                                                      | Required  |
-| form                    | UserForm | Attributes for user, should match configuration defined in corresponding FormConfiguration | Required  |
+| form_name | String   | Name of the defined Form                                                      | Required  |
+| form                    | UserForm | Attributes for user, should match configuration defined in corresponding Form | Required  |
 
 **Example response**
 

@@ -41,7 +41,7 @@ When building the product form you consider the following business rules:
 - when new product is created, redirect me to the details page for this product
 - when editing an existing product, redirect me back to edit form
 
-#### app/form_configurations/product/product_form.liquid
+#### app/forms/product/product_form.liquid
 
 ```liquid
 {% raw %}
@@ -659,7 +659,7 @@ You can improve usability of any long form (and in most cases anything more than
 
 Now that the form for entering data is ready, you need a way to fetch them from the database. You should create a generic query that will be reused throughout the app to fetch lists of products.
 
-#### app/graph_queries/product/get_products.graphql
+#### app/graphql/product/get_products.graphql
 
 ```graphql
 query get_products($id: ID) {
@@ -961,7 +961,7 @@ platformOS has built-in filters for displaying monetary values: `pricify` and `p
 
 The last step is to add a form for deleting the product.
 
-#### app/form_configurations/product/destroy_product_form.liquid
+#### app/forms/product/destroy_product_form.liquid
 
 ```liquid
 {% raw %}

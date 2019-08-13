@@ -48,7 +48,7 @@ For more information on Properties please see [Properties Documentation](/tutori
 
 Now that you have the definition of a `Contact` in place, you can create a Form that will configure the server to accept requests with data in the desired format. Data passed through the form will be stored in the database as a Contact object.
 
-#### form_configurations/contact_form.liquid
+#### forms/contact_form.liquid
 
 ```yaml
 ---
@@ -74,7 +74,7 @@ The above definition whitelists name, email, and description attributes and defi
 
 ### Step 3: Fetch saved data with GraphQL
 
-Now that you have created the `Contact` custom model type in the previous step, you can proceed to fetch this data with GraphQL. To define get_contacts query, create file `get_contacts.graphql` file in `graph_queries` directory.
+Now that you have created the `Contact` custom model type in the previous step, you can proceed to fetch this data with GraphQL. To define get_contacts query, create file `get_contacts.graphql` file in `graphql` directory.
 
 ```graphql
 query get_contacts($id: ID) {
@@ -205,7 +205,7 @@ fields:
 
 The `redirect_to` configuration option defines where to redirect the user after successful form submission. The predefined `form` tag allows you to create context for submitted data.
 
-For more information of advanced form configuration please visit [Form Configuration Documentation](/tutorials/forms/form-configurations).
+For more information of advanced form configuration please visit [Form Documentation](/tutorials/forms/form-configurations).
 
 To display the form on the previously created `contacts` page you have to include it with:
 
@@ -281,7 +281,7 @@ trigger_condition: true
 {% endraw %}
 ```
 
-As you can see, all request parameters are now accessible in `form.model` object, so you can simply compose any email you want. Next step is linking `contact_notification` in the `contact_form` by adding to form configuration inside `form_configurations/contact_form.liquid` file.
+As you can see, all request parameters are now accessible in `form.model` object, so you can simply compose any email you want. Next step is linking `contact_notification` in the `contact_form` by adding to form configuration inside `forms/contact_form.liquid` file.
 
 ```yaml
 email_notifications:

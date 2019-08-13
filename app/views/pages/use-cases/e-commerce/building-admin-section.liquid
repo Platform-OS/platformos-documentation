@@ -58,7 +58,7 @@ This should create a new file in your `migrations` folder.
 
 You need three more files to make it work. First, create a generic `get_user` query.
 
-#### app/graph_queries/get_user.graphql
+#### app/graphql/get_user.graphql
 
 ```graphql
 query get_user($id: ID, $email: String, $slug: String) {
@@ -83,12 +83,12 @@ You can build queries with additional parameters, to make them more versatile. E
 {% endcapture %}
 {% include 'alert/note', content: content %}
 
-#### app/graph_queries/user/mutations/promote_user_to_admin.graphql
+#### app/graphql/user/mutations/promote_user_to_admin.graphql
 
 ```graphql
 mutation promote_user_to_admin($id: ID) {
   user_update(
-    form_configuration_name: "promote_user_to_admin_form"
+    form_name: "promote_user_to_admin_form"
     id: $id
     user: {
       profiles: [
@@ -104,7 +104,7 @@ mutation promote_user_to_admin($id: ID) {
 }
 ```
 
-#### app/form_configurations/user/promote_user_to_admin_form.liquid
+#### app/forms/user/promote_user_to_admin_form.liquid
 
 ```yaml
 ---
@@ -122,12 +122,12 @@ fields:
 
 There is one more thing to do. When the Instance was created, your user has been copied, but for security reasons its password was set to a random string. You have to update it as well. You need to add one more mutation and form configuration to do just that.
 
-#### app/graph_queries/user/mutations/set_user_password.graphql
+#### app/graphql/user/mutations/set_user_password.graphql
 
 ```graphql
 mutation set_user_password($id: ID, $password: String) {
   user_update(
-    form_configuration_name: "set_user_password_form"
+    form_name: "set_user_password_form"
     id: $id
     user: { password: $password }
   ) {
@@ -136,7 +136,7 @@ mutation set_user_password($id: ID, $password: String) {
 }
 ```
 
-#### app/form_configurations/user/set_user_password_form.liquid
+#### app/forms/user/set_user_password_form.liquid
 
 ```liquid
 ---
@@ -177,7 +177,7 @@ flash_alert: Sorry, you have to be an admin user to access this page.
 {% endraw %}
 ```
 
-#### app/graph_queries/current_user.graphql
+#### app/graphql/current_user.graphql
 
 ```grapqhl
 query current_user {
@@ -199,7 +199,7 @@ You’ll notice, that this query is identical to the `get_user` query apart from
 
 Now, that the Authorization Policy is in place, you can go ahead and modify the `promote_user_to_admin_form` form, so that only admins can promote other users to admins from now on.
 
-#### app/form_configurations/user/promote_user_to_admin_form.liquid
+#### app/forms/user/promote_user_to_admin_form.liquid
 
 ```yaml
 name: promote_user_to_admin_form
@@ -249,7 +249,7 @@ You can also use a new layout file [`views/layouts/authorization.html.liquid`](h
 {% endcapture %}
 {% include 'alert/note', content: content %}
 
-#### app/form_configurations/session/sign_in_form.liquid
+#### app/forms/session/sign_in_form.liquid
 
 ```liquid
 {% raw %}
@@ -318,7 +318,7 @@ Input fields are a prime candidate for refactoring, as there is a lot of repetit
 
 Now that you can sign in, you should be able to sign out as well. [Logging Out an Authenticated User](/tutorials/users/logging-out-authenticated-user) describes well what needs to be done. You’ll add the form configuration now, so that it’s ready when you are working on the top navigation and the sign out button.
 
-#### app/form_configurations/session/sign_out_form.liquid
+#### app/forms/session/sign_out_form.liquid
 
 ```liquid
 {% raw %}
