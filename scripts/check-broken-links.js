@@ -8,7 +8,7 @@ const siteUrl = process.env.MP_URL || 'https://documentation.platformos.com';
 const options = {
   filterLevel: 0,
   honorRobotExclusions: false,
-  excludedKeywords: ['localhost', '*tablesgenerator.com*', '*sendgrid.api-docs.io*', '*rubydoc.info*', '*ampproject.org*'],
+  excludedKeywords: ['localhost', '*tablesgenerator.com*', '*sendgrid.api-docs.io*', '*rubydoc.info*', '*ampproject.org*', '*ampstart.com*'],
   maxSocketsPerHost: 20,
   userAgent:
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36'
