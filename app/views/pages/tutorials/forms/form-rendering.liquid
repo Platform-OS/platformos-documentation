@@ -16,7 +16,7 @@ To understand this topic, you should be familiar with:
 
 ## Defining form implementation
 
-Form implementation example from [Full Form Configuration example](tutorials/forms/configuration-options)
+Form implementation example from [Full Form example](tutorials/forms/configuration-options)
 {% raw %}
 ```liquid
 <p>{{ form.fields.properties.greeting.value }}</p>
@@ -87,7 +87,7 @@ Using the [`form tag`](/api-reference/liquid/platformos-tags#form) is the easies
   ```liquid
   <input name="utf8" type="hidden" value="✓">
   <input type="hidden" name="authenticity_token" value="Dl+Oaignq4h7fe577kMJBURm0FaFYRr5qrBx2OngXm28SOqaTGR8vdkReHOevfzNBN9HKebr/z46sHyEjPm9NA==">
-  <input type="hidden" name="form_configuration_id" value="4099">
+  <input type="hidden" name="form_id" value="4099">
   <input type="hidden" name="page_id" value="5492">
   <input type="hidden" name="slug" value="full-form-example">
   <input type="hidden" name="slug2">
@@ -100,7 +100,7 @@ Using the [`form tag`](/api-reference/liquid/platformos-tags#form) is the easies
 
   Make sure to add necessary information if you create your HTML form manually or when you use third-party tools like curl to construct your request. Required request parameters are:
 
-  * `form_configuration_name` or `form_configuration_id` is telling platformOS which form to use when processing request
+  * `form_name` or `form_id` is telling platformOS which form to use when processing request
   * `parent_resource_id` identifies form object type (which is usually the name of your Model Schema)
   * 'authenticity_token` is required when authorization header is not set, otherwise can be skipped
 

@@ -23,9 +23,9 @@ The very first thing before every POST request is to verify the CSRF token. If i
 {% include 'alert/important', content: content %}
 
 
-## 2. Find FormConfiguration based on form_configuration_name or form_configuration_id parameter
+## 2. Find Form based on form_name or form_id parameter
 
-The first step is to identify the FormConfiguration to be used to process the user's request. In order to do it, the server checks for the parameter called `form_configuration_name` or `form_configuration_id`, which is automatically added to the page when the form is rendered using the {% raw %}`{% form %}`{% endraw %} tag as described in [FormTag](/tutorials/forms/form-rendering#form-tag). If the value is missing or invalid, 404 error is rendered, otherwise you can move on.
+The first step is to identify the Form to be used to process the user's request. In order to do it, the server checks for the parameter called `form_name` or `form_id`, which is automatically added to the page when the form is rendered using the {% raw %}`{% form %}`{% endraw %} tag as described in [FormTag](/tutorials/forms/form-rendering#form-tag). If the value is missing or invalid, 404 error is rendered, otherwise you can move on.
 
 ## 3. Check Authorization Policies
 

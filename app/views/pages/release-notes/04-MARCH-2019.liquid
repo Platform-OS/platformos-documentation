@@ -1,7 +1,7 @@
 ---
 converter: markdown
 metadata:
-  title: Form Configuration name optional, set HTTP status to Authorization Policy
+  title: Form name optional, set HTTP status to Authorization Policy
   description: March 04, 2019
   contributors: false
 slug: release-notes/04-MARCH-2019
@@ -12,7 +12,7 @@ searchable: true
 
 <h4 class="release-note release-note__improved">IMPROVED</h4>
 
-* **`form_configuration_name` optional**: No need to duplicate GraphQL mutation input via Form Configuration - the `form_configuration_name` attribute is now optional in GraphQL mutations like `user_create`, `user_update`, `customization_update`, etc. You can still use it if you want to leverage existing configuration doing something in a callback/async callback or for sending emails, but you don’t have to.
+* **`form_name` optional**: No need to duplicate GraphQL mutation input via Form - the `form_name` attribute is now optional in GraphQL mutations like `user_create`, `user_update`, `customization_update`, etc. You can still use it if you want to leverage existing configuration doing something in a callback/async callback or for sending emails, but you don’t have to.
 * **Set `http_status` to Authorization Policy**: Added possibility to set `http_status` to Authorization Policy (previously hardcoded to 403). This allows you to render your custom 404 when an Auth Policy is violated. Moreover, now you can also customize 403, 500, and 503 (maintenance) pages by creating a page with the corresponding slug - 403, 500, or 503.
 
 <h4 class="release-note release-note__fixed">FIXED</h4>

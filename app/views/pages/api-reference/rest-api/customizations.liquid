@@ -17,8 +17,8 @@ POST /api/user/customizations
 
 | Parameter               | Type               | Description                                                                        | Required | Notes                      |
 | ----------------------- | ------------------ | ---------------------------------------------------------------------------------- | -------- | -------------------------- |
-| form_configuration_name | String             | Name of the form configuration                                                     | Required | underscored                |
-| form                    | CustomizationForm  | CustomizationForm parameters that corresponds with FormConfiguration configuration | Required |                            |
+| form_name | String             | Name of the form configuration                                                     | Required | underscored                |
+| form                    | CustomizationForm  | CustomizationForm parameters that corresponds with Form configuration | Required |                            |
 | parent_resource_id      | ID (Int or String) | Id or name of definced CustomizationType                                           | Required | name should be underscored |
 
 **Customization Parameters**
@@ -32,7 +32,7 @@ POST /api/user/customizations
 
 ```json
 {
-  "form_configuration_name": "reference_rest_api_create_customization",
+  "form_name": "reference_rest_api_create_customization",
   "parent_resource_id": "links",
   "form": {
     "properties": {
@@ -44,8 +44,8 @@ POST /api/user/customizations
 
 | Element                 | Type              | Description                                                                                | Required? |
 | ----------------------- | ----------------- | ------------------------------------------------------------------------------------------ | --------- |
-| form_configuration_name | String            | Name of the defined FormConfiguration                                                      | Required  |
-| form                    | CustomizationForm | Attributes for user, should match configuration defined in corresponding FormConfiguration | Required  |
+| form_name | String            | Name of the defined Form                                                      | Required  |
+| form                    | CustomizationForm | Attributes for user, should match configuration defined in corresponding Form | Required  |
 
 **Example response**
 
@@ -66,8 +66,8 @@ PUT /api/user/customizations/:customization_id
 
 | Parameter               | Type              | Description                                                                        | Required | Notes |
 | ----------------------- | ----------------- | ---------------------------------------------------------------------------------- | -------- | ----- |
-| form_configuration_name | String            | Name of the form configuration                                                     | Required |       |
-| form                    | CustomizationForm | CustomizationForm parameters that corresponds with FormConfiguration configuration | Required |       |
+| form_name | String            | Name of the form configuration                                                     | Required |       |
+| form                    | CustomizationForm | CustomizationForm parameters that corresponds with Form configuration | Required |       |
 
 **Customization Parameters**
 
@@ -80,7 +80,7 @@ PUT /api/user/customizations/:customization_id
 
 ```json
 {
-  "form_configuration_name": "reference_rest_api_update_customization",
+  "form_name": "reference_rest_api_update_customization",
   "form": {
     "properties": {
       "url": "aol.com"
@@ -91,8 +91,8 @@ PUT /api/user/customizations/:customization_id
 
 | Element                 | Type              | Description                                                                                | Required? |
 | ----------------------- | ----------------- | ------------------------------------------------------------------------------------------ | --------- |
-| form_configuration_name | String            | Name of the defined FormConfiguration                                                      | Required  |
-| form                    | CustomizationForm | Attributes for user, should match configuration defined in corresponding FormConfiguration | Required  |
+| form_name | String            | Name of the defined Form                                                      | Required  |
+| form                    | CustomizationForm | Attributes for user, should match configuration defined in corresponding Form | Required  |
 
 **Example response**
 
@@ -112,7 +112,7 @@ DELETE /api/user/customizations/:customization_id
 
 | Parameter               | Type   | Description                    | Required | Notes |
 | ----------------------- | ------ | ------------------------------ | -------- | ----- |
-| form_configuration_name | String | Name of the form configuration | Required |       |
+| form_name | String | Name of the form configuration | Required |       |
 
 **Example request**
 
@@ -121,13 +121,13 @@ DELETE /api/user/customizations/:customization_id
 
 ```json
 {
-  "form_configuration_name": "reference_rest_api_delete_customizations"
+  "form_name": "reference_rest_api_delete_customizations"
 }
 ```
 
 | Element                 | Type   | Description                           | Required? |
 | ----------------------- | ------ | ------------------------------------- | --------- |
-| form_configuration_name | String | Name of the defined FormConfiguration | Required  |
+| form_name | String | Name of the defined Form | Required  |
 
 **Example response**
 

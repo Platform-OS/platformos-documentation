@@ -10,11 +10,11 @@ searchable: true
 This guide will help you create items from an external API call. The example shows the steps of creating a Model from existing data through an API call to our service.
 
 ## Requirements
-This is an advanced tutorial. To follow it, you should be familiar with basic platformOS concepts, HTML, Liquid, APIs and Form Configurations, and the topics in the Get Started section.
+This is an advanced tutorial. To follow it, you should be familiar with basic platformOS concepts, HTML, Liquid, APIs and Forms, and the topics in the Get Started section.
 
 * [How platformOS Works](/how-platformos-works)
 * [Get Started](/get-started)
-* [APIs and Form Configurations](/tutorials/forms/form-configurations)
+* [APIs and Forms](/tutorials/forms/form-configurations)
 * [Building a Contact Form with Model](/tutorials/models/building-contact-form-with-model)
 
 ## Steps
@@ -38,11 +38,11 @@ properties:
   type: integer
 ```
 
-### Step 2: Create FormConfiguration
+### Step 2: Create Form
 
 Define what data you expect, and required validations:
 
-#### form_configurations/import_flowers.liquid
+#### forms/import_flowers.liquid
 
 ```yaml
 ---
@@ -75,5 +75,6 @@ Here is an example POST request you need to send. You need to set:
 curl https://example.platform-os.com/api/user/models
   -H "Authorization: Token token=[YOUR API TOKEN]"
   -H 'Content-Type: application/json'
-  --data '{"form": { "properties_attributes: {"name": "Red flowers", "creator_id":"1" }}, "form_configuration_name": "import_flowers", "parent_object_class":"CustomModelType","parent_object_id":"flower"}'
+  --data '{"form": { "properties_attributes: {"name": "Red flowers", "creator_id":"1" }}, "form_name": "import_flowers", "parent_object_class":"CustomModelType","parent_object_id":"flower"}'
 </code></pre>
+
