@@ -4,10 +4,10 @@
 
 {% comment %} This cache self-invalidates when deploy/sync changes any view/translation {% endcomment %}
 {% parse_json pagesUpdatedAt %}
-{%- cache pagesUpdatedAtCache -%}
-{%- graphql g = 'pages_updated_at' | dig: 'admin_pages', 'results' -%}
-{{- g -}}
-{%- endcache -%}
+  {%- cache pagesUpdatedAtCache -%}
+    {%- graphql g = 'pages_updated_at' | dig: 'admin_pages', 'results' -%}
+    {{- g -}}
+  {%- endcache -%}
 {% endparse_json %}
 
 {%- export pagesUpdatedAt, namespace: 'nav' -%}

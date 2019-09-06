@@ -1,6 +1,6 @@
 {%- if context.location.href != "/" -%}
   {%- graphql g = "get_page_contributors", slug: context.location.href -%}
-  {%- assign page_contributors = g.customizations.results.last -%}
+  {%- assign page_contributors = g.models.results.last -%}
   {%- assign key = context.page.slug -%}
 
   {% comment %}
@@ -18,38 +18,38 @@
       {%- graphql res = "create_page_contributors", slug: slug, paths: page_path -%}
       {%- assign page_contributors = g.customization_create -%}
     {%- endif -%}
-  {%- endcache -%}
 
-  {%- if page_contributors.contributors != blank -%}
-    {% assign slugFromHref = context.location.href | remove_first: '/' %}
-    {% assign updatedAt = context.exports.nav.pagesUpdatedAt | select: slug: slugFromHref | first | fetch: "updated_at" | date: "%b %d, %Y" %}
+    {%- if page_contributors.contributors != blank -%}
+      {% assign slugFromHref = context.location.href | remove_first: '/' %}
+      {% assign updatedAt = context.exports.nav.pagesUpdatedAt | select: slug: slugFromHref | first | fetch: "updated_at" | date: "%b %d, %Y" %}
 
-    <div class="contributors">
-      <div class="row">
-        <div class="col-sm-5">
-          <span>Last edit: {{ updatedAt }}</span>
-        </div>
+      <div class="contributors">
+        <div class="row">
+          <div class="col-sm-5">
+            <span>Last edit: {{ updatedAt }}</span>
+          </div>
 
-        <div class="col-sm-7">
-          <ul>
-            <li>Contributors:</li>
-            {%- assign c = page_contributors.contributors | default: "[]" | to_hash | reverse -%}
-            {%- for contributor in c -%}
-              {%- if contributor.login != blank -%}
-                <li>
-                  <a href="https://github.com/{{ contributor.login }}" target="_blank">
-                    {% comment %}
-                      Github uses round robin to choose CDN. This causes N different SSL handshakes. Breaks browsers cache (SIC).
-                    {% endcomment %}
-                    {% assign avatar_url = "https://avatars0.githubusercontent.com/u/" | append: contributor.id | append: "?v=4&s=20" %}
-                    <img src="{{ avatar_url }}" width="20" height="20" alt="{{ contributor.login }}" lazy>
-                  </a>
-                </li>
-              {%- endif -%}
-            {%- endfor -%}
-          </ul>
+          <div class="col-sm-7">
+            <ul>
+              <li>Contributors:</li>
+              {%- assign c = page_contributors.contributors | default: "[]" | to_hash | reverse -%}
+              {%- for contributor in c -%}
+                {%- if contributor.login != blank -%}
+                  <li>
+                    <a href="https://github.com/{{ contributor.login }}" target="_blank">
+                      {% comment %}
+                        Github uses round robin to choose CDN. This causes N different SSL handshakes. Breaks browsers cache (SIC).
+                      {% endcomment %}
+                      {% assign avatar_url = "https://avatars0.githubusercontent.com/u/" | append: contributor.id | append: "?v=4&s=20" %}
+                      <img src="{{ avatar_url }}" width="20" height="20" alt="{{ contributor.login }}" lazy>
+                    </a>
+                  </li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+          </div>
         </div>
       </div>
-    </div>
-  {%- endif -%}
+    {%- endif -%}
+  {%- endcache -%}
 {%- endif -%}
