@@ -1,3 +1,5 @@
+{%- assign cp = context.headers.REQUEST_URI -%}
+
 <header class="header">
 	<div class="container">
 		<div class="header__inner">
@@ -17,19 +19,19 @@
 				<nav class="nav-header">
 					<ul>
 						<li>
-							<a href="/how-platformos-works">How platformOS Works</a>
+							<a href="/how-platformos-works" class="{% if cp contains '/how-platformos-works' %}active{% endif %}">How platformOS Works</a>
 						</li>
 
 						<li>
-							<a href="/get-started">Get Started</a>
+							<a href="/get-started" class="{% if cp contains '/get-started' %}active{% endif %}">Get Started</a>
 						</li>
 
 						<li>
-							<a href="/tutorials">Tutorials</a>
+							<a href="/tutorials" class="{% if cp contains '/tutorials' %}active{% endif %}">Tutorials</a>
 						</li>
 
 						<li>
-							<a href="/api-reference">API Reference</a>
+							<a href="/api-reference" class="{% if cp contains '/api-reference' %}active{% endif %}">API Reference</a>
 						</li>
 					</ul>
 				</nav>
