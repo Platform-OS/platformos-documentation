@@ -23,7 +23,6 @@ Go to the file you would like to change, [click edit and commit changes](https:/
 ## Contributors
 
 Thank you to all our contributors!
-
 [<img alt="pavelloz" src="https://avatars1.githubusercontent.com/u/546845?v=4&s=117" width="117">](https://github.com/pavelloz) |[<img alt="diana-lakatos" src="https://avatars0.githubusercontent.com/u/4191691?v=4&s=117" width="117">](https://github.com/diana-lakatos) |[<img alt="piotrze" src="https://avatars0.githubusercontent.com/u/96238?v=4&s=117" width="117">](https://github.com/piotrze) |[<img alt="Slashek" src="https://avatars3.githubusercontent.com/u/30107?v=4&s=117" width="117">](https://github.com/Slashek) |[<img alt="lemingos" src="https://avatars0.githubusercontent.com/u/95296?v=4&s=117" width="117">](https://github.com/lemingos) |[<img alt="ignacy" src="https://avatars2.githubusercontent.com/u/25693?v=4&s=117" width="117">](https://github.com/ignacy) |
 :---: |:---: |:---: |:---: |:---: |:---: |
 [pavelloz](https://github.com/pavelloz) |[diana-lakatos](https://github.com/diana-lakatos) |[piotrze](https://github.com/piotrze) |[Slashek](https://github.com/Slashek) |[lemingos](https://github.com/lemingos) |[ignacy](https://github.com/ignacy) |
@@ -39,8 +38,6 @@ Thank you to all our contributors!
 [<img alt="power833" src="https://avatars1.githubusercontent.com/u/53452538?v=4&s=117" width="117">](https://github.com/power833) |[<img alt="mjaneczek" src="https://avatars3.githubusercontent.com/u/3797771?v=4&s=117" width="117">](https://github.com/mjaneczek) |[<img alt="kbd332" src="https://avatars0.githubusercontent.com/u/52897345?v=4&s=117" width="117">](https://github.com/kbd332) |[<img alt="Agsiegert" src="https://avatars1.githubusercontent.com/u/4143205?v=4&s=117" width="117">](https://github.com/Agsiegert) |[<img alt="Developer-DNM" src="https://avatars1.githubusercontent.com/u/1714812?v=4&s=117" width="117">](https://github.com/Developer-DNM) |
 :---: |:---: |:---: |:---: |:---: |
 [power833](https://github.com/power833) |[mjaneczek](https://github.com/mjaneczek) |[kbd332](https://github.com/kbd332) |[Agsiegert](https://github.com/Agsiegert) |[Developer-DNM](https://github.com/Developer-DNM) |
-
-
 
 <!--
   How to update this list?
