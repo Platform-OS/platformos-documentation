@@ -66,7 +66,7 @@ const config = {
   optimization: {
     minimizer: [
       new OptimizeCSSAssetsPlugin({}),
-      new TerserPlugin({ parallel: true, cache: true })
+      new TerserPlugin({ parallel: true, cache: true, comments: false })
     ]
   },
   plugins: plugins,
