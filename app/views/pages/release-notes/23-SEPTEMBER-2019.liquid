@@ -1,0 +1,33 @@
+---
+converter: markdown
+metadata:
+  title: DNS/SSL implementation, GraphQL improvements, bugfixes
+  description: September 23, 2019
+  contributors: false
+slug: release-notes/23-SEPTEMBER-2019
+searchable: true
+---
+
+#### {{ page.metadata.description }}
+
+<h4 class="release-note release-note__new">NEW</h4>
+
+* new DNS/SSL implementation deployed to production
+* locale by default will be set based on Accept-Language header sent by browser
+* boolean_property GraphQL attribute to cast property value to boolean
+
+<h4 class="release-note release-note__improved">IMPROVED</h4>
+
+* data import mutation accepts new _rebuild_index argument to be able to perform re-indexing asynchronously to avoid timeout in GraphQL editor
+* validation of Liquid syntax in Email/SMS/API Notification attributes
+
+<h4 class="release-note release-note__fixed">FIXED</h4>
+
+* translations within modules don't always appear on the site
+* invoking user_session_destroy when user is not logged in triggers 500 error
+* 500 error when trying to fetch properties via GraphQL as nested attribute
+* silence duplicated logs of data import
+
+## pos-cli changes
+
+`pos-cli` changelog is [kept separately](https://github.com/mdyd-dev/pos-cli/blob/master/CHANGELOG.md).
