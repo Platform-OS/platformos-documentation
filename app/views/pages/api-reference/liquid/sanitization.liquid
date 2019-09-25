@@ -12,13 +12,13 @@ In liquid on platformOS we do escape every variable output when you use {% raw %
 ### Input
 ```liquid
 {% raw %}
-{% assign user_name = '<a href="http://platformos.com">Click Me</a>' %}
+{% assign user_name = '<a href="https://www.platformos.com">Click Me</a>' %}
 
 <h2>{{ user_name  }}</h2>
 {% endraw %}
 ```
 
-### Output(not processed by browser)
+### Output (not processed by browser)
 ```liquid
 {% assign user_name = '<a href="http://platformos.com">Click Me</a><h1>x</h1>' %}
 
@@ -30,7 +30,7 @@ In this case html tags are not processed by browser, so the link is not a clicka
 ## Disable variable sanitization
 
 As it is very handy to not need to remember about sanitization there are situation you want to display content as it is.
-You can use [html_safe](https://documentation.platformos.com/api-reference/liquid/platformos-filters#html_safe) to tell that this variable can be printed without sanitization.
+You can use [html_safe](/api-reference/liquid/platformos-filters#html_safe) to tell that this variable can be printed without sanitization.
 
 This is especially important when you trying to construct json output.
 
@@ -60,6 +60,6 @@ This is especially important when you trying to construct json output.
 
 You can also run html/javascript santization on variables before passing them to tags/filters.
 
-- [escape_javascript](https://documentation.platformos.com/api-reference/liquid/platformos-filters#escape_javascript)
-- [raw_escapse_string](https://documentation.platformos.com/api-reference/liquid/platformos-filters#raw_escape_string)
-- [sanitize](https://documentation.platformos.com/api-reference/liquid/platformos-filters#sanitize)
+- [escape_javascript](/api-reference/liquid/platformos-filters#escape_javascript)
+- [raw_escapse_string](/api-reference/liquid/platformos-filters#raw_escape_string)
+- [sanitize](/api-reference/liquid/platformos-filters#sanitize)
