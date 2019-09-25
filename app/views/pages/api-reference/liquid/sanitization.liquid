@@ -3,11 +3,11 @@ converter: markdown
 slug: api-reference/liquid/sanitization
 searchable: true
 metadata:
-  title: Liquid - Data sanitization
+  title: Liquid - Data Sanitization
 ---
 
 When you display data, from user input or from external sources, it is important to sanitize output before displaying it on a website to avoid [XSS](https://en.wikipedia.org/wiki/Cross-site_scripting) attacks.
-In liquid on platformOS we do escape every variable output when you use {% raw %}`{{  }}` and `{%  %}`{% endraw %} markups.
+In Liquid on platformOS, we escape every variable output when you use {% raw %}`{{  }}` and `{%  %}`{% endraw %} markups.
 
 ### Input
 ```liquid
@@ -25,14 +25,13 @@ In liquid on platformOS we do escape every variable output when you use {% raw %
 <h2>{{ user_name | raw_escape_string }}</h2>
 ````
 
-In this case html tags are not processed by browser, so the link is not a clickable link.
+In this case, HTML tags are not processed by the browser, so the link is not a clickable link.
 
 ## Disable variable sanitization
 
-As it is very handy to not need to remember about sanitization there are situation you want to display content as it is.
-You can use [html_safe](/api-reference/liquid/platformos-filters#html_safe) to tell that this variable can be printed without sanitization.
+In situations when you want to display content as it is, you can use [html_safe](/api-reference/liquid/platformos-filters#html_safe) to specify that this variable can be printed without sanitization.
 
-This is especially important when you trying to construct json output.
+This is especially important when you try to construct a JSON output.
 
 ### Input
 ```liquid
@@ -56,9 +55,9 @@ This is especially important when you trying to construct json output.
 }
 ```
 
-## Escape variables before passing then to external systems.
+## Escape variables before passing them to external systems
 
-You can also run html/javascript santization on variables before passing them to tags/filters.
+You can also run HTML/JavaScript santization on variables before passing them to tags/filters:
 
 - [escape_javascript](/api-reference/liquid/platformos-filters#escape_javascript)
 - [raw_escapse_string](/api-reference/liquid/platformos-filters#raw_escape_string)
