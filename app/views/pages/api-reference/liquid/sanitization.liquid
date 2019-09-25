@@ -1,0 +1,65 @@
+---
+converter: markdown
+slug: api-reference/liquid/sanitization
+searchable: true
+metadata:
+  title: Liquid - Data sanitization
+---
+
+When you display data, from user input or from external sources, it is important to sanitize output before displaying it on a website to avoid XSS attacks.
+In liquid on platformOS we do escape every variable output when you use {% raw %}`{{  }}` and `{%  %}`{% endraw %} markups.
+
+### Input
+```liquid
+{% raw %}
+{% assign user_name = '<a href="http://platformos.com">Click Me</a>' %}
+
+<h2>{{ user_name  }}</h2>
+{% endraw %}
+```
+
+### Output(not processed by browser)
+```liquid
+{% assign user_name = '<a href="http://platformos.com">Click Me</a><h1>x</h1>' %}
+
+<h2>{{ user_name  | raw_escape_string }}</h2>
+````
+
+In this case html tags are not processed by browser, so the link is not a clickable link.
+
+## Disable variable sanitization
+
+As it is very handy to not need to remember about sanitization there are situation you want to display content as it is.
+You can use [html_safe](https://documentation.platformos.com/api-reference/liquid/platformos-filters#html_safe) to tell that this variable can be printed without sanitization.
+
+This is especially important when you trying to construct json output.
+
+### Input
+```liquid
+{% raw %}
+{% assign color = 'red' %}
+{% assign link = '<a href="/car">cars</a>' %}
+{
+  "color": {{ color | json }},
+  "link": {{ link | json | html_safe }}
+}
+{% endraw %}
+```
+
+### Output
+```liquid
+{% assign color = 'red' %}
+{% assign link = '<a href="/car">cars</a>' %}
+{
+  "color": {{ color | json }},
+  "link": {{ link | json | html_safe | raw_escape_string }}
+}
+```
+
+## Escape variables before passing then to external systems.
+
+You can also run html/javascript santization on variables before passing them to tags/filters.
+
+- [escape_javascript](https://documentation.platformos.com/api-reference/liquid/platformos-filters#escape_javascript)
+- [raw_escapse_string](https://documentation.platformos.com/api-reference/liquid/platformos-filters#raw_escape_string)
+- [sanitize](https://documentation.platformos.com/api-reference/liquid/platformos-filters#sanitize)
