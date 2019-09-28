@@ -67,7 +67,12 @@ const config = {
     minimizer: [
       new OptimizeCSSAssetsPlugin({}),
       new TerserPlugin({ parallel: true, cache: true })
-    ]
+    ],
+    splitChunks: {
+      cacheGroups: {
+        vendors: false // Do not emit vendors~* files that are almost empty in this setup
+      }
+    }
   },
   plugins: plugins,
   mode: production ? 'production' : 'development'
