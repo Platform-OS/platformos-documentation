@@ -108,32 +108,32 @@ pipeline {
       }
     }
 
-    stage('Broken links checker') {
-      when {
-        branch 'master'
-        expression { return params.MP_URL.isEmpty() }
-      }
-      agent { docker { image 'node:12-alpine'; args '-u root -v $HOME/tmp:/tmp' } }
+    // stage('Broken links checker') {
+    //   when {
+    //     branch 'master'
+    //     expression { return params.MP_URL.isEmpty() }
+    //   }
+    //   agent { docker { image 'node:12-alpine'; args '-u root -v $HOME/tmp:/tmp' } }
 
-      environment {
-        MP_URL = "${production_url}"
-        CI = true
-      }
+    //   environment {
+    //     MP_URL = "${production_url}"
+    //     CI = true
+    //   }
 
-      steps {
-        sh 'npm i broken-link-checker'
-        sh 'time node ./scripts/check-broken-links.js'
-      }
-    }
+    //   steps {
+    //     sh 'npm i broken-link-checker'
+    //     sh 'time node ./scripts/check-broken-links.js'
+    //   }
+    // }
   }
 
   post {
     success {
       script {
         if (env.GIT_BRANCH == 'master') {
-          testOutput = sh(returnStdout: true, script: 'cat $HOME/tmp/test-summary.txt').trim()
+          // testOutput = sh(returnStdout: true, script: 'cat $HOME/tmp/test-summary.txt').trim()
           slackSend (channel: "#notifications-docs", color: '#00FF00', message: "SUCCESS: <${env.BUILD_URL}|Build #${env.BUILD_NUMBER}> - ${buildDuration()}. ${commitInfo()}")
-          slackSend (channel: "#notifications-docs", color: '#00FF00', message: "${testOutput}")
+          // slackSend (channel: "#notifications-docs", color: '#00FF00', message: "${testOutput}")
         }
       }
     }
