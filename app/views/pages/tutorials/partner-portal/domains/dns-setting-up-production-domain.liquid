@@ -1,0 +1,44 @@
+---
+converter: markdown
+metadata:
+  title: Setting Up a Production Domain
+  description: This guide will help you set up a production domain.
+slug: tutorials/partner-portal/domains/production-domain
+searchable: true
+---
+
+This guide will help you set up a production domain. The production domain is the domain of your production Instance, your live site available to visitors.
+
+
+## Requirements
+To be able to set up a production domain on the Partner Portal, you have to have access to the Partner Portal, have a production Instance, and you should be familiar with the recommended development workflow.
+
+* [Accessing the Partner Portal](/get-started/accessing-partner-portal)
+* [Setting Up a Site on Our Platform](/get-started/setting-up-site)
+* [Development Workflow](/how-platformos-works/platformos-workflow/development-workflow)
+
+#### Note: Domain can be added only in a production data center. It means you cannot setup additional domain on staging data centers.
+#### Note: that we are improving this function UX constantly trying to make it as user friendly as possible. Some diferences/changes may occur/apply
+## Steps
+
+On the selected Instance's page, click on `Domains` then `Add new domain to your instance`.
+
+The next step is to decide how you will manage the DNS records. In the end, both scenarios will include creating a www version of your domain and redirecting from the root to the www version.
+Pick an option from below:
+
+* Route53 Hosted Zone [Recommended]
+Choose this option if you want to manage the DNS through the Partner Portal by creating a Route53 Hosted Zone. You can fully configure your domain, add any necessary DNS records, add MX records for mail boxes, etc all here.
+
+* External DNS management
+Choose this option if you want to manage the DNS through a 3rd party solution. After confirming right to your domain, you will be provided a Load Balancer DNS Name [FQDN] to which you will need to point your domain, within your 3rd party solution.
+*NOTE*: your DNS solution must provide for the acceptance of Fully Qualified Domain Names!
+
+After selecting your option you will have to enter the name of the new domain and click on `Create domain`.
+Note: It must be a root domain, example: platformos-demo.com, not www.domain.com.
+
+You will be redirected back to the domains page. After a few moment, your new domain will appear on the domain list. Wait for status to change from pending and then click `view` for futher instruction.
+
+### Next step
+
+When you selected [Route53 Hosted Zone](/tutorials/partner-portal/domains/production-domain-pos) 
+When you selected [External DNS management](/tutorials/partner-portal/domains/production-domain-ext)

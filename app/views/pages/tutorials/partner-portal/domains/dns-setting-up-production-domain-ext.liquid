@@ -1,0 +1,53 @@
+---
+converter: markdown
+metadata:
+  title: Setting Up a Production Domain on 3rd Party Provider
+  description: This guide will help you set up a production domain.
+slug: tutorials/partner-portal/domains/production-domain-ext
+searchable: true
+---
+
+This guide will help you set up a production domain. The production domain is the domain of your production Instance, your live site available to visitors.
+
+## Requirements
+To be able to set up a production domain within 3rd Party Provider, you have to [Create Domain with External DNS management](/tutorials/partner-portal/domains/production-domain) first.
+
+#### Note: that we are improving this function UX constantly trying to make it as user friendly as possible. Some diferences/changes may apply
+## Steps
+### Ownership verification
+As a next step you will be asked to demonstrate control over the domain. You will do this by adding at least one CNAME record to your current DNS Zone.
+
+Visit the domain list page, find your domain and click the `view` link. The page will display a requested CNAME record[s].
+
+<img src="{{ 'images/tutorials/dns/ownership-verification.png' | asset_url }}" alt="ownership verification" />
+
+Visit your DNS provider Control Panel add the presented CNAME record. For more information please refer to your DNS provider .
+
+It can take a few minutes for the changes to propagate. The page will refresh automatically every few minutes. If not you can refresh the page manually.
+
+#### Diagnostics
+You can observe propagation status on the last column of CNAME record table. If the status changes to `OK` then the change has been propagated to Cloudflare DNS system.
+Please note that diagnostics are only informational. DNS propagation can take up to 24h in the worst scenario. Usualy it's not longer than 1 hour.
+
+When status is OK the page should refresh automatically and display `Congratulations! Your Domain is Ready` message.
+If not, please click `OK. Done. I added requested record` button.
+If you are shown the same page again it means the propagation did not accomplish yet. Please try again in a few minutes.
+
+#### When propagation went well you will see 'Configuration! Your Domain is Ready' message.
+
+### Final configuration
+There are only two steps ahead:
+
+Please go to your DNS provider Control Panel:
+1. setup forwarding to a presented DNS name. [screenshot]
+Accordingly to your DNS provider - it will be an ANAME record or an ALIAS. Refer to your DNS provider docs for furter instructions.
+2. add www CNAME record
+
+Note. It can take a few minutes for the changes to propagate.
+
+#### Troubleshooting
+In case of issue you can visit `diagnostics` link.
+There are two textareas which should display the same values when domain propagation is accomplished and correct. [describe it better]
+
+### That's all. Your configuration is finished.
+
