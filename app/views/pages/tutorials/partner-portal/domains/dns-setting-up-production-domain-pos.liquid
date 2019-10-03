@@ -1,0 +1,34 @@
+---
+converter: markdown
+metadata:
+  title: Setting Up a Production Domain Hosted on PlatformOS
+  description: This guide will help you set up a production domain.
+slug: tutorials/partner-portal/domains/production-domain-pos
+searchable: true
+---
+
+This guide will help you set up a production domain. The production domain is the domain of your production Instance, your live site available to visitors.
+
+## Requirements
+To be able to set up a production domain on the Partner Portal, you have to [Create Domain as DNS Zone](/tutorials/partner-portal/domains/production-domain) first,
+
+## Steps
+#### Note: that we are improving this function UX constantly trying to make it as user friendly as possible. Some diferences/changes may apply
+
+Your domain configuration will be hosted in DNS Zone and [can be managed](/tutorials/partner-portal/domains/production-domain-dns-records) either through Partner Portal [or through PP API].
+
+You have to reconfigure you domain in your current domain provider. It requires simply changing Name Servers to the addresses provided on the View page.
+
+<img src="{{ 'images/tutorials/dns/reparking-ns.png' | asset_url }}" alt="reparking ns" />
+
+Please refer to your DNS provider for more information.
+
+It can take a few minutes for the changes to propagate. You can optionally click `diagnostics` link and check if the change has been propagated to Cloudflare DNS system.
+Please note that diagnostics are only for informational purpose and might help diagnose problems. DNS propagation might take up to 24h in the worst scenario. Usualy it's not longer than 1 hour.
+
+The page will refresh automatically every few minutes. If not you can force the page reloading by clicking the `I have changed Name Servers` button.
+
+When propagation went well you will see message that your domain is ready. You instance should be accessible from the domain you just set up from now on.
+
+## What else
+You can [add DNS records to your domain](/tutorials/partner-portal/domains/production-domain-dns-records) now.
