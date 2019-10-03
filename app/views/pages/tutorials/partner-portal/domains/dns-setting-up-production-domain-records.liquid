@@ -3,29 +3,39 @@ converter: markdown
 metadata:
   title: Adding DNS records to DNS Zone
   description: This guide will help you set up a production domain.
-slug: tutorials/partner-portal/domains/production-domain-dns-records
+slug: tutorials/partner-portal/domains/dns-setting-up-production-domain-records
 searchable: true
 ---
 
 This guide will help you add DNS Records to your DNS Zone hosted as DNS Zone.
 
 ## Requirements
-To be able to add DNS records you have to first [create](/tutorials/partner-portal/domains/production-domain) and [configure](/tutorials/partner-portal/domains/production-domain-pos) Domain as DNS Zone.
+To be able to add DNS records you have to first [create](/tutorials/partner-portal/domains/production-domain) and [configure](/tutorials/partner-portal/domains/production-domain-pos) the Domain as a DNS Zone.
+
+{% capture content %}
+We are continuously improving the UX of this functionality, trying to make it as user-friendly as possible. Some changes may apply. 
+{% endcapture %}
+{% include 'alert/note', content: content %}
 
 ## Steps
-#### Note: that we are improving this function UX constantly trying to make it as user friendly as possible. Some diferences/changes may apply
 
-Once your domain has been properly configured then the domain View page will display all DNS records which were created in the Zone.
+<div data-autosteps></div>
 
-If you want to add a new record please follow the steps:
-- click `Add additional record` button
-- type name of the record - it should just a name without the root domain. Leave the field empty if you want a name as the root domain. [rephrase it]
-- select DNS record type - on right side of the form help section should update and provide additional information about the selected type. Follow the instruction.
-- set TTL (value in seconds).
-<small>TTL (Time to Live) is a setting for each DNS record that specifies how long a resolver is supposed to cache (or remember) the DNS query before the query expires and a new one needs to be done.
-For records that rarely change, such as TXT or MX records, it’s best to keep those somewhere between an hour (3600) and a day (86400)</small>
-- add value for your record. Refer to the help for possible requirements on formatting.
+### Step 1: Add new record 
 
-Note. You can add many records at once.
+Once your domain has been properly configured, the domain View page will display all DNS records created in the Zone.
+If you want to add a new record, click on the `Add additional record` button. 
 
-Important. When edition if finished you have to click `Commit DNS changes` button. It will take a few minutes to apply changes to the DNS system. Although DNS propagation might take a bit longer.
+### Step 2: Fill in the form
+
+* Type **name** of the record. It should be just a name without the root domain. Leave the field empty if you want a name as the root domain. 
+* Select **DNS record type**. On right side of the form, the help section should update and provide additional information about the selected type. Follow the instructions.
+* Set **TTL** (value in seconds). TTL (Time to Live) is a setting for each DNS record that specifies how long a resolver is supposed to cache (or remember) the DNS query before the query expires and a new one needs to be done. For records that rarely change, such as TXT or MX records, it’s best to keep those somewhere between an hour (3600) and a day (86400).
+* Add a value for your record. Refer to the help for possible requirements on formatting.
+
+You can add many records at once.
+
+{% capture content %}
+When edition if finished you have to click `Commit DNS changes` button. It will take a few minutes to apply changes to the DNS system. Although DNS propagation might take a bit longer.
+{% endcapture %}
+{% include 'alert/important', content: content %}
