@@ -17,28 +17,47 @@ To be able to set up a production domain on the Partner Portal, you have to have
 * [Setting Up a Site on Our Platform](/get-started/setting-up-site)
 * [Development Workflow](/how-platformos-works/platformos-workflow/development-workflow)
 
-#### Note: Domain can be added only in a production data center. It means you cannot setup additional domain on staging data centers.
-#### Note: that we are improving this function UX constantly trying to make it as user friendly as possible. Some diferences/changes may occur/apply
+{% capture content %}
+A domain can only be added on a production data center. It means that you cannot set up an additional domain on staging data centers.
+{% endcapture %}
+{% include 'alert/note', content: content %}
+
+{% capture content %}
+We are continuously improving the UX of this functionality, trying to make it as user-friendly as possible. Some changes may apply. 
+{% endcapture %}
+{% include 'alert/note', content: content %}
+
 ## Steps
+
+<div data-autosteps></div>
+
+### Step 1: Open the `Add new domain to your instance` form
 
 On the selected Instance's page, click on `Domains` then `Add new domain to your instance`.
 
+### Step 2: Select DNS Zone or External DNS managent 
 The next step is to decide how you will manage the DNS records. In the end, both scenarios will include creating a www version of your domain and redirecting from the root to the www version.
+
 Pick an option from below:
 
 * DNS Zone [Recommended]
-Choose this option if you want to manage the DNS through the Partner Portal by creating a DNS Zone. You can fully configure your domain, add any necessary DNS records, add MX records for mail boxes, etc all here.
+Choose this option if you want to manage the DNS through the Partner Portal by creating a DNS Zone. You can fully configure your domain, add any necessary DNS records, MX records for mail boxes, etc. here.
 
 * External DNS management
-Choose this option if you want to manage the DNS through a 3rd party solution. After confirming right to your domain, you will be provided a Load Balancer DNS Name [FQDN] to which you will need to point your domain, within your 3rd party solution.
+Choose this option if you want to manage the DNS through a 3rd party solution. After confirming permissions to your domain, you will be provided a Load Balancer DNS Name [FQDN] to which you will need to point your domain within your 3rd party solution.
 *NOTE*: your DNS solution must provide for the acceptance of Fully Qualified Domain Names!
 
+### Step 3: Name your new domain
 After selecting your option you will have to enter the name of the new domain and click on `Create domain`.
-Note: It must be a root domain, example: platformos-demo.com, not www.domain.com.
 
-You will be redirected back to the domains page. After a few moment, your new domain will appear on the domain list. Wait for status to change from pending and then click `view` for futher instruction.
+{% capture content %}
+The name of your new domain must be a root domain, for example: platformos-demo.com, not www.domain.com.
+{% endcapture %}
+{% include 'alert/note', content: content %}
+
+You will be redirected back to the domains page. In a few moments, your new domain will appear on the domains list. Wait for the status to change from pending and then click `view` for futher instructions.
 
 ### Next step
 
-When you selected [DNS Zone](/tutorials/partner-portal/domains/production-domain-pos)
-When you selected [External DNS management](/tutorials/partner-portal/domains/production-domain-ext)
+* If you selected [DNS Zone](/tutorials/partner-portal/domains/production-domain-pos)
+* If you selected [External DNS management](/tutorials/partner-portal/domains/production-domain-ext)
