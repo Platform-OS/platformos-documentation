@@ -1,20 +1,22 @@
 ---
 converter: markdown
 metadata:
-  title: SPA Angular CLI and platformOS
-  description: This guide will help you connect your Angular app (created with CLI) with platformOS.
+  title: Connecting an Angular Single Page Application with platformOS
+  description: This guide will help you connect your Angular app (created with a CLI) with platformOS.
 slug: tutorials/web-apps/spa-angular-cli-and-platformos
 searchable: true
 ---
 
-This guide will help you connect your Angular app (created with CLI) with platformOS. The goal is to have Angular app ready for local development communicating with instance by api via proxy.
+This guide will help you connect your Angular Single Page Application (SPA) that you created with the CLI to platformOS. The goal is to have your Angular app ready for local development communicating with the Instance by the API via proxy.
 
-This tutorial has been based on Angular version 8.
+This tutorial is based on Angular version 8.
 
 ## Requirements
+To follow this tutorial, you should have your development environment and a platformOS Instance set up, be familiar with pages and layouts, and have the Angular CLI installed. 
 
-- [Set up Platform Instance](/get-started)
-- [Installed Angular CLI](https://angular.io/cli)
+- [Get Started](/get-started) 
+- [Pages and Layouts](/tutorials/pages/pages)
+- [Angular CLI](https://angular.io/cli) 
 
 ## Steps
 
@@ -22,69 +24,62 @@ Connecting Angular with platformOS is a six-step process. Angular CLI is based o
 
 <div data-autosteps></div>
 
-### Step 1: Place for Angular App files
+### Step 1: Create place for Angular App files
 
-Source files of web app are not part of platformOS app and can be stored anywhere you want.
-I wanted to keep it together in one repo, in one project so I've created Angular app directly in my instance `/app`. folder. It's recommended but not required.
+The source files of a web app are not part of platformOS and can be stored anywhere you want.
+In this example, to keep it together in one repo and in one project, you'll create the Angular app directly in your Instance's `/app`. folder. This is recommended but not required.
 
-Let's do it now, navigate to `/app` folder and create new app with:
+Navigate to the`/app` folder and create new app with:
 
 ```$ng new web-app```
 
-And pick scss as `stylesheet format`.
+Pick scss as `stylesheet format`.
 
-Instead of `web-app` you can use other name for your project.
+Instead of `web-app` you can also use another name for your project.
 
-### Step 2: Local development, production build and "hosting" ideas
+### Step 2: Set up local development, production build and "hosting"
 
-Angular app build files are part of platformOS instance.
+Angular app build files are part of the platformOS Instance.
 
-In platformOS there's no traditional `hosting`. You cannot put files straight into some `root` folder and have `your-domain.com/the-file.html`.
+In platformOS, there's no traditional `hosting`. You cannot put files straight into some `root` folder and have `your-domain.com/the-file.html`.
 
-But there's special place in Your instance where You can achieve similar effect.
-Every file that has been put into `app/assets/` will be "visible" as `your-domain.com/assets/the-file.html`.
+But there's a special place in your Instance where you can achieve a similar effect. Every file that has been put into `app/assets/` will be "visible" as `your-domain.com/assets/the-file.html`.
+We strongly recommend to wrap your build files into another folder like `app/assets/web-app`, because in the future you might want to store other assets like for example graphic files for emails in the `app/assets/` folder. 
 
-There will be place for your build files. I strongly recommend to wrap it into another folder like `app/assets/web-app`.
-It's because in the future You may want to store other assets like for example graphic files for emails etc.
-
-Let's change place to store build files in `web-app/angular.json` config file.
-
-Please find line with `"outputPath": "dist/web-app",`
-
-and change it into:
+Change the location to store build files in `web-app/angular.json` config file.
+Find line with `"outputPath": "dist/web-app",` and change it into:
 
 `"outputPath": "../app/assets/web-app",`
 
-If You are using version control like GIT it's recommended to add this folder into your `.gitignore` rules.
+If you are using version control like GIT, it's recommended to add this folder into your `.gitignore` rules.
 
-So after building our app now, files will be copied into `/app/assets/web-app`.
+After building your app, files will now be copied into `/app/assets/web-app`.
 
-But now compiled files will be stored under `app/assets/web-app` (like for example `main.js`) and Angular will be looking for it in root folder. We need to let it know where to find it.
+But now compiled files will be stored under `app/assets/web-app` (like for example `main.js`) and Angular will be looking for it in the root folder. You need to let it know where to find it.
 
-Open `web-app/package.json` and in `scripts` extend `build` command:
+Open `web-app/package.json` and in `scripts` extend the `build` command:
 
 `"build": "ng build --prod --base-href / --deploy-url /assets/web-app/",`
 
-Now our Angular app routing will know that our base-href is `/` and compiled files will be stored in `/assets/web-app/`.
+Now your Angular app routing will know that your base-href is `/` and compiled files will be stored in `/assets/web-app/`.
 
 It will append proper paths into index.html automatically.
 
-### Step 3: Routing and Redirects
+### Step 3: Set up routing and redirects
 
-platformOS routing is based on liquid files (pages and layouts).
+platformOS routing is based on Liquid files (pages and layouts).
 
-I assume that Angular router will do his job, so I need to rewrite all urls into one file.
+Assuming that the Angular router will do its job, you'll need to rewrite all URLs into one file.
 
-I will do this with pages and layouts. [Learn More about Pages and Layouts](/tutorials/pages/pages)
+You can do this with pages and layouts. Learn More about [Pages and Layouts](/tutorials/pages/pages). 
 
-First let's create layout that will be injected into every liquid page.
-This file will be generated during build by Angular and copied into `app/views/layouts` as `app.html.liquid`
+First, create a layout that will be injected into every Liquid page. This file will be generated during build by Angular and copied into `app/views/layouts` as `app.html.liquid`.
 
-I'll do this in three steps:
+You can do this in three steps:
 
-* go into `web-app/src` and change name `index.html` into `app.html.liquid` (name it as You want, but it has to have `.liquid` extension)
-* go into `web-app/angular.json` config file, find line with `"index": "src/index.html",` and change it with `"index": "src/app.html.liquid",`
-* go into `web-app/package.json` and add commands
+* open `web-app/src` and change the name `index.html` to `app.html.liquid` (you can name it as you want, but it has to have a `.liquid` extension)
+* open the `web-app/angular.json` config file, find the line with `"index": "src/index.html",` and change it to `"index": "src/app.html.liquid",`
+* open `web-app/package.json` and add commands
 
 ```
 "copyIndex": "cp ../app/assets/web-app/app.html.liquid ../app/views/layouts/",
@@ -96,12 +91,12 @@ and
 "postbuild": "npm run copyIndex"
 ```
 
-So right after our web app will be built, our `index` will be copied into `app/views/layouts` as a layout with name `app`.
+So right after your web app will be built, your `index` will be copied into `app/views/layouts` as a layout with the name `app`.
 
-Now let's create home page.
+Now create the home page.
 
-I do this in `app/views/pages` where I create `routing` folder.
-Now in `app/views/pages/routing` I create `home.html.liquid` page with code:
+You can do this in `app/views/pages` where you create the `routing` folder.
+Now, in `app/views/pages/routing`, create the `home.html.liquid` page with the following code:
 
 ```
 ---
@@ -110,15 +105,15 @@ layout_name: app
 ---
 ```
 
-I will need similar page for every url, but fortunately only on first level.
+You will need a similar page for every URL, but fortunately only on the first level.
 
-For example, let's have urls:
+For example, have the URLs:
 
 * company/about
 * company/terms-of-service
 * company/info/some-example-page
 
-For all these links only one page has to be created (let's call it company.html.liquid):
+For all these links, only one page has to be created (call it company.html.liquid):
 
 ```
 ---
@@ -127,15 +122,15 @@ layout_name: app
 ---
 ```
 
-Angular router will do rest of the job.
+The Angular router will do rest of the job.
 
-### Step 4: Local and production paths
+### Step 4: Set up local and production paths
 
-If I needed to add some asset files like for example images or custom svg icons for [Angular Materials](https://material.angular.io/components/icon/overview) or maybe translation files like for [ngx-translate](https://www.codeandweb.com/babeledit/tutorials/how-to-translate-your-angular8-app-with-ngx-translate), I would definitely store it in `web-app/src/assets/`
+If you needed to add some asset files like for example images or custom svg icons for [Angular Materials](https://material.angular.io/components/icon/overview) or maybe translation files like for [ngx-translate](https://www.codeandweb.com/babeledit/tutorials/how-to-translate-your-angular8-app-with-ngx-translate), you should definitely store them in `web-app/src/assets/`.
 
-Now I need to let know my app where I store it. I will use Angular `environments` files.
+Now you need to let your app know where you store them. You will use Angular `environments` files for this task. 
 
-Simply in `web-app/src/environments/environment.ts` I'll add:
+In `web-app/src/environments/environment.ts` add:
 
 ```javascript
 export const environment = {
@@ -144,7 +139,7 @@ export const environment = {
 }
 ```
 
-and in `web-app/src/environments/environment.prod.ts`
+and in `web-app/src/environments/environment.prod.ts` add:
 
 ```javascript
 export const environment = {
@@ -153,15 +148,14 @@ export const environment = {
 }
 ```
 
-And anywhere in code I need reference to one of my assets I'll just use `environment.assetsPrefix` variable.
+Anywhere in code where you need a reference to one of your assets, you'll use the `environment.assetsPrefix` variable.
 
-### Step 5: Local and production paths inside (s)css files
+### Step 5: Set up local and production paths inside (s)css files
 
-It's not as easy as with assets from ts / template files.
-Angular CLI cannot replace css files because css is build before replacement engine run.
-There are some [different approaches](https://github.com/angular/angular-cli/issues/11451) to achieve that, but I went another way.
+Angular CLI cannot replace css files because css is built before the replacement engine runs.
+There are some [different approaches](https://github.com/angular/angular-cli/issues/11451) to achieve that, but in this tutorial, we go another way.
 
-I've created two files:
+Create two files:
 * `web-app/src/styles/environments/local/asset-path.scss` that contains:
 
 ```scss
@@ -174,16 +168,16 @@ $assets-path: '';
 $assets-path: '/assets/web-app/';
 ```
 
-(`web-app/src/styles/` is where I store all global scss files)
+(`web-app/src/styles/` is where you store all global scss files)
 
-Then I've created two commands that will do the job - before angular build will change the `$assets-path: ''` into `$assets-path: '/assets/web-app/'` and restore it after build.
+Then create two commands that will do the job - before angular build will change the `$assets-path: ''` into `$assets-path: '/assets/web-app/'` and restore it after build.
 
 ```json
 "cssAssetsPath": "cp src/styles/environments/prod/asset-path.scss src/styles/environments/",
 "cssAssetsPathReset": "cp src/styles/environments/local/asset-path.scss src/styles/environments/",
 ```
 
-Also I've added `"prebuild": "npm run cssAssetsPath",` command to run it before and updated `postbuild` so that's how my scripts look like now:
+Also, add the `"prebuild": "npm run cssAssetsPath",` command to run it before and update `postbuild` so that's how your scripts look like now:
 
 ```json
 "cssAssetsPath": "cp src/styles/environments/prod/asset-path.scss src/styles/environments/",
@@ -194,7 +188,7 @@ Also I've added `"prebuild": "npm run cssAssetsPath",` command to run it before 
 "postbuild": "npm run copyIndex && npm run cssAssetsPathReset"
 ```
 
-And now in any of my `scss` files when I need assets I'll use:
+And now in any of your `scss` files when you need assets you'll use:
 
 ```scss
 @import '~styles/environments/asset-path.scss';
@@ -204,15 +198,15 @@ And now in any of my `scss` files when I need assets I'll use:
 }
 ```
 
-### Step 6: Proxy for local api calls
+### Step 6: Set up proxy for local API calls
 
-Due to security issues You cannot use:
+Due to security issues you cannot use:
 ```
 response_headers: >
   {
     "Access-Control-Allow-Origin": "*"
   }
 ```
-So you need to use proxy. To do this just follow the instructions here: [Proxying to a backend server](https://angular.io/guide/build#proxying-to-a-backend-server).
+So you need to use a proxy. To do this, follow the instructions here: [Proxying to a backend server](https://angular.io/guide/build#proxying-to-a-backend-server).
 
-Now You have `$ng serve` for local development and `$npm run build` for production build.
+Now you have `$ng serve` for local development and `$npm run build` for production build.
