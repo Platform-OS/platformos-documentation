@@ -145,6 +145,14 @@ query get_all_adults_below_60 {
 }
 ```
 
+`range` uses [ISO 8601 date-time formats](https://www.cryptosys.net/pki/manpki/pki_iso8601datetime.html), for example: 
+
+```graphql
+{name: "last_time_active", range: {lte: "2019-10-02T08:13:00", gte: "2019-09-01T08:13:00"}}
+```
+
+
+
 ### exists
 
 ```graphql
