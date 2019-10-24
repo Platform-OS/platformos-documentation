@@ -34,10 +34,7 @@ Refactoring the views we’ve built so far is a five-step process:
 
 Some information is reused over and over in your application. When you’ve built the admin panel logic, you had to keep checking over and over again in different places if current user has admin access flag set to `true`. So far each time you needed to do that, you called the `current_user` query and checked the appropriate field value. Imagine though, that further down the road in the project, additional business logic is put in place, that changes this condition. You will have to go in, and update all of these places in code.
 
-{% capture content %}
-This problem is not new and every programming project has to deal with it in one way or another. What we propose below is just a convention, and not the only way to approach this issue.
-{% endcapture %}
-{% include 'alert/note', content: content %}
+{% include 'alert/note', content: 'This problem is not new and every programming project has to deal with it in one way or another. What we propose below is just a convention, and not the only way to approach this issue.' %}
 
 Start with moving the part that fetches data to a separate partial in the `shared` namespace.
 
@@ -85,12 +82,9 @@ You will then have access to the `current_user.has_admin_access` variable. This 
 
 Rename query `app/graphql/user/current_user.liquid` to `app/graphql/user/get_current_user_data.liquid` and update the query name inside the file.
 
-{% capture content %}
-Liquid implementation comes with a certain feature you have to be aware of. The [documentation for the `include` tag](https://www.rubydoc.info/gems/liquid/Liquid/Include) mentions, that you can use `for` and `with` keywords to pass a variable that will be named after the partial name.
+{% include 'alert/note', content: 'Liquid implementation comes with a certain feature you have to be aware of. The [documentation for the `include` tag](https://www.rubydoc.info/gems/liquid/Liquid/Include) mentions, that you can use `for` and `with` keywords to pass a variable that will be named after the partial name.
 
-This variable is created every time, even if you do not use `for` or `with` keywords (it’s simply blank). It cannot be overwritten, so it’s important to avoid creating new variables or calling queries that are called the same as the partial file.
-{% endcapture %}
-{% include 'alert/tip', content: content %}
+This variable is created every time, even if you do not use `for` or `with` keywords (it’s simply blank). It cannot be overwritten, so it’s important to avoid creating new variables or calling queries that are called the same as the partial file.' %}
 
 ### Step 3: Update files fetching `current_user` data
 
@@ -141,10 +135,7 @@ This variable contains all information regarding every field - its name, current
 
 Having this in place you can easily build shared partials, that will accept a `form.fields` entry and generate the required control in a consistent manner.
 
-{% capture content %}
-For the sake of brevity, this tutorial includes only one example, for regular `<input type="text">` field. You will probably need to create one partial per control type as the application grows.
-{% endcapture %}
-{% include 'alert/note', content: content %}
+{% include 'alert/note', content: 'For the sake of brevity, this tutorial includes only one example, for regular `<input type="text">` field. You will probably need to create one partial per control type as the application grows.' %}
 
 {% comment %}
 TO BE ADDED: link to the form beginners tutorial once it’s out
@@ -289,10 +280,7 @@ This example can be split into three separate parts and as a pattern reused thro
 1. Top comment: contains a list of all required and optional parameters that can be passed and will be used in this partial. This way it’s easier to see at a glance what options are available.
 2. Assign values: most of the optional parameters should have some kind of initial value assigned, if none is provided in the `include` tag. Keeping all of these declarations always in the same place makes your partial more readable.
 
-{% capture content %}
-You should always reset values of all variables at the top of the partial. In case of `_required` you could have omitted the `else` section and just assume if it’s not assigned then the default blank applies. However, if any of the previous partials did set the value for the variable, it would leak into your partial.
-{% endcapture %}
-{% include 'alert/warning', content: content %}
+{% include 'alert/warning', content: 'You should always reset values of all variables at the top of the partial. In case of `_required` you could have omitted the `else` section and just assume if it’s not assigned then the default blank applies. However, if any of the previous partials did set the value for the variable, it would leak into your partial.' %}
 
 3. Rendering: It’s recommended to split common components into their own separate partials. Whenever you want to make a change to either `label` or `error` elements, they will be used in all fields, so once more you do not have to repeat yourself.
 

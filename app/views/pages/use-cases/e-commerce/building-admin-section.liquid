@@ -51,10 +51,7 @@ This should create a new file in your `migrations` folder.
 {% endraw %}
 ```
 
-{% capture content %}
-`{TIMESTAMP}` is going to be a 12 digit number representing the date and time when the migration was created. You will use this in a moment to run the migration.
-{% endcapture %}
-{% include 'alert/note', content: content %}
+{% include 'alert/note', content: '`{TIMESTAMP}` is going to be a 12 digit number representing the date and time when the migration was created. You will use this in a moment to run the migration.' %}
 
 You need three more files to make it work. First, create a generic `get_user` query.
 
@@ -73,15 +70,9 @@ query get_user($id: ID, $email: String, $slug: String) {
 }
 ```
 
-{% capture content %}
-You can build queries with additional parameters, to make them more versatile. Empty parameters are omitted when query is executed.
-{% endcapture %}
-{% include 'alert/note', content: content %}
+{% include 'alert/note', content: 'You can build queries with additional parameters, to make them more versatile. Empty parameters are omitted when query is executed.' %}
 
-{% capture content %}
-`properties` is a special keyword, that will list all of custom properties attached to the object, so you do not have to list them all one by one.
-{% endcapture %}
-{% include 'alert/note', content: content %}
+{% include 'alert/note', content: '`properties` is a special keyword, that will list all of custom properties attached to the object, so you do not have to list them all one by one.' %}
 
 #### app/graphql/user/mutations/promote_user_to_admin.graphql
 
@@ -148,10 +139,7 @@ fields:
 ---
 ```
 
-{% capture content %}
-Right now this form configuration is not secure. You had to set `resource_owner` to `anyone` so it can be executed by a logged out user, but it should be set to `self` once the migration is done. This way the user will only be able to change their own password.
-{% endcapture %}
-{% include 'alert/important', content: content %}
+{% include 'alert/important', content: 'Right now this form configuration is not secure. You had to set `resource_owner` to `anyone` so it can be executed by a logged out user, but it should be set to `self` once the migration is done. This way the user will only be able to change their own password.' %}
 
 Once all of these files are ready, you can run the migration with the pos-cli command. Substitute `TIMESTAMP` with migration ID from your own file.
 
@@ -192,10 +180,7 @@ query current_user {
 }
 ```
 
-{% capture content %}
-You’ll notice, that this query is identical to the `get_user` query apart from having no parameters, and using the `current_user` endpoint instead. It always returns the currently authorized user.
-{% endcapture %}
-{% include 'alert/note', content: content %}
+{% include 'alert/note', content: 'You’ll notice, that this query is identical to the `get_user` query apart from having no parameters, and using the `current_user` endpoint instead. It always returns the currently authorized user.' %}
 
 Now, that the Authorization Policy is in place, you can go ahead and modify the `promote_user_to_admin_form` form, so that only admins can promote other users to admins from now on.
 
@@ -244,10 +229,7 @@ metadata:
 {% endraw %}
 ```
 
-{% capture content %}
-You can also use a new layout file [`views/layouts/authorization.html.liquid`](https://github.com/mdyd-dev/e-commerce/blob/master/app/views/layouts/authorization.liquid) to make the authorization screens a bit more compact.
-{% endcapture %}
-{% include 'alert/note', content: content %}
+{% include 'alert/note', content: 'You can also use a new layout file [`views/layouts/authorization.html.liquid`](https://github.com/mdyd-dev/e-commerce/blob/master/app/views/layouts/authorization.liquid) to make the authorization screens a bit more compact.' %}
 
 #### app/forms/session/sign_in_form.liquid
 
@@ -309,10 +291,7 @@ fields:
 {% endraw %}
 ```
 
-{% capture content %}
-Input fields are a prime candidate for refactoring, as there is a lot of repetition and common logic that can be implemented with shared partials.
-{% endcapture %}
-{% include 'alert/note', content: content %}
+{% include 'alert/note', content: 'Input fields are a prime candidate for refactoring, as there is a lot of repetition and common logic that can be implemented with shared partials.' %}
 
 ### Step 4: Create a sign-out form
 

@@ -48,19 +48,15 @@ For a detailed description of requirements by country for individuals, companies
 ## Algorithms
 
 Stripe has implemented different algorithms (just like eBay and other commerce enabled marketplaces) to assess risk and require action by users selectively.
-{% capture content %}
-Because of the different risk assessment results, country requirements, and thresholds, the identity verification workflow might be different for each separate user of the same Stripe enabled solution. Also, you should be aware that the identification verification steps vary between individuals and companies.
-{% endcapture %}
-{% include 'alert/note', content: content %}
+
+{% include 'alert/note', content: 'Because of the different risk assessment results, country requirements, and thresholds, the identity verification workflow might be different for each separate user of the same Stripe enabled solution. Also, you should be aware that the identification verification steps vary between individuals and companies.' %}
 
 1. Example steps of risk assessment and verification for a marketplace:
 Each member/merchant is assessed separately/individually by Stripe risk assessment algorithms.
 2. The marketplace as a whole is assessed by Stripe risk assessment algorithms. 
 3. Dynamically, as triggered by Stripe algorithms, they might request additional information from certain members/accounts; like an ID document, date of birth, or the last four digits of the SSN.
-   {% capture content %}
-   If the Stripe algorithms still assess the person is a high risk, then the Stripe gateway might request the full SSN.
-   {% endcapture %}
-   {% include 'alert/note', content: content %}
+   
+   {% include 'alert/note', content: 'If the Stripe algorithms still assess the person is a high risk, then the Stripe gateway might request the full SSN.' %}
   
 4. Stripe provides API web hooks where such requests will be made on users dynamically as assessed; you can configure your marketplace to automatically request the information from that User.  Once the data is submitted through the form, it is pushed back to Stripe where it is recorded securely, thus meeting Stripe’s risk mitigation requirements.
 
