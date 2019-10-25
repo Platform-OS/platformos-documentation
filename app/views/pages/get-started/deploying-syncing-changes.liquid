@@ -85,10 +85,8 @@ A message _"Environment [your Instance URL] as staging has been added successful
 ### Step 3: Deploy or sync changes
 
 To be able to see your changes on your site, you have to deploy those changes to your Instance.
-{% capture content %}
-This step describes two different methods. If this is your first go, we recommend to follow the process described in the "Deploying" section.
-{% endcapture %}
-{% include 'alert/note', content: content %}
+
+{% include 'alert/note', content: 'This step describes two different methods. If this is your first go, we recommend to follow the process described in the "Deploying" section.' %}
 
 #### Deploying
 
@@ -107,10 +105,8 @@ pos-cli deploy staging
 A progress indicator shows that the deployment is in progress, and once it finishes, a _"Deploy succeeded after <time>"_ is displayed.
 
 We recommend to first deploy to staging, test, and only then trigger a deployment to production. In practice, deploy creates a zip file that contains all your files, and sends it to the API. It is then processed in the background. We store each zip file, so that you can roll back in case something goes wrong.
-{% capture content %}
-Learn more about our recommendations for version control and deployment on platformOS in the <a href="/how-platformos-works/platformos-workflow/development-workflow">Development Workflow</a> topic.
-{% endcapture %}
-{% include 'alert/tip', content: content %}
+
+{% include 'alert/note', content: 'Learn more about our recommendations for version control and deployment on platformOS in the <a href="/how-platformos-works/platformos-workflow/development-workflow">Development Workflow</a> topic.' %}
 
 #### Syncing
 

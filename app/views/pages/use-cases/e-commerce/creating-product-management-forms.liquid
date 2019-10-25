@@ -227,10 +227,7 @@ In the snippet above, you’ve:
 - set its value to `1` whenever you have a new object (new objects do not have `id` set yet)
 - set in `redirect_to` to check request params, and decide where to redirect the user (do not worry about URLs right now, routing for product page is described in one of the next steps)
 
-{% capture content %}
-Whenever you add a new product, `redirect_to` is processed after the new database object has already been created. The ID of the newly created object can be accessed via `form.id`.
-{% endcapture %}
-{% include 'alert/note', content: content %}
+{% include 'alert/note', content: 'Whenever you add a new product, `redirect_to` is processed after the new database object has already been created. The ID of the newly created object can be accessed via `form.id`.' %}
 
 
 #### Handling price
@@ -282,10 +279,7 @@ Next, include field control in the form. You can use a shared partial, created i
 {% endraw %}
 ```
 
-{% capture content %}
-You might have noticed additional options. Partial update is described in one of the next steps in this article.
-{% endcapture %}
-{% include 'alert/note', content: content %}
+{% include 'alert/note', content: 'You might have noticed additional options. Partial update is described in one of the next steps in this article.' %}
 
 Finally, transform the price value once again, just before committing it to the database. To do that, you should use [`default_payload` form configuration option](/tutorials/forms/default-payload).
 
@@ -682,10 +676,7 @@ query get_products($id: ID) {
 
 Initially, the query will have only one parameter `$id`, but in the next topics you’ll extend it with different filters to implement filtering, pagination, etc.
 
-{% capture content %}
-`model(join_on_property: "propname")` is a useful method for [loading data from related models](/tutorials/model-schemas/loading-related-models)
-{% endcapture %}
-{% include 'alert/note', content: content %}
+{% include 'alert/note', content: '`model(join_on_property: "propname")` is a useful method for [loading data from related models](/tutorials/model-schemas/loading-related-models)' %}
 
 ### Step 6: Create products listing page
 

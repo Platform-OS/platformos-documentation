@@ -47,8 +47,7 @@ Use modern front-end development techniques:
 * Code splitting to take advantage of http2 on CDN
 * Ideally, your code should be tested using End-to-End testing to make sure no regressions are introduced while maintaining the project/module. We recommend [TestCafe](/best-practices/qa/testcafe) for testing. 
 
-{% capture content %}
-Avoid these bad practices:
+{% include 'alert/important', content: 'Avoid these bad practices:
 
 * Obtrusive JavaScript
 * Synchronously loaded 3rd party scripts
@@ -56,9 +55,7 @@ Avoid these bad practices:
 * Including a high number of helper dependencies
 * Including a lot more fonts than its necessary
 * Using font icons where an SVG alternative is available
-* Including big monolith dependencies (e.g.  jquery-ui - 280KB) instead of scripts that do one thing but do it well
-{% endcapture %}
-{% include 'alert/important', content: content %}
+* Including big monolith dependencies (e.g.  jquery-ui - 280KB) instead of scripts that do one thing but do it well' %}
 
 ### Performance
 
@@ -70,15 +67,12 @@ There are techniques for caching, removal of n+1 queries, summing aggregation, l
 
 Use [PageSpeed Insights](https://developers.google.com/speed/pagespeed/insights/). In benchmarks, aim for at least 75 for both mobile/desktop for new projects and 85+ for projects that have been launched to production already. Fixing recommendations from PageSpeed insights and long-running server-side code is very important.
 
-{% capture content %}
-Examples of bad practices:
+{% include 'alert/important', content: 'Examples of bad practices:
 
 * Uncompressed images, wrong sizes of images, wrong format of images
 * Including whole frameworks/libraries when it can be tree-shaken to a fraction of the size
 * Loading everything synchronously when it is not needed on a page
-* Not utilizing browser cache
-{% endcapture %}
-{% include 'alert/important', content: content %}
+* Not utilizing browser cache' %}
 
 Besides running automated checks, click and scroll through the page manually to verify that it’s smooth and jank-free. 
 
@@ -86,14 +80,11 @@ Besides running automated checks, click and scroll through the page manually to 
 
 Avoid 3rd party javascript code if possible - it can cause data leaks, MiTM attacks, and create other vectors of attacks. Tag managers are especially bad (Google tag manager being the most popular) — they allow marketing people to inject anything anywhere without technical knowledge. 99% of the time it ends in disaster regarding performance and UX.
 
-{% capture content %}
-Examples of bad practices:
+{% include 'alert/important', content: 'Examples of bad practices:
 
 * Loading JavaScript libraries from 3rd party CDNs when a self-hosted, alternative is available
 * Sending sensitive user data in query params (ie. password) — it should be sent using POST/PUT methods and forms
-* Making files "private" by giving them long/random names — only a signed URL that expires after X minutes is secure.
-{% endcapture %}
-{% include 'alert/important', content: content %}
+* Making files "private" by giving them long/random names — only a signed URL that expires after X minutes is secure.' %}
 
 ### Other aspects to consider
 

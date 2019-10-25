@@ -98,13 +98,9 @@ Brand and product type models are pretty basic ones, they only contain a name of
 
 `.json` part of the file name is optional, it just helps identify file type at a glance.
 
-{% capture content %}
-Many editors allow you to set syntax highlighting depending on more than just one extension. For example, in VS Code you can add below entry in editor settings.
+{% include 'alert/tip', content: 'Many editors allow you to set syntax highlighting depending on more than just one extension. For example, in VS Code you can add below entry in editor settings.
 
-`"files.associations": { "*.json.liquid": "json" }`
-
-{% endcapture %}
-{% include 'alert/tip', content: content %}
+`"files.associations": { "*.json.liquid": "json" }`' %}
 
 ### Step 2: Create processor partials
 
@@ -263,15 +259,9 @@ pos-cli migrations generate development create_product_types
 
 Deploying your code or executing migrations with the `pos-cli migration run` command will save all of the data to the database. In the future, in order to add new brands, you can simply edit `brand.yml` and add a new migration that includes the processor file.
 
-{% capture content %}
-There is quite a lot of overlap between `brand` and `product_type` models. Above example could be streamlined and optimized, to use common queries, Forms, etc.
-{% endcapture %}
-{% include 'alert/note', content: content %}
+{% include 'alert/note', content: 'There is quite a lot of overlap between `brand` and `product_type` models. Above example could be streamlined and optimized, to use common queries, Forms, etc.' %}
 
-{% capture content %}
-Be careful when creating processor files that either modify or delete existing Models. Make sure that you do not inadvertently create data inconsistencies with missing reference to existing models.
-{% endcapture %}
-{% include 'alert/warning', content: content %}
+{% include 'alert/warning', content: 'Be careful when creating processor files that either modify or delete existing Models. Make sure that you do not inadvertently create data inconsistencies with missing reference to existing models.' %}
 
 ## Next steps
 

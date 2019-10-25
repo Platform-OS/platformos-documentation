@@ -182,13 +182,9 @@ Include the script at the end of the `create_photo_form` form.
 %}
 {% endraw %}
 ```
+{% include 'alert/tip', content: 'You might consider using promise-based `fetch` instead of `XMLHttpRequest` for making requests to the server. Remember that it will not work in Internet Explorer without adding an appropriate polyfill like https://github.com/github/fetch.
 
-{% capture content %}
-  You might consider using promise-based `fetch` instead of `XMLHttpRequest` for making requests to the server. Remember that it will not work in Internet Explorer without adding an appropriate polyfill like https://github.com/github/fetch.
-
-  To learn more about using `fetch`, go to https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch.
-{% endcapture %}
-{% include 'alert/tip', content: content %}
+To learn more about using `fetch`, go to https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch.' %}
 
 ### Step 3: Create photo destroy form
 
@@ -227,10 +223,7 @@ fields:
 {% endraw %}
 ```
 
-{% capture content %}
-  The `product_id` field is not required to perform the `delete` action, but is needed to add a correct redirect after the action.
-{% endcapture %}
-{% include 'alert/note', content: content %}
+{% include 'alert/note', content: 'The `product_id` field is not required to perform the `delete` action, but is needed to add a correct redirect after the action.' %}
 
 ### Step 4: Create query to fetch photos from database
 

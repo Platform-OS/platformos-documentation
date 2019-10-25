@@ -145,10 +145,7 @@ The HTML field snippet for geometry JSON is just a textarea:
 </div>
 ```
 
-{% capture content %}
-This example is for presentation only. In a real scenario, no one would provide a raw JSON as a location address — there would be a JavaScript function using external geolocation services for getting coordinates and then building the required GeometryJSON structure.
-{% endcapture %}
-{% include 'alert/note', content: content %}
+{% include 'alert/note', content: 'This example is for presentation only. In a real scenario, no one would provide a raw JSON as a location address — there would be a JavaScript function using external geolocation services for getting coordinates and then building the required GeometryJSON structure.' %}
 
 ### Step 3: Prepare GraphQL query
 
@@ -198,11 +195,9 @@ slug: search
 {% endfor %}
 {% endraw %}
 ```
-{% capture content %}
-Since the `distance` argument has to be an Integer and `context.params.distance` is a String, we have to cast this value to Integer.
-You can do this by appending a plus filter with a `0` argument - literally adding a 0 converts a string into a number.
-{% endcapture %}
-{% include 'alert/note', content: content %}
+
+{% include 'alert/note', content: 'Since the `distance` argument has to be an Integer and `context.params.distance` is a String, we have to cast this value to Integer.
+You can do this by appending a plus filter with a `0` argument - literally adding a 0 converts a string into a number.' %}
 
 ## Live example and source code
 
