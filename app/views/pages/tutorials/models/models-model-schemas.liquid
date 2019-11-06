@@ -7,19 +7,19 @@ slug: tutorials/models/models-model-schemas
 searchable: true
 ---
 
-## What is a Model? What is a Model Schema?
+## What is a Model Schema?
 
 **Model Schema is an object that describes all Model objects that belong to it.**
 
-You can think of it as a DB table, whereas Models are records inside this table - hence Model must always be associated with exactly one ModelSchema.
+You can think of it as a DB table. Model Schemas define object types that will exist in your application. They describe the properties each object can have. For example, if you want your application to manage "books", you can create a Model Schema with the name "book" that will have the properties "title" and "author" (both having the type "string"). Hence ModelSchema's main function is to allow you to define structure of your data.
 
-Example:
-Model Schemas define object types that will exist in your application. They describe the properties each object can have. For example, if you want your application to manage "books", you can create a Model Schema with the name "book" that will have the properties "title" and "author" (both having the type "string"). Individual books in your application will be "model" objects tied to this custom model type, and you will be able to set actual values for the "title" and "author" of each book.
+## What is a Model?
 
-To fully understand Model Schemas you first need to understand basic functions of Model objects which is to create, read, update, and delete data. The organization of how this data is structured within Model and persisted in our backend systems is defined by Model Schema files.
+If ModelSchemas are DB tables, then you can think of Models as DB records. Hence Model must always be associated with exactly one ModelSchema.
 
-Head to the [Persisting Data With Model](/tutorials/models/persisting-data-with-models) tutorial to fully understand the process based on a todo list example.
+Using the book analogy, individual books in your application will be Model objects tied to "Book" ModelSchema, and you will be able to set actual values for the "title" and "author" of each book. For example, one of your models could be a record with title "1984" and author "George Orwell". Hence the main function of a Model is to persist actual data in a system.
 
+Head to the [Persisting Data With Model](/tutorials/models/persisting-data-with-models) tutorial to fully understand the process based on a TODO list example.
 
 ## Model Schemas use cases
 
@@ -28,7 +28,7 @@ Head to the [Persisting Data With Model](/tutorials/models/persisting-data-with-
 
 For example, you can build a table that will store a user's favorite books. Each book has an author, title and a number of pages. These three fields are Properties. That’s why you can use Model Schema to group Properties.
 
-Now you can build a form that allows users to add multiple books attached to their user profile (using GraphQL).
+Now you can build a form that allows users to add multiple books attached to them (using GraphQL).
 
 ## Defining
 
@@ -49,14 +49,14 @@ properties:
 
 | Property                 | Description | Required |
 | ------------------------ | ----------- | -------- |
-| name                     | Name of your model. Best practice is to keep it lower case. Example: `user_application` | Yes      |
+| name                     | Name of your Model Schema. Best practice is to keep it lower case. Example: `user_application` | Yes      |
 | properties               | Array of properties you want to contain within your models. Equivalent to a column in a database table. | No       |
 
 # Form
 
 Model Schemas work well with Forms. For detailed description and all available options see the following topic:
 
-* [Default Payload](/tutorials/forms/default-payload#custom-model-example)
+* [Default Payload](/tutorials/forms/default-payload#model-example)
 
 ## Related topics
 
