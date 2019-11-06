@@ -93,9 +93,9 @@ In [Building Contact Form With Model tutorial](/tutorials/models/building-contac
 ## Step 6: Model Schema change
 
   As you know by now Models and Model Schema objects are strictly related as the definition of properties allows for storing the data in platformOS backend systems.
-  Once you have data persisted within Model you need to be aware of how changes in ModelSchema affect your Model objects:
+  Once you have data persisted within Model you need to be aware of how changes in Model Schema affect your Model objects:
 
-  * **ModelSchema definition delete** - you can only delete your Model Schema object if there is no related Model object. Use [models_delete_all](/api-reference/graphql/mutations#models_delete_all) mutation to delete all related Model objects.
+  * **Model Schema definition delete** - you can only delete your Model Schema object if there is no related Model object. Use [models_delete_all](/api-reference/graphql/mutations#models_delete_all) mutation to delete all related Model objects.
 
       If you try to deploy with orphaned Model, you will see the following message:
 
@@ -104,9 +104,9 @@ In [Building Contact Form With Model tutorial](/tutorials/models/building-contac
       Use the mutation below to remove dependent objects:
       mutation { models_delete_all(model_schema_name: "todo") { count } }
       ```
-  * **name change** - as platformOS detects ModelSchema definition by its name, if you change it is equal with adding new ModelSchema, please note that Model objects are not automatically migrated and will be treated as orphaned with next deploy attempt, see error message above.
-  * **add new ModelSchema property** - adding new properties is a valid change that does not need additional actions, the data remains untouched.
-  * **delete of ModelSchema property** - deletion of the property is a valid change, data stored in related Model properties will remain saved but will not be accessible. Use migration to remove the data prior to the change.
+  * **name change** - as platformOS detects Model Schema definition by its name, if you change it is equal with adding new Model Schema, please note that Model objects are not automatically migrated and will be treated as orphaned with next deploy attempt, see error message above.
+  * **add new Model Schema property** - adding new properties is a valid change that does not need additional actions, the data remains untouched.
+  * **delete of Model Schema property** - deletion of the property is a valid change, data stored in related Model properties will remain saved but will not be accessible. Use migration to remove the data prior to the change.
   * **property edition** - is a valid change and is equal to the removal of property with old name and creation of new property, data is not migrated.
 
 
