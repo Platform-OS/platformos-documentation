@@ -31,7 +31,7 @@ Each file is divided into two sections: configuration and implementation.
 
 ## Minimal form example
 
-Every form configuration is strictly connected with the resource that can be a static class predefined by platformOS or a dynamic model. The very basic example of the Form that enables the possibility to create an object of CustomModelType named "Car" and accepts one property called "color", would look like this:
+Every form configuration is strictly connected with the resource that can be a static class predefined by platformOS or a dynamic model. The very basic example of the Form that enables the possibility to create an object of Model Schema named "Car" and accepts one property called "color", would look like this:
 
 {% raw %}
 ```liquid
@@ -50,7 +50,7 @@ fields:
 ```
 {% endraw %}
 
-As already mentioned the file is split into two sections. In the configuration part, you define `name` that is later used to include the form in the view, `resource` that tells the platform which CustomModelType is connected with that form and `configuration` that whitelists model `properties` that can be altered with this form endpoint.
+As already mentioned the file is split into two sections. In the configuration part, you define `name` that is later used to include the form in the view, `resource` that tells the platform which Model Schema is connected with that form and `configuration` that whitelists model `properties` that can be altered with this form endpoint.
 In the implementation part the [form tag](/api-reference/liquid/platformos-tags#form) generates the HTML `<form>` together with all inputs and properties required for successful form submission. The name of the text input, included in the form body, is provided by the [form variable](/tutorials/forms/form-builder).
 
 To display the form within a page, use the [include_form tag](/api-reference/liquid/platformos-tags#include_form) that accepts the name of the form that you want to display:
