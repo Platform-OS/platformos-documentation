@@ -663,10 +663,10 @@ query get_products($id: ID) {
       name: property(name: "name")
       description: property(name: "description")
       price: property(name: "price")
-      brand: model(join_on_property: "brand_id") {
+      brand: related_model(join_on_property: "brand_id") {
         name: property(name: "name")
       }
-      product_type: model(join_on_property: "product_type_id") {
+      product_type: related_model(join_on_property: "product_type_id") {
         name: property(name: "name")
       }
     }
@@ -676,7 +676,7 @@ query get_products($id: ID) {
 
 Initially, the query will have only one parameter `$id`, but in the next topics you’ll extend it with different filters to implement filtering, pagination, etc.
 
-{% include 'alert/note', content: '`model(join_on_property: "propname")` is a useful method for [loading data from related models](/tutorials/models/loading-related-models)' %}
+{% include 'alert/note', content: '`related_model(join_on_property: "propname")` is a useful method for [loading data from related models](/tutorials/models/loading-related-models)' %}
 
 ### Step 6: Create products listing page
 
