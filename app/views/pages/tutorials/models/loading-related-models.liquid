@@ -156,10 +156,10 @@ The results show that this approach produces slow output. The n+1 queries slow d
 
 ### Step 4: Request data from related model within GraphQL query (recommended)
 
-To avoid n+1 queries, request company data within the `programmers` GraphQL query. Load related data at once along with the programmer collection using new GraphQL field called `model`.
+To avoid n+1 queries, request company data within the `programmers` GraphQL query. Load related data at once along with the programmer collection using new GraphQL field called `related_model`.
 
 ```graphql
-model(join_on_property: "company_id") { properties }
+related_model(join_on_property: "company_id") { properties }
 ```
 
 `join_on_property` argument is required and is used as a foreign key of the company collection. In SQL language this could look similarly:
@@ -176,7 +176,7 @@ programmers: models(filter: { name: { value: "programmer" } }, per_page: 200) {
     total_entries
     results {
       properties
-      company: model(model_name: "company", join_on_property: "company_id") {
+      company: related_model(model_name: "company", join_on_property: "company_id") {
         url: property(name: "url")
         properties
       }
