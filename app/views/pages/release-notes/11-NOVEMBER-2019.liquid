@@ -1,0 +1,44 @@
+---
+converter: markdown
+metadata:
+  title: Related models using array of ids, or filter for users, improvements and fixes
+  description: November 11, 2019
+  contributors: false
+slug: release-notes/11-NOVEMBER-2019
+searchable: true
+---
+
+#### {{ page.metadata.description }}
+
+<h4 class="release-note release-note__new">NEW</h4>
+
+* `join_on_property` now accepts array of ids, not only single value
+* add `or` filter to `users` GraphQL query
+
+<h4 class="release-note release-note__improved">IMPROVED</h4>
+
+* `image_presign_url` automatically includes versions defined in schema
+* upgrade application server to the newest version
+* allow to prefix `layouts/` for `layout_path` property
+* if there is only one rule in `or` clause in GraphQL filter then apply it (previously was ignored)
+* renamed GraphQL argument `model_name` to `model_schema_name`
+* renamed `model(s)` to `related_model(s)` to avoid confusion in `model_create`, `model_update` mutations
+* renamed `user(s)` to `related_user(s)` to avoid confusion in `user_create`, `user_update` mutations
+* deprecated bunch of old queries/mutations/fields to not appear in GrahQL editor auto complete list
+* add validation to layout_path in EmailNotification to make sure the layout exists
+* added new system field `content_updated_at` to `Page` to make it easier to invalidate cache in a more efficient way
+
+<h4 class="release-note release-note__fixed">FIXED</h4>
+
+* accept "model_schemas" in `physical_file_path` for admin_model_schema mutation
+* remove unnecessary uniqueness validation for `name`, `type` pair for property
+* do not allow to override pOS private API endpoints
+* do not crash when adding `assets` directory within `app/assets`
+* accessing specific error codes for GraphQL validation errors via `extensions.codes.`
+* properly invalidate layout cache for EmailNotification on sync/deploy/GraphQL mutation
+* 500 error when confirmation validation is used in `forms` without defining corresponding virtual field
+
+
+## pos-cli changes
+
+`pos-cli` changelog is [kept separately](https://github.com/mdyd-dev/pos-cli/blob/master/CHANGELOG.md).
