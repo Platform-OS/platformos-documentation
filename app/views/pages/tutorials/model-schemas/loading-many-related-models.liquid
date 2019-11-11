@@ -1,32 +1,46 @@
 ---
 converter: markdown
 metadata:
-  title: Loading Related Models From Array Property
+  title: Loading Related Models From an Array Property
   description: This guide will help you load related models from array property while avoiding n+1.
 slug: tutorials/model-schemas/loading-related-models-from-array
 searchable: true
 ---
 
-The `related models` graphql argument can be really powerful tool allowing users to build quickly flexible structures.
-Using `foreign_property` along with `join_on_property` users can define relationship on the fly and load any nested data within single query. Read about it more in this [tutorial](/tutorials/models/loading-related-models)
+The `related models` graphql argument can be a really powerful tool that allows you to quickly build flexible structures.
+Using `foreign_property` along with `join_on_property` you can define relationships on the fly and load any nested data within a single query. Read about it more in this [tutorial](/tutorials/models/loading-related-models)
 
-Recently we extended scope of the `join_on_property` and now it also accepts and resolves queries with property of array type.
+We extended the scope of the `join_on_property` and now it also accepts and resolves queries with the property of array type.
 
-In this document you will learn how it can be used based on real live scenario.
+In this tutorial, you will learn how `join_on_property` can be used based on a real scenario.
 
-We will use the new function to build a homepage which will be presenting 3 lists:
+You will use the new function to build a homepage that presents 3 lists:
 - most popular programmers
 - most valuable programmers
-- and most popular companies.
+- and most popular companies
 
-First way of solving this is to create three queries and calculate what to display each time the page is being accessed.
-But this is not recommended, at least on homepage as it is the very first page of our site. We have to make sure it loads as quickly as possible.
-Moreover pages based on live queries are hard to customize - let's imagine we want to add one extra record to be displayed which is not accessible by the query.
-Let's then create next query... oh wait. Why the page is so slow?
+One way of solving this is to create three queries and calculate what to display each time the page is accessed. But this is not recommended, at least on the homepage, as it is the very first page of our site. We have to make sure it loads as quickly as possible.
+Moreover, pages based on live queries are hard to customize - imagine you want to add one extra record to be displayed which is not accessible by the query. Then create next query... oh wait. Why is the page so slow?
 
-We need figure something better - we need an extra structure.
+You need to figure out something better - you need an extra structure. 
 
-We will create a special model type `ranking`.
+## Requirements
+
+This is an advanced tutorial. To follow it, you should be familiar with Model Schemas, Properties, and Loding Related Models  
+
+* [Models and Model Schemas](/tutorials/models/models-model-schemas)
+* [Properties](/tutorials/properties/properties)
+* [Loading Related Models](/tutorials/models/loading-related-models)
+
+## Steps
+
+Loading related models form an array property following this scenario is a four-step process:
+
+<div data-autosteps></div>
+
+### Step 1: Create model type
+
+Create a special model type `ranking`.
 
 ```graphql
 name: ranking
@@ -47,10 +61,12 @@ properties:
     belongs_to: programmer
 ```
 
-It consists of three properties of type array which will serve as cache containers of the homepage lists.
-[parameter `belongs_to` is currently only of use during import/export operations]
+It consists of three properties of the type array which will serve as cache containers of the homepage lists.
+[parameter `belongs_to` is currently only used during import/export operations]
 
-We can create now a first record of `ranking` model schema executing the following query:
+### Step 2: Create first record 
+
+Now create the first record of the `ranking` model schema that executes the following query:
 
 ```graphql
 mutation createRanking {
@@ -62,8 +78,9 @@ mutation createRanking {
 }
 ```
 
+### Step 3: Populate ranking record 
 
-We are ready now to populate the ranking record.
+You are now ready to populate the ranking record.
 
 ```graphql
 mutation updateModel($companies: [String], $vips: [String], $featured: [String]) {
@@ -81,8 +98,7 @@ mutation updateModel($companies: [String], $vips: [String], $featured: [String])
 }
 ```
 
-
-Alternatively you can add single ID to a specific field with the following query:
+Alternatively, you can add a single ID to a specific field with the following query:
 
 ```graphql
 mutation updateModel($name: String!, $id: String) {
@@ -99,10 +115,11 @@ mutation updateModel($name: String!, $id: String) {
 }
 ```
 
-
 If you want to remove an element from an array use: `array_remove`.
 
-Finally we are ready to fetch the ranking record.
+### Step 4: Fetch ranking record
+
+Finally you are ready to fetch the ranking record.
 
 ```graphql
    query { rankings: models(
@@ -127,8 +144,7 @@ Finally we are ready to fetch the ranking record.
 }
 ```
 
+As a result, you will get a ranking record filled with nested objects - featured programmers and popular companies - ready to be presented on the page.
 
-As a result we will get a ranking record filled with nested objects - featured programmers and popular companies - ready to be presented on the page.
-
-That's all. Our homepage - backed up by really simple structure - will load much faster. Because it is only one query.
-In addition - even though we added some extra code - final solution is clearer than complex query and easier to maintain and extend.
+Your homepage - backed up by really simple structure - will load much faster, because it is only one query.
+In addition (even though you added some extra code) the final solution is clearer than a complex query and easier to maintain and extend.
