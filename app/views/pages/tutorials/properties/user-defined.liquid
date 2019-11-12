@@ -84,7 +84,12 @@ Properties depend on their parent objects and are accessible in the query after 
 
 ```graphql
 query get_models {
-  models(name: "model_name") {
+  models(
+    per_page: 20,
+    filter: {
+    	name: { value: "model_name" }
+  	}
+  ) {
     results {
       name: property(name: "name")
       age: property(name: "age")
