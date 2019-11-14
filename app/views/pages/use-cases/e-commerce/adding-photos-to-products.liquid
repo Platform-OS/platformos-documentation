@@ -234,6 +234,7 @@ Uploading and removing photo forms are ready, but before you can create the part
 ```graphql
 query get_photos($product_id: String) {
   models(
+    per_page: 20,
     filter: {
       name: { exact: "photo" }
       properties: [{ name: "product_id", value: $product_id }]

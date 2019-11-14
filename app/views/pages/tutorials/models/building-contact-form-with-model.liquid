@@ -78,7 +78,13 @@ Now that you have created the `Contact` Model Schema in the previous step, you c
 
 ```graphql
 query get_contacts($id: ID) {
-  models(filter: { name: { exact: "modules/contacts/contact" }, id: { value: $id } }, per_page: 100) {
+  models(
+    filter: {
+      name: { exact: "modules/contacts/contact" },
+      id: { value: $id }
+    },
+    per_page: 100
+  ) {
     results {
       id
       name: property(name: "name")

@@ -33,26 +33,27 @@ You can fetch all post details with:
 query get_blog_posts($per_page: Int = 20, $page: Int, $title: String, $id: ID, $slug: String, $published_at_lte: String, $published_at_lt: String, $published_at_gt: String, $published_at_gte: String, $tags: [String!], $blog_instance_id: String) {
   blog_posts: models(
     per_page: $per_page,
-    page: $page, filter: {
-      deleted_at: {exists: false},
-      id: {value: $id},
-      name: {value: "blog_post"},
+    page: $page,
+    filter: {
+      deleted_at: { exists: false },
+      id: { value: $id },
+      name: { value: "blog_post" },
       properties: [
-        {name: "tags", value_in: $tags},
-        {name: "blog_instance_id", value: $blog_instance_id},
-        {name: "title", value: $title},
-        {name: "slug", value: $slug},
-        {name: "published_at", range: {lte: $published_at_lte}},
-        {name: "published_at", range: {lt: $published_at_lt}},
-        {name: "published_at", range: {gt: $published_at_gt}},
-        {name: "published_at", range: {gte: $published_at_gte}}
+        { name: "tags", value_in: $tags },
+        { name: "blog_instance_id", value: $blog_instance_id },
+        { name: "title", value: $title },
+        { name: "slug", value: $slug },
+        { name: "published_at", range: { lte: $published_at_lte } },
+        { name: "published_at", range: { lt: $published_at_lt } },
+        { name: "published_at", range: { gt: $published_at_gt } },
+        { name: "published_at", range: { gte: $published_at_gte  } }
       ]
     }
     sort: [
       {
         properties: [
           {
-            name: "published_at"
+            name: "published_at",
             order: DESC
           }
         ]

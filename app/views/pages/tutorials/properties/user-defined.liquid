@@ -110,8 +110,11 @@ Each object in the properties array is connected with a Property through its nam
 ```graphql
 query get_all_johns {
   models(
-    is_deleted: false
-    properties: [{ name: "name", value: "John" }]
+    per_page: 20,
+    filter: {
+      deleted_at: { exists: false },
+      properties: [{ name: "name", value: "John" }]
+    }
   ) {
     results {
       first_name: property(name: "name")
@@ -125,8 +128,11 @@ query get_all_johns {
 ```graphql
 query get_all_johns_and_annas {
   models(
-    is_deleted: false
-    properties: [{ name: "name", values: ["John", "Anna"], values_operator: OR }]
+    per_page: 20,
+    filter: {
+      deleted_at: { exists: false },
+      properties: [{ name: "name", values: ["John", "Anna"], values_operator: OR }]
+    }
   ) {
     results {
       first_name: property(name: "name")
@@ -140,8 +146,11 @@ query get_all_johns_and_annas {
 ```graphql
 query get_all_adults_below_60 {
   models(
-    is_deleted: false
-    properties: [{ name: "age", range: { gte: $adult_age_treshold, lt: 60 } }]
+    per_page: 20,
+    filter: {
+      deleted_at: { exists: false },
+      properties: [{ name: "age", range: { gte: $adult_age_treshold, lt: 60 } }]
+    }
   ) {
     results {
       first_name: property(name: "name")
@@ -150,7 +159,7 @@ query get_all_adults_below_60 {
 }
 ```
 
-`range` uses [ISO 8601 date-time formats](https://www.cryptosys.net/pki/manpki/pki_iso8601datetime.html), for example: 
+`range` uses [ISO 8601 date-time formats](https://www.cryptosys.net/pki/manpki/pki_iso8601datetime.html), for example:
 
 ```graphql
 {
@@ -169,8 +178,11 @@ query get_all_adults_below_60 {
 ```graphql
 query get_all_with_name {
   models(
-    is_deleted: false
-    properties: [{ name: "name", exists: true }]
+    per_page: 20,
+    filter: {
+      deleted_at: { exists: false },
+      properties: [{ name: "name", exists: true }]
+    }
   ) {
     results {
       first_name: property(name: "name")
@@ -180,5 +192,3 @@ query get_all_with_name {
 ```
 
 Please note that the above examples are only valid for Properties defined on Model Schema. Please refer to GraphQL schema in order to filter Properties defined on different parents than Model Schema.
-
-

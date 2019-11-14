@@ -134,8 +134,10 @@ First, you'll need a GraphQL query to pull out the data:
 ```graphql
 query feedback($per_page: Int = 10) {
   models(
-    filter: { name: { exact: "feedback" } }
-    per_page: $per_page
+    filter: {
+      name: { exact: "feedback" }
+    },
+    per_page: $per_page,
     sort: { name: "created_at", order: "desc" }
   ) {
     results {

@@ -657,7 +657,13 @@ Now that the form for entering data is ready, you need a way to fetch them from 
 
 ```graphql
 query get_products($id: ID) {
-  models(filter: { id: {value: $id }, { name: { exact: "product" }}, per_page: 100) {
+  models(
+    filter: {
+      id: { value: $id },
+      name: { value: "product" }
+    },
+    per_page: 100
+  ) {
     results {
       id
       name: property(name: "name")

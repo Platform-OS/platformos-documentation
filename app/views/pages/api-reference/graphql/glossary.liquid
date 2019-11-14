@@ -27,10 +27,11 @@ An alternative name given to the result of a field to avoid conflicts during dat
 
 ```graphql
 {
-  notes: models(filter: { name: { exact: "notes"}}) {
+  notes: models(per_page: 20, filter: { name: { exact: "notes" } }) {
     results { id }
   }
-  car_photos: models(filter: { name: { exact: "car_photos"} }) {
+
+  car_photos: models(per_page: 20, filter: { name: { exact: "car_photos"} }) {
     results {
       photos: custom_images(name: "photo") {
         url

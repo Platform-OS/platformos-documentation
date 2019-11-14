@@ -115,7 +115,7 @@ query get_products($slug: String) {
   products: models(
     filter: {
       name: { value: "product" }
-      deleted_at: { value: null }
+      deleted_at: { exists: false }
       properties: [
         { name: "slug", value: $slug }
       ]

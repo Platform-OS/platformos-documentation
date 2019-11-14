@@ -146,7 +146,12 @@ Processor files are supposed to be included inside of the migration file and sho
 
 ```graphql
 query get_brands {
-  models(filter: { name: { exact: "brand"} }, per_page: 999) {
+  models(
+    filter: {
+      name: { value: "brand" }
+    },
+    per_page: 999
+  ) {
     results {
       id
       name: property(name: "name")
@@ -175,7 +180,12 @@ mutation create_brand($name: String) {
 
 ```graphql
 query get_product_types {
-  models(name: "product_type", per_page: 999) {
+  models(
+    filter: {
+      model_schema_name: { value: "product_type" }
+    },
+    per_page: 999
+  ) {
     results {
       id
       name: property(name: "name")
