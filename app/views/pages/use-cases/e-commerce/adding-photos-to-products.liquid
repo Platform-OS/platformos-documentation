@@ -178,7 +178,7 @@ Include the script at the end of the `create_photo_form` form.
 
 {%
   include "forms/upload/s3_script",
-    config: form.fields.custom_images.image.image.s3_upload
+  config: form.fields.custom_images.image.image.s3_upload
 %}
 {% endraw %}
 ```
@@ -236,7 +236,7 @@ query get_photos($product_id: String) {
   models(
     per_page: 20,
     filter: {
-      name: { exact: "photo" }
+      model_schemaname: { value: "photo" }
       properties: [{ name: "product_id", value: $product_id }]
     }
   ) {

@@ -95,7 +95,12 @@ In this approach, you use two GraphQL queries:
 
 ```graphql
 query programmers {
-programmers: models(per_page: 20, filter: { name: { value: "programmer" } }){
+  programmers: models(
+    per_page: 20,
+    filter: {
+      model_schema_name: {value: "programmer" }
+    }
+  ) {
     total_entries
     results {
       properties
@@ -108,7 +113,13 @@ programmers: models(per_page: 20, filter: { name: { value: "programmer" } }){
 
 ```graphql
 query company($id: ID) {
-  companies: models(per_page: 20, filter: { name: { value: "company" }, id: { value: $id } }){
+  companies: models(
+    per_page: 20,
+    filter: {
+      model_schema_name: { value: "company" },
+      id: { value: $id }
+    }
+  ){
     results {
       name
       id
@@ -172,7 +183,12 @@ and after updating your GraphQL query would look like this:
 
 ```graphql
 query programmers {
-programmers: models(filter: { name: { value: "programmer" } }, per_page: 200) {
+  programmers: models(
+    filter: {
+      model_schema_name: { value: "programmer" }
+    },
+    per_page: 200
+  ) {
     total_entries
     results {
       properties
