@@ -12,11 +12,11 @@ This guide will help you connect your Angular Single Page Application (SPA) that
 This tutorial is based on Angular version 8.
 
 ## Requirements
-To follow this tutorial, you should have your development environment and a platformOS Instance set up, be familiar with pages and layouts, and have the Angular CLI installed. 
+To follow this tutorial, you should have your development environment and a platformOS Instance set up, be familiar with pages and layouts, and have the Angular CLI installed.
 
-- [Get Started](/get-started) 
+- [Get Started](/get-started)
 - [Pages and Layouts](/tutorials/pages/pages)
-- [Angular CLI](https://angular.io/cli) 
+- [Angular CLI](https://angular.io/cli)
 
 ## Steps
 
@@ -43,8 +43,24 @@ Angular app build files are part of the platformOS Instance.
 
 In platformOS, there's no traditional `hosting`. You cannot put files straight into some `root` folder and have `your-domain.com/the-file.html`.
 
-But there's a special place in your Instance where you can achieve a similar effect. Every file that has been put into `app/assets/` will be "visible" as `your-domain.com/assets/the-file.html`.
-We strongly recommend to wrap your build files into another folder like `app/assets/web-app`, because in the future you might want to store other assets like for example graphic files for emails in the `app/assets/` folder. 
+But there's special place in Your instance where You can achieve similar effect with static address.
+Every file that has been put into `app/assets/` will be "visible" as `your-uploads-path/assets/the-file.html`.
+
+#### How to get `your-uploads-path`?
+
+Please put this code into some page liquid file and check what server returns in website source code:
+
+```liquid
+{% raw  %}
+{{ "" | asset_url }}
+{% endraw %}
+```
+
+It will be look like:
+
+`https://uploads.staging.oregon.platform-os.com/instances/<YOUR-INSTANCE-ID>/assets`
+
+We strongly recommend to wrap your build files into another folder like `app/assets/web-app`, because in the future you might want to store other assets like for example graphic files for emails in the `app/assets/` folder.
 
 Change the location to store build files in `web-app/angular.json` config file.
 Find line with `"outputPath": "dist/web-app",` and change it into:
@@ -59,7 +75,7 @@ But now compiled files will be stored under `app/assets/web-app` (like for examp
 
 Open `web-app/package.json` and in `scripts` extend the `build` command:
 
-`"build": "ng build --prod --base-href / --deploy-url /assets/web-app/",`
+`"build": "ng build --prod --base-href / --deploy-url your-uploads-path/assets/web-app/",`
 
 Now your Angular app routing will know that your base-href is `/` and compiled files will be stored in `/assets/web-app/`.
 
@@ -71,7 +87,7 @@ platformOS routing is based on Liquid files (pages and layouts).
 
 Assuming that the Angular router will do its job, you'll need to rewrite all URLs into one file.
 
-You can do this with pages and layouts. Learn More about [Pages and Layouts](/tutorials/pages/pages). 
+You can do this with pages and layouts. Learn More about [Pages and Layouts](/tutorials/pages/pages).
 
 First, create a layout that will be injected into every Liquid page. This file will be generated during build by Angular and copied into `app/views/layouts` as `app.html.liquid`.
 
@@ -128,7 +144,7 @@ The Angular router will do rest of the job.
 
 If you needed to add some asset files like for example images or custom svg icons for [Angular Materials](https://material.angular.io/components/icon/overview) or maybe translation files like for [ngx-translate](https://www.codeandweb.com/babeledit/tutorials/how-to-translate-your-angular8-app-with-ngx-translate), you should definitely store them in `web-app/src/assets/`.
 
-Now you need to let your app know where you store them. You will use Angular `environments` files for this task. 
+Now you need to let your app know where you store them. You will use Angular `environments` files for this task.
 
 In `web-app/src/environments/environment.ts` add:
 
@@ -144,7 +160,7 @@ and in `web-app/src/environments/environment.prod.ts` add:
 ```javascript
 export const environment = {
   production: true,
-  assetsPrefix: '/assets/web-app',
+  assetsPrefix: 'your-uploads-path/assets/web-app',
 }
 ```
 
@@ -165,7 +181,7 @@ $assets-path: '';
 * and `web-app/src/styles/environments/prod/asset-path.scss` that contains:
 
 ```scss
-$assets-path: '/assets/web-app/';
+$assets-path: 'your-uploads-path/assets/web-app/';
 ```
 
 (`web-app/src/styles/` is where you store all global scss files)
@@ -184,7 +200,7 @@ Also, add the `"prebuild": "npm run cssAssetsPath",` command to run it before an
 "cssAssetsPathReset": "cp src/styles/environments/local/asset-path.scss src/styles/environments/",
 "copyIndex": "cp ../app/assets/web-app/app.html.liquid ../app/views/layouts/",
 "prebuild": "npm run cssAssetsPath",
-"build": "ng build --prod --base-href / --deploy-url /assets/web-app/",
+"build": "ng build --prod --base-href / --deploy-url your-uploads-path/assets/web-app/",
 "postbuild": "npm run copyIndex && npm run cssAssetsPathReset"
 ```
 
@@ -200,7 +216,7 @@ And now in any of your `scss` files when you need assets you'll use:
 
 ### Step 6: Set up proxy for local API calls
 
-Due to security issues you cannot use:
+Due to security issues You should not use:
 ```
 response_headers: >
   {
