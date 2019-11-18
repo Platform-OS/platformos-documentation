@@ -43,12 +43,12 @@ Angular app build files are part of the platformOS Instance.
 
 In platformOS, there's no traditional `hosting`. You cannot put files straight into some `root` folder and have `your-domain.com/the-file.html`.
 
-But there's special place in Your instance where You can achieve similar effect with static address.
-Every file that has been put into `app/assets/` will be "visible" as `your-uploads-path/assets/the-file.html`.
+But there's a special place in your Instance where you can achieve a similar effect with a static address.
+Each file put into `app/assets/` will be "visible" as `your-uploads-path/assets/the-file.html`.
 
 #### How to get `your-uploads-path`?
 
-Please put this code into some page liquid file and check what server returns in website source code:
+Put this code into some page liquid file and check what the server returns in the website's source code:
 
 ```liquid
 {% raw  %}
@@ -56,14 +56,14 @@ Please put this code into some page liquid file and check what server returns in
 {% endraw %}
 ```
 
-It will be look like:
+It will look like:
 
 `https://uploads.staging.oregon.platform-os.com/instances/<YOUR-INSTANCE-ID>/assets`
 
-We strongly recommend to wrap your build files into another folder like `app/assets/web-app`, because in the future you might want to store other assets like for example graphic files for emails in the `app/assets/` folder.
+We strongly recommend to wrap your build files into another folder like `app/assets/web-app`, because in the future you might want to store other assets, for example graphic files for emails, in the `app/assets/` folder.
 
-Change the location to store build files in `web-app/angular.json` config file.
-Find line with `"outputPath": "dist/web-app",` and change it into:
+Change the location to store build files in the `web-app/angular.json` config file.
+Find the line with `"outputPath": "dist/web-app",` and change it into:
 
 `"outputPath": "../app/assets/web-app",`
 
@@ -216,7 +216,7 @@ And now in any of your `scss` files when you need assets you'll use:
 
 ### Step 6: Set up proxy for local API calls
 
-Due to security issues You should not use:
+Due to security issues you should not use:
 ```
 response_headers: >
   {
