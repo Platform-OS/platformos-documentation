@@ -18,8 +18,6 @@ if / else statements should be familiar from other programming languages. Liquid
 The condition of an if, elsif, or unless tag should be either a normal Liquid expression or a comparison using Liquid expressions.
 Note that the comparison operators are implemented by the "if"-like tags; they don't work anywhere else in Liquid.
 
-{% include 'alert/important', content: "Always be mindful of Liquid's syntax. For example, {% raw %}`{% if rs.enabled == 'true' %}`{% endraw %} will work while {% raw %}`{% if rs.enabled=='true' %}`{% endraw %} (without the spaces) will not." %}
-
 ## Operators
 
 The available comparison operators are:
@@ -28,6 +26,8 @@ The available comparison operators are:
 * `<`, `<=`, `>`, `>=`: less/greater-than
 * There are also special values `empty` and `blank` (unquoted) that you can compare arrays to; the comparison is `true` if the array has no members.
 * `contains`: similar to Ruby's `include?` method, implemented on strings, arrays, and hashes. If the left argument is a string and the right isn't, it stringifies the right.
+
+Always be mindful of the Liquid syntax. For example, {% raw %}`{% if rs.enabled == 'true' %}`{% endraw %} will work while {% raw %}`{% if rs.enabled=='true' %}`{% endraw %} (without the spaces) will not.
 
 ## Boolean operators
 
