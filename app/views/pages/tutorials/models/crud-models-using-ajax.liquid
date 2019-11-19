@@ -153,13 +153,11 @@ query feedback($per_page: Int = 10) {
 
 Then you need to create a page that returns JSON with the data:
 
-#### views/pages/feedback_list.liquid
+#### views/pages/feedback_list.json.liquid
 
 ```liquid
 ---
 slug: feedback_list
-layout_name: ''
-format: json
 ---
 {%- raw -%}
 {%- graphql recent = "modules/feedback/feedback", per_page: 10 -%}
