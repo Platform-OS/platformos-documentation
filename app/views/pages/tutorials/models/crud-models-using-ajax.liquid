@@ -138,7 +138,7 @@ query feedback($per_page: Int = 10) {
       name: { exact: "feedback" }
     },
     per_page: $per_page,
-    sort: { name: "created_at", order: "desc" }
+    sort: { created_at: { order: DESC } }
   ) {
     results {
       id
