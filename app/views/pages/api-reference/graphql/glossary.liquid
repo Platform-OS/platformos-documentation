@@ -27,11 +27,11 @@ An alternative name given to the result of a field to avoid conflicts during dat
 
 ```graphql
 {
-  notes: models(per_page: 20, filter: { name: { exact: "notes" } }) {
+  notes: models(per_page: 20, filter: { name: { value: "notes" } }) {
     results { id }
   }
 
-  car_photos: models(per_page: 20, filter: { name: { exact: "car_photos"} }) {
+  car_photos: models(per_page: 20, filter: { name: { value: "car_photos"} }) {
     results {
       photos: custom_images(name: "photo") {
         url
@@ -63,7 +63,7 @@ A file or request string that contains one or multiple definitions of a GraphQL 
 A unit of data you are asking for in a Schema, which ends up as a field in your JSON response data.
 
 ```graphql
-type User{
+type User {
   id: ID!
   first_name: String
   last_name: String
@@ -113,17 +113,12 @@ An operation for creating, modifying and destroying data.
 
 ```graphql
 mutation edit_car($car_id: ID!, $color: String!) {
-  customization_update(
-    form_name: "edit_car"
+  model_update(
     id: $car_id
-    customization: {
-      properties: [
-        { name: "color", value: $color }
-      ]
+    model: {
+      properties: { name: "color", value: $color }
     }
-  ) {
-    id
-  }
+  ) { id }
 }
 ```
 

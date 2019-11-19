@@ -98,7 +98,7 @@ query programmers {
   programmers: models(
     per_page: 20,
     filter: {
-      model_schema_name: {value: "programmer" }
+      model_schema_name: { value: "programmer" }
     }
   ) {
     total_entries
@@ -119,9 +119,9 @@ query company($id: ID) {
       model_schema_name: { value: "company" },
       id: { value: $id }
     }
-  ){
+  ) {
     results {
-      name
+      model_schema_name
       id
       deleted_at
       properties

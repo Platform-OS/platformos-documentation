@@ -80,7 +80,7 @@ Now that you have created the `Contact` Model Schema in the previous step, you c
 query get_contacts($id: ID) {
   models(
     filter: {
-      name: { exact: "modules/contacts/contact" },
+      model_schema_name: { value: "modules/contacts/contact" },
       id: { value: $id }
     },
     per_page: 100

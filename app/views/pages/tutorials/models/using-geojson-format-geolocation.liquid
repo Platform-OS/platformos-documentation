@@ -88,8 +88,8 @@ Create a GraphQL mutation `createCompany.graphql`:
 
 ```graphql
 mutation createCompany($location: JSONPayload, $city: String, $timezone: String, $name: String){
-  customization_create(
-    customization: {
+  model_create(
+    model: {
       model_schema_name: "company"
       properties: [
         { name: "name" value: $name }
@@ -140,7 +140,7 @@ The HTML field snippet for geometry JSON is just a textarea:
 <div class="form-group">
   <label for="location">Location</label>
   <textarea required="true" id="location" type="text" class="form-control" name="{{ form.fields.properties.location.name }}">
-      {{- context.params.form.properties_attributes.location }}
+    {{- context.params.form.properties_attributes.location }}
   </textarea>
 </div>
 ```
@@ -158,7 +158,13 @@ query search($point: GeometryJSON, $distance: Int) {
     name: { value: "modules/geo_models/company" }
     filter: {
       properties: [
-        { name: "location", distance_sphere: {center: $point, distance_in_km: $distance}}
+        {
+          name: "location",
+          distance_sphere: {
+            center: $point,
+            distance_in_km: $distance
+          }
+        }
       ]
     }) {
     results {
