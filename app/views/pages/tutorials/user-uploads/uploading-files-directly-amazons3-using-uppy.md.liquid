@@ -1,0 +1,369 @@
+---
+converter: markdown
+metadata:
+  title: Uploading Files Directly to Amazon S3 Using Uppy
+  description: This guide will help you to create fast and user friendly image upload feature with image processing.
+slug: tutorials/user-uploads/uploading-files-directly-amazons3-using-uppy
+searchable: true
+---
+
+This guide will help you to create user-friendly image upload feature with image processing.
+
+{% include 'alert/note', content: 'This example uses some Twitter Boostrap classes to make it a little bit prettier' %}
+
+## Requirements
+This is an advanced tutorial. To follow it, you should be familiar with basic platformOS concepts, HTML, JavaScript, Liquid, GraphQL, and some topics in the Get Started section.
+
+## Steps
+
+Uploading images directly to Amazon S3 is a four-step process:
+
+<div data-autosteps></div>
+
+### Step 1: Create Model Schema and image processing configuration
+
+There will be only one property in Model Schema used in this example (photo), but it will generate 4 different versions of the image uploaded by the user. Apart from explicitly defined versions, there is also `original` version that is always there.
+
+##### modules/direct_s3_upload/public/model_schemas/uppy.yml
+
+```yml
+name: uppy
+properties:
+- name: photo
+  type: photo
+  image_versions:
+    large_bw: # version name
+      output:
+        format: jpeg # output format
+        quality: 70 # output quality
+      resize:
+        width: 1600 # width of the image - in this case max width
+        height: 1200 # max height of the image - in this case max height
+        fit: inside # preserve aspect ratio, do not crop the image, make sure all pixels are within viewport
+        without_enlargement: false # if image is smaller than width/height, do not enlarge it
+      manipulate:
+        greyscale: true # make image greyscale (similar to css "filter: grayscale(1)")
+        blur: 20 # blur using gaussian mask (similar to css "filter: blur(1.5rem)")
+        flatten: red # merge alpha transparency channel (if exists) with given color
+    small:
+      output:
+        format: webp
+        quality: 80
+      resize:
+        width: 640
+        height: 480
+        fit: cover
+        position: top # define the gravity direction or strategy when cropping the image using fit cover or contain
+    thumb:
+      output:
+        format: png
+        quality: 80
+      resize:
+        width: 200
+        fit: contain
+        background: "rgba(255, 255, 255, 0.5)" # if resized image is not covering whole viewport, set background color
+    center:
+      output:
+        format: jpeg
+        quality: 100
+      resize:
+        height: 400
+        width: 400
+        fit: cover
+```
+
+### Step 2: Get presign data and expose it using form
+
+To upload a file to AWS S3 directly, you will need some server-generated data, called signature. This information is from GraphQL. It takes `model_schema_name` and `property_name` as arguments so it can forward `image_versions` from the model.
+
+##### modules/direct_s3_upload/public/views/pages/images.liquid
+
+{% raw %}
+```liquid
+---
+slug: direct-s3-upload/images
+---
+
+{% graphql data %}
+mutation presign {
+  image_presign_url(
+    options: {
+      content_length: { gte: 0, lte: 2048 }
+      model_property: {
+        model_schema_name: "modules/direct_s3_upload/uppy"
+        property_name: "photo"
+      }
+    }
+  ) {
+    upload_url            # url to s3 where you will post data.
+    upload_url_payload    # series of fields required for the request to be valid
+  }
+}
+{% endgraphql %}
+{% assign data = data.image_presign_url %}
+
+<form action="{{ data.upload_url }}"
+  data-s3-uppy="form"
+  data-s3-uppy-user-id="{{ context.current_user.id }}"
+  hidden>
+  {% for field in data.upload_url_payload %}
+    <input type="hidden" name="{{ field[0] }}" value='{{ field[1] }}'>
+  {% endfor %}
+</form>
+```
+{% endraw %}
+
+While we are at it, just below the form paste code responsible for containing Uppy.
+
+##### modules/direct_s3_upload/public/views/pages/images.liquid
+
+```html
+<div class="row">
+  <div class="col-5">
+    <div class="card">
+      <div class="card-body">
+        <div id="drag-drop-area"></div> <!-- This is where Uppy will inject itself -->
+      </div>
+    </div>
+  </div>
+
+  <div class="col-7">
+    <div class="card">
+      <div class="card-body">
+        <p>URLs to image returned by AWS (input):</p>
+        <small>
+          <ol data-s3-uppy="log"></ol>
+        </small>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+### Step 3: Configure Uppy and use presigned data
+
+Upp is a JavaScript widget that helps to handle uploads. With its S3 plugin on board we can make the implementation much shorter and easier.
+
+However, before we can use any scripts, we need to load them.
+
+##### modules/direct_s3_upload/public/views/pages/images.liquid
+
+```html
+<link href="https://transloadit.edgly.net/releases/uppy/v1.6.0/uppy.css" rel="stylesheet">
+<script src="https://transloadit.edgly.net/releases/uppy/v1.6.0/uppy.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9" defer></script>
+<script src="{{ 'modules/direct_s3_upload/images.js' | asset_url }}" defer></script>
+```
+
+This is the final `images.js` file, responsible for uploading image, logging its url, creating model, and showing confirmation box.
+
+##### modules/direct_s3_upload/public/assets/images.js
+
+```js
+const _form = document.querySelector('[data-s3-uppy="form"]');
+const _log = document.querySelector('[data-s3-uppy="log"]');
+
+const uppy = Uppy.Core({
+  autoProceed: true,
+  restrictions: {
+    maxFileSize: 2097152,
+    maxNumberOfFiles: 3,
+    allowedFileTypes: ['image/png', 'image/jpeg', 'image/webp']
+  }
+})
+  .use(Uppy.Dashboard, {
+    inline: true,
+    target: '#drag-drop-area',
+    note: 'Images only, up to 3 files, 2MB each',
+    width: '100%',
+    height: 350
+  })
+  .use(Uppy.DragDrop)
+  .use(Uppy.GoldenRetriever)
+  .use(Uppy.AwsS3, {
+    getUploadParameters() {
+      // 1. Get URL to post to from action attribute
+      const _url = _form.getAttribute('action');
+      // 2. Create Array from FormData object to make it easy to operate on
+      const _formDataArray = Array.from(new FormData(_form));
+      // 3. Create a JSON object from array
+      const _fields = _formDataArray.reduce((acc, cur) => ({ ...acc, [cur[0]]: cur[1] }), {});
+
+      // 4. Return resolved promise with Uppy. Uppy it will add file in file param as the last param
+      return Promise.resolve({
+        method: 'POST',
+        url: _url,
+        fields: _fields
+      });
+    }
+  });
+
+uppy.on('upload-success', (_file, data) => {
+  const li = document.createElement('li');
+  li.textContent = data.body.location;
+  _log.appendChild(li);
+});
+
+uppy.on('complete', ({ failed, successful }) => {
+  /*
+    For every successfully uploaded image to s3, send request to the instance
+    that will create model with uploaded image url as direct_url param.
+  */
+  Promise.all(successful.map(({ response }) => createImage(response.body.location)))
+  .then(() => {
+    // Show confirmation box (SweetAlert2) after all the images has been created
+    Swal.fire({
+      title: 'Images uploaded',
+      icon: 'success',
+      text: 'Press refresh to see the results',
+      confirmButtonText: 'Refresh',
+      showCloseButton: true
+    }).then(result => {
+      if (!result.value) {
+        return;
+      }
+
+      // Reload page after "Refresh" button has been clicked inside Sweet Alert2
+      window.location.reload();
+    });
+  });
+});
+
+const createImage = imageUrl => {
+  // Get logged in user id
+  const userId = _form.dataset.s3UppyUserId;
+
+  // Create model for this user with s3 image url
+  return fetch('/direct-s3-upload/images/model_create', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json'
+    },
+    body: JSON.stringify({ direct_url: imageUrl, user_id: userId })
+  }).then(response => response.json());
+};
+```
+
+### Step 4: Create page that will create model with image
+
+For fetch to succeed, we need to create page under `/direct-s3-upload/images/model_create` path. It will execute `model_create` mutation with params passed in XHR request.
+
+##### modules/direct_s3_upload/public/views/pages/model_create.liquid
+
+{% raw %}
+```liquid
+---
+slug: direct-s3-upload/images/model_create
+method: post
+---
+{% if context.params.user_id %}
+{% graphql model, direct_url: context.params.direct_url, user_id: context.params.user_id %}
+mutation model_create($direct_url: String!, $user_id: ID!) {
+  model_create(model: {
+    custom_model_type_name: "modules/direct_s3_upload/uppy"
+    user_id: $user_id
+    custom_images: {
+      name: "photo"
+      direct_url: $direct_url
+    }
+  }) {
+    id
+  }
+}
+{% endgraphql %}
+{{ model | fetch: "model_create" | json }}
+{% endif %}
+```
+{% endraw %}
+
+{% include 'alert/note', content: 'You might want to add a check so that user can only add images to his own account.' %}
+
+### Step 5: Showing up results
+
+To see results of image processing, lets get some of them from the database and display.
+
+First we need query to fetch models.
+
+##### modules/direct_s3_upload/public/graph_queries/get_models.graphql
+
+```graphql
+query get_models($per_page: Int = 5, $user_id: ID!) {
+  models(
+    per_page: $per_page
+    sort: { created_at: { order: DESC } }
+    filter: {
+      model_schema_name: { value: "modules/direct_s3_upload/uppy" },
+      deleted_at: { exists: false },
+      user_id: { value: $user_id }
+    }
+  ) {
+    total_entries
+    results {
+      id
+      images {
+        original: url
+        large_bw: url(version: "large_bw")
+        small: url(version: "small")
+        thumb: url(version: "thumb")
+        center: url(version: "center")
+      }
+    }
+  }
+}
+```
+
+Then we can use it and display images.
+
+##### modules/direct_s3_upload/public/views/pages/images.liquid
+
+{% raw %}
+```liquid
+<!-- Get recently uploaded images for this user, in all versions -->
+{% graphql models = "modules/direct_s3_upload/get_models", user_id: context.current_user.id | dig: "models" %}
+
+{% if models.total_entries > 0 %}
+  <hr>
+
+  <div class="row my-2">
+    <div class="col-9">
+      <h3>Last 5 processed images:</h3>
+    </div>
+  </div>
+
+  <!-- Show all versions next to each other -->
+  {% for model in models.results %}
+    {% assign versions = model | dig: "images" | first %}
+
+    <div class="card my-4">
+      <div class="card-body">
+        <div class="row">
+          {% for version in versions %}
+            <div class="col-sm-2">
+              <h4>{{ version[0] }}</h4>
+              <a href="{{ version[1] }}">
+                <img src="{{ version[1] }}" alt="{{ version[0] }}" width="150">
+              </a>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+{% endif %}
+```
+{% endraw %}
+
+## Important notes / troubleshooting
+
+{% include 'tutorials/user-uploads/troubleshooting' %}
+
+## Live example and source code
+
+{% include 'tutorials/user-uploads/live-example-and-source-code' %}
+
+## Additional resources
+
+* [Example: Browser-Based Upload using HTTP POST (Using AWS Signature Version 4)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-post-example.html)
+* [Creating an HTML Form (Using AWS Signature Version 4)](https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-HTTPPOSTForms.html)
+* [Upload a file with $.ajax to AWS S3 with a pre-signed url](https://gist.github.com/guumaster/9f18204aca2bd6c71a24)
