@@ -1,0 +1,32 @@
+---
+converter: markdown
+metadata:
+  title: Service workers route, multiple queries via GraphiQL editor, improvements, fixes
+  description: November 25, 2019
+  contributors: false
+slug: release-notes/25-NOVEMBER-2019
+searchable: true
+---
+
+#### {{ page.metadata.description }}
+
+<h4 class="release-note release-note__new">NEW</h4>
+
+* special route for service workers
+
+You can put a file named `serviceworker.js` (or `sw.js`) in the `app/assets` directory and access it via `https://www.example.com/serviceworker.js` (or `https://example.com/sw.js`). In case you need more files to be accessible this way, you can add numbers to the filename, for example `serviceworker-1.js`, `serviceworker-2.js`, etc.
+
+<h4 class="release-note release-note__improved">IMPROVED</h4>
+
+* `model_*` mutations return `Graph::Types::Model` object instead of Customization
+* performance of `user_*` mutations invoked without a form, on Instances with many UserProfiles and ModelSchemas (in some scenarios it is now faster - the improvement depends on the number of UserProfiles/ModelSchemas)
+
+<h4 class="release-note release-note__fixed">FIXED</h4>
+
+* handle operation name from GraphiQL editor when multiple queries are defined
+* edge case random 500 error when `acceptance` validation was used
+* icluding a partial, which included `.` in a name, but did not exist (for example `{% raw %}{% include "i_do_not.exist" %}{% endraw %}`), was preventing next partials from being found as well
+
+## pos-cli changes
+
+`pos-cli` changelog is [kept separately](https://github.com/mdyd-dev/pos-cli/blob/master/CHANGELOG.md).
