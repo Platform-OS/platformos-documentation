@@ -2,17 +2,20 @@
 converter: markdown
 metadata:
   title: Uploading Files Directly to Amazon S3 Using Uppy
-  description: This guide will help you to create fast and user friendly image upload feature with image processing.
+  description: This guide will help you to create a fast and user-friendly image upload feature with image processing.
 slug: tutorials/user-uploads/uploading-files-directly-amazons3-using-uppy
 searchable: true
 ---
 
-This guide will help you to create user-friendly image upload feature with image processing.
+This guide will help you to create a user-friendly image upload feature with image processing.
 
 {% include 'alert/note', content: 'This example uses some Twitter Boostrap classes to make it a little bit prettier' %}
 
 ## Requirements
 This is an advanced tutorial. To follow it, you should be familiar with basic platformOS concepts, HTML, JavaScript, Liquid, GraphQL, and some topics in the Get Started section.
+
+* [How platformOS Works](/how-platformos-works)
+* [Get Started](/get-started)
 
 ## Steps
 
@@ -22,7 +25,7 @@ Uploading images directly to Amazon S3 is a four-step process:
 
 ### Step 1: Create Model Schema and image processing configuration
 
-There will be only one property in Model Schema used in this example (photo), but it will generate 4 different versions of the image uploaded by the user. Apart from explicitly defined versions, there is also `original` version that is always there.
+There will be only one property in Model Schema used in this example (photo), but it will generate 4 different versions of the image uploaded by the user. Apart from explicitly defined versions, there is also an `original` version that is always there.
 
 ##### modules/direct_s3_upload/public/model_schemas/uppy.yml
 
@@ -72,7 +75,7 @@ properties:
         fit: cover
 ```
 
-### Step 2: Get presign data and expose it using form
+### Step 2: Get presign data and expose it using a form
 
 To upload a file to AWS S3 directly, you will need some server-generated data, called signature. This information is from GraphQL. It takes `model_schema_name` and `property_name` as arguments so it can forward `image_versions` from the model.
 
@@ -113,7 +116,7 @@ mutation presign {
 ```
 {% endraw %}
 
-While we are at it, just below the form paste code responsible for containing Uppy.
+Below the form, paste the code responsible for containing Uppy.
 
 ##### modules/direct_s3_upload/public/views/pages/images.liquid
 
@@ -142,9 +145,9 @@ While we are at it, just below the form paste code responsible for containing Up
 
 ### Step 3: Configure Uppy and use presigned data
 
-Upp is a JavaScript widget that helps to handle uploads. With its S3 plugin on board we can make the implementation much shorter and easier.
+Uppy is a JavaScript widget that helps to handle uploads. With its S3 plugin on board, you can make the implementation much shorter and easier.
 
-However, before we can use any scripts, we need to load them.
+However, before you can use any scripts, you need to load them.
 
 ##### modules/direct_s3_upload/public/views/pages/images.liquid
 
@@ -155,7 +158,7 @@ However, before we can use any scripts, we need to load them.
 <script src="{{ 'modules/direct_s3_upload/images.js' | asset_url }}" defer></script>
 ```
 
-This is the final `images.js` file, responsible for uploading image, logging its url, creating model, and showing confirmation box.
+This is the final `images.js` file, responsible for uploading the image, logging its URL, creating the model, and showing the confirmation box.
 
 ##### modules/direct_s3_upload/public/assets/images.js
 
@@ -206,8 +209,8 @@ uppy.on('upload-success', (_file, data) => {
 
 uppy.on('complete', ({ failed, successful }) => {
   /*
-    For every successfully uploaded image to s3, send request to the instance
-    that will create model with uploaded image url as direct_url param.
+    For every successfully uploaded image to S3, send request to the Instance
+    that will create a model with the uploaded image's URL as direct_url param.
   */
   Promise.all(successful.map(({ response }) => createImage(response.body.location)))
   .then(() => {
@@ -245,9 +248,9 @@ const createImage = imageUrl => {
 };
 ```
 
-### Step 4: Create page that will create model with image
+### Step 4: Create page that will create the model with the image
 
-For fetch to succeed, we need to create page under `/direct-s3-upload/images/model_create` path. It will execute `model_create` mutation with params passed in XHR request.
+For fetch to succeed, you need to create a page under the `/direct-s3-upload/images/model_create` path. It will execute the `model_create` mutation with params passed in the XHR request.
 
 ##### modules/direct_s3_upload/public/views/pages/model_create.liquid
 
@@ -277,13 +280,13 @@ mutation model_create($direct_url: String!, $user_id: ID!) {
 ```
 {% endraw %}
 
-{% include 'alert/note', content: 'You might want to add a check so that user can only add images to his own account.' %}
+{% include 'alert/note', content: 'You might want to add a check so that users can only add images to their own accounts.' %}
 
-### Step 5: Showing up results
+### Step 5: Show the results
 
-To see results of image processing, lets get some of them from the database and display.
+To see the results of image processing, get some of them from the database and display them.
 
-First we need query to fetch models.
+First you need a query to fetch models.
 
 ##### modules/direct_s3_upload/public/graph_queries/get_models.graphql
 
@@ -313,7 +316,7 @@ query get_models($per_page: Int = 5, $user_id: ID!) {
 }
 ```
 
-Then we can use it and display images.
+Then you can use it to display images.
 
 ##### modules/direct_s3_upload/public/views/pages/images.liquid
 
