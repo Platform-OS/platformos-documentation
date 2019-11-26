@@ -1,0 +1,59 @@
+---
+converter: markdown
+metadata:
+  title: Signing In a User With JWT token
+  description: This guide will help authenticate json requests with JWT token
+slug: tutorials/users/signing-in-user-with-jwt-token
+searchable: true
+---
+
+This guide will help you authenticate json requests with JWT token.
+
+## Requirements
+
+To follow the steps in this tutorial, you should be familiar with the concept of pages, users and authoriation policy.
+
+* [Pages](/tutorials/pages/pages)
+* [Users](/tutorials/users/users)
+* [Authorization Policy](/tutorials/authorization-policy/authorization-policy)
+
+## Steps
+
+Signing in a api request requires three steps.
+
+<div data-autosteps></div>
+
+### Step 1: Fetch JWT token for a user.
+
+#### app/graphql/user_jwt_token.graphql
+
+```graphql
+```
+
+### Step 2: Create page with policy that checks JWT token
+
+#### app/views/pages/api/stats.json.liquid
+
+```liquid
+{% raw %}
+---
+slug: api/stats
+---
+{
+  "user_id": {{ context.current_user.id }},
+  "cart_items": 10,
+  "watched_items": 5,
+  "unread_messages": 33
+}
+```
+
+{% include 'alert/note', content: 'To set an expiration for user sessions, use the `"timeout_in_minutes":  0,` attribute in the Instance configuration settings JSON as described in the <a href="/tutorials/partner-portal/instances/updating-instance-configuration">Updating Instance Configuration</a> tutorial. If you set the attribute to 15, for example, all users will get logged out automatically after 15 minutes of inactivity.' %}
+
+### Step 3: Send signed request
+
+
+
+## Next steps
+Congratulations! You created a sign in page for users to sign in manually. Now you can learn about signing in a user automatically after sign up:
+
+* [Signing In a User Automatically after Sign Up](/tutorials/users/signing-in-user-automatically-after-sign-up)
