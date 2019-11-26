@@ -1,0 +1,38 @@
+---
+converter: markdown
+metadata:
+  title: Service Workers
+  description: This topic describes what service workers are and how to use them in platformOS.
+slug: best-practices/performance/service-workers
+searchable: true
+---
+
+This topic describes what service workers are and how to use them in platformOS. 
+
+## Service workers 
+
+A **service worker** is a script that your browser runs in the background (separate from a web page) helping you to implement features that don't need a web page or user interaction. It's essentially a JavaScript file that runs separately from the main browser thread, intercepting network requests, caching or retrieving resources from the cache, and delivering push messages. 
+
+Service workers are like a new set of features on the web that allow you to turn an application into a Progressive Web App (also known as a PWA), send push notifications, and improve performance by caching. 
+
+## Usage: Adding a service worker JavaScript file on root scope
+
+For security reasons, service workers can intercept requests only from the scope they are in.
+
+For example, assuming you have `sw.js` on `example.com/assets/js/sw.js`, your SW can control requests sent to paths starting with `example.com/assets/js/` at most. That's why, most of the time, you want your SW file to be on the root domain, so you can control every request coming towards your application.
+
+You can do that in platformOS by placing your SW files directly in the `assets/` directory and using this pattern to name them:
+
+* `sw.js` (and `sw-X.js`)
+* `serviceworker.js` (and `serviceworker-X.js`)
+
+Examples:
+
+* `assets/sw.js`, `assets/sw-2.js`
+* `assets/serviceworker.js`, `assets/serviceworker-1.js`
+
+## Read more on service workers
+
+* [Service Workers: an Introduction](https://developers.google.com/web/fundamentals/primers/service-workers)
+* [MDN web docs: Using Service Workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers)
+* [MDN web docs: Service Worker API](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API)
