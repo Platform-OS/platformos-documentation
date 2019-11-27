@@ -18,7 +18,7 @@ This is an advanced tutorial. To follow it, you should be familiar with basic pl
 
 ## Steps
 
-Profiling a page is a one-step process:
+Profiling a page is a two-step process:
 
 <div data-autosteps></div>
 
@@ -38,8 +38,47 @@ enable_profiler: true
 {% endraw %}
 ```
 
-When the flag is set, whenever you trigger a request to the `my-slow-page`, two log entries will be added and accessible via the `pos-cli logs` command. The first one shows information about the page, the second one about the layout associated with the page. You can use this information to identify slow code and improve it.
-
 {% include 'alert/warning', content: 'To avoid noise, the log will include only entries which took longer than 10ms.' %}
+
+### Step 2: View results
+
+When the flag is set, whenever you trigger a request to the `my-slow-page`, two log entries will be added and accessible via the `pos-cli logs` command.
+The first one shows information about the page, the second one about the layout associated with the page. You can use this information to identify slow code and improve it.
+
+Example result for one of our documentation page looks like
+
+```shell
+[2019-11-27 21:40:23.791Z] - debug: PROFILING:
+ [0.351541361s] TOTAL (lvl: 0)
+         [96.36%] include 'layouts/content'  (lvl: 1)
+                 [19.98%] parse_json pagesUpdatedAt  (lvl: 2)
+                         [19.84%] cache pagesUpdatedAtCache  (lvl: 3)
+                                 [18.86%] graphql g = 'pages_updated_at' | dig: 'admin_pages', 'results'  (lvl: 4)
+                 [24.05%] if has_sidebar == 'true'  (lvl: 2)
+                         [23.78%] include 'layouts/nav'  (lvl: 3)
+                                 [23.72%] if context.exports.category.name  (lvl: 4)
+                                         [23.62%] include nav_links_path, cp: current_path  (lvl: 5)
+                 [47.53%] unless context.page.metadata.contributors == false  (lvl: 2)
+                         [47.52%] include 'layouts/content/contributors'  (lvl: 3)
+                                 [47.30%] if context.location.href != "/"  (lvl: 4)
+                                         [5.00%] graphql g = "get_page_contributors", slug: context.location.href  (lvl: 5)
+                                         [42.18%] cache key, expire: 86400  (lvl: 5)
+                                                 [41.03%] if page_contributors.id != blank  (lvl: 6)
+                                                         [41.01%] graphql res = "fetch_page_contributors_from_github", id: page_contributors.id  (lvl: 7)
+                 [3.90%] unless context.page.metadata.feedback == false  (lvl: 2)
+                         [3.89%] include 'layouts/content/feedback'  (lvl: 3)
+                                 [3.84%] include_form "feedback_form"  (lvl: 4)
+```
+
+#### How to interpret the results
+
+At the very top (Level 0) you can see `TOTAL` measured in seconds. In this case it is 0.35 seconds.
+
+Each entry is showing percentage time that it took to complete particular operation.
+
+Inspect each level completion time by looking at percentages from left to right.
+Most time consuming Level 2 was the third one, so this is where you would look for bottlenecks first.
+
+Going to the most nested level, in this case 7, you can see that 41% of total rendering time was spent on fetching github contributors. This is something to look at if your page is slow.
 
 {% include 'alert/warning', content: 'Try to not profile a page on production, as it can result in performance hit. If you absolutely have to, make sure to disable it right after you trigger the request to the page, to minimize the risk of leaving profiling enabled for a long period of time.' %}
