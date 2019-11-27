@@ -1,0 +1,36 @@
+---
+converter: markdown
+metadata:
+  title: Arrays
+  description: Arrays are used to store multiple values for the same property.
+slug: tutorials/properties/arrays
+searchable: true
+---
+
+**Arrays** are used to store multiple values for the same property.
+
+## Defining
+
+You can use arrays by adding a property with `type` set to `array`, for example:
+
+```yaml
+- name: hobbies
+  type: array
+```
+
+## Sending arrays to server
+
+Consider a page `views/pages/hobbies-test.liquid` with the following content:
+
+```yaml
+---
+slug: hobbies-test
+---
+```
+```liquid
+{% raw %}my hobbies: {{ context.params.hobbies }}{% endraw %}
+```
+
+If you navigate to `/hobbies-test?hobbies=music&hobbies=travelling` you will see only the last element - travelling. To send an array of values, you need to add `[]` to the input name. Hence `/hobbies-test?hobbies[]=music&hobbies[]=travelling` displays the expected result: `["music","travelling"]`
+
+{%- include 'alert/tip', content: "If you use Forms, you do not need to remember to add `[]` to the input name - we automatically detect if the property is defined as an array and it is already part of `fields.properties.<property>.name`" -%}
