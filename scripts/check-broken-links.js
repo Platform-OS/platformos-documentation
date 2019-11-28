@@ -3,8 +3,6 @@ const fs = require('fs');
 
 const siteUrl = process.env.MP_URL || 'https://documentation.platformos.com';
 
-// console.log(`CI mode: ${process.env.CI}`);
-
 const options = {
   filterLevel: 0,
   honorRobotExclusions: false,
@@ -19,9 +17,7 @@ const results = { failed: [], succeeded: [] };
 const siteChecker = new blc.SiteChecker(options, {
   link: function(result, results) {
     if (result.broken) {
-      if (process.env.CI) {
-        console.log(`[BAD] ${result.url.original} @ ${result.base.resolved}`);
-      }
+      console.log(`[BAD] ${result.url.original} @ ${result.base.resolved}`);
       results.failed.push(result);
     }
 
@@ -36,7 +32,6 @@ const siteChecker = new blc.SiteChecker(options, {
       report = `Found ${results.failed.length} bad links.`;
     }
 
-    fs.writeFileSync('/tmp/test-summary.txt', report);
     process.exit(0);
   }
 });
