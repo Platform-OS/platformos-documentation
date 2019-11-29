@@ -7,24 +7,38 @@ slug: tutorials/pages/pages
 searchable: true
 ---
 
-**Pages** are the most essential components of our platform, that define content displayed at a given path. All pages have to be located in the `views/pages` directory. Each page is represented by a single file with `liquid` extension.
+**Pages** are the most essential components of our platform, that define content displayed at a given path. All pages have to be located in the `views/pages` directory. Each page is represented by a single file with `liquid` extension. 
+
+Each page is accessible on the URL indicated by its location in the codebase if not otherwise specified in the page configuration `slug` property. For example, the page `app/views/pages/get-started/hello-world.liquid` deployed to the domain `https://example.com` will be automatically accessible at `https://example.com/get-started/hello-world`. 
+
+{% include 'alert/note', content: 'In examples, we often add the `slug` property to show where the page will be accessible, even if it would not be required because it is the same as the default.' %}
 
 ## Page configuration
 
-See below a sample page configuration file, with explanations for each element:
+All page configuration is optional, but you can use page configuration to overwrite defaults. 
 
-#### views/pages/my-page.html.liquid
+See below a sample page configuration file:
+
+#### views/pages/my-page.md.liquid
 
 ```yaml
 ---
-slug: my-page
 layout_name: my_custom_layout
+converter: markdown
+searchable: true
 ---
 ```
 ```liquid
-<h1>Welcome to My Page</h1>
-<p>A paragraph explaining what I do.</p>
+# Welcome to My Page
+
+A paragraph explaining what I do.
 ```
+
+Explanation:
+
+* `layout_name: my_custom_layout`: The page uses the layout `views/layouts/my_custom_layout.liquid`.
+* `converter: markdown`: It converts markdown in the body of the page to HTML.
+* `searchable: true`: It is indexed and accessible via GraphQL query. 
 
 ## Available properties
 
@@ -41,13 +55,13 @@ layout_name: my_custom_layout
 | redirect_to            | URL to a page you want to redirect                           |                                                              |               | No       |
 | response_headers       | JSON object that you can define to override most of the http headers |                                                              |               | No       |
 | searchable             | Indication that this page should be indexed and accessed via GraphQL query | true                                                         | false         | No       |
-| slug                   | Defines the URL at which this page will be accessible. Assuming your site domain is https://example.com, you will be able to access the page at `https://example.com/[slug]` |                                                              | n/a           | Yes      |
+| slug                   | Use the `slug` property to overwrite the default  slug.   |                                                              | The default slug is automatically created based on the page's location in the codebase. For example, a page `app/views/pages/get-started/hello-world.liquid` has the default slug `get-started/hello-world`. | No      |
 
 Everything after the front matter is the body of the page.
 
 ## Homepage
 
-The Homepage slug is `/`, which will work for both https://example.com and https://example.com/. See this sample file for configuring the home page:
+The Homepage slug is `/`, which will work for both https://example.com and https://example.com/. The slug of the file `app/views/pages/home.liquid` defaults to `/`. See this sample file for configuring the home page:
 
 
 #### views/pages/home.html.liquid
