@@ -10,10 +10,17 @@ searchable: true
 
 <h4 class="release-note release-note__new">NEW</h4>
 
-* Update Page based on `physcal_file_path` instead of slug. This fixes the UX issue when pos-cli sync was enabled, modifying slug/format/method could create duplicate Page objects with the same physical file path. It also fixes the UX issue which allowed you to have multiple Pages with the same slug - now uniqueness validation error will be triggered. Last but not least - **slug became optional** - by default path to page will correspond to file path. For example `/hello/world` will display content of `app/views/pages/hello/world`, previously you had to define the slug as follows:
+* Update Page based on `physcal_file_path` instead of slug.
+
+This fixes the UX issue when `pos-cli sync` was enabled, modifying slug/format/method could create duplicated Page objects with the same physical file path.
+
+It also fixes the UX issue which allowed you to have multiple Pages with the same slug - now uniqueness validation error will be triggered.
+
+Last but not least - **slug became optional** - by default path to page will correspond to file path. For example `/hello/world` will display content of `app/views/pages/hello/world.html.liquid`, previously you had to define the slug as follows:
+
 ```yaml
 ---
-slug: /hello/world
+slug: hello/world
 ---
 ```
 ```liquid
@@ -24,9 +31,11 @@ Hello World
 
 * Profiler percentage output for [Profiling Slow Pages](/best-practices/performance/profiling-slow-pages)
 
+It is now easier to spot bottlenecks in profiler output.
+
 <h4 class="release-note release-note__fixed">FIXED</h4>
 
-Avoid race condition in *_delete_all mutations - since actual deletion takes place in the background, make sure that users created between scheduling a background task and executing it won't be deleted
+Avoid race condition in *_delete_all mutations - since actual deletion takes place in the background, make sure that users created between scheduling a background task and executing it won't be deleted.
 
 ## pos-cli changes
 
