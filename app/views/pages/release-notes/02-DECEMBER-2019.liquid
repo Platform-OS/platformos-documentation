@@ -10,7 +10,7 @@ searchable: true
 
 <h4 class="release-note release-note__new">NEW</h4>
 
-* Update Page based on `physcal_file_path` instead of slug.
+* Update Page based on `physical_file_path` instead of slug.
 
 This fixes the UX issue when `pos-cli sync` was enabled, modifying slug/format/method could create duplicated Page objects with the same physical file path.
 
@@ -18,12 +18,10 @@ It also fixes the UX issue which allowed you to have multiple Pages with the sam
 
 Last but not least - **slug became optional** - by default path to page will correspond to file path. For example `/hello/world` will display content of `app/views/pages/hello/world.html.liquid`, previously you had to define the slug as follows:
 
-```yaml
+```liquid
 ---
 slug: hello/world
 ---
-```
-```liquid
 Hello World
 ```
 
