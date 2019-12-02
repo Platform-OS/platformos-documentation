@@ -28,13 +28,39 @@ Creating the codebase with the pos-cli is a two-step process:
 
 ### Step 1: Create the directory structure
 
-To create the codebase, enter:
+`pos-cli init` downloads the directory structure in a zip file, and extracts it into the current directory. This means the best way to start is to create a directory for your projects and directory for your project inside of it.
+
+Example directory structure before `pos-cli init`:
+
+```shell
+projects
+└── my-first-app
+```
+
+To create the codebase inside current directory, enter:
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
 pos-cli init
 </code></pre>
 
-pos-cli downloads the directory structure in a zip file, and extracts it into the current directory.
+If the directory is empty, command should show a success message:
+
+```shell
+my-first-app|⇒ pos-cli init
+[11:35:06] Directory structure sucessfully created.
+```
+
+If it is not empty, it will require your confirmation by adding `--force` flag. Be aware that it will override your files if they conflict.
+
+```shell
+my-first-app|⇒ pos-cli init
+[11:36:10] Cloning failed. Reason: destination directory is not empty, aborting. Use options.force to override
+```
+
+```shell
+my-first-app|⇒ pos-cli init --force
+[11:36:43] Directory structure sucessfully created.
+```
 
 ### Step 2: Explore your directory structure
 
