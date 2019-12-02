@@ -19,42 +19,12 @@ In order to deploy and sync changes to your Instance, you will need an Instance 
 
 ## Steps
 
-Deploying and syncing changes is a three-step process:
+Deploying and syncing changes is a four-step process:
 
 <div data-autosteps></div>
 
-### Step 1: Change something in your codebase
 
-Locate the `home.html.liquid` file in your codebase (`app/views/pages/home.html.liquid`).
-
-```liquid
-{% raw %}
----
-layout_name: 1col
----
-{%- assign name = 'Home' -%}
-{%- content_for 'pagetitle' -%}{{ name }}{%- endcontent_for -%}
-<h1>{{ name }}</h1>
-{% endraw %}
-```
-
-Open it in a code editor of your choice (we recommend [Visual Studio Code](https://code.visualstudio.com/) because it's free and has many helpful extensions), and add some text. Don't edit the lines between `---`:
-
-```liquid
-{% raw %}
----
-layout_name: 1col
----
-{%- assign name = 'Home' -%}
-{%- content_for 'pagetitle' -%}{{ name }}{%- endcontent_for -%}
-<h1>{{ name }}</h1>
-Hello, World!
-{% endraw %}
-```
-
-Save your changes.
-
-### Step 2: Authenticate environments
+### Step 1: Authenticate environments
 
 {% include 'alert/note', content: 'Make sure you remember your **Partner Portal** account email and password — you will need them to authenticate your environments.' %}
 
@@ -80,15 +50,10 @@ pos-cli env add staging --email myemail@example.com --url https://example.com
 
 A message _"Environment [your Instance URL] as staging has been added successfully."_ is displayed.
 
-### Step 3: Deploy or sync changes
 
-To be able to see your changes on your site, you have to deploy those changes to your Instance.
+### Step 2: Deploy your code
 
-{% include 'alert/note', content: 'This step describes two different methods. If this is your first go, we recommend to follow the process described in the "Deploying" section.' %}
-
-#### Deploying
-
-To deploy all changes, run the `deploy` command:
+To deploy all of your code, run the `deploy` command:
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
 pos-cli deploy [environment]
@@ -100,13 +65,50 @@ Example:
 pos-cli deploy staging
 </code></pre>
 
-A progress indicator shows that the deployment is in progress, and once it finishes, a _"Deploy succeeded after <time>"_ is displayed.
+A progress indicator shows that the deployment is in progress, and once it finishes, a _"Deploy succeeded after [time]"_ is displayed.
 
 We recommend to first deploy to staging, test, and only then trigger a deployment to production. In practice, deploy creates a zip file that contains all your files, and sends it to the API. It is then processed in the background. We store each zip file, so that you can roll back in case something goes wrong.
 
 {% include 'alert/note', content: 'Learn more about our recommendations for version control and deployment on platformOS in the <a href="/how-platformos-works/platformos-workflow/development-workflow">Development Workflow</a> topic.' %}
 
-#### Syncing
+Your webpage should be now deployed to your instance. You can verify that by going to it's URL address.
+
+### Step 3: Change something in your codebase
+
+Locate the `home.html.liquid` file in your codebase (`app/views/pages/home.html.liquid`).
+
+```liquid
+{% raw %}
+---
+layout_name: 1col
+---
+
+<h1>This is home page.</h1>
+{% endraw %}
+```
+
+Open it in a code editor of your choice (we recommend [Visual Studio Code](https://code.visualstudio.com/) because it's free and has many helpful extensions), and add some text. Don't edit the lines between `---`:
+
+```liquid
+{% raw %}
+---
+layout_name: 1col
+---
+
+<h1>This is home page.</h1>
+<p>Hello, World!</p>
+{% endraw %}
+```
+
+Save your changes and deploy your code.
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+  pos-cli deploy staging
+</code></pre>
+
+After you have deployed your Instance, refresh your site in your browser. The home page has changed to include the text you added.
+
+### Step 4: Syncing your changes
 
 To immediately push changes in your codebase to the environment, run the `sync` command:
 
@@ -122,8 +124,14 @@ pos-cli sync staging
 
 Using the sync command feels like working on localhost. It is recommended to use sync only for staging environments, as pushing changes immediately to production can be dangerous. Please note, that unlike deploy, this command will not delete resources when you delete the file.
 
-<br>
-After you have deployed your Instance, refresh your site in your browser. The home page has changed to include the text you added.
+Now remove text you have added in Step 3 and look for confirmation that sync command shows.
+
+```shell
+[16:14:35] Synchronizing changes to: https://example.com/
+[16:14:46] [Sync] Synced: views/pages/home.html.liquid
+```
+
+After seeing this confirmation, refresh your site in your browser.
 
 ## Next steps
 
