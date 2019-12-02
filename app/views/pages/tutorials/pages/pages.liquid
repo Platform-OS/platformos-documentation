@@ -7,15 +7,15 @@ slug: tutorials/pages/pages
 searchable: true
 ---
 
-**Pages** are the most essential components of our platform, that define content displayed at a given path. All pages have to be located in the `views/pages` directory. Each page is represented by a single file with `liquid` extension. 
+**Pages** are the most essential components of our platform, that define content displayed at a given path. All pages have to be located in the `views/pages` directory. Each page is represented by a single file with `liquid` extension.
 
-Each page is accessible on the URL indicated by its location in the codebase if not otherwise specified in the page configuration `slug` property. For example, the page `app/views/pages/get-started/hello-world.liquid` deployed to the domain `https://example.com` will be automatically accessible at `https://example.com/get-started/hello-world`. 
+Each page is accessible on the URL indicated by its location in the codebase if not otherwise specified in the page configuration `slug` property. For example, the page `app/views/pages/get-started/hello-world.liquid` deployed to the domain `https://example.com` will be automatically accessible at `https://example.com/get-started/hello-world`.
 
 {% include 'alert/note', content: 'In examples, we often add the `slug` property to show where the page will be accessible, even if it would not be required because it is the same as the default.' %}
 
 ## Page configuration
 
-All page configuration is optional, but you can use page configuration to overwrite defaults. 
+All page configuration is optional, but you can use page configuration to overwrite defaults.
 
 See below a sample page configuration file:
 
@@ -38,7 +38,7 @@ Explanation:
 
 * `layout_name: my_custom_layout`: The page uses the layout `views/layouts/my_custom_layout.liquid`.
 * `converter: markdown`: It converts markdown in the body of the page to HTML.
-* `searchable: true`: It is indexed and accessible via GraphQL query. 
+* `searchable: true`: It is indexed and accessible via GraphQL query.
 
 ## Available properties
 
@@ -103,44 +103,27 @@ For example, you can have both `html`, `pdf` and `txt` version of a page with `H
 
 #### views/pages/hello.html.liquid
 
-```yaml
----
-slug: hello
----
-```
+Will be accessible under URL: `https://example.com/hello`
+
 ```liquid
 Hello world
 ```
 
 #### views/pages/hello.pdf.liquid
 
-```yaml
----
-slug: hello
----
-```
+Will be accessible under URL: `https://example.com/hello.pdf`
+
 ```liquid
 Hello world
 ```
-
 
 #### views/pages/hello.txt.liquid
 
-```yaml
----
-slug: hello
----
-```
+Will be accessible under URL: `https://example.com/hello.txt`
+
 ```liquid
 Hello world
 ```
-
-
-Those will be accessible under the URLs:
-
-* `https://example.com/hello`
-* `https://example.com/hello.pdf`
-* `https://example.com/hello.txt`
 
 Note that the `html` format is implicit, default, you don't need to specify it in the URL.
 
