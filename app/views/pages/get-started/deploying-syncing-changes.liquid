@@ -28,7 +28,7 @@ Deploying and syncing changes is a four-step process:
 
 {% include 'alert/note', content: 'Make sure you remember your **Partner Portal** account email and password — you will need them to authenticate your environments.' %}
 
-Now, you have to specify which Instance will be which environment. For example, you set up one Instance for staging, and another one for production. This information is stored in a config file.
+First, you have to specify which Instance will be which environment. For example, you set up one Instance for staging, and another one for production. This information is stored in a config file.
 
 Regardless of what your Instance is called, after you specify it as `staging`, you can refer to it as `staging` in all commands where applicable, and you won't have to use the Instance name or the URL of the Instance again.
 
@@ -50,7 +50,6 @@ pos-cli env add staging --email myemail@example.com --url https://example.com
 
 A message _"Environment [your Instance URL] as staging has been added successfully."_ is displayed.
 
-
 ### Step 2: Deploy your code
 
 To deploy all of your code, run the `deploy` command:
@@ -71,7 +70,7 @@ We recommend to first deploy to staging, test, and only then trigger a deploymen
 
 {% include 'alert/note', content: 'Learn more about our recommendations for version control and deployment on platformOS in the <a href="/how-platformos-works/platformos-workflow/development-workflow">Development Workflow</a> topic.' %}
 
-Your webpage should be now deployed to your instance. You can verify that by going to it's URL address.
+Your website should be now deployed to your Instance. You can verify that in your browser by going to its URL.
 
 ### Step 3: Change something in your codebase
 
@@ -108,7 +107,7 @@ Save your changes and deploy your code.
 
 After you have deployed your Instance, refresh your site in your browser. The home page has changed to include the text you added.
 
-### Step 4: Syncing your changes
+### Step 4: Sync your changes
 
 To immediately push changes in your codebase to the environment, run the `sync` command:
 
@@ -124,14 +123,14 @@ pos-cli sync staging
 
 Using the sync command feels like working on localhost. It is recommended to use sync only for staging environments, as pushing changes immediately to production can be dangerous. Please note, that unlike deploy, this command will not delete resources when you delete the file.
 
-Now remove text you have added in Step 3 and look for confirmation that sync command shows.
+Now, remove the text you added in Step 3, and look for the confirmation that the sync command shows.
 
 ```shell
 [16:14:35] Synchronizing changes to: https://example.com/
 [16:14:46] [Sync] Synced: views/pages/home.html.liquid
 ```
 
-After seeing this confirmation, refresh your site in your browser.
+After seeing this confirmation, refresh your site in your browser. The text has been removed. 
 
 ## Next steps
 
