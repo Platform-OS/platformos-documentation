@@ -1,0 +1,32 @@
+---
+converter: markdown
+metadata:
+  title: filtering related models/users, new liquid tag - print, improvements, fixes
+  description: December 09, 2019
+  contributors: false
+slug: release-notes/09-DECEMBER-2019
+searchable: true
+---
+
+<h4 class="release-note release-note__new">NEW</h4>
+
+* add possibility to `users`, `models` GraphQL queries to [filter related_models and related_users](/api-reference/graphql/inputs#relatedmodelsfilterinput)
+* new Liquid tag [print](/api-reference/liquid/platformos-tags#print), which bypasses built-in sanitization
+
+<h4 class="release-note release-note__improved">IMPROVED</h4>
+
+* [context variable](/tutorials/variables/context-variable) is now available inside [migrations](/tutorials/migrations/migrating-data)
+* requests made to pOS private api [for example to `/api/graph`] won't be redirected if made against different domain than default
+* GraphQL mutations *_delete_all mark objects as deleted sync instead of async
+* [attachment_presign_url](/api-reference/graphql/mutations#attachment_presign_url) url to direct s3 upload attachments with possibility for example to specify whether it is private or public
+* error message for GraphQL syntax error would clearly state it is GraphQL error
+
+
+<h4 class="release-note release-note__fixed">FIXED</h4>
+
+* importing user_profiles using [data import](/tutorials/data-import-export/import) and fix edge case issue related to importig array property
+* nesting graph queries inside `pages` directory causing 500 error
+
+## pos-cli changes
+
+`pos-cli` changelog is [kept separately](https://github.com/mdyd-dev/pos-cli/blob/master/CHANGELOG.md).
