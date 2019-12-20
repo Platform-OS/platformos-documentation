@@ -1,0 +1,80 @@
+---
+converter: markdown
+metadata:
+  title: Fragment Lazy Loading
+  description: In this article, we share frontend technique that can be used to ad-hoc mitigate performance issue until resolved permanently.
+slug: best-practices/performance/fragment-lazy-loading
+searchable: true
+---
+
+## Problem
+
+Doing time consuming operations on the server before page is started to be delivered to the browser means User Experience (UX) will suffer. It means user is starring at blank page until at least html+css has been downloaded, parsed and rendered. Downloading is delayed by those time consuming operations (heavy rendering, slow database queries). This is bad experience and in extreme cases it can timeout on the server or user could just give up on waiting.
+
+## Disclaimer
+
+Just because there are ways to mitigate this, doesn't mean you should not fix root cause of those slowdowns. This usually means you are doing something wrong and making ad-hoc lazy loading fix shouldn't be the only thing you do, but it can give you a room to breath until you find a way to fix it permanently. Meanwhile users suffer much less from this issue, server is still getting swamped.
+
+I simulated slow code by using for loop and some randomization.
+
+[Slow code implementation](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/fragment_lazy_load/public/views/partials/slow-code.liquid)
+
+## Problem: example + source code
+
+Plain and simple, everything is rendered in one run, slow code is included directly via include.
+
+<img src="{{ 'images/best-practices/performance/fragment-lazy-loading/slow-timeline.png' | asset_url }}" alt="Slow implementation timeline">
+
+Long wait, big initial html
+
+[See source code](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/fragment_lazy_load/public/views/pages/normal.liquid) - [See live example](https://examples.platform-os.com/fragment-lazy-load) - [See pagespeed report](https://developers.google.com/speed/pagespeed/insights/?url=https%3A%2F%2Fexamples.platform-os.com%2Ffragment-lazy-load&tab=desktop)
+
+## Solution
+
+Proposed solution is to asynchronously load fragments of the page using AJAX. It will defer slow code execution in time and not block the main thread.
+
+### Variant 1 - lazy load: example + source code
+
+JS code is inlined directly after div container, so XHR request will start as soon as this element is parsed by the browser.
+
+For visual pleasure I've added "spinner" to inform user that something is going to show up there.
+
+<img src="{{ 'images/best-practices/performance/fragment-lazy-loading/lazy-inline-timeline.png' | asset_url }}" alt="Lazy load inline timeline">
+
+File starts to download much faster and is much smaller, so renders sooner.
+
+[Source code](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/fragment_lazy_load/public/views/pages/lazy-inline.liquid) - [Live example](https://examples.platform-os.com/fragment-lazy-load/lazy-inline) - [Pagespeed report](https://developers.google.com/speed/pagespeed/insights/?url=https%3A%2F%2Fexamples.platform-os.com%2Ffragment-lazy-load%2Finline-lazy&tab=desktop)
+
+### Variant 2: lazy load external: example + source code
+
+Very similar to solution 1, but this time javascript is in external js file that is loaded using `async` attribute and is placed in html after all the remote containers. URL to the downloaded content is in data attribute of its container. This way code is easily reusable.
+
+<img src="{{ 'images/best-practices/performance/fragment-lazy-loading/lazy-external-timeline.png' | asset_url }}" alt="Lazy load external timeline">
+
+Same situation, snappy rendering and small file
+
+[Source code](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/fragment_lazy_load/public/views/pages/lazy-external.liquid) - [Live example](https://examples.platform-os.com/fragment-lazy-load/lazy-external) - [Pagespeed report](https://developers.google.com/speed/pagespeed/insights/?url=https%3A%2F%2Fexamples.platform-os.com%2Ffragment-lazy-load%2Flazy-external&tab=desktop)
+
+## Additional advantages
+
+Asynchronous nature of AJAX requests mean that as soon as the given request is finished, it will insert its result to a page in a given place. This also means that if you have error in one of your modules, only this particular piece of page will break, not the whole page.
+
+Because you had to split page into smaller chunks, you can now implement cache more precisely. One fragment you can expire after one hour, one after one day and one not cache at all. This is very useful when you did a split on big GQL query that now can be reasoned very much on a "feature" basis.
+
+When looking at PageSpeed reports look at film strip - this is the most important effect for the user. He needs to see that something is happening as soon as possible and ideally less important things are downloaded later or never (lazy loading with scroll observer is often used for images for example).
+
+<img src="{{ 'images/best-practices/performance/fragment-lazy-loading/slow-filmstrip.png' | asset_url }}" alt="Slow implementation filmstrip">
+
+Slow version - user sees nothing for a long time, then everything appears
+
+<img src="{{ 'images/best-practices/performance/fragment-lazy-loading/lazy-loading-filmstrip.png' | asset_url }}" alt="Lazy loading filmstrip">
+
+Lazy loading - renders the page, and shows loading indicators for asynchronous modules
+
+## Notes
+
+Adding caching mechanisms to this technique might give you even better results. Try adding ServiceWorker or server-side caching.
+
+If you load remote content with interactivity, you would need to initialize it after its been loaded, but ill leave it up to you to discover how as it can be done in a lot of ways - i prefer custom events.
+
+Developers tend to forget about the root cause of the performance issues because perceived performance for users is so good after this simple optimization. I hope you will not do that and you will strive for faster server responses and quicker load times with user experience in mind.
