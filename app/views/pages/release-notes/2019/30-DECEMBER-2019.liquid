@@ -1,0 +1,29 @@
+---
+converter: markdown
+metadata:
+  title: Respect Content-Type header when rendering page, GraphQL improvements
+  description: December 30, 2019
+  contributors: false
+  skip_contribute_button: true
+slug: release-notes/30-DECEMBER-2019
+searchable: true
+---
+
+<h4 class="release-note release-note__new">NEW</h4>
+
+* use Content-Type header to determine the [Page format](/tutorials/pages/pages#formats)
+
+Previously it was required to explicitly provide format in url to access Page with different format than `html`, for example `app/views/pages/hello.json.liquid` was accessible via `https://example.com//hello.json`, even if request was made with `Content-Type: application/json` header. Now in such scenario we will try to load Page with format `json` first, and if it's not available - fallback to `html` for backwards compatibility.
+
+<h4 class="release-note release-note__improved">IMPROVED</h4>
+
+* error messages for various GraphQL errors related to invalid DB queries
+* the [graphql tag](/api-reference/liquid/platformos-tags#graphql) can now be closed using `{% raw %}{%- endgraphql -%}{% endraw %}` tag (with dashes) - previously it was causing a liquid error.
+
+<h4 class="release-note release-note__improved">FIXED</h4>
+
+* edge case scenarios related to using `sort` in GraphQL queries when `related_models` / `related_users` was used
+
+## pos-cli changes
+
+`pos-cli` changelog is [kept separately](https://github.com/mdyd-dev/pos-cli/blob/master/CHANGELOG.md).
