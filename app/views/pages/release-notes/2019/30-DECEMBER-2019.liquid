@@ -13,12 +13,12 @@ searchable: true
 
 * use Content-Type header to determine the [Page format](/tutorials/pages/pages#formats)
 
-Previously it was required to explicitly provide format in url to access Page with different format than `html`, for example `app/views/pages/hello.json.liquid` was accessible via `https://example.com//hello.json`, even if request was made with `Content-Type: application/json` header. Now in such scenario we will try to load Page with format `json` first, and if it's not available - fallback to `html` for backwards compatibility.
+Previously, it was required to explicitly provide the format in the URL to access a page with a different format than `html`, for example, `app/views/pages/hello.json.liquid` was accessible via `https://example.com/hello.json`, even if you made the request using the `Content-Type: application/json` header. Now, in such a scenario, we will try to load the page with the format `json` first, and if it's not available, we fall back to `html` for backwards compatibility.
 
 <h4 class="release-note release-note__improved">IMPROVED</h4>
 
 * error messages for various GraphQL errors related to invalid DB queries
-* the [graphql tag](/api-reference/liquid/platformos-tags#graphql) can now be closed using `{% raw %}{%- endgraphql -%}{% endraw %}` tag (with dashes) - previously it was causing a liquid error.
+* the [graphql tag](/api-reference/liquid/platformos-tags#graphql) can now be closed using the `{% raw %}{%- endgraphql -%}{% endraw %}` tag (with dashes). Previously, it was causing a Liquid error.
 
 <h4 class="release-note release-note__fixed">FIXED</h4>
 
