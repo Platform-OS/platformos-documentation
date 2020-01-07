@@ -11,9 +11,9 @@ searchable: true
 
 Doing time consuming operations on the server before a page starts to be delivered to the browser means User Experience (UX) will suffer. It means that the user is staring at a blank page until at least the HTML and CSS has been downloaded, parsed and rendered. Download is delayed by these time consuming operations (heavy rendering, slow database queries). This makes for a bad experience and in extreme cases it can timeout on the server or the user could just give up on waiting.
 
-{% include 'alert/note', content: 'Just because there are ways to mitigate this, it doesn't mean you should not fix the root cause of slowdowns. This usually means that you are doing something wrong and fixing lazy loading ad-hoc shouldn't be the only fix you do. Still, it can give you a room to breathe until you find a way to fix it permanently. Although users suffer less from this issue, the server is still getting swamped. Make sure not to forget about the root cause of the performance issues because perceived performance for users is so good after this simple optimization. Strive for faster server responses and quicker load times with user experience in mind.' %}
+{% include "alert/note", content: "Just because there are ways to mitigate this, it doesn't mean you should not fix the root cause of slowdowns. This usually means that you are doing something wrong and fixing lazy loading ad-hoc shouldn't be the only fix you do. Still, it can give you a room to breathe until you find a way to fix it permanently. Although users suffer less from this issue, the server is still getting swamped. Make sure not to forget about the root cause of the performance issues because perceived performance for users is so good after this simple optimization. Strive for faster server responses and quicker load times with user experience in mind." %}
 
-See a simulated slow code using a for loop and some randomization:[Slow code implementation](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/fragment_lazy_load/public/views/partials/slow-code.liquid)
+See a simulated slow code using a for loop and some randomization: [Slow code implementation](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/fragment_lazy_load/public/views/partials/slow-code.liquid)
 
 ## Problem: example + source code
 
@@ -21,7 +21,7 @@ Plain and simple, everything is rendered in one run, slow code is included direc
 
 <img src="{{ 'images/best-practices/performance/fragment-lazy-loading/slow-timeline.png' | asset_url }}" alt="Slow implementation timeline">
 
-Long wait, big initial HTML 
+_Long wait, big initial HTML_ 
 
 - [See source code](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/fragment_lazy_load/public/views/pages/normal.liquid) 
 - [See live example](https://examples.platform-os.com/fragment-lazy-load) 
@@ -39,7 +39,7 @@ We've added a "spinner" to inform the user that something is going to show up th
 
 <img src="{{ 'images/best-practices/performance/fragment-lazy-loading/lazy-inline-timeline.png' | asset_url }}" alt="Lazy load inline timeline">
 
-File starts to download much faster and is much smaller, so it renders sooner.
+_The file starts to download much faster and is much smaller, so it renders sooner._
 
 - [Source code](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/fragment_lazy_load/public/views/pages/lazy-inline.liquid) 
 - [Live example](https://examples.platform-os.com/fragment-lazy-load/lazy-inline) 
@@ -51,7 +51,7 @@ Very similar to solution 1, but this time the JavaScript is in an external js fi
 
 <img src="{{ 'images/best-practices/performance/fragment-lazy-loading/lazy-external-timeline.png' | asset_url }}" alt="Lazy load external timeline">
 
-Same situation, snappy rendering and small file
+_Same situation, snappy rendering and small file_
 
 - [Source code](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/fragment_lazy_load/public/views/pages/lazy-external.liquid) 
 - [Live example](https://examples.platform-os.com/fragment-lazy-load/lazy-external) 
@@ -67,11 +67,11 @@ When looking at PageSpeed reports look at the film strip - this is the most impo
 
 <img src="{{ 'images/best-practices/performance/fragment-lazy-loading/slow-filmstrip.png' | asset_url }}" alt="Slow implementation filmstrip">
 
-Slow version - user sees nothing for a long time, then everything appears
+_Slow version: user sees nothing for a long time, then everything appears_
 
 <img src="{{ 'images/best-practices/performance/fragment-lazy-loading/lazy-loading-filmstrip.png' | asset_url }}" alt="Lazy loading filmstrip">
 
-Lazy loading - renders the page, and shows loading indicators for asynchronous modules
+_Lazy loading: renders the page, and shows loading indicators for asynchronous modules_
 
 ## Notes
 
