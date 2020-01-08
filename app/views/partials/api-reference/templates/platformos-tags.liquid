@@ -19,7 +19,7 @@
         {% for t in p.types %}
           {{ t | escape }}
         {% endfor %}
-        {% if p.description.size > 1 %} - {{ p.description | escape }}{% endif %}
+        {% if p.description.size > 1 %} - {{ p.description | escape | nl2br }}{% endif %}
       </li>
     {% endfor %}
     </ul>
