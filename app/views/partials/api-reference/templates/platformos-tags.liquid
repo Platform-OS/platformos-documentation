@@ -12,17 +12,28 @@
 
   {% if params.size > 0 %}
     <h4>Params</h4>
-    <ul>
-    {% for p in params %}
-      <li>
-        {{ p.name | escape }} -
-        {% for t in p.types %}
-          {{ t | escape }}
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in params %}
+          <tr>
+            <td>{{ p.name | escape }}</td>
+            <td>
+              {% for t in p.types %}
+                {{ t | escape }}
+              {% endfor %}
+            </td>
+            <td>{% if p.description.size > 1 %}{{ p.description | escape | nl2br }}{% endif %}</td>
+          </tr>
         {% endfor %}
-        {% if p.description.size > 1 %} - {{ p.description | escape | nl2br }}{% endif %}
-      </li>
-    {% endfor %}
-    </ul>
+      </tbody>
+    </table>
   {% endif %}
 
   {% if examples.size > 0 %}
