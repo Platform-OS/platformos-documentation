@@ -1,0 +1,24 @@
+---
+converter: markdown
+metadata:
+  title: Error handling and GraphQL fixes
+  description: January 13, 2020
+  contributors: false
+  skip_contribute_button: true
+slug: release-notes/13-JANUARY-2020
+searchable: true
+---
+
+#### {{ page.metadata.description }}
+
+<h4 class="release-note release-note__improved">IMPROVED</h4>
+
+* show a warning in `pos-cli logs` when adding/updating a profile via GraphQL/form which does not exist
+* error handling of BadRequest, for example, when invalid JSON is provided as parameters to Page
+* data export will include user level properties as well
+
+<h4 class="release-note release-note__fixed">FIXED</h4>
+
+* assigning properties to user profiles in some scenarios
+* sorting by `updated_at` in some admin_* queries
+* [jwt_decode_and_set_session](/api-reference/graphql/mutations#jwt_decode_and_set_session) mutation will correctly set `context.current_user`
