@@ -79,6 +79,8 @@ properties:
 
 To upload a file to AWS S3 directly, you will need some server-generated data, called signature. This information is from GraphQL. It takes `model_schema_name` and `property_name` as arguments so it can forward `image_versions` from the model.
 
+In this case we are limiting file size on the storage side to 2MB using `content_length`.
+
 ##### modules/direct_s3_upload/public/views/pages/images.liquid
 
 {% raw %}
@@ -91,7 +93,7 @@ slug: direct-s3-upload/images
 mutation presign {
   image_presign_url(
     options: {
-      content_length: { gte: 0, lte: 2048 }
+      content_length: { gte: 0, lte: 2048 }   # minimum and maximum file size in KiB
       model_property: {
         model_schema_name: "modules/direct_s3_upload/uppy"
         property_name: "photo"
@@ -169,7 +171,7 @@ const _log = document.querySelector('[data-s3-uppy="log"]');
 const uppy = Uppy.Core({
   autoProceed: true,
   restrictions: {
-    maxFileSize: 2097152,
+    maxFileSize: 2097152,  // Limit size to 2 MB on the javascript side
     maxNumberOfFiles: 3,
     allowedFileTypes: ['image/png', 'image/jpeg', 'image/webp']
   }
