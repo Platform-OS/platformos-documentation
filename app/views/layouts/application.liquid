@@ -6,25 +6,25 @@
   {%- include 'layouts/head/head' -%}
 </head>
 <body>
-	<div class="wrapper">
+  <div class="wrapper">
     {% include 'layouts/header' %}
 
-		<div class="main main--mt">
+    <div class="main main--mt">
       <div class="section-search">
-				<div class="container">
-					<div class="form-search form-search--alt">
-						<form action="/search" method="get">
-							<div class="form__controls">
-								<input type="text" name="query" class="form-control" placeholder="Search documentation…" value="{{ context.params.query | escape_javascript }}" />
+        <div class="container">
+          <div class="form-search form-search--alt">
+            <form action="/search" method="get">
+              <div class="form__controls">
+                <input type="text" name="query" class="form-control" placeholder="Search documentation…" value="{{ context.params.query | default: '' | escape_javascript }}" />
 
-								<button class="form-btn">
-                                  <svg width="24" height="24"><use xlink:href="#search"></use></svg>
-								</button>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
+                <button class="form-btn">
+                  <svg width="24" height="24"><use xlink:href="#search"></use></svg>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
 
       <div class="container">
         <div class="row">
@@ -36,7 +36,7 @@
     {% include 'layouts/content/callout' %}
 
     {% include 'layouts/footer' %}
-	</div>
+  </div>
   {%- include 'layouts/body/icons' -%}
 
   {% include 'layouts/body/javascripts_bottom' %}
