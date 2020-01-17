@@ -99,13 +99,14 @@ pipeline {
       environment {
         MP_URL = "${staging_url}"
         DOWNLOAD_DELAY = 1.0
+        LOG_LEVEL = 'INFO'
       }
 
       agent { docker { image "platformos/scrapy" } }
 
       steps {
         sh 'scrapy runspider scripts/scrape-docs.py -o docs.json'
-        sh 'echo docs.json | jq "{models: .}" > docs-index.json'
+        sh 'cat docs.json | jq "{models: .}" > docs-index.json'
       }
     }
 
