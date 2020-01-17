@@ -107,6 +107,7 @@ pipeline {
       steps {
         sh 'rm docs.json || echo docs-json-not-found'
         sh 'scrapy runspider scripts/scrape-docs.py -o docs.json'
+        sh 'env'
         sh 'cat docs.json | jq "{models: .}" > docs-index.json'
       }
     }
