@@ -1,9 +1,9 @@
 ---
 converter: markdown
 metadata:
-  title: Signing In a User With JWT token
+  title: Authenticate a User With JWT token
   description: This guide will help authenticate json requests with JWT token
-slug: tutorials/users/signing-in-user-with-jwt-token
+slug: tutorials/users/authenticate-user-with-jwt-token
 searchable: true
 ---
 
@@ -24,36 +24,73 @@ Signing in a api request requires three steps.
 <div data-autosteps></div>
 
 ### Step 1: Fetch JWT token for a user.
+It can be done after user login, token usually should be strored in a browser memory.
 
 #### app/graphql/user_jwt_token.graphql
 
 ```graphql
-```
-
-### Step 2: Create page with policy that checks JWT token
-
-#### app/views/pages/api/stats.json.liquid
-
-```liquid
-{% raw %}
----
-slug: api/stats
----
 {
-  "user_id": {{ context.current_user.id }},
-  "cart_items": 10,
-  "watched_items": 5,
-  "unread_messages": 33
+  current_user{
+    jwt_token
+  }
+}
+```
+{% include 'alert/note', content: ' Every time you fetch `jwt_token` old token become inactive' %}
+
+### Step 2: Create page with policy that checks JWT token.
+
+Authorization policy fetch JWT token from request header and sets current user using this token.
+
+
+#### app/graphql/jwt_login
+```graphql
+mutation jwt_login($token: String!) {
+  jwt_decode_and_set_session(jwt_token: $token) {
+    email
+    first_name
+    last_name
+    jwt_token
+    id
+  }
 }
 ```
 
-{% include 'alert/note', content: 'To set an expiration for user sessions, use the `"timeout_in_minutes":  0,` attribute in the Instance configuration settings JSON as described in the <a href="/tutorials/partner-portal/instances/updating-instance-configuration">Updating Instance Configuration</a> tutorial. If you set the attribute to 15, for example, all users will get logged out automatically after 15 minutes of inactivity.' %}
+#### app/authorization_policies/api_set_current_user.liquid
+```liquid
+{% raw %}
+---
+name: api_set_current_user
+---
+{% if context.headers.HTTP_AUTHORIZATION %}
+  {%- assign token = context.headers.HTTP_AUTHORIZATION | remove: "Bearer " -%}
+  {%- graphql g = 'jwt_login', token: token -%}
+  {% if g.jwt_decode_and_set_session %}
+    {%- assign current_user = g.jwt_decode_and_set_session %}
+    true
+  {% else %}
+    {% log g %}
+    false
+  {% endif %}
+{% endif %}
+{% endraw %}
+```
+
+#### app/views/pages/api/orders.json.liquid
+
+```liquid
+---
+slug: api/orders
+layout_name: ''
+authorization_policies:
+- modules/signup/api_set_current_user
+---
+{ "orders": [{ "id": "1" }] }
+```
 
 ### Step 3: Send signed request
 
-
-
-## Next steps
-Congratulations! You created a sign in page for users to sign in manually. Now you can learn about signing in a user automatically after sign up:
-
-* [Signing In a User Automatically after Sign Up](/tutorials/users/signing-in-user-automatically-after-sign-up)
+```bash
+curl -i -H "Content-Type: application/json" \
+  -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxNTg2MTB9.i23YVYeckeoNeYmO3UKpvWfAWek96YUx8S7k5VKrIcM" \
+  -XPOST https://example.staging.oregon.platform-os.com/api/orders.json
+```
