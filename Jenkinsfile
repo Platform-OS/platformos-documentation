@@ -105,6 +105,7 @@ pipeline {
       agent { docker { image "platformos/scrapy" } }
 
       steps {
+        sh 'rm docs.json || echo docs-json-not-found'
         sh 'scrapy runspider scripts/scrape-docs.py -o docs.json'
         sh 'cat docs.json | jq "{models: .}" > docs-index.json'
       }
@@ -118,6 +119,7 @@ pipeline {
 
       environment {
         MP_URL = "${staging_url}"
+        MPKIT_URL = "${staging_url}"
       }
 
       agent { docker { image 'platformos/pos-cli' } }
