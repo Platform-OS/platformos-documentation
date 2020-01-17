@@ -90,6 +90,43 @@ pipeline {
       post { failure { archiveArtifacts "screenshots/" } }
     }
 
+    stage('IndexDocsStg') {
+      when {
+        expression { return params.MP_URL.isEmpty() }
+        branch 'index-dox'
+      }
+
+      environment {
+        MP_URL = "${staging_url}"
+        DOWNLOAD_DELAY = 1.0
+      }
+
+      agent { docker { image "platformos/scrapy" } }
+
+      steps {
+        sh 'scrapy runspider scripts/scrape-docs.py -o docs.json'
+        sh 'echo docs.json | jq "{models: .}" > docs-index.json'
+      }
+    }
+
+    stage('ImportDocsIndexStaging') {
+      when {
+        expression { return params.MP_URL.isEmpty() }
+        branch 'index-dox'
+      }
+
+      environment {
+        MP_URL = "${staging_url}"
+      }
+
+      agent { docker { image 'platformos/pos-cli' } }
+
+      steps {
+        sh 'pos-cli data import -p docs-index.json'
+      }
+    }
+
+
     stage('Deploy production') {
       when {
         expression { return params.MP_URL.isEmpty() }

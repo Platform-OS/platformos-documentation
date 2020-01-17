@@ -1,16 +1,18 @@
 query search($query: String, $per_page: Int = 20, $page: Int = 1) {
-  admin_pages(
+
+  admin_pages: customizations(
     per_page: $per_page
     page: $page
-    filter: { searchable: { value: true }, content: { contains: $query } }
-  ) {
+    query: {
+      keyword: $query
+    }
+  ){
     total_entries
     total_pages
     results {
-      id
-      slug
-      # content
-      metadata
+      slug: property(name: "slug")
+      title: property(name: "title")
+      description: property(name: "description")
     }
   }
 }
