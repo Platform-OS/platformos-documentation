@@ -89,8 +89,20 @@ authorization_policies:
 
 ### Step 3: Send signed request
 
+#### curl
 ```bash
 curl -i -H "Content-Type: application/json" \
   -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxNTg2MTB9.i23YVYeckeoNeYmO3UKpvWfAWek96YUx8S7k5VKrIcM" \
   -XPOST https://example.staging.oregon.platform-os.com/api/orders.json
+```
+
+#### js fetch
+```js
+fetch("https://example.staging.oregon.platform-os.com/api/orders.json", {
+  headers: {
+    Authorization: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxNTg2MTB9.i23YVYeckeoNeYmO3UKpvWfAWek96YUx8S7k5VKrIcM",
+    "Content-Type": "application/json"
+  },
+  method: "POST"
+})
 ```
