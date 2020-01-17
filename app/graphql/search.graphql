@@ -3,8 +3,14 @@ query search($query: String, $per_page: Int = 20, $page: Int = 1) {
   admin_pages: customizations(
     per_page: $per_page
     page: $page
+    name: "document"
     query: {
       keyword: $query
+      fields: [
+        { name: "properties.title" priority: 10 }
+        { name: "properties.description" priority: 3 }
+        { name: "properties.body" priority: 1 }
+      ]
     }
   ){
     total_entries
