@@ -12,3 +12,5 @@ import './js/feedback';
 if ($q('code[class*="language-"]')) {
   import(/* webpackChunkName: "syntaxHighlighting" */ './js/syntaxHighlighting');
 }
+
+import(/* webpackChunkName: "search" */ './js/search');
