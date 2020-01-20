@@ -283,7 +283,7 @@ By default when you delete a record what actually happens is this: we set the va
 That is why we have `deleted_at: { exists: false }` filter available in some GraphQL queries. This is called soft delete.
 We do that because some workflows need this for safety reasons. For example it's possible to restore records removed by accident.
 We have a 30 day retention period for soft deleted records. That means that after 30 days from `delete_at` timestamp those records will be removed and they will no longer be available for restoration.
-That also means we will not charge you after 30 days for storing those records. If your workflow requires longer retention you should be prepared to offload those records by for example exporting instance
+That also means we will not charge you after 30 days for storing those records. If your workflow requires longer retention you should be prepared to backup those records by for example exporting instance
 data and keeping it somewhere safe.
 
 #### views/partials/delete.liquid
