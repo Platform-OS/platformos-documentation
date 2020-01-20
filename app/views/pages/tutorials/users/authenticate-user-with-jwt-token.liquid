@@ -1,0 +1,108 @@
+---
+converter: markdown
+metadata:
+  title: Authenticate a User With JWT token
+  description: This guide will help authenticate json requests with JWT token
+slug: tutorials/users/authenticate-user-with-jwt-token
+searchable: true
+---
+
+This guide will help you authenticate json requests with JWT token.
+
+## Requirements
+
+To follow the steps in this tutorial, you should be familiar with the concept of pages, users and authoriation policy.
+
+* [Pages](/tutorials/pages/pages)
+* [Users](/tutorials/users/users)
+* [Authorization Policy](/tutorials/authorization-policy/authorization-policy)
+
+## Steps
+
+Signing in a api request requires three steps.
+
+<div data-autosteps></div>
+
+### Step 1: Fetch JWT token for a user.
+It can be done after user login, token usually should be strored in a browser memory.
+
+#### app/graphql/user_jwt_token.graphql
+
+```graphql
+{
+  current_user{
+    jwt_token
+  }
+}
+```
+{% include 'alert/note', content: ' Every time you fetch `jwt_token` old token become inactive' %}
+
+### Step 2: Create page with policy that checks JWT token.
+
+Authorization policy fetch JWT token from request header and sets current user using this token.
+
+
+#### app/graphql/jwt_login
+```graphql
+mutation jwt_login($token: String!) {
+  jwt_decode_and_set_session(jwt_token: $token) {
+    email
+    first_name
+    last_name
+    jwt_token
+    id
+  }
+}
+```
+
+#### app/authorization_policies/api_set_current_user.liquid
+```liquid
+{% raw %}
+---
+name: api_set_current_user
+---
+{% if context.headers.HTTP_AUTHORIZATION %}
+  {%- assign token = context.headers.HTTP_AUTHORIZATION | remove: "Bearer " -%}
+  {%- graphql g = 'jwt_login', token: token -%}
+  {% if g.jwt_decode_and_set_session %}
+    {%- assign current_user = g.jwt_decode_and_set_session %}
+    true
+  {% else %}
+    {% log g %}
+    false
+  {% endif %}
+{% endif %}
+{% endraw %}
+```
+
+#### app/views/pages/api/orders.json.liquid
+
+```liquid
+---
+slug: api/orders
+layout_name: ''
+authorization_policies:
+- api_set_current_user
+---
+{ "orders": [{ "id": "1" }] }
+```
+
+### Step 3: Send signed request
+
+#### curl
+```bash
+curl -i -H "Content-Type: application/json" \
+  -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxNTg2MTB9.i23YVYeckeoNeYmO3UKpvWfAWek96YUx8S7k5VKrIcM" \
+  -XPOST https://example.staging.oregon.platform-os.com/api/orders.json
+```
+
+#### js fetch
+```js
+fetch("https://example.staging.oregon.platform-os.com/api/orders.json", {
+  headers: {
+    Authorization: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxNTg2MTB9.i23YVYeckeoNeYmO3UKpvWfAWek96YUx8S7k5VKrIcM",
+    "Content-Type": "application/json"
+  },
+  method: "POST"
+})
+```
