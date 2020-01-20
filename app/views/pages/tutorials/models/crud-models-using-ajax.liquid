@@ -279,9 +279,14 @@ The delete operation also needs `method` and `id` because underneath it all, it 
 
 #### A note on soft and hard delete
 
-By default when you delete a record what actually happens is this: we set the value for `deleted_at` timestamp and we don't show this record in results unless you search for it explicitly.
-That is why we have `deleted_at: { exists: false }` filter available in some GraphQL queries. This is called soft delete.
+##### Soft delete
+
+By default when you delete a record what actually happens is this: we set the value for `deleted_at` timestamp. Queries either show those records by default or don't `deleted_at: { exists: false }` filter available
+in some GraphQL queries allows applicaiton developers to choose explicitly if results should include records with `deleted_at` set.
 We do that because some workflows need this for safety reasons. For example it's possible to restore records removed by accident.
+
+##### Hard delete
+
 We have a 30 day retention period for soft deleted records. That means that after 30 days from `delete_at` timestamp those records will be removed and they will no longer be available for restoration.
 That also means we will not charge you after 30 days for storing those records. If your workflow requires longer retention you should be prepared to backup those records by for example exporting instance
 data (using [`pos-cli export`](/tutorials/data-import-export/export) command) and keeping it somewhere safe.
