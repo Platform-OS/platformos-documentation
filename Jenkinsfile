@@ -25,7 +25,7 @@ pipeline {
     stage('Build') {
       when { branch 'master' }
 
-      agent { docker { image 'node:12-alpine'; args '-u root' } }
+      agent { docker { image 'node:12-alpine3.9'; args '-u root' } }
 
       steps {
         sh 'npm ci'
@@ -113,7 +113,7 @@ pipeline {
     //     branch 'master'
     //     expression { return params.MP_URL.isEmpty() }
     //   }
-    //   agent { docker { image 'node:12-alpine'; args '-u root -v $HOME/tmp:/tmp' } }
+    //   agent { docker { image 'node:12-alpine3.9'; args '-u root -v $HOME/tmp:/tmp' } }
 
     //   environment {
     //     MP_URL = "${production_url}"
