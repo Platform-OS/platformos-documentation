@@ -25,9 +25,10 @@ pipeline {
     stage('Build') {
       when { branch 'master' }
 
-      agent { docker { image 'node:12-alpine3.9'; args '-u root' } }
+      agent { docker { image 'node:12.13-alpine3.9'; args '-u root' } }
 
       steps {
+        sh 'apt add python'
         sh 'npm ci'
         sh 'npm run build'
       }
@@ -113,9 +114,10 @@ pipeline {
     //     branch 'master'
     //     expression { return params.MP_URL.isEmpty() }
     //   }
-    //   agent { docker { image 'node:12-alpine3.9'; args '-u root -v $HOME/tmp:/tmp' } }
+    //   agent { docker { image 'node:12.13-alpine3.9'; args '-u root -v $HOME/tmp:/tmp' } }
 
     //   environment {
+  h 'apt add python'
     //     MP_URL = "${production_url}"
     //     CI = true
     //   }
