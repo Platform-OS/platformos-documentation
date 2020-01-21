@@ -28,7 +28,7 @@ pipeline {
       agent { docker { image 'node:12-alpine'; args '-u root' } }
 
       steps {
-        sh 'apk add python'
+        sh 'apk add make python g++'
         sh 'npm ci'
         sh 'npm run build'
       }
