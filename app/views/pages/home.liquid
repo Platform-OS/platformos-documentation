@@ -1,72 +1,76 @@
 ---
 slug: /
-searchable: false
 converter: ''
 layout_name: empty
 dynamic_cache:
   expire: 600
-  layout: false
 ---
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   {%- include 'layouts/lib/context-variables' -%}
   {% include 'layouts/head/head' %}
 </head>
 
 <body>
-	<div class="wrapper">
+  <div class="wrapper">
     {% include 'layouts/header' %}
 
-		<div class="main">
-			<div class="intro" style="background-image: url({{ 'images/svg/background.svg' | asset_url }});">
-				<div class="container">
-					<div class="row">
-						<div class="col-md-8 offset-md-2">
-							<div class="intro__content">
-								<h1>Documentation</h1>
+    <div class="main">
+      <div class="intro" style="background-image: url({{ 'images/svg/background.svg' | asset_url }});">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-8 offset-md-2">
+              <div class="intro__content">
+                <h1>Documentation</h1>
 
-								<p>Examples, tutorials, and APIs to help you start building on platformOS</p>
+                <p>Examples, tutorials, and APIs to help you start building on platformOS</p>
 
                 {% include 'home/search-form' %}
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
       {% include 'home/section-options' %}
 
-			<div class="section-links">
-				<div class="container">
-					<div class="row justify-content-center">
-						<div class="col-md-6">
-							<h3>Latest Release Notes</h3>
-							<p>Our release notes tell you about new features, improvements, and fixes in platformOS.</p>
+      <div class="section-links">
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-md-6">
+              <h3>Latest Release Notes</h3>
+              <p>Our release notes tell you about new features, improvements, and fixes in platformOS.</p>
 
-							<a href="/release-notes" class="section__link">
-								check out our release notes
-                <svg width="10" height="11"><use xlink:href="#arrow-right"></use></svg>
-							</a>
-						</div>
+              <a href="/release-notes" class="section__link">
+                check out our release notes
+                <svg width="10" height="11">
+                  <use xlink:href="#arrow-right"></use>
+                </svg>
+              </a>
+            </div>
 
-						<div class="col-md-6">
-							<h3>Get Involved</h3>
-							<p>Learn about the many ways you can contribute to our documentation.</p>
+            <div class="col-md-6">
+              <h3>Get Involved</h3>
+              <p>Learn about the many ways you can contribute to our documentation.</p>
 
-							<a href="/community/contributor-guide" class="section__link">
-								check out our contributor guide
-                <svg width="10" height="11"><use xlink:href="#arrow-right"></use></svg>
-							</a>
-						</div>
-					</div>
-				</div>
-			</div>
+              <a href="/community/contributor-guide" class="section__link">
+                check out our contributor guide
+                <svg width="10" height="11">
+                  <use xlink:href="#arrow-right"></use>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
 
-    {% include 'layouts/content/callout' %}
-    {% include 'layouts/footer' %}
-	</div>
-  {%- include 'layouts/body/icons' -%}
-  {%- include 'layouts/body/javascripts_bottom' -%}
+      {% include 'layouts/content/callout' %}
+      {% include 'layouts/footer' %}
+    </div>
+    {%- include 'layouts/body/icons' -%}
+    {%- include 'layouts/body/javascripts_bottom' -%}
 </body>
+
 </html>

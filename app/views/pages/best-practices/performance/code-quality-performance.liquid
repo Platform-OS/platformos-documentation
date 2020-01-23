@@ -2,16 +2,15 @@
 converter: markdown
 metadata:
   title: Code Quality and Performance Best Practices
-  description: In this article, we share our experience on how you can improve the code quality of your platformOS site, and test and improve performance. You’ll find best practices, examples of what not to do, and tips for tools to use. 
+  description: In this article, we share our experience on how you can improve the code quality of your platformOS site, and test and improve performance. You’ll find best practices, examples of what not to do, and tips for tools to use.
 slug: best-practices/performance/code-quality-performance
-searchable: true
 ---
 
-In this article, we share our experience on how you can improve the code quality of your platformOS site, and test and improve performance. You’ll find best practices, examples of what not to do, and tips for tools to use. 
+In this article, we share our experience on how you can improve the code quality of your platformOS site, and test and improve performance. You’ll find best practices, examples of what not to do, and tips for tools to use.
 
-**High-quality code** that’s clean, readable, and consistent is easier to understand, maintain, and extend. A well-designed software with less code complexity is easier to test, more robust, and more secure. All of these factors make sure that high-quality code has less technical debt and is more cost-efficient to work with in the long run. 
+**High-quality code** that’s clean, readable, and consistent is easier to understand, maintain, and extend. A well-designed software with less code complexity is easier to test, more robust, and more secure. All of these factors make sure that high-quality code has less technical debt and is more cost-efficient to work with in the long run.
 
-On the other hand, your code should also **perform well**: it should be blazing fast to keep visitors on your site, provide the best user experience, and rank high in search results. According to the Google/SOASTA Research, 2017, as the page load time goes from 1 second to 3 seconds, the probability of bounce increases by 32%. The more page load time increases, the grimmer the outlook, as shown by the results of the [Google/SOASTA Research, 2017](https://www.thinkwithgoogle.com/marketing-resources/data-measurement/mobile-page-speed-new-industry-benchmarks/). 
+On the other hand, your code should also **perform well**: it should be blazing fast to keep visitors on your site, provide the best user experience, and rank high in search results. According to the Google/SOASTA Research, 2017, as the page load time goes from 1 second to 3 seconds, the probability of bounce increases by 32%. The more page load time increases, the grimmer the outlook, as shown by the results of the [Google/SOASTA Research, 2017](https://www.thinkwithgoogle.com/marketing-resources/data-measurement/mobile-page-speed-new-industry-benchmarks/).
 
 As page load time goes from:
 
@@ -24,10 +23,10 @@ As page load time goes from:
 
 When improving the code quality, you should consider many different factors. These are the basics — we’ll move on to back-end and front-end specific aspects later on:
 
-* Always aim for maintainability: make sure your code is simple and easy to read. 
+* Always aim for maintainability: make sure your code is simple and easy to read.
 * Pay attention to naming: Consistent, logical naming helps when you return to your code after a break or hand it over to someone else.
 * Take advantage of the hash/object data structure: It’s often better to keep a couple of hashes as data containers than having too many variables. Hashes also act as an excellent name spacing technique.
-* Use a version control system. 
+* Use a version control system.
 
 ## Front-end
 
@@ -45,7 +44,7 @@ Use modern front-end development techniques:
 * Web components
 * SVG
 * Code splitting to take advantage of http2 on CDN
-* Ideally, your code should be tested using End-to-End testing to make sure no regressions are introduced while maintaining the project/module. We recommend [TestCafe](/best-practices/qa/testcafe) for testing. 
+* Ideally, your code should be tested using End-to-End testing to make sure no regressions are introduced while maintaining the project/module. We recommend [TestCafe](/best-practices/qa/testcafe) for testing.
 
 {% include 'alert/important', content: 'Avoid these bad practices:
 
@@ -74,7 +73,7 @@ Use [PageSpeed Insights](https://developers.google.com/speed/pagespeed/insights/
 * Loading everything synchronously when it is not needed on a page
 * Not utilizing browser cache' %}
 
-Besides running automated checks, click and scroll through the page manually to verify that it’s smooth and jank-free. 
+Besides running automated checks, click and scroll through the page manually to verify that it’s smooth and jank-free.
 
 ### Security
 
@@ -91,7 +90,7 @@ Avoid 3rd party javascript code if possible - it can cause data leaks, MiTM atta
 * Visit your site on a mobile device to evaluate if it is usable on a phone. Sometimes clients don't require a responsive webpage and that’s fine, but it should be somehow usable. The recommended approach to CSS is mobile first.
 * Basic SEO tags and OpenGraph metadata should be included for social media (rich media) optimization purposes. This includes the proper usage of HTML tags, especially headings.
 * An assets build process is required for many of the recommendations described above.
-* Your page should comply to [WCAG 2.0 guidelines](https://www.w3.org/TR/WCAG20/) at the AA level as a minimum and have no issues in [Lighthouse](https://developers.google.com/web/tools/lighthouse/) (page insights) in the accessibility section. 
+* Your page should comply to [WCAG 2.0 guidelines](https://www.w3.org/TR/WCAG20/) at the AA level as a minimum and have no issues in [Lighthouse](https://developers.google.com/web/tools/lighthouse/) (page insights) in the accessibility section.
 
 ## Back-end
 
@@ -100,7 +99,7 @@ Avoid 3rd party javascript code if possible - it can cause data leaks, MiTM atta
 * Your code should be modular: placed in modules and divided by features/group of features.
 * Pay attention to indentation in your files. .editorconfig is a great and universal tool to keep it consistent across all team members.
 * Your codebase should not have "dead" or debugging code that’s active. This is especially true for logging (as it takes CPU time to log and DB space to store).
-* Do not keep commented code in your codebase. Remove it and if you need it, you will find it in your version control system if you need it again. 
+* Do not keep commented code in your codebase. Remove it and if you need it, you will find it in your version control system if you need it again.
 
 
 ### Performance

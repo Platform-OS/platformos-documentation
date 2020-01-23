@@ -4,19 +4,18 @@ metadata:
   title: Authenticating Your Domain on SendGrid
   description: This guide will help you authenticate your domain on SendGrid to prevent your emails from ending up in the spam folder of the recipient.
 slug: best-practices/integrations/authenticating-domain-sendgrid
-searchable: true
 ---
 
 This guide will help you authenticate your domain on SendGrid to prevent your emails from ending up in the spam folder of the recipient.
 
-Domain authentication, formerly known as domain whitelabel, shows email providers that SendGrid has your permission to send emails on your behalf. 
+Domain authentication, formerly known as domain whitelabel, shows email providers that SendGrid has your permission to send emails on your behalf.
 
 Even though this is a small change from your recipient's perspective, it has a huge positive impact on your reputation as a sender and your email deliverability. Email service providers distrust messages that don't have domain authentication set up because they can not be sure that the message comes from you. Explicitly stating that it comes from you increases your reputation with email service providers which makes it much less likely that they will filter your mail and not allow it get to your recipient's inbox, which increases your deliverability. You are also explicitly showing your recipients that this email comes from you, so they are less likely to mark your mail as spam. After setting up domain authentication, your recipients will no longer see the “via sendgrid.net” message on your emails.
 
-Read more about [domain authentication on SendGrid's documentation site](https://sendgrid.com/docs/ui/account-and-settings/how-to-set-up-domain-authentication/#setting-up-domain-authentication). 
+Read more about [domain authentication on SendGrid's documentation site](https://sendgrid.com/docs/ui/account-and-settings/how-to-set-up-domain-authentication/#setting-up-domain-authentication).
 
 ## Requirements
-To follow the steps in this tutorial, you should have SendGrid integration set up for your Instance. 
+To follow the steps in this tutorial, you should have SendGrid integration set up for your Instance.
 
 * [Adding SendGrid to an Instance](/tutorials/integrations/adding-sendgrid-instance)
 
@@ -30,52 +29,52 @@ Authenticating Your Domain on SendGrid is a five-step process:
 
 ### Step 1: Log in to SendGrid
 
-Go to [https://app.sendgrid.com](https://app.sendgrid.com), and log in with your username and password. 
+Go to [https://app.sendgrid.com](https://app.sendgrid.com), and log in with your username and password.
 
-In the menu on the left, go to `Settings`, then click on `Sender Authentication`. 
+In the menu on the left, go to `Settings`, then click on `Sender Authentication`.
 
 ### Step 2: Authenticate Your Domain - page 1
 
-Under "Domain Authentication" click on `Authenticate Your Domain` (or `Get Started` if you haven't changed any settings in SendGrid yet). 
+Under "Domain Authentication" click on `Authenticate Your Domain` (or `Get Started` if you haven't changed any settings in SendGrid yet).
 
-Answer the questions on the "Authenticate Your Domain" page to specify your DNS host and rewrite all tracking links to use the domain you choose — not sendgrid.net. 
+Answer the questions on the "Authenticate Your Domain" page to specify your DNS host and rewrite all tracking links to use the domain you choose — not sendgrid.net.
 
-Which Domain Name Server (DNS) host do you use?  
+Which Domain Name Server (DNS) host do you use?
 
 * **DNS Host**: If platformOS is not available in the list, select Other Host (Not Listed)
 * **Which DNS Host**: platformOS
 
 Would you also like to brand the links for this domain?
 
-* Yes 
+* Yes
 
 Click on `Next`.
 
 ### Step 3: Authenticate Your Domain - page 2
 
-Enter your domain. 
+Enter your domain.
 
 * **Domain You Send From**: example.com
 
-Domain authentication removes the "via sendgrid.net" text that some inbox providers append to your from address. Your from address will look like this `jane.doe@example.com`. 
+Domain authentication removes the "via sendgrid.net" text that some inbox providers append to your from address. Your from address will look like this `jane.doe@example.com`.
 
-For the Advanced settings, use the default `Automated security`. 
+For the Advanced settings, use the default `Automated security`.
 
 ### Step 4: Set up DNS records
 
-You see a list of DNS records that you will need to install to complete the process. 
+You see a list of DNS records that you will need to install to complete the process.
 
 Copy the CNAME records, and add them to your DNS Records. Once added, check the checkbox for "I've added these records." and click on `Verify`. If the records have been successfully added, you will see the message "It worked. Your authenticated domain for example.com was verified."
 
-You have finished authenticating your domain. 
+You have finished authenticating your domain.
 
 ### Step 5: Set up Link Branding
 
-Next up is Link Branding, which has been started by SendGrid already. To set up Link Branding, go through the same process that you went through to authenticate your domain in the Link Branding section under `Settings/Sender Authentication`. 
+Next up is Link Branding, which has been started by SendGrid already. To set up Link Branding, go through the same process that you went through to authenticate your domain in the Link Branding section under `Settings/Sender Authentication`.
 
-When you've finished the link branding process, you should see that the statuses for Domain Authentication and Link Branding are both marked as `Verified`. 
+When you've finished the link branding process, you should see that the statuses for Domain Authentication and Link Branding are both marked as `Verified`.
 
-Congratulations, you have authenticated your domain and set up link branding on SendGrid.  
+Congratulations, you have authenticated your domain and set up link branding on SendGrid.
 
 
 
