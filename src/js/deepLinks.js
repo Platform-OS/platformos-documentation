@@ -3,12 +3,13 @@ import urlify from './helpers/urlify';
 
 const alreadyLinked = el => el.querySelectorAll('a.anchorjs-link').length > 0;
 
-const generateAnchor = href => {
+const generateAnchor = ({ tidyID, text }) => {
   let anchor = document.createElement('a');
 
-  anchor.innerHTML = '<svg width="16" height="16"><use xlink:href="#link"></use></svg>';
+  anchor.innerHTML = `<span class="screen-reader-text">${text}</span><svg width="16" height="16"><use xlink:href="#link"></use></svg>`;
   anchor.className = 'anchorjs-link';
-  anchor.href = `#${href}`;
+  anchor.href = `#${tidyID}`;
+
   return anchor;
 };
 
@@ -22,7 +23,7 @@ const generateDeepLinks = ({ elements }) => {
     }
 
     const tidyID = urlify(el.textContent);
-    const anchor = generateAnchor(tidyID);
+    const anchor = generateAnchor({ tidyID, text: el.textContent });
 
     el.id = tidyID;
     el.classList.add('anchorjs-element');
