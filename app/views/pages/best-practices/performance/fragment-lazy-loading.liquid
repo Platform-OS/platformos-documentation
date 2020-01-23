@@ -1,13 +1,12 @@
 ---
 converter: markdown
 metadata:
-  title: Lazy Loading of Fragments 
+  title: Lazy Loading of Fragments
   description: In this article, we share a frontend technique that can be used to mitigate a performance issue until it's resolved permanently.
 slug: best-practices/performance/fragment-lazy-loading
-searchable: true
 ---
 
-## Problem 
+## Problem
 
 Doing time consuming operations on the server before a page starts to be delivered to the browser means User Experience (UX) will suffer. It means that the user is staring at a blank page until at least the HTML and CSS has been downloaded, parsed and rendered. Download is delayed by these time consuming operations (heavy rendering, slow database queries). This makes for a bad experience and in extreme cases it can timeout on the server or the user could just give up on waiting.
 
@@ -21,10 +20,10 @@ Plain and simple, everything is rendered in one run, slow code is included direc
 
 <img src="{{ 'images/best-practices/performance/fragment-lazy-loading/slow-timeline.png' | asset_url }}" alt="Slow implementation timeline">
 
-_Long wait, big initial HTML_ 
+_Long wait, big initial HTML_
 
-- [See source code](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/fragment_lazy_load/public/views/pages/normal.liquid) 
-- [See live example](https://examples.platform-os.com/fragment-lazy-load) 
+- [See source code](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/fragment_lazy_load/public/views/pages/normal.liquid)
+- [See live example](https://examples.platform-os.com/fragment-lazy-load)
 - [See pagespeed report](https://developers.google.com/speed/pagespeed/insights/?url=https%3A%2F%2Fexamples.platform-os.com%2Ffragment-lazy-load&tab=desktop)
 
 ## Solution
@@ -41,8 +40,8 @@ We've added a "spinner" to inform the user that something is going to show up th
 
 _The file starts to download much faster and is much smaller, so it renders sooner._
 
-- [Source code](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/fragment_lazy_load/public/views/pages/lazy-inline.liquid) 
-- [Live example](https://examples.platform-os.com/fragment-lazy-load/lazy-inline) 
+- [Source code](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/fragment_lazy_load/public/views/pages/lazy-inline.liquid)
+- [Live example](https://examples.platform-os.com/fragment-lazy-load/lazy-inline)
 - [Pagespeed report](https://developers.google.com/speed/pagespeed/insights/?url=https%3A%2F%2Fexamples.platform-os.com%2Ffragment-lazy-load%2Finline-lazy&tab=desktop)
 
 ### Variant 2 — lazy load external: example + source code
@@ -53,15 +52,15 @@ Very similar to solution 1, but this time the JavaScript is in an external js fi
 
 _Same situation, snappy rendering and small file_
 
-- [Source code](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/fragment_lazy_load/public/views/pages/lazy-external.liquid) 
-- [Live example](https://examples.platform-os.com/fragment-lazy-load/lazy-external) 
+- [Source code](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/fragment_lazy_load/public/views/pages/lazy-external.liquid)
+- [Live example](https://examples.platform-os.com/fragment-lazy-load/lazy-external)
 - [Pagespeed report](https://developers.google.com/speed/pagespeed/insights/?url=https%3A%2F%2Fexamples.platform-os.com%2Ffragment-lazy-load%2Flazy-external&tab=desktop)
 
 ## Additional advantages
 
 The asynchronous nature of AJAX requests means that as soon as the given request is finished, it will insert its result to a page in a given place. This also means that if you have an error in one of your modules, only this particular piece of page will break, not the whole page.
 
-Because you had to split the page into smaller chunks, you can now implement cache more precisely. One fragment you can expire after one hour, one after one day and one not cache at all. This is very useful when you did a split on a big GQL query that now can be reasoned on a "feature" basis. 
+Because you had to split the page into smaller chunks, you can now implement cache more precisely. One fragment you can expire after one hour, one after one day and one not cache at all. This is very useful when you did a split on a big GQL query that now can be reasoned on a "feature" basis.
 
 When looking at PageSpeed reports look at the film strip - this is the most important from the user's perspective. Users need to see that something is happening as soon as possible and ideally less important things are downloaded later or never (lazy loading with scroll observer is often used for images for example).
 
