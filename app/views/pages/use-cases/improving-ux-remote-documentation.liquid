@@ -72,15 +72,7 @@ We did the conversion in the following steps:
 
     After setting up the cache, we could safely remove hardcoded data and rely only on downloaded and cached JSON.
 
-5.  Enabling search
-
-    Our system can pre-render a Liquid page if it is not dynamic, by using the `searchable: true` directive. This means that the page will be rendered as soon as it is modified (usually `deploy` or `sync`) and will be returned straight from the cache. Additionally, its content is indexed and easily accessible by the [admin_pages query](https://documentation.platformos.com/api-reference/graphql/queries#admin_pages).
-
 ## Results
-
-### Content is searchable
-
-Every filter, tag, GraphQL operation can now be discovered using on-page search. This fixed an often-reported issue with the previous implementation.
 
 ### Better user experience
 
@@ -88,7 +80,7 @@ The browser receives the already rendered HTML, so there is never a situation wi
 
 ### Less JavaScript
 
-This was not a big problem, but no JavaScript is always faster than any JavaScript. It means less maintenance, fewer assets to send over the wire and less of the user's CPU cycles wasted on tasks that can be done (and cached) server-side.
+This was not a big problem, but no code is faster than any code. It means less maintenance, fewer assets to send over the wire and less of the user's CPU cycles wasted on tasks that can be done (and cached) server-side.
 
 ### Templates are easier to understand and edit by others
 
@@ -99,7 +91,6 @@ Code is much simpler and has no external dependency (ejs) which means it is done
 - [Page source](https://github.com/mdyd-dev/nearme-documentation/blob/master/app/views/pages/api-reference/liquid/platformos-filters.liquid)
 - [Template source](https://github.com/mdyd-dev/nearme-documentation/blob/master/app/views/partials/api-reference/templates/platformos-filters.liquid)
 - [Deep link to append filter](https://documentation.platformos.com/api-reference/liquid/filters#append)
-- [Search example](https://documentation.platformos.com/search?query=assign_to_hash)
 
 ## Author information
 
