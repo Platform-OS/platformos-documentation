@@ -12,16 +12,18 @@ To follow the steps in this tutorial, you should be familiar with Users and Iden
 
 * [Users](/tutorials/users/users)
 
-### Step 1: Create an application on your Google Account https://developers.google.com/identity/protocols/OAuth2
+### Step 1: Setup OAuth 2.0 in Google
 
-### Step 2: In the Google admin, add your domain in `Authorized domains`
+Follow <a href="https://support.google.com/googleapi/answer/6158849?hl=en" target="_blank">tutorial</a>
 
-### Step 3: In the Google admin, set `Authorized redirect url` for `https://<YOUR_DOMAIN>/auth/google/callback`
+* In Google on `Consent Screen` set  `Authorized domains` to your instance domain ex. `example.com`
+* In Google when creating credentials, set `Authorized redirect url` to `https://<YOUR_DOMAIN>/auth/google/callback`
 
-### Step 4: Configure Partner Portal -> Social Integrations
+
+### Step 2: Configure Partner Portal -> Social Integrations
 
 Copy `Client ID` as `Google Key` and `Client Secret` as `Google Secret`.
 
-### Step 5: Use /auth/google on your Instance
+### Step 3: Use /auth/google on your Instance
 
 For example, you can add a link to the "Log In / Sign Up" Liquid page that points to `/auth/google`.
