@@ -34,7 +34,7 @@ test('Images are working fine', async t => {
   await t.navigateTo('/best-practices/qa/testing');
   const contentImages = Layout.Content.find('img[src*="assets/image"]');
 
-  const loadedImages = await t.wait(300).eval(() => {
+  const loadedImages = await t.wait(500).eval(() => {
     const images = Array.prototype.slice.call(document.querySelectorAll('img[src*="assets/image"]'));
     return images.map(image => image.naturalHeight).filter(height => height > 10);
   });
