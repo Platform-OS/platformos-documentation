@@ -20,13 +20,19 @@ test('Generate as many links as there are headings with steps', async t => {
   const stepHeadings = await Selector('h3').filter(h => /^Step \d+:/.test(h.textContent));
   const generatedLinks = await container.find('a');
 
+  const firstEl = await container.find('a').nth(0);
+  const secondEl = await container.find('a').nth(1);
+
   await t.expect(await stepHeadings.count).eql(await generatedLinks.count);
   await t.expect(await stepHeadings.count).eql(2);
+
+  await t.expect(firstEl.textContent).eql('Step 1: Create a new Instance');
+  await t.expect(secondEl.textContent).eql('Step 2: Get confirmation email');
 });
 
 fixture('Table of Contents').page(`${process.env.MP_URL}/api-reference/liquid/types`);
 
-test.only('Is generated', async t => {
+test('Is generated', async t => {
   const container = await Selector('[data-autotoc]');
   const header = await container.find('h4');
   const firstEl = await container.find('ul li').nth(0).find('a');
@@ -34,7 +40,7 @@ test.only('Is generated', async t => {
 
   await t.expect(header.textContent).eql('On this page');
   await t.expect(firstEl.textContent).eql('String');
-  await t.expect(secondtEl.textContent).eql('Number');
+  await t.expect(secondEl.textContent).eql('Number');
 });
 
 fixture('Syntax highlighting').page(`${process.env.MP_URL}/get-started/quickstart-guide`);
