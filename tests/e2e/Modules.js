@@ -26,12 +26,15 @@ test('Generate as many links as there are headings with steps', async t => {
 
 fixture('Table of Contents').page(`${process.env.MP_URL}/api-reference/liquid/types`);
 
-test('Is generated', async t => {
+test.only('Is generated', async t => {
   const container = await Selector('[data-autotoc]');
+  const header = await container.find('h4');
+  const firstEl = await container.find('ul li').nth(0).find('a');
+  const secondEl = await container.find('ul li').nth(1).find('a');
 
-  await t.expect(await container.textContent).contains('On this page');
-  await t.expect(await container.textContent).contains('String');
-  await t.expect(await container.textContent).contains('Array');
+  await t.expect(header.textContent).eql('On this page');
+  await t.expect(firstEl.textContent).eql('String');
+  await t.expect(secondtEl.textContent).eql('Number');
 });
 
 fixture('Syntax highlighting').page(`${process.env.MP_URL}/get-started/quickstart-guide`);
