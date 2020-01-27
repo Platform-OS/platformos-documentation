@@ -9,6 +9,6 @@ const parseHeadings = headings => {
   });
 };
 
-const getHeadings = () => $qa('.content__main h2[id]');
+const getHeadings = () => $qa('.content__main h2[id] span');
 
 export { parseHeadings, getHeadings };
