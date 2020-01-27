@@ -6,12 +6,14 @@ test('Are generated and linked', async t => {
   const container = await Selector('[data-autosteps]');
   const firstStep = await Selector('h3[id]').nth(0);
   const firstStepId = await firstStep.getAttribute('id');
+  const firstStepText = await Selector('h3[id]').nth(0).find('span');
+
   const firstLink = await container.find('a').nth(0);
   const firstLinkHref = await firstLink.getAttribute('href');
   const firstLinkId = firstLinkHref.split('#').pop();
 
   await t.expect(container.exists).ok();
-  await t.expect(await firstLink.textContent).eql(await firstStep.textContent);
+  await t.expect(firstLink.textContent).eql(await firstStepText.textContent);
   await t.expect(firstLinkId).eql(firstStepId);
 });
 

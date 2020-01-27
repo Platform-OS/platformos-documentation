@@ -4,7 +4,7 @@ import { parseHeadings } from './helpers/headings';
 const isStep = h => /^Step \d+:/.test(h.textContent);
 const getContainer = () => $q('[data-autosteps]');
 const getSteps = () => {
-  const headings = $qa('.content h3 span');
+  const headings = $qa('.content h3');
   return headings.filter(isStep);
 };
 

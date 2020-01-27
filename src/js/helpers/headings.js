@@ -1,14 +1,14 @@
-import { $qa } from '../helpers/dom';
+import { $q, $qa } from '../helpers/dom';
 
 const parseHeadings = headings => {
   return headings.map(heading => {
     return {
       href: `#${heading.id}`,
-      text: heading.textContent.trim()
+      text: $q('span', heading).textContent.trim()
     };
   });
 };
 
-const getHeadings = () => $qa('.content__main h2[id] span');
+const getHeadings = () => $qa('.content__main h2[id]');
 
 export { parseHeadings, getHeadings };
