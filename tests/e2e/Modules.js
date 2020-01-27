@@ -20,15 +20,21 @@ test('Generate as many links as there are headings with steps', async t => {
   const stepHeadings = await Selector('h3').filter(h => /^Step \d+:/.test(h.textContent));
   const generatedLinks = await container.find('a');
 
-  const firstEl = await container.find('a').nth(0);
-  const secondEl = await container.find('a').nth(1);
-
   await t.expect(await stepHeadings.count).eql(await generatedLinks.count);
   await t.expect(await stepHeadings.count).eql(2);
+});
+
+
+test('Generated steps have correct text', async t => {
+  const container = await Selector('[data-autosteps]');
+
+  const firstEl = await container.find('a').nth(0);
+  const secondEl = await container.find('a').nth(1);
 
   await t.expect(firstEl.textContent).eql('Step 1: Create a new Instance');
   await t.expect(secondEl.textContent).eql('Step 2: Get confirmation email');
 });
+
 
 fixture('Table of Contents').page(`${process.env.MP_URL}/api-reference/liquid/types`);
 
