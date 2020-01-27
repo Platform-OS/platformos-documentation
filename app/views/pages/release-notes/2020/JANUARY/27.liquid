@@ -1,0 +1,32 @@
+---
+converter: markdown
+metadata:
+  title: Hard delete, internal components update
+  description: January 27, 2020
+  contributors: false
+  skip_contribute_button: true
+slug: release-notes/27-JANUARY-2020
+---
+
+#### {{ page.metadata.description }}
+
+<h4 class="release-note release-note__new">NEW</h4>
+
+* Soft deleted objects will be automatically hard deleted after 30 days
+* New, improved search on Documentation site
+
+<h4 class="release-note release-note__improved">IMPROVED</h4>
+
+* Major update of internal components like PostgreSQL version, Redis to the newest available versions
+* Ability to set user_id and customizable_id as string instead of integer in data import/export
+* Migration engine - handle manifest up to date, execute migrations in the order based on timestamp
+* Major performance improvement for GraphQL queries which do exact search on properties
+* Improve performance of models/users queries by ignoring custom_images/custom_attachments if not requested
+
+<h4 class="release-note release-note__fixed">FIXED</h4>
+
+* Update Google OAuth API version
+* Gracefully handle scenario when invalid property is used in related_filter query
+* Fix overwriting `form` variable in partial which ends with `form.liquid` in some edge case scenarios
+* Fix [parse_json](/api-reference/liquid/platformos-tags#parse_json) tag to appear in documentation
+* Fix edge case scenario in the import mutation, which could impact performance of the instance in a negative way
