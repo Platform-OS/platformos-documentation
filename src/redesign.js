@@ -13,4 +13,6 @@ if ($q('code[class*="language-"]')) {
   import(/* webpackChunkName: "syntaxHighlighting" */ './js/syntaxHighlighting');
 }
 
-import(/* webpackChunkName: "search" */ './js/search');
+if ($q('.search--input')) {
+  import(/* webpackChunkName: "search", webpackPrefetch: true */ './js/search');
+}
