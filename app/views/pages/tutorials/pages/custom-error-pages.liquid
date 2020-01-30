@@ -10,23 +10,23 @@ Instead of returning standard error pages, you can set up **custom error pages**
 
 You can customize the following error pages:
 
-* 403
-* 404
-* 500
-* 503
+* 403 - Forbidden
+* 404 - Not Found
+* 500 - Server Error
+* 503 - Maintenance
 
 ## Creating a custom error page
 
-Error pages are normal platformOS pages, so you can use all features of a page (e.g. layouts). To create a customized error page, [create a Page](/tutorials/pages/creating-page) and set the slug to the status code.
+Error pages are normal platformOS pages, so you can use all features of a page (e.g. layouts). To create a customized error page, [create a Page](/tutorials/pages/creating-page) and set the file name to the status code.
 
 **Example:**
 
+#### views/pages/404.html.liquid
+
 ```yaml
 ---
-slug: 404
+layout_name: error_page
 ---
-```
-```liquid
 The resource you were looking for does not exist.
 ```
 
@@ -38,7 +38,6 @@ The resource you were looking for does not exist.
 | 404           | Not Found     | Rendered in multiple scenarios. Most commonly, it is rendered when you try to access or modify an object that does not exist. You can also set an Authorization Policy's `http_status` to 404 to force render this page instead of the default 403.   |
 | 500           | Server Error  | If there is an error that cannot be handled gracefully, a server error page is displayed.                                                                                                                                                             |
 | 503           | Maintenance   | You can [enable maintenance mode through the Partner Portal](/tutorials/partner-portal/instances/updating-instance-configuration) (see `maintenance_mode` attribute).                                                                                         |
-
 
 ## Related topics
 * [Pages](/tutorials/pages/pages)
