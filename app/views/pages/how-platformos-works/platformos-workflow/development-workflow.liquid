@@ -8,41 +8,62 @@ slug: how-platformos-works/platformos-workflow/development-workflow
 
 A **development workflow** is the process you follow during development to save time and minimize errors. It includes stages like setup (scaffolding), development, testing, integration, optimization, and deployment.
 
-## Setup process
+## Setup
 
 The setup process of developing a site using platformOS includes three main steps:
 
-1. A Partner creates a new Instance through the Partner Portal. The platformOS engine saves the Instance, which &ndash; after authorization &ndash; becomes available for developers to deploy and sync to.
-2. Developers create the codebase in a local environment.
-3. The pos-cli deploys or syncs the codebase to the Instance.
+### 1. Create a new Instance on the Partner Portal
+The **[Partner Portal](https://partners.platformos.com)** is an online interface where you can create, manage, and configure sites built with platformOS, and manage other users of the Partner Portal. The site created on the Partner Portal will be the site you deploy and sync your changes to during development.
 
-## Version control
+* The sites created are called **Instances**. Instances have a URL, and they represent different development environments, like staging or production.
+* Users of the Partner Portal are called **Partners**. Partners have the permissions to create, manage, and configure Instances. Partners can also create and manage other Partners.
 
-We recommend using a version control system. Internally, we use [GitHub](https://github.com/) to host and collaborate on our [git](https://git-scm.com/about) repositories.
+When you create an Instance, the platformOS engine saves the Instance, which &ndash; after authorization &ndash; becomes available for you to deploy and sync to.
 
-You can choose other version control systems, or decide to go without any: all that is required is your codebase and an Instance you can sync/deploy to.
+What you’ll need:
 
-## Development Instances
+* [Access to the Partner Portal](/get-started/accessing-partner-portal)
+
+### 2. Create codebase
+In order to correctly communicate with the platformOS engine and API, your codebase should be organized into a [specific directory structure](/how-platformos-works/platformos-workflow/codebase). To create your codebase in a local environment follow the steps in the [Creating the Codebase](/get-started/creating-codebase) topic.
+
+What you’ll need:
+
+* Node.js (for [Mac](/get-started/installing-nodejs-mac) or [Windows](/get-started/installing-nodejs-windows))
+* [pos-cli](/get-started/installing-pos-cli)
+
+### 3. Setup pos-cli
+The **[pos-cli](https://github.com/mdyd-dev/pos-cli)** is a command line interface that helps you deploy configuration files and assets to your platformOS site. It also allows you to use team collaboration tools like git in your workflow, and it works with cloud storage providers like [Amazon AWS S3](https://aws.amazon.com/s3/).
+
+You can use the pos-cli to deploy or sync your codebase to the Instance as described in the [Deploying and Syncing Changes](/get-started/deploying-syncing-changes) tutorial.
+
+What you’ll need:
+
+* [pos-cli](/get-started/installing-pos-cli)
+
+## Development
+
+We recommend using a **version control system**. Internally, we use [GitHub](https://github.com/) to host and collaborate on our [git](https://git-scm.com/about) repositories. You can choose other version control systems, or decide to go without any: all that is required is your codebase and an Instance you can sync/deploy to.
+
+This is a diagram of our development workflow:
+
+<img src="{{ 'images/workflow/development_workflow.png' | asset_url }}" alt="Feedback block" />
+
+### Development Instances
 
 Development Instances are different copies of the same Instance/codebase used for developing, updating, and testing a site without risking the integrity of the live site.
 
 You can set up different types of Instances (staging/production) through the Partner Portal.
 
-### Local codebase
-You develop your site (write code) in your codebase in your local environment.
-
-The framework for the codebase of the Instance is your codebase organized into the required directory structure. To learn more about the directories and files in your platformOS codebase, see [platformOS Components](/how-platformos-works/platformos-workflow).
-
-### Staging Instance
-The staging Instance can be used for testing, presenting the changes to the client for approval, QA (Quality Assurance), or UAT (User Acceptance Testing).
-
-### Production Instance
-
-The production Instance is the live site available to visitors.
+* **Local codebase**: You develop your site (write code) in your codebase in your local environment. The framework for the codebase of the Instance is your codebase organized into the required directory structure.
+* **Staging Instance**: The staging Instance can be used for testing, presenting the changes to the client for approval, QA (Quality Assurance), or UAT (User Acceptance Testing).
+* **Production Instance**: The production Instance is the live site available to visitors.
 
 Based on the project’s size, scope, or requirements, stages from the above workflow can be removed, or additional stages can be added. For example, a testing site before staging can be added to separate testing from QA and UAT.
 
 ## Related topics
 
+* [pos-cli](/how-platformos-works/platformos-workflow/pos-cli)
+* [Codebase](/how-platformos-works/platformos-workflow/codebase)
 * [Creating the Codebase](/get-started/creating-codebase)
 * [Deploying and Syncing Changes](/get-started/deploying-syncing-changes)
