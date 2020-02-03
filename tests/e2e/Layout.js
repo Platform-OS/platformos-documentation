@@ -40,7 +40,7 @@ test('Images are working fine', async t => {
   });
 
   await t.expect(contentImages.count).gte(2);
-  await t.expect(loadedImages.length).gte(2);
+  await t.expect(loadedImages.length).gte(3);
 });
 
 test.skip('Contributors are showing up', async t => {
