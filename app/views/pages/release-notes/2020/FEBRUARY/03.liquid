@@ -1,0 +1,26 @@
+---
+converter: markdown
+metadata:
+  title: GraphQL performance improvements, fixes
+  description: February 03, 2020
+  contributors: false
+  skip_contribute_button: true
+slug: release-notes/03-FEBRUARY-2020
+---
+
+#### {{ page.metadata.description }}
+
+<h4 class="release-note release-note__improved">IMPROVED</h4>
+
+* Performance improvements in resolving `properties` in models/users GraphQL queries
+* Performance improvements for nested `users` in GraphQL queries
+* Performance improvements for filtering by property
+* Allow to deploy assets only using `-d` flag
+* Add generic layouts for errors + better handling of couple errors which were resulting in "Unhandled low level exception" error message.
+
+<h4 class="release-note release-note__fixed">FIXED</h4>
+
+* Do not try to find custom error page on 504 Timeout
+* Invoking update_all GraphQL mutations in background in some scenarios
+* Do not force `modules/` prefix in admin_* GraphQL mutations for `physical_file_path`
+* Filter on related models with date property
