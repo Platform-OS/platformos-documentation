@@ -1,0 +1,302 @@
+---
+converter: markdown
+slug: use-cases/twilio-video-integration
+metadata:
+  title: Setting Up Twilio Video Integration
+  description: Setup Twilio video integration for allowing users to engage in video conferencing.
+  tags: ["context", "parse_json", "jwt_encode", "form_configuration", "api_call_notifications"]
+---
+
+This use case describes how we created a video conferencing integration for **platformOS** using **[Twilio](https://www.twilio.com)**. 
+
+To create the integration, first we needed to connect platformOS and Twilio. There are many tools available to connect to Twilio and get the API Keys to generate the JWT tokens needed for Twilio's video services. As we would need to interact with the Twilio API on user events later in our module and the best and most efficient way to do this would be directly from platformOS, we decided to learn the ropes and use all platformOS had to offer from the start.  
+
+## Problem/situation
+
+First, we needed to get and store all of the API Keys necessary to authorize the connection. We could get some of them from the platformOS Partner Portal after adding the Twilio integration as detailed in the topic [Managing Integrations](https://documentation.platformos.com/tutorials/partner-portal/instances/managing-integrations). To use other API resources, we created a form and listened to pOS logs in our CLI. Then we created a JWT (JSON Web Token) that would allow the connection to take place. 
+
+## Challenges
+
+Who likes a challenge? I love a good challenge but am not so fond of problems. Luckily with platformOS, challenges are made easier and problems are few:
+
+1. Retrieve the Twilio Secret
+
+    platformOS provides us with Twilio's **API Key SID** called `sid` and the **Twilio Account SID** called `auth_token`. But we must get the **API Key Secret** ourselves.
+
+2. Storing the API Keys
+
+    Once we have all the API keys, we need a place to store them securely so that we can access them later when making the connection to Twilio's video services.
+
+3. Preparing and encoding a JWT 
+
+    We needed to create a JWT encoded token that matches [Twilio's Access Token format](https://www.twilio.com/docs/iam/access-tokens) to make and persist the connection to a Twilio video `room`.
+
+## Solution
+
+Everything we needed to succeed was provided by platformOS. Our process consisted of the following five steps:
+
+<div data-autosteps></div>
+
+### Step 1: Fetch the `secret` with an API call notification 
+
+As discussed above, there are many tools to interact with an API: Curl, node.js, C#, PHP, Ruby, Python, Java and more. Below is a simple use case using Curl.
+
+#### Create API Key Secret with Curl
+Simply replace **ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX** with your Twilio `sid` and your `auth_token` from the [platformOS Partner Portal](https://portal.apps.near-me.com/): select the Instance your are working on, click Update configuration and then Edit to view the Twilio API Keys.
+<pre class="command-line" data-output="2-50" data-user="user" data-host="host"><code class="language-bash">curl -X POST https://api.twilio.com/2010-04-01/Accounts/ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX/Keys.json \ -u ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX:your_auth_token</code></pre>
+    
+We could get the API Secret using many tools but we decided to get it using platformOS. When creating a module, we wanted to do things like create rooms, recordings, compositions and more from inside the context of the module itself. 
+    
+To do this, we needed to connect directly to Twilio from platformOS.
+
+#### Create API Key Secret with platformOS - GraphQL GUI 
+Here, we created an `api_call_notification` and then used the `pos_cli gui sevre <environment>` CLI command to send and receive the response.
+
+1. **Create an API Call Notification**
+
+   To create our **API Key Secret** we send an API call with a request type of `POST` to the URL and with the headers outlined in the [Twilio Identity and Access Management documentation](https://www.twilio.com/docs/iam/keys/api-key-resource).
+
+    #### app/notifications/api_call_notification/twilio_api_secret_create.liquid
+    ```yaml
+    ---
+    name: twilio_api_secret_create
+    format: http
+    headers: |-
+    {%- assign authBasic = context.constants.TWILIO_ACCOUNT_SID | append: ":" | append: context.constants.TWILIO_ACCOUNT_AUTH_TOKEN | base64_encode -%}
+        {
+            "Content-Type": "application/json; charset=utf-8",
+            "Authorization": "Basic {{ authBasic }}"
+        }
+    request_type: POST
+    to: |-
+        https://api.twilio.com/2010-04-01/Accounts/{{ context.constants.TWILIO_ACCOUNT_SID }}/Keys.json
+    ---
+    ```
+
+2. **Send and receive the response**
+
+    To send the **API call notification** and receive the response we used the `pos_cli gui serve <environment>` command. We saw the response returned with our API Key **Secret**.
+
+    ```graphql
+    mutation createSecret {
+        api_call_send(template: {name: "twilio_api_secret_create"}) {
+            response {
+                body
+            }
+        }
+    }
+    ```
+
+#### Fetch API Key resource with platformOS - Form configuration
+
+Here, we were not creating another API Key(Secret) — we were just receiving a representation of the API Key resource that was created. This resource itself is not that helpful, but the process illustrates the workflow when connecting to API resources with a form configuration.
+
+1. **Create a page**
+
+    First, we needed a page to hold a form.
+
+    ```yaml
+    ---
+    slug: twilio-api
+    ---
+    ```
+    
+    ```liquid
+    {% raw %}
+    h3>Get Keys</h3>
+    {% include_form 'twilio_api_call' %}
+    {% endraw %}
+    ```
+
+2. **Create a virtual model**
+
+    To be able to submit a form you need to have a `model_schema` connected to it. In this case we do not need any data, so we can create what we call a `virtual_model` like below. This allows for a form with no data or properties to be submitted.
+
+    #### model_schemas/virtual_model.yml
+    ```yaml
+    name: virtual_model
+    ```
+
+3. **Create a form**
+
+    The simpliest of forms, a button with a resource of our virtual_model schema and an `api_call_notification` that will be triggered on submit.
+    
+    ```yaml
+    ---
+    name: twilio_api_call
+    resource: virtual_model
+    api_call_notifications:
+        - twilio_api_secret_create
+    ---
+    {% form %}
+    <button>API Call</button>
+    {% endform %}
+    ```
+
+4. **Create an API Call Notification**
+
+    Using the API resource was now just a matter of formatting the notification to meet the requirements of the API and resource we were calling. [Twilio Identity and Access Management documentation](https://www.twilio.com/docs/iam/keys/api-key-resource)
+
+    #### app/notifications/api_call_notification/twilio_api_secret_create.liquid
+    
+    ```yaml
+    ---
+    name: twilio_api_secret_create
+    format: http
+    headers: |-
+    {%- assign authBasic = context.constants.TWILIO_ACCOUNT_SID | append: ":" | append: context.constants.TWILIO_ACCOUNT_AUTH_TOKEN | base64_encode -%}
+        {
+            "Content-Type": "application/json; charset=utf-8",
+            "Authorization": "Basic {{ authBasic }}"
+        }
+    request_type: GET
+    to: |-
+        https://api.twilio.com/2010-04-01/Accounts/{{ context.constants.TWILIO_ACCOUNT_SID }}/Keys/{{ context.constants.TWILIO_API_KEY }}.json
+    callback: |-
+        {%- log response.body, type: 'info' -%}
+    ---
+    ```
+
+5. **View the response**
+
+    We clicked the button that submits the form that makes an **API call notification** but what happened to our **API Call Response**? No worries, we just needed to go to the CLI and use the `pos_cli logs <environment>` command to see the response returned as type `info` that we declared in the callback above.
+
+    {% include 'alert/note', content: 'For security reasons, the Secret field is ONLY returned when the API Key is first created – never when fetching the resource.' %}
+
+
+### Step 2: Store the API Keys with custom `context.constants`
+
+We created custom `context.constants` for each of the keys we need to store and access securely. To do this we used the [GraphQL GUI](https://documentation.platformos.com/best-practices/qa/developing-graphql-queries-using-pos-cli-gui) with the `pos_cli gui serve` command.
+
+#### Set Constants
+
+```graphql
+mutation SetConstant {
+     constant_set(name: "TWILIO_API_KEY_SID", value: "123456789") {
+         name
+         value
+     }
+}
+```
+    
+#### Repeat for:
+
+* `TWILIO_API_KEY_SID`
+* `TWILIO_API_ACCOUNT_SID`
+* `TWILIO_API_SECRET`
+
+#### Get Constants
+
+   We used a simple piece of Liquid markup to access our constants from the `context` object.
+
+```liquid
+{% raw %}{{context.constants.TWILIO_API_KEY_SID}}{% endraw %}
+```
+
+{% include 'alert/note', content: 'Constants need to be explicitly called `{{ context.constants }}`, as they are hidden from `{{ context }}`. More info: [context.constants](/tutorials/variables/context-variable)' %}
+
+### Step 3: Using platformOS Liquid filters to prepare, encode and render the JWT
+
+1. **Setup the URL**
+
+   First, we needed a place to put our code and a URL to expose the JWT for authentication. We did this in **pages** and because we wanted it to have the JSON format, we named the file `token.json.liquid`. 
+    
+   We added `slug` to create the URL — in this case the token. We could have also added `format` here, but it was not necessary because we used **.json** in our file name. 
+
+   #### app/pages/token.json.liquid
+    
+    ```yaml
+    ---
+    slug: token
+    format: json
+    ---
+    ```
+
+2. **Prepare the payload**
+
+   Many things are standard for the JWT token, but many have their own properties as does the Twilio JWT.
+
+   **Assign Liquid timestamp variables**
+    
+   We needed to be able to tell Twilio the earliest possible time the token can be used and the time when the token should expire. We did this using [Liquid date filters](https://documentation.platformos.com/api-reference/liquid/filters#date): `date` for date format, `now` for time now and `add_to_time` to add the length of time before the token expires. 
+
+   **Assign identity and room variables**
+    
+   * **Identity Grant** - `identity` is mandatory. It is a unique identifier which indicates the holder of the Access Token can access Programmable Video services.
+   * **Room Grant** - `room` is optional and used to grant use of a specific Room name or SID, which indicates the holder of the Access Token may only connect to the indicated Room.
+
+**Payload** 
+
+The list below describes all the parameters we needed to fill to create the Token. Where we used `parse_json` to create a Hash from these that will be used when encoding the **JWT** token: 
+    
+* `jti` is a unique identifier for the token. Your application can choose this identifier. The default helper library implementation includes the Sid of the **API Key SID** used to generate the token, and a unique random string.
+* `iss` is the issuer - the **API Key SID** whose secret signs the token.
+* `sub` is the **Twilio Account SID** of the account to which access is scoped.
+* `nbf` is the timestamp on which the token was generated.
+* `exp` is the timestamp on which the token will expire. Tokens have a maximum age of 24 hours.
+* `grants` is the list of granted permissions the token has. Client SDK (Chat, Video) grant values will vary from SDK to SDK.
+
+```Liquid
+{% raw %}{%- assign now_timestamp = 'now' | date: '%s' -%}
+{%- assign exp_timestamp = 'now' | add_to_time: 1 | date: '%s' -%}
+{%- assign identity = 'unique-Id-Name' -%}
+{%- assign room = '' -%}
+
+{%- parse_json payload -%}
+{
+    "jti": "{{ context.constants.TWILIO_API_KEY_SID }}-   {{ now_timestamp }}",
+    "iss": "{{ context.constants.TWILIO_API_KEY_SID }}",
+    "sub": "{{ context.constants.TWILIO_ACCOUNT_SID }}",
+    "nbf": {{ now_timestamp }},
+    "exp": {{ exp_timestamp }},
+    "grants": {
+        "identity": "{{ identity }}",
+        "video": {
+            "room": "{{ room }}"
+        }
+    }
+}
+{%- endparse_json -%}{% endraw %}
+```
+
+### Step 4: Encode the JWT Token
+
+Now we had the variable and payload ready. We could encode payload to a **JWT** token using the [jwt_encode](https://documentation.platformos.com/api-reference/liquid/platformos-filters#jwt_encode) Liquid filter. To do this we needed to know the **Algorithm** to use for encryption (in this case `HS256`), the **Secret** constant we created earlier `context.constants.TWILIO_API_SECRET` and a **Custom Header** of `{"cty": "twilio-fpa;v=1"}` where we again used `parse_json` to create a **Hash** from our JSON.
+
+```Liquid
+{% raw %}{% parse_json headers %}
+{
+"cty": "twilio-fpa;v=1"
+}
+{% endparse_json %}
+
+{{ payload | jwt_encode: 'HS256', context.constants.TWILIO_API_SECRET, headers }}{% endraw %}
+```
+
+### Step 5: JSON authentication
+
+As a last step, we needed to configure the JSON used for authentication that will include our Twilio **JWT** token. 
+    
+For this, Twilio requires `identity` and `token` in JSON format.
+    
+```Liquid
+{% raw %}{"identity":"{{ identity }}","token":"{{ payload | jwt_encode: 'HS256', context.constants.TWILIO_API_SECRET, headers }}"}{% endraw %}
+```
+
+## Results
+
+**In platformOS, we had all the tools we needed** to connect to Twilio's API. No need for man in the middle or third-party tools and scripts that add to the weight of our application and increase the list of topics to learn about. We were able to create a lightweight, server-side rendered and fully customizable integration. Everything we needed, nothing we did not.  
+
+## Read more
+
+- [Twilio's Programmable video](https://www.twilio.com/docs/video)
+- [Twilio - API Key Resources](https://www.twilio.com/docs/iam/keys/api-key-resource)
+- [Twilio - User Identity & Access Tokens](https://www.twilio.com/docs/video/tutorials/user-identity-access-tokens)
+- [platformOS - Form Configuration](/tutorials/forms/forms)
+- [platformOS - CLI](/how-platformos-works/platformos-workflow/pos-cli)
+- [JWT](https://jwt.io/)
+
+## Author information
+
+**Daniel Telfer** 
+Frontend Developer, [Digital Fuel](https://digitalfuel.nz)
