@@ -158,7 +158,9 @@ Here, we were not creating another API Key(Secret) — we were just receiving a 
         {%- log response.body, type: 'info' -%}
     ---
     ```
-
+    
+    {% include 'alert/note', content: 'Logs should be removed from production instances to reduce noise. If absolutely necessary then be sure to add a relevent prefix in the log `type` eg. `type: "myModule - info"`. This will help you find the logs you are looking for.' %}
+    
 5. **View the response**
 
     We clicked the button that submits the form that makes an **API call notification** but what happened to our **API Call Response**? No worries, we just needed to go to the CLI and use the `pos-cli logs <environment>` command to see the response returned as type `info` that we declared in the callback above.
