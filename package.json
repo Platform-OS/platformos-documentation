@@ -5,7 +5,7 @@
   "private": true,
   "repository": "mdyd-dev/nearme-documentation",
   "engines": {
-    "node": ">=8"
+    "node": ">=12"
   },
   "scripts": {
     "postinstall": "node ./scripts/check-node-version.js",
@@ -17,6 +17,10 @@
     "test": "docker run -v $PWD/tests/e2e:/tests -e \"MP_URL=$MP_URL\" -it platformos/testcafe 'testcafe \"chromium:headless --no-sandbox\" /tests'",
     "test-ci": "testcafe 'chromium:headless --no-sandbox' --screenshots-on-fails --screenshots=screenshots tests/e2e",
     "test-local": "npx testcafe \"chrome:headless\" tests/e2e"
+  },
+  "graphdoc": {
+    "output": "./modules/graphql/public/views/pages/api-reference/graphql",
+    "baseUrl": "./"
   },
   "author": "platformOS",
   "homepage": "https://documentation.platformos.com",
@@ -32,6 +36,7 @@
     "babel-loader": "8.0.6",
     "css-loader": "3.4.2",
     "css-mqpacker": "7.0.0",
+    "pos-graphdocs": "^2.6.0",
     "mini-css-extract-plugin": "0.9.0",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
     "postcss": "7.0.26",
