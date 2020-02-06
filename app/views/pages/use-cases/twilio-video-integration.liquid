@@ -149,7 +149,7 @@ Here, we were not creating another API Key(Secret) — we were just receiving a 
     headers: |-
     {%- assign authBasic = context.constants.TWILIO_ACCOUNT_SID | append: ":" | append: context.constants.TWILIO_ACCOUNT_AUTH_TOKEN | base64_encode -%}
         {
-            "Content-Type": "application/json; charset=utf-8",
+            "Content-Type": "application/json",
             "Authorization": "Basic {{ authBasic }}"
         }
     request_type: GET
