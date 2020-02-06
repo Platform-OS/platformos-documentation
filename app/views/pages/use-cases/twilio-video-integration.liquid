@@ -263,7 +263,7 @@ The list below describes all the parameters we needed to fill to create the Toke
 
 ### Step 4: Encode the JWT Token
 
-Now we had the variable and payload ready. We could encode payload to a **JWT** token using the [jwt_encode](https://documentation.platformos.com/api-reference/liquid/platformos-filters#jwt_encode) Liquid filter. To do this we needed to know the **Algorithm** to use for encryption (in this case `HS256`), the **Secret** constant we created earlier `context.constants.TWILIO_API_SECRET` and a **Custom Header** of `{"cty": "twilio-fpa;v=1"}` where we again used `parse_json` to create a **Hash** from our JSON.
+Now we had the variable and payload ready. We could encode payload to a **JWT** token using the [jwt_encode](/api-reference/liquid/platformos-filters#jwt_encode) Liquid filter. To do this we needed to know the **Algorithm** to use for encryption (in this case `HS256`), the **Secret** constant we created earlier `context.constants.TWILIO_API_SECRET` and a **Custom Header** of `{"cty": "twilio-fpa;v=1"}` where we again used `parse_json` to create a **Hash** from our JSON.
 
 ```Liquid
 {% raw %}{% parse_json headers %}
