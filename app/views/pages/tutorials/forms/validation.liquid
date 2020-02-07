@@ -223,8 +223,9 @@ The possible date constraint options are:
 | at_or_before | Must be exactly the datetime or earlier |
 | at_or_after | Must be exactly the datetime or later |
 
-All default error messages are in a format `Datetime is not %s %s` where the first `%s` is validation name (is_at, before etc.) and second `%s` is the argument of this validation.
-If provided argument is not a valid datetime (for example `after: "I am not valid datetime"`), a 501 error is raised and Log is created with Date/Time Validation Error description.
+All default error messages are in a format `Datetime is not %s %s` where the first `%s` is validation name (is_at, before etc.) and the second `%s` is the argument of this validation.
+If the provided argument is not a valid datetime (for example `after: "I am not a valid datetime"`), a 501 error is raised and a Log is created with a Date/Time Validation Error description. 
+
 ### date
 
 ```yaml
