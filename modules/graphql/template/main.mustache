@@ -1,0 +1,42 @@
+<section class="title slds-theme--inverse">
+    <div class="container slds-grid">
+        <div>
+        <button class="slds-button js-toggle-navigation less-than-medium">
+            <i class="material-icons slds-button__icon slds-button__icon--left">menu</i>
+            <span class="slds-text-title--caps">Types</span>
+        </button>
+        </div>
+    </div>
+<%!
+ Only navs varaible is defined:
+ @example:
+    title: String,
+    description: String,
+    sections: [
+        {
+            title: String,
+            description: String
+        }
+
+        -- MORE SECTIONS --
+    ]
+%>
+    <div class="container">
+        <%#type%><p class="slds-text-title--caps slds-text-color--weak"><%type.kind%></p><%/type%>
+        <h1 class="slds-text-heading--large"><%title%></h1>
+        <div class="slds-text-body--regular"><%{description}%></div>
+    </div>
+</section>
+<%#documents%>
+<section>
+    <div class="container">
+        <h2 id="<%#slug%><%title%><%/slug%>" class="graphdoc-section__title slds-text-heading--medium slds-m-top--small">
+            <a href="#<%#slug%><%title%><%/slug%>">
+                <i class="material-icons">#</i>
+            </a>
+            <%title%>
+        </h2>
+        <%{description}%>
+    </div>
+</section>
+<%/documents%>
