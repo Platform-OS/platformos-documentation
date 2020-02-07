@@ -30,19 +30,6 @@ test('Breadcrumbs are showing up', async t => {
   await t.expect(Selector('.breadcrumbs a').withText('Introduction').exists).ok();
 });
 
-test('Images are working fine', async t => {
-  await t.navigateTo('/best-practices/qa/testing');
-  const contentImages = Layout.Content.find('img[src*="assets/image"]');
-
-  const loadedImages = await t.wait(500).eval(() => {
-    const images = Array.prototype.slice.call(document.querySelectorAll('img[src*="assets/image"]'));
-    return images.map(image => image.naturalHeight).filter(height => height > 10);
-  });
-
-  await t.expect(contentImages.count).gte(2);
-  await t.expect(loadedImages.length).gte(3);
-});
-
 test.skip('Contributors are showing up', async t => {
   await t.navigateTo('/how-platformos-works');
 
