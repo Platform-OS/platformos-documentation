@@ -197,6 +197,62 @@ Available options are:
 | odd | Input must be an odd number if set to true | must be odd |
 | even | Input must be an even number if set to true | must be even |
 
+### datetime
+Datetime is a date with exact time, to the second. For example: `Fri Feb 07 15:29:43 2020 UTC`.
+
+ Our system can convert human phrases (for example: `1 hour ago`, `3 hours from now`, `now`, `1 day ago`) to datetime, so you can write them easier.
+ 
+Note: `yesterday` will take yesterdays date at midnight, if you want to preserve time of the day, use `1 day ago`
+```yaml
+my_date:
+  validation:
+    datetime:
+      after: "10 minutes ago"
+      message: "Must not be earlier than 10 minutes ago"
+
+my_date2:
+  validation:
+    datetime:
+      before: "now"
+      message: "Must be in the past"
+```
+
+The possible date constraint options are:
+
+| Validation | Description |
+|-----------|-------------|
+| at | Must be at this exact datetime |
+| before | Must be earlier than provided datetime |
+| after | Must be later than provided datetime |
+| at_or_before | Must be exactly the datetime or earlier |
+| at_or_after | Must be exactly the datetime or later |
+
+All default error messages are in a format `Datetime is not %s %s` where the first `%s` is validation name (is_at, before etc.) and the second `%s` is the argument of this validation.
+If the provided argument is not a valid datetime (for example `after: "I am not a valid datetime"`), a 501 error is raised and a Log is created with a Date/Time Validation Error description. 
+
+### date
+
+```yaml
+my_date:
+  validation:
+    date:
+      after: "1 day from now"
+      message: "Must be at least 1 day in the future"
+```
+
+The possible date constraint options are:
+
+| Validation | Description |
+|-----------|-------------|
+| is_at | Must be at this exact date |
+| before | Must be earlier than provided date |
+| after | Must be later than provided date |
+| on_or_before | Must be exactly the date or earlier |
+| on_or_after | Must be exactly the date or later |
+
+All default error messages are in a format `Date is not %s %s` where the first `%s` is validation name (is_at, before etc.) and second `%s` is the argument of this validation.
+If provided argument is not a valid date (for example `after: "I am not date"`), a 501 error is raised and Log is created with Date/Time Validation Error description.
+
 ## Conditional Validation
 
 It is possible to validate attributes based on the state of other attributes from the form.
