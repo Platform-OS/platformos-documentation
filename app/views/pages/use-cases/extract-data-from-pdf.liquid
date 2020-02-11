@@ -44,28 +44,28 @@ Figure 1: Docparser has vertical lines you can drag around the table columns so 
 
 So we went off to work to see if it would extract the products from the PDFs. Look how easy it was to connect platformOS with DocParser:
 
-<pre class="command-line" data-output="2-50" data-user="user" data-host="host"><code class="language-bash">
+```
 ---
 name: pdf_extract_page
 to: https://v2.convertapi.com/convert/pdf/to/extract?Secret=####
 enabled: true
 format: http
 trigger_condition: >
-  {%- query_graph 'get_file_attachment', result_name: 'g_file', file_id: data.file_id -%}
-  {% if g_file.customizations.results[0].document.content_type contains "pdf" %}true{% else %}false{% endif %}
+  {% raw  %}{%- graphql g_file = 'get_file_attachment', file_id: data.file_id -%}
+  {% if g_file.customizations.results[0].document.content_type contains "pdf" %}true{% else %}false{% endif %}{% endraw  %}
 request_type: POST
 callback: ""
 headers: '{
   "Content-Type": "application/json"
 }'
 ---
-{%- query_graph 'get_file_attachment', result_name: 'g_file', file_id: data.file_id -%}
+{% raw  %}{%- graphql g_file = 'get_file_attachment', file_id: data.file_id -%}{% endraw  %}
 {
     "Parameters": [
         {
             "Name": "File",
             "FileValue": {
-                "Url": "{{g_file.customizations.results.first.document.url | html_safe}}"
+                "Url": "{{ g_file.customizations.results.first.document.url | html_safe }}"
             }
         },
         {
@@ -78,11 +78,13 @@ headers: '{
         }
     ]
 }
-</code></pre>
+```
+
+Note: Replace #### with your secret api key.
 
 With only a few lines of code we can send a PDF to get parsed with platformOS. Then we created a URL to receive the parsed PDF data and add it to the database.
 
-##Results
+## Results
 
 Here's how easy it was for us to extract the product data from the PDF on PlatformOS:
 
@@ -91,11 +93,10 @@ Here's how easy it was for us to extract the product data from the PDF on Platfo
 3. The product data is sent back to our app with a custom endpoint we created
 4. We loop through the data and products get added to our database (with reference to the file they came from)
 
-##Video demo
+## Video demo
 
-I have presented our solution at the platformOS Community Town Hall. Check out our PDF parser in action in this video demo: 
-
-<iframe width="560" height="315" src="https://www.youtube.com/watch?v=fbSxtbbrhNg" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+I have presented our solution at the platformOS Community Town Hall. [Check out our PDF parser in action in this video demo.](
+https://www.youtube.com/watch?v=fbSxtbbrhNg) 
 
 ## Author information
 
