@@ -1,0 +1,105 @@
+---
+converter: markdown
+metadata:
+  title: Extracting Data Out of a PDF
+  description: "This use case describes how we leveraged platformOS and DocParser to extract and import product data from hundreds of PDFs."
+slug: use-cases/extracting-data-out-of-a-pdf
+searchable: true
+---
+
+This use case describes how we leveraged platformOS and DocParser to extract and import product data from hundreds of PDFs.
+
+## Problem / Situation
+
+How do you get hundreds of PDF engine drawings that have product info into your app? 
+
+We knew the users were going to upload all the files... but did they also have to do hundreds of hours of data entry of the products in each PDF?
+
+We didn’t think so. There had to be a way to leverage APIs.
+
+We found there was some consistency with where the product table was in the PDFs. So we went out to search for different APIs we could use to extract the text from the PDF.
+
+## Challenges
+
+First, we took a look at some PDF parser libraries. Our idea was to create a server on Heroku to run the PDF parser and then create an API that we could connect to from platformOS. We tested some out on our computer and soon ran into a problem: 
+
+Extracting the text from the PDF is like a long run-on sentence. The data you get back wasn't easy to work with. It was hard to figure out where the text from one column in the table ended and where it began because of the big text dump.
+
+We also bumped into another problem: Creating an API on Heroku would take time. It adds another layer of complexity to the app and more potential errors that we could run into.
+
+We wanted something much simpler so that all we had to manage was our own codebase in platformOS. Since platformOS already has a way to connect with external APIs this seemed to be the best way forward.
+
+We set out to look for a third-party API we could leverage to do some of the heavy lifting for us.
+
+## Solution
+
+We ended up finding [DocParser](https://docparser.com). (And no, we don't get paid for this endorsement. It's our real-life experience.)
+
+It was like a breath of fresh air. You can build templates on what you want to extract and how to format the data.
+
+Check this out:
+
+![alt text](https://res.cloudinary.com/inthevine/image/upload/v1581360014/x2xiqyjgcgdinmp8mhkd.png "Docparser Screenshot")
+Figure 1: Docparser has vertical lines you can drag around the table columns so it can split the data for you.
+
+So we went off to work to see if it would extract the products from the PDFs. Look how easy it was to connect platformOS with DocParser:
+
+```
+---
+name: pdf_extract_page
+to: https://v2.convertapi.com/convert/pdf/to/extract?Secret=####
+enabled: true
+format: http
+trigger_condition: >
+  {% raw  %}{%- graphql g_file = 'get_file_attachment', file_id: data.file_id -%}
+  {% if g_file.customizations.results[0].document.content_type contains "pdf" %}true{% else %}false{% endif %}{% endraw  %}
+request_type: POST
+callback: ""
+headers: '{
+  "Content-Type": "application/json"
+}'
+---
+{% raw  %}{%- graphql g_file = 'get_file_attachment', file_id: data.file_id -%}{% endraw  %}
+{
+    "Parameters": [
+        {
+            "Name": "File",
+            "FileValue": {
+                "Url": "{{ g_file.customizations.results.first.document.url | html_safe }}"
+            }
+        },
+        {
+            "Name": "StoreFile",
+            "Value": true
+        },
+        {
+            "Name": "PageRange",
+            "Value": "1"
+        }
+    ]
+}
+```
+
+Note: Replace #### with your secret api key.
+
+With only a few lines of code we can send a PDF to get parsed with platformOS. Then we created a URL to receive the parsed PDF data and add it to the database.
+
+## Results
+
+Here's how easy it was for us to extract the product data from the PDF on PlatformOS:
+
+1. Upload a PDF
+2. Have it parsed by DocParser
+3. The product data is sent back to our app with a custom endpoint we created
+4. We loop through the data and products get added to our database (with reference to the file they came from)
+
+## Video demo
+
+I have presented our solution at the platformOS Community Town Hall. [Check out our PDF parser in action in this video demo.](
+https://www.youtube.com/watch?v=fbSxtbbrhNg) 
+
+## Author information
+
+**Ryan Johnson**
+Consultant, [The Lean Optimizer](https://theleanoptimizer.com/web-development)
+We build things to help you automate your business, service customers, and reach new markets.
