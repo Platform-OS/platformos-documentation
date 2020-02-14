@@ -1,16 +1,16 @@
-mutation create_github_client($client_id: String!, $client_secret: String!) {
+mutation create_github_client($username: String!, $password: String!) {
   customization_create(
     form_name: "github_client_form"
     customization: {
       model_schema_name: "github_client"
       properties: [
-        { name: "client_id", value: $client_id }
-        { name: "client_secret", value: $client_secret }
+        { name: "username", value: $username }
+        { name: "password", value: $password }
       ]
     }
   ) {
     id
-    client_secret: property(name: "client_secret")
-    client_id: property(name: "client_id")
+    username: property(name: "username")
+    password: property(name: "password")
   }
 }
