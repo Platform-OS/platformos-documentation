@@ -8,7 +8,7 @@ request_type: GET
 to: |-
   {%- graphql g = "get_github_clients" -%}
   {% assign client = g.models.results.last %}
-  https://{{ client.username }}:{{ client.password }}@api.github.com/repos/mdyd-dev/nearme-documentation/commits?path={{ data.path }}
+  https://{{ client.username }}:{{ client.token }}@api.github.com/repos/mdyd-dev/nearme-documentation/commits?path={{ data.path }}
 trigger_condition: true
 ---
 {}
