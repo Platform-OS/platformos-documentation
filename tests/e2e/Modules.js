@@ -1,6 +1,6 @@
 import { Selector } from 'testcafe';
 
-fixture('Autosteps').page(`${process.env.MP_URL}/get-started/setting-up-site`);
+fixture('Autosteps').page(`${process.env.MP_URL}/tutorials/users/authenticating-user-with-jwt-token`);
 
 test('Are generated and linked', async t => {
   const container = await Selector('[data-autosteps]');
@@ -33,8 +33,8 @@ test('Generated steps have correct text', async t => {
   const firstEl = await container.find('a').nth(0);
   const secondEl = await container.find('a').nth(1);
 
-  await t.expect(firstEl.textContent).eql('Step 1: Create a new Instance');
-  await t.expect(secondEl.textContent).eql('Step 2: Get confirmation email');
+  await t.expect(firstEl.textContent).eql('Step 1: Fetch JWT token for a user');
+  await t.expect(secondEl.textContent).eql('Step 2: Create a page with a policy that checks the JWT token');
 });
 
 
@@ -51,26 +51,12 @@ test('Is generated', async t => {
   await t.expect(secondEl.textContent).eql('Number');
 });
 
-fixture('Syntax highlighting').page(`${process.env.MP_URL}/get-started/quickstart-guide`);
+fixture('Syntax highlighting').page(`${process.env.MP_URL}/tutorials/users/authenticating-user-with-jwt-token`);
 
 test('Is working', async t => {
   await t.expect(Selector('span.token').exists).ok();
   await t.expect(Selector('span.operator').exists).ok();
 });
-
-// I have no idea why it doesnt work. Doesnt detect target but does other atrs.
-// fixture.skip('External links').page(process.env.MP_URL);
-
-// test('Have target and rel attributes', async t => {
-//   const blogLink = await Selector('a').withText('Blog');
-
-//   console.log(await blogLink.getAttribute('href'));
-//   console.log(await blogLink.getAttribute('target'));
-
-//   await t.expect(await blogLink.withAttribute('target', '_blank').exists).ok();
-//   await t.expect(await blogLink.withAttribute('rel', 'external').exists).ok();
-//   await t.expect(await blogLink.withAttribute('rel', 'noopener').exists).ok();
-// });
 
 fixture('Deep links').page(`${process.env.MP_URL}/get-started/quickstart-guide`);
 
