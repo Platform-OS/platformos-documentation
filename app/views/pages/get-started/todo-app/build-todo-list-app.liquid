@@ -1,0 +1,718 @@
+---
+converter: markdown
+metadata:
+  title: Build a ToDo List App
+  description:
+slug: get-started/todo-app/build-todo-list-app
+---
+
+**Build a ToDo List App** is the second part of our Get Started guide that walks you through the steps of creating a ToDo List app on platformOS from setting up your development environment to deploying and testing your finished app. It explains basic concepts, main building blocks, and the logic behind platformOS, while also giving you some recommendations on workflow.
+
+## Preview
+
+You can [preview](https://todo-app-dev.staging.oregon.platform-os.com/) the completed application you will be building based on this tutorial. Open this page and get yourself familiar with it — It will make it easier to imagine everything that will be described below.
+
+## Prerequisites
+
+The **ToDo App** will use a couple of basic building blocks available in platformOS:
+
+- Models with simple one-to-many relation
+- GraphQL Queries with basic filtering and sorting
+- GraphQL Mutations to update your database
+- Liquid filters
+- Liquid tags
+- Pages accepting GET, POST requests
+- Query parameters parsing
+- Static assets
+
+Knowing most of the concepts will help you quickly understand what's going on. Knowledge of general web development concepts will also be helpful.
+
+## Frontend technology stack
+
+For ease and speed of development a couple of tools have been used in this project.
+
+- [Skeleton](http://getskeleton.com/) - Minimalistic CSS boilerplate
+- [TailwindCSS](https://tailwindcss.com/) - A utility-first CSS framework for rapidly building custom designs
+- [Alpine.js](https://github.com/alpinejs/alpine) - A minimal framework for composing JavaScript behavior in your markup
+
+If you see HTML code snippets that contain some data attributes or enigmatic CSS classes, those are TailwindCSS and Alpine.js in action. The functionality will work just fine without them, but we wanted to show a more user friendly experience without using heavy JavaScript frameworks.
+
+## Application functionality
+
+It is a good practice to write down exactly what you want to build before you start writing your first line of code. This will help you in multiple ways, but most importantly, it will allow you to follow a plan when implementing, which translates to saving a lot of time and avoiding distractions.
+
+Your ToDo App will allow users to:
+
+<div data-autosteps></div>
+
+And this is the order in which you will be implementing the application. Additionally, you will create GraphQL operations first, then pages that will trigger them.
+
+## File structure
+
+The flexibility of platformOS allows you to merge a lot of these files, but for educational purposes we kept them all separate and categorized in resource-named directories (list, item).
+
+This is what the file structure looks like for this particular application:
+
+```shell
+ app
+ ├── assets
+ │   ├── css
+ │   │   └── app.css
+ │   └── js
+ │       └── app.js
+ ├── graphql
+ │   ├── index.graphql
+ │   ├── item
+ │   │   ├── item_create.graphql
+ │   │   ├── item_delete.graphql
+ │   │   ├── item_read.graphql
+ │   │   ├── item_update_completed.graphql
+ │   │   └── item_update_content.graphql
+ │   └── list
+ │       ├── list_create.graphql
+ │       ├── list_delete.graphql
+ │       ├── list_read.graphql
+ │       └── list_update.graphql
+ ├── model_schemas
+ │   ├── item.yml
+ │   └── list.yml
+ └── views
+     ├── layouts
+     │   └── application.liquid
+     └── pages
+         ├── home.liquid
+         ├── item
+         │   ├── create.liquid
+         │   ├── delete.liquid
+         │   └── update.liquid
+         └── list
+             ├── create.liquid
+             ├── delete.liquid
+             ├── show.liquid
+             └── update.liquid
+```
+
+## Defining models
+
+To have a list, which contains items, you will need two models.
+
+1. List, with a title
+2. Item, with content, completed status and list ID that specifies which list it belongs to
+
+There are also some built-in fields that you do not have to define yourself, like `created_at`, `deleted_at`, `updated_at`, and `id`. They are populated automatically in the object lifecycle.
+
+## Developing GraphQL queries and mutations
+
+To develop GraphQL queries we strongly recommend using our `pos-cli gui serve [environment]` tool. This will open the GraphiQL tool which speeds up development a lot. It has autocomplete, built-in documentation, live feedback and many more useful features.
+
+<img src="{{ 'images/get-started/graphiql.png' | asset_url }}" alt="Screenshot of GraphiQL" />
+
+*GraphiQL demonstration*
+
+After you have tested a query and it has proven to work with hardcoded parameters, you can safely copy it to a target file and reference it using the `graphql` Liquid tag.
+
+For example:
+
+`graphql/list/list_create.graphql` will be referenced this way: `{% graphql result = 'list_create', title: title %}`
+
+### Layout and homepage
+
+Before you start implementing features, you need some ground work. A basic layout and a homepage should be enough to create the form to create a new list.
+
+#### app/views/layouts/application.liquid
+
+{% raw %}
+```liquid
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<title>TODO</title>
+<link rel="stylesheet" href="{{ 'css/app.css' | asset_url }}">
+<style> form, input { margin: 0; } </style>
+<script src="{{ 'js/app.js' | asset_url }}" defer></script>
+</head>
+
+<body>
+
+<div class="container">
+  <p class="mt-8 button">
+    🏠 <a href="/" class="text-2xl">Todoleo <small class="text-gray-500">beta</small></a>
+  </p>
+
+  {{ content_for_layout }}
+</div>
+</body>
+</html>
+```
+{% endraw %}
+
+#### app/views/pages/home.liquid
+
+```liquid
+Hello world
+```
+
+Now when you go to the root URL of your Instance, you will see `Hello world`. Now you have a place to put your content.
+
+### Model schema
+
+To create an object in the Database you need to define its structure. In this case you need two models.
+
+#### model_schemas/list.yml
+
+```yaml
+name: list
+properties:
+  - name: title
+    type: string
+```
+#### model_schemas/item.yml
+
+```yaml
+name: item
+properties:
+  - name: list_id
+    type: string
+  - name: content
+    type: string
+  - name: completed
+    type: boolean
+```
+Item needs the list_id field to be able to relate it to a list when querying for list items.
+
+### Create new list
+
+All database operations in this application follow the same structure and have the same parts:
+
+1) GraphQL mutation
+
+2) Page that accepts parameters and forwards them to GraphQL
+
+3) HTML form that sends data to a page
+
+#### graphql/list/list_create.graphql
+
+```graphql
+ mutation create($title: String!) {
+   model_create(
+     model: {
+       model_schema_name: "list"
+       properties: { name: "title", value: $title }
+     }
+   ) {
+     id
+   }
+ }
+```
+
+#### views/pages/list/create.liquid
+
+{% raw %}
+```liquid
+---
+method: post
+---
+{%- assign title = context.params.title -%}
+
+{% graphql result = 'list_create', title: title %}
+{% assign list = result | fetch: "model_create" %}
+
+{% if list.id %}
+<script>window.location.href = '/list/show/{{ list.id }}';</script>
+{% else %}
+Something went wrong :(
+<br>
+{{ result.errors }}
+{% endif %}
+```
+{% endraw %}
+
+`method: post` allows you to accept post requests.
+
+You are creating a list with a given title and using JavaScript to redirect the user to this list if there were no errors. If there is an error, the user will see an error returned by GraphQL. In a real application, you might want to handle this better.
+
+#### views/pages/home.liquid
+
+```liquid
+<form
+  action="/list/create"
+  method="POST"
+  x-show="open === true">
+
+  <input type="text" name="title" placeholder="List title" required>
+
+  <button class="button-primary">Create</button>
+</form>
+```
+
+The form action corresponds to the file location of the page from point 2. The page file is located in `pages/list/create.liquid` and its method is set to accept post, so you are sending a post request to the `/list/create` path. You also need to send the `title` field required by GraphQL, so you use `input` with `type text` and validate its existence client-side by adding the `required` attribute.
+
+You can see a lot of data attributes (like `x-data`, `x-show`, `@click`) which are non standard. Those are *Alpine.js* directives that allow you to quickly add basic interactivity in HTML markup. No build process necessary. It is a perfect tool for this use case.
+
+### View all lists
+
+Now that you can create a list with a title, show the latest 10 of them on your homepage, sorted by recently updated (title changed).
+
+#### graphql/index.graphql
+
+```graphql
+ query index {
+   models(
+     per_page: 10
+     filter: {
+       model_schema_name: { value: "list" }
+       deleted_at: { exists: false }
+       properties: { name: "title", exists: true }
+     }
+     sort: { updated_at: { order: ASC } }
+   ) {
+     results {
+       id
+       title: property(name: "title")
+     }
+   }
+ }
+```
+
+#### views/pages/home.liquid
+
+{% raw %}
+```liquid
+ {% graphql lists = 'index' | fetch: 'models' | fetch: 'results' %}
+
+ {% if lists.size > 0 %}
+   <ol>
+     {% for list in lists %}
+       <li>
+         <a href="/list/show/{{ list.id }}">{{ list.title }}</a>
+       </li>
+     {% endfor %}
+   </ol>
+ {% else %}
+   <p>There are no lists yet. You can create the first one!</p>
+ {% endif %}
+```
+{% endraw %}
+
+You iterate over the array returned by GraphQL and inform the user that there is nothing to show if the array is empty.
+
+### Show list
+
+Now that you have a link pointing to `/list/show/{{ list.id }}`, you need to create this page to be able to show a particular list.
+
+#### graphql/list/list_read.graphql
+
+```graphql
+ query read($id: ID!) {
+   models(
+     per_page: 1
+     filter: {
+       model_schema_name: { value: "list" }
+       id: { value: $id }
+     }
+   ) {
+     results {
+       id
+       title: property(name: "title")
+     }
+   }
+ }
+```
+
+#### views/pages/list/show.liquid
+
+{% raw %}
+```liquid
+ {%- assign id = context.params.slug3 -%}
+ {% graphql list = 'list_read', id: id | fetch: 'models' | fetch: 'results' | first %}
+
+ <h2 class="mr-10 mb-0">{{ list.title }}</h2>
+```
+{% endraw %}
+
+These couple of lines of code pull the correct list object from the database and shows its title.
+
+### Rename list
+
+To rename a list, you need to update its title field. As usual, you need a GraphQL mutation, a page, and a form.
+
+#### graphql/list/list_update.graphql
+
+```graphql
+ mutation update($id: ID!, $title: String!) {
+   model_update(
+     id: $id
+     model: { properties: { name: "title", value: $title } }
+   ) {
+     id
+     title: property(name: "title")
+   }
+ }
+```
+
+Note that ID is required as well, because you have to tell the system which list has to be modified.
+
+#### views/pages/list/update.liquid
+
+{% raw %}
+```liquid
+ ---
+ method: post
+ ---
+ {%- assign id = context.params.slug3 -%}
+ {%- assign title = context.params.title -%}
+
+ {% graphql result = 'list_update', id: id, title: title %}
+ {% assign list = result | fetch: "model_update" %}
+
+ {% if list.id %}
+ <script>window.location.href = '/list/show/{{ id }}';</script>
+ {% else %}
+ Something went wrong :(
+ <br>
+ {{ result.errors }}
+ {% endif %}
+```
+{% endraw %}
+
+Errors are handled the same way as previously.
+
+#### views/pages/list/show.liquid
+
+{% raw %}
+```liquid
+<form
+  method="POST"
+  action="/list/update/{{ list.id }}"
+  x-show="open === true"
+  class="w-full flex mt-4">
+
+  <input type="text" name="title" placeholder="New title" value="{{ list.title }}" class="w-2/3" required>
+
+  <button class="button-primary ml-2">Save</button>
+</form>
+```
+{% endraw %}
+
+Code for renaming a list is in the `list/show.liquid` page, that's why you have access to `{% raw %}{{ list.id }}{% endraw %}`.
+
+### Delete empty list
+
+Because you did not connect any tasks to your lists, all of them are empty. This means you can easily implement a delete feature.
+
+#### graphql/list/list_delete.graphql
+
+```graphql
+ mutation delete($id: ID!) {
+   model_delete(id: $id) {
+     id
+   }
+ }
+```
+
+#### views/pages/list/delete.liquid
+
+{% raw %}
+```liquid
+ ---
+ method: post
+ ---
+ {%- assign id = context.params.slug3 -%}
+
+ {% graphql result = 'list_delete', id: id %}
+ {% assign list = result | fetch: "model_delete" %}
+
+ {% if list.id %}
+ <script>window.location.href = '/';</script>
+ {% else %}
+ Something went wrong :(
+ <br>
+ {{ result.errors }}
+ {% endif %}
+```
+{% endraw %}
+
+After deleting a list, the user will be redirected to the homepage.
+
+#### views/pages/list/show.liquid
+
+{% raw %}
+```liquid
+ {% if items.size > 0 %}
+ ...
+ {% else %}
+
+ <p>
+   Because this list is empty, you can remove it.
+ </p>
+
+ <form action="/list/delete/{{ list.id }}" method="POST">
+   <button>Delete</button>
+ </form>
+
+ {% endif %}
+```
+{% endraw %}
+
+You show the delete form only when there are no tasks associated with the list.
+
+### Create task
+
+Now that you have all your list operations ready, start handling items.
+
+#### graphql/item/item_create.graphql
+
+```graphql
+ mutation create($list_id: String!, $content: String!) {
+   model_create(
+     model: {
+       model_schema_name: "item"
+       properties: [
+         { name: "list_id", value: $list_id }
+         { name: "content", value: $content }
+       ]
+     }
+   ) {
+     id
+     list_id: property(name: "list_id")
+     content: property(name: "content")
+   }
+ }
+```
+
+#### views/pages/item/create.liquid
+
+{% raw %}
+```liquid
+ ---
+ method: post
+ ---
+ {%- assign list_id = context.params.slug3 -%}
+ {%- assign content = context.params.content -%}
+
+ {% graphql result = 'item_create', list_id: list_id, content: content %}
+ {% assign item = result | fetch: "model_create" %}
+
+ {% if item.id %}
+ <script>window.location.href = '/list/show/{{ list_id }}';</script>
+ {% else %}
+ Something went wrong :(
+ <br>
+ {{ result.errors }}
+ {% endif %}
+```
+{% endraw %}
+
+To create a task attached to a list, you need the list's ID. It is passed in the URL and accessed as `context.params.slug3`. After creation, the user is redirected back to the list.
+
+#### views/pages/list/show.liquid
+
+{% raw %}
+```liquid
+<form
+  action="/item/create/{{ list.id }}"
+  method="POST"
+  x-show="open === true">
+
+  <input type="text" name="content" placeholder="Your task" required>
+
+  <button class="button-primary">Create</button>
+</form>
+```
+{% endraw %}
+
+### Mark task as complete
+
+#### graphql/item/item_update_completed.graphql
+
+```graphql
+ mutation update($id: ID!, $completed: Boolean!) {
+   model_update(
+     id: $id
+     model: {
+       properties: [
+         { name: "completed", value_boolean: $completed }
+       ]
+     }
+   ) {
+     id
+   }
+ }
+```
+
+#### views/pages/item/update.liquid
+
+{% raw %}
+```liquid
+ ---
+ method: post
+ ---
+ {%- assign id = context.params.slug3 -%}
+
+ {% if context.params.completed %}
+   {%- assign completed = context.params.completed | matches: '1' -%}
+   {% graphql result = 'item_update_completed', id: id, completed: completed %}
+ {% endif %}
+
+ {% assign item = result | fetch: "model_update" %}
+
+ {% if item.id %}
+ <script>window.location.href = '/list/show/{{ context.params.list_id }}';</script>
+ {% else %}
+ Something went wrong :(
+ <br>
+ {{ result.errors }}
+ {% endif %}
+```
+{% endraw %}
+
+GraphQL is expecting Boolean, so you need to convert "1" to true. If the completed parameter doesn't have "1" inside of it, the completed variable will resolve to false, and the task will be marked as uncompleted.
+
+#### views/pages/list/show.liquid
+
+{% raw %}
+```liquid
+<form
+ action="/item/update/{{ item.id }}"
+ method="POST"
+ class="text-center">
+
+ <input type="hidden" name="completed" value="0">
+ <input
+   type="checkbox"
+   name="completed"
+   value="1"
+   onchange="this.form.submit()"
+   class="w-8 h-8"
+   {% if item.completed == true %}checked{% endif %}
+ />
+ <input type="hidden" name="list_id" value="{{ list.id }}">
+</form>
+```
+{% endraw %}
+
+Knowledge of HTML forms and tricks around them helps keep your code clean here.
+
+To have two states using checkbox, you are sending a "0" value to the server (hidden field). If the user checks the checkbox (note: the same name, "completed". Unchecked checkbox value is not sent), then the last input of that particular name takes precedence.
+
+This means: If a form is submitted when the checkbox is checked, the value from the checkbox is sent (completed: "1"). If the user did not check the checkbox (or unchecked it), the value of the hidden field is sent (completed: "0").
+
+Additionally, you submit the form as soon as the user checks/unchecks the checkbox using the `onchange` attribute and a little JavaScript, so a submit button is not necessary.
+
+### Edit a task's content
+
+#### graphql/item/item_update_content.graphql
+
+```graphql
+ mutation update($id: ID!, $content: String!) {
+   model_update(
+     id: $id
+     model: {
+       properties: [
+         { name: "content", value: $content }
+       ]
+     }
+   ) {
+     id
+   }
+ }
+```
+
+#### views/pages/item/update.liquid
+
+{% raw %}
+```liquid
+ ---
+ method: post
+ ---
+ {%- assign id = context.params.slug3 -%}
+ {%- assign content = context.params.content -%}
+
+ {% if content.size > 0 %}
+   {% graphql result = 'item_update_content', id: id, content: content %}
+ {% endif %}
+
+ {% assign item = result | fetch: "model_update" %}
+
+ {% if item.id %}
+ <script>window.location.href = '/list/show/{{ context.params.list_id }}';</script>
+ {% else %}
+ Something went wrong :(
+ <br>
+ {{ result.errors }}
+ {% endif %}
+```
+{% endraw %}
+
+You might have noticed that the above filename is the same as in the one in the previous step. Because it is, we just separated it for the purposes of this tutorial, but in source code and in real application, both updates are handled in the same page, using one if statement.
+
+#### views/pages/list/show.liquid
+
+{% raw %}
+```liquid
+<form
+ method="POST"
+ action="/item/update/{{ item.id }}"
+ x-show="open === true"
+ class="flex w-full">
+
+  <input type="text" name="content" value="{{ item.content }}" required class="w-1/2" />
+  <input type="hidden" name="list_id" value="{{ list.id }}">
+
+ <button class="button-primary ml-2">save</button>
+</form>
+```
+{% endraw %}
+
+### Delete a task
+
+#### graphql/item/item_delete.graphql
+
+```graphql
+ mutation delete($item_id: ID!) {
+   model_delete(id: $item_id) {
+     id
+   }
+ }
+```
+
+#### views/pages/item/delete.liquid
+
+{% raw %}
+```graphql
+ ---
+ method: post
+ ---
+ {%- assign item_id = context.params.slug3 -%}
+ {%- assign list_id = context.params.list_id -%}
+
+ {% graphql result = 'item_delete', item_id: item_id %}
+ {% assign item = result | fetch: "model_delete" %}
+
+ {% if item.id %}
+ <script>window.location.href = '/list/show/{{ list_id }}';</script>
+ {% else %}
+ Something went wrong :(
+ <br>
+ {{ result.errors }}
+ {% endif %}
+```
+{% endraw %}
+
+#### views/pages/list/show.liquid
+
+{% raw %}
+```liquid
+<form action="/item/delete/{{ item.id }}" method="POST">
+  <input type="hidden" name="list_id" value="{{ list.id }}">
+  <button>delete</button>
+</form>
+```
+{% endraw %}
+
+By now you are probably familiar with the steps required.
+
+## Source code
+
+Take a look at the [source code](https://github.com/mdyd-dev/todo-app). Feel free to clone it, deploy it to your own Instance, and modify/extend it to build your own practical skillset on platformOS.
