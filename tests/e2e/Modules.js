@@ -23,7 +23,7 @@ test('Generate as many links as there are headings with steps', async t => {
   const generatedLinks = await container.find('a');
 
   await t.expect(await stepHeadings.count).eql(await generatedLinks.count);
-  await t.expect(await stepHeadings.count).eql(2);
+  await t.expect(await stepHeadings.count).eql(3);
 });
 
 
