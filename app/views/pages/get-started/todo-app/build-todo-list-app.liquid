@@ -92,7 +92,7 @@ This is what the file structure looks like for this particular application:
              └── update.liquid
 ```
 
-## Defining models
+### Defining models
 
 To have a list, which contains items, you will need two models.
 
@@ -181,7 +181,7 @@ properties:
 ```
 Item needs the list_id field to be able to relate it to a list when querying for list items.
 
-### Create new list
+### Step 1: Create new list
 
 All database operations in this application follow the same structure and have the same parts:
 
@@ -250,7 +250,7 @@ The form action corresponds to the file location of the page from point 2. The p
 
 You can see a lot of data attributes (like `x-data`, `x-show`, `@click`) which are non standard. Those are *Alpine.js* directives that allow you to quickly add basic interactivity in HTML markup. No build process necessary. It is a perfect tool for this use case.
 
-### View all lists
+### Step 2: View all lists
 
 Now that you can create a list with a title, show the latest 10 of them on your homepage, sorted by recently updated (title changed).
 
@@ -297,7 +297,7 @@ Now that you can create a list with a title, show the latest 10 of them on your 
 
 You iterate over the array returned by GraphQL and inform the user that there is nothing to show if the array is empty.
 
-### Show list
+### Step 3: Show list
 
 Now that you have a link pointing to `/list/show/{{ list.id }}`, you need to create this page to be able to show a particular list.
 
@@ -333,7 +333,7 @@ Now that you have a link pointing to `/list/show/{{ list.id }}`, you need to cre
 
 These couple of lines of code pull the correct list object from the database and shows its title.
 
-### Rename list
+### Step 4: Rename list
 
 To rename a list, you need to update its title field. As usual, you need a GraphQL mutation, a page, and a form.
 
@@ -397,7 +397,7 @@ Errors are handled the same way as previously.
 
 Code for renaming a list is in the `list/show.liquid` page, that's why you have access to `{% raw %}{{ list.id }}{% endraw %}`.
 
-### Delete empty list
+### Step 5: Delete empty list
 
 Because you did not connect any tasks to your lists, all of them are empty. This means you can easily implement a delete feature.
 
@@ -457,7 +457,7 @@ After deleting a list, the user will be redirected to the homepage.
 
 You show the delete form only when there are no tasks associated with the list.
 
-### Create task
+### Step 6: Create task
 
 Now that you have all your list operations ready, start handling items.
 
@@ -522,7 +522,7 @@ To create a task attached to a list, you need the list's ID. It is passed in the
 ```
 {% endraw %}
 
-### Mark task as complete
+### Step 7: Mark task as complete
 
 #### graphql/item/item_update_completed.graphql
 
@@ -600,7 +600,7 @@ This means: If a form is submitted when the checkbox is checked, the value from 
 
 Additionally, you submit the form as soon as the user checks/unchecks the checkbox using the `onchange` attribute and a little JavaScript, so a submit button is not necessary.
 
-### Edit a task's content
+### Step 8: Edit a task's content
 
 #### graphql/item/item_update_content.graphql
 
@@ -665,7 +665,7 @@ You might have noticed that the above filename is the same as in the one in the 
 ```
 {% endraw %}
 
-### Delete a task
+### Step 9: Delete a task
 
 #### graphql/item/item_delete.graphql
 
