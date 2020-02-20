@@ -12,8 +12,13 @@ metadata:
 {%- assign response = api.api_call_send.response.body | to_hash -%}
 {%- assign authors = response | map: "author" -%}
 
-<ul>
-{% for author in authors %}
-  <li><img src="{{author.avatar_url}}" width="120px" height="120px"/>{{author.login}}</li>
-{% endfor %}
-</ul>
+<div id="contributors-page">
+  <ul>
+  {% for author in authors %}
+    <li>
+      <img src="{{author.avatar_url}}" alt="{{author.login}} avatar" width="120px" height="120px" class="contributor-avatar"/>
+      <span class="contributor-name"><a href="{{author.html_url}}">{{author.login}}</a></span>
+    </li>
+  {% endfor %}
+  </ul>
+</div>
