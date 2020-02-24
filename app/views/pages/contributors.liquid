@@ -18,7 +18,11 @@ static_cache:
   <ul>
   {% for author in authors %}
     <li>
-      <img src="{{author.avatar_url}}&s=120" alt="{{author.login}} avatar" width="120px" height="120px" class="contributor-avatar"/>
+      {% comment %}
+        Github uses round robin to choose CDN. This causes N different SSL handshakes. Breaks browsers cache (SIC).
+      {% endcomment %}
+      {% assign avatar_url = "https://avatars0.githubusercontent.com/u/" | append: author.id | append: "?v=4&s=120" %}
+      <img src="{{avatar_url}}" alt="{{author.login}} avatar" width="120px" height="120px" class="contributor-avatar"/>
       <span class="contributor-name"><a href="{{author.html_url}}">{{author.login}}</a></span>
     </li>
   {% endfor %}
