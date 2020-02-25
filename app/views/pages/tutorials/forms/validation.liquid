@@ -118,44 +118,6 @@ custom_attachments:
           - application/vnd.ms-excel
 ```
 
-### file_extension
-
-Validation of file extension uploaded as `custom_attachment`:
-
-Example:
-
-```yaml
-custom_attachments:
-  document:
-    file:
-      validation:
-        file_extension:
-          allow:
-          - .doc
-          - .docx
-```
-
-
-### file_size
-
-file_size validation makes it possible to validate image size in Bytes. Available options are:
-`less_than`, `greater_than`, 'greater_than_or_equal_to', 'less_than_or_equal_to'.
-
-Example:
-
-```yml
-custom_images:
-  main_image:
-    image:
-      validation:
-        file_content_type:
-          allow: ['image/jpeg', 'image/png', 'image/gif']
-        file_size:
-          less_than: 3145728
-          message: "image size must be less than 3MB"
-```
-
-
 ### length
 
 ```yaml
@@ -201,7 +163,7 @@ Available options are:
 Datetime is a date with exact time, to the second. For example: `Fri Feb 07 15:29:43 2020 UTC`.
 
  Our system can convert human phrases (for example: `1 hour ago`, `3 hours from now`, `now`, `1 day ago`) to datetime, so you can write them easier.
- 
+
 Note: `yesterday` will take yesterdays date at midnight, if you want to preserve time of the day, use `1 day ago`
 ```yaml
 my_date:
@@ -228,7 +190,7 @@ The possible date constraint options are:
 | at_or_after | Must be exactly the datetime or later |
 
 All default error messages are in a format `Datetime is not %s %s` where the first `%s` is validation name (is_at, before etc.) and the second `%s` is the argument of this validation.
-If the provided argument is not a valid datetime (for example `after: "I am not a valid datetime"`), a 501 error is raised and a Log is created with a Date/Time Validation Error description. 
+If the provided argument is not a valid datetime (for example `after: "I am not a valid datetime"`), a 501 error is raised and a Log is created with a Date/Time Validation Error description.
 
 ### date
 
@@ -276,7 +238,7 @@ customizations:
   expertise:
     validation:
       presence:
-        message: record is required.
+        message: Expertise is required.
 ```
 
 ### allow_nil
