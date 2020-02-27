@@ -8,7 +8,12 @@ slug: best-practices/gdpr/gdpr-compliance
 
 The [General Data Protection Regulation (GDPR)](http://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32016R0679&from=EN) sets data protection and privacy guidelines for handling personal data of individuals within the European Union (EU). As such, it applies not only to all organizations established in the EU that handle personal data but also to any non-EU established organization that processes personal data of individuals who are in the EU. The GDPR came into force on 25 May 2018.
 
-**platformOS conforms with GDPR.** By design, it’s a technology framework built with the flexibility to adapt to any compliance standard. With many other standards in effect and new ones pending, this adaptability is key to ensuring long-term adherence to standards and regulations.
+**platformOS conforms with GDPR.** 
+
+By design, it’s a technology framework built with the flexibility to adapt to any compliance standard. With many other standards in effect and new ones pending, this adaptability is key to ensuring long-term adherence to standards and regulations.
+
+platformOS approaches GDPR as just one of many compliance requirements. GDPR-like laws are being enforced in California, and variations of it in different jurisdictions. We aren't only complying with GDPR and hard coding those rules but ensure that platformOS can easily add any number of government legislated privacy rules. We made platformOS flexible to adhere to any legislation in any country. 
+
 
 ## Definitions
 
@@ -70,11 +75,17 @@ You can use the same form with slight modifications to gather and update data: u
 
 ## Data erasure
 
-You are only allowed to store personal information for the required amount of time—then you have to take measures to securely erase it.
+You are only allowed to store personal information for the required amount of time, then you have to take measures to securely erase it. You also have to erase data if you receive a valid erasure request. 
 
-When complying to the data erasure requirement, the main goal is to delete the personal data from production systems (live site). You should make sure to explain that the data may be stored in backup archives, that must be kept for a longer period of time. You have to ensure that data in backup archives is encrypted, and won’t be restored. You should also inform the users about how long you will retain the data in the backup. In platformOS, we keep backup archives for 7 days as a default.
+### Erasing data from backup archives 
 
-In platformOS, you can build your own data erasure solution using Models, GraphQL and Liquid: you can use a third-party API encryption service against our endpoint, and flag sensitive data for later deletion.
+When complying to the data erasure requirement, the main goal is to delete the personal data from production systems (live site). You should make sure to explain that the data may be stored in backup archives, that must be kept for a longer period of time.
+
+If you cannot immediately overwrite the backup data, you have to put it "beyond use". You have to ensure that data in backup archives is encrypted, and won’t be restored. You should also inform the users about how long you will retain the data in the backup. 
+
+{% include 'alert/note', content: 'In platformOS, we keep backup archives for 30 days as a default.' %}
+
+In platformOS, we have soft delete as a safety option for the most critical cases, but if you want to have a backup and restore functionality other than what we offer, you can implement your own feature. You can build your own data erasure solution using Models, GraphQL and Liquid: you can use a third-party API encryption service against our endpoint, and flag sensitive data for later deletion. 
 
 ## Getting consent
 
@@ -230,6 +241,8 @@ platformOS Partners can implement a cookie notification in many ways, for exampl
 The regulation expects data controllers to ensure the security of personal data. This means you should use some kind of encryption (e.g. SSL), and implement digital security measures. You should have the ability to recover and restore data from a disaster and implement a workflow for regular testing of security issues.
 
 You have to consider data breaches and their consequences, have a data breach response plan that ensures you can inform your users about the data breach promptly, and report the data breach to your supervisory authority in less than 72 hours.
+
+
 
 We use [Amazon Elastic Compute Cloud (Amazon EC2)](https://aws.amazon.com/ec2/) as server infrastructure, and [Amazon Simple Storage Service (Amazon S3)](https://aws.amazon.com/s3/) for data storage. All AWS services including these are GDPR compliant, learn more about them in detail in their [GDPR Center](https://aws.amazon.com/compliance/gdpr-center/).
 
