@@ -1,0 +1,177 @@
+---
+converter: markdown
+metadata:
+  title: Loading Related Models From an Array Property
+  description: This guide will help you load related models from array property while avoiding n+1.
+slug: developer-guide/models/loading-related-models-from-array
+---
+
+The `related models` graphql argument can be a really powerful tool that allows you to quickly build flexible structures.
+Using `foreign_property` along with `join_on_property` you can define relationships on the fly and load any nested data within a single query.
+
+We extended the scope of the `join_on_property` and now it also accepts and resolves queries with the property of array type.
+
+In this tutorial, you will learn how `join_on_property` can be used based on a real scenario.
+
+You will use the new function to build a homepage that presents 3 lists:
+- most popular programmers
+- most valuable programmers
+- and most popular companies
+
+One way of solving this is to create three queries and calculate what to display each time the page is accessed. But this is not recommended, at least on the homepage, as it is the very first page of our site. We have to make sure it loads as quickly as possible.
+Moreover, pages based on live queries are hard to customize - imagine you want to add one extra record to be displayed which is not accessible by the query. Then create next query... oh wait. Why is the page so slow?
+
+You need to figure out something better - you need an extra structure.
+
+## Requirements
+
+This is an advanced tutorial. To follow it, you should be familiar with Model Schemas, Properties, and Loding Related Models
+
+* [Models and Model Schemas](/developer-guide/models/models-model-schemas)
+* [Properties](/developer-guide/properties/properties)
+* [Loading Related Models](/developer-guide/models/loading-related-models)
+
+## Steps
+
+Loading related models form an array property following this scenario is a four-step process:
+
+<div data-autosteps></div>
+
+### Step 1: Create model type
+
+Create a special model type `ranking`.
+
+```graphql
+name: ranking
+properties:
+  - name: name
+    type: string
+
+  - name: company_ids
+    type: array
+    belongs_to: company
+
+  - name: vip_programmer_ids
+    type: array
+    belongs_to: programmer
+
+  - name: featured_programmer_ids
+    type: array
+    belongs_to: programmer
+```
+
+It consists of three properties of the type array which will serve as cache containers of the homepage lists.
+[parameter `belongs_to` is currently only used during import/export operations]
+
+### Step 2: Create first record
+
+Now create the first record of the `ranking` model schema that executes the following query:
+
+```graphql
+mutation createRanking {
+  model_create(
+    model: {
+      model_schema_name: "ranking"
+    }
+  ) {
+    id
+  }
+}
+```
+
+### Step 3: Populate ranking record
+
+You are now ready to populate the ranking record.
+
+```graphql
+mutation updateModel($companies: [String], $vips: [String], $featured: [String]) {
+  model_update(
+    id: 167655
+    model: {
+      properties: [
+        {
+          name: "company_ids",
+          value_array: $companies
+        },
+        {
+          name: "vip_programmer_ids"
+          value_array: $vips
+        },
+        {
+          name: "featured_programmer_ids",
+          value_array: $featured
+        }
+      ]
+  }) {
+    id
+  }
+}
+```
+
+Alternatively, you can add a single ID to a specific field with the following query:
+
+```graphql
+mutation updateModel($name: String!, $id: String) {
+  model_update(
+    id: 167655
+    model: {
+      properties: [
+        { name: $name, array_append: $id }
+      ]
+  }) {
+    id
+    property_array(name: $name)
+  }
+}
+```
+
+If you want to remove an element from an array use: `array_remove`.
+
+### Step 4: Fetch ranking record
+
+Finally you are ready to fetch the ranking record.
+
+```graphql
+query rankings {
+  rankings: models(
+    per_page: 1,
+    sort: {
+      created_at: { order: DESC }
+    },
+    filter: {
+      name: { value: "ranking" }
+    }
+  ) {
+    results {
+      vips: related_models(
+        join_on_property: "vip_programmer_ids",
+        foreign_property: "id",
+        model_schema_name:"programmer"
+      ) {
+        name: property(name: "name")
+      }
+
+      featured: related_models(
+        join_on_property: "featured_programmer_ids",
+        foreign_property: "id",
+        model_schema_name:"programmer"
+      ) {
+        name: property(name: "name")
+      }
+
+      companies: related_models(
+        join_on_property: "company_ids",
+        foreign_property: "id",
+        model_schema_name:"company"
+      ) {
+        name: property(name: "name")
+      }
+    }
+  }
+}
+```
+
+As a result, you will get a ranking record filled with nested objects - featured programmers and popular companies - ready to be presented on the page.
+
+Your homepage - backed up by really simple structure - will load much faster, because it is only one query.
+In addition (even though you added some extra code) the final solution is clearer than a complex query and easier to maintain and extend.

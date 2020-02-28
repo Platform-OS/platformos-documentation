@@ -1,0 +1,222 @@
+---
+converter: markdown
+metadata:
+  title: Using the GeoJSON format for Geolocation
+  description: This guide will help you build a working site on which one can find models in a maximum distance of X km's from given geo point coordinates.
+slug: developer-guide/models/using-geojson-format-geolocation
+---
+
+This guide will help you build a working site on which one can find models in a maximum distance of X km's from given geo point coordinates.
+
+**GeoJSON** is a geospatial data interchange format based on JSON for encoding a variety of geographic data structures. It defines several types of JSON objects and the manner in which they are combined to represent data about geographic features, their properties, and their spatial extents.
+
+The following geometry types are supported:
+
+* Point [long, lan]
+
+    ```json
+    {
+      "type": "Point",
+      "coordinates": [100.0, 0.0]
+    }
+    ```
+
+* LineString [[long, lan], [long, lan]]
+
+    ```json
+    {
+      "type": "LineString",
+      "coordinates": [ [100.0, 0.0], [10.0, 10.0] ]
+    }
+    ```
+
+* Polygon [[[long, lan], [long, lan]]]
+
+    ```json
+    {
+      "type": "Polygon",
+      "coordinates": [
+        [[100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0]]
+       ]
+    }
+    ```
+
+* MultiPoint [[long, lan], [long, lan]]
+
+    ```json
+    {
+      "type": "MultiPoint",
+      "coordinates": [ [100.0, 0.0], [10.0, 10.0] ]
+    }
+    ```
+To learn more, read the [official GeoJSON documentation](https://tools.ietf.org/html/rfc7946).
+
+## Requirements
+To follow the steps in this tutorial, you should be familiar with Model Schemas, data imports, and Form.
+
+* [Models and Model Schemas](/developer-guide/models/models-model-schemas)
+* [Data Import](/developer-guide/data-import-export/import)
+* [Form](/developer-guide/forms/form-configuration)
+
+## Steps
+
+Using the GeoJSON format to find all models in a maximum distance from geopoint coordinates is a four-step process:
+
+<div data-autosteps></div>
+
+### Step 1: Prepare Model Schema definition
+
+Create `model_schemas/company.yaml`:
+
+```yaml
+name: company
+properties:
+  - name: name
+    type: string
+  - name: timezone
+    type: string
+  - name: city
+    type: string
+  - name: location
+    type: geojson
+```
+
+### Step 2: Import data using GraphQL mutation
+
+Create a GraphQL mutation `createCompany.graphql`:
+
+```graphql
+mutation createCompany($location: JSONPayload, $city: String, $timezone: String, $name: String){
+  model_create(
+    model: {
+      model_schema_name: "company"
+      properties: [
+        { name: "name" value: $name }
+        { name: "city" value: $city }
+        { name: "timezone" value: $timezone }
+        { name: "location" value_json: $location }
+      ]
+    }
+  ) {
+    id
+  }
+}
+```
+
+Create a `payload`:
+
+```json
+{
+  "name": "Company Name",
+    "city": "Boston",
+    "timezone": "Timezone",
+    "location": {
+      "type": "Point",
+      "coordinates": [-111.89903, 33.50921]
+  }
+}
+```
+Alternatively, you can create the record using a Form:
+
+```yaml
+---
+name: create_company
+fields:
+  properties:
+    name:
+      validation: { presence: true }
+    city:
+      validation: { presence: true }
+    timezone:
+      validation: { presence: true }
+    location:
+      validation: { geometry: true }
+```
+
+The HTML field snippet for geometry JSON is just a textarea:
+
+```html
+<div class="form-group">
+  <label for="location">Location</label>
+  <textarea required="true" id="location" type="text" class="form-control" name="{{ form.fields.properties.location.name }}">
+    {{- context.params.form.properties_attributes.location }}
+  </textarea>
+</div>
+```
+
+{% include 'alert/note', content: 'This example is for presentation only. In a real scenario, no one would provide a raw JSON as a location address — there would be a JavaScript function using external geolocation services for getting coordinates and then building the required GeometryJSON structure.' %}
+
+### Step 3: Prepare GraphQL query
+
+Create the GraphQL query `graphql/search.graphql`:
+
+```graphql
+query search($point: GeometryJSON, $distance: Int) {
+  companies: models(
+    per_page: 20
+    name: { value: "modules/geo_models/company" }
+    filter: {
+      properties: [
+        {
+          name: "location",
+          distance_sphere: {
+            center: $point,
+            distance_in_km: $distance
+          }
+        }
+      ]
+    }) {
+    results {
+      properties
+    }
+  }
+}
+```
+
+### Step 4: Create page
+
+To wrap it up, create a page `views/pages/search.liquid`:
+
+```liquid
+{% raw %}
+---
+slug: search
+---
+{% parse_json location %}
+{
+  "type": "Point",
+  "coordinates": [
+    -111.89903,
+    33.50921
+  ]
+}
+{% endparse_json %}
+{% assign distance = context.params.distance | default: 100 | plus: 0 %}
+
+{% graphql g = 'search', point: location, distance: distance %}
+
+{% for company in g.companies.results %}
+[...]
+{% endfor %}
+{% endraw %}
+```
+
+{% include 'alert/note', content: 'Since the `distance` argument has to be an Integer and `context.params.distance` is a String, we have to cast this value to Integer.
+You can do this by appending a plus filter with a `0` argument - literally adding a 0 converts a string into a number.' %}
+
+## Live example and source code
+
+**Examples**
+
+* Form: [https://examples.platform-os.com/geo/companies/new](https://examples.platform-os.com/geo/companies/new)
+* Working advanced example: [https://examples.platform-os.com/geo/search](https://examples.platform-os.com/geo/search)
+
+
+**Code samples**
+
+* [form_configurations/create_company.liquid](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/geo_models/public/forms/create_company.liquid)
+* [views/pages/geo/company-new.liquid](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/geo_models/public/views/pages/geo/company-new.liquid)
+* [views/pages/geo/programmer-new.liquid](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/geo_models/public/views/pages/geo/programmer-new.liquid)
+* [views/pages/geo/company-search.liquid](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/geo_models/public/views/pages/geo/company-search.liquid)
+* [model_schemas/company.yml](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/geo_models/public/model_schemas/company.yml)
+* [graph_queries/search.graphql](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/geo_models/public/graphql/search.graphql)

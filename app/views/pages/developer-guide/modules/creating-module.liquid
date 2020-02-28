@@ -1,0 +1,170 @@
+---
+converter: markdown
+metadata:
+  title: Creating a Module
+  description:
+slug: developer-guide/modules/creating-module
+---
+
+This guide will help you learn how to create a module by walking you through the steps of creating a simple module.
+
+## Requirements
+
+This is an advanced tutorial. To follow it, you should be familiar with basic platformOS concepts, the topics in the Get Started section, and modules.
+
+* [platformOS Workflow](/developer-guide/platformos-workflow/development-workflow)
+* [Get Started](/get-started)
+* [Modules](/developer-guide/modules/modules)
+
+## Steps
+
+Creating a module is a three-step process:
+
+<div data-autosteps></div>
+
+### Step 1: Create directories
+
+Create two directories inside the `modules` directory called `admincms`, then create the `public` and `private` folders inside it. Place the `graphql` directory inside `private`, and the `views/pages` directories inside public.
+
+See the structural overview of the module you'll create here for reference:
+
+```shell
+admincms
+├── private
+│   └── graphql
+│       ├── get_models.graphql
+│       └── get_pages.graphql
+└── public
+    └── views
+        └── pages
+            └── admin.liquid
+```
+
+### Step 2: Create GraphQL queries
+
+Create a GraphQL query that pulls a list of Models.
+
+#### admincms/private/graphql/get_models.graphql
+
+```graphql
+query get_models {
+  models(
+    per_page: 10
+    sort: [{ name: "id", order: "desc" }]
+  ) {
+    results {
+      human_name
+      properties
+    }
+  }
+}
+```
+
+Create another GraphQL query that pulls a list of pages
+
+#### admincms/private/graphql/get_pages.graphql
+
+```graphql
+query get_pages {
+    admin_pages(per_page: 10) {
+    results {
+      format
+      slug
+    }
+  }
+}
+```
+
+### Step 3: Create page
+
+#### admincms/public/views/pages/admin.liquid
+
+```liquid
+{% raw %}
+---
+slug: admincms
+---
+
+<h2> Module example - Admin </h2>
+
+<div class="row">
+  <div class="col-xs-12 col-lg-6">
+    <h3> Models </h3>
+    {%- graphql c = "modules/admincms/get_models" -%}
+    <table class="table table-compact">
+      <thead>
+        <tr>
+          <th> Name </th>
+          <th> Properties </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for model in c.models.results %}
+          <tr>
+            <td> {{ model.human_name }} </td>
+            <td> {{ model.properties }} </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col-xs-12 col-lg-6">
+    <h3> Pages </h3>
+    {%- graphql c = "modules/admincms/get_pages" -%}
+    <table class="table table-compact">
+      <thead>
+        <tr>
+          <th> Slug </th>
+          <th> Format </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for page in c.admin_pages.results %}
+          <tr>
+            <td> {{ page.slug }} </td>
+            <td> {{ page.format }} </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endraw %}
+```
+
+As you can see you are using the queries like usual but the name is prefixed with the module name
+
+```liquid
+{% raw %}
+{%- graphql c = "modules/admincms/get_pages" -%}
+{% endraw %}
+```
+
+The only difference between this code and code of a regular Instance is that this module code is split
+into public and private folders, and if you'd pull the code when it's installed on an Instance,
+you would get a structure like this:
+
+```shell
+.
+├── app
+│   └── views
+|   └── graphql
+│       ...
+└── modules
+    └── admin
+        └── public
+            └── views
+                └── pages
+                    └── admin.html.liquid
+```
+
+## Live example and source code
+
+To see it in action go to [live example](https://examples.platform-os.com/admincms).
+[Source files](https://github.com/mdyd-dev/marketplace-nearme-example/tree/master/modules/admincms) are also publicly accessible.
+
+## Next steps
+Congratulations! You have created a module. Now you can learn about sharing your module on the platformOS Module Marketplace.
+
+* [Sharing a Module](/developer-guide/modules/sharing-module)

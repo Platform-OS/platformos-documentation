@@ -1,0 +1,52 @@
+---
+converter: markdown
+metadata:
+  title: Associating an Authorization Policy with a Page
+  description: This guide will help you associate an Authorization Policy with a page.
+slug: developer-guide/authorization-policy/associating-authorization-policy-page
+---
+
+This guide will help you associate an Authorization Policy with a page.
+
+Similarly to `form` (see [Associating an Authorization Policy with Form](/developer-guide/authorization-policy/associating-authorization-policy-form), you can also associate a policy with a page.
+
+## Requirements
+So that you can follow the steps in this tutorial, you should understand the concept of Authorization Policy, and you should have created a page and an Authorization Policy.
+
+* [Authorization Policy](/developer-guide/authorization-policy/authorization-policy)
+* [Creating a Page](/developer-guide/pages/creating-page)
+* [Adding an Authorization Policy](/developer-guide/authorization-policy/adding-authorization-policy)
+
+## Steps
+
+Associating an Authorization Policy with a page is a two-step process:
+
+<div data-autosteps></div>
+
+### Step 1: Edit page configuration
+Create a custom page that you only want users with the first name `John` to be able to access:
+
+```liquid
+---
+slug: john-private-page
+---
+<h1>Hello John!</h1>
+```
+
+### Step 2: Add `authorization_policies` key to page configuration
+Add the `authorization_policies` key to page configuration
+and specify the Authorization Policy for the page:
+
+```yaml
+---
+slug: john-private-page
+authorization_policies:
+  - only_allowed_by_johns
+---
+<h1>Hello John!</h1>
+```
+
+## Next steps
+Congratulations! You know how to associate an Authorization Policy with a page. Now you can learn about handling violated Authorization Policies:
+
+* [Handling a Violated Authorization Policy](/developer-guide/authorization-policy/handling-violated-authorization-policy)

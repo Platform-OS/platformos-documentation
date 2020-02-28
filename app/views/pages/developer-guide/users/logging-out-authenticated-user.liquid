@@ -1,0 +1,63 @@
+---
+converter: markdown
+metadata:
+  title: Logging Out an Authenticated User
+  description: This guide will help you create an authentication form to log out authenticated users.
+slug: developer-guide/users/logging-out-authenticated-user
+---
+
+This guide will help you create an authentication form to log out authenticated users.
+
+## Requirements
+
+To follow the steps in this tutorial, you should be familiar with the required directory structure for your codebase, and understand the concept of pages and users.
+
+* [Codebase](/developer-guide/platformos-workflow)
+* [Pages](/developer-guide/pages/pages)
+* [Users](/developer-guide/users/users)
+
+## Steps
+
+Logging out an authenticated user is a two-step process:
+
+<div data-autosteps></div>
+
+### Step 1: Create log out form
+
+#### app/forms/log_out.liquid
+
+```liquid
+{% raw %}
+---
+name: log_out
+resource: Session
+---
+
+{% form method: 'delete' %}
+  <button>Log Out</button>
+{% endform %}
+{% endraw %}
+```
+
+The difference from logging in, is that you want to destroy the session. You have to send a DELETE request by providing the `method: delete` attribute to the `form` tag.
+
+### Step 2: Embed the log out form
+
+#### app/views/pages/log-out.liquid
+
+```liquid
+{% raw %}
+---
+slug: log-out
+---
+<h2>Log out</h2>
+{% include_form 'log_out' %}
+{% endraw %}
+```
+
+{% include 'alert/note', content: 'To set an expiration for user sessions, use the `"timeout_in_minutes":  0,` attribute in the Instance configuration settings JSON as described in the <a href="/developer-guide/partner-portal/instances/updating-instance-configuration">Updating Instance Configuration</a> tutorial. If you set the attribute to 15, for example, all users will get logged out automatically after 15 minutes of inactivity.' %}
+
+## Next steps
+Congratulations! You created a log out for authenticated users. Now you can learn about resetting a user's password:
+
+* [Resetting Password of an Authenticated User](/developer-guide/users/resetting-password-authenticated-user)

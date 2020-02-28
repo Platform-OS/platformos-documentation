@@ -1,0 +1,116 @@
+---
+converter: markdown
+metadata:
+  title: Updating Instance Configuration
+  description: This guide will help you update the configuration on an Instance.
+slug: developer-guide/partner-portal/instances/updating-instance-configuration
+---
+
+This guide will help you update the configuration on an Instance.
+
+## Requirements
+To follow the steps in this tutorial, you should be able to log in to the Partner Portal, and have an Instance you created or have access to.
+
+* [Register on the Partner Portal](/get-started/hello-world/register-partner-portal)
+* [Create an Instance](/get-started/hello-world/create-instance)
+
+## Steps
+
+Updating the configuration of an Instance is a two-step process:
+
+<div data-autosteps></div>
+
+### Step 1: Locate Instance
+
+In the menu on the left, click on `Instances`, and select the Instance you would like to update. The information page of the Instance is displayed.
+
+### Step 2: Update Instance configuration
+
+Click on `Update configuration`. You can see the JSON file that stores your configuration information for the Instance, for example, integrations that you have set up. Most of the configuration can be changed through the Partner Portal, but for example, you can configure a test email here.
+
+You are in read-only mode. To modify the JSON configuration file, switch to Edit mode by clicking on `Switch to Edit Mode`. Edit the JSON file (see a list of attributes you can edit below), then click on `Update Instance configuration`.
+
+#### Attributes
+
+##### enable_sms_and_api_workflow_alerts_on_staging
+
+We do not send real text messages on staging by default, because any error with sending real text messages on staging might be more costly than sending emails.
+
+{% include 'alert/important', content: "Using real SMS will affect your billing." %}
+
+**Default value:** `false`
+
+**Example:**
+
+```json
+"enable_sms_and_api_workflow_alerts_on_staging": true
+```
+##### include_tag_with_private_scope
+
+By default, Liquid variables defined inside a partial leak outside, which means that any variable is a global variable.
+
+We received a lot of requests to improve this, so we changed that behavior and introduced the [export tag](/api-reference/liquid/platformos-tags#export).
+
+From then on, all newly created Instances have variables scoped to the partials, and this flag is set to `true`.
+
+We added this flag to keep Instances backward compatible, even if they have been written with the standard Liquid behavior in mind.
+
+We strongly recommend keeping this flag `true` and migrating your projects to use private scopes to increase predictability.
+
+**Default value:** `true`
+
+**Example:**
+
+```json
+"include_tag_with_private_scope": true
+```
+##### maintenance_mode
+
+This setting redirects all incoming requests to the `/maintenance` path on your Instance, with the HTTP status code `503`.
+The page contains the message: `Temporarily down for maintenance.`.
+
+**Default value:** `false`
+
+**Example:**
+
+```json
+"maintenance_mode": true
+```
+
+##### test_email
+
+By default, emails on staging are not going to the email recipient defined inside the Email Notification, but to email(s) defined in this attribute.
+
+You can enter multiple emails, comma-separated.
+
+**Default value:** `""`
+
+**Example:**
+
+```json
+"test_email": "sales@platform-os.com,developer@platform-os.com,support@platform-os.com"
+```
+
+##### timeout_in_minutes
+
+This setting lets you change the duration of a user session. If not set, the default timeout is 1 year. If you want to log out users after 15 minutes of inactivity, set it as shown in the example below.
+
+**Default value:** `525960` (1 year in minutes)
+
+**Example:**
+
+```json
+"timeout_in_minutes": 15
+```
+
+##### Deprecated attributes
+
+* test_mode
+* skip_action_types_and_pricings
+
+
+## Next steps
+Congratulations! You know how to update the configuration of an Instance. Now you can set up a test email or add integrations:
+
+* [Configuring a Test Email](/developer-guide/partner-portal/instances/configuring-test-email)
+* [Managing Integrations](/developer-guide/partner-portal/instances/managing-integrations)

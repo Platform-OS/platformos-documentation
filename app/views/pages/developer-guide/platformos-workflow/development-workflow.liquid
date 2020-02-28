@@ -1,0 +1,79 @@
+---
+converter: markdown
+metadata:
+  title: Development Workflow
+  description: Recommended process to follow during development to save time and minimize errors.
+slug: developer-guide/platformos-workflow/development-workflow
+---
+
+A **development workflow** is the process you follow during development to save time and minimize errors. It includes stages like setup (scaffolding), development, testing, integration, optimization, and deployment.
+
+## Setup
+
+The setup process of developing a site using platformOS includes three main steps:
+
+### 1. Create a new Instance on the Partner Portal
+The **[Partner Portal](https://partners.platformos.com)** is an online interface where you can create, manage, and configure sites built with platformOS, and manage other users of the Partner Portal. The site created on the Partner Portal will be the site you deploy and sync your changes to during development.
+
+* The sites created are called **Instances**. Instances have a URL, and they represent different environments, like staging or production.
+* Users of the Partner Portal are called **Partners**. Partners have the permissions to create, manage, and configure Instances. Partners can also create and manage other Partners.
+
+When you create an Instance, the platformOS engine saves the Instance, which &ndash; after authorization &ndash; becomes available for you to deploy and sync to.
+
+What you’ll need:
+
+* [Access to the Partner Portal](/get-started/hello-world/register-partner-portal)
+
+### 2. Create codebase
+In order to correctly communicate with the platformOS engine and API, your codebase should be organized into a [specific directory structure](/developer-guide/platformos-workflow/codebase). To create your codebase in a local environment follow the steps in the [Create Your Codebase](/get-started/hello-world/create-codebase) topic.
+
+What you’ll need:
+
+* [Node.js](https://www.npmjs.com/get-npm)
+* [pos-cli](/get-started/hello-world/install-pos-cli)
+
+### 3. Setup pos-cli
+The **[pos-cli](https://github.com/mdyd-dev/pos-cli)** is a command line interface that helps you deploy configuration files and assets to your platformOS site. It also allows you to use team collaboration tools like git in your workflow.
+
+You can use the pos-cli to deploy or sync your codebase to the Instance as described in the [Deploy or Sync](/get-started/hello-world/deploy-sync) tutorial.
+
+What you’ll need:
+
+* [pos-cli](/get-started/hello-world/install-pos-cli)
+
+## Development
+
+### Development Instances
+
+Development Instances are used for developing, updating, and testing a site without risking the integrity of the live site.
+
+You can set up different types of Instances (staging/production) through the Partner Portal.
+
+* **Local codebase**: You develop your site (write code) in your codebase in your local environment.
+* **Staging Instance**: The staging Instance can be used for testing, presenting the changes to the client for approval, QA (Quality Assurance), or UAT (User Acceptance Testing).
+* **Production Instance**: The production Instance is the live site available to visitors.
+
+Based on the project’s size, scope, or requirements, stages from the above workflow can be removed, or additional stages can be added. For example, a testing site before staging can be added to separate testing from QA and UAT.
+
+### Development Workflow
+
+You develop your site (write code) in your **codebase in your local environment**. By syncing to your developer Instance you check your changes in real time. The `pos-cli sync` command enables sync mode: it keeps track of changes on your local environment, and sends files that have been changed to the server. It only sends files that have changed after sync was started. It feels like working on localhost. It is recommended to use sync only for staging environments, as pushing changes immediately to production can be dangerous.
+
+Once you have a release candidate, you can deploy it to your **staging site**. You can use the staging site for testing, review, QA or UAT.
+
+If everything works as expected on staging, you can deploy your changes to your **production site**, your live site accessible to visitors.
+
+{% include 'alert/note', content: 'We recommend using a **version control system**. Internally, we use [GitHub](https://github.com/) to host and collaborate on our [git](https://git-scm.com/about) repositories. You can choose other version control systems, or decide to go without any: all that is required is your codebase and an Instance you can sync/deploy to.' %}
+
+This is a diagram of our recommended development workflow:
+
+<img src="{{ 'images/workflow/development_workflow.png' | asset_url }}" alt="Recommended development workflow diagram" />
+
+{% include 'alert/tutorial', content: 'Learn more about QA, testing, the DevOps concept, and Continuous Integration and Delivery in our [QA Best Practices](/best-practices/qa/how-we-built-our-qa-process) section.' %}
+
+## Related topics
+
+* [pos-cli](/developer-guide/platformos-workflow/pos-cli)
+* [Codebase](/developer-guide/platformos-workflow/codebase)
+* [Create Your Codebase](/get-started/hello-world/create-codebase)
+* [Deploy or Sync](/get-started/hello-world/deploy-sync)

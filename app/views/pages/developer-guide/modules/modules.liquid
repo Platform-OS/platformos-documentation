@@ -1,0 +1,156 @@
+---
+converter: markdown
+metadata:
+  title: Modules
+  description: Modules allow code reuse and sharing, while protecting the IP of creators.
+slug: developer-guide/modules/modules
+---
+
+**Modules** allow code reuse and sharing, while protecting the IP of creators.
+
+## Directory structure
+
+In your codebase, the `modules` directory needs to be at the same level as the `app` directory.
+
+Module code can be split into 2 directories to protect IP (Intellectual Property). To create a module, split module code into `public` and `private` folders, and place all that code into the `modules/MODULE_NAME` directory.
+
+```shell
+app
+modules
+└── MODULE_NAME
+    ├── public
+    │   └── assets
+    └── private
+        └─ assets
+```
+
+These directories have the same structure as the standard `app` folder, but if developers try to download files after the module has been deployed to an Instance (`pos-cli pull`), they will only see the files from the public folder.
+
+In general, when referencing files that are part of a module, platformOS uses a prefix which does not include any `public` or `private` folders (for example: `modules/admin/app.css` instead of `modules/admin/private/app.css`). This means that creators should not create files with the same name in both folders, as one will overwrite the other. This behavior gives creators flexibility: if they want to change the scope of the file, they can move it between the private and public folders without changing the code.
+
+You can create an Instance and deploy the code as you would usually do, and you still can have the `app` folder on the top level (this code will not be part of the module but you can use it while developing).
+
+This mechanism allows creators to share their module code, make it configurable (by code in the `public` folder), but still protect the IP in the `private` folder.
+
+### Example: Module directories
+
+An example of module code split into two directories, inside the `modules` directory:
+
+```shell
+admincms
+├── private
+│   └── graphql
+│       ├── get_models.graphql
+│       └── get_pages.graphql
+└── public
+    └── views
+        └── pages
+            └── admin.liquid
+```
+
+## Resource naming conventions and paths
+
+Configuration files placed in a module are treated a bit differently than regular files.
+To avoid conflicts between the code of a module and regular code (or between modules) a namespacing strategy is used.
+
+## Namespacing rules
+
+### Assets
+
+You can access assets placed at `assets` directory in a module using [asset_url](/api-reference/liquid/platformos-filters#asset_url) filter.
+
+Paths for those files are prefixed with `modules/MODULE_NAME`
+
+#### Example for modules/admin/assets/app.css:
+
+```html
+{% raw %}
+<link rel="stylesheet" media="screen" href="{{ 'modules/admin/app.css' | asset_url }}">
+{% endraw %}
+```
+
+#### Example for modules/admin/assets/admin.js:
+
+```html
+{% raw %}
+<script src="{{ 'modules/admin/admin.js' | asset_url }}"></script>
+{% endraw %}
+```
+
+### Partials
+
+Partials can be referenced with their shorter name - the same as the regular ones.
+For example, to include partial saved as `modules/admin/private/views/partials/comments.liquid`, you should use:
+
+```liquid
+{% raw %}
+{% include 'modules/admin/comments' %}
+{% endraw %}
+```
+
+### Layouts
+
+Layout name has the same prefix when referenced within a page:
+
+```yaml
+slug: admin/settings
+layout_name: modules/admin/settings
+```
+
+### Other resources (Authorization Policies, Graph Queries, etc.)
+
+When creating a module you don't have to add prefix to the name but when you use it (inside or outside of module scope) you have to provide the `modules/module_name/` prefix.
+
+### Examples
+
+#### Authorization policy
+
+Authorization policy definition looks like any other:
+
+```liquid
+{% raw %}
+---
+name: can_view_blog_posts
+redirect_to: /blog
+flash_alert: Please log in to access this page.
+---
+true
+{% endraw %}
+```
+
+But within page/form it is referenced with a prefix:
+
+```yaml
+authorization_policies:
+  - modules/admin/can_view_blog_posts
+```
+
+#### Graphql Query
+
+Query looks like any other query:
+
+```graphql
+query get_blog_instance(
+  $current_user_id: ID
+  $slug: String
+  $scope: String
+) {
+  models(
+  ...
+) {
+}
+```
+
+But it is referenced with the prefix:
+
+```liquid
+{% raw %}
+{%- graphql bi = 'modules/admin/get_blog_instance' -%}
+{% endraw %}
+```
+
+## Related topics
+
+* [Creating a Module](/developer-guide/modules/creating-module)
+* [Sharing a Module](/developer-guide/modules/sharing-module)
+* [Installing a Module](/developer-guide/modules/installing-module)

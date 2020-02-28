@@ -1,0 +1,79 @@
+---
+converter: markdown
+metadata:
+  title: Custom Attachments
+  description: Custom Attachments are used to add one or more attachments to a Profile, or Model.
+slug: developer-guide/properties/custom-attachments
+---
+
+**Custom Attachments** are used to add one or more attachments to a Profile, or Model.
+
+## Defining
+
+You can enable CustomAttachments by adding a Property with `type` set to `file`, for example:
+
+```yaml
+- name: Agreement
+  type: file
+```
+
+## Form configuration
+
+The Custom Attachment attribute must be defined in a form in order to whitelist and validate the form request.
+
+```yaml
+...
+fields:
+  custom_attachments:
+    agreement:
+      file:
+        validation:
+          file_content_type: { allow: ['image/jpeg', 'image/png', 'application/pdf'] }
+...
+```
+
+## Fields
+
+Each attachment supports the following self-descriptive fields:
+
+| Field name | Type   | Note                                              |
+| ---------- | ------ | ------------------------------------------------- |
+| file       | String | File object associated with the custom attachment |
+
+## Displaying, updating
+
+After setting up attachments as described above, you can further customize them in the markup for the forms:
+
+
+```liquid
+{% raw %}
+<label>
+  <span>Select file...</span>
+  <input accept=".pdf,.jpg,.jpeg,.png" name="{{ form.fields.custom_attachments.agreement.file.name }}" type="file">
+</label>
+
+<button>Submit file</button>
+
+{% if form.errors['custom_attachments.agreement.file'] %}
+  <p>{{ form.errors['custom_attachments.agreement.file'] }}</p>
+{% endif %}
+{% endraw %}
+```
+
+
+The example above shows the predefined attachment tag.
+
+## Using GraphQL to query for `CustomAttachment`
+
+```graphql
+query test_attachment_query {
+  models {
+    results {
+      certificate: custom_attachment(name: "agreement") {
+        id
+        file_name
+      }
+    }
+  }
+}
+```

@@ -1,0 +1,329 @@
+---
+converter: markdown
+metadata:
+  title: Managing Models using AJAX (CRUD operations)
+  description: This guide will help you create, list, update, and delete Models using JavaScript.
+slug: developer-guide/models/crud-models-using-ajax
+---
+
+This guide will help you create, list, update, and delete Models using JavaScript and GraphQL.
+
+## Requirements
+
+* [GraphQL](https://graphql.org/learn/)
+* [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)
+
+## Steps
+
+Managing Models using AJAX by implementing the full CRUD cycle is a five-step process:
+
+<div data-autosteps></div>
+
+### Step 1: Define prerequisites: Model Schema, Form, Page, javascript functions used in multiple places
+
+Create required files for your implementation:
+
+#### model_schemas/feedback.yml
+
+```yaml
+name: feedback
+properties:
+- name: message
+  type: string
+- name: rate
+  type: string
+```
+
+#### forms/feedback.liquid
+
+``` yaml
+---
+name: feedback_form
+resource: feedback
+resource_owner: anyone
+fields:
+  properties:
+    rate:
+      validation: { presence: true }
+    message:
+      validation: { presence: false }
+---
+{%- raw -%}
+{% include 'modules/feedback/create' %}
+{% include 'modules/feedback/read' %}
+{% include 'modules/feedback/update' %}
+{% include 'modules/feedback/delete' %}
+{% endraw %}
+```
+
+{% include 'alert/warning', content: 'For example purposes `resource_owner` is set to `anyone`, which means on live example page you will be able to edit any record. In real life scenario it is recommended to set <a href="/developer-guide/authorization-policy/authorization-policy">Authorization Policy</a> to prevent even not logged in user to submit a form.' %}
+
+#### assets/Feedback.js
+```javascript
+const request = ({ url, form }) => {
+  fetch(url, {
+    credentials: "same-origin", // make sure safari understands what we are doing
+    method: "POST",
+    body: new FormData(form) // create FormData from form passed or empty if undefined
+  })
+};
+
+[...]
+```
+
+### Step 2: Implement `Create`
+
+First, create a simple form that works without JavaScript:
+
+#### views/partials/create.liquid
+
+```liquid
+{%- raw -%}
+{% form html-data-form: "create" %}
+  {% assign p = form.fields.properties %}
+
+  <h2>Create new feedback (model)</h2>
+  <label>
+    <input type="radio" name='{{ p.rate.name }}' value="Excellent">
+    Excellent
+  </label>
+  <label>
+    <input type="radio" name='{{ p.rate.name }}' value="Meh">
+    Meh
+  </label>
+  <label>
+    <input type="radio" name='{{ p.rate.name }}' value="Very bad">
+    Very bad
+  </label>
+
+  <label for="create_message">Message</label>
+  <textarea type='text' id="create_message" name='{{ p.message.name }}'></textarea>
+
+  <button>Create</button>
+{% endform %}
+{% endraw %}
+```
+
+Then add JavaScript to make it work in the background:
+
+#### assets/Feedback.js
+
+```javascript
+[...]
+
+const Create = event => {
+  event.preventDefault();
+
+  request({
+    url: event.target.getAttribute("action"),
+    form: event.target
+  })
+};
+
+const createForm = document.querySelector('[data-form="create"]');
+createForm.addEventListener("submit", Create);
+```
+
+### Step 3: Implement `Read`
+
+First, you'll need a GraphQL query to pull out the data:
+
+#### graphql/feedback.graphql
+
+```graphql
+query feedback($per_page: Int = 10) {
+  models(
+    filter: {
+      name: { value: "feedback" }
+    },
+    per_page: $per_page,
+    sort: { created_at: { order: DESC } }
+  ) {
+    results {
+      id
+      created_at
+      updated_at
+      rate: property(name: "rate")
+      message: property(name: "message")
+    }
+  }
+}
+```
+
+Then you need to create a page that returns JSON with the data:
+
+#### views/pages/feedback_list.json.liquid
+
+```liquid
+---
+slug: feedback_list
+---
+{%- raw -%}
+{%- graphql recent = "modules/feedback/feedback", per_page: 10 -%}
+{{ recent.models.results | json }}
+{% endraw %}
+```
+
+You also need some HTML that will contain the data, and a button that will trigger data download:
+
+#### views/partials/read.liquid
+
+```html
+<button type="button" data-button="refreshRead">Refresh content from the server</button>
+<table>
+  <thead>
+    <th>ID</th>
+    <th>Created at</th>
+    <th>Updated at</th>
+    <th>Rating</th>
+    <th>Message</th>
+  </thead>
+  <tbody data-body="readTable"></tbody>
+</table>
+```
+
+You also need JavaScript to get the data from the server and render it into the HTML:
+
+#### assets/Feedback.js
+
+```javascript
+const updateReadTable = data => {
+  const readBody = document.querySelector('[data-body="readTable"]');
+  const html = data.map(
+    feedback => `<tr>
+      <td>${feedback.id}</td>
+      <td>${feedback.created_at}</td>
+      <td>${feedback.updated_at}</td>
+      <td>${feedback.rate}</td>
+      <td>${escape(feedback.message)}</td>
+    </tr>`
+  ).join('');
+  readBody.innerHTML = html;
+};
+
+const Read = () => {
+  fetch("/feedback_list.json")
+    .then(response => response.json())
+    .then(updateReadTable)
+};
+
+const refreshReadButton = document.querySelector('[data-button="refreshRead"]');
+refreshReadButton.addEventListener("click", Read);
+```
+
+### Step 4: Implement `Update`
+
+The update form is similar to Create, with a couple of differences:
+
+1. Add hidden input with `_method` set to PUT
+2. Send ID of Model you want to edit
+
+#### views/partials/update.liquid
+
+```html
+{%- raw -%}
+{% form html-data-form: "update" %}
+  {% comment %} Set method using hidden input to tell the server we are updating {% endcomment %}
+  <input type="hidden" name="_method" value="PUT" />
+
+  {% comment %} Let user decide which model to edit {% endcomment %}
+  <label for="model_id">Model ID</label>
+  <input type="text" name='model_id' value="" required>
+
+  <label>
+    <input type="radio" name='{{ p.rate.name }}' value="Excellent">
+    Excellent
+  </label>
+  <label>
+    <input type="radio" name='{{ p.rate.name }}' value="Meh">
+    Meh
+  </label>
+  <label>
+    <input type="radio" name='{{ p.rate.name }}' value="Very bad">
+    Very bad
+  </label>
+
+  <label for="update_message">Message</label>
+  <textarea type='text' id="update_message" name='{{ p.message.name }}'></textarea>
+
+  <button>Update</button>
+{% endform %}
+{% endraw %}
+```
+
+JavaScript is also very similar, but it takes ID from input defined above and puts it into the URL.
+
+#### assets/Feedback.js
+
+```javascript
+[...]
+
+const Update = event => {
+  event.preventDefault();
+  const id = event.target.querySelector('[name="model_id"]').value;
+
+  request({
+    url: `${event.target.getAttribute("action")}/${id}`,
+    form: event.target
+  })
+};
+
+const updateForm = document.querySelector('[data-form="update"]');
+updateForm.addEventListener("submit", Update);
+```
+
+### Step 5: Implement `Delete`
+
+The delete operation also needs `method` and `id` because underneath it all, it is just an update.
+
+#### A note on soft and hard delete
+
+##### Soft delete
+
+When you delete a record, by default, we set the value of `deleted_at` to the timestamp. Queries either show those records by default or not. The `deleted_at: { exists: false }` filter is available in some GraphQL queries for application developers to choose explicitly if the results should include records with `deleted_at` set.
+We do that because some workflows need this for safety reasons. For example, it makes it possible to restore records removed by accident.
+
+##### Hard delete
+
+We have a 30 day retention period for soft-deleted records. That means that after 30 days from the `delete_at` timestamp those records will be removed and they will no longer be available for restoration.
+That also means we will not charge you after 30 days for storing those records. If your workflow requires longer retention you should be prepared to back up those records by for example exporting instance data (using the [`pos-cli export`](/developer-guide/data-import-export/export) command) and keeping it somewhere safe.
+
+#### views/partials/delete.liquid
+
+```liquid
+{%- raw -%}
+{% form html-data-form: "delete" %}
+  <input type="hidden" name="_method" value="DELETE" />
+  <label for="model_id">Model ID</label>
+  <input type="text" name='model_id' value="" required>
+  <button>Delete</button>
+{% endform %}
+{% endraw %}
+```
+
+#### assets/Feedback.js
+
+```javascript
+const Delete = event => {
+  event.preventDefault();
+  const id = event.target.querySelector('[name="model_id"]').value;
+
+  request({
+    url: `${event.target.getAttribute("action")}/${id}`,
+    form: event.target
+  })
+};
+
+const deleteForm = document.querySelector('[data-form="delete"]');
+deleteForm.addEventListener("submit", Delete);
+```
+
+## Live example and source code
+
+To play with a live example (in much fuller form and with additional information) go to [feedback example](https://examples.platform-os.com/feedback) page.
+
+[Source code](https://github.com/mdyd-dev/marketplace-nearme-example/tree/master/modules/feedback) can be found on GitHub.
+
+## Next steps
+
+Congratulations! You know how to implement CRUD operations for Models.
