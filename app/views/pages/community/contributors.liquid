@@ -1,0 +1,29 @@
+---
+slug: community/contributors
+searchable: false
+metadata:
+  title: Contributors
+  description: Contributors
+  questions: false
+  contributors: false
+---
+
+{%- graphql api = 'api_call', template: 'get_all_contributors_from_github' -%}
+{%- assign response = api.api_call_send.response.body | to_hash -%}
+{%- assign authors = response | default: "[]" | reverse | map: "author" -%}
+
+<div id="contributors-page">
+  <span>Thank you to all our contributors!</span>
+  <ul>
+  {% for author in authors %}
+    <li>
+      {% comment %}
+        Github uses round robin to choose CDN. This causes N different SSL handshakes. Breaks browsers cache (SIC).
+      {% endcomment %}
+      {% assign avatar_url = "https://avatars0.githubusercontent.com/u/" | append: author.id | append: "?v=4&s=120" %}
+      <img src="{{avatar_url}}" alt="{{author.login}} avatar" width="120" height="120" class="contributor-avatar"/>
+      <span class="contributor-name"><a href="{{author.html_url}}">{{author.login}}</a></span>
+    </li>
+  {% endfor %}
+  </ul>
+</div>

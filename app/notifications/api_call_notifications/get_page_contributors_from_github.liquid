@@ -6,9 +6,7 @@ format: http
 headers: '{ "Content-Type": "application/json" }'
 request_type: GET
 to: |-
-  {%- graphql g = "get_github_clients" -%}
-  {% assign client = g.models.results.last %}
-  https://api.github.com/repos/mdyd-dev/nearme-documentation/commits?client_id={{ client.client_id }}&client_secret={{ client.client_secret }}&path={{ data.path }}
+  https://api.github.com/repos/mdyd-dev/nearme-documentation/commits
 trigger_condition: true
 ---
 {}
