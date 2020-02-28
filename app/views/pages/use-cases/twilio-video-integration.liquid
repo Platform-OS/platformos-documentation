@@ -13,7 +13,7 @@ To create the integration, first we needed to connect platformOS and Twilio. The
 
 ## Problem/situation
 
-First, we needed to get and store all of the API Keys necessary to authorize the connection. We could get some of them from the platformOS Partner Portal after adding the Twilio integration as detailed in the topic [Managing Integrations](/tutorials/partner-portal/instances/managing-integrations). To use other API resources, we created a form and listened to pOS logs in our CLI. Then we created a JWT (JSON Web Token) that would allow the connection to take place.
+First, we needed to get and store all of the API Keys necessary to authorize the connection. We could get some of them from the platformOS Partner Portal after adding the Twilio integration as detailed in the topic [Managing Integrations](/developer-guide/partner-portal/instances/managing-integrations). To use other API resources, we created a form and listened to pOS logs in our CLI. Then we created a JWT (JSON Web Token) that would allow the connection to take place.
 
 ## Challenges
 
@@ -205,7 +205,7 @@ mutation SetConstant {
 {% raw %}{{ context.constants.TWILIO_API_KEY_SID }}{% endraw %}
 ```
 
-{% include 'alert/note', content: 'Constants need to be explicitly called `{{ context.constants }}`, as they are hidden from `{{ context }}`. More info: [context.constants](/tutorials/variables/context-variable)' %}
+{% include 'alert/note', content: 'Constants need to be explicitly called `{{ context.constants }}`, as they are hidden from `{{ context }}`. More info: [context.constants](/developer-guide/variables/context-variable)' %}
 
 ### Step 3: Using platformOS Liquid filters to prepare, encode and render the JWT
 
@@ -312,9 +312,9 @@ For this, Twilio requires `identity` and `token` in JSON format.
 
 - [Twilio's Programmable video](https://www.twilio.com/docs/video)
 - [Twilio - API Key Resources](https://www.twilio.com/docs/iam/keys/api-key-resource)
-- [Twilio - User Identity & Access Tokens](https://www.twilio.com/docs/video/tutorials/user-identity-access-tokens)
-- [platformOS - Form Configuration](/tutorials/forms/forms)
-- [platformOS - CLI](/how-platformos-works/platformos-workflow/pos-cli)
+- [Twilio - User Identity & Access Tokens](https://www.twilio.com/docs/video/developer-guide/user-identity-access-tokens)
+- [platformOS - Form Configuration](/developer-guide/forms/forms)
+- [platformOS - CLI](/developer-guide/platformos-workflow/pos-cli)
 - [JWT](https://jwt.io/)
 
 ## Author information

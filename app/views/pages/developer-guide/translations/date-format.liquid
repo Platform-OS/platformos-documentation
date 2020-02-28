@@ -1,0 +1,86 @@
+---
+converter: markdown
+metadata:
+  title: Date Format
+  description: Defining your own date/time format for your application.
+slug: developer-guide/translations/date-format
+---
+
+## Date Format
+
+To render date/time in a given format consistently accross the application use the [`localize` (`l`)](/api-reference/liquid/platformos-filters#localize-aliases-l) filter.
+{% raw %}
+```liquid
+  {{ user.created_at | localize: 'short' }} => 11:45
+```
+{% endraw %}
+
+In order to customize predefined formats you can overwrite them in the translation file (e.g. `app/translations/en.yml`).
+
+
+For example, use the format `short` defined with `short: '%-H:%M'` and format time to `11:45`. The `%H` and `%M` are format directives. They are standard date formatting for UNIX. You can see available directives for time and date [here](https://devhints.io/strftime).
+
+Here are default values for the `en` localization, you can set different formats for time and date.
+
+
+```yml
+en:
+  time:
+    formats:
+      short: '%-H:%M'
+      long: '%a, %m/%d/%Y %H:%M'
+      with_time_zone: '%m/%d/%Y %H:%M (%Z)'
+      short_with_time_zone: '%-H:%M (%Z)'
+      day_and_month: '%b %d'
+      day_month_year: '%d-%m-%Y'
+  date:
+    abbr_months:
+      jan: Jan
+      feb: Feb
+      mar: Mar
+      apr: Apr
+      may: May
+      jun: Jun
+      jul: Jul
+      aug: Aug
+      sep: Sep
+      oct: Oct
+      nov: Nov
+      dec: Dec
+    months:
+      jan: January
+      feb: February
+      mar: March
+      apr: April
+      may: May
+      jun: June
+      jul: July
+      aug: August
+      sep: September
+      oct: October
+      nov: November
+      dec: December
+    abbr_days:
+      sun: Sun
+      mon: Mon
+      tue: Tue
+      wed: Wed
+      thu: Thu
+      fri: Fri
+      sat: Sat
+    days:
+      sun: Sunday
+      mon: Monday
+      tue: Tuesday
+      wed: Wednesday
+      thu: Thursday
+      fri: Friday
+      sat: Saturday
+    yesterday: Yesterday
+    formats:
+      long: '%B %d, %Y'
+      short: '%m/%d/%Y'
+      day_and_month: '%b %d'
+      day_month_year: '%d-%m-%Y'
+      stripe: '%m-%d-%Y'
+```

@@ -16,12 +16,12 @@ This guide will help you create forms for managing products in your store. Produ
 
 To follow this tutorial, you should be familiar with basic platformOS concepts, and the topics in the Get Started section. You should have followed this tutorial series up to the previous part "Seeding Configuration Data", where initial values for brands and product types were added to the database.
 
-- [How platformOS Works](/how-platformos-works)
+- [platformOS Workflow](/developer-guide/platformos-workflow/development-workflow)
 - [Get Started](/get-started)
 - [Seeding Configuration Data](/use-cases/e-commerce/seeding-configuration-data)
-- [Form Validation](/tutorials/forms/validation)
-- [Default Payload](/tutorials/forms/default-payload)
-- [Loading Related Models](/tutorials/models/loading-related-models)
+- [Form Validation](/developer-guide/forms/validation)
+- [Default Payload](/developer-guide/forms/default-payload)
+- [Loading Related Models](/developer-guide/models/loading-related-models)
 
 ## Steps
 
@@ -235,7 +235,7 @@ Entering and storing monetary values is tricky in any system. Using `float` as d
 
 It’s much better to store all prices as cents, using the `integer` data type. This way `$5.99` becomes `599`, thus eliminating any issues with rounding. However, this approach comes with its own set of challenges when it comes to transforming user input to database entry.
 
-First, set basic validation rules for the price field. You can read more about [Form Validation](/tutorials/forms/validation) in our documentation.
+First, set basic validation rules for the price field. You can read more about [Form Validation](/developer-guide/forms/validation) in our documentation.
 
 ```yaml
 price:
@@ -280,7 +280,7 @@ Next, include field control in the form. You can use a shared partial, created i
 
 {% include 'alert/note', content: 'You might have noticed additional options. Partial update is described in one of the next steps in this article.' %}
 
-Finally, transform the price value once again, just before committing it to the database. To do that, you should use [`default_payload` form configuration option](/tutorials/forms/default-payload).
+Finally, transform the price value once again, just before committing it to the database. To do that, you should use [`default_payload` form configuration option](/developer-guide/forms/default-payload).
 
 Price should be submitted as a `float` with two decimal spaces, so first, multiply it by 100 and then round it.
 
@@ -681,7 +681,7 @@ query get_products($id: ID) {
 
 Initially, the query will have only one parameter `$id`, but in the next topics you’ll extend it with different filters to implement filtering, pagination, etc.
 
-{% include 'alert/note', content: '`related_model(join_on_property: "propname")` is a useful method for [loading data from related models](/tutorials/models/loading-related-models)' %}
+{% include 'alert/note', content: '`related_model(join_on_property: "propname")` is a useful method for [loading data from related models](/developer-guide/models/loading-related-models)' %}
 
 ### Step 6: Create products listing page
 

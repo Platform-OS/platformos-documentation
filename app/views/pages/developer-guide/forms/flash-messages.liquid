@@ -1,0 +1,56 @@
+---
+converter: markdown
+metadata:
+  title: Flash Messages
+  description: Flash messages are used to create notices and alerts, e.g. on form submission.
+slug: developer-guide/forms/flash-messages
+max_deep_level: 5
+---
+**Flash messages** are used to create notices and alerts, e.g. on form submission.
+
+## Setting form notice/alert values through Form
+
+You can add values for `flash` messages as part of form configuration, for example:
+
+```yaml
+---
+name: signup_form
+resource: User
+fields:
+  email:
+  password:
+flash_notice: You have successfully signed up
+flash_alert: Please fix validation errors
+---
+```
+
+### Interpolation
+
+Values for `flash` keys are processed using a Liquid parser, so they can be interpolated in the context of the current form:
+
+```yaml
+---
+name: signup_form
+resource: User
+fields:
+  email:
+  password:
+  first_name:
+    validation: { presence: true }
+flash_notice: 'Thank you {% raw %}{{ form.first_name }}{% endraw %}, you have successfully signed up!'
+flash_alert: Please fix validation errors
+---
+```
+
+{% include 'alert/note', content: 'Quotes around the value of flash_notice are required if you interpolate Liquid code inside YAML' %}
+
+### Displaying flash messages
+
+Messages can be displayed on page with [context variable](/developer-guide/variables/context-variable)
+
+{% raw %}
+```liquid
+{{ context.flash['notice'] }}
+{{ context.flash['alert'] }}
+```
+{% endraw %}

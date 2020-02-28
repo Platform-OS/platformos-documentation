@@ -1,0 +1,33 @@
+---
+converter: markdown
+metadata:
+  title: Response Headers
+  description: Response Headers is a property to define your own custom response headers for the page.
+slug: developer-guide/pages/response-headers
+---
+
+**Response Headers** is a property to define your own custom response headers for the page. To do so, pass a JSON key-value pairs to `response_headers` property, for example:
+
+#### views/pages/xml-data.html.liquid
+
+```yaml
+slug: xml-data
+response_headers: >
+  {
+    "Content-Type": "text/xml",
+    "Some-Header": "value"
+  }
+```
+
+In the example above, endpoint `/xml-data` will return it's content as XML, even though the file was saved as `html` format. This allows you to have full control over returned headers. Liquid syntax is supported.
+
+There are few restricted header names that cannot be overwritten:
+
+  * cache-control
+  * etag
+  * set-cookie
+  * x-request-id
+  * x-xss-protection
+
+## Related topics
+* [Pages](/developer-guide/pages/pages)

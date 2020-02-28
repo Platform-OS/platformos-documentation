@@ -1,6 +1,6 @@
 import { Selector } from 'testcafe';
 
-fixture('Autosteps').page(`${process.env.MP_URL}/tutorials/users/authenticating-user-with-jwt-token`);
+fixture('Autosteps').page(`${process.env.MP_URL}/developer-guide/users/authenticating-user-with-jwt-token`);
 
 test('Are generated and linked', async t => {
   const container = await Selector('[data-autosteps]');
@@ -51,7 +51,7 @@ test('Is generated', async t => {
   await t.expect(secondEl.textContent).eql('Number');
 });
 
-fixture('Syntax highlighting').page(`${process.env.MP_URL}/tutorials/users/authenticating-user-with-jwt-token`);
+fixture('Syntax highlighting').page(`${process.env.MP_URL}/developer-guide/users/authenticating-user-with-jwt-token`);
 
 test('Is working', async t => {
   await t.expect(Selector('span.token').exists).ok();
@@ -72,7 +72,7 @@ test('Deep linking is working with utf8 characters in the heading id/href', asyn
   const heading = await Selector('#step-2-define-contact-form-–-form-object');
 
   await t.navigateTo(
-    '/tutorials/models/building-contact-form-with-model#step-2-define-contact-form-–-form-object'
+    '/developer-guide/models/building-contact-form-with-model#step-2-define-contact-form-–-form-object'
   );
 
   await t.expect(await heading.exists).ok();

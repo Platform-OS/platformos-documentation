@@ -14,13 +14,13 @@ This guide will help you set up a secured section on your e-commerce  site, wher
 
 To follow this tutorial, you should be familiar with basic platformOS concepts, and the topics in the Get Started section. You should have configured the data model, as described in a previous part of this tutorial series.
 
-- [How platformOS Works](/how-platformos-works)
+- [platformOS Workflow](/developer-guide/platformos-workflow/development-workflow)
 - [Get Started](/get-started)
 - [Configuring the Data Schema](/use-cases/e-commerce/configuring-data-schema)
-- [Migrating Data](/tutorials/migrations/migrating-data)
-- [Adding an Authorization Policy](/tutorials/authorization-policy/authorization-policy)
-- [Signing in a User Manually](/tutorials/users/signing-in-user-manually)
-- [Logging Out an Authenticated User](/tutorials/users/logging-out-authenticated-user)
+- [Migrating Data](/developer-guide/migrations/migrating-data)
+- [Adding an Authorization Policy](/developer-guide/authorization-policy/authorization-policy)
+- [Signing in a User Manually](/developer-guide/users/signing-in-user-manually)
+- [Logging Out an Authenticated User](/developer-guide/users/logging-out-authenticated-user)
 
 ## Steps
 
@@ -30,7 +30,7 @@ Building a secured admin section is a five-step process:
 
 ### Step 1: Create an admin user
 
-Your admin panel should be accessible only to admin users, but you don’t have one just yet. After creating the instance, your user from the Partner Portal has been automatically added to your Instance. It’s now necessary to grant admin credentials to that user. You can use [migrations](/tutorials/migrations/migrating-data) to do that.
+Your admin panel should be accessible only to admin users, but you don’t have one just yet. After creating the instance, your user from the Partner Portal has been automatically added to your Instance. It’s now necessary to grant admin credentials to that user. You can use [migrations](/developer-guide/migrations/migrating-data) to do that.
 
 Go to the terminal and run the following command to create your first migration:
 
@@ -148,7 +148,7 @@ pos-cli migrations run development TIMESTAMP
 
 ### Step 2: Create an Authorization Policy
 
-Your user now has the required admin credential. This allows you to create your first [Authorization Policy](/tutorials/authorization-policy/authorization-policy), that you can use to secure the form you’ve just created in the previous step and reuse it to limit access to all resources in the admin panel.
+Your user now has the required admin credential. This allows you to create your first [Authorization Policy](/developer-guide/authorization-policy/authorization-policy), that you can use to secure the form you’ve just created in the previous step and reuse it to limit access to all resources in the admin panel.
 
 #### app/authorization_policies/admin_user.liquid
 
@@ -202,7 +202,7 @@ authorization_policies: [admin_user]
 
 You are ready to create the sign-in form for your application. Sign-up will come later, after you’ve finished the management section of the app.
 
-The whole process has been described in our documentation in the [Signing in User Manually](/tutorials/users/signing-in-user-manually) article.
+The whole process has been described in our documentation in the [Signing in User Manually](/developer-guide/users/signing-in-user-manually) article.
 
 You’ll need a new page and form configuration file.
 
@@ -294,7 +294,7 @@ fields:
 
 ### Step 4: Create a sign-out form
 
-Now that you can sign in, you should be able to sign out as well. [Logging Out an Authenticated User](/tutorials/users/logging-out-authenticated-user) describes well what needs to be done. You’ll add the form configuration now, so that it’s ready when you are working on the top navigation and the sign out button.
+Now that you can sign in, you should be able to sign out as well. [Logging Out an Authenticated User](/developer-guide/users/logging-out-authenticated-user) describes well what needs to be done. You’ll add the form configuration now, so that it’s ready when you are working on the top navigation and the sign out button.
 
 #### app/forms/session/sign_out_form.liquid
 

@@ -1,0 +1,104 @@
+---
+converter: markdown
+metadata:
+  title: Integrating SendGrid Using API Call Notifications
+  description: This guide will help you create a SendGrid integration for platformOS using API Call Notifications.
+slug: developer-guide/integrations/integrating-sendgrid-api-call-notifications
+---
+
+This guide will help you create a SendGrid integration for platformOS using API Call Notifications.
+
+When a user fills out a form on your platformOS site, you need to have that user added to the correct SendGrid Segment so you can provide them with the correct marketing campaign. This guide explains how to create an API Call Notification for each form on your site, that sends the user’s info to SendGrid and creates a custom (field) attribute in SendGrid to allow the user to be added to the correct segment.
+
+## Requirements
+To follow this tutorial, you should be familiar with creating API Call Notifications. You also have to have access to SendGrid, and be familiar with the SendGrid API and creating segments in SendGrid.
+
+* [Creating an API Call Notification](/developer-guide/notifications/creating-api-call-notification)
+* [SendGrid API Reference, Contacts API - Recipients: POST](https://sendgrid.api-docs.io/v3.0/contacts-api-recipients/add-recipients)
+* [Segments in SendGrid](https://sendgrid.com/docs/Glossary/segments.html)
+
+## Steps
+
+Integrating SendGrid using API Call Notifications is a three-step process:
+
+<div data-autosteps></div>
+
+### Step 1: Create API Call Notification
+
+Create an API Call Notification:
+
+* Replace `<<YOUR_API_KEY>>` with your SendGrid API key.
+* Add the payload based on the attributes in your form.
+* Create a custom (field) attribute in SendGrid called `contact_via`. Each form on your site provides a unique response that is recorded here.
+
+```yaml
+---
+name: sendgrid_new_user_homepage
+delay: '0'
+enabled: true
+format: http
+headers: >
+  {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer <<YOUR_API_KEY>>"
+  }
+request_type: POST
+to: https://api.sendgrid.com/v3/contactdb/recipients
+trigger_condition: true
+---
+[
+  {
+    "email": "{{ form.properties.email }}",
+    "first_name": "{{ form.properties.first_name }}",
+    "last_name": "{{ form.properties.last_name }}",
+    "contact_via": "Home Page Contact Form"
+  }
+]
+```
+
+{% include 'alert/note', content: 'Read more about [defining custom http response headers](/developer-guide/pages/response-headers).' %}
+
+### Step 2: Add API Call Notification to forms
+
+Add the following to the front matter on your form:
+
+```yaml
+api_call_notifications:
+- sendgrid_new_user_homepage
+```
+
+### Step 3: Create segments in SendGrid
+Create [segments in SendGrid](https://sendgrid.com/docs/Glossary/segments.html) and filter using the `contact_via` attribute.
+
+## Troubleshooting
+
+### Emails getting stuck in spam folders/filters
+There are some tweaks you can make to your DNS records to help ensure that your emails are getting to your users' inboxes and not getting caught up in their spam folders/filters.
+
+#### Solution 1
+Add the sendgrid.net lookup to your current SFP record for your domain.
+
+**Example**
+
+If your current record (TXT or SPF) is
+
+```
+"v=spf1 a mx include:_spf.google.com include:spf.protection.outlook.com ~all"
+```
+
+you can add
+
+```
+include:sendgrid.net
+```
+
+prior to the `~all` at the end, resulting in
+
+```
+"v=spf1 a mx include:_spf.google.com include:spf.protection.outlook.com include:sendgrid.net ~all"
+```
+
+Learn more about it here: [https://sendgrid.com/docs/Glossary/spf.html](https://sendgrid.com/docs/Glossary/spf.html)
+
+#### Solution 2
+Add DKIM records to your DNS records as described here: [https://sendgrid.com/docs/Glossary/dkim.html](https://sendgrid.com/docs/Glossary/dkim.html)
