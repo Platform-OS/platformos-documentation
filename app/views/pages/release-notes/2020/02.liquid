@@ -1,0 +1,25 @@
+---
+converter: markdown
+metadata:
+  title: Fixes and improvements
+  description: March 02, 2020
+  contributors: false
+  skip_contribute_button: true
+slug: release-notes/02-MARCH-2020
+---
+
+#### {{ page.metadata.description }}
+
+<h4 class="release-note release-note__improved">IMPROVED</h4>
+
+* asset_url will always render a full path to file hosted in CDN, even if it does not exist in the manifest
+
+<h4 class="release-note release-note__fixed">FIXED</h4>
+
+* static_cache expire config in Page will cache Page for given time
+* match filter error handling for invalid expression
+* presign url - fix for path with spaces and other special characters
+* deprecated current_user will return the same hash as recommended context.current_user to avoid unexpected errors
+* asset_url will correctly decode the name before looking it up in the manifest
+* removed legacy routes to correctly display 404 if the Page does not exist (internal error was returned instead for some edge cases like /webhooks)
+
