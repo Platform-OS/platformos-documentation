@@ -31,6 +31,40 @@ properties:
     type: string
 ```
 
+#### Note on default.yml vs user.yml 
+
+**default.yml**
+
+Another approach could be to create `default.yml`: a UserProfileSchema with  the name “default” placed in user_profile_scchemas directory. In a form you should then do the following: 
+
+```yaml
+resource: User
+fields:
+  profiles:
+    default: 
+      properties:
+        my_property:
+```
+
+In GraphQL you need to fetch values via profiles. 
+
+**user.yml**
+
+`user.yml` is placed in `app` and it behaves like adding a property directly to user:
+
+```yaml
+resource: User
+fields:
+  properties:
+    my_property:
+```
+
+So in GraphQL you fetch it also directly from user (same as with models, no need to go through the extra step of using a user profile).
+
+**Conclusion**
+
+At the end of the day, both of these approaches work and both have advantages and disadvantages. `user.yml` is easier to use, but it lacks namespace and you can’t add user properties via module. 
+
 ## Next steps
 Congratulations! You have created a property for all Users. Now you can learn how to namespace user properties using UserProfiles:
 
