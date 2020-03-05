@@ -7,9 +7,6 @@ metadata:
   questions: false
 ---
 
-{% assign SEC_IN_DAY = 86400 %}
-{% cache 'community/contributors', expire: SEC_IN_DAY %}
-
 {%- graphql api = 'api_call', template: 'get_all_contributors_from_github' -%}
 {%- assign response = api.api_call_send.response.body | to_hash -%}
 {%- assign authors = response | default: "[]" | reverse | map: "author" -%}
@@ -29,7 +26,5 @@ metadata:
   {% endfor %}
   </ul>
 </div>
-
-{% endcache %}
 
 <em>Contributors displayed here have sent commits to our GitHub repository. The list is ordered by number of commits starting from the contributor with the most commits.</em>
