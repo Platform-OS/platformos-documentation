@@ -1,4 +1,4 @@
-<img alt="Tested with TestCafe" src="https://img.shields.io/badge/tested%20with-TestCafe-2fa4cf.svg"><img alt="Tested with TestCafe" src="https://img.shields.io/david/mdyd-dev/nearme-documentation.svg">
+<img alt="Tested with TestCafe" src="https://img.shields.io/badge/tested%20with-TestCafe-2fa4cf.svg"><img alt="Dependencies status" src="https://img.shields.io/david/mdyd-dev/nearme-documentation.svg">
 
 ## Contribute content
 
@@ -6,7 +6,7 @@ Thank you for your interest in contributing to the platformOS documentation! Our
 
 ## Give us feedback
 
-[Create an issue](https://guides.github.com/features/issues/) with your finding.
+[Create an issue](https://guides.github.com/features/issues/) with your finding in the Issues tab.
 
 ## Edit or add topics on the GitHub UI
 
@@ -15,7 +15,7 @@ Go to the file you would like to change, [click edit and commit changes](https:/
 ## Edit or add topics using git
 
 1. [Fork the repository](https://guides.github.com/activities/forking/).
-2. Install dependencies (NPM).
+2. Install node.js dependencies (npm).
 3. Change something or add a new topic. Please check if a [template](/tree/master/app/views/pages/doc-templates) is already available for the type of content you’d like to contribute. We have prepared templates for most content on our documentation page, to make contribution easier, and to ensure the consistency of contributed content. Please make sure to follow our [style guide](https://documentation.platformos.com/community/documentation-style-guide).
 4. Create a pull request.
 5. We review your changes, and either get back to you with our feedback, or merge your changes.
