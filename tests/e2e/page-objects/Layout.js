@@ -10,7 +10,6 @@ export default class LayoutPO {
 
     this.Body = Selector('body');
     this.Content = this.Body.find('.content__main');
-    this.Contributors = Selector('.contributors');
     this.Questions = Selector('.callout__actions');
     this.Sidebar = Selector('.sidebar', { visibilityCheck: true });
     this.Feedback = Selector('.feedback-main');

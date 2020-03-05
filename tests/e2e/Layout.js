@@ -6,11 +6,10 @@ const Layout = new LayoutPO();
 
 fixture('Layout').page(process.env.MP_URL);
 
-test('Conditional layout parts are working: questions, feedback, contributors, one-column layout', async t => {
+test('Conditional layout parts are working: questions, feedback, one-column layout', async t => {
   await t.click(Selector('a').withText(Layout.txt.contact));
 
   await t.expect(Layout.Sidebar.count).eql(0);
-  await t.expect(Layout.Contributors.count).eql(0);
   await t.expect(Layout.Feedback.count).eql(0);
   await t.expect(Layout.Questions.count).eql(0);
 });
@@ -28,11 +27,4 @@ test('Breadcrumbs are showing up', async t => {
   await t.expect(Selector('.breadcrumbs a').withText('Documentation').exists).ok();
   await t.expect(Selector('.breadcrumbs a').withText('API Reference').exists).ok();
   await t.expect(Selector('.breadcrumbs a').withText('Introduction').exists).ok();
-});
-
-test.skip('Contributors are showing up', async t => {
-  await t.navigateTo('/how-platformos-works');
-
-  await t.expect(Layout.Contributors.find('a').count).gt(0);
-  await t.expect(Layout.Contributors.find('img').count).gt(0);
 });
