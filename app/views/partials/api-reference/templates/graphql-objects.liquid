@@ -19,6 +19,7 @@
           <td>{{ f.name }}</td>
           <td>{% if f.type %}{{ f.type.name }}{% endif %}</td>
           <td class="text-capitalize">
+            {% if f.is_deprecated %}DEPRECATED. Reason: {{ f.deprecation_reason }}<br/>{% endif %}
             {% if f.description %}{{ f.description }}{% endif %}
             {% if f.default_value %}Default: <code>{{ f.default_value }}</code>{% endif %}
           </td>
