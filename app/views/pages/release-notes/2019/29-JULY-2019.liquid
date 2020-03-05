@@ -17,11 +17,11 @@ slug: release-notes/29-JULY-2019
     models(
       per_page: 10
       filter: {
-        name: { value: "cars" }
-        users: { join: { foreign_property: "car_id" }
-          filter: { properties: [{ name: "name" value: "Mike" }]
-          }
-        }
+	name: { value: "cars" }
+	related_users: { join: { foreign_property: "car_id" }
+	  filter: { properties: [{ name: "name" value: "Mike" }]
+	  }
+	}
       }
     ) { ... }
   ```
