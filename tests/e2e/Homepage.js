@@ -12,10 +12,6 @@ test('There are no liquid errors on the page', async () => {
   await Layout.checkLiquidErrors();
 });
 
-test('Github contributors are not shown', async t => {
-  await t.expect(Layout.Contributors.count).eql(0);
-});
-
 test('Page is not too slow', async t => {
   const perf = await getPerformanceMetrics({ t });
   const computed = perf.computed;
