@@ -3,6 +3,7 @@ converter: markdown
 metadata:
   title: Modules
   description: Modules allow code reuse and sharing, while protecting the IP of creators.
+  toc: true
 slug: developer-guide/modules/modules
 ---
 
@@ -24,7 +25,7 @@ modules
         └─ assets
 ```
 
-These directories have the same structure as the standard `app` folder, but if developers try to download files after the module has been deployed to an Instance (`pos-cli pull`), they will only see the files from the public folder.
+`public` and `private` directories have the same structure as the standard `app` folder, but if developers try to download or preview files after the module has been deployed to an Instance, they will only see the files from the `public` folder.
 
 In general, when referencing files that are part of a module, platformOS uses a prefix which does not include any `public` or `private` folders (for example: `modules/admin/app.css` instead of `modules/admin/private/app.css`). This means that creators should not create files with the same name in both folders, as one will overwrite the other. This behavior gives creators flexibility: if they want to change the scope of the file, they can move it between the private and public folders without changing the code.
 
@@ -48,12 +49,22 @@ admincms
             └── admin.liquid
 ```
 
-## Resource naming conventions and paths
+## Namespacing rules
 
 Configuration files placed in a module are treated a bit differently than regular files.
 To avoid conflicts between the code of a module and regular code (or between modules) a namespacing strategy is used.
 
-## Namespacing rules
+The general rule of accessing files in modules is to prefix paths with `modules/MODULE_NAME`. Keep in mind that skipping resource type applies just like it does without modules. This means that when you access a `partial`, you type a path to it as if you were in the partials directory.
+
+When you use app: `app/views/partials/users/settings/name.liquid`
+Is accessed by path: `users/settings/name.liquid`
+
+When you use module: `modules/admin/public/views/partials/users/settings/name.liquid`
+Is accessed by path: `modules/admin/users/settings/name.liquid`
+
+The only difference is the prefix.
+
+## Examples
 
 ### Assets
 
@@ -61,7 +72,7 @@ You can access assets placed at `assets` directory in a module using [asset_url]
 
 Paths for those files are prefixed with `modules/MODULE_NAME`
 
-#### Example for modules/admin/assets/app.css:
+#### modules/admin/public/assets/app.css
 
 ```html
 {% raw %}
@@ -69,7 +80,7 @@ Paths for those files are prefixed with `modules/MODULE_NAME`
 {% endraw %}
 ```
 
-#### Example for modules/admin/assets/admin.js:
+#### modules/admin/public/assets/admin.js
 
 ```html
 {% raw %}
@@ -92,20 +103,35 @@ For example, to include partial saved as `modules/admin/private/views/partials/c
 
 Layout name has the same prefix when referenced within a page:
 
+#### modules/admin/public/views/layouts/settings.liquid
+
 ```yaml
 slug: admin/settings
 layout_name: modules/admin/settings
 ```
 
-### Other resources (Authorization Policies, Graph Queries, etc.)
+### Models
 
-When creating a module you don't have to add prefix to the name but when you use it (inside or outside of module scope) you have to provide the `modules/module_name/` prefix.
+#### modules/admin/private/models/resume.yml
 
-### Examples
+```graphql
+query get_resumes {
+  models(
+    per_page: 5
+    filter: {
+      model_schema_name: { value: "modules/admin/resume" }
+    }
+  ) {
+    results {
+      id
+    }
+  }
+}
+```
 
-#### Authorization policy
+### Authorization Policies
 
-Authorization policy definition looks like any other:
+#### modules/admin/public/authorization_policies/can_view_blog_posts.liquid
 
 ```liquid
 {% raw %}
@@ -118,7 +144,7 @@ true
 {% endraw %}
 ```
 
-But within page/form it is referenced with a prefix:
+Within page/form it is referenced with a prefix:
 
 ```yaml
 authorization_policies:
@@ -128,6 +154,8 @@ authorization_policies:
 #### Graphql Query
 
 Query looks like any other query:
+
+#### modules/admin/public/graphql/get_blog_instance.graphql
 
 ```graphql
 query get_blog_instance(
