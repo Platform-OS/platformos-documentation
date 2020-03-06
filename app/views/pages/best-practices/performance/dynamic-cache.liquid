@@ -1,16 +1,16 @@
 ---
 converter: markdown
 metadata:
-  title: Dynamic page cache
+  title: Dynamic Page Cache
   description: Detailed description of dynamic page cache, with examples.
 ---
 
-Dynamic cache works similarly to static cache, you can use it to cache the whole page, but the difference is that it triggers authorization, so it works also for logged in users.
+**Dynamic cache** works similarly to static cache, you can use it to cache the whole page, but the difference is that it triggers authorization, so it works for logged in users as well.
 
 Whenever you change something on the page and deploy it, the cache will be invalidated.
 In reality, it's rarely possible to cache the whole page or layout (this is why `layout` is `false` by default).
 
-Dynamic cache is often used when a page is very often visited (ie. homepage with products from the database, landing page with recently registered users) and you want this page to be fast and protected against huge amount of visitors flooding from marketing campaign. Data cached on those pages usually does not need to be real time, because it is not critical. Following products on the homepage example: Last viewed products on the homepage - it is not critical for this list to be real time, it can be cached for 60 seconds or even more to improve site's performance.
+Dynamic cache is often used when a page is very often visited (for example, a homepage with products from the database, a landing page with recently registered users) and you want this page to be fast and protected against the huge amount of visitors flooding from a marketing campaign. Data cached on those pages usually does not need to be real time, because it is not critical. Following products on the homepage example: Last viewed products on the homepage - it is not critical for this list to be real time, it can be cached for 60 seconds or even more to improve the site's performance.
 
 ## Explanation
 
@@ -45,7 +45,7 @@ Number of seconds since cache creation after which it will not be taked into con
 If it is set to 0 and `key` is set, the cache will never expire by itself (updating the file would invalidate the cache though).
 If `key` is blank and `expire` is 0, the page won't be cached at all.
 
-If you update a page either by sync or deploy, it will invalidate cache, no matter if expiration time has passed or not.
+If you update a page either by sync or deploy, it will invalidate cache, no matter if the expiration time has passed or not.
 
 Default: none
 
@@ -55,7 +55,7 @@ Makes layout part of the cached page.
 
 Default: `false`
 
-## Example 2
+## Example 1
 
 #### views/pages/dynamic-cache.liquid
 
@@ -72,9 +72,9 @@ Random Seed: {{ 5 | random_string }}
 {% endraw %}
 ```
 
-## Example 1
+## Example 2
 
-You can cache a page depending on last update of multiple models to invalidate cache only when needed. This might be used to refresh page content after new products have been added to the store you manage.
+You can cache a page depending on the last update of multiple models to invalidate the cache only when needed. This might be used to refresh page content after new products have been added to the store you manage.
 
 #### views/pages/dynamic-models.liquid
 
