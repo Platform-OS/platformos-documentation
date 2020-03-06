@@ -1,0 +1,70 @@
+---
+converter: markdown
+metadata:
+  title: Integrating Mailchimp Using API Call Notifications
+  description: This guide will help you create a Mailchimp integration for platformOS using API Call Notifications.
+slug: developer-guide/integrations/integrating-mailchimp-api-call-notifications
+---
+
+This guide will help you create a Mailchimp integration for platformOS using API Call Notifications.
+
+## Requirements
+To follow this tutorial, you should be familiar with creating API Call Notifications. You also have to have access to the Partner Portal and know how to manage integrations, and have a Mailchimp account where you can find your API key.
+
+* [Creating an API Call Notification](/developer-guide/notifications/creating-api-call-notification)
+* [Register on the Partner Portal](/get-started/hello-world/register-partner-portal)
+* [Mailchimp: Find or generate your API key](https://mailchimp.com/help/about-api-keys/#Find_or_generate_your_API_key)
+
+## Steps
+
+Integrating Mailchimp using API Call Notifications is a two-step process:
+
+<div data-autosteps></div>
+
+### Step 1: Create API Call Notification
+
+Create an API Call Notification: 
+
+* Replace `<<YOUR_API_KEY>>` with your Mailchimp API key 
+* Replace `<<YOUR_DC_KEY>>` with the last part of your Mailchimp API key (the part after the `-`, for example `xxxxxxxxxxxxxxxxxxxxxxxxxx-us3` where `us3` is the DC_KEY)
+* Replace <<YOUR_AUDIENCE_ID>> with your Mailchimp Audience ID. To find that follow these steps:
+	1. Navigate to the Audience tab.
+	2. If you have more than one audience, click the Current audience drop-down and choose the one you want to work with.
+	3. Click on View Contacts.
+	4. Click on the Settings drop-down and choose Audience name and defaults.
+	5. In the Audience ID section, you’ll see a string of letters and numbers. This is your audience ID.
+* Add the payload based on the attributes in your form.
+
+```yaml
+---
+name: mailchimp_new_host
+to: 'https://<<YOUR_DC_KEY>>.api.mailchimp.com/3.0/lists/<<YOUR_AUDIENCE_ID>>/members/'
+delay: 0
+enabled: true
+format: http
+trigger_condition: true
+request_type: POST
+headers: >
+  {
+    "Content-Type": "application/json",
+    "Authorization": "apikey <<YOUR_API_KEY>>"
+  }
+---
+{
+    "email_address":"{{ form.email }}",
+    "status":"subscribed",
+    "merge_fields": {
+    "FNAME": "{{ form.first_name }}",
+    "LNAME": "{{ form.last_name }}"
+    }
+}
+```
+
+### Step 2: Add API Call Notification to forms
+
+Add the following to the front matter on your form:
+
+```yaml
+api_call_notifications:
+  - mailchimp_new_host
+```
