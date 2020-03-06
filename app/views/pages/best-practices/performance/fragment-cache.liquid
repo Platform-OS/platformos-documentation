@@ -1,12 +1,12 @@
 ---
 converter: markdown
 metadata:
-  title: Fragment cache
+  title: Fragment Cache
   description: Detailed description of fragment caching with examples.
 ---
 
-You can cache specific parts of a page or layout using fragment caching.
-One common use case is to cache fragments that take a lot of time to fetch and/or render, for example long running GraphQL query.
+You can cache specific parts of a page or layout using **fragment caching**.
+One common use case is to cache fragments that take a lot of time to fetch and/or render, for example a long-running GraphQL query.
 
 ## Testing the cache
 
@@ -27,7 +27,7 @@ Random string: {{ 18 | random_string }}
 
 ## Example
 
-Example demonstrating rendering a lot of data (in this case generated inline, in real world, this would be fetched from the database):
+This example demonstrates rendering a lot of data (in this case generated inline, in real world, this would be fetched from the database):
 
 #### views/pages/fragment-cache-long-running.liquid
 
@@ -48,11 +48,11 @@ Random string not cached: {{ 18 | random_string }} <br>
 
 ## Authentication and Cross Site Request Forgery tokens
 
-If you cache a fragment that includes a token (like an `authenticity_token` that's generated for form request), then the token gets also cached. This could, for example, prevent the user from submitting a form.
+If you cache a fragment that includes a token (like an `authenticity_token` that's generated for a form request), then the token gets also cached. This could, for example, prevent the user from submitting a form.
 
-platformOS automatically processes the cache and updates those tokens if you use the [form](/api-reference/liquid/platformos-tags#form) liquid tag.
-If you're using JavaScript to submit forms, you can obtain the CSRF token for current page from cookie named `CSRF-TOKEN`.
+platformOS automatically processes the cache and updates those tokens if you use the [form](/api-reference/liquid/platformos-tags#form) Liquid tag.
+If you're using JavaScript to submit forms, you can obtain the CSRF token for the current page from a cookie named `CSRF-TOKEN`.
 
 ## Source code and demo
 
-You can see [source code](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/caches/public/views/pages/fragment-cache-long-running.liquid) of this example on GitHub, and [see demo](https://examples.platform-os.com/fragment-cache-long-running) on our examples page.
+You can see the [source code](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/caches/public/views/pages/fragment-cache-long-running.liquid) of this example on GitHub, and [see a demo](https://examples.platform-os.com/fragment-cache-long-running) on our examples page.
