@@ -1,0 +1,68 @@
+---
+converter: markdown
+metadata:
+  title: Integrating ActiveCampaign Using API Call Notifications
+  description: This guide will help you create an ActiveCampaign integration for platformOS using API Call Notifications.
+slug: developer-guide/integrations/integrating-activecampaign-api-call-notifications
+---
+
+This guide will help you create an ActiveCampaign integration for platformOS using API Call Notifications.
+
+## Requirements
+To follow this tutorial, you should be familiar with creating API Call Notifications. You also have to have access to the Partner Portal and know how to manage integrations, and have an ActiveCampaign account where you can find your API key.
+
+* [Creating an API Call Notification](/developer-guide/notifications/creating-api-call-notification)
+* [Register on the Partner Portal](/get-started/hello-world/register-partner-portal)
+
+## Steps
+
+Integrating ActiveCampaign using API Call Notifications is a two-step process:
+
+<div data-autosteps></div>
+
+### Step 1: Create API Call Notification
+
+Create an API Call Notification: 
+
+1. Go to [https://www.activecampaign.com](https://www.activecampaign.com) and sign in. Click the "Settings" option located in the left side navigation menu.
+2. The Account Settings menu appears. Click the "Developer" option.
+3. The Developer Settings page loads and displays your ActiveCampaign API URL and API Key.
+4. Replace `<<YOUR_API_KEY>>` with your ActiveCampaign API key.
+5. Replace `<<YOUR_ACCOUNT_URL>>` with your account URL.
+6. Add the payload based on the attributes in your form.
+
+```yaml
+---
+name: active_campaign_new_host
+to: <<YOUR_ACCOUNT_URL>>/api/3/contacts
+delay: '0'
+enabled: true
+format: http
+trigger_condition: true
+request_type: POST
+headers: >
+  {
+    "Content-Type": "application/json",
+    "Api-Token": "<<YOUR_API_KEY>>"
+  }
+---
+{
+  "contact": {
+    "email": "{{ form.email }}",
+    "firstName": "{{ form.first_name }}",
+    "lastName": "{{ form.last_name }}"
+  }
+}
+```
+
+### Step 2: Add API Call Notification to forms
+
+Add the following to the front matter on your form:
+
+```yaml
+api_call_notifications:
+  - active_campaign_new_host
+```
+
+
+
