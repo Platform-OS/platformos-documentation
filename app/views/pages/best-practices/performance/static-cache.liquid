@@ -1,0 +1,44 @@
+---
+converter: markdown
+metadata:
+  title: Static Cache
+  description: Detailed description of static cache, with examples.
+---
+
+**Static cache** means you create a static response, and serve it bypassing the whole server side, including authorization. It is similar to server-side rendering. It is faster because it bypasses the application server completely.
+
+Although it's fast, you can rarely use it. For example, it's great to use this for the home page, to make it very fast for non-authenticated users, but you can't do the same for a dashboard, because the user has to be authenticated.
+
+### Use cases
+
+Static cache is a great candidate to use when creating a sitemap that you want to have updated at most once a day.
+
+Many developers use it also for their JSON API that has to respond as fast as possible but the data does not change often and is not dependent of the user requesting the data.
+
+### Example
+
+For example, if you were to build a currency exchange rates API, you might want to fetch data from the database at most once a minute, not more often.
+
+#### views/pages/currencies.json.liquid
+
+```liquid
+{% raw %}
+---
+static_cache:
+  expire: 60 # response will be cached for 60 seconds (or 1 minute)
+---
+{
+  "PLN": "{{ 10 | random_string }}",
+  "USD": "{{ 10 | random_string }}",
+  "CHF": "{{ 10 | random_string }}",
+  "AUD": "{{ 10 | random_string }}",
+  "JPY": "{{ 10 | random_string }}"
+}
+{% endraw %}
+```
+
+{% include 'alert/note', content: 'Keep in mind that there are multiple servers behind our load balancers and each of them have separate cache, so you might encounter different results depending on hitting a server with warm cache or cold cache.' %}
+
+## Source code and demo
+
+You can see the [source code](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/caches/public/views/pages/currencies.json.liquid) of this example on GitHub, and [see a demo](https://examples.platform-os.com/currencies.json) on our examples page.

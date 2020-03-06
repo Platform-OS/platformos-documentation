@@ -1,0 +1,58 @@
+---
+converter: markdown
+metadata:
+  title: Fragment Cache
+  description: Detailed description of fragment caching with examples.
+---
+
+You can cache specific parts of a page or layout using **fragment caching**.
+One common use case is to cache fragments that take a lot of time to fetch and/or render, for example a long-running GraphQL query.
+
+## Testing the cache
+
+You can test the cache by adding a random string and refreshing the page:
+
+* When the page is rendered from the cache, the string remains the same.
+* When the cache is invalidated (e.g. after the time specified in the `expire` property), the string changes.
+
+#### views/pages/fragment-cache-simple.liquid
+
+```liquid
+{% raw %}
+{% cache context.page.slug, expire: 10 %}
+Random string: {{ 18 | random_string }}
+{% endcache %}
+{% endraw %}
+```
+
+## Example
+
+This example demonstrates rendering a lot of data (in this case generated inline, in real world, this would be fetched from the database):
+
+#### views/pages/fragment-cache-long-running.liquid
+
+```liquid
+{% raw %}
+Random string not cached: {{ 18 | random_string }} <br>
+
+{% capture key %}{{ context.page.slug }}-v1{% endcapture %}
+{% cache key, expire: 15 %}
+  Random string cached: {{ 18 | random_string }} <br>
+  {%- for i in (1..5000) -%}
+    {%- assign r = 15 | random_string %}
+    <span class="{{ r }}">{{ i }}</span>
+  {%- endfor -%}
+{% endcache %}
+{% endraw %}
+```
+
+## Authentication and Cross Site Request Forgery tokens
+
+If you cache a fragment that includes a token (like an `authenticity_token` that's generated for a form request), then the token gets also cached. This could, for example, prevent the user from submitting a form.
+
+platformOS automatically processes the cache and updates those tokens if you use the [form](/api-reference/liquid/platformos-tags#form) Liquid tag.
+If you're using JavaScript to submit forms, you can obtain the CSRF token for the current page from a cookie named `CSRF-TOKEN`.
+
+## Source code and demo
+
+You can see the [source code](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/caches/public/views/pages/fragment-cache-long-running.liquid) of this example on GitHub, and [see a demo](https://examples.platform-os.com/fragment-cache-long-running) on our examples page.
