@@ -1,0 +1,93 @@
+---
+converter: markdown
+metadata:
+  title: Instance Copy, GraphQL improvements, fixes
+  description: March 16, 2020
+  skip_contribute_button: true
+slug: release-notes/16-MARCH-2020
+---
+
+#### {{ page.metadata.description }}
+
+<h4 class="release-note release-note__new">NEW</h4>
+
+* Possibility to duplicate Instance 1-1 from any stack to any stack. It means, you can copy a site from staging to production, production Sydney to production London. It even allows you to migrate a site from the AWS Stack into the Google Cloud Stack. Includes all admin resources like forms, GraphQL queries, data like models, users, user profiles and user uploads - assets, images, attachments. Please watch our [Instance Copy demo on Town Hall #77](https://www.youtube.com/watch?v=evezbNPC0Mo&t=1m17s) for details.
+
+* Ability to filter GraphQL Query `users` by `related_model`
+
+This example query will find all company owners (users) whose company's (which is a model in his example) property "codename" is either "ES" or "FI":
+```
+query {
+  users(
+    per_page: 10
+    filter: {
+      related_models: {
+        join: { join_on_property: "id" foreign_property: "company_owner_id" }
+        filter: {
+          model_schema_name: { value: "company" }
+          properties: [{ name: "codename" value_in: ["ES", "FI"] }]
+        }
+      }
+    }
+  ) {
+    results {
+      id
+      email
+      companies: related_models(join_on_property: "id", foreign_property: "company_owner_id" model_schema_name: "company"){
+        codename: property(name: "codename")
+      }
+    }
+  }
+}
+```
+
+* ability to filter GraphQL Query `users` by `related_users`
+
+This example query will find all users whose boss's first name is John:
+```
+query {
+  users(
+    per_page: 10
+    filter: {
+      related_users: {
+        join: { join_on_property: "boss_id" foreign_property: "id" }
+        filter: {
+          first_name: { value: "John" }
+        }
+      }
+    }
+  ) {
+    results {
+      external_id
+      email
+      boss: related_users(join_on_property: "boss_id", foreign_property: "id") {
+        external_id
+        first_name
+        email
+      }
+    }
+  }
+}
+```
+
+<h4 class="release-note release-note__improved">IMPROVED</h4>
+
+* Deploy/sync based on `physical_file_path` for all admin resources
+
+Behind the scenes `pos-cli` was relying on platformOS to find admin resources like forms, graphql queries, model schemas based on different properties, usually name. We improved this functionality and from now on physical_file_path will be used. This allowed us to add two enhancements to `pos-cli` -  `pos-cli pull`, which would be the reverse of deploy - it will create the `app/` and `modules/` directory based on current DB state (using the newest naming, without unnecessary default values) and `pos-cli sync` will also listen to file deletion and act accordingly. Those changes will be released separately, you can follow them at the [pos-cli Changelog](https://github.com/mdyd-dev/pos-cli/blob/master/CHANGELOG.md).
+
+* Referencing GraphQL files
+
+Previously, the example file `app/graphql/my_diectory/my_query.graphql` was invokable via {% raw %}{% graphql res = 'my_query' %}{% endraw %}. It was the only resource which behaved like this. Moreover, due to the uniqueness constraint on name, it was often leading to structure like `graphql/module_a/module_a_create.graphql` and `graphql/module_b/module_b_create.graphql` instead of `graphql/module_a/create.graphql` and `graphql/module_b/create.graphql`.
+After the change, the expected way to invoke it is {% raw %}{% graphql res = 'my_directory/my_query' %}{% endraw %}. For backwards compatibility, the previous way still works, however a deprecation log is generated. For this particular example, it would look like this:
+
+```
+DeprecationWarning: Finding GraphQL query/mutation by only name is deprecated, use full path instead.
+Replace my_query with my_directory/my_query
+```
+
+<h4 class="release-note release-note__fixed">FIXED</h4>
+
+* Uniqueness validation for user property
+* Edge cases when `content_updated_at` was always updated, even though content has not been directly changed
+* {% raw %}{% assign = %}{% endraw %} will now throw syntax error
