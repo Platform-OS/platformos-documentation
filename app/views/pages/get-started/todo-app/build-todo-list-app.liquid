@@ -14,7 +14,7 @@ You can [preview](https://todo-app-dev.staging.oregon.platform-os.com/) the comp
 
 ## Prerequisites
 
-This tutorial assumes you have completed the [Hello, World!](/get-started/hello-world/register-partner-portal) tutorial. 
+This tutorial assumes you have completed the [Hello, World!](/get-started/hello-world/register-partner-portal) tutorial.
 
 The **ToDo App** will use a couple of basic building blocks available in platformOS:
 
@@ -115,7 +115,7 @@ After you have tested a query and it has proven to work with hardcoded parameter
 
 For example:
 
-`graphql/list/list_create.graphql` will be referenced this way: {% raw %}`{% graphql result = 'list_create', title: title %}`{% endraw %}
+`graphql/list/create.graphql` will be referenced this way: {% raw %}`{% graphql result = 'list/create', title: title %}`{% endraw %}
 
 ### Layout and homepage
 
@@ -193,7 +193,7 @@ All database operations in this application follow the same structure and have t
 
 3) HTML form that sends data to a page
 
-#### graphql/list/list_create.graphql
+#### graphql/list/create.graphql
 
 ```graphql
  mutation create($title: String!) {
@@ -217,7 +217,7 @@ method: post
 ---
 {%- assign title = context.params.title -%}
 
-{% graphql result = 'list_create', title: title %}
+{% graphql result = 'list/create', title: title %}
 {% assign list = result | fetch: "model_create" %}
 
 {% if list.id %}
@@ -254,7 +254,7 @@ You can see a lot of data attributes (like `x-data`, `x-show`, `@click`) which a
 
 ### Step 2: View all lists
 
-Now that you can create a list with a title, show the latest 10 of them on your homepage, sorted by recently updated (title changed).
+Now that you can create a list with a title, show 10 of them on your homepage, sorted by those which had been recently updated.
 
 #### graphql/index.graphql
 
@@ -267,7 +267,7 @@ Now that you can create a list with a title, show the latest 10 of them on your 
        deleted_at: { exists: false }
        properties: { name: "title", exists: true }
      }
-     sort: { updated_at: { order: ASC } }
+     sort: { updated_at: { order: DESC } }
    ) {
      results {
        id
@@ -303,7 +303,7 @@ You iterate over the array returned by GraphQL and inform the user that there is
 
 Now that you have a link pointing to {% raw %}`/list/show/{{ list.id }}`{% endraw %}, you need to create this page to be able to show a particular list.
 
-#### graphql/list/list_read.graphql
+#### graphql/list/read.graphql
 
 ```graphql
  query read($id: ID!) {
@@ -327,7 +327,7 @@ Now that you have a link pointing to {% raw %}`/list/show/{{ list.id }}`{% endra
 {% raw %}
 ```liquid
  {%- assign id = context.params.slug3 -%}
- {% graphql list = 'list_read', id: id | fetch: 'models' | fetch: 'results' | first %}
+ {% graphql list = 'list/read', id: id | fetch: 'models' | fetch: 'results' | first %}
 
  <h2 class="mr-10 mb-0">{{ list.title }}</h2>
 ```
@@ -339,7 +339,7 @@ These couple of lines of code pull the correct list object from the database and
 
 To rename a list, you need to update its title field. As usual, you need a GraphQL mutation, a page, and a form.
 
-#### graphql/list/list_update.graphql
+#### graphql/list/update.graphql
 
 ```graphql
  mutation update($id: ID!, $title: String!) {
@@ -365,7 +365,7 @@ Note that ID is required as well, because you have to tell the system which list
  {%- assign id = context.params.slug3 -%}
  {%- assign title = context.params.title -%}
 
- {% graphql result = 'list_update', id: id, title: title %}
+ {% graphql result = 'list/update', id: id, title: title %}
  {% assign list = result | fetch: "model_update" %}
 
  {% if list.id %}
@@ -403,7 +403,7 @@ Code for renaming a list is in the `list/show.liquid` page, that's why you have 
 
 Because you did not connect any tasks to your lists, all of them are empty. This means you can easily implement a delete feature.
 
-#### graphql/list/list_delete.graphql
+#### graphql/list/delete.graphql
 
 ```graphql
  mutation delete($id: ID!) {
@@ -422,7 +422,7 @@ Because you did not connect any tasks to your lists, all of them are empty. This
  ---
  {%- assign id = context.params.slug3 -%}
 
- {% graphql result = 'list_delete', id: id %}
+ {% graphql result = 'list/delete', id: id %}
  {% assign list = result | fetch: "model_delete" %}
 
  {% if list.id %}
@@ -463,7 +463,7 @@ You show the delete form only when there are no tasks associated with the list.
 
 Now that you have all your list operations ready, start handling items.
 
-#### graphql/item/item_create.graphql
+#### graphql/item/create.graphql
 
 ```graphql
  mutation create($list_id: String!, $content: String!) {
@@ -526,7 +526,7 @@ To create a task attached to a list, you need the list's ID. It is passed in the
 
 ### Step 7: Mark task as complete
 
-#### graphql/item/item_update_completed.graphql
+#### graphql/item/update_completed.graphql
 
 ```graphql
  mutation update($id: ID!, $completed: Boolean!) {
@@ -604,7 +604,7 @@ Additionally, you submit the form as soon as the user checks/unchecks the checkb
 
 ### Step 8: Edit a task's content
 
-#### graphql/item/item_update_content.graphql
+#### graphql/item/update_content.graphql
 
 ```graphql
  mutation update($id: ID!, $content: String!) {
@@ -669,7 +669,7 @@ You might have noticed that the above filename is the same as in the one in the 
 
 ### Step 9: Delete a task
 
-#### graphql/item/item_delete.graphql
+#### graphql/item/delete.graphql
 
 ```graphql
  mutation delete($item_id: ID!) {
