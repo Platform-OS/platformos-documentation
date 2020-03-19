@@ -10,17 +10,41 @@ platformOS is a **model-based application development platform**. Aimed at front
 
 platformOS is a **platform as a service** (PaaS) that enables you to create and host anything from small websites to large enterprise applications and even entire SaaS products.
 
-## platformOS is
+platformOS is:
 
-<table class="table table-borderless">
-  <tr>
-    <td><b>Decoupled</b><br><br>Use frontend code to build custom workflows, B2B, and P2P solutions that interact with any 3rd party API.</td>
-    <td><b>Scalable</b><br><br>Build on load balanced SSL server infrastructure running worldwide on <a href="https://docs.aws.amazon.com" target="_blank" rel="noopener external">AWS</a> (Amazon Web Services) servers.</td>
-    <td><b>Secure</b><br><br>Use our Secure Data Centers with added layers of security, and cater to country-specific security or legal requirements.</td>
-  </tr>
-  <tr>
-    <td><b>Fast</b><br><br>Use Liquid templating and natively <a href="https://amp.dev" target="_blank" rel="noopener external">AMP</a>-ready GraphQL data calls on a platform tuned for performance, regardless of your application's size.</td>
-    <td><b>Extensible</b><br><br>Integrate your sites with virtually any 3rd party system that provides API access, or build your own APIs in platformOS.</td>
-    <td><b>SEO-friendly</b><br><br>Build on <a href="https://aws.amazon.com/elasticsearch-service" target="_blank" rel="noopener external">AWS Elastic Search</a> and maximize the benefits of local search using our custom model.</td>
-  </tr>
-</table>
+* **Decoupled**: Use frontend code to build custom workflows, B2B, and P2P solutions that interact with any 3rd party API.
+* **Scalable**: Build on load balanced SSL server infrastructure running worldwide on <a href="https://docs.aws.amazon.com" target="_blank" rel="noopener external">AWS</a> (Amazon Web Services) servers.
+* **Secure**: Use our Secure Data Centers with added layers of security, and cater to country-specific security or legal requirements.
+* **Fast**: Use Liquid templating and natively <a href="https://amp.dev" target="_blank" rel="noopener external">AMP</a>-ready GraphQL data calls on a platform tuned for performance, regardless of your application's size.
+* **Extensible**: Integrate your sites with virtually any 3rd party system that provides API access, or build your own APIs in platformOS.
+* **SEO-friendly**: Build on <a href="https://aws.amazon.com/elasticsearch-service" target="_blank" rel="noopener external">AWS Elastic Search</a> and maximize the benefits of local search using our custom model.
+
+## Technologies
+
+Besides standard web technologies like HTML, CSS, JavaScript (including JSON and AJAX), platformOS uses a couple of languages that you need to be familiar with to build a site on our platform:
+
+### YAML
+A human-friendly data serialization standard used in platformOS for setting properties in configuration files. To learn more, visit the [Official YAML Documentation](http://www.yaml.org/start.html).
+
+### Liquid
+
+A template language used in platformOS to build dynamic pages, and to provide dynamic configuration (e.g. based on currently logged in user). Use Liquid to provide authorization policy for forms and pages, or to specify notifications (email, SMS, API call).
+
+{% include 'alert/tutorial', content: 'To learn more about Liquid and how to use it in platformOS, check out our [Liquid Documentation](/api-reference/liquid/introduction) that includes an introduction for beginners, types, tags, filters, whitespace control, and detailed descriptions of platformOS-specific filters and tags — all of them demonstrated with examples.' %}
+
+### GraphQL
+
+A query language used to communicate with our data storages. 
+
+Check out platformOS code examples for GraphQL terms in our GraphQl glossary, and see detailed descriptions of queries, mutations, objects, scalars, interfaces, enums, and input objects in our [GraphQL Documenation](/api-reference/graphql/glossary).
+
+To help you quickly develop GraphQl queries, we provide a [GraphiQL](https://github.com/graphql/graphiql) graphical user interface through the pos-cli. GraphiQL is a GraphQL editor with autocomplete and live docs that helps you structure GraphQL queries correctly.
+
+{% include 'alert/tutorial', content: 'To learn more about using GraphQL and the GraphiQL tool, explore [our documentation topics on using GraphQL in platformOS](/developer-guide/graphql/developing-graphql-queries-using-graphiql).
+' %}
+
+<img src="{{ 'images/best-practices/qa/graphiql.png' | asset_url }}" alt="Screenshot of the GraphiQL editor" />
+
+### Node.js
+
+An asynchronous event-driven JavaScript runtime we used to support a small footprint deployment process. Visit the [Official Node.js Documentation](https://nodejs.org/en/docs/) to learn more about Node.js, and [get Node.JS here](https://nodejs.org/en/).
