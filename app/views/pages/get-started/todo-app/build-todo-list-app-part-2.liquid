@@ -1,0 +1,549 @@
+---
+converter: markdown
+metadata:
+  title: "Build a ToDo List App Part 2: Extending"
+  description:
+slug: get-started/todo-app/build-todo-list-app-part-2
+---
+
+This is part two of `Build a ToDo List App` series. We will extend what we have built in part one to explore more platformOS features, explore them deeper, or learn more best practices.
+
+## Preview
+
+You can [preview](https://todo-app-dev2.staging.oregon.platform-os.com/) the completed application you will be building based on this tutorial.
+
+## Prerequisites
+
+This tutorial assumes you have completed the [Build a ToDo List App](/get-started/todo-app/build-todo-list-app) tutorial.
+
+<div data-autosteps></div>
+
+## File structure
+
+In this tutorial we will also reorganize some files because some pages became too long and complicated to fit on the screen.
+
+We will extract parts of the features that can be easily named to partials.
+
+```shell
+app/
+├── assets
+│   ├── css
+│   │   └── app.css
+│   └── js
+│       └── app.js
+├── graphql
+│   ├── emails
+│   │   └── created_protected_list.graphql
+│   ├── index.graphql
+│   ├── item
+│   │   ├── create.graphql
+│   │   ├── delete.graphql
+│   │   ├── read.graphql
+│   │   ├── update_completed.graphql
+│   │   └── update_content.graphql
+│   └── list
+│       ├── create.graphql
+│       ├── delete.graphql
+│       ├── read.graphql
+│       └── update.graphql
+├── model_schemas
+│   ├── item.yml
+│   └── list.yml
+├── notifications
+│   └── email_notifications
+│       └── created_protected_list.liquid
+└── views
+    ├── layouts
+    │   ├── application.liquid
+    │   └── mailer.liquid
+    ├── pages
+    │   ├── home.liquid
+    │   ├── item
+    │   │   ├── create.liquid
+    │   │   ├── delete.liquid
+    │   │   └── update.liquid
+    │   └── list
+    │       ├── create.liquid
+    │       ├── delete.liquid
+    │       ├── show.liquid
+    │       └── update.liquid
+    └── partials
+        └── list
+            ├── item.liquid
+            ├── new_item.liquid
+            ├── remove.liquid
+            ├── show.liquid
+            ├── title.liquid
+            └── wrong_password.liquid
+```
+
+You can notice new main directories for partials and email notifications.
+
+### Step 1: Adding new properties to an existing model
+
+Adding new properties to a model is identical to creating new model. Add properties with types in your model definition and sync the file to the server.
+
+##### app/model_schemas/list.yml
+
+```diff
+name: list
+ properties:
+ - name: title
+   type: string
++- name: password
++  type: string
++- name: email
++  type: string
+```
+
+To test if the properties have been added you can use GraphQL. We chose `admin_model_schemas` query to list attributes and their types of a given model_schema, in this type, `list` schema.
+
+```graphql
+query model_props {
+  admin_model_schemas(filter: {
+    name: { value:"list" }
+  }) {
+    results {
+      name
+      properties {
+        name
+        attribute_type
+      }
+    }
+  }
+}
+```
+
+Executing this query resulted in:
+
+```json
+{
+  "data": {
+    "admin_model_schemas": {
+      "results": [
+        {
+          "name": "list",
+          "properties": [
+            {
+              "name": "email",
+              "attribute_type": "string"
+            },
+            {
+              "name": "password",
+              "attribute_type": "string"
+            },
+            {
+              "name": "title",
+              "attribute_type": "string"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
+```
+
+Which means `password` and `email` fields have been added to the model schema.
+
+### Step 2: Adding password protection
+
+For password protection we are going to use the simplest possible way of doing it. We will keep password in plain text in the database (usually not recommended), pass it in URL as GET request (usually highly not recommended) and send it using hidden text field in POST request. This is because it is not supposed to be a demonstration of good security practices - we will cover security measures in a separate series of articles. This excercise is more about expanding existing application and advice on how to use features available in an efficient manner for speedy application development.
+
+We need to adapt our list creation query to accept more arguments. Those fields are not required, so type is not suffixed with `!`.
+
+##### app/graphql/list/create.graphql
+
+```diff
++mutation create($title: String!, $email: String, $password: String) {
+  model_create(
+    model: {
+      model_schema_name: "list"
+      properties: [
+        { name: "title", value: $title }
++       { name: "email", value: $email }
++       { name: "password", value: $password }
+      ]
+    }
+  ) {
+    id
+  }
+}
+```
+
+#### Using grahpql tag with `args`
+
+Having our query updated, we need to modify our create page to accept more arguments. Because arguments list can become long and it might be easier to keep all those arguments in one object, we designed [`graphql`](/api-reference/liquid/platformos-tags#graphql) tag in an "liberal input, strict output" manner.
+
+We will modify our create page to account for new arguments and refactor code to make it easier to understand.
+
+##### app/views/pages/list/create.liquid
+
+```diff
+{% raw %}
+{% parse_json arguments %}
+{
+  "title": "{{ context.params.title }}",
++  "email": "{{ context.params.email }}",
++  "password": "{{ context.params.password }}"
+}
+{% endparse_json %}
+
++{% graphql result = 'list/create', args: arguments %}
+{% endraw %}
+```
+
+Let's dissect changes made to this file.
+
+First we add new properties to the `arguments` hash.
+
+Next, we pass them all to `list/create` query. Their names need to match in `arguments` hash and graphql query.
+
+
+#### Index of lists
+
+To make it obvious for users which lists are password protected and which are not, we will mark them with a lock emoji.
+
+##### app/views/pages/home.liquid
+
+```diff
+{% raw %}
+-<a href="/list/show/{{ list.id }}">{{ list.title }}</a>
++<a href="/list/show/{{ list.id }}">
++  {% if list.password %}🔒{% endif %}
++  {{ list.title }}
++</a>
+{% endraw %}
+```
+
+To make it work, query fetching lists needed `password` added to the results.
+
+##### app/graphql/index.graphql
+
+```diff
+results {
+  id
+  title: property(name: "title")
++  email: property(name: "email")
++  password: property(name: "password")
+}
+```
+
+#### Creating password protected list
+
+To create password protected list we will use checkbox to show new fields (email, password) that will be sent over with form.
+
+It all happens in on the home page where we create new list.
+
+##### app/views/pages/home.liquid
+
+```diff
+{% raw %}
+-<div x-data="{ open: false }">
++<div x-data="{ open: false, protected: false }" class="p-8 bg-gray-200 rounded-lg">
+   <button
+     @click.prevent="open = !open"
+     x-show="open !== true"
+@@ -24,8 +33,38 @@
+     action="/list/create"
+     method="POST"
+     x-show="open === true">
+-    <input type="text" name="title" placeholder="List title" required>
+-    <button class="button-primary">Create</button>
++
++    <h4>New list</h4>
++
++    <fieldset>
++      <label>
++        Title
++        <br>
++        <input type="text" name="title" placeholder="List title" required>
++      </label>
++    </fieldset>
++
++    <fieldset>
++      <label for="protected" class="inline-flex items-center">
++        <input type="checkbox" name="protected" id="protected" @change="protected = !protected" :checked="protected" class="form-checkbox w-6 h-6 mr-2">
++        Password protected
++      </label>
++    </fieldset>
++
++    <fieldset :disabled="protected !== true" x-show="protected === true">
++      <label>
++        Password
++        <br>
++        <input type="text" name="password" placeholder="Password" required>
++      </label>
++      <label>
++        Email
++        <br>
++        <input type="text" name="email" placeholder="Your email" required>
++      </label>
++    </fieldset>
++
++    <button class="button-primary mt-4">Create</button>
+     <button @click.prevent="open = false">Cancel</button>
+{% endraw %}
+```
+
+We added new variable in alpinejs named `protected` and binded it to a checkbox. If its checked, `email` and `password` fields are shown and required to be filled.
+
+#### Accessing password protected list
+
+Now we need to handle checking the password correctness and showing list or not depending on the result.
+
+##### app/views/pages/list/show.liquid
+
+```diff
+{% raw %}
+{% graphql list = 'list/read', id: id | fetch: 'models' | fetch: 'results' | first %}
+
+{% if list.password.size > 0 %}
++  {% if context.params.password == list.password %}
++    {% include 'list/show' %}
++  {% else %}
+    {% include 'list/wrong_password' %}
+  {% endif %}
+{% else %}
++  {% include 'list/show' %}
+{% endif %}
+{% endraw %}
+```
+
+Let's dissect what we added here.
+
+If list has no password, server will render it.
+
+If it has password, it will check if password passed from query params is the same as the one saved in the database.
+If passwords match, it will render the list. If not, it will render `wrong_password` partial.
+
+{% include 'alert/note', content: 'Because we verify password from query params with database, every operation that redirects back to the list, has to have password query param now.' %}
+
+Some of our pages are redirecting back to the list page. For example, mark item as completed. Or change title. Add item.
+
+This is how we how we have been redirecting thus far:
+
+```liquid
+{% raw %}
+<script>window.location.href = '/list/show/{{ list.id }}';</script>
+{% endraw %}
+```
+
+And this is how added query param with password looks like:
+
+```liquid
+{% raw %}
+<script>window.location.href = '/list/show/{{ list.id }}?password={{ context.params.password }}';</script>
+{% endraw %}
+```
+
+To have password available in context.params, it needs to be passed somehow. We used hidden inputs to pass it around.
+
+```diff
++ <input type="hidden" name="password" value="{{ context.params.password }}">
+```
+
+This will work on most pages, because you had to have password in the URL to see the list in the first place. From there, you just need to make sure every operation is keeping this password in the URL so it can be reused. In real world, you would probably use [JWT authentication](/developer-guide/users/authenticating-user-with-jwt-token) to avoid exposing password in the URL.
+
+#### Wrong password
+
+If user provided wrong password, we want to inform him about it and present password input again.
+
+```liquid
+{% raw %}
+<p>
+  Wrong password. Access denied.
+</p>
+
+<div class="p-8 bg-gray-200 rounded-lg">
+  <form action="/list/show/{{ list.id }}">
+    <fieldset>
+      <input type="text" name="password" value="{{ context.params.password }}" placeholder="Password">
+      <button>Submit</button>
+    </fieldset>
+  </form>
+
+</div>
+{% endraw %}
+```
+
+### Step 3: Adding email notification
+
+In part 3 we will add all notification types there are, including SMS and webhook. Here we will only send an email to the creator with list link and the password. Read more about [email notifications](/developer-guide/notifications/creating-email-notification), especially the part about enabling sending real emails from staging. We will need it, so test_email it has been populated in Partner Portal.
+
+#### Creating notification
+
+Email notification is in similar format to page. It has YAML part and content part. Some parts are required (to, subject, content)
+
+##### app/notifications/email_notifications/created_protected_list.liquid
+
+```liquid
+{% raw %}
+---
+to: "{{ data.email }}"
+delay: 0
+enabled: true
+trigger_condition: true
+from: no-reply@example.com
+reply_to: no-reply@example.com
+cc:
+bcc:
+subject: "List \"{{ data.title }}\" has been created"
+layout_path: mailer
+---
+
+<h2>Your list has been created</h2>
+
+<p>
+  List name: {{ data.title }} <br>
+  List password: {{ data.password }} <br>
+  <a href="https://{{ context.location.host }}/list/show/{{ data.id }}?password={{ data.password }}">Preview list</a>
+</p>
+{% endraw %}
+```
+
+The `data` object is an object that will be passed to notification from mutation that will trigger it.
+
+* {% raw %}`"{{ data.email }}"`{% endraw %} is in quotes because liquid code has to be quoted in YAML.
+* {% raw %}`"List \"{{ data.title }}\" has been created"`{% endraw %} - In this case we had to quote for liquid code and quote for our message - thats why we had to escape inside quotes with `\`. This way YAML is ignoring those quotes.
+
+
+{% include 'alert/note', content: "layout_path works the same as layout_name for pages and it is layout for email notifications, in this case named `mailer`. You can name it however you like. See its [source on GitHub](https://github.com/mdyd-dev/todo-app/blob/2-extending/app/views/layouts/mailer.liquid)." %}
+
+#### Triggering notification using GraphQL
+
+Sometimes notifications are triggered from forms, in this example we will use `email_send` mutation to trigger it when we want to. Triggering in forms means it will be sent on successful submit, given the `trigger_condition` is `true` (or liquid inside of it resolves to `true`).
+
+Using mutation inside `if` condition is similar to using form and doing a condition check in `trigger_condition`.
+
+This mutation needs two things to work properly. One is the notification path, in this case `created_protected_list`, because file containing it is named `created_protected_list` relative to `email_notifications`. Second thing is object with data that is expected to be present inside the notification. Query will work if its not present, but notification will not be sent, because it will not have target email to send to.
+
+Email that will go out will be sent from SendGrid infrastructure to the email you put into `test_email` in Partner Portal. Its subject will contain email that it would be sent to if it was working in production mode.
+
+##### app/graphql/emails/created_protected_list.graphql
+
+```graphql
+mutation notify($data: HashObject) {
+  email_send(
+    template: { name: "created_protected_list" }
+    data: $data
+  ) {
+    errors { message }
+    is_scheduled_to_send
+  }
+}
+```
+
+`is_scheduled_to_send` is a result of this mutation. Basically it tells you if operation was successful and notification is scheduled to be sent, or not. If not, object with errors will have a message that will tell you what went wrong.
+
+#### Adding new key to existing hash
+
+You might have noticed that our notification includes preview link. We need to pass list id to the notification to create this link.
+
+```liquid
+{% raw %}
+<a href="https://{{ context.location.host }}/list/show/{{ data.id }}?password={{ data.password }}">Preview list</a>
+{% endraw %}
+```
+
+Because `arguments` object in list create page did not have a list, until it is created (you cannot have an id of non-existent row), we need to add it to `arguments` after list has been created. We will use `add_hash_key` to do that.
+
+##### app/views/pages/list/create.liquid
+
+```diff
+{% raw %}
+{% if list.id %}
++  {% assign data = arguments | add_hash_key: 'id', list.id %}
++
++  {% if arguments.password and arguments.email %}
++    {% graphql notify = 'emails/created_protected_list', data: data %}
++  {% endif %}
++
++  <script>window.location.href = '/list/show/{{ list.id }}?password={{ context.params.password }}';</script>
+{% endraw %}
+```
+
+Having all the information we need for notification to be sent, we trigger `emails/created_protected_list` mutation and redirect user to the list.
+
+### Using logs for your advantage
+
+Very often during a software development something is not right. Things don't work or they work in a an unexpected ways. Or you want to just keep track of the data flow during your testing. This is when logging can help you track down bug or make sense of unexpected application behavior. You can use logs inside pages, layouts, partials, notifications, liquid-accpeting properties in YAML parts of the system.
+
+platformOS has [`log`](/api-reference/liquid/platformos-tags#log) liquid tag that we can use to record any data into log stream. To preview contents of log stream, run `pos-cli logs <environment>` in your terminal.
+
+For our purposes we want to track when someone tried to access a list with wrong password, given that password has been given (is not empty).
+
+```diff
+{% raw %}
+{% if list.password.size > 0 %}
+  {% if context.params.password == list.password %}
+    {% include 'list/show' %}
+  {% else %}
+    {% include 'list/wrong_password' %}
+
++    {% if context.params.password %}
++      {% capture message -%}
++        [{{ id }}] {{ list.title }} - {{ context.params.password }}
++      {%- endcapture %}
++
++      {% log message, type: 'wrong-password' %}
++    {% endif %}
+  {% endif %}
+{% else %}
+{% endraw %}
+```
+
+Let's dissect code we added piece by piece.
+
+First we check if password have been passed in URL query. If there is password, server will do some work. We do not want to log empty passwords, because we want to detect hacking attempts.
+
+Next, we compose a message using capture tag, using it as template (think template literals from JavaScript). We save to a `message` variable string with id of the list, list title and password passed, that is incorrect.
+
+Finally, we use `log` tag to save this message to logs under the type `wrong-type` to be easily identified.
+
+Example log entry looks like:
+
+```shell
+[2020-03-17 17:25:36.964Z] - wrong-password: [36] My super secret list - schrute.farm.best.beets
+```
+
+You can just as well log objects, strings, arrays, booleans.
+
+For example:
+
+```liquid
+{% raw %}
+{% parse_json res %}
+{
+  "errors": ["no", "errors", "present"],
+  "status": 200,
+  "message": "OK",
+  "context": {
+    "host": "{{ context.location.host }}"
+  }
+}
+{% endparse_json %}
+
+{% log res, type: "response" %}
+{% endraw %}
+```
+
+This will result in logging:
+
+```shell
+[2020-03-18 22:18:24.902Z] - response: {"errors":["no","errors","present"],"status":200,"message":"OK","context":{"host":"todo-app-dev2.staging.oregon.platform-os.com"}}
+```
+
+Using `parse_json` as an object creation tool is very powerful when you need to log a whole data structure.
+
+Read more about [logging](/best-practices/qa/creating-application-logs).
+
+## Summary
+
+This is most of the work we needed to achieve our goals, but not all of them. Make sure you look at the [final difference between `master` and `2-extending`](https://github.com/mdyd-dev/todo-app/compare/2-extending) branches to inspect on GitHub every code change that happened to get to final state from part one tutorial.
+
+We are advising that because file structure changed and it would make a very long and boring article to show how it changed. Extraction of code is something you will feel the need naturally when your files grow.
+
+## Source code
+
+Take a look at the [source code](https://github.com/mdyd-dev/todo-app/tree/2-extending). Feel free to clone it, deploy it to your own Instance, and modify/extend it to build your own practical skillset on platformOS.
