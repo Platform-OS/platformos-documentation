@@ -60,7 +60,6 @@ Create a notification file in `notifications/sms_notifications/welcome_user.liqu
 ```liquid
 {% raw %}
 ---
-name: welcome_user
 to: '{{ form.mobile_number }}'
 delay: 0
 enabled: true
@@ -70,10 +69,13 @@ Hello {{ form.first_name }} via sms.
 {% endraw %}
 ```
 
-
 ### Step 3: Add SMS Notification to sign up form
 
-Add the SMS Notification you created to the sign-up form:
+Add the SMS Notification you created to the sign-up form.
+
+SMS notification name is a path of the file relative to `sms_notifications` directory, without extension.
+
+For notifications/sms_notifications/**welcome_user**.liquid - bolded part is the name (physical_file_path).
 
 ```yaml
 ---

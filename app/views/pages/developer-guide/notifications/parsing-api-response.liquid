@@ -49,7 +49,12 @@ mutation store_third_party_api_id($user_id: ID!, $third_party_api_id: String!) {
     id: $user_id
     user: {
       profiles: [
-        { name: "default", values: { properties: [{ name: "third_party_api_id", value: $third_party_api_id }] } }
+        {
+          name: "default",
+          values: {
+            properties: [{ name: "third_party_api_id", value: $third_party_api_id }]
+          }
+        }
       ]
     }
     form_name: "callback_third_party_api_id"
@@ -66,7 +71,6 @@ The mutation you created provides input for the Form called `callback_third_part
 
 ```yaml
 ---
-name: callback_third_party_api_id
 resource: User
 fields:
   profiles:
@@ -77,6 +81,7 @@ fields:
 ```
 
 ### Step 4: Extend API Call Notification with callback
+
 Extend the API Call Notification by adding the proper callback, which executes the mutation with the input received form the third party API:
 
 #### notifications/api_call_notifications/ping_example_com_on_user_sign_up.liquid
@@ -84,7 +89,6 @@ Extend the API Call Notification by adding the proper callback, which executes t
 ```liquid
 {% raw %}
 ---
-name: ping_example_com_on_user_sign_up
 to: 'https://example.com/endpoint/{{ form.id }}'
 callback: "{%- assign response_json = response.body | to_hash -%}{% graphql res = 'persist_custom_attribute', id: form.id, third_party_api_id: response_json.third_party_api_id %}"
 ---
