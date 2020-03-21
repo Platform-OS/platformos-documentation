@@ -3,17 +3,11 @@
 \* ------------------------------------------------------------ */
 
 .header {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1;
-
   .header__inner {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    padding: 35px 0;
+    padding: 25px 0;
   }
 
   .header__links {
@@ -71,6 +65,33 @@
       & + li {
         margin-left: 70px;
       }
+    }
+  }
+}
+
+
+@media only screen and (max-width: 600px) {
+  .header__inner {
+    flex-wrap: wrap;
+  }
+
+  .nav-header ul {
+    flex-wrap: wrap;
+
+    li {
+      display: block;
+      width: 100%;
+      flex-basis: 100%;
+    }
+
+    li a {
+      padding: .4em 0;
+      font-weight: 400;
+      font-size: 1.15em;
+    }
+
+    li + li {
+      margin-left: 0;
     }
   }
 }

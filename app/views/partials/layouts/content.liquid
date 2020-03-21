@@ -15,6 +15,10 @@
 {% if has_sidebar == 'true' %}
   <div class="col-sm-3">
     <div class="sidebar">
+      <p class="skip-to-content">
+        <a href="#content">Skip to content</a>
+      </p>
+
       <div class="sidebar__title">
         {% if context.exports.category.name %}
           {% capture icon_path %}svg/{{ context.exports.category.slug }}{% endcapture %}
@@ -37,7 +41,7 @@
     {% endunless %}
 
     <div class="row">
-      <div class="col{% if context.page.metadata.toc == true %}-8{% endif %} content__main">
+      <div class="col{% if context.page.metadata.toc == true %}-8{% endif %} content__main" id="content">
         {% if context.page.metadata.title %}
           <h1>{{ context.page.metadata.title }}</h1>
         {% endif %}

@@ -22,6 +22,10 @@
     z-index: -1;
   }
 
+  .skip-to-content {
+    display: none;
+  }
+
   .sidebar__title {
     display: flex;
     align-items: center;
@@ -47,7 +51,7 @@
   font-size: 15px;
   margin-top: 1em;
   padding-top: 1em;
-  padding-bottom: 3em;
+  padding-bottom: 1em;
   border-top: 1px solid #ebebeb;
 
   ul {
@@ -95,5 +99,20 @@
     color: #45A041;
     font-size: .85em;
     margin-left: .2rem;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .sidebar {
+    margin-left: -15px;
+    .skip-to-content {
+      display: block;
+      font-size: 1.25em;
+      margin-bottom: 1.5em;
+    }
+  }
+
+  .sidebar__title svg {
+    display: none;
   }
 }

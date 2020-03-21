@@ -10,7 +10,7 @@
   "scripts": {
     "postinstall": "node ./scripts/check-node-version.js",
     "start": "npx webpack-cli -w",
-    "bs": "npx browser-sync start --files app/* --reload-delay 1000 --proxy",
+    "lr": "npx livereload \"app\" -e \"liquid,graphql,js,css\" -w 1000",
     "clean": "git clean -Xfq app/assets/*.{css,js}",
     "build": "NODE_ENV=production npx webpack-cli",
     "deploy": "npm run clean && npm run build && pos-cli deploy",
