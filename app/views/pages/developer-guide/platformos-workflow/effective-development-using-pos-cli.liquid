@@ -32,7 +32,7 @@ Final result looks [like this](https://github.com/mdyd-dev/todo-app/blob/23b2dad
 
 Read more about [npm scripts](https://docs.npmjs.com/misc/scripts).
 
-We are using webpack for assets bundling, livereload, and concurrently to run multiple tasks in one terminal.
+We are using webpack for assets bundling, livereload to refresh browser on changes, and concurrently to run multiple tasks in one terminal.
 
 Having all those tasks defined one by one allows you to run them one by one when you need it:
 
@@ -65,7 +65,7 @@ npx livereload \"app\" -e \"liquid,graphql,js,css\" -w 1000
 ```
 
 1. Run `livereload` via `npx`
-2. Point it to app directory because there located output files that `pos-cli` is syncing
+2. Point it to app directory because there are located output files that `pos-cli` is syncing
 3. Limit observer to only look for certain file extensions. You might want to add images extensions as an excercise
 4. Wait one second after the change has been detected, then broadcast "refresh" message. This prevents refreshing the page before files have been processed by webpack and synced over to platformOS.
 
@@ -83,7 +83,7 @@ Look for icon that looks similar to <img src="https://rawcdn.githack.com/liverel
 
 ## concurrently
 
-Finally, when we have all our tasks prepared, we need to run them all in one terminal, to avoid remembering long commands and occupying bunch of terminal windows.
+Finally, when we have all our tasks prepared, we need to run them all at once in one terminal, to avoid remembering long commands and occupying bunch of terminal windows.
 
 There is a lot of tools that can do that, including bash scripting, but we decided to use npm package [concurrently](https://www.npmjs.com/package/concurrently).
 
