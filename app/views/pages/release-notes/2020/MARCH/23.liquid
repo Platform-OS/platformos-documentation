@@ -17,15 +17,15 @@ slug: release-notes/23-MARCH-2020
 
 * change soft user profiles validation to hard validation for Form
 
-In October we have added extra notifications via pos-cli when trying to sync Form with invalid fields - if it included profiles which did not exist, we were adding a warning message. For consistency and better UX, we are changing it to hard validation now, whih means you will not be able to deploy/sync such form anymore until the issue is fixed.
+In October we added extra notifications via pos-cli when trying to sync a Form with invalid fields - if it included profiles which did not exist, we were adding a warning message. For consistency and better UX, we are changing it to hard validation now, which means you will not be able to deploy/sync such forms anymore until the issue is fixed.
 
 * server side handling of invalid file path
 
-When trying to sync a file from a path which does not match anything (for example `app/my_form.liquid` instead of `app/forms/my_form.liquid`), a meaningful error message will be shown now, instead of a success message. In such scenario, the `pos-cli deploy` command will still succeed, however it will send a warning with a list of all the files which were ignored.
+When trying to sync a file from a path which does not match anything (for example `app/my_form.liquid` instead of `app/forms/my_form.liquid`), a meaningful error message will be shown now, instead of a success message. In such a scenario, the `pos-cli deploy` command will still succeed, however it will send a warning with a list of all the files which were ignored.
 
 * Legacy Partner Portal domains will now redirect to https://partners.platform-os.com
 
-* An first User will not be automatically created on the new Instance
+* A first User will not be automatically created on the new Instance
 
 * Allow to filter admin_* GraphQL Queries by `physical_file_path`
 
