@@ -21,7 +21,7 @@ Who likes a challenge? I love a good challenge but am not so fond of problems. L
 
 1. Retrieve the Twilio Secret
 
-    platformOS provides us with Twilio's **API Key SID** called `sid` and the **Twilio Account SID** called `auth_token`. But we must get the **API Key Secret** ourselves.
+    platformOS provides us with Twilio's **Twilio Account SID** called `sid` and the **API Key SID** called `auth_token`. But we must get the **API Key Secret** ourselves.
 
 2. Storing the API Keys
 
@@ -69,14 +69,14 @@ Here, we created an `api_call_notification` and then used the `pos-cli gui serve
     name: twilio_api_secret_create
     format: http
     headers: |-
-    {%- assign authBasic = context.constants.TWILIO_ACCOUNT_SID | append: ":" | append: context.constants.TWILIO_ACCOUNT_AUTH_TOKEN | base64_encode -%}
+        {%- assign authBasic = context.constants.TWILIO_API_ACCOUNT_SID | append: ":" | append: context.constants.TWILIO_API_KEY_SID | base64_encode -%}
         {
             "Content-Type": "application/json",
             "Authorization": "Basic {{ authBasic }}"
         }
     request_type: POST
     to: |-
-        https://api.twilio.com/2010-04-01/Accounts/{{ context.constants.TWILIO_ACCOUNT_SID }}/Keys.json
+        https://api.twilio.com/2010-04-01/Accounts/{{ context.constants.TWILIO_API_ACCOUNT_SID }}/Keys.json
     ---
     {% endraw %}
     ```
