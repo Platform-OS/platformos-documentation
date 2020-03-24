@@ -1,22 +1,20 @@
 ---
 converter: markdown
 metadata:
-  title: Effective Development Using pos-cli
-  description: How to leverage npm tasks and concurrently npm package to speed up your development.
+  title: Effective Development Using the pos-cli
+  description: How to leverage npm tasks and the concurrently npm package to speed up your development.
 slug: developer-guide/platformos-workflow/effective-development-using-pos-cli
 ---
 
-When you develop application with platformOS you need to use various `pos-cli` commands. Most commonly used are `sync`, `logs`, `gui serve`. Apart from `pos-cli` you might use some kind of assets bundler, like webpack in watch mode. When writing JavaScript you might want to run your test runner in watch mode. If you want to reload your browser on every asset change, because you are styling the website, then you need another tool, ie. livereload.
+When developing an application with platformOS, you need to use various `pos-cli` commands. Most commonly used are `sync`, `logs`, and  `gui serve`. Apart from `pos-cli` you might use some kind of assets bundler, like webpack in watch mode. When writing JavaScript, you might want to run your test runner in watch mode. If you want to reload your browser on every asset change, because you are styling the website, then you need another tool, for example, livereload.
 
-This is a lot of tools to run at the same time, each one of them takes one terminal window, which becomes cumbersome to manage.
-
-This article aims at making this issue a non-factor.
+These are a lot of tools to run at the same time, each of them taking up one terminal window, which becomes cumbersome to manage. This article aims to make this issue a non-factor.
 
 ## npm tasks
 
-After some research, tries and educated guesses, we figured that packaging everything into npm tasks and running them concurrently is the way to go.
+After some research, trials and educated guesses, we figured that packaging everything into npm tasks and running them concurrently is the way to go.
 
-Final result looks [like this](https://github.com/mdyd-dev/todo-app/blob/23b2dadd87dbade9e797556e88a0ff566fc60c8f/package.json#L3-L12), and was used to develop Todo App with no issues.
+The final result looks [like this](https://github.com/mdyd-dev/todo-app/blob/23b2dadd87dbade9e797556e88a0ff566fc60c8f/package.json#L3-L12), and was used to develop the [Todo App](/get-started/todo-app/build-todo-list-app) with no issues.
 
 ```json
 "scripts": {
@@ -32,7 +30,7 @@ Final result looks [like this](https://github.com/mdyd-dev/todo-app/blob/23b2dad
 
 Read more about [npm scripts](https://docs.npmjs.com/misc/scripts).
 
-We are using webpack for assets bundling, livereload to refresh browser on changes, and concurrently to run multiple tasks in one terminal.
+We are using webpack for assets bundling, livereload to refresh the browser on changes, and concurrently to run multiple tasks in one terminal.
 
 Having all those tasks defined one by one allows you to run them one by one when you need it:
 
@@ -40,13 +38,13 @@ Having all those tasks defined one by one allows you to run them one by one when
 $ npm run clean
 ```
 
-{% include 'alert/note', content: 'Keep in mind that command `rm -rf` does not exist on windows, so if you are using windows, change that command, or use [rimraf](https://www.npmjs.com/package/rimraf) for cross-platform compability.' %}
+{% include 'alert/note', content: 'Keep in mind that the command `rm -rf` does not exist on Windows, so if you are using Windows, change that command, or use [rimraf](https://www.npmjs.com/package/rimraf) for cross-platform compability.' %}
 
 ## npx
 
 `npx` is a tool that allows you to run npm packages that expose executable files (binaries). If the package is not installed on your system (locally or globally), it will install it and then execute.
 
-You can run any npm package, without knowing if its installed or not, just by prefixing it with `npx`. For example, we could rewrite our clean task to be cross platform like that:
+You can run any npm package, without knowing if it's installed or not, just by prefixing it with `npx`. For example, we could rewrite the clean task to be cross platform like this:
 
 ```shell
 $ npx rimraf app/assets/*
@@ -58,34 +56,34 @@ Read more about [npx](https://www.npmjs.com/package/npx).
 
 Livereload is broadcasting a "refresh" message when files that you defined are changed.
 
-Let's explain what is happening in `lr` task from example above.
+We'll explain what is happening in the `lr` task from example above.
 
 ```shell
 npx livereload \"app\" -e \"liquid,graphql,js,css\" -w 1000
 ```
 
-1. Run `livereload` via `npx`
-2. Point it to app directory because there are located output files that `pos-cli` is syncing
-3. Limit observer to only look for certain file extensions. You might want to add images extensions as an excercise
-4. Wait one second after the change has been detected, then broadcast "refresh" message. This prevents refreshing the page before files have been processed by webpack and synced over to platformOS.
+1. Run `livereload` via `npx`.
+2. Point it to the app directory because the output files that `pos-cli` is syncing are located there.
+3. Limit observer to only look for certain file extensions. You might want to add images extensions as an excercise.
+4. Wait one second after the change has been detected, then broadcast the "refresh" message. This prevents refreshing the page before files have been processed by webpack and synced over to platformOS.
 
-Note the `\` characters before double-quotes. They are needed because npm tasks are in JSON format, which means they use double-quotes to separate name from command to run, so if we did not escape them, it would be a syntax error.
+Note the `\` characters before double-quotes. They are needed because npm tasks are in JSON format, which means they use double-quotes to separate the name from the command to run, so if we did not escape them, it would be a syntax error.
 
 Read more about [livereload](https://www.npmjs.com/package/livereload).
 
 After you have your livereload server running, you need a client.
-Install extension and when you are on a page that you want to be refreshed when files change, click livereload extension icon.
+Install the extension and when you are on a page that you want to be refreshed when files change, click the livereload extension icon.
 
 [Chrome extension](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei)
 [Firefox extension](https://addons.mozilla.org/en-US/firefox/addon/livereload-web-extension/)
 
-Look for icon that looks similar to <img src="https://rawcdn.githack.com/livereload/livereload-extensions/0a8edb9cc7008249c23718386e19d99230e81179/Chrome/LiveReload/IconDisabled@2x.png" width="32" height="32" alt="Livereload icon">.
+Look for an icon that looks similar to <img src="https://rawcdn.githack.com/livereload/livereload-extensions/0a8edb9cc7008249c23718386e19d99230e81179/Chrome/LiveReload/IconDisabled@2x.png" width="32" height="32" alt="Livereload icon">.
 
 ## concurrently
 
-Finally, when we have all our tasks prepared, we need to run them all at once in one terminal, to avoid remembering long commands and occupying bunch of terminal windows.
+Finally, when you have all your tasks prepared, you need to run them all at once in one terminal, to avoid remembering long commands and occupying bunch of terminal windows.
 
-There is a lot of tools that can do that, including bash scripting, but we decided to use npm package [concurrently](https://www.npmjs.com/package/concurrently).
+There is a lot of tools that can do that, including bash scripting, but we decided to use the npm package [concurrently](https://www.npmjs.com/package/concurrently).
 
 It has more options than we used in this article, for example coloring:
 
@@ -93,19 +91,19 @@ It has more options than we used in this article, for example coloring:
 
 ## Putting it all together
 
-Finally, when you have all atomic npm tasks doing one thing, its time to join them together to run them all using one command.
+Finally, when you have all atomic npm tasks doing one thing, it's time to join them together to run them all using one command.
 
 ```shell
 "start": "npx concurrently npm:clean npm:lr npm:dev-*"
 ```
 
-Let's explain:
+Explanation:
 
-1. Use `start` task because it is the most appropriate and you don't need to write `run` before it to run it. You just write `npm start`, which is convenient.
-2. Use npx to run concurrently
-3. Run `clean` task to delete old assets
-4. Run `lr` task to run livereload
-5. Run all tasks that name starts with `dev-`, in our case:
+1. Use the `start` task because it is the most appropriate and you don't need to write `run` before it to run it. You just write `npm start`, which is convenient.
+2. Use npx to run concurrently.
+3. Run the `clean` task to delete old assets.
+4. Run the `lr` task to run livereload.
+5. Run all tasks where the name starts with `dev-`, in this case:
     logs - runs `pos-cli logs dev`
     sync - runs `pos-cli sync dev`
     gui - runs `pos-cli gui serve dev`
@@ -113,7 +111,7 @@ Let's explain:
 
 ## Final result
 
-Let's look how it looks like in practice:
+See what all of this looks like in practice:
 
 ```shell
 todo-app|master ⇒ npm start
@@ -170,11 +168,11 @@ todo-app|master ⇒ npm start
 [dev-sync] [13:20:51] [Sync] Synced: assets/css/app.css
 ```
 
-At the beginning, there will be a lot of text going through your screen, because every task needs to execute and all of them leave some kind of trace in the console. But after initial wall of text, only observing tasks should output things to the terminal, such as sync, logs and webpack.
+At the beginning, there will be a lot of text going through your screen, because every task needs to execute and all of them leave some kind of trace in the console. But after this initial wall of text, only observing tasks should output things to the terminal, such as sync, logs, and webpack.
 
-All tasks run by concurrently stream their output to one terminal, and every line is prefixed with name of the task that is responsible for a given entry.
+All tasks run by concurrently stream their output to one terminal, and every line is prefixed with the name of the task that is responsible for a given entry.
 
-It also shows the exit code if task finished its work, like it did with clean task:
+It also shows the exit code if the task has finished, like it did with the clean task:
 
 ```shell
 [clean] npm run clean exited with code 0
@@ -182,4 +180,4 @@ It also shows the exit code if task finished its work, like it did with clean ta
 
 That way you have a trace when a task goes wrong.
 
-Thats it, this is the setup that can save you a lot of terminal windows, time and hopefully makes your development more efficient.
+That's it, this is the setup that can save you a lot of terminal windows, time and hopefully makes your development more efficient. 
