@@ -1,0 +1,138 @@
+---
+converter: markdown
+metadata:
+  title: Optimizing Font Files
+  description: How to make your font files small and load fast
+---
+
+In this article you will take a standard form in TTF format and optimize it for the modern web so that it loads a lot faster and the user experience is more acceptable for most people on bad connections.
+
+Going from start to finish is a six-step process:
+
+<div data-autosteps></div>
+
+### Step 1: Download font files
+
+You will use the `Lato` font in this example. You can download it from [Google Fonts](https://fonts.google.com/specimen/Lato?selection.family=Lato:300,400,700,900).
+
+After unpacking the zip file downloaded from Google Fonts, these are the files we get:
+
+```shell
+68K - Lato-Black.ttf
+70K - Lato-BlackItalic.ttf
+72K - Lato-Bold.ttf
+76K - Lato-BoldItalic.ttf
+74K - Lato-Italic.ttf
+75K - Lato-Light.ttf
+48K - Lato-LightItalic.ttf
+73K - Lato-Regular.ttf
+68K - Lato-Thin.ttf
+48K - Lato-ThinItalic.ttf
+```
+
+It all sums up to 688 KB.
+
+### Step 2: Select the proper format
+
+You'll use the woff2 format because your audience is developers with modern browsers. The woff2 format is supported by every browser that is newer than IE 11 - which is good enough for this case. Check [caniuse.com](https://caniuse.com/#search=woff2) for more information.
+
+The woff2 format is much smaller than TTF by itself, so if you don't want to do subsetting, you can just convert TTF to woff2 in any [online converter](https://duckduckgo.com/?q=ttf+to+woff2) and already get some savings that way.
+
+### Step 3: Choose the right characters
+
+Most popular fonts usually have a lot of characters that you will not use on your website. For example, if your website is in English, you probably only need English letters (upper case and lower case), numbers, punctuations and special characters. You might want to add some fancy quotes, dashes, currency symbols, but that's about it. There is no need to have greek letters or the cyrillic alphabet.
+But you can do much better than that by selecting characters you know will be using, and stripping away everything else.
+
+For this use case you will use a pretty basic character set:
+
+* Letters: `AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz`
+* Numbers: `0123456789`
+* Special characters: `!@#$%^&*()[]{}:;"'\|,./<>?=+-_`
+
+Final set: `AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789!@#$%^&*()[]{}:;"'\|,./<>?=+-_`
+
+### Step 4: Generate subset of characters
+
+To do the optimization you will need two tools in your system - `fonttools` and `glyphhanger`:
+
+Install `fonttools` first (pip is a python package manager):
+
+    pip install fonttools
+
+And then `glyphhanger` (npm is the node package manager):
+
+    npm i -g glyphhanger
+
+Now you can run glyphhanger on your font files. Glyphhanger has a lot of very useful options, this tutorial uses and explains only a handful of them, but we recommend reading all the options available and experimenting with them.
+
+    glyphhanger --formats=woff2 --whitelist="AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789!@#$%^&*()[]{}:;\"'\|,./<>?=+-_" --subset="*.ttf" --css
+
+Note: Because you use quotes in your character set, you need to escape the double quote (`"`) in the whitelist.
+
+`--formats` - define which output file formats you want your fonts in.  See step 2 of this tutorial. 
+`--whitelist` - specify exactly which characters you want to incude in your font. See step 3 of this tutorial. 
+`--subset` - tells `glyphhanger` which files should be processed as input files. In this case it will take all .ttf files from the current directory
+`--css` - tells `glyphhanger` to print css after it's done, so you can copy it to your stylesheets with ease
+
+After running the command, you should see the progress similar to this:
+
+```shell
+Subsetting Lato-Black.ttf to Lato-Black-subset.woff2 (was 67.86 KB, now 12.51 KB)
+Subsetting Lato-BlackItalic.ttf to Lato-BlackItalic-subset.woff2 (was 70.26 KB, now 13.05 KB)
+Subsetting Lato-Bold.ttf to Lato-Bold-subset.woff2 (was 71.6 KB, now 12.73 KB)
+Subsetting Lato-BoldItalic.ttf to Lato-BoldItalic-subset.woff2 (was 75.86 KB, now 13.34 KB)
+Subsetting Lato-Italic.ttf to Lato-Italic-subset.woff2 (was 73.97 KB, now 13.27 KB)
+Subsetting Lato-Light.ttf to Lato-Light-subset.woff2 (was 75.38 KB, now 12.73 KB)
+Subsetting Lato-LightItalic.ttf to Lato-LightItalic-subset.woff2 (was 47.91 KB, now 9.65 KB)
+Subsetting Lato-Regular.ttf to Lato-Regular-subset.woff2 (was 73.38 KB, now 12.92 KB)
+Subsetting Lato-Thin.ttf to Lato-Thin-subset.woff2 (was 68.33 KB, now 11.33 KB)
+Subsetting Lato-ThinItalic.ttf to Lato-ThinItalic-subset.woff2 (was 47.7 KB, now 9.44 KB)
+```
+
+As you can see, files are quite a bit smaller than their original equivalents. In fact, all those files are now 124 KB which is **564 KB smaller than the original**.
+
+Additionally, for every font file there is a CSS file generated so you can copy paste it to your styles.
+
+Example of the CSS file generated:
+
+```css
+@font-face {
+  src: url(Lato-ThinItalic-subset.woff2) format("woff2");
+  unicode-range: U+22,U+25-3F,U+41-5F,U+61-7D;
+}
+```
+
+### Step 5: Set optimal font-display
+
+It is a good practice to use the `font-display` property.
+
+Usually it is recommended to use `font-display: swap` because it guarantees that your custom font will be used.
+
+It is defined as: `Gives the font face an extremely small block period and an infinite swap period`. This means the font will not block rendering of a page for long, but as soon as the font is downloaded, it will be used, replacing the default font with this newly downloaded one.
+
+In this use case, when going for an extremely high performance website, we have chosen fallback, which is defined as: `Gives the font face an extremely small block period and a short swap period.`, which means that if the font doesn't download fast enough, it will not be used at all, but it will be downloaded.
+
+It may seem extreme, but because of browser cache, it means it will be used on the second page view, because it will be taken from cache. There is a high chance that your user will not even notice that something changed on the page because of that, if he doesn't know what to look for. This solution has two positive effects:
+
+* When the font is downloaded fast enough, it will be used very early, usually before the user starts reading text on the page
+* When the font is downloaded too slowly, it will be cached and will not interrupt the user while reading
+
+At the end of the day you have to choose what is the best for your use case and users.
+
+Read more on [font-display](https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display).
+
+### Step 6: Use optimized fonts
+
+To use all the optimized fonts you need to define font-faces in your CSS. Copy over all the CSS generated by `glyphhanger` and adjust file paths so they are correspond to your environment.
+
+```css
+@font-face {
+  src: url('../fonts/Lato-ThinItalic-subset.woff2') format("woff2");
+  unicode-range: U+22,U+25-3F,U+41-5F,U+61-7D;
+  font-display: fallback;
+}
+```
+
+{% include 'alert/note', content: 'You can also try inlining the font-face declaration of the "normal" variant in your page `<head>`. It might further speed up font download for your first-time visitors, because it will start downloading the font file without the need for downloading CSS first. You can even go further, and encode the font in base64 to also mitigate the HTTP request for the font file — it will also eliminate font swap altogether, but will cause your font to not be cached.' %}
+
+We wish you low load times and happy users. 
