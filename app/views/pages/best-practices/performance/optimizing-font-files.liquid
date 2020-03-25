@@ -57,20 +57,31 @@ To do the optimization you will need two tools in your system - `fonttools` and 
 
 Install `fonttools` first (pip is a python package manager):
 
-    pip install fonttools
+```shell
+pip install fonttools
+```
 
 And then `glyphhanger` (npm is the node package manager):
 
-    npm i -g glyphhanger
+```shell
+npm i -g glyphhanger
+```
 
 Now you can run glyphhanger on your font files. Glyphhanger has a lot of very useful options, this tutorial uses and explains only a handful of them, but we recommend reading all the options available and experimenting with them.
 
-    glyphhanger --formats=woff2 --whitelist="AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789!@#$%^&*()[]{}:;\"'\|,./<>?=+-_" --subset="*.ttf" --css
+```shell
+glyphhanger \
+  --formats=woff2 \
+  --whitelist="AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789!@#$%^&*()[]{}:;\"'\|,./<>?=+-_" \
+  --subset="*.ttf" \
+  --css
+```
 
 Note: Because you use quotes in your character set, you need to escape the double quote (`"`) in the whitelist.
+Note 2: We have split the command into multiple lines to make it easier to read in this article, you can safely remove `\` and join it into one long line.
 
-`--formats` - define which output file formats you want your fonts in.  See step 2 of this tutorial. 
-`--whitelist` - specify exactly which characters you want to incude in your font. See step 3 of this tutorial. 
+`--formats` - define which output file formats you want your fonts in.  See step 2 of this tutorial.
+`--whitelist` - specify exactly which characters you want to incude in your font. See step 3 of this tutorial.
 `--subset` - tells `glyphhanger` which files should be processed as input files. In this case it will take all .ttf files from the current directory
 `--css` - tells `glyphhanger` to print css after it's done, so you can copy it to your stylesheets with ease
 
@@ -135,4 +146,4 @@ To use all the optimized fonts you need to define font-faces in your CSS. Copy o
 
 {% include 'alert/note', content: 'You can also try inlining the font-face declaration of the "normal" variant in your page `<head>`. It might further speed up font download for your first-time visitors, because it will start downloading the font file without the need for downloading CSS first. You can even go further, and encode the font in base64 to also mitigate the HTTP request for the font file — it will also eliminate font swap altogether, but will cause your font to not be cached.' %}
 
-We wish you low load times and happy users. 
+We wish you low load times and happy users.
