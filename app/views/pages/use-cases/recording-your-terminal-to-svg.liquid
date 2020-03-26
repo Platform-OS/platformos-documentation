@@ -1,0 +1,118 @@
+---
+converter: markdown
+metadata:
+  title: Recording Your Terminal to SVG
+  description: This use case describes how we recorded pos-cli introduction and saved it as SVG to embed it on our marketing website.
+---
+
+There are couple of way of recording your screen to share it on the Internet.
+
+1. Animated gif - Pretty easy with tools like [Kap](https://getkap.co/), but it has heavy drawbacks. Maximum of 256 colors, balance between FPS and file size is very delicated, and gif files are usually big.
+2. Video (mp4, webm) - Pretty easy with tools like [Kap](https://getkap.co/), but needs usage of video tag, which is not always a possibility (markdown readme being a big one)
+3. Animated PNG - I have never seen anyone use it, even though browser support is there. That is a good candidate to experiment if you have free time.
+4. Finally, SVG. All above solutions can record everything, whole screen with images, so they are more universal. What we need is to record only terminal, which is predominantly text. This means, recordings will be much smaller than the closest alternative - gif, and easier to embed at more places than videos.
+
+If you only need to share your terminal recording with someone, without embedding it on a website, we recommend excellent [asciinema](https://asciinema.org/).
+
+But if you want to show off your recording as an image on your website, then you need an image format that is natively understood by browsers.
+
+### Enter: [termtosvg](https://github.com/nbedos/termtosvg)
+
+Instead of talking what it does, lets [look at examples](https://nbedos.github.io/termtosvg/pages/examples.html).
+
+Apart from recording what you see in your terminal, you can also [change the theme](https://nbedos.github.io/termtosvg/pages/templates.html), just in case your terminal is heavily customized and you want more vanilla look and feel.
+
+**Installation**
+
+It is a python 3 script, so you will need to have python in your system.
+
+```shell
+pip3 install termtosvg
+```
+
+**Usage**
+
+When you use termtosvg, it starts recording immediately.
+
+```shell
+pos-cli|master ⇒ termtosvg helloworld.svg
+Recording started, enter "exit" command or Control-D to end
+```
+
+It is time do what you want to record.
+
+```shell
+pos-cli|master ⇒ echo "Hello world"
+Hello world
+```
+
+When you are ready to end and save your recording, press Control-D.
+
+```shell
+pos-cli|master ⇒
+Rendering ended, SVG animation is hello.svg
+```
+
+You can even nest recordings, so I recorded all those commands above into a SVG file. Its that simple:
+
+<img src="{{ 'images/use-cases/recording-terminal/hello.svg' | asset_url  }}" alt="Hello world animation">
+
+### More options
+
+If you need to do more complicated things, type `termtosvg -h` which will give you information about options it provides.
+
+```shell
+pos-cli|master ⇒ termtosvg -h
+usage: termtosvg [output_path] [-c COMMAND] [-D DELAY] [-g GEOMETRY]
+                 [-m MIN_DURATION] [-M MAX_DURATION] [-s] [-t TEMPLATE] [-h]
+
+Record a terminal session and render an SVG animation on the fly
+
+```shell
+positional arguments:
+  output_path           optional filename of the SVG animation. If --still-
+                        frame is specified, output_path should be the path of
+                        the directory where still frames will be stored. If
+                        missing, a random path will be automatically
+                        generated.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -c COMMAND, --command COMMAND
+                        specify the program to record with optional arguments
+                        (default: /bin/zsh)
+  -D DELAY, --loop-delay DELAY
+                        duration in milliseconds of the pause between two
+                        consecutive loops of the animation (default: 1000ms)
+  -g GEOMETRY, --screen-geometry GEOMETRY
+                        geometry of the terminal screen used for rendering the
+                        animation. The geometry must be given as the number of
+                        columns and the number of rows on the screen separated
+                        by the character "x". For example "82x19" for an 82
+                        columns by 19 rows screen.
+  -m MIN_DURATION, --min-frame-duration MIN_DURATION
+                        minimum duration of a frame in milliseconds (default:
+                        1ms)
+  -M MAX_DURATION, --max-frame-duration MAX_DURATION
+                        maximum duration of a frame in milliseconds (default:
+                        No maximum value)
+  -s, --still-frames    output still frames instead of an animation.
+  -t TEMPLATE, --template TEMPLATE
+                        set the SVG template used for rendering the SVG
+                        animation. TEMPLATE may either be one of the default
+                        templates (base16_default_dark, dracula, gjm8_play,
+                        gjm8_single_loop, gjm8, powershell, progress_bar,
+                        putty, solarized_dark, solarized_light, terminal_app,
+                        ubuntu, window_frame_js, window_frame_powershell,
+                        window_frame, xterm) or a path to a valid template.
+
+See also 'termtosvg record --help' and 'termtosvg render --help'
+```
+
+### Final result
+
+Having ready SVG, you can embed it anywhere you want, using your favorite image syntax.
+
+<img src="{{ 'images/use-cases/recording-terminal/pos-cli.svg' | asset_url  }}" alt="pos-cli animation">
+
+This post was inspired by [dev.to post](https://dev.to/brpaz/make-your-project-readme-file-stand-out-with-animated-gifs-svgs-4kpe) by Bruno Paz, where he showed how to use asciinema and a converter to achieve similar result. You might also use that approach in your development workflow: Record and share asciinema recording to get feedback from your team, and when it is good enough, convert to SVG and ship.
