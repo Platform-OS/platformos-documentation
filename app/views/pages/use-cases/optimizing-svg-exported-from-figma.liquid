@@ -1,73 +1,77 @@
 ---
 converter: markdown
 metadata:
-  title: Optimizing SVG Exported From Figma
-  description: This topic describes how to export a flow diagram in SVG format from Figma and optimize its source code to make it smaller and easier to maintain.
+  title: Optimizing SVG Exported from Figma
+  description: This use case describes how to export a flow diagram in SVG format from Figma and optimize its source code to make it smaller and easier to maintain.
 ---
 
-There are many different image formats that can be used on the web, one of them is SVG. SVG is a XML document describing what should be drawn where and how. You can open SVG file, read it, understand it, and modify it, if you know the syntax. This is impossible with bitmaps like jpeg or png.
+There are many different image formats that can be used on the web, one of them is SVG. SVG is an XML document describing what should be drawn where and how. You can open an SVG file, read it, understand it, and modify it, if you know the syntax. This is impossible with bitmaps like jpeg or png.
 
-`V` in SVG stands for Vector and this is why it is exciting. Vectors are math equations that are rendered sharply and accurately no matter what. This means, unlike a bitmap, when you zoom in/stretch it full screen, it preserves it's quality.
+`V` in SVG stands for Vector and this is why it is exciting. Vectors are math equations that are rendered sharply and accurately no matter what. This means, unlike a bitmap, when you zoom in/stretch it to full screen, it preserves its quality.
 
 Because of those properties, SVGs are often used to present shapes, charts. They are not the best for photos or screenshots, because the number of elements and attributes on those elements would be very high, hence making the file very big.
 
-We wanted to have a flowchart that will be light and editable in the future. This is a great candidate for SVG, because lines, rectangles and simple shapes do not take much text to draw in SVG, and `text` tag SVG standard allows us to have text that is editable in code editor, without having source image or even graphical application.
+## Problem 
+
+We wanted to have a flowchart that will be light and editable in the future. This is a great candidate for SVG, because lines, rectangles and simple shapes do not take much text to draw in SVG, and the `text` tag SVG standard allows us to have text that is editable in a code editor, without having a source image or even graphical application.
 
 In this article our objectives are:
 
 * Export a flowchart image as SVG with editable text
-* Optimize its size and structure so its easy to edit
+* Optimize its size and structure so it's easy to edit
 * Try to preserve as much design as it is possible while keeping the file size down
 
-This is how it looks like in Figma:
+This is what it looks like in Figma:
 
 <img src="{{ 'images/use-cases/svg-optimization/figma-design.jpg' | asset_url }}" alt="Flowchart design">
 
-## Export flowchart from Figma
+## Solution
+
+### Export flowchart from Figma
 
 To avoid exporting text in SVG as paths you need to uncheck "Outline text" in export settings.
 
 <img src="{{ 'images/use-cases/svg-optimization/outline-text.jpg' | asset_url }}" alt="Figma export - outline text">
 
-If you were to export it with text outlined, file would be much bigger. The difference in size would be huge, because text would be traced as paths, instead of written as `text` tags.
+If you were to export it with text outlined, the file would be much bigger. The difference in size would be huge, because text would be traced as paths, instead of written as `text` tags.
 
 <img src="{{ 'images/use-cases/svg-optimization/size-comparison.jpg' | asset_url }}" alt="File sizes comparison">
 
-## Fix syntax error
+### Fix syntax error
 
 For some reason Figma is exporting SVG with syntax error (at least in this case).
 
 <img src="{{ 'images/use-cases/svg-optimization/xml-error.jpg' | asset_url }}" alt="XML error">
 
-In this case we need to replace all `&#3;` with a space.
+In this case, we needed to replace all `&#3;` with a space.
 
-From now on we recommend using [Svg Preview](https://marketplace.visualstudio.com/items?itemName=SimonSiefke.svg-preview) for convenience and live feedback.
+From now on, we recommend using [Svg Preview](https://marketplace.visualstudio.com/items?itemName=SimonSiefke.svg-preview) for convenience and live feedback.
 
 <img src="{{ 'images/use-cases/svg-optimization/svg-preview.jpg' | asset_url }}" alt="SVG Preview">
 
-## Custom font issue
+### Custom font issue
 
-Our design is using `Gotham` font for text. Because we exported SVG with text as text, not as an outline, font will be missing and fallback used as a result. For the purpose of this tutorial, we will replace `Gotham` font with `sans-serif`.
+Our design is using the `Gotham` font for text. Because we exported SVG with text as text, not as an outline, the font will be missing and fallback used as a result. For the purpose of this use case, we will replace the `Gotham` font with `sans-serif`.
 
-### Layers
+**Layers**
 
-You should know about one property of SVG before moving elements around in the file. SVG elements can overlap, and if they do, the element that is last in the document will be in front (think of layers, the one on the top on the layers list, is on the top - in SVG its the opposite). This is important, because we need to keep our text above blue boxes.
+You should know about one property of SVG before moving elements around in the file. SVG elements can overlap, and if they do, the element that is last in the document will be in front (think of layers, the one on the top on the layers list, is the one on top - in SVG it's the opposite). This is important, because we need to keep our text above blue boxes.
 
-## Optimizations
+### Optimizations
 
 We will use only one technique of optimization to make it smaller and more readable - the `g` tag, which stands for group.
 
-`<g></g>` tag groups elements. Those elements will inherit properties of the group. For example: font-family, font-size, fill, letter-spacing, stroke.
+`<g></g>` tag groups elements. The elements will inherit properties of the group. For example: font-family, font-size, fill, letter-spacing, stroke.
 
-To know what we can group to make our code more DRY, we will look for patterns. It is more of a visual excercise than a programming one. It helps to turn off word-wrap in your editor to see those patterns easier. The more of the same attributes are repeated, the better, because they can be extracted to a group.
+To know what we can group to make our code more DRY, we look for patterns. It is more of a visual excercise than a programming one. It helps to turn off word-wrap in your editor to see those patterns easier. The more of the same attributes are repeated the better because they can be extracted to a group.
 
-### Heading text
+**Heading text**
 
-Heading text is the uppercase text, in the boxes. When looking at the file and attributes, certain patterns are visible for text tags.
+Heading text is the uppercase text in the boxes. When looking at the file and attributes, certain patterns are visible for text tags.
 
 <img src="{{ 'images/use-cases/svg-optimization/multicursor-16.jpg' | asset_url }}" alt="Pattern detect">
 
-Let's group all those elements inside a group and place that group at the end of the file, to make sure they will be always visible.
+We grouped all those elements inside a group and placed that group at the end of the file, to make sure they will be always visible.
 
 ```xml
 <g>
@@ -79,12 +83,12 @@ Let's group all those elements inside a group and place that group at the end of
 </g>
 ```
 
-#### Optimization steps
+**Optimization steps**
 
 1. We can safely remove `xml:space="preserve" style="white-space: pre"` because we will not wrap any lines.
-2. Now lets use `g` inheritance feature to DRY it up.
-3. It looks like `tspan` tags are not needed. We can move coordinates to `text` tag and remove `tspans` altogether.
-4. Change Gotham font to sans-serif
+2. Now let's use `g` inheritance feature to DRY it up.
+3. It looks like `tspan` tags are not needed. We can move coordinates to the `text` tag and remove `tspans` altogether.
+4. Change Gotham font to sans-serif.
 5. Optional: While we are at it, we can also cut off some decimal places from the `x` and `y` attributes. Be careful when doing this and observe your live preview to not break anything while changing numbers.
 
 After those operations, we get a much smaller and more readable code snippet:
@@ -101,7 +105,7 @@ After those operations, we get a much smaller and more readable code snippet:
 
 Having everything grouped like that makes future changes easier. We can change colors of all headings by changing one attribute.
 
-### Description text
+**Description text**
 
 The same way we can see that there is a lot of text with font-size 16. Optimized description texts:
 
@@ -115,9 +119,9 @@ The same way we can see that there is a lot of text with font-size 16. Optimized
 </g>
 ```
 
-### Blue horizontal lines
+**Blue horizontal lines**
 
-Now we will tackle horizontal lines. Grouped lines:
+Then we tackle the horizontal lines. Grouped lines:
 
 ```xml
 <g opacity="0.5" stroke="#3A8DDE">
@@ -131,7 +135,7 @@ Now we will tackle horizontal lines. Grouped lines:
 
 Note: We are not extracting `x1` and `x2` attributes, because it would break the lines.
 
-### Blue rectangles
+**Blue rectangles**
 
 Next up are all the `rect` (rectangle) tags.
 
@@ -145,9 +149,9 @@ Next up are all the `rect` (rectangle) tags.
 </g>
 ```
 
-### Arrows
+**Arrows**
 
-Arrows are made from two paths. For some reason fill color of them is different, we will make it consistent by grouping them under one big group.
+Arrows are made from two paths. For some reason the fill color of them is different, so we make it consistent by grouping them under one big group.
 
 Grouped arrows:
 
@@ -165,9 +169,9 @@ Grouped arrows:
 </g>
 ```
 
-Note: If you want to experiment, as an excercise, you can also cut off decimal places from `d` attributes fo paths. This will make file size even smaller and in this case, no visible effect. For result look at the source of the final image at the end of this article.
+Note: If you want to experiment, as an excercise, you can also cut off decimal places from the `d` attributes of paths. This will make the file size even smaller and in this case has no visible effect. Look at the source of the final image at the end of this article to see the result. 
 
-## Font weight
+### Font weight
 
 Now that we have flowchart elements grouped and cleaned up, we need to tackle one visual regression that we have been ignoring thus far.
 
@@ -181,24 +185,24 @@ Because we changed font-family to `sans-serif`, we need to set `font-weight`. He
 <g font-size="16" letter-spacing=".3px" fill="#141414" font-family="sans-serif" font-weight="lighter">
 ```
 
-## Finishing touches
+### Finishing touches
 
-Finally, lets remove height and width property from SVG declaration, so it will take as much space as we want when we use it in our HTML.
+Finally, we remove the height and width properties from the SVG declaration, so it will take as much space as we want when we use it in our HTML.
 
 ```xml
 <svg viewBox="0 0 515 660" fill="none" xmlns="http://www.w3.org/2000/svg">
 ```
 
-Also, because Gotham font is different width than sans-serif, we will adjust `x` attribute for description texts, to be centered in regards to arrows.
+Also, because Gotham font has a different width than sans-serif, we adjust the `x` attribute for description texts, to be centered in regards to arrows.
 
 ## Results
 
-After all those optimizations, we have a SVG file that is 2.5 KB (with no minification, no gzip), easy to edit, and looks like this:
+After all those optimizations, we have an SVG file that is 2.5 KB (with no minification, no gzip), easy to edit, and looks like this:
 
 <img src="{{ 'images/developer-guide/user-uploads/flowchart-attachments.svg' | asset_url }}" alt="Attachments flow">
 
 In fact, what you are looking at, is the final file we used in our documentation. It is very crisp, no matter the resolution and pixel density, which is why we love SVG.
 
-We think it was a good time investment and shows respect for people using mobile, often expensive, internet.
+We think it was a good time investment and shows respect for people using (often expensive) mobile internet.
 
-You can see the results of those optimizations in form of two different SVG images in our [User Uploads in platformOS](/developer-guide/user-uploads/user-uploads) article.
+You can see the results of the optimizations in the form of two different SVG images in our [User Uploads in platformOS](/developer-guide/user-uploads/user-uploads) article.
