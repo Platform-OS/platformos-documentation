@@ -2,29 +2,37 @@
 converter: markdown
 metadata:
   title: Recording Your Terminal to SVG
-  description: This use case describes how we recorded pos-cli introduction and saved it as SVG to embed it on our marketing website.
+  description: This use case describes how we recorded the pos-cli introduction and saved it as an SVG to embed it on our marketing website.
 ---
 
-There are couple of way of recording your screen to share it on the Internet.
+## Problem
 
-1. Animated gif - Pretty easy with tools like [Kap](https://getkap.co/), but it has heavy drawbacks. Maximum of 256 colors, balance between FPS and file size is very delicated, and gif files are usually big.
-2. Video (mp4, webm) - Pretty easy with tools like [Kap](https://getkap.co/), but needs usage of video tag, which is not always a possibility (markdown readme being a big one)
-3. Animated PNG - I have never seen anyone use it, even though browser support is there. That is a good candidate to experiment if you have free time.
-4. Finally, SVG. All above solutions can record everything, whole screen with images, so they are more universal. What we need is to record only terminal, which is predominantly text. This means, recordings will be much smaller than the closest alternative - gif, and easier to embed at more places than videos.
+This use case describes how we recorded the pos-cli introduction and saved it as an SVG to embed it on our marketing website.
 
-If you only need to share your terminal recording with someone, without embedding it on a website, we recommend excellent [asciinema](https://asciinema.org/).
+There are ca ouple of ways for recording your screen to share it on the Internet.
+
+1. Animated gif - Pretty easy to do with tools like [Kap](https://getkap.co/), but it has heavy drawbacks. Maximum of 256 colors, balance between FPS and file size is very delicate, and gif files are usually big.
+2. Video (mp4, webm) - Pretty easy with tools like [Kap](https://getkap.co/), but needs usage of the video tag, which is not always a possibility (markdown readme being a big one).
+3. Animated PNG - We have never seen anyone use it, even though the browser support is there. This is a good candidate to experiment if you have free time.
+4. Finally, SVG — All of the above solutions can record everything, the whole screen with images, so they are more universal. What we need is to record only terminal, which is predominantly text. This means, recordings will be much smaller than the closest alternative - gif, and easier to embed in more places than videos.
+
+So, which solution did we choose for showing the recording of our CLI as an image on our website? 
+
+## Solution 
+
+If you only need to share your terminal recording with someone, without embedding it on a website, we recommend the excellent [asciinema](https://asciinema.org/).
 
 But if you want to show off your recording as an image on your website, then you need an image format that is natively understood by browsers.
 
 ### Enter: [termtosvg](https://github.com/nbedos/termtosvg)
 
-Instead of talking what it does, lets [look at examples](https://nbedos.github.io/termtosvg/pages/examples.html).
+Instead of talking about what it does, let's [look at some examples](https://nbedos.github.io/termtosvg/pages/examples.html).
 
-Apart from recording what you see in your terminal, you can also [change the theme](https://nbedos.github.io/termtosvg/pages/templates.html), just in case your terminal is heavily customized and you want more vanilla look and feel.
+Apart from recording what you see in your terminal, you can also [change the theme](https://nbedos.github.io/termtosvg/pages/templates.html), just in case your terminal is heavily customized and you want a simpler look and feel.
 
 **Installation**
 
-It is a python 3 script, so you will need to have python in your system.
+It is a Python 3 script, so you will need to have Python in your system.
 
 ```shell
 pip3 install termtosvg
@@ -53,13 +61,13 @@ pos-cli|master ⇒
 Rendering ended, SVG animation is hello.svg
 ```
 
-You can even nest recordings, so I recorded all those commands above into a SVG file. Its that simple:
+You can even nest recordings, so I recorded all those commands above into an SVG file:
 
 <img src="{{ 'images/use-cases/recording-terminal/hello.svg' | asset_url  }}" alt="Hello world animation">
 
 ### More options
 
-If you need to do more complicated things, type `termtosvg -h` which will give you information about options it provides.
+If you need to do more complicated things, type `termtosvg -h` which will give you information about the options it provides.
 
 ```shell
 pos-cli|master ⇒ termtosvg -h
@@ -109,10 +117,10 @@ optional arguments:
 See also 'termtosvg record --help' and 'termtosvg render --help'
 ```
 
-### Final result
+### Results
 
-Having ready SVG, you can embed it anywhere you want, using your favorite image syntax.
+Having the SVG ready, you can embed it anywhere you want, using your favorite image syntax.
 
 <img src="{{ 'images/use-cases/recording-terminal/pos-cli.svg' | asset_url  }}" alt="pos-cli animation">
 
-This post was inspired by [dev.to post](https://dev.to/brpaz/make-your-project-readme-file-stand-out-with-animated-gifs-svgs-4kpe) by Bruno Paz, where he showed how to use asciinema and a converter to achieve similar result. You might also use that approach in your development workflow: Record and share asciinema recording to get feedback from your team, and when it is good enough, convert to SVG and ship.
+This post was inspired by this [dev.to post](https://dev.to/brpaz/make-your-project-readme-file-stand-out-with-animated-gifs-svgs-4kpe) by Bruno Paz, where he showed how to use asciinema and a converter to achieve a similar result. You might also use that approach in your development workflow: Record and share an asciinema recording to get feedback from your team, and when it is good enough, convert it to SVG and ship.
