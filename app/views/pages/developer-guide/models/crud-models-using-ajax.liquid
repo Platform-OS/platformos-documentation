@@ -280,8 +280,8 @@ The delete operation also needs `method` and `id` because underneath it all, it 
 
 ##### Soft delete
 
-When you delete a record, by default, we set the value of `deleted_at` to the timestamp. Queries either show those records by default or not. The `deleted_at: { exists: false }` filter is available in some GraphQL queries for application developers to choose explicitly if the results should include records with `deleted_at` set.
-We do that because some workflows need this for safety reasons. For example, it makes it possible to restore records removed by accident.
+When you delete a record, by default, we set the value of `deleted_at` to the timestamp. Queries either show those records by default or not. The `deleted_at: { exists: false }` filter is available in some GraphQL queries for application developers to choose explicitly if the results should include records with `deleted_at` set. By default deleted records are not returned by GraphQL queries like `models` and `users`.
+We do that because some workflows need this for safety reasons. For example, it makes it possible to restore records removed by accident. To do it, you can use [user_update](https://documentation.platformos.com/api-reference/graphql/mutations#user_update) or [model_update](https://documentation.platformos.com/api-reference/graphql/mutations#model_update) mutation and set `deleted_at` to `null`.
 
 ##### Hard delete
 
