@@ -11,12 +11,12 @@ slug: release-notes/30-MARCH-2020
 
 <h4 class="release-note release-note__improved">IMPROVED</h4>
 
-* `name` property will be automatically derived from physical_file_path for all admin resources like Authorization Policies, Notifications, Forms, Model Schemas etc.. For example, app/authorization_policies/dir/my_policy.liquid will have defult name `dir/my_policy`. For backwards compatibility, it is still possible to overwrite the default name using `name` attribute.
-* notifications directory structure has been flattened - new directories are now `app/emails/`, `app/smses'`, `app/api_calls`. For example, instead of `app/notifications/email_notifications/my_email.liquid` you can now place it in `app/emails/my_email.liquid`.
+* `name` property will be automatically derived from physical_file_path for all admin resources like Authorization Policies, Notifications, Forms, Model Schemas etc. For example, app/authorization_policies/dir/my_policy.liquid will have the defult name `dir/my_policy`. For backwards compatibility, it is still possible to overwrite the default name using the `name` attribute.
+* The notifications directory structure has been flattened - new directories are now `app/emails/`, `app/smses'`, `app/api_calls`. For example, instead of `app/notifications/email_notifications/my_email.liquid` you can now place it in `app/emails/my_email.liquid`.
 * Deleted objects are not returned by default for `models` and `users` queries. To fetch soft-deleted records, you can still use filter for `deleted_at` field.
-* Added extra validation for physical file path, to make sure files have proper extensions, for example `liquid` for Forms, Authorization Policies and `yml` for Model Schemas.
+* Added extra validation for physical file path, to make sure files have proper extensions, for example, `liquid` for Forms, Authorization Policies and `yml` for Model Schemas.
 * Error message for layout_path / layout_name will not include confusing `layouts/` prefix in the suggestions
-* When changing type of the property, for example from string to integer, all the data will be updated behind the scenes. In case of casting error, validation error message will be thrown and deploy/sync will fail, until data is manually fixed, for example via GraphQL Mutaions.
+* When changing the type of a property, for example, from string to integer, all the data will be updated behind the scenes. In case of casting error, a validation error message will be thrown and deploy/sync will fail, until data is manually fixed, for example, via GraphQL Mutaions.
 * Added extra algorithms to jwt token filters and allow to specify algorithm for jwt mutation.
-* Improve Domain name internal validation.
+* Improved Domain name internal validation.
 * GraphQL engine has been upgraded.
