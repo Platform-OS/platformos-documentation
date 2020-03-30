@@ -75,17 +75,87 @@ Although only the assets directory is required and you can put your assets there
 Example directory structure of `assets` with sample files:
 
 ```shell
-app
-└── assets
-    ├── fonts
-    └── images
-    │   ├── favicon.ico
-    └── scripts
-    │   ├── app.js
-    │   ├── vendor.js
-    └── styles
-        ├── app.css
-        ├── vendor.css
+├── app
+│   ├── assets
+│   │   ├── fonts
+│   │   │   ├── Gotham-Bold.woff2
+│   │   │   ├── Gotham-Book.woff2
+│   │   │   ├── Gotham-Light.woff2
+│   │   │   └── Gotham-Medium.woff2
+│   │   ├── images
+│   │   │   ├── logo-black.svg
+│   │   │   ├── logo.svg
+│   │   │   └── welcome.svg
+│   │   ├── scripts
+│   │   │   ├── app.js
+│   │   │   ├── sw.js
+│   │   │   └── vendor.js
+│   │   └── styles
+│   │       └── app.css
+│   ├── authorization_policies
+│   │   ├── example_policy.liquid
+│   │   └── failing_policy.liquid
+│   ├── forms
+│   ├── graphql
+│   │   └── example.graphql
+│   ├── model_schemas
+│   ├── notifications
+│   │   ├── api_call_notifications
+│   │   │   └── example.liquid
+│   │   ├── email_notifications
+│   │   │   └── example.liquid
+│   │   └── sms_notifications
+│   │       └── example.liquid
+│   ├── translations
+│   │   ├── en.yml
+│   │   └── pl.yml
+│   ├── user_profile_types
+│   └── views
+│       ├── layouts
+│       │   ├── 1col.html.liquid
+│       │   └── application.html.liquid
+│       ├── pages
+│       │   ├── admin.html.liquid
+│       │   ├── home.html.liquid
+│       │   └── unauthorized.html.liquid
+│       └── partials
+│           └── layout
+│               ├── head.liquid
+│               └── scripts.liquid
+└── modules
+    └── example
+        ├── private
+        │   ├── assets
+        │   ├── authorization_policies
+        │   ├── forms
+        │   ├── graphql
+        │   ├── model_schemas
+        │   ├── notifications
+        │   │   ├── api_call_notifications
+        │   │   ├── email_notifications
+        │   │   └── sms_notifications
+        │   ├── translations
+        │   ├── user_profile_types
+        │   └── views
+        │       ├── layouts
+        │       ├── pages
+        │       └── partials
+        └── public
+            ├── assets
+            ├── authorization_policies
+            ├── forms
+            ├── graphql
+            ├── model_schemas
+            ├── notifications
+            │   ├── api_call_notifications
+            │   ├── email_notifications
+            │   └── sms_notifications
+            ├── translations
+            ├── user_profile_types
+            └── views
+                ├── layouts
+                ├── pages
+                └── partials
 ```
 
 {% include "alert/tutorial", content: "Follow our step-by-step tutorials to learn more about <a href='/developer-guide/assets/assets'>assets</a>." %}
