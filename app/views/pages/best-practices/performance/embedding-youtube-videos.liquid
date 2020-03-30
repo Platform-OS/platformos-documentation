@@ -1,0 +1,60 @@
+---
+converter: markdown
+metadata:
+  title: Embedding Youtube Videos
+  description: How to embed a Youtube video while keeping your page fast and your users' privacy intact.
+---
+
+Sometimes you want to share a Youtube video on your website, instead of just pasting a link. The problem with this is that Youtube will load over 1.5 MB of scripts (including tracking code), styles, and HTML even if the user is not interested in the video at all.
+
+### Default
+
+This is the default embed code that is proposed by Youtube:
+
+```html
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/evezbNPC0Mo"
+  frameborder="0"
+  allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen>
+</iframe>
+```
+
+### Low-tech solution
+
+There is a pretty nice workaround to provide a visually pleasing video for your user without making the site slow and heavy. You can use the thumbnail from Youtube and link it to the video, so the user would click an image and go to Youtube to watch the video.
+
+```html
+<a href="https://www.youtube.com/watch?v=evezbNPC0Mo" target="_blank">
+  <img src="images/thumbnail.jpg" alt="Town Hall #77 - How platformOS cloning revolutionized web development">
+</a>
+```
+
+Example:
+
+<a href="https://www.youtube.com/watch?v=evezbNPC0Mo" target="_blank">
+  <img src="{{ 'images/best-practices/performance/embedding-youtube/thumbnail.jpg' | asset_url }}" alt="Town Hall #77 - How platformOS cloning revolutionized web development">
+</a>
+
+### High-tech solution
+
+Now there is a better way: **[Lite YouTube Embed](https://github.com/paulirish/lite-youtube-embed)**
+
+Lite YouTube Embed is a script that registers a custom element in the browser. This element shows a Youtube player that's very similar to original, but:
+
+1. It is not downloading anything but the thumbnail until the user clicks play
+2. It uses the `youtube-nocookie.com` domain instead of `youtube.com`, which strips out tracking cookies, preserving your users' privacy
+3. According to the readme, because of deferred loading of resources, it renders 224x faster than the original player
+
+To be able to use this custom element in its full potential, you need its CSS (https://raw.githubusercontent.com/paulirish/lite-youtube-embed/master/src/lite-yt-embed.css) and [javascript](https://github.com/paulirish/lite-youtube-embed/blob/master/src/lite-yt-embed.js) loaded on your website.
+
+The custom element is straightforward to use:
+
+```html
+<lite-youtube videoid="evezbNPC0Mo">
+</lite-youtube>
+```
+
+See [live demos](https://paulirish.github.io/lite-youtube-embed/).
