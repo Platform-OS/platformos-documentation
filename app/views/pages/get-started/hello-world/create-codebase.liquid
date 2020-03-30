@@ -2,16 +2,16 @@
 converter: markdown
 metadata:
   title: Create Your Codebase
-  description: How to create your codebase and organize it into the directory structure platformOS uses.    
+  description: How to create your codebase and organize it into the directory structure platformOS uses.
 slug: get-started/hello-world/create-codebase
 searchable: true
 ---
 
-{% include 'alert/tip', content: 'If you go through the Hello, World! onboarding steps when registering on the Partner Portal,  you can download the codebase of your demo Instance instead of creating it with the pos-cli init command.' %} 
+{% include 'alert/tip', content: 'If you go through the Hello, World! onboarding steps when registering on the Partner Portal,  you can download the codebase of your demo Instance instead of creating it with the pos-cli init command.' %}
 
 In order to correctly communicate with the platformOS engine and API, your codebase should be organized into a specific directory structure. You can create your codebase organized into the the required directory structure using the pos-cli's `init` command.
 
-`pos-cli init` downloads the directory structure in a zip file, and extracts it into the current directory. This means the best way to start is to create a directory for all of your projects and a directory for your project inside of it. 
+`pos-cli init` downloads the directory structure in a zip file, and extracts it into the current directory. This means the best way to start is to create a directory for all of your projects and a directory for your project inside of it.
 
 Example directory structure before `pos-cli init`:
 
@@ -26,15 +26,15 @@ Change into the `hello-world` directory and run the `pos-cli init` command:
 pos-cli init
 </code></pre>
 
-This command creates the required directories, configuration files, and some example files in the directory you specified.{%- capture content -%}Make sure you invoke this command where you have permissions to create a directory.   
+This command creates the required directories, configuration files, and some example files in the directory you specified.{%- capture content -%}Make sure you invoke this command where you have permissions to create a directory.
 {%- endcapture -%}
-{% include 'alert/important', content: content %} 
+{% include 'alert/important', content: content %}
 
 If the directory is empty, the command shows a success message:
 
 ```shell
 $ pos-cli init
-[11:35:06] Directory structure successfully created. 
+[11:35:06] Directory structure successfully created.
 ```
 
 If it is not empty (don't forget to think of hidden files), it will require your confirmation by adding the `--force` flag. Be aware that it will override your files if they conflict.
@@ -51,87 +51,96 @@ $ pos-cli init --force
 
 Once you've installed the required directory structure, locate and explore it – this is how your codebase for your platformOS Instances should be organized.
 
-Example directory structure after running `pos-cli init`: 
+Example directory structure after running `pos-cli init`:
 
 ```shell
-app
-└── assets
-│   ├── fonts
-│   └── images
-│   │   ├── icon_small.png
-│   └── scripts
-│   │   ├── app.js
-│   │   ├── sw.js   
-│   │   ├── vendor.js
-│   └── styles
-│       ├── app.css
-│       ├── vendor.css
-└── authorization_policies
-│   ├── example_policy.liquid        
-└── forms
-└── graphql
-│   ├── example.graphql
-└── model_schemas
-└── notifications
-│   ├── api_call_notifications
-│   │   ├── ping_example_com_on_user_sign_up.liquid
-│   └── email_notifications
-│   │   ├── welcome_user.liquid
-│   └── sms_notifications
-│       ├── welcome_user.liquid
-└── translations
-│   ├── en.yml
-│   ├── pl.yml 
-└── user_profile_types
-└── views
-    ├── layouts
-    │   ├── 1col.html.liquid
-    └── pages
-    │   ├── admin.html.liquid    
-    │   ├── home.html.liquid
-    │   ├── unauthorized.html.liquid
-    └── partials
-        ├── layout
-            ├── footer.liquid
-            ├── head.liquid
-            ├── header.liquid
-            ├── scripts.liquid
-
-modules
-└── example
-    ├── private
-    │   └── assets
-    │   └── authorization_policies
-    │   └── forms
-    │   └── graphql
-    │   └── model_schemas
-    │   └── notifications
-    │   └── translations
-    │   └── user_profile_types
-    │   └── views
-    │       └── layouts
-    │       └── pages
-    │       └── partials 
-    └── public
-        └── assets
-        └── authorization_policies
-        └── forms
-        └── graphql
-        └── model_schemas
-        └── notifications
-        └── translations
-        └── user_profile_types
-        └── views
-            └── layouts
-            └── pages
-            └── partials 
-
+.
+├── LICENSE
+├── app
+│   ├── assets
+│   │   ├── fonts
+│   │   │   ├── Gotham-Bold.woff2
+│   │   │   ├── Gotham-Book.woff2
+│   │   │   ├── Gotham-Light.woff2
+│   │   │   └── Gotham-Medium.woff2
+│   │   ├── images
+│   │   │   ├── logo-black.svg
+│   │   │   ├── logo.svg
+│   │   │   └── welcome.svg
+│   │   ├── scripts
+│   │   │   ├── app.js
+│   │   │   ├── sw.js
+│   │   │   └── vendor.js
+│   │   └── styles
+│   │       └── app.css
+│   ├── authorization_policies
+│   │   ├── example_policy.liquid
+│   │   └── failing_policy.liquid
+│   ├── forms
+│   ├── graphql
+│   │   └── example.graphql
+│   ├── model_schemas
+│   ├── notifications
+│   │   ├── api_call_notifications
+│   │   │   └── example.liquid
+│   │   ├── email_notifications
+│   │   │   └── example.liquid
+│   │   └── sms_notifications
+│   │       └── example.liquid
+│   ├── translations
+│   │   ├── en.yml
+│   │   └── pl.yml
+│   ├── user_profile_types
+│   └── views
+│       ├── layouts
+│       │   ├── 1col.html.liquid
+│       │   └── application.html.liquid
+│       ├── pages
+│       │   ├── admin.html.liquid
+│       │   ├── home.html.liquid
+│       │   └── unauthorized.html.liquid
+│       └── partials
+│           └── layout
+│               ├── head.liquid
+│               └── scripts.liquid
+└── modules
+    └── example
+        ├── private
+        │   ├── assets
+        │   ├── authorization_policies
+        │   ├── forms
+        │   ├── graphql
+        │   ├── model_schemas
+        │   ├── notifications
+        │   │   ├── api_call_notifications
+        │   │   ├── email_notifications
+        │   │   └── sms_notifications
+        │   ├── translations
+        │   ├── user_profile_types
+        │   └── views
+        │       ├── layouts
+        │       ├── pages
+        │       └── partials
+        └── public
+            ├── assets
+            ├── authorization_policies
+            ├── forms
+            ├── graphql
+            ├── model_schemas
+            ├── notifications
+            │   ├── api_call_notifications
+            │   ├── email_notifications
+            │   └── sms_notifications
+            ├── translations
+            ├── user_profile_types
+            └── views
+                ├── layouts
+                ├── pages
+                └── partials
 ```
-
 
 To learn more about the required directories and files, see [platformOS Codebase](/developer-guide/platformos-workflow/codebase).
 
-</br>
-</br>
-<p align="right"><strong><a href="/get-started/hello-world/change-homepage">Next step: Change Something on Your Homepage</strong></p>
-
+<p align="right">
+  <a href="/get-started/hello-world/change-homepage"><strong>Next step: Change Something on Your Homepage</strong></a>
+</p>
