@@ -493,7 +493,7 @@ Now that you have all your list operations ready, start handling items.
  {%- assign list_id = context.params.slug3 -%}
  {%- assign content = context.params.content -%}
 
- {% graphql result = 'item_create', list_id: list_id, content: content %}
+ {% graphql result = 'item/create', list_id: list_id, content: content %}
  {% assign item = result | fetch: "model_create" %}
 
  {% if item.id %}
