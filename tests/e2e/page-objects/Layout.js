@@ -7,6 +7,7 @@ export default class LayoutPO {
     this.Questions = Selector('.callout__actions');
     this.Sidebar = Selector('.sidebar', { visibilityCheck: true });
     this.Feedback = Selector('.feedback-main');
+    this.LastEdit = Selector('.last-edit');
   }
 
   async checkLiquidErrors() {

@@ -7,9 +7,19 @@ const Layout = new LayoutPO();
 fixture('Layout').page(process.env.MP_URL);
 
 test('Conditional layout parts are working: questions, feedback, one-column layout', async t => {
+
   await t.click(Selector('a').withText('pOS Community'));
 
+  await t.expect(Layout.Sidebar.count).eql(1);
+  await t.expect(Layout.LastEdit.count).eql(1);
+  await t.expect(Layout.Feedback.count).eql(1);
+  await t.expect(Layout.Questions.count).eql(1);
+
+
+  await t.click(Selector('a').withText('Release Notes'));
+
   await t.expect(Layout.Sidebar.count).eql(0);
+  await t.expect(Layout.LastEdit.count).eql(0);
   await t.expect(Layout.Feedback.count).eql(0);
   await t.expect(Layout.Questions.count).eql(0);
 });
