@@ -554,7 +554,7 @@ To create a task attached to a list, you need the list's ID. It is passed in the
 
  {% if context.params.completed %}
    {%- assign completed = context.params.completed | matches: '1' -%}
-   {% graphql result = 'item_update_completed', id: id, completed: completed %}
+   {% graphql result = 'item/update_completed', id: id, completed: completed %}
  {% endif %}
 
  {% assign item = result | fetch: "model_update" %}
