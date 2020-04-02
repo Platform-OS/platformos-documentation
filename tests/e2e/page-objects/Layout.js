@@ -2,12 +2,6 @@ import { Selector, t } from 'testcafe';
 
 export default class LayoutPO {
   constructor() {
-    this.txt = {
-      about: 'About platformOS',
-      howItWorks: 'How platformOS Works',
-      contact: 'Contact'
-    };
-
     this.Body = Selector('body');
     this.Content = this.Body.find('.content__main');
     this.Questions = Selector('.callout__actions');
