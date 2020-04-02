@@ -13,7 +13,7 @@ test('Conditional layout parts are working: questions, feedback, one-column layo
   await t.expect(Layout.Sidebar.count).eql(1);
   await t.expect(Layout.LastEdit.count).eql(1);
   await t.expect(Layout.Feedback.count).eql(1);
-  await t.expect(Layout.Questions.count).eql(1);
+  await t.expect(Layout.CTABlock.count).eql(1); // "Questions?" Block
 
 
   await t.click(Selector('a').withText('Release Notes'));
@@ -21,7 +21,7 @@ test('Conditional layout parts are working: questions, feedback, one-column layo
   await t.expect(Layout.Sidebar.count).eql(0);
   await t.expect(Layout.LastEdit.count).eql(0);
   await t.expect(Layout.Feedback.count).eql(0);
-  await t.expect(Layout.Questions.count).eql(0);
+  await t.expect(Layout.CTABlock.count).eql(1); // "Documentation Reports" block
 });
 
 test('Navigation is expanding both serverside and clientside', async t => {

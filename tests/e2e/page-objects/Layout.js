@@ -4,7 +4,7 @@ export default class LayoutPO {
   constructor() {
     this.Body = Selector('body');
     this.Content = this.Body.find('.content__main');
-    this.Questions = Selector('.callout__actions');
+    this.CTABlock = Selector('.callout__actions');
     this.Sidebar = Selector('.sidebar', { visibilityCheck: true });
     this.Feedback = Selector('.feedback-main');
     this.LastEdit = Selector('.last-edit');
