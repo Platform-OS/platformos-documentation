@@ -36,7 +36,7 @@ Authorization Policies allow you to restrict access to forms and pages in a flex
 
 Each policy is parsed using Liquid and the system will check them in order of their appearance in the code.
 
-The system redirects the user to a URL provided by the developer if the condition is not met. You can also add a message for the user who has been rejected because of insufficient access rights.
+The system redirects the user to a URL provided by the developer if the condition is not met. You can also add a message to be displayed to the user when that happens.
 
 Learn more:
 
@@ -48,7 +48,7 @@ We provide one of the best Content Delivery Networks in the world: CloudFront.
 
 Everything you place in the `assets/` directory will be served by this performant CDN. You can nest directories however you want, the directory structure will be kept.
 
-You access files using either the `asset_url` filter, `asset_url` hash, or composing the path yourself, since it is deterministic &ndash; it consists of cdnPath + path/to/asset.
+You access files using either the `asset_url` Liquid filter, `asset_url` hash, or composing the path yourself, since it is deterministic &ndash; it consists of `path to cdn` + path/to/asset.
 
 Learn more:
 
@@ -99,25 +99,14 @@ Learn more:
 
 * [Models and Model Schemas](/developer-guide/models/models-model-schemas)
 
-## Environments
-
-Each application has at least two environments: staging and production.
-
-Staging is used to develop and test your application before it goes live &ndash; it is a place to catch and fix bugs.
-
-If you are a Partner, you most likely will want to use a sandbox environment to develop your application and then use staging to show the client the progress, and get final sign-off before promoting changes to production.
-
-Learn more:
-
-* [Development Workflow](/developer-guide/platformos-workflow/development-workflow)
-
 ## Form
 
-Form is a concept, which gives you full control over both the look & feel of a form, along with its behavior.
+Form is a concept, which gives you full control over both the look & feel of a form, along with its behavior. This is where you can define field validations.
 
 Learn more:
 
 * [Forms](/developer-guide/forms)
+*
 ## FrontMatter (YAML)
 
 The triple dashes `---` you see in various places (e.g. Forms) are called FrontMatter.
@@ -141,11 +130,14 @@ Learn more:
 
 ## Instance
 
-The sites created on the Partner Portal are called Instances. Instances have a URL, and they represent different development environments, like staging or production.
+The sites created on the Partner Portal are called Instances. Instances have a URL, and they represent different environments, like `staging` or `production`.
+
+If you are a Partner, you most likely will want to use a `development` environment to develop your application and then use `staging` to show the client the progress, and get final sign-off before promoting changes to `production`.
 
 Learn more:
 
 * [Create an Instance](/get-started/hello-world/create-instance)
+* [Development Workflow](/developer-guide/platformos-workflow/development-workflow)
 
 ## Layout
 
@@ -169,10 +161,18 @@ Learn more:
 
 ## pos-cli
 
-pos-cli is a tool that helps you quickly:
+`pos-cli` is a command line tool provided by the platformOS team to help you:
 
-1. develop your application (`sync` command)
-2. deploy your application (`deploy` command)
+* develop applications quickly
+* debug existing applications
+* avoid common programming mistakes
+* import data into your application
+* export data from your application
+* deploy applications to environments
+
+and much more.
+
+It is your personal toolbelt to work with `pos-cli` Instances.
 
 Learn more:
 
@@ -181,9 +181,9 @@ Learn more:
 
 ## Node.js
 
-Node.js is a javascript runtime for servers based on Chrome's V8 engine. By itself, it allows developers to write and run javascript on the server.
+Node.js is a javascript runtime based on Chrome's V8 engine. By itself, it allows developers to write and run javascript in environments other than browsers.
 
-Currently, Long Term Support version is 8.x, and we always recommend you to use the newest LTS version of Node for both stability and security reasons.
+We always recommend you to use the newest Long Term Support (evergreen) version of Node for stability, security and performance reasons.
 
 Learn more:
 
@@ -201,23 +201,15 @@ Learn more:
 
 ## NPM and NPM scripts
 
-NPM is a Node Package Manager that allows you to install packages published in the NPM registry. There are many different packages that you can install, some of them written by the platformOS team, like the pos-cli.
+NPM is a Node Package Manager that allows you to install packages published in the NPM registry. There are many different packages that you can install, some of them written by the platformOS team, like the `pos-cli`.
 
 Learn more:
 
 * [NPM Official Documentation](https://www.npmjs.com/)
 
-## NVM
-
-Node Version Manager is an NPM package that helps you manage multiple versions of node in your system, and allows you to quickly switch between them. Install any version.
-
-Learn more:
-
-* [NVM on GitHub](https://github.com/creationix/nvm)
-
 ## Page
 
-Pages are the most essential components of our platform, that define content displayed at a given path.
+Pages are essential components of our platform, that define content displayed at a given path (URL).
 
 Pages have to be located in the `views/pages` directory, and their content is rendered in place of `{{ content_for_layout }}` variable in the layout they’re using.
 
@@ -259,13 +251,17 @@ Learn more:
 
 Users of the Partner Portal are called Partners. Partners have the permissions to create, manage, and configure Instances. Partners can also create and manage other Partners.
 
-## Push (deploy)
+## Deploy (pos-cli deploy)
 
-Pushing code to an Instance means it will pack your app into a zip file and send it to the server. In the future, only modified files will be compressed and pushed to the server.
+Using `pos-cli deploy` means it will:
 
-## Sync
+* run static analysis of your code to find errors/deprecations
+* compress your assets and send them to the storage service
+* compress your app and send it to the server
 
-Syncing to any environment means that pos-cli is watching your filesystem for changes. Whenever you change a file, it automatically picks it up and sends it to the server. If this operation fails, you will see a message in your console &ndash; we have some validations on the server side to prevent you from deploying corrupted code and breaking your application.
+## Sync (pos-cli sync)
+
+Syncing to any environment means that `pos-cli` is watching your filesystem for changes. Whenever you change a file, it automatically picks it up and sends it to the server. If this operation fails, you will see a message in your console &ndash; we have some validations on the server side to prevent you from deploying corrupted code and breaking your application.
 
 ## Translations
 
@@ -302,7 +298,7 @@ The usual structure of a webpage with the possibility to use layouts, pages and 
 2. Create pages with different slugs: `app/pages/about-us.liquid`
 3. Create partials that are used both in layout and pages: `app/views/layouts/shared/javascripts.liquid`, `app/views/partials/shared/contact-form.liquid`
 
-Because `_contact-form.liquid` is a partial it can be used in multiple places, about-us page, contact-us page, and in a configuration form.
+Because `contact-form.liquid` is a partial it can be used in multiple places, about-us page, contact-us page, and in a configuration form.
 
 ## YAML
 
