@@ -44,10 +44,11 @@ pipeline {
       when { expression { return !params.MP_URL.isEmpty() } }
       environment {
         MPKIT_URL = "${params.MP_URL}"
+        CI = true
       }
       agent { docker { image 'platformos/pos-cli' } }
       steps {
-        sh 'CI=true pos-cli deploy'
+        sh 'pos-cli deploy'
       }
     }
 
@@ -70,12 +71,13 @@ pipeline {
 
       environment {
         MPKIT_URL = "${staging_url}"
+        CI = true
       }
 
       agent { docker { image 'platformos/pos-cli' } }
 
       steps {
-        sh 'CI=true pos-cli deploy'
+        sh 'pos-cli deploy'
       }
     }
 
@@ -104,7 +106,6 @@ pipeline {
       }
 
       environment {
-        PROD = true
         MPKIT_URL = "${production_url}"
         CI = true
       }
@@ -138,9 +139,9 @@ pipeline {
   post {
     success {
       script {
-        if (env.GIT_BRANCH == 'master' && env.PROD == true) {
+        if (env.GIT_BRANCH == 'master') {
           // testOutput = sh(returnStdout: true, script: 'cat $HOME/tmp/test-summary.txt').trim()
-          slackSend (channel: "#notifications-docs", color: '#00FF00', message: "OK: <${env.BUILD_URL}|Build #${env.BUILD_NUMBER}>}. ${commitInfo()}")
+          slackSend (channel: "#notifications-docs", color: '#00FF00', message: "OK: <${env.BUILD_URL}|Build #${env.BUILD_NUMBER}>. ${commitInfo()}")
           // slackSend (channel: "#notifications-docs", color: '#00FF00', message: "${testOutput}")
         }
       }
@@ -148,8 +149,8 @@ pipeline {
 
     failure {
       script {
-        if (env.GIT_BRANCH == 'master' && env.PROD == true) {
-          slackSend (channel: "#notifications-docs", color: '#FF0000', message: "FAIL: <${env.BUILD_URL}|Build #${env.BUILD_NUMBER}>}. ${commitInfo()}")
+        if (env.GIT_BRANCH == 'master') {
+          slackSend (channel: "#notifications-docs", color: '#FF0000', message: "FAIL: <${env.BUILD_URL}|Build #${env.BUILD_NUMBER}>. ${commitInfo()}")
         }
       }
     }
