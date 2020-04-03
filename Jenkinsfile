@@ -137,7 +137,7 @@ pipeline {
   post {
     success {
       script {
-        if (env.GIT_BRANCH == 'master') {
+        if (env.GIT_BRANCH == 'master' && MPKIT_URL == production_url) {
           // testOutput = sh(returnStdout: true, script: 'cat $HOME/tmp/test-summary.txt').trim()
           slackSend (channel: "#notifications-docs", color: '#00FF00', message: "SUCCESS: <${env.BUILD_URL}|Build #${env.BUILD_NUMBER}> - ${buildDuration()}. ${commitInfo()}")
           // slackSend (channel: "#notifications-docs", color: '#00FF00', message: "${testOutput}")
@@ -147,7 +147,7 @@ pipeline {
 
     failure {
       script {
-        if (env.GIT_BRANCH == 'master') {
+        if (env.GIT_BRANCH == 'master' && MPKIT_URL == production_url) {
           slackSend (channel: "#notifications-docs", color: '#FF0000', message: "FAILED: <${env.BUILD_URL}|Build #${env.BUILD_NUMBER}> - ${buildDuration()}. ${commitInfo()}")
         }
       }
