@@ -161,7 +161,7 @@ Now when you go to the root URL of your Instance, you will see `Hello world`. No
 
 To create an object in the Database you need to define its structure. In this case you need two models.
 
-#### model_schemas/list.yml
+#### app/model_schemas/list.yml
 
 ```yaml
 name: list
@@ -169,7 +169,7 @@ properties:
   - name: title
     type: string
 ```
-#### model_schemas/item.yml
+#### app/model_schemas/item.yml
 
 ```yaml
 name: item
@@ -193,7 +193,7 @@ All database operations in this application follow the same structure and have t
 
 3) HTML form that sends data to a page
 
-#### graphql/list/create.graphql
+#### app/graphql/list/create.graphql
 
 ```graphql
  mutation create($title: String!) {
@@ -208,7 +208,7 @@ All database operations in this application follow the same structure and have t
  }
 ```
 
-#### views/pages/list/create.liquid
+#### app/views/pages/list/create.liquid
 
 {% raw %}
 ```liquid
@@ -234,7 +234,7 @@ Something went wrong :(
 
 You are creating a list with a given title and using JavaScript to redirect the user to this list if there were no errors. If there is an error, the user will see an error returned by GraphQL. In a real application, you might want to handle this better.
 
-#### views/pages/home.liquid
+#### app/views/pages/home.liquid
 
 ```liquid
 <form
@@ -256,7 +256,7 @@ You can see a lot of data attributes (like `x-data`, `x-show`, `@click`) which a
 
 Now that you can create a list with a title, show 10 of them on your homepage, sorted by those which had been recently updated.
 
-#### graphql/index.graphql
+#### app/graphql/index.graphql
 
 ```graphql
  query index {
@@ -277,7 +277,7 @@ Now that you can create a list with a title, show 10 of them on your homepage, s
  }
 ```
 
-#### views/pages/home.liquid
+#### app/views/pages/home.liquid
 
 {% raw %}
 ```liquid
@@ -303,7 +303,7 @@ You iterate over the array returned by GraphQL and inform the user that there is
 
 Now that you have a link pointing to {% raw %}`/list/show/{{ list.id }}`{% endraw %}, you need to create this page to be able to show a particular list.
 
-#### graphql/list/read.graphql
+#### app/graphql/list/read.graphql
 
 ```graphql
  query read($id: ID!) {
@@ -322,7 +322,7 @@ Now that you have a link pointing to {% raw %}`/list/show/{{ list.id }}`{% endra
  }
 ```
 
-#### views/pages/list/show.liquid
+#### app/views/pages/list/show.liquid
 
 {% raw %}
 ```liquid
@@ -339,7 +339,7 @@ These couple of lines of code pull the correct list object from the database and
 
 To rename a list, you need to update its title field. As usual, you need a GraphQL mutation, a page, and a form.
 
-#### graphql/list/update.graphql
+#### app/graphql/list/update.graphql
 
 ```graphql
  mutation update($id: ID!, $title: String!) {
@@ -355,7 +355,7 @@ To rename a list, you need to update its title field. As usual, you need a Graph
 
 Note that ID is required as well, because you have to tell the system which list has to be modified.
 
-#### views/pages/list/update.liquid
+#### app/views/pages/list/update.liquid
 
 {% raw %}
 ```liquid
@@ -380,7 +380,7 @@ Note that ID is required as well, because you have to tell the system which list
 
 Errors are handled the same way as previously.
 
-#### views/pages/list/show.liquid
+#### app/views/pages/list/show.liquid
 
 {% raw %}
 ```liquid
@@ -403,7 +403,7 @@ Code for renaming a list is in the `list/show.liquid` page, that's why you have 
 
 Because you did not connect any tasks to your lists, all of them are empty. This means you can easily implement a delete feature.
 
-#### graphql/list/delete.graphql
+#### app/graphql/list/delete.graphql
 
 ```graphql
  mutation delete($id: ID!) {
@@ -413,7 +413,7 @@ Because you did not connect any tasks to your lists, all of them are empty. This
  }
 ```
 
-#### views/pages/list/delete.liquid
+#### app/views/pages/list/delete.liquid
 
 {% raw %}
 ```liquid
@@ -437,7 +437,7 @@ Because you did not connect any tasks to your lists, all of them are empty. This
 
 After deleting a list, the user will be redirected to the homepage.
 
-#### views/pages/list/show.liquid
+#### app/views/pages/list/show.liquid
 
 {% raw %}
 ```liquid
@@ -463,7 +463,7 @@ You show the delete form only when there are no tasks associated with the list.
 
 Now that you have all your list operations ready, start handling items.
 
-#### graphql/item/create.graphql
+#### app/graphql/item/create.graphql
 
 ```graphql
  mutation create($list_id: String!, $content: String!) {
@@ -483,7 +483,7 @@ Now that you have all your list operations ready, start handling items.
  }
 ```
 
-#### views/pages/item/create.liquid
+#### app/views/pages/item/create.liquid
 
 {% raw %}
 ```liquid
@@ -508,7 +508,7 @@ Now that you have all your list operations ready, start handling items.
 
 To create a task attached to a list, you need the list's ID. It is passed in the URL and accessed as `context.params.slug3`. After creation, the user is redirected back to the list.
 
-#### views/pages/list/show.liquid
+#### app/views/pages/list/show.liquid
 
 {% raw %}
 ```liquid
@@ -526,7 +526,7 @@ To create a task attached to a list, you need the list's ID. It is passed in the
 
 ### Step 7: Mark task as complete
 
-#### graphql/item/update_completed.graphql
+#### app/graphql/item/update_completed.graphql
 
 ```graphql
  mutation update($id: ID!, $completed: Boolean!) {
@@ -543,7 +543,7 @@ To create a task attached to a list, you need the list's ID. It is passed in the
  }
 ```
 
-#### views/pages/item/update.liquid
+#### app/views/pages/item/update.liquid
 
 {% raw %}
 ```liquid
@@ -571,7 +571,7 @@ To create a task attached to a list, you need the list's ID. It is passed in the
 
 GraphQL is expecting Boolean, so you need to convert "1" to true. If the completed parameter doesn't have "1" inside of it, the completed variable will resolve to false, and the task will be marked as uncompleted.
 
-#### views/pages/list/show.liquid
+#### app/views/pages/list/show.liquid
 
 {% raw %}
 ```liquid
@@ -604,7 +604,7 @@ Additionally, you submit the form as soon as the user checks/unchecks the checkb
 
 ### Step 8: Edit a task's content
 
-#### graphql/item/update_content.graphql
+#### app/graphql/item/update_content.graphql
 
 ```graphql
  mutation update($id: ID!, $content: String!) {
@@ -621,7 +621,7 @@ Additionally, you submit the form as soon as the user checks/unchecks the checkb
  }
 ```
 
-#### views/pages/item/update.liquid
+#### app/views/pages/item/update.liquid
 
 {% raw %}
 ```liquid
@@ -649,7 +649,7 @@ Additionally, you submit the form as soon as the user checks/unchecks the checkb
 
 You might have noticed that the above filename is the same as in the one in the previous step. Because it is, we just separated it for the purposes of this tutorial, but in source code and in real application, both updates are handled in the same page, using one if statement.
 
-#### views/pages/list/show.liquid
+#### app/views/pages/list/show.liquid
 
 {% raw %}
 ```liquid
@@ -669,7 +669,7 @@ You might have noticed that the above filename is the same as in the one in the 
 
 ### Step 9: Delete a task
 
-#### graphql/item/delete.graphql
+#### app/graphql/item/delete.graphql
 
 ```graphql
  mutation delete($item_id: ID!) {
@@ -679,7 +679,7 @@ You might have noticed that the above filename is the same as in the one in the 
  }
 ```
 
-#### views/pages/item/delete.liquid
+#### app/views/pages/item/delete.liquid
 
 {% raw %}
 ```graphql
@@ -702,7 +702,7 @@ You might have noticed that the above filename is the same as in the one in the 
 ```
 {% endraw %}
 
-#### views/pages/list/show.liquid
+#### app/views/pages/list/show.liquid
 
 {% raw %}
 ```liquid
