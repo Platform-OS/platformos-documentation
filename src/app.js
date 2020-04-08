@@ -1,4 +1,4 @@
-import './redesign.scss';
+import './app.scss';
 
 import { $q } from './js/helpers/dom';
 

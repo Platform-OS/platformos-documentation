@@ -18,7 +18,7 @@ const plugins = [
 
 const config = {
   entry: {
-    redesign: './src/redesign'
+    app: './src/app'
   },
   output: {
     filename: '[name].js',
