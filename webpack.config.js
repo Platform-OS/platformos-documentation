@@ -2,7 +2,6 @@ const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const WebpackRequireFrom = require('webpack-require-from');
 const TerserPlugin = require('terser-webpack-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 const production = process.env.NODE_ENV === 'production';
 
@@ -40,17 +39,11 @@ const config = {
         loader: 'babel-loader?retainLines=true&cacheDirectory'
       },
       {
-        test: /(\.css|\.scss)$/,
+        test: /(\.css)$/,
         use: [
           MiniCssExtractPlugin.loader,
           'css-loader?url=false',
-          'postcss-loader',
-          {
-            loader: 'sass-loader',
-            options: {
-              implementation: require('sass')
-            }
-          }
+          'postcss-loader'
         ]
       },
       {
@@ -65,7 +58,6 @@ const config = {
   },
   optimization: {
     minimizer: [
-      new OptimizeCSSAssetsPlugin({}),
       new TerserPlugin({ parallel: true, cache: true })
     ],
     splitChunks: {

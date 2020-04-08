@@ -1,4 +1,4 @@
-import './app.scss';
+import './app.css';
 
 import { $q } from './js/helpers/dom';
 
