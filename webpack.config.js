@@ -1,7 +1,12 @@
 const path = require('path');
+const glob = require('glob-all');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const WebpackRequireFrom = require('webpack-require-from');
 const TerserPlugin = require('terser-webpack-plugin');
+
+// Todo: Investigate DropCSS (maybe write postcss-plugin)
+// https://github.com/leeoniya/dropcss
+const PurgecssPlugin = require('purgecss-webpack-plugin');
 
 const production = process.env.NODE_ENV === 'production';
 
@@ -12,6 +17,12 @@ const plugins = [
   }),
   new WebpackRequireFrom({
     variableName: 'window.__CONTEXT__.cdnUrl'
+  }),
+  new PurgecssPlugin({
+    paths: glob.sync(['app/views/**/*.liquid', 'src/js/**/*.js'], { nodir: true }),
+    only: ['app.css'],
+    whitelistPatternsChildren: [/^feedback/],
+    defaultExtractor: content => content.match(/[\w-/:]+(?<!:)/g) || []
   })
 ];
 

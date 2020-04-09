@@ -1,3 +1,6 @@
+import(/* webpackChunkName: "search" */ 'docsearch.js/dist/cdn/docsearch.css');
+import(/* webpackChunkName: "search" */ '../css/overrides/docsearch.css');
+
 import docsearch from 'docsearch.js';
 
 docsearch({

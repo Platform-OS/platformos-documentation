@@ -1,11 +1,3 @@
-// Todo: Investigate DropCSS (maybe write postcss-plugin)
-// https://github.com/leeoniya/dropcss
-const purgecss = require('@fullhuman/postcss-purgecss')({
-  content: ['app/views/**/*.liquid', 'src/js/**/*.js'],
-  whitelistPatternsChildren: [/^feedback/],
-  defaultExtractor: content => content.match(/[\w-/:]+(?<!:)/g) || []
-});
-
 const csso = require('postcss-csso')({ comments: false });
 
 module.exports = () => {
@@ -17,7 +9,6 @@ module.exports = () => {
       require('postcss-nested'),
       require('autoprefixer'),
       require('tailwindcss'),
-      prod ? purgecss : undefined,
       prod ? csso : undefined // keep csso after purgecss, or it will break
     ]
   };
