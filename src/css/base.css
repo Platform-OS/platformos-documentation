@@ -1,15 +1,6 @@
-/* ------------------------------------------------------------ *\
-	Base
-\* ------------------------------------------------------------ */
-
 body {
-  min-width: 320px;
-  background: #fff;
-  font-family: 'Gotham', sans-serif;
-  font-size: 14px;
-  line-height: 1.57;
-  color: #4a4a4a;
-  font-weight: 400;
+  line-height: 1.57; /* Migrate to leading-normal (1.5) */
+  @apply text-body bg-white text-sm antialiased font-normal;
 }
 
 a {
@@ -22,13 +13,21 @@ a {
   }
 }
 
+svg {
+  display: inline-block;
+}
+
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-  line-height: 1.2;
+  @apply leading-tight font-medium;
+}
+
+ul {
+  list-style: disc;
 }
 
 h1 {
@@ -50,10 +49,6 @@ h4 {
 h5 {
   font-size: 14px;
 }
-
-/* ------------------------------------------------------------ *\
-	Fonts
-\* ------------------------------------------------------------ */
 
 @font-face {
   font-family: 'Gotham';

@@ -1,35 +1,8 @@
-/* ------------------------------------------------------------ *\
-	Section Options
-\* ------------------------------------------------------------ */
-
-.section-options {
-  padding: 13px 0 30px;
-}
-
-/* ------------------------------------------------------------ *\
-	Section Links
-\* ------------------------------------------------------------ */
-
 .section-links {
   padding: 35px 0 70px;
   text-align: center;
   font-size: 16px;
   letter-spacing: 0.02em;
-
-  [class^='col'] {
-    padding: 0 80px;
-    & + [class^='col'] {
-      &:before {
-        content: '';
-        position: absolute;
-        left: 0;
-        width: 1px;
-        top: 10px;
-        bottom: 10px;
-        background-color: rgba(74, 74, 74, 0.15);
-      }
-    }
-  }
 
   h3 {
     margin-bottom: 20px;
@@ -48,9 +21,18 @@
   }
 }
 
-/* ------------------------------------------------------------ *\
-	Section Search
-\* ------------------------------------------------------------ */
+@screen md {
+  .section-with-border:before {
+    content: '';
+    position: absolute;
+    display: block;
+    left: -5rem;
+    width: 1px;
+    top: 10px;
+    bottom: 10px;
+    background-color: rgba(74, 74, 74, 0.15);
+  }
+}
 
 .section-search {
   border-top: 1px solid #ebebeb;

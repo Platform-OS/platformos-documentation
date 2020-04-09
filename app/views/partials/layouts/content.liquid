@@ -13,17 +13,17 @@
 {%- export pagesUpdatedAt, namespace: 'nav' -%}
 
 {% if has_sidebar == 'true' %}
-  <div class="col-sm-3">
-    <div class="sidebar">
-      <p class="skip-to-content">
+  <div class="w-full sm:w-3/12">
+    <div class="relative sidebar p-4 sm:p-2 md:p-8">
+      <p class="skip-to-content text-lg text-center">
         <a href="#content">Skip to content</a>
       </p>
 
       <div class="sidebar__title">
         {% if context.exports.category.name %}
-          {% capture icon_path %}svg/{{ context.exports.category.slug }}{% endcapture %}
-          {% include icon_path, width: '32px', height: '32px' %}
-          <h4>{{ context.exports.category.name }}</h4>
+        {% capture icon_path %}svg/{{ context.exports.category.slug }}{% endcapture %}
+        {% include icon_path, width: '32px', height: '32px' %}
+        <h4>{{ context.exports.category.name }}</h4>
         {% endif %}
       </div>
 
@@ -32,7 +32,7 @@
   </div>
 {% endif %}
 
-<div class="{% if has_sidebar == 'true' %}col-sm-9{% else %}col-sm-12{% endif %}">
+<div class="{% if has_sidebar == 'true' %}w-full sm:w-9/12 mt-8 sm:mt-0{% else %} w-full{% endif %}">
   <div class="content category__{{ context.params.slug }}">
     {% include 'layouts/content/flash-messages' %}
 
@@ -40,8 +40,8 @@
       {% include 'layouts/content/breadcrumbs', category: context.exports.category %}
     {% endunless %}
 
-    <div class="row">
-      <div class="col{% if context.page.metadata.toc == true %}-8{% endif %} content__main" id="content">
+    <div class="flex">
+      <div class="w-full{% if context.page.metadata.toc == true %} w-full sm:w-8/12{% endif %} content__main sm:pl-12 pb-10" id="content">
         {% if context.page.metadata.title %}
           <h1>{{ context.page.metadata.title }}</h1>
         {% endif %}
@@ -56,7 +56,7 @@
       </div>
 
       {% if context.page.metadata.toc == true %}
-        <div class="col-4" data-autotoc></div>
+        <div class="ml-6 hidden sm:block w-4/12" data-autotoc></div>
       {% endif %}
     </div>
   </div>
