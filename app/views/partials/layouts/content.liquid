@@ -19,7 +19,7 @@
         <a href="#content">Skip to content</a>
       </p>
 
-      <div class="sidebar__title">
+      <div class="sidebar__title hidden sm:block">
         {% if context.exports.category.name %}
         {% capture icon_path %}svg/{{ context.exports.category.slug }}{% endcapture %}
         {% include icon_path, width: '32px', height: '32px' %}
@@ -41,7 +41,7 @@
     {% endunless %}
 
     <div class="flex">
-      <div class="w-full{% if context.page.metadata.toc == true %} w-full sm:w-8/12{% endif %} content__main sm:pl-12 pb-10" id="content">
+      <div class="w-full{% if context.page.metadata.toc == true %} w-full md:w-8/12{% endif %} content__main sm:pl-12" id="content">
         {% if context.page.metadata.title %}
           <h1>{{ context.page.metadata.title }}</h1>
         {% endif %}

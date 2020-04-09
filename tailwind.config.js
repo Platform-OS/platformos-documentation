@@ -11,11 +11,16 @@ module.exports = {
       fontFamily: {
         sans: ['Gotham', ...defaultTheme.fontFamily.sans],
       },
+      spacing: {
+        '72': '18rem',
+        '84': '21rem',
+        '96': '24rem',
+      }
     },
     screens: {
       sm: '640px',
-      md: '1280px',
-      lg: '1600px',
+      md: '1024px',
+      lg: '1440px',
     },
     container: {
       center: true,
