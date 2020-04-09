@@ -2,7 +2,7 @@
 // https://github.com/leeoniya/dropcss
 const purgecss = require('@fullhuman/postcss-purgecss')({
   content: ['app/views/**/*.liquid', 'src/js/**/*.js'],
-  css: ['app/assets/**/app.css'],
+  whitelistPatternsChildren: [/^feedback/],
   defaultExtractor: content => content.match(/[\w-/:]+(?<!:)/g) || []
 });
 
