@@ -32,13 +32,12 @@ flash_notice: Thank you for your feedback.
   <input name="{{ p.path.name }}" type='hidden' value='{{ context.location.pathname }}'>
 
   <div class="feedback-main">
-    <div class="row">
-      <div class="col-12 feedback__title">
-        <h4>Was this page helpful?</h4>
-      </div>
+    <div class="w-full feedback__title">
+      <h4>Was this page helpful?</h4>
     </div>
-    <div class="row">
-      <div class="col-12 col-md-6 feedback__ratings">
+
+    <div class="flex flex-wrap md:flex-nowrap">
+      <div class="w-full md:w-5/12 feedback__ratings">
         <ul>
           <li>
             <label>
@@ -61,7 +60,7 @@ flash_notice: Thank you for your feedback.
         </ul>
       </div>
       {% unless context.page.metadata.skip_contribute_button == true %}
-        <div class="col-12 col-md-6 contribute-to-page">
+        <div class="w-full md:w-5/12 contribute-to-page">
           {%- capture url -%}
             https://github.com/mdyd-dev/nearme-documentation/blob/master/app/views/pages/{{ context.page.slug }}.liquid
           {%- endcapture -%}
@@ -73,40 +72,39 @@ flash_notice: Thank you for your feedback.
       {% endunless %}
     </div>
   </div>
-  <div class="row feedback__questions">
-    <div data-feedback="questions" class="hidden col">
-      <div class="row">
-        <div class="col">
-          <div class="alert alert-success" role="alert">
-            <p><b>Thank you. We have received your feedback.</b></p>
-            <p>If you would like to give us more details, please do so below.</p>
-          </div>
+
+  <div class="feedback__questions">
+    <!-- auto -->
+    <div data-feedback="questions" class="hidden w-full">
+      <!-- auto -->
+      <div class="w-full">
+        <div class="alert alert-success" role="alert">
+          <p><b>Thank you. We have received your feedback.</b></p>
+          <p>If you would like to give us more details, please do so below.</p>
         </div>
       </div>
-      <div class="row">
-        <div class="col">
-          <label class="hidden" for="message" data-feedback-value="5">
-            We’re glad you liked our documentation page!<br />
-            Why did you like it? How could we make it even better?
-          </label>
-          <label class="hidden" for="message" data-feedback-value="3">
-            We are continuously working on our docs to make them better.<br />
-            How do you think we could improve this page?
-          </label>
-          <label class='hidden' for="message" data-feedback-value="1">
-            We’re sorry you didn’t like our documentation page.<br />
-            What was the problem? How do you think we could fix it?
-          </label>
-          <textarea type='text' id="message" name='{{ p.message.name }}'></textarea>
-        </div>
+    <!-- auto -->
+      <div class="w-full">
+        <label class="hidden" for="message" data-feedback-value="5">
+          We’re glad you liked our documentation page!<br />
+          Why did you like it? How could we make it even better?
+        </label>
+        <label class="hidden" for="message" data-feedback-value="3">
+          We are continuously working on our docs to make them better.<br />
+          How do you think we could improve this page?
+        </label>
+        <label class='hidden' for="message" data-feedback-value="1">
+          We’re sorry you didn’t like our documentation page.<br />
+          What was the problem? How do you think we could fix it?
+        </label>
+        <textarea type='text' id="message" name='{{ p.message.name }}'></textarea>
       </div>
-      <div class="row">
-        <div class="col-12">
-          <label for="email">Would you like to get an answer from us?</label>
-        </div>
-        <div class="col-12">
-          <input type='email' id="email" name='{{ p.email.name }}' placeholder='Your e-mail'>
-        </div>
+
+      <div class="w-full">
+        <label for="email">Would you like to get an answer from us?</label>
+      </div>
+      <div class="w-full">
+        <input type='email' id="email" name='{{ p.email.name }}' placeholder='Your e-mail'>
       </div>
 
       <button class="btn btn-primary mb-3">Send</button>

@@ -1,13 +1,61 @@
-/* ------------------------------------------------------------ *\
-	Fonts
-\* ------------------------------------------------------------ */
+body {
+  line-height: 1.57; /* Migrate to leading-normal (1.5) */
+  @apply text-body bg-white text-sm antialiased font-normal;
+}
+
+a {
+  color: inherit;
+  text-decoration: underline;
+
+  &:hover,
+  &[href^='tel'] {
+    text-decoration: none;
+  }
+}
+
+svg {
+  display: inline-block;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply leading-tight font-medium;
+}
+
+ul {
+  list-style: disc;
+}
+
+h1 {
+  font-size: 32px;
+}
+
+h2 {
+  font-size: 24px;
+}
+
+h3 {
+  font-size: 20px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
 
 @font-face {
   font-family: 'Gotham';
   src: url('./fonts/Gotham-Light.woff2?v=subset') format('woff2');
   font-weight: 300;
   font-style: normal;
-  font-display: fallback;
+  font-display: swap;
 }
 
 @font-face {
@@ -15,7 +63,7 @@
   src: url('./fonts/Gotham-Bold.woff2?v=subset') format('woff2');
   font-weight: bold;
   font-style: normal;
-  font-display: fallback;
+  font-display: swap;
 }
 
 @font-face {
@@ -23,7 +71,7 @@
   src: url('./fonts/Gotham-Book.woff2?v=subset') format('woff2');
   font-weight: normal;
   font-style: normal;
-  font-display: fallback;
+  font-display: swap;
 }
 
 @font-face {
@@ -31,5 +79,6 @@
   src: url('./fonts/Gotham-Medium.woff2?v=subset') format('woff2');
   font-weight: 500;
   font-style: normal;
-  font-display: fallback;
+  font-display: swap;
 }
+

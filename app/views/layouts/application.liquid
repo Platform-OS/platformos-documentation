@@ -14,10 +14,10 @@
         <div class="container">
           <div class="form-search form-search--alt">
             <form action="/" method="get">
-              <div class="form__controls">
+              <div class="form__controls w-full sm:w-84">
                 <input type="text" name="query" class="form-control search--input" placeholder="Search documentation…" value="{{ context.params.query | default: '' | escape_javascript }}" />
 
-                <div class="search--icon">
+                <div class="search--icon ml-auto sm:ml-0 relative">
                   <svg width="28" height="28"><use xlink:href="#search"></use></svg>
                 </div>
               </div>
@@ -26,10 +26,8 @@
         </div>
       </div>
 
-      <div class="container">
-        <div class="row">
-          {% include 'layouts/content' %}
-        </div>
+      <div class="container flex flex-wrap sm:flex-nowrap">
+        {% include 'layouts/content' %}
       </div>
     </div>
 

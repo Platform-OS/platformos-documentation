@@ -1,13 +1,13 @@
 {% assign slugTitleized = context.params.slug | titleize %}
 
 <div class="breadcrumbs">
-  <ul>
-    <li>
+  <ul class="flex flex-wrap sm:flex-nowrap">
+    <li class="flex items-center">
       <a href="/">Documentation</a>
       <svg width="8" height="8"><use xlink:href="#arrow-right"></use></svg>
     </li>
 
-    <li>
+    <li class="flex items-center">
       <a href="/{{ category.slug | default: context.params.slug }}">{{ category.name | default: category.default_name | default: slugTitleized }}</a>
 
       {% if context.params.slug2 %}
@@ -16,7 +16,7 @@
     </li>
 
     {% if context.params.slug2 %}
-      <li>
+      <li class="flex items-center">
         <a href="#">{{ context.page.metadata.title | default: "This Page" }}</a>
       </li>
     {% endif %}
