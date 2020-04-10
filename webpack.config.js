@@ -25,7 +25,7 @@ if (production) {
     new PurgecssPlugin({
       paths: glob.sync(['app/views/**/*.liquid', 'src/js/**/*.js'], { nodir: true }),
       only: ['app.css'],
-      whitelistPatternsChildren: [/^feedback/, /^algolia/], // TODO: Investigate why this is needed. :-[
+      whitelistPatternsChildren: [/^feedback/, /^algolia/, /.*line-numbers.*/],
       defaultExtractor: (content) => content.match(/[\w-/:]+(?<!:)/g) || [],
     })
   );
