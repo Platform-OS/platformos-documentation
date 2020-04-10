@@ -298,7 +298,6 @@ query get_models($per_page: Int = 5, $user_id: ID!) {
     sort: { created_at: { order: DESC } }
     filter: {
       model_schema_name: { value: "modules/direct_s3_upload/uppy" },
-      deleted_at: { exists: false },
       user_id: { value: $user_id }
     }
   ) {

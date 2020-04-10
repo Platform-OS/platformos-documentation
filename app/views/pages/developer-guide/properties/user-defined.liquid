@@ -111,7 +111,6 @@ query get_all_johns {
   models(
     per_page: 20,
     filter: {
-      deleted_at: { exists: false },
       properties: [{ name: "name", value: "John" }]
     }
   ) {
@@ -129,7 +128,6 @@ query get_all_johns_and_annas {
   models(
     per_page: 20,
     filter: {
-      deleted_at: { exists: false },
       properties: [{ name: "name", values: ["John", "Anna"], values_operator: OR }]
     }
   ) {
@@ -147,7 +145,6 @@ query get_all_adults_below_60 {
   models(
     per_page: 20,
     filter: {
-      deleted_at: { exists: false },
       properties: [{ name: "age", range: { gte: $adult_age_treshold, lt: 60 } }]
     }
   ) {
@@ -179,7 +176,6 @@ query get_all_with_name {
   models(
     per_page: 20,
     filter: {
-      deleted_at: { exists: false },
       properties: [{ name: "name", exists: true }]
     }
   ) {

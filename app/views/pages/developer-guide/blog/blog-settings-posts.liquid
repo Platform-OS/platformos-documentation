@@ -34,7 +34,6 @@ query get_blog_posts($per_page: Int = 20, $page: Int, $title: String, $id: ID, $
     per_page: $per_page,
     page: $page,
     filter: {
-      deleted_at: { exists: false },
       id: { value: $id },
       name: { value: "blog_post" },
       properties: [
