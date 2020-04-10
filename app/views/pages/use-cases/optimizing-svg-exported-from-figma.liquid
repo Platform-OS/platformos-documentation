@@ -23,7 +23,7 @@ In this article our objectives are:
 
 This is what it looks like in Figma:
 
-<img src="{{ 'images/use-cases/svg-optimization/figma-design.jpg' | asset_url }}" alt="Flowchart design">
+<img loading="lazy" src="{{ 'images/use-cases/svg-optimization/figma-design.jpg' | asset_url }}" alt="Flowchart design">
 
 ## Solution
 
@@ -31,23 +31,23 @@ This is what it looks like in Figma:
 
 To avoid exporting text in SVG as paths you need to uncheck "Outline text" in export settings.
 
-<img src="{{ 'images/use-cases/svg-optimization/outline-text.jpg' | asset_url }}" alt="Figma export - outline text">
+<img loading="lazy" src="{{ 'images/use-cases/svg-optimization/outline-text.jpg' | asset_url }}" alt="Figma export - outline text">
 
 If you were to export it with text outlined, the file would be much bigger. The difference in size would be huge, because text would be traced as paths, instead of written as `text` tags.
 
-<img src="{{ 'images/use-cases/svg-optimization/size-comparison.jpg' | asset_url }}" alt="File sizes comparison">
+<img loading="lazy" src="{{ 'images/use-cases/svg-optimization/size-comparison.jpg' | asset_url }}" alt="File sizes comparison">
 
 ### Fix syntax error
 
 For some reason Figma is exporting SVG with syntax error (at least in this case).
 
-<img src="{{ 'images/use-cases/svg-optimization/xml-error.jpg' | asset_url }}" alt="XML error">
+<img loading="lazy" src="{{ 'images/use-cases/svg-optimization/xml-error.jpg' | asset_url }}" alt="XML error">
 
 In this case, we needed to replace all `&#3;` with a space.
 
 From now on, we recommend using [Svg Preview](https://marketplace.visualstudio.com/items?itemName=SimonSiefke.svg-preview) for convenience and live feedback.
 
-<img src="{{ 'images/use-cases/svg-optimization/svg-preview.jpg' | asset_url }}" alt="SVG Preview">
+<img loading="lazy" src="{{ 'images/use-cases/svg-optimization/svg-preview.jpg' | asset_url }}" alt="SVG Preview">
 
 ### Custom font issue
 
@@ -69,7 +69,7 @@ To know what we can group to make our code more DRY, we look for patterns. It is
 
 Heading text is the uppercase text in the boxes. When looking at the file and attributes, certain patterns are visible for text tags.
 
-<img src="{{ 'images/use-cases/svg-optimization/multicursor-16.jpg' | asset_url }}" alt="Pattern detect">
+<img loading="lazy" src="{{ 'images/use-cases/svg-optimization/multicursor-16.jpg' | asset_url }}" alt="Pattern detect">
 
 We grouped all those elements inside a group and placed that group at the end of the file, to make sure they will be always visible.
 
@@ -199,7 +199,7 @@ Also, because Gotham font has a different width than sans-serif, we adjust the `
 
 After all those optimizations, we have an SVG file that is 2.5 KB (with no minification, no gzip), easy to edit, and looks like this:
 
-<img src="{{ 'images/developer-guide/user-uploads/flowchart-attachments.svg' | asset_url }}" alt="Attachments flow">
+<img loading="lazy" src="{{ 'images/developer-guide/user-uploads/flowchart-attachments.svg' | asset_url }}" alt="Attachments flow">
 
 In fact, what you are looking at, is the final file we used in our documentation. It is very crisp, no matter the resolution and pixel density, which is why we love SVG.
 

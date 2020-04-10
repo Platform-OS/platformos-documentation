@@ -18,7 +18,7 @@ See a simulated slow code using a for loop and some randomization: [Slow code im
 
 Plain and simple, everything is rendered in one run, slow code is included directly via include.
 
-<img src="{{ 'images/best-practices/performance/fragment-lazy-loading/slow-timeline.png' | asset_url }}" alt="Slow implementation timeline">
+<img loading="lazy" src="{{ 'images/best-practices/performance/fragment-lazy-loading/slow-timeline.png' | asset_url }}" alt="Slow implementation timeline">
 
 _Long wait, big initial HTML_
 
@@ -36,7 +36,7 @@ JS code is inlined directly after div container, so the XHR request will start a
 
 We've added a "spinner" to inform the user that something is going to show up there.
 
-<img src="{{ 'images/best-practices/performance/fragment-lazy-loading/lazy-inline-timeline.png' | asset_url }}" alt="Lazy load inline timeline">
+<img loading="lazy" src="{{ 'images/best-practices/performance/fragment-lazy-loading/lazy-inline-timeline.png' | asset_url }}" alt="Lazy load inline timeline">
 
 _The file starts to download much faster and is much smaller, so it renders sooner._
 
@@ -48,7 +48,7 @@ _The file starts to download much faster and is much smaller, so it renders soon
 
 Very similar to solution 1, but this time the JavaScript is in an external js file that is loaded using the `async` attribute and is placed in HTML after all the remote containers. The URL to the downloaded content is in the data attribute of its container. This way the code is easily reusable.
 
-<img src="{{ 'images/best-practices/performance/fragment-lazy-loading/lazy-external-timeline.png' | asset_url }}" alt="Lazy load external timeline">
+<img loading="lazy" src="{{ 'images/best-practices/performance/fragment-lazy-loading/lazy-external-timeline.png' | asset_url }}" alt="Lazy load external timeline">
 
 _Same situation, snappy rendering and small file_
 
@@ -64,11 +64,11 @@ Because you had to split the page into smaller chunks, you can now implement cac
 
 When looking at PageSpeed reports look at the film strip - this is the most important from the user's perspective. Users need to see that something is happening as soon as possible and ideally less important things are downloaded later or never (lazy loading with scroll observer is often used for images for example).
 
-<img src="{{ 'images/best-practices/performance/fragment-lazy-loading/slow-filmstrip.png' | asset_url }}" alt="Slow implementation filmstrip">
+<img loading="lazy" src="{{ 'images/best-practices/performance/fragment-lazy-loading/slow-filmstrip.png' | asset_url }}" alt="Slow implementation filmstrip">
 
 _Slow version: user sees nothing for a long time, then everything appears_
 
-<img src="{{ 'images/best-practices/performance/fragment-lazy-loading/lazy-loading-filmstrip.png' | asset_url }}" alt="Lazy loading filmstrip">
+<img loading="lazy" src="{{ 'images/best-practices/performance/fragment-lazy-loading/lazy-loading-filmstrip.png' | asset_url }}" alt="Lazy loading filmstrip">
 
 _Lazy loading: renders the page, and shows loading indicators for asynchronous modules_
 
