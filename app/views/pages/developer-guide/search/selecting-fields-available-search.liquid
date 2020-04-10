@@ -21,19 +21,3 @@ query get_owners {
 ```
 
 Returns users whose `first_name` exactly matches `John`.
-
-## Properties
-
-```graphql
-query get_providers {
-  listings(
-    query: { keyword: "20", fields: [{ name: "properties.service_radius" }] }
-  ) {
-    results {
-      service_radius: property(name: "service_radius")
-    }
-  }
-}
-```
-
-Gets all Transactables where Property`service_radius` equals `20`. It is exact search, but not case sensitive.
