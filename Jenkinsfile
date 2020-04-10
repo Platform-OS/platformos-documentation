@@ -127,10 +127,10 @@ pipeline {
 
       steps {
         sh 'curl https://documentation.platformos.com -o warmup.txt'
-        sh 'curl https://documentation.platformos.com/developer-guide/graphql/developing-graphql-queries-using-graphiql -o warmup2.txt'
+        sh 'curl https://documentation.platformos.com/developer-guide/glossary -o warmup2.txt'
 
         sh 'lighthouse-ci https://documentation.platformos.com > $HOME/tmp/lighthouse-home.txt'
-        sh 'lighthouse-ci https://documentation.platformos.com/developer-guide/graphql/developing-graphql-queries-using-graphiql > $HOME/tmp/lighthouse-content.txt'
+        sh 'lighthouse-ci https://documentation.platformos.com/developer-guide/glossary > $HOME/tmp/lighthouse-content.txt'
 
         script {
           lighthouseHome = sh(returnStdout: true, script: 'grep perf $HOME/tmp/lighthouse-home.txt').trim()
