@@ -117,23 +117,30 @@ pipeline {
       }
     }
 
-    // stage('Broken links checker') {
-    //   when {
-    //     branch 'master'
-    //     expression { return params.MP_URL.isEmpty() }
-    //   }
-    //   agent { docker { image 'node:12-alpine'; args '-u root -v $HOME/tmp:/tmp' } }
+    stage('Lighthouse') {
+      when {
+        expression { return params.MP_URL.isEmpty() }
+        branch 'master'
+      }
 
-    //   environment {
-    //     MP_URL = "${production_url}"
-    //     CI = true
-    //   }
+      agent { docker { image 'kanti/lighthouse-ci' } }
 
-    //   steps {
-    //     sh 'npm i broken-link-checker'
-    //     sh 'time node ./scripts/check-broken-links.js'
-    //   }
-    // }
+      steps {
+        sh 'curl https://documentation.platformos.com -o warmup.txt'
+        sh 'curl https://documentation.platformos.com/developer-guide/graphql/developing-graphql-queries-using-graphiql -o warmup2.txt'
+
+        sh 'lighthouse-ci https://documentation.platformos.com > $HOME/tmp/lighthouse-home.txt'
+        sh 'lighthouse-ci https://documentation.platformos.com/developer-guide/graphql/developing-graphql-queries-using-graphiql > $HOME/tmp/lighthouse-content.txt'
+
+        script {
+          lighthouseHome = sh(returnStdout: true, script: 'grep perf $HOME/tmp/lighthouse-home.txt').trim()
+          lighthouseContent = sh(returnStdout: true, script: 'grep perf $HOME/tmp/lighthouse-content.txt').trim()
+
+          slackSend (channel: "#notifications-docs", color: '#304ffe', message: "Lighthouse Home ${lighthouseHome}")
+          slackSend (channel: "#notifications-docs", color: '#304ffe', message: "Lighthouse Content ${lighthouseContent}")
+        }
+      }
+    }
   }
 
   post {
