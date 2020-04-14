@@ -1,30 +1,30 @@
 ---
 converter: markdown
 metadata:
-  title: Cleaning instance
-  description: This guide will help you use `pos-cli` to clean data on your instance
+  title: Cleaning an Instance
+  description: This guide will help you use `pos-cli` to clean data on your Instance. 
 ---
 
-This guide will help you use `pos-cli` to clean data on your instance.
+This guide will help you use `pos-cli` to clean data on your Instance.
 
 ## Requirements
 
-This is an advanced tutorial. To follow it, you should be familiar with basic platformOS concepts, Get Started section, and have `pos-cli` installed.
+This is an advanced tutorial. To follow it, you should be familiar with basic platformOS concepts, the Get Started section, and have `pos-cli` installed.
 
 * [platformOS Workflow](/developer-guide/platformos-workflow/development-workflow)
 * [Get Started](/get-started)
-* [Install pos-cli](/get-started/hello-world/install-pos-cli)
+* [Install the pos-cli](/get-started/hello-world/install-pos-cli)
 
 
 ## Disclaimer
 
 * Deleting data stored in the database using `pos-cli data clean` is **irreversible**. Caution is advised.
-* `pos-cli` will ask you for confirmation, so you don't delete data by accident
-* This operation is asynchronous, which means it may take several seconds before it is completed and visible in the browser
+* `pos-cli` will ask you for confirmation, so you don't delete data by accident.
+* This operation is asynchronous, which means it may take several seconds before it is completed and visible in the browser.
 
 ## Cleaning only models and users
 
-To clear only data stored in models and users you need to use `pos-cli data clean` command.
+To clear only data stored in models and users, use the `pos-cli data clean` command:
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
 $ pos-cli data clean ENVIRONMENT
@@ -46,8 +46,8 @@ $ pos-cli data clean staging
 
 ## Cleaning all the data from database
 
-By adding `--include-schema` (`-i`) to the command, you can additionally remove all admin resources pages, schemas, graphql queries, notifications.
-It will not clear instance constants (found in `context.constants`) or anything set up in Partner Portal (test_emails, integration keys).
+By adding `--include-schema` (`-i`) to the command, you can additionally remove all admin resources, pages, schemas, graphql queries, notifications.
+It will not clear Instance constants (found in `context.constants`) or anything set up in the Partner Portal (test_emails, integration keys).
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
 $ pos-cli data clean ENVIRONMENT --include-schema
