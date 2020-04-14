@@ -5,11 +5,12 @@ metadata:
   title: Liquid - Whitespace Control
 ---
 
-In Liquid, you can include a hyphen in your tag syntax `{{ 'e3stLCAtfX0sIHslLSwgYW5kIC0lfQ==' | base64_decode }}` to strip whitespace from the left or right side of a rendered tag.
+In Liquid, you can include a hyphen in your tag syntax {% raw %}`{{-`, `-}}`, `{%-`, and `-%}`{% endraw %} to strip whitespace (including line breaks) from the left and/or right side of a rendered tag.
 
 Normally, even if it doesn’t output text, any line of Liquid in your template will still output a blank line in your rendered HTML:
 
 #### Input
+
 ```liquid
 {% raw %}
 {% assign my_variable = "tomato" %}
@@ -22,70 +23,98 @@ Notice the blank line before “tomato” in the rendered template:
 #### Output
 
 <pre class="raw-output">
+
 tomato
 </pre>
 
-## Strip whitespace in assign
+### Trim whitespace before
 
-By including hyphens in your `assign` tag, you can strip the generated whitespace from the rendered template:
+Using hyphen on opening tags ({% raw %}`{{-` and `{%-`{% endraw %}) will trim white space from content before the tag.
 
 #### Input
 
 ```liquid
 {% raw %}
-{%- assign my_variable = "tomato" -%}
-{{ my_variable }}
+Start
+
+
+My paragraph
+
+
+{{- 'The end.' }}
 {% endraw %}
 ```
 
 #### Output
 
 <pre class="raw-output">
-tomato
+Start
+
+
+My paragraph
+
+
+{{- 'The end.' }}
 </pre>
 
-If you don’t want any of your tags to output whitespace, as a general rule you can add hyphens to both sides of all your tags (`{{ 'eyUtIGFuZCAtJX0=' | base64_decode }}`):
+### Trim whitespace after
+
+Using hyphen on closing tags ({% raw %}`-}}` and `-%}`{% endraw %}) will trim white space from content after the tag
 
 #### Input
 
 ```liquid
 {% raw %}
-{% assign username = "John G. Chalmers-Smith" %}
-{% if username and username.size > 10 %}
-  Wow, {{ username }}, you have a long name!
-{% else %}
-  Hello there!
-{% endif %}
+{{ 'Start' -}}
+
+
+My paragraph
+
+
+The end.
 {% endraw %}
 ```
 
-#### Output without whitespace control
-
+#### Output
 
 <pre class="raw-output">
+{{ 'Start' -}}
 
 
-  Wow, John G. Chalmers-Smith, you have a long name!
+My paragraph
 
+The end.
 </pre>
+
+### Trim whitespace before and after
+
+Using hyphens on both opening and closing tags ({% raw %}`{{-`, `-}}`, `{%-`, and `-%}`{% endraw %}) will trim white space from both sides of the tag.
+
 
 #### Input
 
 ```liquid
 {% raw %}
-{%- assign username = "John G. Chalmers-Smith" -%}
-{%- if username and username.size > 10 -%}
-  Wow, {{ username }}, you have a long name!
-{%- else -%}
-  Hello there!
-{%- endif -%}
+{{ 'Start' -}}
+
+
+My paragraph
+
+
+{{- 'The end.' }}
 {% endraw %}
 ```
 
-#### Output with whitespace control
+#### Output
 
 <pre class="raw-output">
-Wow, John G. Chalmers-Smith, you have a long name!
+{{ 'Start' -}}
+
+
+My paragraph
+
+
+{{- 'The end.' }}
 </pre>
 
 {% include 'reference/liquid/resource-note-shopify' %}
