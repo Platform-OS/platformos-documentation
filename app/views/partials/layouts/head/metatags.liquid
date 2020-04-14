@@ -23,14 +23,6 @@
 <title>{{ title }}</title>
 
 
-<meta property="og:locale" content="en_US" />
-<meta property="og:type" content="article" />
-<meta property="og:title" content="{{ title }}" />
-<meta property="og:description" content="{{ description }}" />
-<meta property="og:url" content="{{ context.location.url }}" />
-<meta property="og:site_name" content="platformOS Documentation" />
-<meta property="article:section" content="Uncategorized" />
-
 {% graphql page_dates, slug: context.page.slug %}
 query get_dates($slug: String!) {
   admin_pages(
@@ -47,15 +39,23 @@ query get_dates($slug: String!) {
 
 {% assign dates = page_dates | fetch: 'admin_pages' | fetch: 'results' | first %}
 
+
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="{{ title }}" />
+<meta property="og:description" content="{{ description }}" />
+<meta property="og:url" content="{{ context.location.url }}" />
+<meta property="og:site_name" content="platformOS Documentation" />
+<meta property="article:section" content="Uncategorized" />
 <meta property="article:published_time" content="{{ dates.created_at }}" />
 <meta property="article:modified_time" content="{{ dates.content_updated_at }}" />
 <meta property="og:updated_time" content="{{ dates.content_updated_at }}" />
-
 <meta property="og:image" content="{{ 'images/pos-logo.png' | asset_url }}" />
-<meta property="og:image:secure_url" content="{{ 'images/pos-logo.png' | asset_url }}" />
 <meta property="og:image:width" content="730" />
 <meta property="og:image:height" content="412" />
+
+
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:description" content="{{ description }}" />
 <meta name="twitter:title" content="{{ title }}" />
-<meta name="twitter:image" content="{{ 'images/pos-logo.png' | asset_url }}" />
+<meta name="twitter:image" content="{{ 'images/pos-logo-2to1.png' | asset_url }}" />
