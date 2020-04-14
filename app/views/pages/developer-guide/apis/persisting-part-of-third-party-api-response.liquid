@@ -69,9 +69,7 @@ Replace `example.com` with your domain:
 ---
 name: send_request
 to: http://example.com/test-endpoint.json
-enabled: true
 format: http
-trigger_condition: true
 request_type: GET
 callback: "{%- assign response_json = response.body | to_hash -%}{% graphql res = 'persist_in_custom_attribute', user_id: form.id, third_party_api_id: response_json.third_party_api_id %}"
 headers: '{
