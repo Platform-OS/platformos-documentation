@@ -22,19 +22,14 @@ Creating an Email Notification is a two-step process:
 
 ### Step 1: Create Email Notification
 
-Create the notification file `notifications/email_notifications/welcome_user.liquid`:
+##### app/emails/welcome_user.liquid
 
 ```liquid
 {% raw %}
 ---
 to: '{{ form.email }}'
-delay: 0
-enabled: true
-trigger_condition: true
 from: 'Example Marketplace <info@example.com>'
 reply_to: no-reply@example.com
-cc:
-bcc:
 subject: 'Welcome {{ form.first_name }} in our marketplace!'
 layout_path: mailer
 ---
@@ -44,11 +39,40 @@ layout_path: mailer
 {% endraw %}
 ```
 
-### Step 2: Add notification to sign up form
+### Step 2a: Invoke notification directly via GraphQL [email_send](/api-reference/graphql/mutations#email_send)
 
-Edit the `forms/developer/sign_up.liquid` file to associate this email with it. The email notification name is a path of the file relative to the `email_notifications` directory, without extension.
+```
+mutation notify($data: HashObject) {
+  email_send(
+    template: { name: "welcome_user" }
+    data: $data
+  ) {
+    errors { message }
+    is_scheduled_to_send
+  }
+}
+```
 
-For notifications/email_notifications/**welcome_user**.liquid - the bolded part is the name (physical_file_path).
+All parameters provided via GraphQL as `data` argument, will be accessible in every Email Notification property as a `data` variable (or `form` to make it compatible with Form).
+
+This is how you can prepare `data` HashObject for this mutation:
+
+```liquid
+{% parse_json data %}
+{
+  "email": "RgnlMngr.MichaelScott@DunderMifflin.com",
+  "first_name": "Michael"
+}
+{% endparse_json %}
+
+{% graphql notify = 'emails/welcome_user', data: data %}
+```
+
+### Step 2b: Connect notification to sign up form
+
+Edit the `forms/developer/sign_up.liquid` file to associate this email with it. The email notification name is a path of the file relative to the `emails` directory, without extension.
+
+For app/emails/**welcome_user**.liquid - the bolded part is the name (physical_file_path).
 
 ```yaml
 ---

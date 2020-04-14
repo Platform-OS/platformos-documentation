@@ -55,7 +55,7 @@ On the production site, you have to take into consideration that users might not
 
 ### Step 2: Create SMS Notification
 
-Create a notification file in `notifications/sms_notifications/welcome_user.liquid`:
+##### app/smses/welcome_user.liquid
 
 ```liquid
 {% raw %}
@@ -73,9 +73,9 @@ Hello {{ form.first_name }} via sms.
 
 Add the SMS Notification you created to the sign-up form.
 
-The SMS notification name is a path of the file relative to the `sms_notifications` directory, without extension.
+The SMS notification name is a path of the file relative to the `smses` directory, without extension.
 
-For notifications/sms_notifications/**welcome_user**.liquid - the bolded part is the name (physical_file_path).
+For app/smses/**welcome_user**.liquid - the bolded part is the name (physical_file_path).
 
 ```yaml
 ---
