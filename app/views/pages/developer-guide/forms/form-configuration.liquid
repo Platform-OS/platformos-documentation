@@ -210,15 +210,15 @@ Learn more in a separate tutorial about [Flash Messages](/developer-guide/forms/
 String, message that is passed to the `context.flash.notice` object when the form is valid. This type of message is usually used to notify user about success of an operation and is used by the system only if form submitted succeeded.
 Learn more in a separate tutorial about [Flash Messages](/developer-guide/forms/flash-messages).
 
-### return_to
+### redirect_to
 String, defines path of the page rendered after a successful form submission. Example: `/welcome`. You can use liquid to determine what the value should be.
-This property also can be set up during the form submission by setting value of `return_to` parameter.
-For example you can have two submitting buttons in your form, with different `return_to` values to send user into different places depending on which one has been clicked.
+This property also can be set up during the form submission by setting value of `redirect_to` parameter.
+For example you can have two submitting buttons in your form, with different `redirect_to` values to send user into different places depending on which one has been clicked.
 
 For example, onboarding step 3 could have this code if we wanted to save progress (by submitting form) that user made on the form and go back/forward afterwards:
 
 ```html
-<button name="return_to" value="/onboarding/step2">Back</button>
+<button name="redirect_to" value="/onboarding/step2">Back</button>
 <button name="return_to" value="/onboarding/step4">Next</button>
 ```
 
