@@ -97,54 +97,7 @@ Explanation:
 
 See what all of this looks like in practice:
 
-```shell
-todo-app|master⚡ ⇒ npm start
-
-> todo-app@1.0.0 start /Users/pavel/projects/todo-app
-> npx concurrently npm:clean npm:dev-*
-
-[dev-logs]
-[dev-logs] > todo-app@1.0.0 dev-logs /Users/pavel/projects/todo-app
-[dev-logs] > pos-cli logs dev
-[dev-logs]
-[clean]
-[clean] > todo-app@1.0.0 clean /Users/pavel/projects/todo-app
-[clean] > npx rimraf app/assets/*
-[clean]
-[dev-gui]
-[dev-gui] > todo-app@1.0.0 dev-gui /Users/pavel/projects/todo-app
-[dev-gui] > pos-cli gui serve dev
-[dev-gui]
-[clean] npm run clean exited with code 0
-[dev-sync]
-[dev-sync] > todo-app@1.0.0 dev-sync /Users/pavel/projects/todo-app
-[dev-sync] > pos-cli sync dev --livereload
-[dev-sync]
-[dev-watch]
-[dev-watch] > todo-app@1.0.0 dev-watch /Users/pavel/projects/todo-app
-[dev-watch] > npx webpack-cli -w
-[dev-watch]
-[dev-gui] [23:15:15] Connected to https://todo-app-dev2.staging.oregon.platform-os.com/
-[dev-gui] [23:15:15] GraphiQL IDE: http://localhost:3333/gui/graphql
-[dev-logs] [23:15:15] Starting live logging...
-[dev-sync] [23:15:15] [LiveReload] Server started
-[dev-watch]
-[dev-watch] webpack is watching the files...
-[dev-watch]
-[dev-sync] [23:15:17] [Sync] Synchronizing changes to: https://todo-app-dev2.staging.oregon.platform-os.com/
-[dev-watch] Hash: d99cc9fd3ebf23a759e7
-[dev-watch] Version: webpack 4.41.6
-[dev-watch] Time: 2708ms
-[dev-watch]       Asset      Size  Chunks             Chunk Names
-[dev-watch] css/app.css  1.18 MiB     app  [emitted]  app
-[dev-watch]   js/app.js  37.2 KiB     app  [emitted]  app
-[dev-watch] Entrypoint app = css/app.css js/app.js
-[dev-logs] path: /list/create page: pages/list/create
-[dev-logs] [2020-03-18 15:05:03.355Z] - Notification Not Sent:
-[dev-logs] [2020-03-18 22:16:14.977Z] - response: {"errors":[],"status":200,"message":"OK"}
-[dev-sync] [23:15:20] [Sync] Synced: assets/js/app.js
-[dev-sync] [23:15:22] [Sync] Synced: assets/css/app.css
-```
+<img src="{{ 'images/developer-guide/pos-cli-workflow/final-result.svg' | asset_url }}" alt="Terminal recording" />
 
 At the beginning, there will be a lot of text going through your screen, because every task needs to execute and all of them leave some kind of trace in the console. But after this initial wall of text, only observing tasks should output things to the terminal, such as sync, logs, and webpack.
 
