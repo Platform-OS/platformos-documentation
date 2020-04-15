@@ -3,7 +3,6 @@ converter: markdown
 metadata:
   title: Creating an Email Notification
   description: This guide will help you create an Email Notification to send a welcome email to a newly signed up user.
-slug: developer-guide/notifications/creating-email-notification
 ---
 
 This guide will help you create an Email Notification to send a welcome email to a newly signed up user.
@@ -11,6 +10,7 @@ This guide will help you create an Email Notification to send a welcome email to
 ## Requirements
 To follow the steps in this tutorial, you should understand the concept of notifications. You'll also use the sign-up form you created in a previous tutorial.
 
+* [Form Configuration](/developer-guide/forms/form-configuration)
 * [Notifications](/developer-guide/notifications/notifications)
 * [Creating a Sign Up Form](/developer-guide/users/creating-sign-up-form)
 
@@ -41,7 +41,7 @@ layout_path: mailer
 
 ### Step 2a: Invoke notification directly via GraphQL [email_send](/api-reference/graphql/mutations#email_send)
 
-```
+```graphql
 mutation notify($data: HashObject) {
   email_send(
     template: { name: "welcome_user" }
@@ -58,6 +58,7 @@ All parameters provided via GraphQL as the `data` argument will be accessible in
 This is how you can prepare the `data` HashObject for this mutation:
 
 ```liquid
+{% raw %}
 {% parse_json data %}
 {
   "email": "RgnlMngr.MichaelScott@DunderMifflin.com",
@@ -66,6 +67,7 @@ This is how you can prepare the `data` HashObject for this mutation:
 {% endparse_json %}
 
 {% graphql notify = 'emails/welcome_user', data: data %}
+{% endraw %}
 ```
 
 ### Step 2b: Connect notification to sign up form
@@ -75,11 +77,9 @@ Edit the `forms/developer/sign_up.liquid` file to associate this email with it. 
 For app/emails/**welcome_user**.liquid - the bolded part is the name (physical_file_path).
 
 ```yaml
----
 resource: User
 email_notifications:
   - welcome_user
----
 ```
 
 Now, when you submit the form, the newly registered user should receive the email.

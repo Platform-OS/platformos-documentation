@@ -3,7 +3,6 @@ converter: markdown
 metadata:
   title: Creating an API Call Notification
   description: This guide will help you create an API Call Notification that pings an API endpoint when a new user signs up.
-slug: developer-guide/notifications/creating-api-call-notification
 ---
 
 This guide will help you create an API Call Notification that pings an API endpoint when a new user signs up.
@@ -11,6 +10,7 @@ This guide will help you create an API Call Notification that pings an API endpo
 ## Requirements
 To follow the steps in this tutorial, you should understand the concept of notifications. You'll also use the sign-up form you created in a previous tutorial.
 
+* [Form Configuration](/developer-guide/forms/form-configuration)
 * [Notifications](/developer-guide/notifications/notifications)
 * [Creating a Sign Up Form](/developer-guide/users/creating-sign-up-form)
 
@@ -77,6 +77,7 @@ All parameters provided via GraphQL as `data` argument, will be accessible in ev
 This is how you can prepare the `data` HashObject for this mutation:
 
 ```liquid
+{% raw %}
 {% parse_json data %}
 {
   "first_name": "Michael",
@@ -85,18 +86,16 @@ This is how you can prepare the `data` HashObject for this mutation:
 {% endparse_json %}
 
 {% graphql notify = 'api_calls/ping_example_com_on_user_sign_up', data: data %}
+{% endraw %}
 ```
-
 
 ### Step 2b: Connect notification to sign up form
 
 Connect the API Call Notification you created with the sign up form `forms/developer/sign_up.liquid`:
 
 ```yaml
----
 api_call_notifications:
   - ping_example_com_on_user_sign_up
----
 ```
 
 Whenever a user successfully signs up, the `https://example.com/endpoint/{% raw %}{{ form.id }}{% endraw %}` endpoint will be notified.
