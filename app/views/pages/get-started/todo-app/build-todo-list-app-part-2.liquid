@@ -16,7 +16,7 @@ You can [preview](https://todo-app-dev2.staging.oregon.platform-os.com/) the com
 
 This tutorial assumes you have completed the [Build a ToDo List App](/get-started/todo-app/build-todo-list-app) tutorial.
 
-## Steps 
+## Steps
 
 <div data-autosteps></div>
 
@@ -51,9 +51,8 @@ app/
 ├── model_schemas
 │   ├── item.yml
 │   └── list.yml
-├── notifications
-│   └── email_notifications
-│       └── created_protected_list.liquid
+├── emails
+│   └── created_protected_list.liquid
 └── views
     ├── layouts
     │   ├── application.liquid
@@ -308,7 +307,7 @@ Now you need to handle checking the password for correctness and showing the lis
 {% endraw %}
 ```
 
-Explanation: 
+Explanation:
 
 If the list has no password, the server will render it.
 
@@ -371,21 +370,16 @@ In part 3 of our series, you will add all notification types there are, includin
 
 #### Creating the notification
 
-An email notification's format is similar to that of a page. It has a YAML part and content part, and some parts are required (to, subject, content). 
+An email notification's format is similar to that of a page. It has a YAML part and content part, and some parts are required (to, subject, content).
 
-##### app/notifications/email_notifications/created_protected_list.liquid
+##### app/emails/created_protected_list.liquid
 
 ```liquid
 {% raw %}
 ---
 to: "{{ data.email }}"
-delay: 0
-enabled: true
-trigger_condition: true
 from: no-reply@example.com
 reply_to: no-reply@example.com
-cc:
-bcc:
 subject: "List \"{{ data.title }}\" has been created"
 layout_path: mailer
 ---
@@ -491,7 +485,7 @@ For your purposes you want to track when someone tried to access a list with wro
 {% endraw %}
 ```
 
-Explanation: 
+Explanation:
 
 First, you check if the password has been passed in the URL query. If there is a password, server will do some work. You do not want to log empty passwords, because you want to detect hacking attempts.
 

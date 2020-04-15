@@ -20,14 +20,14 @@ Attaching a file to an Email Notification is a one-step process:
 
 ### Step 1: Include `attachments` JSON in Email Notification
 
-Add the `attachments` JSON to the Email Notification `notifications/email_notifications/welcome_user.liquid` created in a previous tutorial:
+Add the `attachments` JSON to the Email Notification created in a previous tutorial:
+
+##### app/emails/welcome_user.liquid
 
 ```liquid
 {% raw %}
 ---
 to: '{{ form.email }}'
-enabled: true
-trigger_condition: true
 from: 'Example Marketplace <info@example.com>'
 reply_to: no-reply@example.com
 subject: 'Welcome {{ form.first_name }} in our marketplace!'

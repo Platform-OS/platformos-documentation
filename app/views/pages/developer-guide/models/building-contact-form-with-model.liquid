@@ -270,18 +270,17 @@ slug: contacts/edit
 
 To send an Email Notification to the email that was sent with form submission, create an Email Notification file that will define email configuration and message template.
 
-File should be located in the `notifications/email_notifications`, name it `contact_notification.liquid`:
+The file should be located in the `emails` directory, name it `contact_notification.liquid`:
+
+##### app/emails/contact_notification.liquid
 
 ```liquid
 {% raw %}
 ---
 name: contact_notification
-delay: 0
-enabled: true
 from: 'Example Site <info@example.com>'
 subject: Contact
 to: '{{ form.properties.email }}'
-trigger_condition: true
 ---
 <h2>Hi {{ form.properties.name }}</h2>
 <p>Thank you for your request, we will contact you shortly!</p>

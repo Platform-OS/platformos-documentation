@@ -23,9 +23,9 @@ Integrating Mailchimp using API Call Notifications is a two-step process:
 
 ### Step 1: Create API Call Notification
 
-Create an API Call Notification: 
+Create an API Call Notification:
 
-* Replace `<<YOUR_API_KEY>>` with your Mailchimp API key 
+* Replace `<<YOUR_API_KEY>>` with your Mailchimp API key
 * Replace `<<YOUR_DC_KEY>>` with the last part of your Mailchimp API key (the part after the `-`, for example `xxxxxxxxxxxxxxxxxxxxxxxxxx-us3` where `us3` is the DC_KEY)
 * Replace `<<YOUR_AUDIENCE_ID>>` with your Mailchimp Audience ID. To find that follow these steps:
 	1. Navigate to the Audience tab.
@@ -39,10 +39,7 @@ Create an API Call Notification:
 ---
 name: mailchimp_new_host
 to: 'https://<<YOUR_DC_KEY>>.api.mailchimp.com/3.0/lists/<<YOUR_AUDIENCE_ID>>/members/'
-delay: 0
-enabled: true
 format: http
-trigger_condition: true
 request_type: POST
 headers: >
   {

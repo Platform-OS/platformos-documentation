@@ -11,7 +11,7 @@ This use case describes how we leveraged platformOS and DocParser to extract and
 
 ## Problem / Situation
 
-How do you get hundreds of PDF engine drawings that have product info into your app? 
+How do you get hundreds of PDF engine drawings that have product info into your app?
 
 We knew the users were going to upload all the files... but did they also have to do hundreds of hours of data entry of the products in each PDF?
 
@@ -21,7 +21,7 @@ We found there was some consistency with where the product table was in the PDFs
 
 ## Challenges
 
-First, we took a look at some PDF parser libraries. Our idea was to create a server on Heroku to run the PDF parser and then create an API that we could connect to from platformOS. We tested some out on our computer and soon ran into a problem: 
+First, we took a look at some PDF parser libraries. Our idea was to create a server on Heroku to run the PDF parser and then create an API that we could connect to from platformOS. We tested some out on our computer and soon ran into a problem:
 
 Extracting the text from the PDF is like a long run-on sentence. The data you get back wasn't easy to work with. It was hard to figure out where the text from one column in the table ended and where it began because of the big text dump.
 
@@ -48,7 +48,6 @@ So we went off to work to see if it would extract the products from the PDFs. Lo
 ---
 name: pdf_extract_page
 to: https://v2.convertapi.com/convert/pdf/to/extract?Secret=####
-enabled: true
 format: http
 trigger_condition: >
   {% raw  %}{%- graphql g_file = 'get_file_attachment', file_id: data.file_id -%}
@@ -96,7 +95,7 @@ Here's how easy it was for us to extract the product data from the PDF on Platfo
 ## Video demo
 
 I have presented our solution at the platformOS Community Town Hall. [Check out our PDF parser in action in this video demo.](
-https://www.youtube.com/watch?v=fbSxtbbrhNg) 
+https://www.youtube.com/watch?v=fbSxtbbrhNg)
 
 ## Author information
 

@@ -62,16 +62,14 @@ Create an API Call Notification that should:
 Replace `example.com` with your domain:
 
 
-#### notifications/api_call_notifications/send_request.liquid
+#### app/api_calls/send_request.liquid
 
 ```liquid
 {% raw %}
 ---
 name: send_request
 to: http://example.com/test-endpoint.json
-enabled: true
 format: http
-trigger_condition: true
 request_type: GET
 callback: "{%- assign response_json = response.body | to_hash -%}{% graphql res = 'persist_in_custom_attribute', user_id: form.id, third_party_api_id: response_json.third_party_api_id %}"
 headers: '{

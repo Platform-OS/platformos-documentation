@@ -22,16 +22,13 @@ Creating an API Call Notification is a two-step process:
 
 ### Step 1: Create API Call Notification
 
-Create an API Call Notification `notifications/api_call_notifications/ping_example_com_on_user_sign_up.liquid`:
+##### app/api_calls/ping_example_com_on_user_sign_up.liquid
 
 ```json
 {% raw %}
 ---
 to: 'https://example.com/endpoint/{{ form.id }}'
-delay: 0
-enabled: true
 format: http
-trigger_condition: true
 callback: >
   {% log response, type: 'response object' %}
   {% assign response_hash = response.body | parse_json %}
@@ -52,9 +49,9 @@ This defines a POST request to the endpoint with the newly created user's ID. In
 
 ### Step 2a: Invoke notification directly via GraphQL [api_call_send](/api-reference/graphql/mutations#api_call_send)
 
-The API Call notification name is a path of the file relative to the `sms_notifications` directory, without extension.
+The API Call notification name is a path of the file relative to the `api_calls` directory, without extension.
 
-For notifications/api_call_notifications/**ping_example_com_on_user_sign_up**.liquid - the bolded part is the name (physical_file_path).
+For app/api_calls/**ping_example_com_on_user_sign_up**.liquid - the bolded part is the name (physical_file_path).
 
 To easily test your newly created API Call Notification you can trigger it using the following query:
 
@@ -64,7 +61,10 @@ mutation send_api_call ($data: HashObject) {
     data: $data
     template: { name: "ping_example_com_on_user_sign_up" }
   ) {
-    response { status body }
+    response {
+      status
+      body
+    }
     errors {
       message
     }
@@ -73,6 +73,20 @@ mutation send_api_call ($data: HashObject) {
 ```
 
 All parameters provided via GraphQL as `data` argument, will be accessible in every API Call Notification property as a `data` variable (or `form` to make it compatible with Form).
+
+This is how you can prepare the `data` HashObject for this mutation:
+
+```liquid
+{% parse_json data %}
+{
+  "first_name": "Michael",
+  "id": "0386676"
+}
+{% endparse_json %}
+
+{% graphql notify = 'api_calls/ping_example_com_on_user_sign_up', data: data %}
+```
+
 
 ### Step 2b: Connect notification to sign up form
 
@@ -87,7 +101,7 @@ api_call_notifications:
 
 Whenever a user successfully signs up, the `https://example.com/endpoint/{% raw %}{{ form.id }}{% endraw %}` endpoint will be notified.
 
-{% include 'alert/important', content: 'We do not send real text messages on staging by default. Because any error with sending real text messages on staging might be more costly than sending emails. If you want to test SMS on staging, please change `enable_sms_and_api_workflow_alerts_on_staging` flag to `true` in your Partner Portal instance configuration.' %}
+{% include 'alert/important', content: 'We do not send API Calls on staging by default. Because any error with sending API Calls on staging might be more costly than sending emails. If you want to test API Calls on staging, please change `enable_sms_and_api_workflow_alerts_on_staging` flag to `true` in your Partner Portal instance configuration.' %}
 
 ## Next steps
 
