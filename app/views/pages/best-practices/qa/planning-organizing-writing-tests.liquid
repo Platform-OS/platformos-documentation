@@ -139,7 +139,7 @@ We protect users by only allowing them to access endpoints on staging, where we 
 
 In platformOS, it is very simple to do that in a quick and reusable way. Create an authorization_policy and use it on a page that you want to protect:
 
-#### authorization_policies/is_staging.liquid
+##### app/authorization_policies/is_staging.liquid
 {% raw %}
 ```liquid
 ---
@@ -149,7 +149,7 @@ name: is_staging
 ```
 {% endraw %}
 
-#### modules/feedback/public/views/pages/clean.liquid
+##### modules/feedback/public/views/pages/clean.liquid
 {% raw %}
 ```liquid
 ---
@@ -426,7 +426,7 @@ When your client reports a bug it is very tempting to jump right into fixing it.
 
 Now you are safe. Your test will fail in case someone tries to break the feature in the same way and your users will have more confidence in your team.
 
-### Single Page Applications (SPA) 
+### Single Page Applications (SPA)
 
 Because single page applications don't need page reloads, and a reload can loose state of the application, you should look into the disablePageReloads setting to prevent unnecessary reloads.
 

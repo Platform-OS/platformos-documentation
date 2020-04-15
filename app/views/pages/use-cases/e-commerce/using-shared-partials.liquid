@@ -37,7 +37,7 @@ Some information is reused over and over in your application. When you’ve buil
 
 Start with moving the part that fetches data to a separate partial in the `shared` namespace.
 
-#### app/views/partials/shared/get_current_user.liquid
+##### app/views/partials/shared/get_current_user.liquid
 
 ```liquid
 {% raw %}
@@ -89,7 +89,7 @@ This variable is created every time, even if you do not use `for` or `with` keyw
 
 Make changes to the two files that had this logic before.
 
-#### app/authorization_policies/admin_user.liquid
+##### app/authorization_policies/admin_user.liquid
 
 ```liquid
 {% raw %}
@@ -105,7 +105,7 @@ flash_alert: Sorry, you have to be an admin user to access this page.
 {% endraw %}
 ```
 
-#### app/forms/session/sign_in_form.liquid
+##### app/forms/session/sign_in_form.liquid
 
 ```liquid
 {% raw %}
@@ -174,7 +174,7 @@ Properties explained:
 
 Take a look at how you could structure the shared partial, to make it configurable and use values provided by `form`:
 
-#### app/views/partials/forms/fields/text.liquid
+##### app/views/partials/forms/fields/text.liquid
 
 ```liquid
 {% raw %}
@@ -235,7 +235,7 @@ Take a look at how you could structure the shared partial, to make it configurab
 {% endraw %}
 ```
 
-#### app/views/partials/forms/error.liquid
+##### app/views/partials/forms/error.liquid
 
 ```liquid
 {% raw %}
@@ -249,7 +249,7 @@ Take a look at how you could structure the shared partial, to make it configurab
 {% endraw %}
 ```
 
-#### app/views/partials/forms/label.liquid
+##### app/views/partials/forms/label.liquid
 
 ```liquid
 {% raw %}
@@ -287,7 +287,7 @@ This example can be split into three separate parts and as a pattern reused thro
 
 With partial in place you can now update your form `sign_in_form`:
 
-#### app/forms/session/sign_in_form.liquid
+##### app/forms/session/sign_in_form.liquid
 
 ```liquid
 {% raw %}
@@ -342,7 +342,7 @@ fields:
 
 It’s recommended to keep all common elements in their own partials, so go ahead and create a default submit partial:
 
-#### app/views/partials/forms/submit.liquid
+##### app/views/partials/forms/submit.liquid
 
 ```liquid
 {% raw %}

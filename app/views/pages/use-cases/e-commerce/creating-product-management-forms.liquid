@@ -40,7 +40,7 @@ When building the product form you consider the following business rules:
 - when new product is created, redirect me to the details page for this product
 - when editing an existing product, redirect me back to edit form
 
-#### app/forms/product/product_form.liquid
+##### app/forms/product/product_form.liquid
 
 ```liquid
 {% raw %}
@@ -306,7 +306,7 @@ Price field HTML control requires some additional options, that are not present 
 
 You can easily extend the existing partial to accommodate for the additional requirements.
 
-#### app/views/partials/forms/fields/text.liquid
+##### app/views/partials/forms/fields/text.liquid
 
 ```liquid
 {% raw %}
@@ -418,7 +418,7 @@ You can easily extend the existing partial to accommodate for the additional req
 
 You are going to use some new form controls as well for collecting different types of data.
 
-#### app/views/partials/forms/fields/textarea.liquid
+##### app/views/partials/forms/fields/textarea.liquid
 
 ```liquid
 {% raw %}
@@ -480,7 +480,7 @@ You are going to use some new form controls as well for collecting different typ
 {% endraw %}
 ```
 
-#### app/views/partials/forms/select.liquid
+##### app/views/partials/forms/select.liquid
 
 ```liquid
 {% raw %}
@@ -552,7 +552,7 @@ You are going to use some new form controls as well for collecting different typ
 {% endraw %}
 ```
 
-#### app/views/partials/forms/fields/radio_group.liquid
+##### app/views/partials/forms/fields/radio_group.liquid
 
 ```liquid
 {% raw %}
@@ -625,7 +625,7 @@ You can improve usability of any long form (and in most cases anything more than
 {% endraw %}
 ```
 
-#### app/views/partials/forms/error_summary.liquid
+##### app/views/partials/forms/error_summary.liquid
 ```liquid
 {% raw %}
 {% comment %}
@@ -652,7 +652,7 @@ You can improve usability of any long form (and in most cases anything more than
 
 Now that the form for entering data is ready, you need a way to fetch them from the database. You should create a generic query that will be reused throughout the app to fetch lists of products.
 
-#### app/graphql/product/get_products.graphql
+##### app/graphql/product/get_products.graphql
 
 ```graphql
 query get_products($id: ID) {
@@ -687,7 +687,7 @@ Initially, the query will have only one parameter `$id`, but in the next topics 
 
 Product management in the admin panel will consist of two controllers. First, you should create a page that handles displaying a listing with all products, that link to detail pages. For now, it will be a very simple list. In a later topic you will rebuild it to include pagination, filtering, etc.
 
-#### app/views/pages/admin/products.liquid
+##### app/views/pages/admin/products.liquid
 
 ```liquid
 {% raw %}
@@ -727,7 +727,7 @@ Next page you should create will be used as a router for three different section
 1. You can have dynamic parts of the URL (product ID in this case)
 2. There is no risk of conflicts in resolving URLs that could happen if you tried to add pages where a slug for one matches the slug in the other page.
 
-#### app/views/pages/admin/product.liquid
+##### app/views/pages/admin/product.liquid
 
 ```liquid
 {% raw %}
@@ -787,7 +787,7 @@ redirect_to: /404
 
 Once the router has been added, it’s time to add partials for specific views:
 
-#### app/views/partials/admin/product/new.liquid
+##### app/views/partials/admin/product/new.liquid
 
 ```liquid
 {% raw %}
@@ -798,7 +798,7 @@ Once the router has been added, it’s time to add partials for specific views:
 {% endraw %}
 ```
 
-#### app/views/partials/admin/product/edit.liquid
+##### app/views/partials/admin/product/edit.liquid
 
 ```liquid
 {% raw %}
@@ -819,7 +819,7 @@ These partials are very similar, but it’s still advisable to keep every route 
 
 The router you’ve created also handles displaying details of the given product.
 
-#### app/views/partials/admin/product/edit.liquid
+##### app/views/partials/admin/product/edit.liquid
 
 ```liquid
 {% raw %}
@@ -957,7 +957,7 @@ platformOS has built-in filters for displaying monetary values: `pricify` and `p
 
 The last step is to add a form for deleting the product.
 
-#### app/forms/product/destroy_product_form.liquid
+##### app/forms/product/destroy_product_form.liquid
 
 ```liquid
 {% raw %}

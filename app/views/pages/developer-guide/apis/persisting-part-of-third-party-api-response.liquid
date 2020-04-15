@@ -26,7 +26,7 @@ Persisting part of a third-party API response is a seven-step process:
 
 Create a new user profile called `test_profile`, and create a Property to store the value from the API, called `third_party_api_value`:
 
-#### user_profile_types/default.yml
+##### app/user_profile_types/default.yml
 
 ```yaml
 name: test_profile
@@ -39,7 +39,7 @@ properties:
 
 Create a test endpoint that simulates a third-party API JSON response:
 
-#### views/pages/test-endpoint.json.liquid
+##### app/views/pages/test-endpoint.json.liquid
 
 ```liquid
 {% raw %}
@@ -62,7 +62,7 @@ Create an API Call Notification that should:
 Replace `example.com` with your domain:
 
 
-#### app/api_calls/send_request.liquid
+##### app/api_calls/send_request.liquid
 
 ```liquid
 {% raw %}
@@ -86,7 +86,7 @@ headers: '{
 
 In the callback, the `graphql` tag invokes a GraphQL mutation with the provided arguments. The query accepts two arguments: the `user_id`, the ID of the user we want to update, and the `third_party_api_id` which is the value we want to store. The content of the GraphQL mutation file:
 
-#### graphql/persist_in_custom_attribute.graphql
+##### app/graphql/persist_in_custom_attribute.graphql
 
 ```graphql
 mutation persist_in_custom_attribute($user_id: ID!, $third_party_api_id: String!) {
@@ -110,7 +110,7 @@ mutation persist_in_custom_attribute($user_id: ID!, $third_party_api_id: String!
 The mutation passes the arguments to a form called `callback_persist_in_custom_attribute`. Make sure that its configuration includes the fields you want to persist. Please note: by re-using an idea of `form` here, you can easily send additional emails, SMSes, or even other API calls. All you want to do in this example though is to store the value, so you don't have to add any extra notifications.
 
 
-#### forms/callback_persist_in_custom_attribute.liquid
+##### app/forms/callback_persist_in_custom_attribute.liquid
 
 ```yaml
 ---
@@ -129,7 +129,7 @@ fields:
 
 Once you have an API Call Notification defined, you should associate it with a form to trigger it. Create a page for embedding this form.
 
-#### views/pages/test-form.liquid
+##### app/views/pages/test-form.liquid
 
 ```yaml
 ---
@@ -147,7 +147,7 @@ slug: test-form
 Create the form and associate it with the API Call Notification. It can be a signup form, that creates the `test_profile` in the background:
 
 
-#### forms/test-form.liquid
+##### app/forms/test-form.liquid
 
 ```yaml
 ---
@@ -189,7 +189,7 @@ Once the user fills the signup form without validation errors, the system will p
 
 In the `test_form` you have set up a redirection to `/test-result`, so create this page and make it display the `third_party_api_value`:
 
-#### views/pages/test-result.liquid
+##### app/views/pages/test-result.liquid
 
 ```yaml
 ---
@@ -205,7 +205,7 @@ Third Party Api Value: for {{ graph_current_user.current_user.email }}: {{ graph
 
 which uses the following GraphQL query:
 
-#### graphql/get_current_user_third_party_api_value.graphql
+##### app/graphql/get_current_user_third_party_api_value.graphql
 
 ```graphql
 query get_current_user_third_party_api_value {

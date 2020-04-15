@@ -33,7 +33,7 @@ Seeding configuration data is a six-step process:
 
 Brand and product type models are pretty basic ones, they only contain a name of the object. In the future though, you might want to extend them with descriptions, photos, icons, etc. Storing these values in a partial would quickly become very cumbersome and limit the usefulness of GraphQL searches.
 
-#### app/views/partials/data/brand.json.liquid
+##### app/views/partials/data/brand.json.liquid
 
 ```json
 [
@@ -89,7 +89,7 @@ Brand and product type models are pretty basic ones, they only contain a name of
 ]
 ```
 
-#### app/views/partials/data/product_type.json.liquid
+##### app/views/partials/data/product_type.json.liquid
 
 ```json
 ["Crew Neck", "V Neck", "Henley - Y Neck", "Polo", "Scoop Neck"]
@@ -105,7 +105,7 @@ Brand and product type models are pretty basic ones, they only contain a name of
 
 Processor files are supposed to be included inside of the migration file and should allow multiple execution without creating any duplicates. This way if you need to add more Models in the future, you can create a new migration, include processor partial without having to repeat the logic behind it.
 
-#### app/views/partials/migrations/create_brands.liquid
+##### app/views/partials/migrations/create_brands.liquid
 
 ```liquid
 {% raw %}
@@ -122,7 +122,7 @@ Processor files are supposed to be included inside of the migration file and sho
 {% endraw %}
 ```
 
-#### app/views/partials/migrations/create_product_types.liquid
+##### app/views/partials/migrations/create_product_types.liquid
 
 ```liquid
 {% raw %}
@@ -141,7 +141,7 @@ Processor files are supposed to be included inside of the migration file and sho
 
 ### Step 3: Create queries and mutations
 
-#### app/graphql/brand/get_brands.graphql
+##### app/graphql/brand/get_brands.graphql
 
 ```graphql
 query get_brands {
@@ -159,7 +159,7 @@ query get_brands {
 }
 ```
 
-#### app/graphql/brand/mutations/create_brand.graphql
+##### app/graphql/brand/mutations/create_brand.graphql
 
 ```graphql
 mutation create_brand($name: String) {
@@ -175,7 +175,7 @@ mutation create_brand($name: String) {
 }
 ```
 
-#### app/graphql/product_type/get_product_types.graphql
+##### app/graphql/product_type/get_product_types.graphql
 
 ```graphql
 query get_product_types {
@@ -193,7 +193,7 @@ query get_product_types {
 }
 ```
 
-#### app/graphql/product_type/mutations/create_product_type.graphql
+##### app/graphql/product_type/mutations/create_product_type.graphql
 
 ```graphql
 mutation create_product_type($name: String) {
@@ -211,7 +211,7 @@ mutation create_product_type($name: String) {
 
 ### Step 4: Create form configurations
 
-#### app/forms/brand/create_brand_form.liquid
+##### app/forms/brand/create_brand_form.liquid
 
 ```yaml
 name: create_brand_form
@@ -225,7 +225,7 @@ fields:
 
 ```
 
-#### app/forms/brand/create_product_type_form.liquid
+##### app/forms/brand/create_product_type_form.liquid
 
 ```yaml
 name: create_product_type_form
@@ -245,7 +245,7 @@ fields:
 pos-cli migrations generate development create_brands
 ```
 
-#### app/migrations/TIMESTAMP_create_brands.liquid
+##### app/migrations/TIMESTAMP_create_brands.liquid
 
 ````liquid
 {% raw %}
@@ -256,7 +256,7 @@ pos-cli migrations generate development create_brands
 pos-cli migrations generate development create_product_types
 ````
 
-#### app/migrations/TIMESTAMP_create_product_types.liquid
+##### app/migrations/TIMESTAMP_create_product_types.liquid
 
 ```liquid
 {% raw %}

@@ -41,7 +41,7 @@ As a first step, create a Property in the user profile. In this example, you wil
 ### Step 2: Add GraphQL mutation
 Add GraphQL mutation:
 
-#### graphql/store_third_party_api_id.graphql
+##### app/graphql/store_third_party_api_id.graphql
 
 ```graphql
 mutation store_third_party_api_id($user_id: ID!, $third_party_api_id: String!) {
@@ -67,7 +67,7 @@ mutation store_third_party_api_id($user_id: ID!, $third_party_api_id: String!) {
 ### Step 3: Create Form
 The mutation you created provides input for the Form called `callback_third_party_api_id`, so create this Form:
 
-#### forms/callback_third_party_api_id.liquid
+##### app/forms/callback_third_party_api_id.liquid
 
 ```yaml
 ---
@@ -84,7 +84,7 @@ fields:
 
 Extend the API Call Notification by adding the proper callback, which executes the mutation with the input received form the third party API:
 
-#### app/api_calls/ping_example_com_on_user_sign_up.liquid
+##### app/api_calls/ping_example_com_on_user_sign_up.liquid
 
 ```liquid
 {% raw %}

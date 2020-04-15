@@ -26,7 +26,7 @@ Authenticating a user with a JWT token is a three-step process:
 
 It can be done after user login, the token should usually be stored in the browser memory.
 
-#### app/graphql/user_jwt_token.graphql
+##### app/graphql/user_jwt_token.graphql
 
 ```graphql
 {
@@ -41,7 +41,7 @@ It can be done after user login, the token should usually be stored in the brows
 
 The Authorization Policy fetches the JWT token from the request header and sets the current user using this token.
 
-#### app/graphql/jwt_login
+##### app/graphql/jwt_login
 ```graphql
 mutation jwt_login($token: String!) {
   jwt_decode_and_set_session(jwt_token: $token) {
@@ -54,7 +54,7 @@ mutation jwt_login($token: String!) {
 }
 ```
 
-#### app/authorization_policies/api_set_current_user.liquid
+##### app/authorization_policies/api_set_current_user.liquid
 ```liquid
 {% raw %}
 ---
@@ -74,7 +74,7 @@ name: api_set_current_user
 {% endraw %}
 ```
 
-#### app/views/pages/api/orders.json.liquid
+##### app/views/pages/api/orders.json.liquid
 
 ```liquid
 ---

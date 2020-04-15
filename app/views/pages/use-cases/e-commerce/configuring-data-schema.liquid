@@ -43,7 +43,7 @@ Creating the data schema varies from one project to another. In this case it’s
 
 Every T-shirt in your store will be described by `product_type` and `brand`. Additionally every product may have one or more `photo`s attached. Finally, there are available variants of the product (in this case it’s T—shirt sizes). You will create `stock_level` that will hold information on the available amount of products in a specific variant (size).
 
-#### app/model_schemas/product.yml
+##### app/model_schemas/product.yml
 
 ```yaml
 name: product
@@ -65,7 +65,7 @@ Notes:
 - Price will be stored as an integer, representing cents, so \$1.00 is stored as `100`. This helps to avoid problematic computations and rounding problems that sometimes happen with the `float` data type.
 - External ids are integer numbers, but since variable types are important and `"100" != 100`, it’s easier to store all IDs as strings.
 
-#### app/model_schemas/brand.yml
+##### app/model_schemas/brand.yml
 
 ```yaml
 name: brand
@@ -74,7 +74,7 @@ properties:
     type: string
 ```
 
-#### app/model_schemas/product_type.yml
+##### app/model_schemas/product_type.yml
 
 ```yaml
 name: product_type
@@ -83,7 +83,7 @@ properties:
     type: string
 ```
 
-#### app/model_schemas/photo.yml
+##### app/model_schemas/photo.yml
 
 ```yaml
 name: photo
@@ -109,7 +109,7 @@ properties:
 
 The `photo` model uses a special field type called `photo`. It helps automating upload and versions creation. You can [read more on `Custom Images` here](/developer-guide/properties/custom-images).
 
-#### app/model_schemas/stock_level.yml
+##### app/model_schemas/stock_level.yml
 
 ```yaml
 name: stock_level
@@ -126,7 +126,7 @@ properties:
 
 `User` is a built-in data type in platformOS. It has some predefined fields like `name` and `email`. You can extend `User` with additional Properties by using user profiles. The example below uses the `default` user profile to add a phone number field. You can [learn more about creating a user profile](/developer-guide/users/creating-user-profile) in our documentation.
 
-#### app/user_profile_types/default.yml
+##### app/user_profile_types/default.yml
 
 ```yaml
 name: default
@@ -139,7 +139,7 @@ properties:
 
 Every user will also be able to save multiple `addresses` to his contact book.
 
-#### app/model_schemas/address.yml
+##### app/model_schemas/address.yml
 
 ```yaml
 name: address
@@ -158,7 +158,7 @@ properties:
 
 Last part of your shop data schema is related to `order`s created by clients. Every order can have multiple products attached to it and a `shipping_option` selected during checkout. Order is finished with `payment`. You will store the history of all payments for a given order (usually it will be just one, but you would want to log every interaction with the payments API as a separate entry). Finally, you will store `order_history` describing any changes to order state (received, paid, shipped, etc.)
 
-#### app/model_schemas/order.yml
+##### app/model_schemas/order.yml
 
 ```yaml
 name: order
@@ -179,7 +179,7 @@ properties:
     type: string
 ```
 
-#### app/model_schemas/order_product.yml
+##### app/model_schemas/order_product.yml
 
 ```yaml
 name: order_product
@@ -200,7 +200,7 @@ properties:
 
 You’ve probably noticed that some fields are duplicated (shipping) or not referencing other custom types by `id` (addresses). You want to ensure that order data is persistent and does not change after an order has been created. If at any point in time the admin removed the shipping option used in this order, or the user updated his address in the address book, the order would no longer represent the state at the moment of creation. Therefore, you should copy any piece of information prone to being manipulated, when the new order is created. Same logic applies to the `order_product` table where information on the ordered products is stored, along with the reference to the product itself. In case a product is removed or updated, you do not lose any data.
 
-#### app/model_schemas/order_history.yml
+##### app/model_schemas/order_history.yml
 
 ```yaml
 name: order_history
@@ -211,7 +211,7 @@ properties:
     type: string
 ```
 
-#### app/model_schemas/payment.yml
+##### app/model_schemas/payment.yml
 
 ```yaml
 name: payment
@@ -224,7 +224,7 @@ properties:
 
 {% include 'alert/note', content: 'The data diagram mentions a `timestamp` field for both the `payment` and the `order_history` data types. platformOS automates creation of such timestamps. Every object gets two built-in fields `created_at` and `updated_at` that are updated automatically.' %}
 
-#### app/model_schemas/shipping_option.yml
+##### app/model_schemas/shipping_option.yml
 
 ```yaml
 name: shipping_option

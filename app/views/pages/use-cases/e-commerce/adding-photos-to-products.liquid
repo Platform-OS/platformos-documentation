@@ -31,7 +31,7 @@ Adding photos to products is a six-step process:
 
 Photo form will be included on the product details page. Photo upload is a two-step process. First, you upload image directly to a S3 bucket, then you submit the form itself, including url to the newly uploaded file. You can read more about [Uploading Files Directly to Amazon S3 Using AJAX](/developer-guide/user-uploads/uploading-files-directly-amazons3-using-ajax) in our documentation.
 
-#### app/forms/photo/create_photo_form.liquid
+##### app/forms/photo/create_photo_form.liquid
 
 ```liquid
 {% raw %}
@@ -85,7 +85,7 @@ The upload form should already be working, but it is less efficient than it coul
 
 Create the upload script first:
 
-#### app/views/partials/forms/upload/s3_script.liquid
+##### app/views/partials/forms/upload/s3_script.liquid
 ```liquid
 {% raw %}
 {% comment %}
@@ -169,7 +169,7 @@ Create the upload script first:
 Include the script at the end of the `create_photo_form` form.
 
 
-#### app/forms/photo/create_photo_form.liquid
+##### app/forms/photo/create_photo_form.liquid
 ```liquid
 {% raw %}
 
@@ -189,7 +189,7 @@ To learn more about using `fetch`, go to https://developer.mozilla.org/en-US/doc
 
 Now that you can upload new photos, it’s time make it possible to remove them as well.
 
-#### app/forms/photo/destroy_photo_form.liquid
+##### app/forms/photo/destroy_photo_form.liquid
 
 ```liquid
 {% raw %}
@@ -228,7 +228,7 @@ fields:
 
 Uploading and removing photo forms are ready, but before you can create the partial to show photos attached to the product and the form for uploading new ones, you need a query to fetch that information from the database.
 
-#### app/graphql/photo/get_photos.graphql
+##### app/graphql/photo/get_photos.graphql
 
 ```graphql
 query get_photos($product_id: String) {
@@ -261,7 +261,7 @@ It’s time to tie it all together. Create partial that will:
 2. Add _Remove_ button to each of them
 3. Include an upload form to add new photos
 
-#### app/views/partials/admin/product/photos.liquid
+##### app/views/partials/admin/product/photos.liquid
 
 ```liquid
 {% raw %}
@@ -296,7 +296,7 @@ It’s time to tie it all together. Create partial that will:
 
 Include the details page in admin section, by including the partial created in the previous step at the end of the `show.liquid` file.
 
-#### app/views/partials/admin/product/show.liquid
+##### app/views/partials/admin/product/show.liquid
 
 ```liquid
 {% raw %}

@@ -10,7 +10,7 @@ The `include` tag allows you to make your code more maintainable by including te
 
 The simplest example of `include` looks like this:
 
-#### views/pages/include.liquid
+##### app/views/pages/include.liquid
 
 ```liquid
 {% raw %}
@@ -23,13 +23,13 @@ slug: include
 {% endraw %}
 ```
 
-#### views/partials/mypartial.liquid
+##### app/views/partials/mypartial.liquid
 
 ```liquid
 This is first partial
 ```
 
-#### views/partials/mypartial2.liquid
+##### app/views/partials/mypartial2.liquid
 
 ```liquid
 This is second partial
@@ -115,7 +115,7 @@ This will iterate over the collection and render the partial for each item. Each
 
 Having a partial that looks like this:
 
-#### views/partials/product.liquid
+##### app/views/partials/product.liquid
 
 ```liquid
 {% raw %}
@@ -141,7 +141,7 @@ It works from top to bottom though: If you define a variable on a page and then 
 
 That means that given this partial:
 
-#### views/partials/variable.liquid
+##### app/views/partials/variable.liquid
 
 ```liquid
 {% raw %}
@@ -151,7 +151,7 @@ That means that given this partial:
 
 And this page using it:
 
-#### views/pages/include.liquid
+##### app/views/pages/include.liquid
 
 ```liquid
 {% raw %}
@@ -167,7 +167,7 @@ Will not return `Honda` in the page. The `my_car` variable can be accessed only 
 
 To use a variable that has been defined inside a partial, outside of it, you need to use the [export](/api-reference/liquid/platformos-tags#export) tag and [context.exports](/developer-guide/variables/context-variable#exposing-a-local-variable-within-the-context-object).
 
-#### views/partials/export.liquid
+##### app/views/partials/export.liquid
 
 ```liquid
 {% raw %}
@@ -182,7 +182,7 @@ To use a variable that has been defined inside a partial, outside of it, you nee
 {% endraw %}
 ```
 
-#### views/pages/include.liquid
+##### app/views/pages/include.liquid
 
 ```liquid
 {% raw %}

@@ -35,7 +35,7 @@ Form configuration needs to have the attribute `spam_protection: { "recaptcha_v2
 Also use the [`{% spam_protection %}`](/api-reference/liquid/platformos-tags#spam_protection) tag to generate required JS (you can include required JS code on your own).
 {% endraw %}
 
-#### views/pages/sign-in-recaptcha.liquid
+##### app/views/pages/sign-in-recaptcha.liquid
 ```liquid
 {% raw %}
 ---
@@ -47,7 +47,7 @@ slug: sign-in-recaptcha
 {% endraw %}
 ```
 
-#### forms/sign_in_with_recaptcha.liquid
+##### app/forms/sign_in_with_recaptcha.liquid
 ```liquid
 {% raw %}
 ---
@@ -78,7 +78,7 @@ fields:
 In order to show reCAPTCHA only after a specified number of failed login attempts, you need to know how many times the user tried to log in. You can count this and store the number in a session. Use mutation `session_create_field`.
 You also need the sign-in form configuration without spam protection.
 
-#### forms/sign_in_without_recaptcha.liquid
+##### app/forms/sign_in_without_recaptcha.liquid
 ```liquid
 {% raw %}
 ---
@@ -105,7 +105,7 @@ callback_actions: >
 
 ```
 
-#### graphql/set_failed_signin_attempts.graphql
+##### app/graphql/set_failed_signin_attempts.graphql
 ```graphql
 mutation set_failed_signin_attempts($attempts: Any!) {
   session_create_field(name: "failed_attempts", value: $attempts)
@@ -116,7 +116,7 @@ mutation set_failed_signin_attempts($attempts: Any!) {
 
 Once you have the number of failed attempts in the session, you can display the correct form, with or without spam protection. `context` variable has information about the session.
 
-#### views/pages/sign-in-recaptcha.liquid
+##### app/views/pages/sign-in-recaptcha.liquid
 ```liquid
 {% raw %}
 ---
@@ -136,7 +136,7 @@ slug: sign-in-recaptcha
 
 After the user signed in successfully, you should clear session information with callback `{% raw %}{% graphql res = "clear_failed_signin_attempts" %}{% endraw %}`
 
-#### graphql/clear_failed_signin_attempts.graphql
+##### app/graphql/clear_failed_signin_attempts.graphql
 ```graphql
 mutation clear_failed_signin_attempts {
   session_delete_field(name: "failed_attempts")

@@ -62,7 +62,7 @@ Here, we created an `api_call_notification` and then used the `pos-cli gui serve
 
    To create our **API Key Secret** we send an API call with a request type of `POST` to the URL and with the headers outlined in the [Twilio Identity and Access Management documentation](https://www.twilio.com/docs/iam/keys/api-key-resource).
 
-    #### app/api_calls/twilio_api_secret_create.liquid
+    ##### app/api_calls/twilio_api_secret_create.liquid
     ```yaml
     {% raw %}
     ---
@@ -103,7 +103,7 @@ Here, we were not creating another API Key(Secret) — we were just receiving a 
 
     First, we needed a page to hold a form.
 
-    #### views/pages/twilio-api.html.liquid
+    ##### app/views/pages/twilio-api.html.liquid
     ```liquid
     ---
     slug: twilio-api
@@ -118,7 +118,7 @@ Here, we were not creating another API Key(Secret) — we were just receiving a 
 
     To be able to submit a form you need to have a `model_schema` connected to it. In this case we do not need any data, so we can create what we call a `virtual_model` like below. This allows for a form with no data or properties to be submitted.
 
-    #### model_schemas/virtual_model.yml
+    ##### app/model_schemas/virtual_model.yml
     ```yaml
     name: virtual_model
     ```
@@ -145,7 +145,7 @@ Here, we were not creating another API Key(Secret) — we were just receiving a 
 
     Using the API resource was now just a matter of formatting the notification to meet the requirements of the API and resource we were calling. [Twilio Identity and Access Management documentation](https://www.twilio.com/docs/iam/keys/api-key-resource)
 
-    #### app/api_calls/twilio_api_secret_create.liquid
+    ##### app/api_calls/twilio_api_secret_create.liquid
 
     ```yaml
     {% raw %}
@@ -215,7 +215,7 @@ mutation SetConstant {
 
    We added `slug` to create the URL — in this case the token. We could have also added `format` here, but it was not necessary because we used **.json** in our file name.
 
-   #### app/pages/token.json.liquid
+   ##### app/pages/token.json.liquid
 
     ```yaml
     ---

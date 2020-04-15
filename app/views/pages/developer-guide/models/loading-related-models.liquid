@@ -29,7 +29,7 @@ Loading related models in this demonstrative scenario is a five-step process:
 ### Step 1: Create models
 The data schema in this scenario consists of two models: `company` and `programmer`. The programmer model has a `company_id` property which references a corresponding company model [foreign key].
 
-##### model_schemas/company.yml
+##### app/model_schemas/company.yml
 
 ```yaml
 name: company
@@ -42,7 +42,7 @@ properties:
   type: string
 ```
 
-##### model_schemas/programmer.yml
+##### app/model_schemas/programmer.yml
 
 ```yaml
 name: programmer
@@ -90,7 +90,7 @@ The goal is to load programmers' data along with related company by joining prog
 ### Step 2: Load related model for each record (not recommended)
 In this approach, you use two GraphQL queries:
 
-##### graphql/programmers.grapqhl
+##### app/graphql/programmers.grapqhl
 
 ```graphql
 query programmers {
@@ -108,7 +108,7 @@ query programmers {
 }
 ```
 
-##### graphql/company.graphql
+##### app/graphql/company.graphql
 
 ```graphql
 query company($id: ID) {
@@ -202,7 +202,7 @@ query programmers {
 
 Update the `programmers/index` page. The page looks much simpler now:
 
-##### views/pages/programmers/index.liquid
+##### app/views/pages/programmers/index.liquid
 
 ```liquid
 {% raw %}

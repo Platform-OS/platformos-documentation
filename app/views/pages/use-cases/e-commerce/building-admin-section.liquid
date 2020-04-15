@@ -40,7 +40,7 @@ pos-cli migrations generate development add_admin
 
 This should create a new file in your `migrations` folder.
 
-#### app/migrations/{TIMESTAMP}\_add_admin.liquid
+##### app/migrations/{TIMESTAMP}\_add_admin.liquid
 
 ```liquid
 {% raw %}
@@ -54,7 +54,7 @@ This should create a new file in your `migrations` folder.
 
 You need three more files to make it work. First, create a generic `get_user` query.
 
-#### app/graphql/get_user.graphql
+##### app/graphql/get_user.graphql
 
 ```graphql
 query get_user($id: ID, $email: String, $slug: String) {
@@ -73,7 +73,7 @@ query get_user($id: ID, $email: String, $slug: String) {
 
 {% include 'alert/note', content: '`properties` is a special keyword, that will list all of custom properties attached to the object, so you do not have to list them all one by one.' %}
 
-#### app/graphql/user/mutations/promote_user_to_admin.graphql
+##### app/graphql/user/mutations/promote_user_to_admin.graphql
 
 ```graphql
 mutation promote_user_to_admin($id: ID) {
@@ -94,7 +94,7 @@ mutation promote_user_to_admin($id: ID) {
 }
 ```
 
-#### app/forms/user/promote_user_to_admin_form.liquid
+##### app/forms/user/promote_user_to_admin_form.liquid
 
 ```yaml
 ---
@@ -112,7 +112,7 @@ fields:
 
 There is one more thing to do. When the Instance was created, your user has been copied, but for security reasons its password was set to a random string. You have to update it as well. You need to add one more mutation and form configuration to do just that.
 
-#### app/graphql/user/mutations/set_user_password.graphql
+##### app/graphql/user/mutations/set_user_password.graphql
 
 ```graphql
 mutation set_user_password($id: ID, $password: String) {
@@ -126,7 +126,7 @@ mutation set_user_password($id: ID, $password: String) {
 }
 ```
 
-#### app/forms/user/set_user_password_form.liquid
+##### app/forms/user/set_user_password_form.liquid
 
 ```liquid
 ---
@@ -150,7 +150,7 @@ pos-cli migrations run development TIMESTAMP
 
 Your user now has the required admin credential. This allows you to create your first [Authorization Policy](/developer-guide/authorization-policy/authorization-policy), that you can use to secure the form you’ve just created in the previous step and reuse it to limit access to all resources in the admin panel.
 
-#### app/authorization_policies/admin_user.liquid
+##### app/authorization_policies/admin_user.liquid
 
 ```liquid
 ---
@@ -164,7 +164,7 @@ flash_alert: Sorry, you have to be an admin user to access this page.
 {% endraw %}
 ```
 
-#### app/graphql/current_user.graphql
+##### app/graphql/current_user.graphql
 
 ```grapqhl
 query current_user {
@@ -183,7 +183,7 @@ query current_user {
 
 Now, that the Authorization Policy is in place, you can go ahead and modify the `promote_user_to_admin_form` form, so that only admins can promote other users to admins from now on.
 
-#### app/forms/user/promote_user_to_admin_form.liquid
+##### app/forms/user/promote_user_to_admin_form.liquid
 
 ```yaml
 name: promote_user_to_admin_form
@@ -206,7 +206,7 @@ The whole process has been described in our documentation in the [Signing in Use
 
 You’ll need a new page and form configuration file.
 
-#### app/views/pages/sign-in.html.liquid
+##### app/views/pages/sign-in.html.liquid
 
 ```liquid
 {% raw %}
@@ -230,7 +230,7 @@ metadata:
 
 {% include 'alert/note', content: 'You can also use a new layout file [`views/layouts/authorization.html.liquid`](https://github.com/mdyd-dev/e-commerce/blob/master/app/views/layouts/authorization.liquid) to make the authorization screens a bit more compact.' %}
 
-#### app/forms/session/sign_in_form.liquid
+##### app/forms/session/sign_in_form.liquid
 
 ```liquid
 {% raw %}
@@ -296,7 +296,7 @@ fields:
 
 Now that you can sign in, you should be able to sign out as well. [Logging Out an Authenticated User](/developer-guide/users/logging-out-authenticated-user) describes well what needs to be done. You’ll add the form configuration now, so that it’s ready when you are working on the top navigation and the sign out button.
 
-#### app/forms/session/sign_out_form.liquid
+##### app/forms/session/sign_out_form.liquid
 
 ```liquid
 {% raw %}
@@ -314,7 +314,7 @@ resource: Session
 
 All that is left is to add an admin index page and make sure only admins can access it.
 
-#### app/views/pages/admin/index.liquid
+##### app/views/pages/admin/index.liquid
 
 ```liquid
 ---

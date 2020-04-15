@@ -26,7 +26,7 @@ Building a Contact Form with Models is a nine-step process:
 
 To define a new Model Schema, use YAML files placed in the `model_schemas` directory. In the key-value format, you can define a name for your Model, and an array of Properties for the Model object. To build a Contact Form, you'll need email, name, and description attributes on the Model that you can call a `contact`.
 
-#### model_schemas/contact.yml
+##### app/model_schemas/contact.yml
 
 ```yaml
 name: contact
@@ -47,7 +47,7 @@ For more information on Properties please see [Properties Documentation](/develo
 
 Now that you have the definition of a `Contact` in place, you can create a Form that will configure the server to accept requests with data in the desired format. Data passed through the form will be stored in the database as a Contact object.
 
-#### forms/contact_form.liquid
+##### app/forms/contact_form.liquid
 
 ```yaml
 ---
@@ -107,7 +107,7 @@ As a first step, you need a page that will respond to given paths:
 
 Page slug for the above URL map will simply be `contacts` as the ID passed in the URL is dynamically assigned to the `context.params.slug2` variable. For more information, see [Pages](/developer-guide/pages/pages) documentation.
 
-#### views/pages/contacts.liquid
+##### app/views/pages/contacts.liquid
 
 ```liquid
 {% raw %}
@@ -125,7 +125,7 @@ slug: contacts
 {% endraw %}
 ```
 
-#### views/partials/contacts/list.liquid
+##### app/views/partials/contacts/list.liquid
 
 ```liquid
 {% raw %}
@@ -147,7 +147,7 @@ slug: contacts
 {% endraw %}
 ```
 
-#### views/partials/contacts/show.liquid
+##### app/views/partials/contacts/show.liquid
 
 ```liquid
 {% raw %}
