@@ -10,10 +10,10 @@ This guide will help you create an SMS Notification to send a text message to a 
 ## Requirements
 To follow the steps in this tutorial, you should understand the concept of notifications. You'll also use the sign-up form you created in a previous tutorial. As you'll use our Twilio integration, you need to ensure that the `to` number is formatted according to Twilio's phone number format guideline.
 
+* [Form Configuration](/developer-guide/forms/form-configuration)
 * [Notifications](/developer-guide/notifications/notifications)
 * [Creating a Sign-Up Form](/developer-guide/users/creating-sign-up-form)
 * [Twilio's phone number format guideline](https://support.twilio.com/hc/en-us/articles/223183008-Formatting-International-Phone-Numbers)
-
 
 ## Steps
 
@@ -23,7 +23,9 @@ Creating an SMS Notification is a three-step process:
 
 ### Step 1: Extend sign up form with mobile number
 
-As you haven't collected the mobile phone number in the sign-up form yet, as a first step, extend the sign-up form `forms/developer/sign_up.liquid`:
+As you haven't collected the mobile phone number in the sign-up form yet, as a first step, extend the sign-up form.
+
+##### app/forms/developer/sign_up.liquid
 
 ```yaml
 ---
@@ -74,10 +76,8 @@ The SMS notification name is a path of the file relative to the `smses` director
 For app/smses/**welcome_user**.liquid - the bolded part is the name (physical_file_path).
 
 ```yaml
----
 sms_notifications:
   - welcome_user
----
 ```
 
 {% include 'alert/important', content: 'We do not send real text messages on staging by default. Because any error with sending real text messages on staging might be more costly than sending emails. If you want to test SMS on staging, please change `enable_sms_and_api_workflow_alerts_on_staging` flag to `true` in your Partner Portal instance configuration.' %}
