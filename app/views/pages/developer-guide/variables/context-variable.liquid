@@ -182,7 +182,12 @@ When visiting the page with path `www.mysite.com/app/admin/content/nyc/brooklyn/
 ### context.session
 `context.session` allows for quick access to session storage. Use mutations in order to store data in session like in [this example](/api-reference/graphql/glossary#operation-name). 
 
-The browser session ID is stored on client-side as a cookie, session values are stored on server-side. You can use your browser’s developer tools to check when a browser session ID expires. For user sessions of logged in users, see [timeout_in_minutes](/developer-guide/partner-portal/instances/updating-instance-configuration). 
+The browser generates a session ID and stores it as a cookie, then sends the session ID with every request. On the server side, we check if we have an entry matching this session_id and get the JSON associated with it. This JSON can contain anything, including user_id if the user is logged in but if the user is not logged in, we still have the session_id, and as mentioned, it can contain other data - for example product_ids to power the shopping cart functionality for a not logged in user. 
+
+After some time we just remove the data associated with the session_id — this is when the server invalidates the session,
+but a user can also invalidate the session by manually removing the session_id and then the browser will generate a new one. 
+
+For user sessions of logged in users, see also [timeout_in_minutes](/developer-guide/partner-portal/instances/updating-instance-configuration). 
 
 ### context.useragent
 `context.useragent` returns an object with user agent data.
