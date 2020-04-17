@@ -42,9 +42,6 @@ Create a test endpoint that simulates a third-party API JSON response:
 
 ```liquid
 {% raw %}
----
-slug: test-endpoint
----
 {
   "third_party_api_id": "id-1"
 }
@@ -130,11 +127,6 @@ Once you have an API Call Notification defined, you should associate it with a f
 
 ##### app/views/pages/test-form.liquid
 
-```yaml
----
-slug: test-form
----
-```
 ```liquid
 {% raw %}
 {% include_form 'test_form', object_id: current_user.id, object_class: 'User' %}
@@ -190,11 +182,6 @@ In the `test_form` you have set up a redirection to `/test-result`, so create th
 
 ##### app/views/pages/test-result.liquid
 
-```yaml
----
-slug: test-result
----
-```
 ```liquid
 {% raw %}
 {% graphql graph_current_user = 'get_current_user_third_party_api_value'  %}

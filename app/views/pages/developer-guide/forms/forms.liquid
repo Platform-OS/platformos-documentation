@@ -31,6 +31,8 @@ Each file is divided into two sections: configuration and implementation.
 
 Every form configuration is strictly connected with the resource that can be a static class predefined by platformOS or a dynamic model. The very basic example of the Form that enables the possibility to create an object of Model Schema named "Car" and accepts one property called "color", would look like this:
 
+##### app/forms/car_form.liquid
+
 {% raw %}
 ```liquid
 ---
@@ -52,15 +54,14 @@ As already mentioned the file is split into two sections. In the configuration p
 In the implementation part the [form tag](/api-reference/liquid/platformos-tags#form) generates the HTML `<form>` together with all inputs and properties required for successful form submission. The name of the text input, included in the form body, is provided by the [form variable](/developer-guide/forms/default-payload#form-variable).
 
 To display the form within a page, use the [include_form tag](/api-reference/liquid/platformos-tags#include_form) that accepts the name of the form that you want to display:
-{% raw %}
+
+##### app/views/pages/car.liquid
 
 ```liquid
----
-slug: car
----
+{% raw %}
 {% include_form "modules/minimal_form/car_form" %}
-```
 {% endraw %}
+```
 
 Now head to the `/car` page and see the form with text input followed by a submit button.
 

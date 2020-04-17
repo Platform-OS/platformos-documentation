@@ -29,11 +29,8 @@ From the HTML page, copy the content into a separate Liquid page, e.g. `views/pa
 * The page will use layout named `application` by default, so you don't have to specify it because it will be named `application`.
 * Add a title to your page to make it dynamic.
 
-```yaml
----
-slug: blog
----
-```
+##### app/views/pages/blog.liquid
+
 ```liquid
 {% raw %}
 {% content_for 'meta_title' %}Blog{% endcontent_for %}
@@ -48,7 +45,8 @@ slug: blog
 ```
 
 ### Step 2: Edit layout
-Edit your layout `views/layouts/application.liquid`:
+
+Edit your layout `app/views/layouts/application.liquid`:
 
 * Cut the first part of the HTML page and add it to the top of your layout.
 * Replace or add the `title`.

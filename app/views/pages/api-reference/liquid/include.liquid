@@ -13,9 +13,6 @@ The simplest example of `include` looks like this:
 
 ```liquid
 {% raw %}
----
-slug: include
----
 {% include 'mypartial' %}
 <br/>
 {% include 'mypartial2' %}
@@ -34,12 +31,9 @@ This is first partial
 This is second partial
 ```
 
-After expanding `include`, it becomes:
+After expanding `include`, rendered content becomes:
 
 ```liquid
----
-slug: include
----
 This is first partial
 <br/>
 This is second partial
@@ -154,9 +148,6 @@ And this page using it:
 
 ```liquid
 {% raw %}
----
-slug: include
----
 {% include 'variable' %}
 This is empty: {{ my_car }}
 {% endraw %}
@@ -185,9 +176,6 @@ To use a variable that has been defined inside a partial, outside of it, you nee
 
 ```liquid
 {% raw %}
----
-slug: include
----
 {% include 'export' %}
 Car: {{ context.exports.my_car }}
 My car maker: {{ context.exports.my_car.honda.maker }}

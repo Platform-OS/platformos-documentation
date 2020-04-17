@@ -23,22 +23,23 @@ Associating an Authorization Policy with a page is a two-step process:
 <div data-autosteps></div>
 
 ### Step 1: Edit page configuration
+
 Create a custom page that you only want users with the first name `John` to be able to access:
 
+##### app/views/pages/john-private-page.liquid
+
 ```liquid
----
-slug: john-private-page
----
 <h1>Hello John!</h1>
 ```
 
 ### Step 2: Add `authorization_policies` key to page configuration
-Add the `authorization_policies` key to page configuration
-and specify the Authorization Policy for the page:
+
+Add the `authorization_policies` key to page configuration and specify the Authorization Policy for the page:
+
+##### app/views/pages/john-private-page.liquid
 
 ```yaml
 ---
-slug: john-private-page
 authorization_policies:
   - only_allowed_by_johns
 ---

@@ -57,7 +57,7 @@ fields:
 
 {% include 'alert/warning', content: 'For example purposes `resource_owner` is set to `anyone`, which means on live example page you will be able to edit any record. In real life scenario it is recommended to set <a href="/developer-guide/authorization-policy/authorization-policy">Authorization Policy</a> to prevent even not logged in user to submit a form.' %}
 
-#### assets/Feedback.js
+##### app/assets/Feedback.js
 ```javascript
 const request = ({ url, form }) => {
   fetch(url, {
@@ -105,7 +105,7 @@ First, create a simple form that works without JavaScript:
 
 Then add JavaScript to make it work in the background:
 
-#### assets/Feedback.js
+##### app/assets/Feedback.js
 
 ```javascript
 [...]
@@ -154,9 +154,6 @@ Then you need to create a page that returns JSON with the data:
 ##### app/views/pages/feedback_list.json.liquid
 
 ```liquid
----
-slug: feedback_list
----
 {%- raw -%}
 {%- graphql recent = "modules/feedback/feedback", per_page: 10 -%}
 {{ recent.models.results | json }}
@@ -183,7 +180,7 @@ You also need some HTML that will contain the data, and a button that will trigg
 
 You also need JavaScript to get the data from the server and render it into the HTML:
 
-#### assets/Feedback.js
+##### app/assets/Feedback.js
 
 ```javascript
 const updateReadTable = data => {
@@ -252,7 +249,7 @@ The update form is similar to Create, with a couple of differences:
 
 JavaScript is also very similar, but it takes ID from input defined above and puts it into the URL.
 
-#### assets/Feedback.js
+##### app/assets/Feedback.js
 
 ```javascript
 [...]
@@ -300,7 +297,7 @@ That also means we will not charge you after 30 days for storing those records. 
 {% endraw %}
 ```
 
-#### assets/Feedback.js
+##### app/assets/Feedback.js
 
 ```javascript
 const Delete = event => {

@@ -24,11 +24,12 @@ Feeding data into AMP pages with GraphQL, in this case, displaying products on a
 
 ### Step 1: Display list of products
 
-Create the main page, HTML extended with AMP tags and objects `app/views/pages/product-list.liquid`:
+Create the main page, HTML extended with AMP tags and objects
+
+##### app/views/pages/product-list.liquid
 
 ```yaml
 ---
-slug: product-list
 layout_name: application
 ---
 ```
@@ -64,19 +65,18 @@ Include the AMP dependencies in the layout file `app/views/layouts/application.l
 ```
 
 #### Notes
+
 * The data source for `<amp-list>` is `products.json`.
 * `amp-mustache` enables the 'mustache' (double curly braces) templating syntax.
 * The `{{ "{% raw" }} %}` tag instructs the liquid preprocessor not to interpret the liquid tags and leaves them to AMP/mustache to process.
 
 
 ### Step 2: Create JSON endpoint
-Create the JSON endpoint, a dynamically generated JSON document from which AMP fetches the data that it displays `app/views/pages/api/products.json.liquid`:
 
-```yaml
----
-slug: api/products
----
-```
+Create the JSON endpoint, a dynamically generated JSON document from which AMP fetches the data that it displays.
+
+##### app/views/pages/api/products.json.liquid
+
 ```liquid
 {% raw %}
 {% graphql g = 'get_products' %}
@@ -105,7 +105,10 @@ slug: api/products
 * The loop puts a comma after each element except for the last in the list.
 
 ### Step 3: Fetch product data
-Create the GraphQL query that fetches product data `app/graphql/get_products.graphql`:
+
+Create the GraphQL query that fetches product data.
+
+##### app/graphql/get_products.graphql
 
 ```graphql
 query get_products($slug: String) {
@@ -131,8 +134,11 @@ query get_products($slug: String) {
 ```
 
 #### Notes
+
 * If the optional slug argument is omitted, then it returns all products.
-* `price` is a property defined in the product Model Schema's .yml file, which is found in the `model_schemas` directory:
+* `price` is a property defined in the product Model Schema's .yml file, which is found in the `model_schemas` directory.
+
+##### app/model_schemas/product.yml
 
 ```yaml
 name: product
@@ -150,15 +156,15 @@ properties:
 ```
 
 ### Step 4: Display product details
-Create the `/product-details` page that loads when visitors click on a product from `/product-list` above `views/pages/product-details.liquid`:
 
-```yaml
+Create the `/product-details` page that loads when visitors click on a product from `/product-list` above.
+
+##### app/views/pages/product-details.liquid
+
+```liquid
 ---
-slug: product-details
 layout_name: application
 ---
-```
-```liquid
 {% raw %}
 {% graphql g = 'get_products', slug: params.slug2 %}
 {% assign product = g.products.results.first %}

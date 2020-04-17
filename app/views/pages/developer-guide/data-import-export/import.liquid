@@ -168,6 +168,8 @@ It is possible to import data using GraphQL mutations. This gives you more flexi
 
 There are two main mutations for importing [`import_users()`](/api-reference/graphql/mutations#import_users) and [`import_models()`](/api-reference/graphql/mutations#import_models). You can create a page that will import sent data.
 
+##### app/graphql/import_data.graphql
+
 ```graphql
 mutation import_data(
     $users: [UserImport!]!,
@@ -183,7 +185,6 @@ mutation import_data(
 {% raw %}
 ```liquid
 ---
-slug: import_data
 method: post
 ---
 {% graphql res = "import_data",

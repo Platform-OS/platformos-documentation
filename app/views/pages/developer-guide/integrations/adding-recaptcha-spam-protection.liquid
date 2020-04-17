@@ -35,11 +35,9 @@ Also use the [`{% spam_protection %}`](/api-reference/liquid/platformos-tags#spa
 {% endraw %}
 
 ##### app/views/pages/sign-in-recaptcha.liquid
+
 ```liquid
 {% raw %}
----
-slug: sign-in-recaptcha
----
 <h2>Sign in</h2>
 
 {% include_form 'sign_in_with_recaptcha' %}
@@ -47,6 +45,7 @@ slug: sign-in-recaptcha
 ```
 
 ##### app/forms/sign_in_with_recaptcha.liquid
+
 ```liquid
 {% raw %}
 ---
@@ -78,6 +77,7 @@ In order to show reCAPTCHA only after a specified number of failed login attempt
 You also need the sign-in form configuration without spam protection.
 
 ##### app/forms/sign_in_without_recaptcha.liquid
+
 ```liquid
 {% raw %}
 ---
@@ -105,6 +105,7 @@ callback_actions: >
 ```
 
 ##### app/graphql/set_failed_signin_attempts.graphql
+
 ```graphql
 mutation set_failed_signin_attempts($attempts: Any!) {
   session_create_field(name: "failed_attempts", value: $attempts)
@@ -116,11 +117,9 @@ mutation set_failed_signin_attempts($attempts: Any!) {
 Once you have the number of failed attempts in the session, you can display the correct form, with or without spam protection. `context` variable has information about the session.
 
 ##### app/views/pages/sign-in-recaptcha.liquid
+
 ```liquid
 {% raw %}
----
-slug: sign-in-recaptcha
----
 <h2>Sign in </h2>
 
 {% assign signin_failed_attempts = context.session.failed_attempts | plus: 0 %}
@@ -130,18 +129,17 @@ slug: sign-in-recaptcha
   {% include_form 'sign_in_without_recaptcha' %}
 {% endif %}
 {% endraw %}
-
 ```
 
 After the user signed in successfully, you should clear session information with callback `{% raw %}{% graphql res = "clear_failed_signin_attempts" %}{% endraw %}`
 
 ##### app/graphql/clear_failed_signin_attempts.graphql
+
 ```graphql
 mutation clear_failed_signin_attempts {
   session_delete_field(name: "failed_attempts")
 }
 ```
-
 
 ## Live example and source code
 To play with live example create developer account at [https://examples.platform-os.com](https://examples.platform-os.com) and go to the [sign-in-recaptcha](https://examples.platform-os.com/sign-in-recaptcha) page.

@@ -110,9 +110,6 @@ Page slug for the above URL map will simply be `contacts` as the ID passed in th
 
 ```liquid
 {% raw %}
----
-slug: contacts
----
 {%- assign id = context.params.slug2 -%}
 {%- graphql g = "modules/contacts/get_contacts", id: id -%}
 
@@ -161,7 +158,6 @@ slug: contacts
 
 In Step 2: Define Contact Form-Data Creation, you have created a form file called `contact_form`, that configures the form object. This was a minimal example to allow sending requests to our API endpoint, and create Model objects. Now you can extend this file with HTML, that renders the form to our users. The HTML part of the file comes after the configuration part, i.e. after the closing `---` tag.
 
-
 ```yaml
 ---
 name: contact_form
@@ -182,7 +178,6 @@ fields:
         presence: true
 ---
 ```
-
 ```liquid
 {% raw %}
 {% form %}
@@ -214,6 +209,8 @@ The `redirect_to` configuration option defines where to redirect the user after 
 For more information of advanced form configuration please visit [Form Documentation](/developer-guide/forms/form-configurations).
 
 To display the form on the previously created `contacts` page you have to include it with:
+
+##### app/views/pages/contacts.liquid
 
 ```liquid
 {% raw %}
@@ -256,11 +253,10 @@ To display delete button on the list of contacts, include the form as follows:
 
 As you already have the form to create contacts, you can simply reuse it for the purpose of record update. In order to prefill the form with proper data, add `id` to `include_form` tag.
 
+##### app/views/pages/contacts/edit.liquid
+
 {% raw %}
 ```liquid
----
-slug: contacts/edit
----
 {% include_form "modules/contacts/contact_edit_form", id: context.params.slug3 %}
 ```
 {% endraw %}

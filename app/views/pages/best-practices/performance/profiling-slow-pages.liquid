@@ -24,13 +24,13 @@ Profiling a page is a two-step process:
 
 Add `enable_profiler: true` to a YML file corresponding to the page you want to profile:
 
-```yaml
+
+##### app/views/my-slow-page.liquid
+
+```liquid
 ---
-slug: my-slow-page
 enable_profiler: true
 ---
-```
-```liquid
 {% raw %}
 {% include 'very_time_consuming_partial' %}
 {% endraw %}

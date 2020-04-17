@@ -10,7 +10,7 @@ This guide will help you create your own logs using the `log` Liquid tag. This t
 You can use the `log` tag in any file that accepts Liquid, so you can use them in pages, layouts, partials, Authorization Policies, async callbacks, etc.
 
 ## Requirements
-So that you can follow the steps in this tutorial, you have to have the pos-cli installed, an environment configured, and the codebase set up. You should be familiar with Pages, and the technologies behind platformOS, especially Liquid.
+So that you can follow the steps in this tutorial, you have to have the `pos-cli` installed, an environment configured, and the codebase set up. You should be familiar with Pages, and the technologies behind platformOS, especially Liquid.
 
 * [Get Started](/get-started): helps you get access to our platform, set up a site, install the pos-cli, set up the required directory structure, and deploy to your site.
 * [Technologies](/developer-guide/about-platform-os#technologies)
@@ -24,22 +24,22 @@ Creating your own application logs is a two-step process:
 ### Step 1: Use `log` Liquid tag
 Create a page using the `log` Liquid tag, and sync it.
 
+##### app/views/pages/log-test.liquid
+
 ```liquid
 {% raw %}
----
-slug: log-test
----
 {% log 'This is a message' %}
 {% log params, type: 'request-params' %}
 {% log user.id, type: 'debug' %}
 {% endraw %}
 ```
 
-#### Notes:
-You can print any object to the logs that can be printed.
-You can use parameters (e.g. take parameters from the URL and include them in the message).
-The `type` of the log entry can be any string you want to tag your entry.
-If you chose `error` pos-cli will mark it red and try to notify your OS.
+#### Notes
+
+* You can print any object to the logs that can be printed.
+* You can use parameters (e.g. take parameters from the URL and include them in the message).
+* The `type` of the log entry can be any string you want to tag your entry.
+* If you chose `error` pos-cli will mark it red and try to notify your OS.
 
 ### Step 2: Start logging
 In your command line, enter the command to start live logging:
