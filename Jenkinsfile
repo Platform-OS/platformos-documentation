@@ -116,7 +116,7 @@ pipeline {
         sh 'pos-cli deploy'
 
         script {
-          slackSend (channel: "#notifications-docs", color: '#FFFF00', message: "Procution build: <${env.BUILD_URL}|Build #${env.BUILD_NUMBER}>.")
+          slackSend (channel: "#notifications-docs", color: '#FFFF00', message: "Production build: <${env.BUILD_URL}|Build #${env.BUILD_NUMBER}>.")
         }
       }
     }
