@@ -114,6 +114,10 @@ pipeline {
 
       steps {
         sh 'pos-cli deploy'
+
+        script {
+          slackSend (channel: "#notifications-docs", color: '#FFFF00', message: "Procution build: <${env.BUILD_URL}|Build #${env.BUILD_NUMBER}>. ${commitInfo()}")
+        }
       }
     }
 
@@ -138,26 +142,6 @@ pipeline {
 
           slackSend (channel: "#notifications-docs", color: '#304ffe', message: "Lighthouse Home ${lighthouseHome}")
           slackSend (channel: "#notifications-docs", color: '#304ffe', message: "Lighthouse Content ${lighthouseContent}")
-        }
-      }
-    }
-  }
-
-  post {
-    success {
-      script {
-        if (env.GIT_BRANCH == 'master') {
-          // testOutput = sh(returnStdout: true, script: 'cat $HOME/tmp/test-summary.txt').trim()
-          slackSend (channel: "#notifications-docs", color: '#00FF00', message: "OK: <${env.BUILD_URL}|Build #${env.BUILD_NUMBER}>. ${commitInfo()}")
-          // slackSend (channel: "#notifications-docs", color: '#00FF00', message: "${testOutput}")
-        }
-      }
-    }
-
-    failure {
-      script {
-        if (env.GIT_BRANCH == 'master') {
-          slackSend (channel: "#notifications-docs", color: '#FF0000', message: "FAIL: <${env.BUILD_URL}|Build #${env.BUILD_NUMBER}>. ${commitInfo()}")
         }
       }
     }
