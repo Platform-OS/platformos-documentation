@@ -2,17 +2,17 @@
 converter: markdown
 metadata:
   title: Backup and Removal of Data
-  description: This article describes how removed data is backed up just in case and when it is removed permanently.
+  description: This article describes how removed data is backed up and when it is removed permanently.
 ---
 
-This article describes how removed data is backed up just in case and when it is removed permanently.
+This article describes how removed data is backed up and when it is removed permanently.
 
 ## What is deleted_at
 
-Every record that you create in our database has couple properties built-in. One of those properties is `deleted_at` which is `null` when record is created.
-When you delete a record using , our system by default is filling this property with a datetime of the delete operation.
+Every record that you create in our database has a couple of properties built-in. One of those properties is `deleted_at` which is `null` when the record is created.
+When you delete a record, our system by default fills this property with a datetime of the delete operation.
 
-For example, you can delete record:
+For example, you can delete a record like this:
 
 ```graphql
 mutation DefaultDelete {
@@ -45,21 +45,20 @@ query models {
 
 ## Automatic delayed permanent removal
 
-After 30 days of the date set in `deleted_at`, it will be permanently deleted, at 5am UTC.
+After 30 days of the date set in `deleted_at`, the data will be permanently deleted at 5am UTC.
 
-For example, if `deleted_at` is `2020-03-15T14:28:48.153Z` (15 March 2020, 14:28 PM), record will be deleted 30 days later at 5am (14 April 2020, 5 AM). Until this date you can still recover it by setting `deleted_at` to `null`.
+For example, if `deleted_at` is `2020-03-15T14:28:48.153Z` (15 March 2020, 14:28 PM), the record will be deleted 30 days later at 5am (14 April 2020, 5 AM). Until this date you can still recover it by setting `deleted_at` to `null`.
 
-{% include 'alert/warning', content: 'If record has been permanently deleted, you will not be able to recover it in any way.' %}
+{% include 'alert/warning', content: 'If a record has been permanently deleted, you will not be able to recover it in any way.' %}
 
 ## Manual permanent removal
 
-You can force permanent removal by setting `deleted_at` value to date more than 30 days ago.
+You can force permanent removal by setting the `deleted_at` value to a date more than 30 days ago.
 
 For example:
 
 You want the record to be deleted as soon as possible.
-Lets assume it is `30 April 2020`.
-You would set `deleted_at` at date that is more than 30 days ago, for example `March 10`, which means it will be permanently deleted in the next purge process at 5am UTC.
+Assume it is `30 April 2020`, you would set `deleted_at` to a date that is more than 30 days ago, for example `March 10`, which means it will be permanently deleted in the next purge process at 5am UTC.
 
 ```graphql
 mutation Delete {
@@ -74,7 +73,7 @@ mutation Delete {
 }
 ```
 
-{% include 'alert/warning', content: 'If record has been permanently deleted, you will not be able to recover it in any way.' %}
+{% include 'alert/warning', content: 'If a record has been permanently deleted, you will not be able to recover it in any way.' %}
 
 
 ## Undeleting data
