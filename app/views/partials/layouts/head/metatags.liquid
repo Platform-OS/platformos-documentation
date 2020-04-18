@@ -59,3 +59,50 @@ query get_dates($slug: String!) {
 <meta name="twitter:description" content="{{ description }}" />
 <meta name="twitter:title" content="{{ title }}" />
 <meta name="twitter:image" content="{{ 'images/pos-logo-2to1.png' | asset_url }}" />
+
+<script type='application/ld+json'>
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://documentation.platformos.com",
+      "url": "https://documentation.platformos.com",
+      "name": "platformOS Documentation",
+      "inLanguage": "en-US",
+      "description": "Examples, tutorials, references, APIs, and best practices—everything you need to build future-proof applications on platformOS"
+    },
+    {
+      "@type": "ImageObject",
+      "inLanguage": "en-US",
+      "url": "{{ 'images/pos-logo.png' | asset_url }}",
+      "width": 730,
+      "height": 412,
+      "caption": "Full-Stack Observability"
+    },
+    {
+      "@type": "WebPage",
+      "url": "{{ context.location.url }}",
+      "name": "{{ title }}",
+      "description": "{{ description }}",
+      "isPartOf": {
+        "@id": "https://documentation.platformos.com/"
+      },
+      "inLanguage": "en-US",
+      "primaryImageOfPage": {
+        "@id": "{{ 'images/pos-logo.png' | asset_url }}"
+      },
+      "datePublished": "{{ dates.created_at }}",
+      "dateModified": "{{ dates.content_updated_at }}",
+      "potentialAction": [
+        {
+          "@type": "ReadAction",
+          "target": [
+            "{{ context.location.url }}"
+          ]
+        }
+      ]
+    }
+  ]
+}
+</script>
