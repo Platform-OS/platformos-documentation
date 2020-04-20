@@ -12,7 +12,7 @@ slug: release-notes/20-APRIL-2020
 
 <h4 class="release-note release-note__improved">IMPROVED</h4>
 
-* Form's metadata is now accessible also on `form` object via `form.metadata`. You will be able to use liquid as a value, for example:
+* Form's metadata is now also accessible on the `form` object via `form.metadata`. You will be able to use Liquid as a value, for example:
 
 ```liquid
 {% raw %}
@@ -27,8 +27,8 @@ metadata:
 {% endform %}
 {% endraw %}
 ```
-* index.<format>.liquid will have a default slug pointing to root. For example, if you have a file in `app/views/pages/my/page/index.html.liquid` then the default slug will be `my/page`. The property `max_level_deep` will prevent any extra slug components by default, so in this scenario `/my/page/abc` will return 404 error. To maintain backwards compatibility, if you manually set the `slug` property then `max_level_deep` will not be changed.
+* index.<format>.liquid will have a default slug pointing to root. For example, if you have a file in `app/views/pages/my/page/index.html.liquid` then the default slug will be `my/page`. The property `max_level_deep` will prevent any extra slug components by default, so in this scenario `/my/page/abc` will return a 404 error. To maintain backwards compatibility, if you manually set the `slug` property then `max_level_deep` will not be changed.
 
 <h4 class="release-note release-note__fixed">FIXED</h4>
 
-* The misleading error message "Form configuration has not been found" which was rendered via `pos-cli` when you tried to delete a resource which did not exist has been fixed and will include correct name of the resource which you try to delete.
+* The misleading error message "Form configuration has not been found" which was rendered via `pos-cli` when you tried to delete a resource which did not exist has been fixed and will include the correct name of the resource which you try to delete.
