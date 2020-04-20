@@ -2,10 +2,10 @@
 converter: markdown
 metadata:
   title: Assets
-  description: Assets are files that can be served by an http web server without any backend/server processing. They are usually Javascript files, stylesheets (CSS), documents (html, pdf, doc), fonts, or media (audio, video) files.
+  description: Assets are files that can be served by an http web server without any backend/server processing. They are usually Javascript files, stylesheets (CSS), images, documents (pdf, doc), fonts, or media (audio, video) files.
 ---
 
-**Assets** are files that can be served by an HTTP web server without any backend/server processing. They are usually Javascript files, stylesheets (CSS), documents (HTML, pdf, doc), fonts, or media (audio, video) files.
+**Assets** are files that can be served by an HTTP web server without any backend/server processing. They are usually Javascript files, stylesheets (CSS), images, documents (pdf, doc), fonts, or media (audio, video) files.
 
 ## Assets directory
 
@@ -27,28 +27,36 @@ Location of the image asset in the codebase:
 `app/assets/images/svg/logo.svg`
 
 URL of the image asset on CDN:
-`https://uploads.prod01.oregon.platform-os.com/instances/1/assets/images/svg/logo.svg`
+`https://uploads.prod01.oregon.platform-os.com/instances/1/assets/images/svg/logo.svg?updated=1586975239`
 
 URL of the image asset on your vanity domain with no CDN involved (it is slower, CDN solution is recommended):
 `https://documentation.platformos.com/assets/images/svg/logo.svg`
 
 {% include 'alert/note', content: 'CDN host and Instance ID are dynamic and will be specific to your instance and region' %}
 
+## Busting browser cache
+
+When you use the `asset_url` or `asset_path` filters, paths to files will be suffixed with an `updated` parameter and a number (`?updated=1586975239`). This number is an epoch timestamp indicating when the file was updated most recently. This is the mechanism to force the browser to use the newer version from the CDN, instead of using the locally cached version. This way you don't have to change the file name every time your content changes. You can, but you don't have to.
+
+The `updated` parameter will not be added to files that do not exist, because the server doesn't know when it was last updated, since it doesn't exist.
+
 ## Accessing assets
 
-You can access assets through their relative path on the CDN, or with the `asset_url` filter.
+You can access assets using three different ways (that we know of): 
 
-{% include 'alert/important', content: 'Be careful not to use a leading `/` in your path when using the `asset_url` filter.' %}
+* relative path on the CDN - used usually in CSS files to access fonts, images
 
-**Examples**
-
-Accessing an image from a CSS file located at `assets/styles/page.css`:
+Accessing an image in `app/assets/images/logo.svg` from a CSS file located at `app/assets/styles/app.css`:
 
 ```css
 background: transparent url('../images/logo.svg') top center no-repeat;
 ```
 
-Accessing a Javascript file:
+* `asset_url` liquid filter - returns absolute URL to the CDN with the `updated` parameter
+
+#### Example
+
+Accessing a JavaScript file located in `app/assets/scripts/app.js` from a Liquid file:
 
 ```html
 {% raw %}
@@ -56,39 +64,50 @@ Accessing a Javascript file:
 {% endraw %}
 ```
 
-Accessing a CSS file:
+File has been found:
+`https://uploads.staging.oregon.platform-os.com/instances/335/assets/scripts/app.js?updated=1586946301`
+
+File does not exist:
+`https://uploads.staging.oregon.platform-os.com/instances/335/assets/scripts/app.js`
+
+
+{% include 'alert/important', content: 'Be careful not to use a leading `/` in your path when using the `asset_url` filter.' %}
+
+* `asset_path` Liquid filter - returns relative path to Instance domain (no CDN, worse performance for end users) with the `updated` parameter
+
+#### Example
 
 ```html
 {% raw %}
-<link rel="stylesheet" href="{{ 'styles/app.css' | asset_url }}">
+<script src="{{ 'scripts/app.js' | asset_path }}"></script>
 {% endraw %}
 ```
 
-Accessing an HTML file:
+File has been found:
+`/assets/scripts/app.js?updated=1586946301`
 
-```html
-{% raw %}
-<a href="{{ 'test.html' | asset_url }}">Test</a>
-{% endraw %}
-```
+File does not exist:
+`/assets/scripts/app.js`
+
+{% include 'alert/important', content: 'Be careful not to use a leading `/` in your path when using the `asset_path` filter.' %}
+
 
 ## Accessing assets placed in modules
 
-Assets in modules are namespaced to not conflict with each other. They are also accessed by prefixing the path with the `modules/[my_module]` prefix. It does not matter whether you try to access the files from a module or not, the path to the asset is the same.
+Assets in modules are namespaced to not conflict with each other. They are also accessed by prefixing the path with the `modules/[my_module]` prefix. It does not matter whether you try to access the files from a module or not, the path to the asset is the same. Which means only location of the asset file matters, not where you write the code that references it.
 
 **Examples**
 
 {% raw %}
-File location: `modules/[my_module]/public/assets/style.css`
-Asset url filter access: `{{ 'modules/[my_module]/assets/style.css' | asset_url }}`
-
 File location: `modules/[my_module]/public/assets/js/app.js`
+
 Asset url filter access: `{{ 'modules/[my_module]/assets/js/app.js' | asset_url }}`
+Asset path filter access: `{{ 'modules/[my_module]/assets/js/app.js' | asset_path }}`
 {% endraw %}
 
-## Syncing and deploying assets
+## Removing assets
 
-Syncing only adds files on the CDN, and all the added assets will stay in the database even if you delete them on your computer. To remove files from the database that you deleted on your computer, use deploy. See [Deploy or Sync](/get-started/hello-world/deploy-sync).
+At the moment, there is no way to just remove assets/files from S3. If for example, you only want one header image out of 6 to be present on the server, you should name the file the same while working on it — this way it will be overridden.
 
 ## Related topics
 
