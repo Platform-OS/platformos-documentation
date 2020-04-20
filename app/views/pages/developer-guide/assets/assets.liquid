@@ -36,15 +36,15 @@ URL of the image asset on your vanity domain with no CDN involved (it is slower,
 
 ## Busting browser cache
 
-When you use `asset_url` or `asset_path` filters, paths to files will be suffixed with an `updated` parameter and a number (`?updated=1586975239`). This number is an epoch timestamp indicating when the file was updated most recently. This is the mechanism to force browser to use newer version from CDN, instead of using locally cached version. This way you dont have to change file name every time content changes. You can, but you don't have to.
+When you use the `asset_url` or `asset_path` filters, paths to files will be suffixed with an `updated` parameter and a number (`?updated=1586975239`). This number is an epoch timestamp indicating when the file was updated most recently. This is the mechanism to force the browser to use the newer version from the CDN, instead of using the locally cached version. This way you don't have to change the file name every time your content changes. You can, but you don't have to.
 
-`updated` parameter will not be added to files that do not exist, because server doesn't know when it was last updated, since it doesn't exist.
+The `updated` parameter will not be added to files that do not exist, because the server doesn't know when it was last updated, since it doesn't exist.
 
 ## Accessing assets
 
-You can access assets using three different ways (that we know of)
+You can access assets using three different ways (that we know of): 
 
-* relative path on the CDN - used usually in CSS files to access fonts, images.
+* relative path on the CDN - used usually in CSS files to access fonts, images
 
 Accessing an image in `app/assets/images/logo.svg` from a CSS file located at `app/assets/styles/app.css`:
 
@@ -52,11 +52,11 @@ Accessing an image in `app/assets/images/logo.svg` from a CSS file located at `a
 background: transparent url('../images/logo.svg') top center no-repeat;
 ```
 
-* `asset_url` liquid filter - returns absolute url to the CDN with `updated` parameter
+* `asset_url` liquid filter - returns absolute URL to the CDN with the `updated` parameter
 
 #### Example
 
-Accessing a JavaScript file located in `app/assets/scripts/app.js` from a liquid file:
+Accessing a JavaScript file located in `app/assets/scripts/app.js` from a Liquid file:
 
 ```html
 {% raw %}
@@ -73,7 +73,7 @@ File does not exist:
 
 {% include 'alert/important', content: 'Be careful not to use a leading `/` in your path when using the `asset_url` filter.' %}
 
-* `asset_path` liquid filter - returns relative path to instance domain (no CDN, worse performance for end users) with `updated` parameter
+* `asset_path` Liquid filter - returns relative path to Instance domain (no CDN, worse performance for end users) with the `updated` parameter
 
 #### Example
 
