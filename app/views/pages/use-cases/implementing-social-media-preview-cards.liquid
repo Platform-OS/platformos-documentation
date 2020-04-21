@@ -115,6 +115,75 @@ After:
 
 <img src="{{ 'images/use-cases/social-media-cards/after.jpg' | asset_url }}" alt="Twitter card after adding OpenGraph meta tags" />
 
-## Other resources
+### Other resources
 
 If you wish to learn more about the topic, read: [Everything you ever wanted to know about unfurling but were afraid to ask /or/ How to make your site previews look amazing in Slack](https://medium.com/slack-developer-blog/everything-you-ever-wanted-to-know-about-unfurling-but-were-afraid-to-ask-or-how-to-make-your-e64b4bb9254)
+
+## Structured data
+
+After you have your OpenGraph metadata done, it is also a good idea to add so called Structured Data into your website.
+This metadata is sometimes used by websites to generate rich snippets instead of OpenGraph, or a an addition. Additionally, this data is used by search engines to populate their rich snippets, so it is important from SEO point of view too. Using structured data you can describe your content in detail. Because of that, it is more flexible. It is possible to describe relation between entities (author, image, website). The more correct details you provide within a reason, the better.
+
+### Example
+
+```js
+<script type='application/ld+json'>
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://documentation.platformos.com",
+      "url": "https://documentation.platformos.com",
+      "name": "platformOS Documentation",
+      "inLanguage": "en-US",
+      "description": "Examples, tutorials, references, APIs, and best practices—everything you need to build future-proof applications on platformOS"
+    },
+    {
+      "@type": "ImageObject",
+      "inLanguage": "en-US",
+      "url": "{{ 'images/pos-logo.png' | asset_url }}",
+      "width": 730,
+      "height": 412,
+      "caption": "platformOS Documentation"
+    },
+    {
+      "@type": "WebPage",
+      "url": "{{ context.location.url }}",
+      "name": "{{ title }}",
+      "description": "{{ description }}",
+      "isPartOf": {
+        "@id": "https://documentation.platformos.com"
+      },
+      "inLanguage": "en-US",
+      "primaryImageOfPage": {
+        "@id": "{{ 'images/pos-logo.png' | asset_url }}"
+      },
+      "datePublished": "{{ dates.created_at }}",
+      "dateModified": "{{ dates.content_updated_at }}",
+      "potentialAction": [
+        {
+          "@type": "ReadAction",
+          "target": [
+            "{{ context.location.url }}"
+          ]
+        }
+      ]
+    }
+  ]
+}
+</script>
+```
+
+We basically recycled data we used in OpenGraph, with very simple relations.
+
+### Resources
+
+When you develop your own structured data, validate it on https://search.google.com/structured-data/testing-tool/u/0/ - it will show you warning and errors should you encounter them.
+
+Read standard specification on: https://schema.org/docs/documents.html
+
+Read those articles to get more practical information than official documentation:
+* https://developers.google.com/search/docs/guides/intro-structured-data
+* https://www.lullabot.com/articles/create-seo-juice-by-adding-json-ld-structured-data-to-drupal-8
+* https://neilpatel.com/blog/structured-data/
