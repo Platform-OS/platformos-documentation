@@ -24,33 +24,33 @@ Integrating Sendinblue using API Call Notifications is a two-step process:
 Create an API Call Notification:
 
 * Go to [sendinblue.com](https://www.sendinblue.com) and sign in. Click your name on the top right and then select the "SMTP & API" link from the drop-down menu. On the next page you can see your v3 API key on top.
-* Replace `<< YOUR API_KEY >>` with your Sendinblue API Key. 
+* Replace `<< YOUR API_KEY >>` with your Sendinblue API Key.
 * Add the payload based on the attributes in your form.
 
+##### app/api_calls/sendinblue_new_host.liquid
+
 ```yaml
+{% raw %}
 ---
-name: sendinblue_new_host
 to: 'https://api.sendinblue.com/v3/contacts'
-delay: 0
-enabled: true
 format: http
-trigger_condition: true
 request_type: POST
 headers: >
-  {
-    "Content-Type": "application/json",
-    "Api-key": "<< YOUR API_KEY >>",
-    "Accept":"application/json"
-  }
+{
+  "Content-Type": "application/json",
+  "Api-key": "<< YOUR API_KEY >>",
+  "Accept":"application/json"
+}
 ---
 {
-    "email":"{{ form.email }}",
-    "status":"subscribed",
-    "attributes": {
+  "email": "{{ form.email }}",
+  "status": "subscribed",
+  "attributes": {
     "FIRSTNAME": "{{ form.first_name }}",
     "LASTNAME": "{{ form.last_name }}"
-    }
+  }
 }
+{% endraw %}
 ```
 
 ### Step 2: Add API Call Notification to forms
@@ -62,4 +62,4 @@ api_call_notifications:
   - sendinblue_new_host
 ```
 
-Congratulations! You have created a Sendinblue integration using API Call Notifications. 
+Congratulations! You have created a Sendinblue integration using API Call Notifications.
