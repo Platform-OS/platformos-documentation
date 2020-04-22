@@ -54,26 +54,30 @@
 
 <li class="{% if cp contains 'assets' %}active{% endif %}">
   <a href="/developer-guide/assets/assets">Assets</a>
-  <ul class="submenu">
-    {% include "shared/nav/link", href: "/developer-guide/assets/assets", text: "Assets" %}
-    {% include "shared/nav/link", href: "/developer-guide/assets/using-static-assets-pages", text: "Using Static Assets on Your Pages" %}
-    {% include "shared/nav/link", href: "/developer-guide/assets/adding-visuals-pages-css", text: "Adding Visuals to Pages: CSS" %}
-    {% include "shared/nav/link", href: "/developer-guide/assets/adding-visuals-pages-javascript", text: "Adding Visuals to Pages: Javascript" %}
-  </ul>
+  {% if cp contains 'assets' %}
+    <ul class="submenu">
+      {% include "shared/nav/link", href: "/developer-guide/assets/assets", text: "Assets" %}
+      {% include "shared/nav/link", href: "/developer-guide/assets/using-static-assets-pages", text: "Using Static Assets on Your Pages" %}
+      {% include "shared/nav/link", href: "/developer-guide/assets/adding-visuals-pages-css", text: "Adding Visuals to Pages: CSS" %}
+      {% include "shared/nav/link", href: "/developer-guide/assets/adding-visuals-pages-javascript", text: "Adding Visuals to Pages: Javascript" %}
+    </ul>
+  {% endif %}
 </li>
 
 <li class="{% if cp contains 'variables' %}active{% endif %}">
   <a href="/developer-guide/variables/context-variable">Context Variable</a>
 </li>
 
-<li class="{% if cp contains 'translations' %}active{% endif %}"><a
-    href="/developer-guide/translations/translations">Translations</a>
-  <ul class="submenu">
-    {% include "shared/nav/link", href: "/developer-guide/translations/translations", text: "Translations" %}
-    {% include "shared/nav/link", href: "/developer-guide/translations/multilanguage-page", text: "Multi-Language Page" %}
-    {% include "shared/nav/link", href: "/developer-guide/translations/system-messages", text: "System Messages" %}
-    {% include "shared/nav/link", href: "/developer-guide/translations/date-format", text: "Date Format" %}
-  </ul>
+<li class="{% if cp contains 'translations' %}active{% endif %}">
+  <a href="/developer-guide/translations/translations">Translations</a>
+  {% if cp contains 'translations' %}
+    <ul class="submenu">
+      {% include "shared/nav/link", href: "/developer-guide/translations/translations", text: "Translations" %}
+      {% include "shared/nav/link", href: "/developer-guide/translations/multilanguage-page", text: "Multi-Language Page" %}
+      {% include "shared/nav/link", href: "/developer-guide/translations/system-messages", text: "System Messages" %}
+      {% include "shared/nav/link", href: "/developer-guide/translations/date-format", text: "Date Format" %}
+    </ul>
+  {% endif %}
 </li>
 
 <li class="topic-group">
@@ -130,14 +134,16 @@
 
 <li class="{% if cp contains 'search' %}active{% endif %}">
   <a href="/developer-guide/search/search">Search</a>
-  <ul class="submenu">
-    {% include "shared/nav/link", href: "/developer-guide/search/search", text: "Search" %}
-    {% include "shared/nav/link", href: "/developer-guide/search/narrowing-keyword-search", text: "Narrowing Keyword Search" %}
-    {% include "shared/nav/link", href: "/developer-guide/search/selecting-fields-available-search", text: "Selecting Fields Available for Search" %}
-    {% include "shared/nav/link", href: "/developer-guide/search/keyword-match-type", text: "Keyword Match Type" %}
-    {% include "shared/nav/link", href: "/developer-guide/search/filtering-sorting", text: "Filtering and Sorting" %}
-    {% include "shared/nav/link", href: "/developer-guide/search/distance-units", text: "Distance Units" %}
-  </ul>
+  {% if cp contains 'search' %}
+    <ul class="submenu">
+      {% include "shared/nav/link", href: "/developer-guide/search/search", text: "Search" %}
+      {% include "shared/nav/link", href: "/developer-guide/search/narrowing-keyword-search", text: "Narrowing Keyword Search" %}
+      {% include "shared/nav/link", href: "/developer-guide/search/selecting-fields-available-search", text: "Selecting Fields Available for Search" %}
+      {% include "shared/nav/link", href: "/developer-guide/search/keyword-match-type", text: "Keyword Match Type" %}
+      {% include "shared/nav/link", href: "/developer-guide/search/filtering-sorting", text: "Filtering and Sorting" %}
+      {% include "shared/nav/link", href: "/developer-guide/search/distance-units", text: "Distance Units" %}
+    </ul>
+  {% endif %}
 </li>
 
 <li class="{% if cp contains 'activity-feeds' %}active{% endif %}">
@@ -244,12 +250,14 @@
 </li>
 <li class="{% if cp contains 'data-management' or cp contains 'data-import-export' %}active{% endif %}">
   <a href="/developer-guide/data-import-export/import">Data Import/Export</a>
-  <ul class="submenu">
-    {% include "shared/nav/link", href: "/developer-guide/data-import-export/import", text: "Data Import" %}
-    {% include "shared/nav/link", href: "/developer-guide/data-import-export/import-files", text: "Data Import: Files" %}
-    {% include "shared/nav/link", href: "/developer-guide/data-import-export/export", text: "Data Export" %}
-    {% include "shared/nav/link", href: "/developer-guide/data-import-export/model-relations", text: "Model Relations" %}
-  </ul>
+  {% if cp contains 'data-management' or cp contains 'data-import-export' %}
+    <ul class="submenu">
+      {% include "shared/nav/link", href: "/developer-guide/data-import-export/import", text: "Data Import" %}
+      {% include "shared/nav/link", href: "/developer-guide/data-import-export/import-files", text: "Data Import: Files" %}
+      {% include "shared/nav/link", href: "/developer-guide/data-import-export/export", text: "Data Export" %}
+      {% include "shared/nav/link", href: "/developer-guide/data-import-export/model-relations", text: "Model Relations" %}
+    </ul>
+  {% endif %}
 </li>
 
 <li class="{% if cp contains 'data-management/migrating-data' %}active{% endif %}">
@@ -292,12 +300,14 @@
 
 <li class="{% if cp contains 'identity-providers' %}active{% endif %}">
   <a href="/developer-guide/identity-providers/identity-providers">Identity Providers (OAuth)</a>
-  <ul class="submenu">
-    {% include "shared/nav/link", href: "/developer-guide/identity-providers/identity-providers", text: "Identity Providers" %}
-    {% include "shared/nav/link", href: "/developer-guide/identity-providers/auth0", text: "Auth0 Integration" %}
-    {% include "shared/nav/link", href: "/developer-guide/identity-providers/google-oauth", text: "Google OAuth Integration" %}
-    {% include "shared/nav/link", href: "/developer-guide/identity-providers/facebook", text: "Facebook Integration" %}
-  </ul>
+  {% if cp contains 'identity-providers' %}
+    <ul class="submenu">
+      {% include "shared/nav/link", href: "/developer-guide/identity-providers/identity-providers", text: "Identity Providers" %}
+      {% include "shared/nav/link", href: "/developer-guide/identity-providers/auth0", text: "Auth0 Integration" %}
+      {% include "shared/nav/link", href: "/developer-guide/identity-providers/google-oauth", text: "Google OAuth Integration" %}
+      {% include "shared/nav/link", href: "/developer-guide/identity-providers/facebook", text: "Facebook Integration" %}
+    </ul>
+  {% endif %}
 </li>
 
 <li class="topic-group">
@@ -336,16 +346,18 @@
 
 <li class="{% if cp contains 'partner-portal/domains' %}active{% endif %}">
   <a href="/developer-guide/partner-portal/domains/dns-setting-up-production-domain">Domains</a>
-  <ul class="submenu">
-    {% include "shared/nav/link", href: "/developer-guide/partner-portal/domains/dns-setting-up-production-domain", text: "NEW Setting Up a Production Domain" %}
-    {% include "shared/nav/link", href: "/developer-guide/partner-portal/domains/dns-setting-up-production-domain-pos", text: "NEW Setting Up a Production Domain Hosted on platformOS" %}
-    {% include "shared/nav/link", href: "/developer-guide/partner-portal/domains/dns-setting-up-production-domain-ext", text: "NEW Setting Up a Production Domain on a 3rd-Party Provider" %}
-    {% include "shared/nav/link", href: "/developer-guide/partner-portal/domains/dns-setting-up-production-domain-records", text: "NEW Adding DNS records to a DNS Zone" %}
+  {% if cp contains 'partner-portal/domains' %}
+    <ul class="submenu">
+      {% include "shared/nav/link", href: "/developer-guide/partner-portal/domains/dns-setting-up-production-domain", text: "NEW Setting Up a Production Domain" %}
+      {% include "shared/nav/link", href: "/developer-guide/partner-portal/domains/dns-setting-up-production-domain-pos", text: "NEW Setting Up a Production Domain Hosted on platformOS" %}
+      {% include "shared/nav/link", href: "/developer-guide/partner-portal/domains/dns-setting-up-production-domain-ext", text: "NEW Setting Up a Production Domain on a 3rd-Party Provider" %}
+      {% include "shared/nav/link", href: "/developer-guide/partner-portal/domains/dns-setting-up-production-domain-records", text: "NEW Adding DNS records to a DNS Zone" %}
 
-    {% include "shared/nav/link", href: "/developer-guide/partner-portal/domains/setting-up-production-domain", text: "OLD Setting Up a Production Domain" %}
-    {% include "shared/nav/link", href: "/developer-guide/partner-portal/domains/configuring-www-default-domain", text: "OLD Configuring www as the Default Domain" %}
-    {% include "shared/nav/link", href: "/developer-guide/partner-portal/domains/deleting-ssl-certificate", text: "OLD Deleting an SSL Certificate" %}
-  </ul>
+      {% include "shared/nav/link", href: "/developer-guide/partner-portal/domains/setting-up-production-domain", text: "OLD Setting Up a Production Domain" %}
+      {% include "shared/nav/link", href: "/developer-guide/partner-portal/domains/configuring-www-default-domain", text: "OLD Configuring www as the Default Domain" %}
+      {% include "shared/nav/link", href: "/developer-guide/partner-portal/domains/deleting-ssl-certificate", text: "OLD Deleting an SSL Certificate" %}
+    </ul>
+  {% endif %}
 </li>
 
 <li class="{% if cp contains 'partner-portal/billing-plans' %}active{% endif %}">
