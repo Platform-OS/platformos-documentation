@@ -1,0 +1,67 @@
+---
+converter: markdown
+metadata:
+  title: Node.js Debug Logging
+  description: While working on node.js programs, you often need to print some additional info on the screen to know what exactly is happening during the flow. In this article we will show you how you can improve your logging in a very simple way.
+---
+
+While working on node.js programs, you often need to print some additional info on the screen to know what exactly is happening during the flow. In this article we will show you how you can improve your logging in a very simple way.
+
+### Before
+
+There are nodejs [packages to help you](https://www.npmjs.com/package/debug) to abstract some parts and give some flexibility when it comes to filtering, but if you don't need much, you can just do an if statement:
+
+```js
+if (process.env.DEBUG === 'true') {
+  console.log("original filePath", filePath);
+  console.log("extension", extension);
+  console.log("mimeExtension", mimeExtension);
+}
+```
+
+Those `console.log`s will only work if there is a system environment variable `DEBUG` set to `true`.
+
+For example, on *nix systems you can set the environment variable while running a command:
+
+```shell
+DEBUG=true pos-cli assets
+```
+
+On Windows you should use [`set DEBUG=true`](https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/set_1).
+
+This will result in something like this:
+
+<img src="{{ 'images/use-cases/nodejs-debug-logging/before.jpg' | asset_url }}" alt="Before screenshot" loading="lazy">
+
+It is doing what it's supposed to do, but we can do better with less code.
+
+### After
+
+```js
+if (process.env.DEBUG === 'true') {
+  console.log('Original data', {
+    filePath,
+    extension,
+    mimeExtension
+  });
+}
+```
+
+1. We use `Original data` as the title for this object, which will help us identify what we are logging.
+2. In an object we use the shortcut version of `key: value` when both are the same by writing only `key`. 
+3. In modern shells object values are colored (zsh on the screenshot).
+4. Logged object is formatted by nodejs, with indentations, further improving readability.
+5. If the object would fit in one line, nodejs would not break line and keep it compact. 
+
+### Result
+
+<img src="{{ 'images/use-cases/nodejs-debug-logging/after.jpg' | asset_url }}" alt="After screenshot" loading="lazy">
+
+### Other resources
+
+There are some pretty nice alternatives if you want more power or visual clarity in your logging / debugging:
+
+* https://www.npmjs.com/package/debug
+* https://www.npmjs.com/package/log
+* https://www.npmjs.com/package/loglevel
+* https://www.npmjs.com/package/pretty-error
