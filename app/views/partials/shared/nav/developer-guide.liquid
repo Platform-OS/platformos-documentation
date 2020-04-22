@@ -30,23 +30,26 @@
 <li class="topic-group">
   <h3>TEMPLATES</h3>
 </li>
+
 <li class="{% if cp contains 'pages' %}active{% endif %}">
   <a href="/developer-guide/pages/pages">Pages and Layouts</a>
-  <ul class="submenu">
-    {% include "shared/nav/link", href: "/developer-guide/pages/pages", text: "Pages" %}
-    {% include "shared/nav/link", href: "/developer-guide/pages/metadata", text: "Metadata" %}
-    {% include "shared/nav/link", href: "/developer-guide/pages/layouts", text: "Layouts" %}
-    {% include "shared/nav/link", href: "/developer-guide/pages/creating-layout", text: "Creating a Layout" %}
-    {% include "shared/nav/link", href: "/developer-guide/pages/creating-page", text: "Creating a Page" %}
-    {% include "shared/nav/link", href: "/developer-guide/pages/adding-new-page-custom-url", text: "Adding a New Page at a Custom URL" %}
-    {% include "shared/nav/link", href: "/developer-guide/pages/injecting-dynamic-content-into-layout", text: "Injecting Dynamic Content into a Layout" %}
+  {% if cp contains 'pages' %}
+    <ul class="submenu">
+      {% include "shared/nav/link", href: "/developer-guide/pages/pages", text: "Pages" %}
+      {% include "shared/nav/link", href: "/developer-guide/pages/metadata", text: "Metadata" %}
+      {% include "shared/nav/link", href: "/developer-guide/pages/layouts", text: "Layouts" %}
+      {% include "shared/nav/link", href: "/developer-guide/pages/creating-layout", text: "Creating a Layout" %}
+      {% include "shared/nav/link", href: "/developer-guide/pages/creating-page", text: "Creating a Page" %}
+      {% include "shared/nav/link", href: "/developer-guide/pages/adding-new-page-custom-url", text: "Adding a New Page at a Custom URL" %}
+      {% include "shared/nav/link", href: "/developer-guide/pages/injecting-dynamic-content-into-layout", text: "Injecting Dynamic Content into a Layout" %}
 
-    {% include "shared/nav/link", href: "/developer-guide/pages/reusing-code-across-multiple-pages", text: "Reusing Code Across Multiple Pages" %}
-    {% include "shared/nav/link", href: "/developer-guide/pages/response-headers", text: "Response Headers" %}
-    {% include "shared/nav/link", href: "/developer-guide/pages/search-by-content", text: "Search by content" %}
-    {% include "shared/nav/link", href: "/developer-guide/pages/redirects", text: "Redirects" %}
-    {% include "shared/nav/link", href: "/developer-guide/pages/custom-error-pages", text: "Custom Error Pages" %}
-  </ul>
+      {% include "shared/nav/link", href: "/developer-guide/pages/reusing-code-across-multiple-pages", text: "Reusing Code Across Multiple Pages" %}
+      {% include "shared/nav/link", href: "/developer-guide/pages/response-headers", text: "Response Headers" %}
+      {% include "shared/nav/link", href: "/developer-guide/pages/search-by-content", text: "Search by content" %}
+      {% include "shared/nav/link", href: "/developer-guide/pages/redirects", text: "Redirects" %}
+      {% include "shared/nav/link", href: "/developer-guide/pages/custom-error-pages", text: "Custom Error Pages" %}
+    </ul>
+  {% endif %}
 </li>
 
 <li class="{% if cp contains 'assets' %}active{% endif %}">
@@ -78,45 +81,51 @@
 </li>
 <li class="{% if cp contains 'users' %}active{% endif %}">
   <a href="/developer-guide/users/users">Users</a>
-  <ul class="submenu">
-    {% include "shared/nav/link", href: "/developer-guide/users/users", text: "Users" %}
-    {% include "shared/nav/link", href: "/developer-guide/users/creating-user-property", text: "Creating a Property for All Users" %}
-    {% include "shared/nav/link", href: "/developer-guide/users/creating-user-profile", text: "Creating a User Profile" %}
-    {% include "shared/nav/link", href: "/developer-guide/users/creating-sign-up-form", text: "Creating a Sign Up Form" %}
-    {% include "shared/nav/link", href: "/developer-guide/users/embedding-sign-up-form", text: "Embedding a Sign Up Form in a Page" %}
-    {% include "shared/nav/link", href: "/developer-guide/users/signing-in-user-manually", text: "Signing In a User Manually" %}
-    {% include "shared/nav/link", href: "/developer-guide/users/signing-in-user-automatically-after-sign-up", text: "Signing In a User Automatically after Sign Up" %}
-    {% include "shared/nav/link", href: "/developer-guide/users/authenticating-user-with-jwt-token", text: "Authenticating a User with a JWT token" %}
-    {% include "shared/nav/link", href: "/developer-guide/users/logging-out-authenticated-user", text: "Logging Out an Authenticated User" %}
-    {% include "shared/nav/link", href: "/developer-guide/users/resetting-password-authenticated-user", text: "Resetting Password of an Authenticated User" %}
-    {% include "shared/nav/link", href: "/developer-guide/users/accessing-authenticated-user-data", text: "Accessing Authenticated User Data" %}
-    {% include "shared/nav/link", href: "/developer-guide/users/sharing-attributes-across-multiple-profiles", text: "Sharing Attributes Across Multiple Profiles" %}
-  </ul>
+  {% if cp contains 'users' %}
+    <ul class="submenu">
+      {% include "shared/nav/link", href: "/developer-guide/users/users", text: "Users" %}
+      {% include "shared/nav/link", href: "/developer-guide/users/creating-user-property", text: "Creating a Property for All Users" %}
+      {% include "shared/nav/link", href: "/developer-guide/users/creating-user-profile", text: "Creating a User Profile" %}
+      {% include "shared/nav/link", href: "/developer-guide/users/creating-sign-up-form", text: "Creating a Sign Up Form" %}
+      {% include "shared/nav/link", href: "/developer-guide/users/embedding-sign-up-form", text: "Embedding a Sign Up Form in a Page" %}
+      {% include "shared/nav/link", href: "/developer-guide/users/signing-in-user-manually", text: "Signing In a User Manually" %}
+      {% include "shared/nav/link", href: "/developer-guide/users/signing-in-user-automatically-after-sign-up", text: "Signing In a User Automatically after Sign Up" %}
+      {% include "shared/nav/link", href: "/developer-guide/users/authenticating-user-with-jwt-token", text: "Authenticating a User with a JWT token" %}
+      {% include "shared/nav/link", href: "/developer-guide/users/logging-out-authenticated-user", text: "Logging Out an Authenticated User" %}
+      {% include "shared/nav/link", href: "/developer-guide/users/resetting-password-authenticated-user", text: "Resetting Password of an Authenticated User" %}
+      {% include "shared/nav/link", href: "/developer-guide/users/accessing-authenticated-user-data", text: "Accessing Authenticated User Data" %}
+      {% include "shared/nav/link", href: "/developer-guide/users/sharing-attributes-across-multiple-profiles", text: "Sharing Attributes Across Multiple Profiles" %}
+    </ul>
+  {% endif %}
 </li>
 
 <li class="{% if cp contains 'properties' %}active{% endif %}">
   <a href="/developer-guide/properties/properties">Properties</a>
-  <ul class="submenu">
-    {% include "shared/nav/link", href: "/developer-guide/properties/properties", text: "Properties" %}
-    {% include "shared/nav/link", href: "/developer-guide/properties/user-defined", text: "User-Defined Properties" %}
-    {% include "shared/nav/link", href: "/developer-guide/properties/arrays", text: "Arrays" %}
-    {% include "shared/nav/link", href: "/developer-guide/properties/custom-attachments", text: "Custom Attachments" %}
-    {% include "shared/nav/link", href: "/developer-guide/properties/custom-images", text: "Custom Images" %}
-  </ul>
+  {% if cp contains 'properties' %}
+    <ul class="submenu">
+      {% include "shared/nav/link", href: "/developer-guide/properties/properties", text: "Properties" %}
+      {% include "shared/nav/link", href: "/developer-guide/properties/user-defined", text: "User-Defined Properties" %}
+      {% include "shared/nav/link", href: "/developer-guide/properties/arrays", text: "Arrays" %}
+      {% include "shared/nav/link", href: "/developer-guide/properties/custom-attachments", text: "Custom Attachments" %}
+      {% include "shared/nav/link", href: "/developer-guide/properties/custom-images", text: "Custom Images" %}
+    </ul>
+  {% endif %}
 </li>
 
 <li class="{% if cp contains 'models' %}active{% endif %}">
   <a href="/developer-guide/models/models-model-schemas">Models</a>
-  <ul class="submenu">
-    {% include "shared/nav/link", href: "/developer-guide/models/models-model-schemas", text: "Models and Model Schemas" %}
-    {% include "shared/nav/link", href: "/developer-guide/models/data-backup-removal", text: "Data Backup and Removal" %}
-    {% include "shared/nav/link", href: "/developer-guide/models/building-contact-form-with-model", text: "Building a Contact Form with Models" %}
-    {% include "shared/nav/link", href: "/developer-guide/models/crud-models-using-ajax", text: "Managing Models using AJAX (CRUD operations)" %}
-    {% include "shared/nav/link", href: "/developer-guide/models/persisting-data-with-models", text: "Persisting Data With Models" %}
-    {% include "shared/nav/link", href: "/developer-guide/models/loading-related-models", text: "Loading Related Models" %}
-    {% include "shared/nav/link", href: "/developer-guide/models/loading-related-models-from-array", text: "Loading Related Models from an Array Property" %}
-    {% include "shared/nav/link", href: "/developer-guide/models/using-geojson-format-geolocation", text: "Using the GeoJSON format for Geolocation" %}
-  </ul>
+  {% if cp contains 'models' %}
+    <ul class="submenu">
+      {% include "shared/nav/link", href: "/developer-guide/models/models-model-schemas", text: "Models and Model Schemas" %}
+      {% include "shared/nav/link", href: "/developer-guide/models/data-backup-removal", text: "Data Backup and Removal" %}
+      {% include "shared/nav/link", href: "/developer-guide/models/building-contact-form-with-model", text: "Building a Contact Form with Models" %}
+      {% include "shared/nav/link", href: "/developer-guide/models/crud-models-using-ajax", text: "Managing Models using AJAX (CRUD operations)" %}
+      {% include "shared/nav/link", href: "/developer-guide/models/persisting-data-with-models", text: "Persisting Data With Models" %}
+      {% include "shared/nav/link", href: "/developer-guide/models/loading-related-models", text: "Loading Related Models" %}
+      {% include "shared/nav/link", href: "/developer-guide/models/loading-related-models-from-array", text: "Loading Related Models from an Array Property" %}
+      {% include "shared/nav/link", href: "/developer-guide/models/using-geojson-format-geolocation", text: "Using the GeoJSON format for Geolocation" %}
+    </ul>
+  {% endif %}
 </li>
 
 <li class="{% if cp contains 'search' %}active{% endif %}">
@@ -152,40 +161,46 @@
 </li>
 <li class="{% if cp contains 'forms' %}active{% endif %}">
   <a href="/developer-guide/forms/forms">Forms</a>
-  <ul class="submenu">
-    {% include "shared/nav/link", href: "/developer-guide/forms/forms", text: "Forms" %}
-    {% include "shared/nav/link", href: "/developer-guide/forms/form-configuration", text: "Form Configuration Options" %}
-    {% include "shared/nav/link", href: "/developer-guide/forms/form-rendering", text: "Form Rendering" %}
-    {% include "shared/nav/link", href: "/developer-guide/forms/form-server-side-processing", text: "Form Server Side Processing" %}
-    {% include "shared/nav/link", href: "/developer-guide/forms/flash-messages", text: "Flash Messages" %}
-    {% include "shared/nav/link", href: "/developer-guide/forms/default-payload", text: "Default Payload" %}
-    {% include "shared/nav/link", href: "/developer-guide/forms/validation", text: "Validation" %}
-    {% include "shared/nav/link", href: "/developer-guide/forms/examples", text: "Examples" %}
-  </ul>
+  {% if cp contains 'forms' %}
+    <ul class="submenu">
+      {% include "shared/nav/link", href: "/developer-guide/forms/forms", text: "Forms" %}
+      {% include "shared/nav/link", href: "/developer-guide/forms/form-configuration", text: "Form Configuration Options" %}
+      {% include "shared/nav/link", href: "/developer-guide/forms/form-rendering", text: "Form Rendering" %}
+      {% include "shared/nav/link", href: "/developer-guide/forms/form-server-side-processing", text: "Form Server Side Processing" %}
+      {% include "shared/nav/link", href: "/developer-guide/forms/flash-messages", text: "Flash Messages" %}
+      {% include "shared/nav/link", href: "/developer-guide/forms/default-payload", text: "Default Payload" %}
+      {% include "shared/nav/link", href: "/developer-guide/forms/validation", text: "Validation" %}
+      {% include "shared/nav/link", href: "/developer-guide/forms/examples", text: "Examples" %}
+    </ul>
+  {% endif %}
 </li>
 
 <li class="{% if cp contains '/developer-guide/notifications' %}active{% endif %}">
   <a href="/developer-guide/notifications/notifications">Notifications</a>
-  <ul class="submenu">
-    {% include "shared/nav/link", href: "/developer-guide/notifications/notifications", text: "Notifications" %}
-    {% include "shared/nav/link", href: "/developer-guide/notifications/creating-email-notification", text: "Creating an Email Notification" %}
-    {% include "shared/nav/link", href: "/developer-guide/notifications/using-email-layouts", text: "Using Email Layouts" %}
-    {% include "shared/nav/link", href: "/developer-guide/notifications/adding-attachments-email-notification", text: "Adding Attachments to an Email Notification" %}
-    {% include "shared/nav/link", href: "/developer-guide/notifications/creating-sms-notification", text: "Creating an SMS Notification" %}
-    {% include "shared/nav/link", href: "/developer-guide/notifications/creating-api-call-notification", text: "Creating an API Call Notification" %}
-    {% include "shared/nav/link", href: "/developer-guide/notifications/parsing-api-response", text: "Parsing an API Response" %}
-  </ul>
+  {% if cp contains '/developer-guide/notifications' %}
+    <ul class="submenu">
+      {% include "shared/nav/link", href: "/developer-guide/notifications/notifications", text: "Notifications" %}
+      {% include "shared/nav/link", href: "/developer-guide/notifications/creating-email-notification", text: "Creating an Email Notification" %}
+      {% include "shared/nav/link", href: "/developer-guide/notifications/using-email-layouts", text: "Using Email Layouts" %}
+      {% include "shared/nav/link", href: "/developer-guide/notifications/adding-attachments-email-notification", text: "Adding Attachments to an Email Notification" %}
+      {% include "shared/nav/link", href: "/developer-guide/notifications/creating-sms-notification", text: "Creating an SMS Notification" %}
+      {% include "shared/nav/link", href: "/developer-guide/notifications/creating-api-call-notification", text: "Creating an API Call Notification" %}
+      {% include "shared/nav/link", href: "/developer-guide/notifications/parsing-api-response", text: "Parsing an API Response" %}
+    </ul>
+  {% endif %}
 </li>
 
 <li class="{% if cp contains 'authorization' %}active{% endif %}">
   <a href="/developer-guide/authorization-policy/authorization-policy">Authorization Policy</a>
-  <ul class="submenu">
-    {% include "shared/nav/link", href: "/developer-guide/authorization-policy/authorization-policy", text: "Authorization Policy" %}
-    {% include "shared/nav/link", href: "/developer-guide/authorization-policy/adding-authorization-policy", text: "Adding an Authorization Policy" %}
-    {% include "shared/nav/link", href: "/developer-guide/authorization-policy/associating-authorization-policy-form", text: "Associating an Authorization Policy with Form" %}
-    {% include "shared/nav/link", href: "/developer-guide/authorization-policy/associating-authorization-policy-page", text: "Associating an Authorization Policy with a Page" %}
-    {% include "shared/nav/link", href: "/developer-guide/authorization-policy/handling-violated-authorization-policy", text: "Handling a Violated Authorization Policy" %}
-  </ul>
+  {% if cp contains 'authorization' %}
+    <ul class="submenu">
+      {% include "shared/nav/link", href: "/developer-guide/authorization-policy/authorization-policy", text: "Authorization Policy" %}
+      {% include "shared/nav/link", href: "/developer-guide/authorization-policy/adding-authorization-policy", text: "Adding an Authorization Policy" %}
+      {% include "shared/nav/link", href: "/developer-guide/authorization-policy/associating-authorization-policy-form", text: "Associating an Authorization Policy with Form" %}
+      {% include "shared/nav/link", href: "/developer-guide/authorization-policy/associating-authorization-policy-page", text: "Associating an Authorization Policy with a Page" %}
+      {% include "shared/nav/link", href: "/developer-guide/authorization-policy/handling-violated-authorization-policy", text: "Handling a Violated Authorization Policy" %}
+    </ul>
+  {% endif %}
 </li>
 
 
@@ -194,14 +209,16 @@
 </li>
 <li class="{% if cp contains 'modules' %}active{% endif %}">
   <a href="/developer-guide/modules/modules">Modules</a>
-  <ul class="submenu">
-    {% include "shared/nav/link", href: "/developer-guide/modules/modules", text: "Modules" %}
-    {% include "shared/nav/link", href: "/developer-guide/modules/creating-module", text: "Creating a Module" %}
-    {% include "shared/nav/link", href: "/developer-guide/modules/sharing-module", text: "Sharing a Module" %}
-    {% include "shared/nav/link", href: "/developer-guide/modules/installing-module", text: "Installing a Module" %}
-    {% include "shared/nav/link", href: "/developer-guide/modules/templates", text: "Module Templates" %}
-    {% include "shared/nav/link", href: "/developer-guide/modules/configuring-module-template", text: "Configuring a Module Template" %}
-  </ul>
+  {% if cp contains 'modules' %}
+    <ul class="submenu">
+      {% include "shared/nav/link", href: "/developer-guide/modules/modules", text: "Modules" %}
+      {% include "shared/nav/link", href: "/developer-guide/modules/creating-module", text: "Creating a Module" %}
+      {% include "shared/nav/link", href: "/developer-guide/modules/sharing-module", text: "Sharing a Module" %}
+      {% include "shared/nav/link", href: "/developer-guide/modules/installing-module", text: "Installing a Module" %}
+      {% include "shared/nav/link", href: "/developer-guide/modules/templates", text: "Module Templates" %}
+      {% include "shared/nav/link", href: "/developer-guide/modules/configuring-module-template", text: "Configuring a Module Template" %}
+    </ul>
+  {% endif %}
 </li>
 
 <li class="{% if cp contains 'payments' %}active{% endif %}">
@@ -257,18 +274,20 @@
 
 <li class="{% if cp contains 'integrations' %}active{% endif %}">
   <a href="/developer-guide/integrations/integrating-slack-api-call-notifications">Integrations</a>
-  <ul class="submenu">
-    {% include "shared/nav/link", href: "/developer-guide/integrations/integrating-slack-api-call-notifications", text: "Integrating Slack Using API Call Notifications" %}
-    {% include "shared/nav/link", href: "/developer-guide/integrations/integrating-sendgrid-api-call-notifications", text: "Integrating SendGrid Using API Call Notifications" %}
-    {% include "shared/nav/link", href: "/developer-guide/integrations/authenticating-domain-sendgrid", text: "Authenticating Your Domain on SendGrid" %}
-    {% include "shared/nav/link", href: "/developer-guide/integrations/adding-sendgrid-instance", text: "Adding SendGrid to an Instance" %}
-    {% include "shared/nav/link", href: "/developer-guide/integrations/integrating-twilio-api-call-notifications", text: "Integrating Twilio Using API Call Notifications" %}
-    {% include "shared/nav/link", href: "/developer-guide/integrations/integrating-mailchimp-api-call-notifications", text: "Integrating Mailchimp Using API Call Notifications" %}
-    {% include "shared/nav/link", href: "/developer-guide/integrations/integrating-activecampaign-api-call-notifications", text: "Integrating ActiveCampaign Using API Call Notifications" %}
-    {% include "shared/nav/link", href: "/developer-guide/integrations/integrating-sendinblue-api-call-notifications", text: "Integrating Sendinblue Using API Call Notifications" %}
-    {% include "shared/nav/link", href: "/developer-guide/integrations/adding-recaptcha-spam-protection", text: "Adding reCAPTCHA V2 Spam Protection" %}
-    {% include "shared/nav/link", href: "/developer-guide/integrations/adding-recaptcha-v3-spam-protection", text: "Adding reCAPTCHA V3 Spam Protection" %}
-  </ul>
+  {% if cp contains 'integrations' %}
+    <ul class="submenu">
+      {% include "shared/nav/link", href: "/developer-guide/integrations/integrating-slack-api-call-notifications", text: "Integrating Slack Using API Call Notifications" %}
+      {% include "shared/nav/link", href: "/developer-guide/integrations/integrating-sendgrid-api-call-notifications", text: "Integrating SendGrid Using API Call Notifications" %}
+      {% include "shared/nav/link", href: "/developer-guide/integrations/authenticating-domain-sendgrid", text: "Authenticating Your Domain on SendGrid" %}
+      {% include "shared/nav/link", href: "/developer-guide/integrations/adding-sendgrid-instance", text: "Adding SendGrid to an Instance" %}
+      {% include "shared/nav/link", href: "/developer-guide/integrations/integrating-twilio-api-call-notifications", text: "Integrating Twilio Using API Call Notifications" %}
+      {% include "shared/nav/link", href: "/developer-guide/integrations/integrating-mailchimp-api-call-notifications", text: "Integrating Mailchimp Using API Call Notifications" %}
+      {% include "shared/nav/link", href: "/developer-guide/integrations/integrating-activecampaign-api-call-notifications", text: "Integrating ActiveCampaign Using API Call Notifications" %}
+      {% include "shared/nav/link", href: "/developer-guide/integrations/integrating-sendinblue-api-call-notifications", text: "Integrating Sendinblue Using API Call Notifications" %}
+      {% include "shared/nav/link", href: "/developer-guide/integrations/adding-recaptcha-spam-protection", text: "Adding reCAPTCHA V2 Spam Protection" %}
+      {% include "shared/nav/link", href: "/developer-guide/integrations/adding-recaptcha-v3-spam-protection", text: "Adding reCAPTCHA V3 Spam Protection" %}
+    </ul>
+  {% endif %}
 </li>
 
 <li class="{% if cp contains 'identity-providers' %}active{% endif %}">
@@ -286,29 +305,33 @@
 </li>
 <li class="{% if cp contains 'partner-portal/users' %}active{% endif %}">
   <a href="/developer-guide/partner-portal/users/inviting-new-user-to-partner-portal">Users</a>
-  <ul class="submenu">
-    {% include "shared/nav/link", href: "/developer-guide/partner-portal/users/inviting-new-user-to-partner-portal", text: "Inviting a New User to the Partner Portal" %}
-    {% include "shared/nav/link", href: "/developer-guide/partner-portal/users/setting-up-users-partner-permissions", text: "Setting Up a User's Partner Permissions" %}
-    {% include "shared/nav/link", href: "/developer-guide/partner-portal/users/setting-up-users-instance-permissions", text: "Setting Up a User's Instance Permissions" %}
-    {% include "shared/nav/link", href: "/developer-guide/partner-portal/users/deleting-user", text: "Deleting a User" %}
-    {% include "shared/nav/link", href: "/developer-guide/partner-portal/users/setting-up-instance-partner-permissions-outside-own-partner", text: "Setting Up Instance and Partner Permissions for Users Outside of Your Own Partner" %}
-    {% include "shared/nav/link", href: "/developer-guide/partner-portal/users/updating-partner", text: "Updating a Partner" %}
-    {% include "shared/nav/link", href: "/developer-guide/partner-portal/users/changing-partner-user", text: "Changing the Partner of a User" %}
-  </ul>
+  {% if cp contains 'partner-portal/users' %}
+    <ul class="submenu">
+      {% include "shared/nav/link", href: "/developer-guide/partner-portal/users/inviting-new-user-to-partner-portal", text: "Inviting a New User to the Partner Portal" %}
+      {% include "shared/nav/link", href: "/developer-guide/partner-portal/users/setting-up-users-partner-permissions", text: "Setting Up a User's Partner Permissions" %}
+      {% include "shared/nav/link", href: "/developer-guide/partner-portal/users/setting-up-users-instance-permissions", text: "Setting Up a User's Instance Permissions" %}
+      {% include "shared/nav/link", href: "/developer-guide/partner-portal/users/deleting-user", text: "Deleting a User" %}
+      {% include "shared/nav/link", href: "/developer-guide/partner-portal/users/setting-up-instance-partner-permissions-outside-own-partner", text: "Setting Up Instance and Partner Permissions for Users Outside of Your Own Partner" %}
+      {% include "shared/nav/link", href: "/developer-guide/partner-portal/users/updating-partner", text: "Updating a Partner" %}
+      {% include "shared/nav/link", href: "/developer-guide/partner-portal/users/changing-partner-user", text: "Changing the Partner of a User" %}
+    </ul>
+  {% endif %}
 </li>
 
 <li class="{% if cp contains 'partner-portal/instances' %}active{% endif %}">
   <a href="/developer-guide/partner-portal/instances/finding-instances">Instances</a>
-  <ul class="submenu">
-    {% include "shared/nav/link", href: "/developer-guide/partner-portal/instances/finding-instances", text: "Finding Instances" %}
-    {% include "shared/nav/link", href: "/developer-guide/partner-portal/instances/changing-partner-instance", text: "Changing the Partner of an Instance" %}
-    {% include "shared/nav/link", href: "/developer-guide/partner-portal/instances/updating-instance", text: "Updating an Instance" %}
-    {% include "shared/nav/link", href: "/developer-guide/partner-portal/instances/updating-instance-configuration", text: "Updating Instance Configuration" %}
-    {% include "shared/nav/link", href: "/developer-guide/partner-portal/instances/checking-releases-instance", text: "Checking the Releases of an Instance" %}
-    {% include "shared/nav/link", href: "/developer-guide/partner-portal/instances/downloading-codebase-instance", text: "Downloading the Codebase of an Instance" %}
-    {% include "shared/nav/link", href: "/developer-guide/partner-portal/instances/unpublishing-instance", text: "Unpublishing an Instance" %}
-    {% include "shared/nav/link", href: "/developer-guide/partner-portal/instances/configuring-test-email", text: "Configuring a Test Email" %}
-  </ul>
+  {% if cp contains 'partner-portal/instances' %}
+    <ul class="submenu">
+      {% include "shared/nav/link", href: "/developer-guide/partner-portal/instances/finding-instances", text: "Finding Instances" %}
+      {% include "shared/nav/link", href: "/developer-guide/partner-portal/instances/changing-partner-instance", text: "Changing the Partner of an Instance" %}
+      {% include "shared/nav/link", href: "/developer-guide/partner-portal/instances/updating-instance", text: "Updating an Instance" %}
+      {% include "shared/nav/link", href: "/developer-guide/partner-portal/instances/updating-instance-configuration", text: "Updating Instance Configuration" %}
+      {% include "shared/nav/link", href: "/developer-guide/partner-portal/instances/checking-releases-instance", text: "Checking the Releases of an Instance" %}
+      {% include "shared/nav/link", href: "/developer-guide/partner-portal/instances/downloading-codebase-instance", text: "Downloading the Codebase of an Instance" %}
+      {% include "shared/nav/link", href: "/developer-guide/partner-portal/instances/unpublishing-instance", text: "Unpublishing an Instance" %}
+      {% include "shared/nav/link", href: "/developer-guide/partner-portal/instances/configuring-test-email", text: "Configuring a Test Email" %}
+    </ul>
+  {% endif %}
 </li>
 
 <li class="{% if cp contains 'partner-portal/domains' %}active{% endif %}">
