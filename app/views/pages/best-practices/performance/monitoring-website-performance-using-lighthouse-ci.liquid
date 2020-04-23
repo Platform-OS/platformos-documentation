@@ -12,12 +12,12 @@ To make sure we do not miss any performance issues/regressions, we set up monito
 
 Because of how our infrastructure is architected we will be using tools:
 
-* [Jenkins CI](https://jenkins.io) - it will run our code on github merge
+* [Jenkins CI](https://jenkins.io) - it will run our code on GitHub merge
 * [Docker](https://www.docker.com/) - it will handle isolation and dependencies needed for Lighthouse
 * `kanti/lighthouse-ci` - docker image
 * Slack - to receive notifications
 
-Note: You can use the same technique on any CI/CD system you want: Github Actions, CircleCI, TeamCity, Codeship, Travis CI - as long as it has support for docker images. If there is no docker support, you should probably just use [`lighthouse-ci`](https://github.com/GoogleChrome/lighthouse-ci) directly, without docker. Read official [quick start](https://github.com/GoogleChrome/lighthouse-ci#quick-start).
+Note: You can use the same technique on any CI/CD system you want: GitHub Actions, CircleCI, TeamCity, Codeship, Travis CI - as long as it has Docker support. Without Docker you should use [`lighthouse-ci`](https://github.com/GoogleChrome/lighthouse-ci) directly. Read official [quick start](https://github.com/GoogleChrome/lighthouse-ci#quick-start) for more information on that.
 
 ## Infrastructure
 
@@ -31,9 +31,11 @@ Our documentation site is built, tested and deployed automatically, every time c
 6a. If they pass, code is deployed to production
 6b. If they fail, code is not deployed
 
-We want to add step 7, which will test homepage and one content page and write to us on Slack with the results.
+We want to add step 7, which will test homepage and one content page and notify us on Slack with the results.
 
 ## Code
+
+This the final result of our work:
 
 ```shell
 stage('Lighthouse') {
@@ -73,7 +75,7 @@ when {
 }
 ```
 
-Code will be executed only when code was pushed to `master` branch and build URL was not overridden. It is helpful because sometimes we want to build from master branch to a different environment for testing purposes.
+Code will be executed only when code was pushed to `master` branch and build URL was not overridden. It is helpful because sometimes we want to build from `master` branch to a different environment for testing purposes.
 
 ```shell
 agent { docker { image 'kanti/lighthouse-ci' } }
@@ -102,7 +104,7 @@ lighthouseContent = sh(returnStdout: true, script: 'grep perf $HOME/tmp/lighthou
 
 Take lines with `perf` in them and save them to a variable. In practice, this means we are throwing away scores from other audits.
 
-If we didnt do it, we would get also accessibility, seo and best practices scores, like that:
+If we didn't do it, we would get also accessibility, seo and best practices scores:
 
 ```shell
 performance: 81
@@ -113,21 +115,20 @@ pwa: 56
 All checks are passing. 🎉
 ```
 
-We are interested only in performance, but you might want to get more of the report.
+We are interested only in performance, but your requirement might be different. Note that you can specify which audits will be run when running `lighthouse-ci` CLI.
 
 ```shell
 slackSend (channel: "#notifications-docs", color: '#304ffe', message: "Lighthouse Home ${lighthouseHome}")
 slackSend (channel: "#notifications-docs", color: '#304ffe', message: "Lighthouse Content ${lighthouseContent}")
 ```
 
-Send notification with scores to a Slack channel.
+Send notification to a Slack channel.
 
 ## Results
 
 Now every time we do a production deploy (automatically), we also check if we did not introduce a speed regression.
 
 <img src="{{ 'images/best-practices/lighthouse/slack-notification.png' | asset_url }}" alt="Slack notification" loading="lazy">
-
 
 
 ## Other resources
