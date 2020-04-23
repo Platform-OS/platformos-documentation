@@ -2,12 +2,10 @@ const defaultTheme = require('tailwindcss/defaultTheme');
 
 module.exports = {
   theme: {
-    colors: {
-      'body': '#4a4a4a',
-      black: '#000000',
-      white: '#ffffff'
-    },
     extend: {
+      colors: {
+        'body': '#4a4a4a',
+      },
       fontFamily: {
         sans: ['Gotham', ...defaultTheme.fontFamily.sans],
       },
