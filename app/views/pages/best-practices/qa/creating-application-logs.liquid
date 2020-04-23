@@ -30,7 +30,7 @@ Create a page using the `log` Liquid tag, and sync it.
 {% raw %}
 {% log 'This is a message' %}
 {% log params, type: 'request-params' %}
-{% log user.id, type: 'debug' %}
+{% log 'This will be an error', type: 'error' %}
 {% endraw %}
 ```
 
@@ -49,3 +49,16 @@ pos-cli logs staging
 </code></pre>
 
 This pulls the logs from the server every couple of seconds and displays them in your command line.
+
+### Example
+
+```shell
+[2020-04-23 14:53:24.998Z] - info: This is a message
+path: /test/logs/debug
+[2020-04-23 14:53:25.094Z] - request-params: {"slug":"test","slug2":"logs","slug3":"debug","format":"html"}
+path: /test/logs/debug
+[2020-04-23 14:53:25.116Z] - error: This will be an error
+path: /test/logs/debug
+```
+
+As you can see, we are also logging a path which triggered particular log entry. This way you can find cause of the trouble easier.
