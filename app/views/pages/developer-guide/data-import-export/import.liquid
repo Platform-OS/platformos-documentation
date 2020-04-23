@@ -38,10 +38,9 @@ You can generate data from an existing Instance with the `pos-cli data export` c
 
 With pos-cli data, you can export/import Instance data (information entered by the users).
 
+platformOS CLI provides the `pos-cli data import` command for uploading and importing data from a JSON file or ZIP archive with CSV files. It accepts one option:
 
-platformOS CLI provides the `pos-cli data import` command for uploading and importing data from a JSON file. It accepts one option:
-
-- --path (short: -p): A path to a JSON data file to be imported
+- --path (short: -p): A path to a JSON or ZIP files to be imported
 
 Under the hood, the CLI uses the GraphQL import API that's described in the next section. However, using the CLI provides some major benefits:
 
@@ -214,3 +213,67 @@ curl -F "import[data]=@data.json" \
 </code></pre>
 
 {% include 'alert/note', content: 'You can find your API Token in [Partner Portal](https://partners.platformos.com/me) under "Access Key".' %}
+
+## Data Import using CSV files
+
+It is possible to import data using CSV files. This is in fact the most straightforward and performant way of doing it.
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+pos-cli data import --path=archive.zip staging-instance
+</code></pre>
+
+### CSV data format
+
+Inside the ZIP archive there should be CSV files with data to be imported. For example:
+
+```bash
+models.csv
+users.csv
+user_profiles.csv
+```
+
+- Before import, your model schemas need to be deployed.
+
+- CSV files only support comma separated values, it might be a good idea to use linter like [CSVlint](https://github.com/Clever/csvlint) to check the file in case of doubts
+- A well formatted file has header with names of columns available for given type, and one or more rows of data
+
+### Example file for Models
+
+```csv
+id,user_id,created_at,updated_at,properties,custom_model_type_name
+1,,2020-03-13 11:22:54.825836,2020-03-17 05:32:41.477453,"{""name"": ""Buy milk"", ""done"": ""false""}",todo
+2,,2020-03-13 11:27:26.236759,2020-03-17 05:39:34.765109,"{""name"": ""Do code reviews"", ""done"": ""true""}",todo
+3,,2020-03-13 11:27:26.236759,2020-03-17 05:39:34.765109,"{""name"": ""Fix a tpyo"", ""done"": ""false""}",todo
+```
+
+This file will import Models matching the Model Schema for: "todo". If you notice, there's a typo in object with id=3, to fix it you can edit the file:
+
+```csv
+id,user_id,created_at,updated_at,properties,custom_model_type_name
+1,,2020-03-13 11:22:54.825836,2020-03-17 05:32:41.477453,"{""name"": ""Buy milk"", ""done"": ""false""}",todo
+2,,2020-03-13 11:27:26.236759,2020-03-17 05:39:34.765109,"{""name"": ""Do code reviews"", ""done"": ""true""}",todo
+3,,2020-03-13 11:27:26.236759,2020-03-17 05:39:34.765109,"{""name"": ""Fix a typo"", ""done"": ""true""}",todo
+```
+
+And now importing will just update the data of matching rows. Even if you add new rows, only they will be added, the existing ones will not be deleted.
+Additionally not all columns are required, so for example this will work as well:
+
+```csv
+properties,custom_model_type_name
+"{""name"": ""Buy milk"", ""done"": ""false""}",todo
+"{""name"": ""Do code reviews"", ""done"": ""true""}",todo
+```
+
+### Example file for Users
+
+```csv
+id,email,encrypted_password,created_at,updated_at,name,authentication_token,slug,time_zone,first_name,middle_name,last_name,external_id,properties
+1,api@example.com,abcdefghijaklmnoprst111,2020-03-11 05:44:13.302432,2020-03-11 05:44:13.302432,api@example.com,xyz123fhfhfh,api-example-com,,John,A,Smith,af56f347-ecdd-4636-8cf6-76aa58f89b61,{}
+```
+
+### Example file for UserProfiles
+
+```csv
+id,user_id,proile_type,created_at,updated_at,properties,instance_profile_type_name
+1,2,"buyer",2020-03-11 05:44:13.302432,2020-03-11 05:44:13.302432,"{""name"": ""Our Services""}","modules/menu/buyer"
+```
