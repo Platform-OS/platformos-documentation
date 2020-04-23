@@ -1,0 +1,137 @@
+---
+converter: markdown
+metadata:
+  title: Monitoring Website Performance Using Lighthouse-CI
+  description: To make sure you do not miss any performance regressions, it is a good practice to set up monitoring.
+---
+
+We treat performance seriously in platformOS. We want our services, including documentation site, to just fly to devices, no matter how bad the connection is.
+To make sure we do not miss any performance issues/regressions, we set up monitoring after every production deploy to have an high-level overview.
+
+## Prerequisites
+
+Because of how our infrastructure is architected we will be using tools:
+
+* [Jenkins CI](https://jenkins.io) - it will run our code on github merge
+* [Docker](https://www.docker.com/) - it will handle isolation and dependencies needed for Lighthouse
+* `kanti/lighthouse-ci` - docker image
+* Slack - to receive notifications
+
+Note: You can use the same technique on any CI/CD system you want: Github Actions, CircleCI, TeamCity, Codeship, Travis CI - as long as it has support for docker images. If there is no docker support, you should probably just use [`lighthouse-ci`](https://github.com/GoogleChrome/lighthouse-ci) directly, without docker. Read official [quick start](https://github.com/GoogleChrome/lighthouse-ci#quick-start).
+
+## Infrastructure
+
+Our documentation site is built, tested and deployed automatically, every time code is pushed to master branch.
+
+1. Code is pushed to `master` branch
+2. Jenkins starts its job
+3. Assets are built
+4. Code is deployed to staging
+5. TestCafe tests are run on staging environment
+6a. If they pass, code is deployed to production
+6b. If they fail, code is not deployed
+
+We want to add step 7, which will test homepage and one content page and write to us on Slack with the results.
+
+## Code
+
+```shell
+stage('Lighthouse') {
+  when {
+    expression { return params.MP_URL.isEmpty() }
+    branch 'master'
+  }
+
+  agent { docker { image 'kanti/lighthouse-ci' } }
+
+  steps {
+    sh 'curl https://documentation.platformos.com -o warmup.txt'
+    sh 'curl https://documentation.platformos.com/developer-guide/glossary -o warmup2.txt'
+
+    sh 'lighthouse-ci https://documentation.platformos.com > $HOME/tmp/lighthouse-home.txt'
+    sh 'lighthouse-ci https://documentation.platformos.com/developer-guide/glossary > $HOME/tmp/lighthouse-content.txt'
+
+    script {
+      lighthouseHome = sh(returnStdout: true, script: 'grep perf $HOME/tmp/lighthouse-home.txt').trim()
+      lighthouseContent = sh(returnStdout: true, script: 'grep perf $HOME/tmp/lighthouse-content.txt').trim()
+
+      slackSend (channel: "#notifications-docs", color: '#304ffe', message: "Lighthouse Home ${lighthouseHome}")
+      slackSend (channel: "#notifications-docs", color: '#304ffe', message: "Lighthouse Content ${lighthouseContent}")
+    }
+  }
+}
+```
+
+## Explanation
+
+Some of the code you might recognize as standard linux commands, lets go through the code piece by piece.
+
+```shell
+when {
+  expression { return params.MP_URL.isEmpty() }
+  branch 'master'
+}
+```
+
+Code will be executed only when code was pushed to `master` branch and build URL was not overridden. It is helpful because sometimes we want to build from master branch to a different environment for testing purposes.
+
+```shell
+agent { docker { image 'kanti/lighthouse-ci' } }
+```
+
+Everything in steps block execute within context of `kanti/lighthouse-ci` docker container.
+
+```shell
+sh 'curl https://documentation.platformos.com -o warmup.txt'
+sh 'curl https://documentation.platformos.com/developer-guide/glossary -o warmup2.txt'
+```
+
+Run `curl` to those two URLs to warm up cache after deploy, if there is any cache.
+
+```shell
+sh 'lighthouse-ci https://documentation.platformos.com > $HOME/tmp/lighthouse-home.txt'
+sh 'lighthouse-ci https://documentation.platformos.com/developer-guide/glossary > $HOME/tmp/lighthouse-content.txt'
+```
+
+Run `lighthouse-ci` on given URLs and output the report to respective text files. In this line we could also add treshold below which lighthouse-ci would use `exit 1` and fail the build. But we didn't see the need for that.
+
+```shell
+lighthouseHome = sh(returnStdout: true, script: 'grep perf $HOME/tmp/lighthouse-home.txt').trim()
+lighthouseContent = sh(returnStdout: true, script: 'grep perf $HOME/tmp/lighthouse-content.txt').trim()
+```
+
+Take lines with `perf` in them and save them to a variable. In practice, this means we are throwing away scores from other audits.
+
+If we didnt do it, we would get also accessibility, seo and best practices scores, like that:
+
+```shell
+performance: 81
+accessibility: 100
+best-practices: 100
+seo: 100
+pwa: 56
+All checks are passing. 🎉
+```
+
+We are interested only in performance, but you might want to get more of the report.
+
+```shell
+slackSend (channel: "#notifications-docs", color: '#304ffe', message: "Lighthouse Home ${lighthouseHome}")
+slackSend (channel: "#notifications-docs", color: '#304ffe', message: "Lighthouse Content ${lighthouseContent}")
+```
+
+Send notification with scores to a Slack channel.
+
+## Results
+
+Now every time we do a production deploy (automatically), we also check if we did not introduce a speed regression.
+
+<img src="{{ 'images/best-practices/lighthouse/slack-notification.png' | asset_url }}" alt="Slack notification" loading="lazy">
+
+
+
+## Other resources
+
+* If you don't want to write code yourself take a look at https://speedcurve.com/ (paid).
+* If you want more information, timelines, comparisons with competition, take a look at https://www.sitespeed.io/ (open source, self-hosted).
+* [Lighthouse-CI Github Action](https://github.com/treosh/lighthouse-ci-action)
