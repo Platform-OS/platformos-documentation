@@ -136,8 +136,7 @@ pipeline {
           lighthouseHome = sh(returnStdout: true, script: 'grep perf $HOME/tmp/lighthouse-home.txt').trim()
           lighthouseContent = sh(returnStdout: true, script: 'grep perf $HOME/tmp/lighthouse-content.txt').trim()
 
-          slackSend (channel: "#notifications-docs", color: '#304ffe', message: "Lighthouse Home ${lighthouseHome}")
-          slackSend (channel: "#notifications-docs", color: '#304ffe', message: "Lighthouse Content ${lighthouseContent}")
+          slackSend (channel: "#notifications-docs", color: '#304ffe', message: "LH Home: ${lighthouseHome}   |   LH Content: ${lighthouseContent}")
         }
       }
     }
