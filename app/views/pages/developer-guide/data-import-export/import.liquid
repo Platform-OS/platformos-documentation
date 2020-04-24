@@ -240,7 +240,7 @@ user_profiles.csv
 ### Example file for Models
 
 ```csv
-id,user_id,created_at,updated_at,properties,custom_model_type_name
+id,user_id,created_at,updated_at,properties,model_schema
 1,,2020-03-13 11:22:54.825836,2020-03-17 05:32:41.477453,"{""name"": ""Buy milk"", ""done"": ""false""}",todo
 2,,2020-03-13 11:27:26.236759,2020-03-17 05:39:34.765109,"{""name"": ""Do code reviews"", ""done"": ""true""}",todo
 3,,2020-03-13 11:27:26.236759,2020-03-17 05:39:34.765109,"{""name"": ""Fix a tpyo"", ""done"": ""false""}",todo
@@ -249,7 +249,7 @@ id,user_id,created_at,updated_at,properties,custom_model_type_name
 This file will import Models matching the Model Schema for: "todo". If you notice, there's a typo in object with id=3, to fix it you can edit the file:
 
 ```csv
-id,user_id,created_at,updated_at,properties,custom_model_type_name
+id,user_id,created_at,updated_at,properties,model_schema
 1,,2020-03-13 11:22:54.825836,2020-03-17 05:32:41.477453,"{""name"": ""Buy milk"", ""done"": ""false""}",todo
 2,,2020-03-13 11:27:26.236759,2020-03-17 05:39:34.765109,"{""name"": ""Do code reviews"", ""done"": ""true""}",todo
 3,,2020-03-13 11:27:26.236759,2020-03-17 05:39:34.765109,"{""name"": ""Fix a typo"", ""done"": ""true""}",todo
@@ -259,7 +259,7 @@ And now importing will just update the data of matching rows. Even if you add ne
 Additionally not all columns are required, so for example this will work as well:
 
 ```csv
-properties,custom_model_type_name
+properties,model_schema
 "{""name"": ""Buy milk"", ""done"": ""false""}",todo
 "{""name"": ""Do code reviews"", ""done"": ""true""}",todo
 ```
