@@ -146,6 +146,23 @@ pipeline {
       }
     }
   }
+
+  post {
+    success {
+      script {
+        if (env.GIT_BRANCH == 'master') {
+          slackSend (channel: "#notifications-docs", color: '#00FF00', message: "OK: <${env.BUILD_URL}|#${env.BUILD_NUMBER}>. ${commitInfo()}")
+        }
+      }
+    }
+    failure {
+      script {
+        if (env.GIT_BRANCH == 'master') {
+          slackSend (channel: "#notifications-docs", color: '#FF0000', message: "BAD: <${env.BUILD_URL}|#${env.BUILD_NUMBER}>. ${commitInfo()}")
+        }
+      }
+    }
+ }
 }
 
 def commitInfo() {
