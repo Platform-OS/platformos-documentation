@@ -21,7 +21,7 @@ Source: [MDN web docs - Lazy loading](https://developer.mozilla.org/en-US/docs/W
 
 ## Solutions
 
-What you want is to have the smallest possible footprint that your user accepts. "What your user accepts" is a very subjective term, and you need to make a decision — what is better: Faster load times and less money spent on bandwidth, or better looking images. You need to know why people came to your website and prioritize or deprioritize the quality of some of your images. 
+What you want is to have the smallest possible footprint that your user accepts. "What your user accepts" is a very subjective term, and you need to make a decision — what is better: Faster load times and less money spent on bandwidth, or better looking images. You need to know why people came to your website and prioritize or deprioritize the quality of some of your images.
 
 For images that are purely decorative (for example, backgrounds) users can tolerate more quality degradation, because this is not crucial content. It's nice to have, and it is even nicer if it does not make your webpage feel sluggish. You need to assess the risk to reward ratio and make a decision that's best for your website, often on an image by image basis.
 Product photos, your photos if you are a photographer, people's faces, big images that are essential on a page are another story, you might want to keep them closer to the original, even when using lossy compression, because this is crucial content - it is showing what your product is about, it is about selling or telling a story.
@@ -35,7 +35,7 @@ Let's see what is left in the bitmap formats:
 * JPEG (or jpg) - use for photos. The more colors and gradients, the better JPEG stands in terms of size/performance vs PNG
 * GIF - limited to 256 colors, has transparency support
 * PNG - use for everything else, especially if there is not a lot of colors (at some point JPEG is going to be better), or you need 8bit alpha channel. If you need lossless graphics, PNG is also your best bet
-* WEBP - as of April 2020 it still has [no universal support](https://caniuse.com/#search=webp) despite being a very good format, so we will ignore it - it takes too much time and effort to shave off a couple of KBs in the most popular browsers just to get a bug report a year later that something is broken in Safari since 2017 when it was introduced. Remember, that your users will very rarely report a bug, they will just leave, so minimizing risks is important. 
+* WEBP - as of April 2020 it still has [no universal support](https://caniuse.com/#search=webp) despite being a very good format, so we will ignore it - it takes too much time and effort to shave off a couple of KBs in the most popular browsers just to get a bug report a year later that something is broken in Safari since 2017 when it was introduced. Remember, that your users will very rarely report a bug, they will just leave, so minimizing risks is important.
 
 ### Size
 
@@ -62,7 +62,7 @@ There are three different methods that we use for compressing images, depending 
 
 1) [ImageOptim](https://imageoptim.com) - Used in projects where there is constant developer supervision, and can do it by hand once in a while, and images do not change.
 2) [sharp](https://www.npmjs.com/package/sharp) - extremely performant compressor with some additional options like resizing, can be used programmatically or as a [CLI](https://www.npmjs.com/package/sharp-cli). We use it when we need to compress a lot of images very quickly. We use it in high performance applications where speed is crucial and/or operations on the image are needed.
-3) [imagemin](https://www.npmjs.com/package/imagemin) - node package and its plugins that wrap other image compressors like pngquant, optipng, gifsicle, jpegtran, and others. Can be used as a webpack loader ([imagemin-webpack](https://www.npmjs.com/package/imagemin-webpack)) and this is his strength - its authors are maintaining all the binaries required for the most popular compressors. We use it in situations where a project is not under developer supervision and non-technical people can throw uncompressed images straight from the phone to the repository. 
+3) [imagemin](https://www.npmjs.com/package/imagemin) - node package and its plugins that wrap other image compressors like pngquant, optipng, gifsicle, jpegtran, and others. Can be used as a webpack loader ([imagemin-webpack](https://www.npmjs.com/package/imagemin-webpack)) and this is his strength - its authors are maintaining all the binaries required for the most popular compressors. We use it in situations where a project is not under developer supervision and non-technical people can throw uncompressed images straight from the phone to the repository.
 
 #### JPEG progressive
 
@@ -99,15 +99,17 @@ To be fair, we will measure the time they took to compress the images and use re
 sharp -i *.jpg -o compressed  4.93s user 2.72s system 438% cpu 1.744 total
 ```
 
-Sharp result: `5,450,220` (saved: `2,064,274` bytes) in `1.7` seconds
+Sharp result: `5,450,220` (saved: `2,064,274` bytes, or 27%) in `1.7` seconds
 
 ```shell
 imageoptim --quality 80-80 *.jpg  21.55s user 5.39s system 171% cpu 15.686 total
 ```
 
-imageoptim result: `4,167,764` (saved: `3,346,730` bytes) in `15.6` seconds
+imageoptim result: `4,167,764` (saved: `3,346,730` bytes, or 44%) in `15.6` seconds
 
 Keep in mind, that using `sharp` we could also make some resizing operations in one go, which is a great safety switch when you don't know who will upload the image and how but you know the target size of it on your site.
+
+Sharp did the job much quicker, but yielded output images are bigger. Imageoptim did much better job on compressing the images, but almost 10 times slower. Our recommendation is to use Imageoptim for one-time optimization (for example, header image, logo, team photos), and use sharp for images that are uploaded synchronously and response time is crucial.
 
 No automated image compression is perfect, but modern compressors use very sophisticated metrics like [DSSIM](https://github.com/kornelski/dssim) to make their work as transparent for humans as possible, that's why we opt for automated compression in situations where there is more than one image a week to be compressed or the project has no dedicated developer to do it manually.
 
