@@ -1,0 +1,118 @@
+---
+converter: markdown
+metadata:
+  title: Optimizing Image Files
+  description: In this article you can learn about the steps we are going through when preparing images for our web properties.
+---
+
+In this article you can learn about the steps we are going through when preparing images for our web properties. We are not going to dive into too much detail, but focus on transferring a lot of experience and linking to resources that will explain exactly how to use that experience to your advantage. This time we will only talk about bitmaps - if you are interested in optimizing SVG, read [Optimizing SVG Exported from Figma](https://documentation.platformos.com/use-cases/optimizing-svg-exported-from-figma).
+
+## Problem
+
+The problem is simple, but not always easy to solve - heavy images that your users need to download and display, costing mobile users a fortune and making them wait for far too long to see the content they visited the page for. Images take up on average 60% of the page weight and websites are growing year by year, while network speeds (especially mobile) can't keep up. Downloading takes time, rendering images takes time and then keeping those big images on the screen takes memory.
+
+<blockquote>
+Between 2011 and 2019, the median resource weight increased from ~100KB to ~400KB for desktop and ~50KB to ~350KB for mobile.
+While Image size has increased from ~250KB to ~900KB on desktop and ~100KB to ~850KB on mobile.
+</blockquote>
+
+Source: [MDN web docs - Lazy loading](https://developer.mozilla.org/en-US/docs/Web/Performance/Lazy_loading#Overview)
+
+
+## Solutions
+
+What you want is to have the smallest possible footprint that your user accepts. "What your user accepts" is a very subjective term, and you need to make a decision — what is better: Slower load times and money wasted on bandwidth, or better looking images. You need to know why people came to your website and prioritize or deprioritize the quality of some of your images. 
+
+For images that are purely decorative (for example, backgrounds) users can tolerate more quality degradation, because this is not crucial content. It's nice to have, and it is even nicer if it does not make your webpage feel sluggish. You need to assess the risk to reward ratio and make a decision that's best for your website, often on an image by image basis.
+Product photos, your photos if you are a photographer, people's faces, big images that are essential on a page are another story, you might want to keep them closer to the original, even when using lossy compression, because this is crucial content - it is showing what your product is about, it is about selling or telling a story.
+
+### Formats
+
+We are only going to describe raster images in this article, but keep in mind, that if you can use SVG because you have the vector source of the image, use it. It is very possible that if your image is not a photo and does not have a lot of colors, SVG will be a good format for it.
+
+Let's see what is left in the bitmap formats:
+
+* JPEG (or jpg) - use for photos. The more colors and gradients, the better JPEG stands in terms of size/performance vs PNG
+* GIF - limited to 256 colors, has transparency support
+* PNG - use for everything else, especially if there is not a lot of colors (at some point JPEG is going to be better), or you need 8bit alpha channel. If you need lossless graphics, PNG is also your best bet
+* WEBP - as of April 2020 it still has [no universal support](https://caniuse.com/#search=webp) despite being a very good format, so we will ignore it - it takes too much time and effort to shave off a couple of KBs in the most popular browsers just to get a bug report a year later that something is broken in Safari since 2017 when it was introduced. Remember, that your users will very rarely report a bug, they will just leave, so minimizing risks is important. 
+
+### Size
+
+If your image is 3000x4000px and you are displaying it as 300x400px, most of those pixels are wasted. And most of the bandwidth used to send those pixels is also wasted.
+
+Let's assume we are talking about a product photo on a search list. There is 20 search results per page. On desktop it is displayed as 400x200, on mobile there is one column and the image is displayed as 100% width, let's say 600px and height proportionally. Keep in mind that the pixel became a subjective measure since high DPI screens entered the market.
+
+There are a couple of approaches here to consider:
+
+1) Generate only the largest image you need
+    We think this is the correct choice for most websites. If the difference between the smallest and largest image is not especially big, we would just go with that — this is what we use in our documentation site.
+2) Generate one small, one medium, and one big image
+    This approach is trying to target small, medium and big screens. I would use this approach if the size difference between the images are at least 50%. For example: small 12 KB, medium 25 KB, big 40 KB. If there is not enough difference between those images, we recommend cutting the middle one out to make better use of the cache.
+3) Generate all the possible variants you need, including high DPI
+    This is the most time consuming approach, both for the CPU that needs to generate those images, and for the developer who needs to hardcode every image version to a breakpoint in the layout. This also requires images to be in the best source possible, beacause the high DPI version will require more pixels to get the same image size on the screen. You probably don't need it, but having the experience and skillset to do it is good to have, just in case, especially if you are doing client work.
+
+Multiple images also require more involvement in the HTML code (and often CSS code). To learn how to use more than one image depending on screen size, you will find great resources for further read at the end of the article.
+
+### Compression
+
+In 2020 most of the web is still using formats invented over 20 years ago, but just because we use JPEG for photos, does not mean we can't make the same images smaller. Algorithms like `mozjpeg` or `Guetzli` showed that there is still room for improvement.
+
+There are three different methods that we use for compressing images, depending on how often it needs to happen, who will introduce images to the repository and how good they have to be:
+
+1) [ImageOptim](https://imageoptim.com) - Used in projects where there is constant developer supervision, and can do it by hand once in a while, and images do not change.
+2) [sharp](https://www.npmjs.com/package/sharp) - extremely performant compressor with some additional options like resizing, can be used programmatically or as a [CLI](https://www.npmjs.com/package/sharp-cli). We use it when we need to compress a lot of images very quickly. We use it in high performance applications where speed is crucial and/or operations on the image are needed.
+3) [imagemin](https://www.npmjs.com/package/imagemin) - node package and its plugins that wrap other image compressors like pngquant, optipng, gifsicle, jpegtran, and others. Can be used as a webpack loader ([imagemin-webpack](https://www.npmjs.com/package/imagemin-webpack)) and this is his strength - its authors are maintaining all the binaries required for the most popular compressors. We use it in situations where a project is not under developer supervision and non-technical people can throw uncompressed images straight from the phone to the repository. 
+
+#### JPEG progressive
+
+Make sure you are setting progressive to true for big JPEG images - it will improve the perceived speed of loading the image.
+
+Read more on progressive JPEGs:
+
+* Thewebmaster: [Progressive JPEGs - How to improve website speed](https://www.thewebmaster.com/dev/2016/feb/10/how-progressive-jpegs-can-speed-up-your-website/).
+* Liquidweb: [What is progressive JPEG](https://www.liquidweb.com/kb/what-is-a-progressive-jpeg/)
+
+### Delivery
+
+Users often close your webpage before they even scroll down, so it is a good idea to lazy load images that are below the fold.
+
+If you don't know which images are good candidates for lazy loading, as a general rule of thumb, measure 1280px from the top of the page, every image below that line can be safely lazy loaded.
+
+Read more about [native lazy loading](https://developer.mozilla.org/en-US/docs/Web/Performance/Lazy_loading#Images_and_iframes).
+
+Another trick to make your images less impactful when loading is using placeholders for the loading time, and updating the source of the images to the real `src` later. We don't recommend this as a performance improvement, because nowadays browsers know exactly how to prioritize requests for resources, but it can make loading a better experience if your website is a Single Page Application - YouTube is a good example of that.
+
+## Example
+
+As an example, we will download an example set of images (only JPEG) from a live webpage, save it in two copies and run two tools on them - `sharp-cli` and `imageoptim-cli`.
+
+```shell
+npm i -g sharp-cli imageoptim-cli
+```
+
+The original set of images is exactly `7,514,494` bytes.
+
+To be fair, we will measure the time they took to compress the images and use relatively the same settings (quality 80).
+
+```shell
+sharp -i *.jpg -o compressed  4.93s user 2.72s system 438% cpu 1.744 total
+```
+
+Sharp result: `5,450,220` (saved: `2,064,274` bytes) in `1.7` seconds
+
+```shell
+imageoptim --quality 80-80 *.jpg  21.55s user 5.39s system 171% cpu 15.686 total
+```
+
+imageoptim result: `4,167,764` (saved: `3,346,730` bytes) in `15.6` seconds
+
+Keep in mind, that using `sharp` we could also make some resizing operations in one go, which is a great safety switch when you don't know who will upload the image and how but you know the target size of it on your site.
+
+No automated image compression is perfect, but modern compressors use very sophisticated metrics like [DSSIM](https://github.com/kornelski/dssim) to make their work as transparent for humans as possible, that's why we opt for automated compression in situations where there is more than one image a week to be compressed or the project has no dedicated developer to do it manually.
+
+## Resources
+
+* MDN: [Responsive images](https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images)
+* CSS Tricks: [Responsive Images: If you’re just changing resolutions, use srcset.](https://css-tricks.com/responsive-images-youre-just-changing-resolutions-use-srcset/)
+* Google Web Fundamentals: [Images](https://developers.google.com/web/fundamentals/design-and-ux/responsive/images)
