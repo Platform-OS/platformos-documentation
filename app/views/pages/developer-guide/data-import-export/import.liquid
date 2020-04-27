@@ -233,7 +233,6 @@ user_profiles.csv
 ```
 
 - Before import, your model schemas need to be deployed.
-
 - CSV files only support comma separated values, it might be a good idea to use linter like [CSVlint](https://github.com/Clever/csvlint) to check the file in case of doubts
 - A well formatted file has header with names of columns available for given type, and one or more rows of data
 
@@ -270,6 +269,10 @@ properties,model_schema
 id,email,encrypted_password,created_at,updated_at,name,authentication_token,slug,time_zone,first_name,middle_name,last_name,external_id,properties
 1,api@example.com,abcdefghijaklmnoprst111,2020-03-11 05:44:13.302432,2020-03-11 05:44:13.302432,api@example.com,xyz123fhfhfh,api-example-com,,John,A,Smith,af56f347-ecdd-4636-8cf6-76aa58f89b61,{}
 ```
+
+It is important to note that `encrypted_password` will only work if this is importing data previously exported from our system through other means. So setting passwords in this way will not work,
+they will be saved but the system will not accept them when checking through application code. It would be unsafe to set passwords this way because of that it's better to use a random value here
+and require users to change passwords after migration.
 
 ### Example file for UserProfiles
 
