@@ -27,7 +27,7 @@ Connecting Angular with platformOS is a six-step process. Angular CLI is based o
 The source files of a web app are not part of platformOS and can be stored anywhere you want.
 In this example, to keep it together in one repo and in one project, you'll create the Angular app directly in your Instance's `/app`. folder. This is recommended but not required.
 
-Navigate to the`/app` folder and create new app with:
+Navigate to the `/app` folder and create new app with:
 
 ```$ng new web-app```
 
@@ -42,7 +42,10 @@ Angular app build files are part of the platformOS Instance.
 In platformOS, there's no traditional `hosting`. You cannot put files straight into some `root` folder and have `your-domain.com/the-file.html`.
 
 But there's a special place in your Instance where you can achieve a similar effect with a static address.
-Each file put into `app/assets/` will be "visible" as `your-uploads-path/assets/the-file.html`.
+Each file put into `app/assets/` will be "visible" as `{your-uploads-path}/assets/`.
+For example `app/assets/images/bg.jpg` can be accessed also as `{your-uploads-path}/assets/images/bg.jpg`.
+[Read about assets](/developer-guide/assets/assets) for more information.
+
 
 #### How to get `your-uploads-path`?
 
@@ -54,9 +57,11 @@ Put this code into some page liquid file and check what the server returns in th
 {% endraw %}
 ```
 
-It will look like:
+It will look similar to:
 
-`https://uploads.staging.oregon.platform-os.com/instances/<YOUR-INSTANCE-ID>/assets`
+```shell
+https://uploads.staging.oregon.platform-os.com/instances/<YOUR-INSTANCE-ID>/assets/
+```
 
 We strongly recommend to wrap your build files into another folder like `app/assets/web-app`, because in the future you might want to store other assets, for example graphic files for emails, in the `app/assets/` folder.
 
@@ -110,7 +115,9 @@ So right after your web app will be built, your `index` will be copied into `app
 Now create the home page.
 
 You can do this in `app/views/pages` where you create the `routing` folder.
-Now, in `app/views/pages/routing`, create the `home.html.liquid` page with the following code:
+Now, in `app/views/pages/routing`, create the `index.html.liquid` page with the following code:
+
+##### app/views/pages/routing/index.html.liquid
 
 ```
 ---
@@ -126,11 +133,12 @@ For example, have the URLs:
 * company/terms-of-service
 * company/info/some-example-page
 
-For all these links, only one page has to be created (call it company.html.liquid):
+For all these links, only one page has to be created:
+
+##### app/views/pages/company.html.liquid
 
 ```
 ---
-slug: company
 layout_name: app
 ---
 ```
@@ -143,7 +151,7 @@ If you needed to add some asset files like for example images or custom svg icon
 
 Now you need to let your app know where you store them. You will use Angular `environments` files for this task.
 
-In `web-app/src/environments/environment.ts` add:
+##### web-app/src/environments/environment.ts
 
 ```javascript
 export const environment = {
@@ -152,7 +160,7 @@ export const environment = {
 }
 ```
 
-and in `web-app/src/environments/environment.prod.ts` add:
+##### web-app/src/environments/environment.prod.ts
 
 ```javascript
 export const environment = {
@@ -169,13 +177,14 @@ Angular CLI cannot replace css files because css is built before the replacement
 There are some [different approaches](https://github.com/angular/angular-cli/issues/11451) to achieve that, but in this tutorial, we go another way.
 
 Create two files:
-* `web-app/src/styles/environments/local/asset-path.scss` that contains:
+
+##### web-app/src/styles/environments/local/asset-path.scss
 
 ```scss
 $assets-path: '';
 ```
 
-* and `web-app/src/styles/environments/prod/asset-path.scss` that contains:
+##### web-app/src/styles/environments/prod/asset-path.scss
 
 ```scss
 $assets-path: 'your-uploads-path/assets/web-app/';
@@ -220,6 +229,7 @@ response_headers: >
     "Access-Control-Allow-Origin": "*"
   }
 ```
+
 So you need to use a proxy. To do this, follow the instructions here: [Proxying to a backend server](https://angular.io/guide/build#proxying-to-a-backend-server).
 
 Now you have `$ng serve` for local development and `$npm run build` for production build.
