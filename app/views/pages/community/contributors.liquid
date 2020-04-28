@@ -5,9 +5,9 @@ metadata:
   questions: false
 ---
 
-{%- graphql api = 'api_call', template: 'get_all_contributors_from_github' -%}
-{%- assign response = api.api_call_send.response.body | to_hash -%}
-{%- assign authors = response | default: "[]" | reverse | map: "author" -%}
+{% cache 'contributors', expires: 86400 %}
+{% assign url = "https://api.github.com/repos/mdyd-dev/nearme-documentation/stats/contributors" %}
+{% assign authors = url | download_file | to_hash  | default: "[]" | reverse | map: "author" %}
 
 <div id="contributors-page">
   <p><strong>Thank you to all our contributors!</strong></p>
@@ -17,10 +17,6 @@ metadata:
   <ul>
   {% for author in authors %}
     <li>
-      {% comment %}
-        Github uses round robin to choose CDN. This causes N different SSL handshakes. Breaks browsers cache (SIC).
-      {% endcomment %}
-
       {% assign avatar_url = "https://avatars0.githubusercontent.com/u/" | append: author.id | append: "?v=4&s=120" %}
       <img loading="lazy" src="{{ avatar_url }}" alt="{{ author.login }} avatar" width="120" height="120" class="contributor-avatar"/>
       <span class="contributor-name"><a href="{{ author.html_url }}">{{ author.login }}</a></span>
@@ -28,5 +24,7 @@ metadata:
   {% endfor %}
   </ul>
 </div>
+
+{% endcache %}
 
 <em>Contributors displayed here have sent commits to our GitHub repository. The list is ordered by number of commits starting from the contributor with the most commits.</em>
