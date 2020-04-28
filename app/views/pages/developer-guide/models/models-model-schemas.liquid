@@ -31,7 +31,7 @@ Now you can build a form that allows users to add multiple books attached to the
 ##### Soft delete
 
 When you delete a record, by default, we set the value of `deleted_at` to the timestamp. Queries either show those records by default or not. The `deleted_at: { exists: false }` filter is available in some GraphQL queries for application developers to choose explicitly if the results should include records with `deleted_at` set. By default deleted records are not returned by GraphQL queries like `models` and `users`.
-We do that because some workflows need this for safety reasons. For example, it makes it possible to restore records removed by accident. To do it, you can use the [model_update](/api-reference/graphql/mutations#model_update) mutation and set `deleted_at` to `null`.
+We do that because some workflows need this for safety reasons. For example, it makes it possible to restore records removed by accident. To do it, you can use the [model_update](/api-reference/graphql/rootmutation.html) mutation and set `deleted_at` to `null`.
 
 ## Defining
 

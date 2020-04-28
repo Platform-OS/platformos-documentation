@@ -45,9 +45,9 @@ headers: '{
 {% endraw %}
 ```
 
-This defines a POST request to the endpoint with the newly created user's ID. In this example the body of the request is JSON, and to notify the endpoint about it, you set the `Content-Type` header to `application/json`. If the call is successful, then the code from the `callback` property is triggered. You can access the endpoint's response via the [Response](/api-reference/graphql/objects#response) object - which includes headers, status and body. In the example, we assume the server returns valid JSON, which we parse and log.
+This defines a POST request to the endpoint with the newly created user's ID. In this example the body of the request is JSON, and to notify the endpoint about it, you set the `Content-Type` header to `application/json`. If the call is successful, then the code from the `callback` property is triggered. You can access the endpoint's response via the [Response](/api-reference/graphql/response.html) object - which includes headers, status and body. In the example, we assume the server returns valid JSON, which we parse and log.
 
-### Step 2a: Invoke notification directly via GraphQL [api_call_send](/api-reference/graphql/mutations#api_call_send)
+### Step 2a: Invoke notification directly via GraphQL [api_call_send](/api-reference/graphql/rootmutation.html)
 
 The API Call notification name is a path of the file relative to the `api_calls` directory, without extension.
 

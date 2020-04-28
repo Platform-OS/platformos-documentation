@@ -5,9 +5,9 @@ metadata:
   description: Detailed description of data import with examples.
 ---
 
-This topic describes **data import** including fast data imports using CSV files. 
+This topic describes **data import** including fast data imports using CSV files.
 
-Data to be imported needs to be in JSON format, it is an array of [user data](/api-reference/graphql/inputs#userimport) and array of [models data](/api-reference/graphql/inputs#customizationimport):
+Data to be imported needs to be in JSON format, it is an array of [user data](/api-reference/graphql/userimport.html) and array of [models data](/api-reference/graphql/customizationimport.html):
 
 ```json
 {
@@ -49,7 +49,7 @@ Under the hood, the CLI uses the GraphQL import API that's described in the next
 
 ### Input format
 
-The required data format is a JSON file with users and models keys that have an array of maps. Each of those collections needs to be in the same format as a corresponding GraphQL mutation. Under the hood import is just a set of mutations: [`import_users()`](/api-reference/graphql/mutations#import_users), [`import_models()`](/api-reference/graphql/mutations#import_models). When importing data using the CLI, the file should contain data in a format that matches the following structure:
+The required data format is a JSON file with users and models keys that have an array of maps. Each of those collections needs to be in the same format as a corresponding GraphQL mutation. Under the hood import is just a set of mutations: [`import_users()`](/api-reference/graphql/rootmutation.html), [`import_models()`](/api-reference/graphql/rootmutation.html). When importing data using the CLI, the file should contain data in a format that matches the following structure:
 
 ```json
 {
@@ -165,7 +165,7 @@ pos-cli data import --path=data.json staging-instance
 
 It is possible to import data using GraphQL mutations. This gives you more flexibility, and even allows you to create your own import tool as a website feature. Please remember to handle authentication properly.
 
-There are two main mutations for importing [`import_users()`](/api-reference/graphql/mutations#import_users) and [`import_models()`](/api-reference/graphql/mutations#import_models). You can create a page that will import sent data.
+There are two main mutations for importing [`import_users()`](/api-reference/graphql/rootmutation.html) and [`import_models()`](/api-reference/graphql/rootmutation.html). You can create a page that will import sent data.
 
 ##### app/graphql/import_data.graphql
 
@@ -233,8 +233,8 @@ user_profiles.csv
 ```
 
 - Before import, your model schemas need to be deployed.
-- CSV files only support comma separated values, if in doubt, it might be a good idea to use a linter like [CSVlint](https://github.com/Clever/csvlint) to check the file.  
-- A well formatted file has a header with names of columns available for the given type, and one or more rows of data. 
+- CSV files only support comma separated values, if in doubt, it might be a good idea to use a linter like [CSVlint](https://github.com/Clever/csvlint) to check the file.
+- A well formatted file has a header with names of columns available for the given type, and one or more rows of data.
 
 ### Example file for Models
 

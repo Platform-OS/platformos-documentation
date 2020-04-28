@@ -93,7 +93,7 @@ In [Building Contact Form With Model tutorial](/developer-guide/models/building-
   As you know by now Models and Model Schema objects are strictly related as the definition of properties allows for storing the data in platformOS backend systems.
   Once you have data persisted within Model you need to be aware of how changes in Model Schema affect your Model objects:
 
-  * **Model Schema definition delete** - you can only delete your Model Schema object if there is no related Model object. Use [models_delete_all](/api-reference/graphql/mutations#models_delete_all) mutation to delete all related Model objects.
+  * **Model Schema definition delete** - you can only delete your Model Schema object if there is no related Model object. Use [models_delete_all](/api-reference/graphql/rootmutation.html) mutation to delete all related Model objects.
 
       If you try to deploy with orphaned Model, you will see the following message:
 
@@ -110,6 +110,6 @@ In [Building Contact Form With Model tutorial](/developer-guide/models/building-
 
 ## Step 7: Mutations
 
-What you have done in steps 2, 3 and 4 can be done with [admin_model_schema_create](/api-reference/graphql/mutations#admin_model_schema_create/) mutation.
+What you have done in steps 2, 3 and 4 can be done with [admin_model_schema_create](/api-reference/graphql/rootmutation.html) mutation.
 In your platformOS instance, the result would be exactly the same, but you can now create CMS system where the user can define their own models with a few clicks in the user interface.
 Please note that the same rules apply for Model Schema deletion as when you delete it with pos-cli
