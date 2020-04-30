@@ -1,0 +1,174 @@
+---
+converter: markdown
+metadata:
+  title: Using Gatsby with platformOS
+  description: This use case describes how to configure Gatsby to work with platformOS. 
+---
+
+This use case describes how to configure [Gatsby](https://www.gatsbyjs.org)(a free and open source framework based on React) to work with platformOS. Through the example of using Gatsby, this article also gives you an overview of how to use any static site generator with platformOS.  
+
+## Gatsby and platformOS 
+
+In the pursuit of performance, flexibility, and developer experience a lot of front-end developers turned their heads to static site generators like Gatsby.
+
+[Gatsby](gatsbyjs.org/) is a static site generator based on React.js that became popular because of its good performance, documentation, plugins ecosystem, and integrations with hostings.
+
+Gatsby has a very nice architecture, where data can be pulled on build time from various sources to build static HTML, or during runtime in the browser using standard AJAX using React.
+
+Read more about [how Gatsby connects can pull data from multiple sources](https://www.gatsbyjs.org/docs/content-and-data/).
+
+Because the output of static site generators is assets and HTML files, platformOS can be used as a hosting platform for that kind of content. 
+
+## Using static site generators with platformOS 
+
+No matter which static site generator you choose for your project ([there are plenty](https://www.staticgen.com/)), you always have to consider the same three steps when using it with platformOS.
+
+### Pages (routes)
+
+* Entry file should be named `index.html`. That's usually the default. 
+* To make URLs pretty, routes should be like this: `about-us/index.html`. For example, if you want to have a `/contact` page, the best way is to have the `app/views/pages/contact/index.html` file. That's usually also the default. 
+* HTML files need to land in the `app/views/pages` directory. This you have to do yourself.  
+
+### Assets
+
+All other files (assets: js, css, images, fonts, etc.) need to be in the `app/assets` directory. This you have to do yourself. 
+
+It is a good practice to use `asset_path`.
+
+## Migration
+
+For our example migration we used the [official Gatsby Blog](https://github.com/gatsbyjs/gatsby-starter-blog) repository.
+
+It includes Markdown processing (all the blog posts are written in Markdown), image generation using sharp, and a couple more features.
+
+After building the project by default you will get a lot of files in the `public/` directory. This is where output files are located. By default, all files are generated there with no separation. We want a little bit more structure.
+
+### Assets
+
+To put all the assets into the `public/assets` directory instead of just `public/` we use `gatsby-plugin-asset-path`.
+
+```shell
+$ npm i gatsby-plugin-asset-path
+```
+
+And activated it:
+
+##### gatsby-config.js
+
+```diff
+module.exports = {
++  assetPrefix: "assets/",
+...
+plugins: [
++ {
++   resolve: "gatsby-plugin-asset-path",
++ },
+```
+
+Gatsby also needs a `--prefix-paths` flag in its build command to make use of this option:
+
+##### package.json
+
+```diff
++ "build": "gatsby build --prefix-paths",
+```
+
+We will also add `gatsby-plugin-no-sourcemaps` because we don't need sourcemaps.
+
+```shell
+$ npm i gatsby-plugin-no-sourcemaps
+```
+
+```diff
+plugins: [
++ {
++   resolve: "gatsby-plugin-no-sourcemaps",
++ },
+```
+
+Now assets are in a separate directory and the public/ directory is much cleaner:
+
+```shell
+$ ls -l public
+404
+404.html
+assets
+chunk-map.json
+favicon-32x32.png
+favicon.ico
+hello-world
+icons
+index.html
+manifest.webmanifest
+my-second-post
+new-beginnings
+robots.txt
+webpack.stats.json
+```
+
+Now all we need to do is to move assets to `app/assets`. We chose `rsync` and basic bash commands for that task.
+
+```shell
+rsync -a -m --include '*/' --exclude '*.html' public app && \
+rsync -a -v app/public/assets/ app/public && rm -rf app/public/assets && \
+mv -f app/public app/assets
+```
+
+The first line copies all non .html files from the `public` directory to `app/public` while preserving the directory structure.
+The second line flattens the structure, because some files are now in `app/public/assets` and we want them in `app/public`. This step is an intermediary step before the structure is stabilized.
+The third line renames `app/public` to `app/assets` as a final step.
+
+### Pages
+
+The public directory has some directories with index.html files inside of them. Those are our pages.
+
+Let's use rsync to move them to the correct place.
+
+```shell
+rsync -a -m --include '*/' --include '*.html' --exclude '*' public app/views && \
+mv -f app/views/public app/views/pages
+```
+
+The first line is copies HTML files from public to views preserving the directory structure.
+The second line renames `app/views/public` to `app/views/pages` as a final step.
+
+## Automation
+
+Now that we have commands to do the migration for us, let's make our build more automated using npm tasks.
+
+##### package.json
+
+```json
++ "prepare:html": "rsync -a -m --include '*/' --include '*.html' --exclude '*' public app/views && mv -f app/views/public app/views/pages",
++ "prepare:assets": "rsync -a -m --include '*/' --exclude '*.html' public app && mv -f app/public app/assets",
++ "prebuild": "rm -rf public app/assets app/views/pages && mkdir -p app/views",
+  "build": "gatsby build --prefix-paths",
+```
+
+Now, when we run `npm run build` it will prepare empty directories, build the Gatsby site, and move the necessary files into their proper places.
+
+## Result
+
+The only thing left to do is to deploy the page.
+
+```shell
+pos-cli deploy production
+```
+
+You can see the result at: https://gatsby-blog.prod01.oregon.platform-os.com/
+You can also see the source code of this project on GitHub: https://github.com/mdyd-dev/demo-gatsby
+
+## Notes on using our CDN 
+
+Because assets can be accessed using relative paths to the Instance domain, this is all there is to it to make it work, but if you want to make it even faster, you should use our CDN.
+
+There are two ways to make this happen:
+
+1. Using the [asset_url Liquid filter](/api-reference/liquid/platformos-filters#asset_url)
+2. Setting up your asset builder to prefix URLs with your CDN path. There is a lot of ways to do it, two of them are the following: 
+    * One way of doing it we presented in the use case about [Connecting an Angular Single Page Application with platformOS](/use-cases/connecting-angular-spa-platformos#step-2-set-up-local-development-production-build-and-hosting)
+    * Another way is to use the [webpack-require-from](https://github.com/agoldis/webpack-require-from) plugin (we use it in our documentation project: [webpack config](https://github.com/mdyd-dev/nearme-documentation/blob/81976c414cd048d52e9e7dd4c1a2af76f1b3ec27/webpack.config.js#L18-L20), [Liquid code](https://github.com/mdyd-dev/nearme-documentation/blob/81976c414cd048d52e9e7dd4c1a2af76f1b3ec27/app/views/partials/layouts/lib/context-variables.liquid#L2-L4))
+
+Read more on [assets](/developer-guide/assets/assets#content).
+
+Although Gatsby tried to implement [support for CDN-hosted assets](https://github.com/gatsbyjs/gatsby/pull/12128) our minimal experience with Gatsby didn't allow us to use it with success. If you know how to leverage it, feel free to create an issue/PR in our [documentation repo](https://github.com/mdyd-dev/nearme-documentation/) with a hint. 
