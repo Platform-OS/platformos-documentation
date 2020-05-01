@@ -6,11 +6,9 @@
 {%- if daysSinceLastUpdate < 8 -%}true{%- else -%}false{%- endif -%}
 {%- endcapture -%}
 
-<li>
-  <a href="{{ href }}">
-    {{ text }}
-    {%- if isNew == "true" -%}
-      <span class="new">New!</span>
-    {%- endif -%}
-  </a>
-</li>
+<a href="{{ href }}">
+  {{ text }}
+  {%- if isNew == "true" -%}
+    <span class="new">New!</span>
+  {%- endif -%}
+</a>
