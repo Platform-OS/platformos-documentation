@@ -1,7 +1,7 @@
 ---
 layout_name: empty
 static_cache:
-  expire: 3600
+  expire: 0
 metadata:
   title: platformOS Documentation
 ---
@@ -13,60 +13,54 @@ metadata:
   {% include 'layouts/head/head' %}
 </head>
 
-<body class="homepage">
-  <div class="wrapper">
-    {% include 'layouts/header' %}
+<body class="homepage antialiased bg-pos-page-bg">
+  {% include 'layouts/header' %}
 
-    <div class="main">
-      <div class="intro px-6 sm:pt-16 pb-20">
-        <div class="container">
-          <div class="md:w-2/3 mx-auto">
-            <div class="intro__content md:px-8">
-              <h1>Documentation</h1>
+  <main class="pt-16 bg-pos-page-bg bg-no-repeat" style="background-position: 60% 0; background-size: 132%; background-image: url({{ 'images/svg/header-bg.svg' | asset_url }})">
+    <div class="container">
+      <div class="text-center md:px-8">
+        <h1 class="text-4xl sm:text-5xl mb-4 text-pos-darkblue">Documentation</h1>
 
-              <p>Examples, tutorials, references, APIs, and best practices—everything you need to build future-proof applications on platformOS</p>
+        <div class="md:w-3/5 mx-auto">
+          <p class="text-lg">Examples, tutorials, references, APIs, and best practices—everything you need to build future-proof applications on platformOS</p>
 
-              {% include 'home/search-form' %}
-            </div>
-          </div>
+          {% include 'home/search-form' %}
         </div>
       </div>
 
       {% include 'home/section-options' %}
 
-      <div class="section-links">
-        <div class="container">
-          <div class="md:flex md:justify-center">
-            <div class="md:w-1/2 md:mx-20">
-              <h3>Community</h3>
-              <p>Join in, grow your skills, and find people who share your interest in platformOS.</p>
+      <div class="text-center md:flex md:justify-center mb-20">
+        <div class="md:w-1/3 md:mx-20 mt-10 md:mt-10">
+          <h3 class="mb-4 text-lg">Community</h3>
+          <p class="text-body">Join in, grow your skills, and find people who share your interest in platformOS.</p>
 
-              <a href="/community" class="section__link">
-                join our community
-                <svg width="10" height="11">
-                  <use xlink:href="#arrow-right"></use>
-                </svg>
-              </a>
-            </div>
+          <a href="/community" class="text-pos-blue hover:text-pos-darkblue inline-block no-underline text-sm font-semibold mt-6">
+            JOIN OUR COMMUNITY
+            <svg width="10" height="11">
+              <use xlink:href="#arrow-right"></use>
+            </svg>
+          </a>
+        </div>
 
-            <div class="md:w-1/2 md:mx-20 relative section-with-border">
-              <h3>Get Involved</h3>
-              <p>Learn about the many ways you can contribute to our documentation.</p>
+        <div class="hidden sm:block w-px border-l border-pos-divider"></div>
 
-              <a href="/community/contributor-guide" class="section__link">
-                check out our contributor guide
-                <svg width="10" height="11">
-                  <use xlink:href="#arrow-right"></use>
-                </svg>
-              </a>
-            </div>
-          </div>
+        <div class="md:w-1/3 md:mx-20 relative mt-16 md:mt-10">
+          <h3 class="mb-4 text-lg">Get Involved</h3>
+          <p class="text-body">Learn about the many ways you can contribute to our documentation.</p>
+
+          <a href="/community/contributor-guide" class="text-pos-blue hover:text-pos-darkblue inline-block no-underline text-sm font-semibold mt-6">
+            CHECK OUT OUR CONTRIBUTOR GUIDE
+            <svg width="10" height="11">
+              <use xlink:href="#arrow-right"></use>
+            </svg>
+          </a>
         </div>
       </div>
-
-      {% include 'layouts/content/callout' %}
     </div>
-  </div>
+
+    {% include 'layouts/content/callout' %}
+  </main>
 
   {% include 'layouts/footer' %}
 

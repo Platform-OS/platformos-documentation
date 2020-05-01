@@ -1,13 +1,10 @@
 {% if context.exports.category.name %}
+  {%- assign current_path = context.headers.REQUEST_URI -%}
+  {%- capture nav_links_path %}shared/nav/{{ context.exports.category.slug }}{% endcapture %}
 
-{%- assign current_path = context.headers.REQUEST_URI -%}
-
-{%- capture nav_links_path %}shared/nav/{{ context.exports.category.slug }}{% endcapture %}
-
-<nav class="nav-sidebar">
-  <ul>
-    {%- include nav_links_path, cp: current_path -%}
-  </ul>
-</nav>
-
+  <nav>
+    <ul class="list-none">
+      {%- include nav_links_path, cp: current_path -%}
+    </ul>
+  </nav>
 {% endif %}

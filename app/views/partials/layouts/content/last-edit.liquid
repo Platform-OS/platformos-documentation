@@ -1,10 +1,6 @@
-{% unless context.page.metadata.last_edit == false %}
+{%- unless context.page.metadata.last_edit == false -%}
+  {%- assign slugFromHref = context.location.href | remove_first: '/' %}
+  {%- assign updatedAt = context.exports.nav.pagesUpdatedAt | select: slug: slugFromHref | first | fetch: "updated_at" | date: "%b %d, %Y" %}
 
-{% assign slugFromHref = context.location.href | remove_first: '/' %}
-{% assign updatedAt = context.exports.nav.pagesUpdatedAt | select: slug: slugFromHref | first | fetch: "updated_at" | date: "%b %d, %Y" %}
-
-<div class="last-edit">
-  <span>Last edit: {{ updatedAt }}</span>
-</div>
-
-{% endunless %}
+  <div class="my-6">Last edit: {{ updatedAt }}</div>
+{%- endunless %}

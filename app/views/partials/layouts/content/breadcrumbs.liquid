@@ -1,23 +1,29 @@
 {% assign slugTitleized = context.params.slug | titleize %}
 
-<div class="breadcrumbs">
-  <ul class="flex flex-wrap sm:flex-nowrap">
+<div class="breadcrumbs w-full my-4">
+  <ul class="flex flex-wrap justify-end list-none sm:flex-no-wrap text-sm">
     <li class="flex items-center">
-      <a href="/">Documentation</a>
-      <svg width="8" height="8"><use xlink:href="#arrow-right"></use></svg>
+      <a href="/" class="no-underline text-pos-blue hover:text-pos-darkblue hover:underline">Documentation</a>
+    </li>
+
+    <li>
+      <svg class="mx-2" width="8" height="8"><use xlink:href="#arrow-right"></use></svg>
     </li>
 
     <li class="flex items-center">
-      <a href="/{{ category.slug | default: context.params.slug }}">{{ category.name | default: category.default_name | default: slugTitleized }}</a>
-
-      {% if context.params.slug2 %}
-        <svg width="8" height="8"><use xlink:href="#arrow-right"></use></svg>
-      {% endif %}
+      <a class="no-underline text-pos-blue hover:text-pos-darkblue hover:underline"
+      href="/{{ category.slug | default: context.params.slug }}">
+        {{ category.name | default: category.default_name | default: slugTitleized }}
+      </a>
     </li>
 
     {% if context.params.slug2 %}
+      <li>
+        <svg class="mx-2" width="8" height="8"><use xlink:href="#arrow-right"></use></svg>
+      </li>
+
       <li class="flex items-center">
-        <a href="#">{{ context.page.metadata.title | default: "This Page" }}</a>
+        <a class="no-underline" href="#">{{ context.page.metadata.title | default: "This Page" }}</a>
       </li>
     {% endif %}
   </ul>

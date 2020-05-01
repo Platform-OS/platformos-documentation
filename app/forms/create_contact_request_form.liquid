@@ -17,13 +17,13 @@ email_notifications:
 redirect_to: /contact
 flash_notice: Thank you for your request. We will contact you shortly.
 ---
-{% form html-class: 'contact-form' %}
+{% form html-class: '' %}
   {% spam_protection "recaptcha_v3", action: "contact" %}
   {% assign f = form.fields.properties %}
   {% include 'forms/errors' %}
 
   {% include 'forms/input', field: f.email, type: 'email', placeholder: 'Your contact email', label: false %}
-  {% include 'forms/textarea', type: 'text', field: f.message %}
+  {% include 'forms/textarea', type: 'text', field: f.message, placeholder: 'Your message' %}
 
   <button class="btn btn-primary">Send</button>
 {% endform %}
