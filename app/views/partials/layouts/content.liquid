@@ -12,52 +12,56 @@
 
 {%- export pagesUpdatedAt, namespace: 'nav' -%}
 
-{% if has_sidebar == 'true' %}
-  <div class="w-full sm:w-3/12">
-    <div class="relative sidebar px-4 py-6 sm:px-2 md:p-8">
-      <p class="skip-to-content text-lg text-center">
-        <a href="#content">Skip to content</a>
-      </p>
+<main class="flex flex-wrap sm:flex-no-wrap relative bg-white">
+  {% if has_sidebar == 'true' %}
+    <div class="w-full sm:w-3/12 flex bg-pos-page-bg">
+      <div class="sm:w-1/4"></div>
 
-      <div class="sidebar__title hidden sm:block">
-        {% if context.exports.category.name %}
-        {% capture icon_path %}svg/{{ context.exports.category.slug }}{% endcapture %}
-        {% include icon_path, width: '32px', height: '32px' %}
-        <h4>{{ context.exports.category.name }}</h4>
+      <div class="w-full sm:w-3/4 px-4 py-6 sm:pt-20 sm:px-2 md:pl-16 md:pr-6">
+        <p class="sm:hidden text-lg text-center">
+          <a href="#content">Skip to content</a>
+        </p>
+
+        <div class="hidden sm:flex absolute shadow-sm top-0 left-0 sm:w-3/12 h-16 items-center justify-center bg-white">
+          {% if context.exports.category.name %}
+            <span>
+              {% capture icon_path %}svg/{{ context.exports.category.slug }}{% endcapture %}
+              {% include icon_path, width: '32px', height: '32px' %}
+            </span>
+            <h4 class="ml-3 text-lg">{{ context.exports.category.name }}</h4>
+          {% endif %}
+        </div>
+
+        {% include 'layouts/nav' %}
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="w-full bg-white {% if has_sidebar == 'true' %}sm:w-8/12{% else %}container{% endif %}">
+    <div class="content category__{{ context.params.slug }} sm:pl-16 sm:pr-0">
+
+      {% unless context.page.metadata.breadcrumbs == false %}
+        {% include 'layouts/content/breadcrumbs', category: context.exports.category %}
+      {% endunless %}
+
+      <div class="flex">
+        <div class="content__main w-full pb-8 {% if context.page.metadata.toc == true %} w-full md:w-8/12{% endif %}" id="content">
+
+          <div class="max-w-4xl px-6 sm:px-0 {% if has_sidebar != 'true' %}mx-auto{% endif %}">
+            {% if context.page.metadata.title %}
+              <h1 class="text-3xl text-pos-darkblue">{{ context.page.metadata.title }}</h1>
+            {% endif %}
+
+            {% include 'layouts/content/last-edit' %}
+
+            {{ content_for_layout }}
+          </div>
+        </div>
+
+        {% if context.page.metadata.toc == true %}
+          <div class="ml-6 w-4/12" data-autotoc></div>
         {% endif %}
       </div>
-
-      {% include 'layouts/nav' %}
     </div>
   </div>
-{% endif %}
-
-<div class="{% if has_sidebar == 'true' %}w-full sm:w-9/12 mt-8 sm:mt-0{% else %} w-full{% endif %}">
-  <div class="content category__{{ context.params.slug }}">
-    {% include 'layouts/content/flash-messages' %}
-
-    {% unless context.page.metadata.breadcrumbs == false %}
-      {% include 'layouts/content/breadcrumbs', category: context.exports.category %}
-    {% endunless %}
-
-    <div class="flex">
-      <div class="w-full{% if context.page.metadata.toc == true %} w-full md:w-8/12{% endif %} content__main sm:pl-12 pb-20" id="content">
-        {% if context.page.metadata.title %}
-          <h1>{{ context.page.metadata.title }}</h1>
-        {% endif %}
-
-        {% include 'layouts/content/last-edit' %}
-
-        {{ content_for_layout }}
-
-        {% unless context.page.metadata.feedback == false %}
-          {% include 'layouts/content/feedback' %}
-        {% endunless %}
-      </div>
-
-      {% if context.page.metadata.toc == true %}
-        <div class="ml-6 w-4/12" data-autotoc></div>
-      {% endif %}
-    </div>
-  </div>
-</div>
+</main>

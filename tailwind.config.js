@@ -1,11 +1,38 @@
 const defaultTheme = require('tailwindcss/defaultTheme');
 
 module.exports = {
+  purge: [
+    './app/forms/**/*.liquid',
+    './app/views/**/*.liquid',
+    './src/js/**/*.js',
+  ],
   theme: {
-    extend: {
-      colors: {
-        'body': '#4a4a4a',
+    colors: {
+      'white': '#ffffff',
+      'body': '#4a4a4a',
+      pos: {
+        'blue': '#3A8DDE',
+        'darkblue': '#194F90',
+        'page-bg': '#F5F6FC',
+        'divider': '#dddddd',
+        'search': '#767676',
+        'green': '#45A041',
+        'tip-bg': '#EEEEF2',
+        'tip-text': '#6F7286',
+        'note-bg': '#E2EEFA',
+        'note-text': '#2E71B2',
+        'important-bg': '#FFF3E6',
+        'important-text': '#B35C00',
+        'warning-bg': '#FFE9EE',
+        'warning-text': '#AA002C',
+        'success-bg': '#E9F3E8',
+        'success-text': '#166D12'
       },
+      'gray': {
+        200: '#eeeeee'
+      }
+    },
+    extend: {
       fontFamily: {
         sans: ['Gotham', ...defaultTheme.fontFamily.sans],
       },
@@ -17,13 +44,15 @@ module.exports = {
     },
     screens: {
       sm: '640px',
-      md: '1024px',
-      lg: '1440px',
+      md: '1024px'
     },
     container: {
       center: true,
       padding: '0'
     },
+    variants: {
+      textColor: ['responsive',  'group-hover', 'hover', 'focus']
+    }
   },
   corePlugins: {
     gridTemplateColumns: false,

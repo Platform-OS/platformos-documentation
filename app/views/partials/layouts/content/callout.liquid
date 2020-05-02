@@ -1,14 +1,14 @@
 {% capture callout_questions %}
-  <h2>Questions?</h2>
+  <h2 class="text-xl">Questions?</h2>
 
-  <p>We are always happy to help with any questions you may have.</p>
+  <p class="my-8 text-lg">We are always happy to help with any questions you may have.</p>
 
-  <div class="callout__actions">
-    <a href="/contact" class="btn btn-primary">contact us</a>
-  </div>
+  <a href="/contact" class="btn btn-primary">contact us</a>
 {% endcapture %}
 
-<div class="callout callout--padding-sm callout--border-top">
+
+
+<div class="bg-white py-10 sm:py-20 text-center bg-no-repeat bg-contain" style="background-position: center 100%; background-image: url({{ 'images/svg/callout-bg.svg' | asset_url }})">
   <div class="container">
     {% if context.page.metadata.questions == false %}
       {% yield "callout_content" %}

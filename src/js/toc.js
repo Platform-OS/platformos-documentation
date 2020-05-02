@@ -5,11 +5,13 @@ import { parseHeadings, getHeadings } from './helpers/headings';
 
 const getContainer = () => $q('[data-autotoc]');
 
-const generateTOCList = headings => {
+const generateTOCList = (headings) => {
   return headings
-    .map(h => {
+    .map((h) => {
       return `<li>
-        <a href="${h.href}">${h.text}</a>
+        <a href="${h.href}" class="no-underline hover:text-pos-darkblue inline-block py-1">
+          ${h.text}
+        </a>
       </li>`;
     })
     .join('');
@@ -25,9 +27,9 @@ const initialize = () => {
 
   const tocHTML = generateTOCList(parseHeadings(headings));
 
-  const tocDOM = `<div class="content__aside hidden md:block">
-      <h4>On this page</h4>
-      <ul>${tocHTML}</ul>
+  const tocDOM = `<div class="hidden md:block p-8 bg-pos-page-bg">
+      <h4 class="mb-4 text-lg">On this page</h4>
+      <ul class="list-none">${tocHTML}</ul>
     </div>`;
 
   container.innerHTML = tocDOM;

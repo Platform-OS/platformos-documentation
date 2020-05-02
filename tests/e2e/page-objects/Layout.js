@@ -2,16 +2,14 @@ import { Selector, t } from 'testcafe';
 
 export default class LayoutPO {
   constructor() {
-    this.Body = Selector('body');
-    this.Content = this.Body.find('.content__main');
-    this.CTABlock = Selector('.callout__actions');
-    this.Sidebar = Selector('.sidebar', { visibilityCheck: true });
+    this.Content = Selector('.content__main');
     this.Feedback = Selector('.feedback-main');
     this.LastEdit = Selector('.last-edit');
   }
 
   async checkLiquidErrors() {
-    const bodyText = await this.Body.textContent;
+    const body = Selector('body');
+    const bodyText = await body.textContent;
     return t
       .expect(bodyText)
       .notContains('Liquid Error')
