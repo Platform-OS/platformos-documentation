@@ -1,43 +1,36 @@
 table {
-  width: 100%;
-  margin-bottom: 1rem;
-  color: #212529;
+  @apply w-full mb-4;
 }
 
 table th,
 table td {
-  padding: 0.75rem;
-  vertical-align: top;
-  border-top: 1px solid #dee2e6;
+  @apply p-3 align-top border-t border-pos-divider;
 }
 
 table thead th {
-  vertical-align: bottom;
-  border-bottom: 2px solid #dee2e6;
-  text-align: left;
+  @apply align-bottom border-b-2 text-left border-pos-divider;
 }
 
 table tbody + tbody {
-  border-top: 2px solid #dee2e6;
+  @apply border-t-2 border-pos-divider
 }
 
 table + p {
-  padding-top: 14px;
+  @apply pt-5;
 }
 
 .table-sm th,
 .table-sm td {
-  padding: 0.35rem;
-  font-size: 0.9em;
+  @apply p-2 text-sm;
 }
 
 .table-bordered {
-  border: 1px solid #dee2e6;
+  @apply border border-pos-divider;
 }
 
 .table-bordered th,
 .table-bordered td {
-  border: 1px solid #dee2e6;
+  @apply border border-pos-divider;
 }
 
 .table-bordered thead th,
@@ -49,7 +42,7 @@ table + p {
 .table-borderless td,
 .table-borderless thead th,
 .table-borderless tbody + tbody {
-  border: 0;
+  @apply border-0;
 }
 
 .table-striped tbody tr:nth-of-type(odd) {
@@ -57,12 +50,10 @@ table + p {
 }
 
 .table-responsive {
-  display: block;
-  width: 100%;
-  overflow-x: auto;
+  @apply block w-full overflow-x-auto;
   -webkit-overflow-scrolling: touch;
 }
 
 .table-responsive > .table-bordered {
-  border: 0;
+  @apply border-none;
 }

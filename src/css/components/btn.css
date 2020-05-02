@@ -1,38 +1,21 @@
 button.btn, a.btn {
-  display: inline-block;
-  vertical-align: middle;
-  text-align: center;
-  cursor: pointer;
-  text-decoration: none;
-  appearance: none;
-  border-radius: 3px;
-
-  font-size: 14px;
-  padding: 11px 15px;
-  line-height: 1.5;
-  text-transform: uppercase;
+  @apply inline-block py-3 px-4 align-middle rounded text-base leading-normal text-center font-medium cursor-pointer no-underline appearance-none uppercase;
 
   &--block {
-    display: block;
-    padding-left: 0;
-    padding-right: 0;
+    @apply block px-0;
   }
 
   &-primary {
-    background-color: #2173C4;
-    border: 1px solid rgba(33, 115, 196, 1);
-    color: #fff;
-    text-transform: uppercase;
-    font-weight: 500;
+    @apply text-white uppercase bg-pos-blue;
+    border: 1px solid theme('colors.pos-blue');
     &:hover {
+      @apply bg-pos-darkblue;
       box-shadow: 0 4px 6px -1px rgba(33, 115, 196, 0.1), 0 2px 4px -1px rgba(33, 115, 196, 0.06);
     }
   }
 
   &-outline-primary {
-    font-weight: 500;
-    color: rgba(33, 115, 196, 1);
-    border: 1px solid rgba(33, 115, 196, 1);
+    @apply text-pos-blue border border-pos-blue;
     &:hover {
       color: darken(rgba(33, 115, 196, 1), 15);
       border-color: darken(rgba(33, 115, 196, 1), 15);
