@@ -2,36 +2,36 @@
 converter: markdown
 metadata:
   title: Using Gatsby with platformOS
-  description: This use case describes how to configure Gatsby to work with platformOS. 
+  description: This use case describes how to configure Gatsby to work with platformOS.
 ---
 
-This use case describes how to configure [Gatsby](https://www.gatsbyjs.org)(a free and open source framework based on React) to work with platformOS. Through the example of using Gatsby, this article also gives you an overview of how to use any static site generator with platformOS.  
+This use case describes how to configure [Gatsby](https://www.gatsbyjs.org)(a free and open source framework based on React) to work with platformOS. Through the example of using Gatsby, this article also gives you an overview of how to use any static site generator with platformOS.
 
-## Gatsby and platformOS 
+## Gatsby and platformOS
 
 In the pursuit of performance, flexibility, and developer experience a lot of front-end developers turned their heads to static site generators like Gatsby.
 
-[Gatsby](gatsbyjs.org/) is a static site generator based on React.js that became popular because of its good performance, documentation, plugins ecosystem, and integrations with hostings.
+[Gatsby](https://www.gatsbyjs.org/) is a static site generator based on React.js that became popular because of its good performance, documentation, plugins ecosystem, and integrations with hostings.
 
 Gatsby has a very nice architecture, where data can be pulled on build time from various sources to build static HTML, or during runtime in the browser using standard AJAX using React.
 
 Read more about [how Gatsby connects can pull data from multiple sources](https://www.gatsbyjs.org/docs/content-and-data/).
 
-Because the output of static site generators is assets and HTML files, platformOS can be used as a hosting platform for that kind of content. 
+Because the output of static site generators is assets and HTML files, platformOS can be used as a hosting platform for that kind of content.
 
-## Using static site generators with platformOS 
+## Using static site generators with platformOS
 
 No matter which static site generator you choose for your project ([there are plenty](https://www.staticgen.com/)), you always have to consider the same three steps when using it with platformOS.
 
 ### Pages (routes)
 
-* Entry file should be named `index.html`. That's usually the default. 
-* To make URLs pretty, routes should be like this: `about-us/index.html`. For example, if you want to have a `/contact` page, the best way is to have the `app/views/pages/contact/index.html` file. That's usually also the default. 
-* HTML files need to land in the `app/views/pages` directory. This you have to do yourself.  
+* Entry file should be named `index.html`. That's usually the default.
+* To make URLs pretty, routes should be like this: `about-us/index.html`. For example, if you want to have a `/contact` page, the best way is to have the `app/views/pages/contact/index.html` file. That's usually also the default.
+* HTML files need to land in the `app/views/pages` directory. This you have to do yourself.
 
 ### Assets
 
-All other files (assets: js, css, images, fonts, etc.) need to be in the `app/assets` directory. This you have to do yourself. 
+All other files (assets: js, css, images, fonts, etc.) need to be in the `app/assets` directory. This you have to do yourself.
 
 It is a good practice to use `asset_path`.
 
@@ -158,17 +158,17 @@ pos-cli deploy production
 You can see the result at: https://gatsby-blog.prod01.oregon.platform-os.com/
 You can also see the source code of this project on GitHub: https://github.com/mdyd-dev/demo-gatsby
 
-## Notes on using our CDN 
+## Notes on using our CDN
 
 Because assets can be accessed using relative paths to the Instance domain, this is all there is to it to make it work, but if you want to make it even faster, you should use our CDN.
 
 There are two ways to make this happen:
 
 1. Using the [asset_url Liquid filter](/api-reference/liquid/platformos-filters#asset_url)
-2. Setting up your asset builder to prefix URLs with your CDN path. There is a lot of ways to do it, two of them are the following: 
+2. Setting up your asset builder to prefix URLs with your CDN path. There is a lot of ways to do it, two of them are the following:
     * One way of doing it we presented in the use case about [Connecting an Angular Single Page Application with platformOS](/use-cases/connecting-angular-spa-platformos#step-2-set-up-local-development-production-build-and-hosting)
     * Another way is to use the [webpack-require-from](https://github.com/agoldis/webpack-require-from) plugin (we use it in our documentation project: [webpack config](https://github.com/mdyd-dev/nearme-documentation/blob/81976c414cd048d52e9e7dd4c1a2af76f1b3ec27/webpack.config.js#L18-L20), [Liquid code](https://github.com/mdyd-dev/nearme-documentation/blob/81976c414cd048d52e9e7dd4c1a2af76f1b3ec27/app/views/partials/layouts/lib/context-variables.liquid#L2-L4))
 
 Read more on [assets](/developer-guide/assets/assets#content).
 
-Although Gatsby tried to implement [support for CDN-hosted assets](https://github.com/gatsbyjs/gatsby/pull/12128) our minimal experience with Gatsby didn't allow us to use it with success. If you know how to leverage it, feel free to create an issue/PR in our [documentation repo](https://github.com/mdyd-dev/nearme-documentation/) with a hint. 
+Although Gatsby tried to implement [support for CDN-hosted assets](https://github.com/gatsbyjs/gatsby/pull/12128) our minimal experience with Gatsby didn't allow us to use it with success. If you know how to leverage it, feel free to create an issue/PR in our [documentation repo](https://github.com/mdyd-dev/nearme-documentation/) with a hint.
