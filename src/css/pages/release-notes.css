@@ -1,11 +1,14 @@
 h4 + h2, h4 + h3 {
-  margin-top: 1rem !important;
+  @apply mt-4 !important;
 }
 
-/* Index */
+h4 {
+  @apply font-semibold;
+}
+
 .release-notes__year-container {
   li {
-    margin-bottom: 1.5em;
+    @apply mb-8;
   }
 
   a {
@@ -18,27 +21,20 @@ h4 + h2, h4 + h3 {
 }
 
 .release-notes__timeline {
-  position: relative;
+  @apply relative;
 
   &:before {
+    @apply absolute;
     height: calc(100% - 3.5em);
     content: ' ';
     border-left: 3px solid #ebebeb;
-    position: absolute;
     top: 3.1em;
     left: 50%;
   }
 }
 
-/* Details */
 .release-note {
-  border-radius: 1em;
-  width: auto;
-  display: inline-block;
-  padding: 0.35em 1.25em;
-  color: #fff !important;
-  font-size: 1.1em;
-  font-weight: 500 !important;
+  @apply rounded-full w-auto inline-block px-5 py-2 text-white text-lg font-semibold !important;
 }
 
 .release-note__new {

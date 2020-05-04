@@ -7,7 +7,9 @@
 {%- endcapture -%}
 
 <li>
-  <a href="{{ href }}">
+  <a href="{{ href }}"
+    {% if context.headers.REQUEST_URI == href %}class="text-pos-blue"{% endif %}
+  >
     {{ text }}
     {%- if isNew == "true" -%}
       <span class="new">New!</span>
