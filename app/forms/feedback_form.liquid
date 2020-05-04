@@ -32,28 +32,28 @@ flash_notice: Thank you for your feedback.
   <input name="{{ p.path.name }}" type='hidden' value='{{ context.location.pathname }}'>
 
   <div class="feedback-main py-4 px-3 bg-pos-page-bg">
-    <div class="flex flex-wrap w-full sm:w-2/3 md:w-1/2 mx-auto">
+    <div class="flex flex-wrap w-full sm:w-3/4 mx-auto">
 
-      <div class="w-full md:w-1/2 feedback__ratings">
-        <h4 class="text-lg text-center w-full mb-4">Was this page helpful?</h4>
+      <div class="feedback__ratings w-full md:w-1/2 border-r border-pos-divider">
+        <h4 class="text-lg text-center font-medium w-full mb-4">Was this page helpful?</h4>
 
         <ul class="flex justify-center list-none">
           <li class="">
             <label>
               <input type="radio" name='{{ p.rate.name }}' value="5" data-feedback-selected-value="5" hidden>
-              <svg class="feedback-smile h-12 w-12 ml-2 cursor-pointer text-pos-icon-feedback"><use xlink:href="#feedback-smile"></use></svg>
+              <svg class="feedback-smile h-8 w-8 ml-2 cursor-pointer text-pos-icon-feedback"><use xlink:href="#feedback-smile"></use></svg>
             </label>
           </li>
           <li class="ml-3">
             <label>
               <input type="radio" name='{{ p.rate.name }}' value="3" data-feedback-selected-value="3" hidden>
-              <svg class="feedback-weird h-12 w-12 ml-2 cursor-pointer text-pos-icon-feedback"><use xlink:href="#feedback-weird"></use></svg>
+              <svg class="feedback-weird h-8 w-8 ml-2 cursor-pointer text-pos-icon-feedback"><use xlink:href="#feedback-weird"></use></svg>
             </label>
           </li>
           <li class="ml-3">
             <label>
               <input type="radio" name='{{ p.rate.name }}' value="1" data-feedback-selected-value="1" hidden>
-              <svg class="feedback-sad h-12 w-12 ml-2 cursor-pointer text-pos-icon-feedback"><use xlink:href="#feedback-sad"></use></svg>
+              <svg class="feedback-sad h-8 w-8 ml-2 cursor-pointer text-pos-icon-feedback"><use xlink:href="#feedback-sad"></use></svg>
             </label>
           </li>
         </ul>
@@ -61,13 +61,13 @@ flash_notice: Thank you for your feedback.
 
       {% unless context.page.metadata.skip_contribute_button == true %}
         <div class="w-full mt-10 sm:mt-0 md:w-1/2">
-          <h4 class="text-lg mb-4 text-center">Contribute to this page</h4>
+          <h4 class="text-lg mb-4 font-medium text-center">Contribute to this page</h4>
 
           {%- capture url -%}
             https://github.com/mdyd-dev/nearme-documentation/blob/master/app/views/pages/{{ context.page.slug }}.liquid
           {%- endcapture -%}
           <a href="{{ url }}" target="_blank" rel="noopener" class="block text-center no-underline text-pos-icon-feedback hover:text-pos-darkblue">
-            <svg class="h-12 w-12"><use xlink:href="#github"></use></svg>
+            <svg class="h-8 w-8"><use xlink:href="#github"></use></svg>
           </a>
         </div>
       {% endunless %}
@@ -107,16 +107,16 @@ flash_notice: Thank you for your feedback.
 {% endform %}
 
 <svg xmlns="http://www.w3.org/2000/svg" hidden>
-  <symbol id='feedback-smile' viewBox='0 0 512 512' fill="currentColor">
-    <path d='m256 0c-141.156 0-256 114.844-256 256s114.844 256 256 256 256-114.844 256-256-114.844-256-256-256zm0 490.667c-129.396 0-234.667-105.271-234.667-234.667s105.271-234.667 234.667-234.667 234.667 105.271 234.667 234.667-105.271 234.667-234.667 234.667z'/><path d='m393.385 299.115c-5.781-1.385-11.49 2.177-12.844 7.906-13.75 57.885-64.958 98.313-124.542 98.313-59.656 0-110.885-40.49-124.573-98.448-1.365-5.75-7.146-9.24-12.833-7.938-5.74 1.354-9.292 7.104-7.938 12.833 15.979 67.646 75.75 114.885 145.344 114.885 69.51 0 129.26-47.167 145.292-114.708 1.365-5.739-2.176-11.489-7.906-12.843z'/><circle cx='170.667' cy='192' r='21.333'/><circle cx='341.333' cy='192' r='21.333'/>
+  <symbol id='feedback-smile' fill="none" viewBox="0 0 30 30">
+    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 29a14 14 0 100-28 14 14 0 000 28z" clip-rule="evenodd"/><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.3 10.8a.5.5 0 110 1 .5.5 0 010-1M19.7 10.8a.5.5 0 110 1 .5.5 0 010-1M22.6 18.8a8.4 8.4 0 01-15.2 0"/>
   </symbol>
 
-  <symbol id='feedback-weird' viewBox='0 0 512 512' fill="currentColor">
-    <path d='m256 0c-141.156 0-256 114.844-256 256s114.844 256 256 256 256-114.844 256-256-114.844-256-256-256zm0 490.667c-129.396 0-234.667-105.271-234.667-234.667s105.271-234.667 234.667-234.667 234.667 105.271 234.667 234.667-105.271 234.667-234.667 234.667z'/><circle cx='170.667' cy='192' r='21.333'/><circle cx='341.333' cy='192' r='21.333'/><path d='m373.333 341.333h-234.666c-5.896 0-10.667 4.771-10.667 10.667s4.771 10.667 10.667 10.667h234.667c5.896 0 10.667-4.771 10.667-10.667-.001-5.896-4.772-10.667-10.668-10.667z'/>
+  <symbol id='feedback-weird' fill="none" viewBox="0 0 30 30">
+    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 29a14 14 0 100-28 14 14 0 000 28z" clip-rule="evenodd"/><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.3 10.8a.5.5 0 110 1 .5.5 0 010-1M19.7 10.8a.5.5 0 110 1 .5.5 0 010-1M9.4 19.7h11.2"/>
   </symbol>
 
-  <symbol id='feedback-sad' viewBox='0 0 512 512' fill="currentColor">
-    <path d='m256 0c-141.156 0-256 114.844-256 256s114.844 256 256 256 256-114.844 256-256-114.844-256-256-256zm0 490.667c-129.396 0-234.667-105.271-234.667-234.667s105.271-234.667 234.667-234.667 234.667 105.271 234.667 234.667-105.271 234.667-234.667 234.667z'/><circle cx='170.667' cy='192' r='21.333'/><circle cx='341.333' cy='192' r='21.333'/><path d='m256 320h-.031c-89.615 0-124.396 45.021-125.833 46.938-3.521 4.688-2.573 11.302 2.094 14.854 4.667 3.542 11.354 2.635 14.927-2 1.208-1.573 30.604-38.458 108.813-38.458h.03c78.229.01 107.635 36.896 108.802 38.406 2.094 2.792 5.292 4.26 8.542 4.26 2.229 0 4.469-.698 6.396-2.135 4.708-3.531 5.667-10.219 2.125-14.938-1.438-1.906-36.23-46.917-125.865-46.927z'/>
+  <symbol id="feedback-sad" fill="none" viewBox="0 0 30 30">
+    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 29a14 14 0 100-28 14 14 0 000 28z" clip-rule="evenodd"/><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 22.5a8.4 8.4 0 017.6-4.7M10.3 10.8a.5.5 0 110 1 .5.5 0 010-1M19.7 10.8a.5.5 0 110 1 .5.5 0 010-1"/>
   </symbol>
 
   <symbol id='github' viewBox='0 0 438.549 438.549' fill="currentColor">
