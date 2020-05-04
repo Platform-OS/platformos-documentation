@@ -26,13 +26,17 @@ module.exports = {
         'warning-bg': '#FFE9EE',
         'warning-text': '#AA002C',
         'success-bg': '#E9F3E8',
-        'success-text': '#166D12'
+        'success-text': '#166D12',
+        'icon-feedback': '#8589A0'
       },
       'gray': {
         200: '#eeeeee'
       }
     },
     extend: {
+      boxShadow: {
+        box: '0px 10px 30px rgba(52, 61, 75, 0.3)'
+      },
       fontFamily: {
         sans: ['Gotham', ...defaultTheme.fontFamily.sans],
       },
