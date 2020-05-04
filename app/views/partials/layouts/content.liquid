@@ -12,9 +12,9 @@
 
 {%- export pagesUpdatedAt, namespace: 'nav' -%}
 
-<main class="flex flex-wrap sm:flex-no-wrap relative bg-white">
+<div class="flex flex-wrap sm:flex-no-wrap relative bg-white">
   {% if has_sidebar == 'true' %}
-    <div class="w-full sm:w-3/12 flex bg-pos-page-bg">
+    <aside class="w-full sm:w-3/12 flex bg-pos-page-bg">
       <div class="sm:w-1/4"></div>
 
       <div class="w-full sm:w-3/4 px-4 py-6 sm:pt-20 sm:px-2 md:pl-16 md:pr-6">
@@ -34,10 +34,10 @@
 
         {% include 'layouts/nav' %}
       </div>
-    </div>
+    </aside>
   {% endif %}
 
-  <div class="w-full bg-white {% if has_sidebar == 'true' %}sm:w-8/12{% else %}container{% endif %}">
+  <main class="w-full bg-white {% if has_sidebar == 'true' %}sm:w-8/12{% else %}container{% endif %}">
     <div class="content category__{{ context.params.slug }} sm:pl-16 sm:pr-0">
 
       {% unless context.page.metadata.breadcrumbs == false %}
@@ -63,5 +63,5 @@
         {% endif %}
       </div>
     </div>
-  </div>
-</main>
+  </main>
+</div>
