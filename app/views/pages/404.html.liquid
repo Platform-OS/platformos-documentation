@@ -1,16 +1,44 @@
 ---
+layout_name: empty
 metadata:
   description: We're sorry, this page doesn't exist.
   feedback: false
   breadcrumbs: false
   last_edit: false
 ---
-<p>&nbsp;</p>
+<!DOCTYPE html>
+<html lang="en">
 
-<div class="text-center">
-  <h3>We're sorry, this page doesn't exist.</h3>
+<head>
+  {%- include 'layouts/lib/context-variables' -%}
+  {% include 'layouts/head/head' %}
+</head>
 
-  <p>Please select a category below or search above to find what you are looking for.</p>
-</div>
+<body class="homepage antialiased bg-pos-page-bg">
+  {% include 'layouts/header' %}
 
-{% include 'home/section-options' %}
+  <main class="pt-16 bg-pos-page-bg bg-no-repeat" style="background-position: 60% 0; background-size: 132%; background-image: url({{ 'images/svg/header-bg.svg' | asset_url }})">
+    <div class="container">
+      <div class="text-center md:px-8">
+        <div class="md:w-3/5 mx-auto">
+          {% include 'home/search-form' %}
+        </div>
+      </div>
+
+      <div class="text-center mt-10">
+        <h3>We're sorry, this page doesn't exist.</h3>
+
+        <p>Please select a category below or search above to find what you are looking for.</p>
+      </div>
+
+      {% include 'home/section-options' %}
+
+    </main>
+  {% include 'layouts/content/callout' %}
+
+  {% include 'layouts/footer' %}
+
+  {%- include 'layouts/body/icons' -%}
+  {%- include 'layouts/body/javascripts_bottom' -%}
+</body>
+</html>
