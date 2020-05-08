@@ -13,6 +13,7 @@ module.exports = {
       pos: {
         'blue': '#3A8DDE',
         'darkblue': '#194F90',
+        'searchblue': '#2173C4',
         'page-bg': '#F5F6FC',
         'divider': '#dddddd',
         'search': '#767676',
