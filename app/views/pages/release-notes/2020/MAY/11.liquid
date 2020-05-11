@@ -1,0 +1,32 @@
+---
+converter: markdown
+metadata:
+  title: Fixes
+  description: May 11, 2020
+  skip_contribute_button: true
+  last_edit: false
+slug: release-notes/11-MAY-2020
+---
+
+#### {{ page.metadata.description }}
+
+<h4 class="release-note release-note__new">NEW</h4>
+
+* [Beta] new property type `upload` to replace `custom_images` and `custom_attachments`. It is still work in progress and the interface might change. Final documentation to be provided within next few weeks.
+* added `sms_send` GraphQL mutation to work similarly to `email_send` and `api_call_send`
+
+<h4 class="release-note release-note__fixed">FIXED</h4>
+
+* gracefully handle error when admin_* mutation was invoked with name, but without required physical_file_path
+* `pos-cli logs` sometimes included unnecessary internal error message
+* added `model_name` as a restricted property name
+* added graceful handling of a scenario of uploading a file with too long name
+* authorization_policies sometimes were invoked twice
+* authorization_policies sometimes were returning `200` status code instead of the one provided in `http_status`
+* added better handling of invalid regpexp in `regex_matches` filter
+* fix descriptions of multiple GraphQL mutations
+* fix documentation example of `raw_escape_string` filter
+* fix edge case scenario when integer is provided as a path name for `include` tag
+* `{% raw%}{% form %}{% endform %}{% endraw %}` was rendering nothing instead of form html tag
+* fixed edge case scenario when invalid arguments were provided to precision argument in `time_diff` filter
+* fix edge case scenario when invalid arguments were provided to `format_number` filter
