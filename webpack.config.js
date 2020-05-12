@@ -54,7 +54,18 @@ const config = {
     ],
   },
   optimization: {
-    minimizer: [new TerserPlugin({ parallel: true, cache: true })],
+    minimizer: [
+      new TerserPlugin({
+        parallel: true,
+        cache: true,
+        terserOptions: {
+          output: {
+            comments: false,
+          },
+        },
+        extractComments: false,
+      }),
+    ],
     splitChunks: {
       cacheGroups: {
         vendors: false, // Do not emit vendors~* files that are almost empty in this setup
