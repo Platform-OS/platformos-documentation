@@ -1,0 +1,105 @@
+---
+layout_name: empty
+---
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link rel="preload" href="{{ 'fonts/Gotham-Medium.woff2' | asset_url }}" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="{{ 'fonts/Gotham-Book.woff2' | asset_url }}" as="font" type="font/woff2" crossorigin="anonymous">
+
+  {% include 'layouts/head/favicon' %}
+
+  <link type="text/css" rel="stylesheet" href="{{ 'app.css' | asset_url }}" />
+  <link type="text/css" rel="stylesheet" href="{{ 'modules/graphql/code.css' | asset_url }}" />
+  <title>ACL | platformOS Documentation</title>
+</head>
+<body class="antialiased bg-pos-page-bg flex">
+
+  <aside class="w-84 bg-white min-h-screen shadow-lg relative">
+
+    <a href="/" class="block no-underline text-center my-8">
+      <span class="screen-reader-text">Home</span>
+      {% include 'svg/logo', height: 37 %}
+    </a>
+
+    <div class="mx-4 my-8">
+      <input id="type-search" type="text" placeholder="Search a type" autofocus=""
+         class="py-1 px-2" />
+    </div>
+
+    <nav>
+      <h4>Schema</h4>
+      <ul>
+          <li  title="RootQuery">
+              <a href="rootquery.html" class="">
+                  RootQuery
+              </a>
+          </li>
+          <li  title="RootMutation">
+              <a href="rootmutation.html" class="">
+                  RootMutation
+              </a>
+          </li>
+      </ul>
+
+      <h4>Scalars</h4>
+      <ul>
+          <li  title="ActivityStreamsPayload">
+              <a href="activitystreamspayload.html" class="">
+                  ActivityStreamsPayload
+              </a>
+          </li>
+          <li  title="Any">
+              <a href="any.html" class="">
+                  Any
+              </a>
+          </li>
+          <li  title="Boolean">
+              <a href="boolean.html" class="">
+                  Boolean
+              </a>
+          </li>
+      </ul>
+    </nav>
+
+  </aside>
+
+  {% raw %}
+  <main class="w-auto">
+        <p class="">ENUM</p>
+        <h1 class="">ACL</h1>
+        <div class=""></div>
+
+
+
+        <section>
+          <h2 id="lesstitlegreater" class="">
+              <a href="#lesstitlegreater">
+                  <i class="">#</i>
+              </a>
+              GraphQL Schema definition
+          </h2>
+          <code class="highlight"><table class="code"><tbody><tr class="row"><td id="L1" class="td-index">1</td><td id="LC1" class="td-code"><span class="keyword operator ts">enum</span> <span class="identifier">ACL</span> {</td></tr><tr class="row"><td id="L2" class="td-index">2</td><td id="LC2" class="td-code"><span class="tab"></span></td></tr><tr class="row"><td id="L3" class="td-index">3</td><td id="LC3" class="td-code"><span class="tab"><span class="comment line">#   private</span></span></td></tr><tr class="row"><td id="L4" class="td-index">4</td><td id="LC4" class="td-code"><span class="tab"><span class="meta">private</span></span></td></tr><tr class="row"><td id="L5" class="td-index">5</td><td id="LC5" class="td-code"><span class="tab"></span></td></tr><tr class="row"><td id="L6" class="td-index">6</td><td id="LC6" class="td-code"><span class="tab"><span class="comment line">#   public (read only)</span></span></td></tr><tr class="row"><td id="L7" class="td-index">7</td><td id="LC7" class="td-code"><span class="tab"><span class="meta">public</span></span></td></tr><tr class="row"><td id="L8" class="td-index">8</td><td id="LC8" class="td-code">}</td></tr></tbody></table></code>
+        </section>
+        <section>
+          <h2 id="lesstitlegreater" class="">
+              <a href="#lesstitlegreater">
+                  <i class="">#</i>
+              </a>
+              Required by
+          </h2>
+          <ul class="require-by"><li><a href="presignurlinput.html" title="PresignUrlInput - ">PresignUrlInput<em>null</em></a><li></ul>
+        </section>
+</main>
+  {% endraw %}
+
+  <script src="{{ 'modules/graphql/focus-active.js' | asset_url }}"></script>
+  <script src="{{ 'modules/graphql/filter-types.js' | asset_url }}"></script>
+  <script src="{{ 'modules/graphql/toggle-navigation.js' | asset_url }}"></script>
+  <script src="{{ 'modules/graphql/line-link.js' | asset_url }}"></script>
+</body>
