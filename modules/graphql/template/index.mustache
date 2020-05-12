@@ -14,21 +14,13 @@ layout_name: empty
 
   {% include 'layouts/head/favicon' %}
 
-  <link type="text/css" rel="stylesheet" href="{{ 'app.css' | asset_url" /> }}
-  <link type="text/css" rel="stylesheet" href="{{ 'modules/graphql/code.css' | asset_url }}" />
+  <link type="text/css" rel="stylesheet" href="{{ 'app.css' | asset_url }}" />
+  <link type="text/css" rel="stylesheet" href="{{ 'graphql.css' | asset_url }}" />
   <title><% title %> | platformOS Documentation</title>
 </head>
-<body class="antialiased bg-pos-page-bg">
-  <nav>
-    <%> nav %>
-  </nav>
 
-  {% raw %}
-  <main><%> main %></main>
-  {% endraw %}
-
-  <script src="{{ 'modules/graphql/focus-active.js' | asset_url }}"></script>
-  <script src="{{ 'modules/graphql/filter-types.js' | asset_url }}"></script>
-  <script src="{{ 'modules/graphql/toggle-navigation.js' | asset_url }}"></script>
-  <script src="{{ 'modules/graphql/line-link.js' | asset_url }}"></script>
+<body class="antialiased bg-pos-page-bg flex">
+  <%> nav %>
+  <%> main %>
+  <script src="{{ 'graphql.js' | asset_url }}"></script>
 </body>
