@@ -1,8 +1,14 @@
 <li class="topic-group mb-4 mt-6 text-base">
   <h3>DEVELOPMENT</h3>
 </li>
-<li class="{% if cp contains 'about-platform-os' %}active{% endif %}">
-  <a href="/developer-guide/about-platform-os">About platformOS</a>
+<li class="{% if cp contains 'about-platformos' %}active{% endif %}">
+  <a href="/developer-guide/about-platformos/about-platformos">About platformOS</a>
+  {% if cp contains 'about-platformos' %}
+    <ul class="submenu">
+      {% include "shared/nav/link", href: "/developer-guide/about-platformos/about-platformos", text: "What is platformOS?" %}
+      {% include "shared/nav/link", href: "/developer-guide/about-platformos/security-drp", text: "Security and Disaster Recovery" %}
+    </ul>
+  {% endif %}
 </li>
 <li class="{% if cp contains 'platformos-workflow/development-workflow' %}active{% endif %}">
   <ul class="list-none">
