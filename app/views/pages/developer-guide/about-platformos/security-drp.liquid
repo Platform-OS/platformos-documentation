@@ -1,0 +1,93 @@
+---
+converter: markdown
+metadata:
+  title: Security and Disaster Recovery
+  description: This article outlines the steps platformOS takes to ensure security and provide disaster recovery.
+---
+
+## Security Management System
+
+platformOS has invested heavily in its **Information Security Management System (ISMS)** and built a set of security policies and processes to protect your data and assets.
+
+* Multiple network abstraction layers for isolation
+* Co-location of data centers around the world
+* Third party penetration testing
+* Virus and malware scanning
+
+We currently provide the choice for you to deploy your websites, SaaS products and applications on both [Amazon Web Services (AWS)](https://aws.amazon.com) and [Google Cloud](https://cloud.google.com) hosting services (Azure is coming soon), so we will refer to their respective services when discussing specific aspects of security.
+
+Learn more:
+
+* [AWS Cloud Security](https://aws.amazon.com/security/): As an AWS partner, we ensure your sites and applications will benefit from AWS data centers and a network architected to protect your information, identities, applications, and devices. With AWS, we meet core security and compliance requirements, such as data locality, protection, and confidentiality with our comprehensive services and features.
+* [Google Cloud Security](https://cloud.google.com/security): We take advantage of the same secure-by-design infrastructure, built-in protection, and global network that Google uses to protect your information, identities, applications, and devices.
+
+Some of our clients have contractual obligations to host services on specific Infrastructure as a Service providers — platformOS ensures your code runs securely, with redundancy and backups.
+
+## Data backups
+
+platformOS automatically backs up your applications and databases using real-time READ REPLICAs which exist across multiple Zones for further physical disaster recovery within a data-center.
+Additionally, incremental transaction logs, daily and weekly backups are taken.
+
+The retention period for monthly backups is 60 days.
+These processes are internal to the platformOS DevOps team.
+
+For developers and Channel Partners building Software as a Service solutions on top of platformOS, there’s additional options for taking off-site backups and managing data removal.
+
+Learn more:
+
+* [Data Backup and Removal](https://documentation.platformos.com/developer-guide/models/data-backup-removal): Learn about how deleted data is backed up and when it is removed permanently. Includes explanation of automatic and manual permanent removal.
+* [Data Export](https://documentation.platformos.com/developer-guide/data-import-export/export#content): Using either the CLI or the raw export API. This can be useful when test data is needed for a service, e.g. in a staging environment or off-site backups of your choosing.
+* [GDPR Compliance in platformOS](https://documentation.platformos.com/best-practices/gdpr/gdpr-compliance): Learn how platformOS approaches GDPR as just one of many compliance requirements and ensures that your project can easily comply with any number of government legislated privacy rules.
+* [AWS Backup](https://aws.amazon.com/backup/): AWS Backup is a fully managed backup service that makes it easy to centralize and automate the backup of data across AWS services.
+* [Google Cloud Backups](https://cloud.google.com/sql/docs/mysql/backup-recovery/backups ): How backups of your Cloud SQL instance work, and how they can be used to restore your data to the same or another instance.
+
+## Load balancing and redundancy
+
+We use **application load balancers** that are best suited for load balancing of HTTP and HTTPS traffic and provide advanced request routing targeted at the delivery of modern application architectures, including microservices and containers.
+
+On AWS, operating at the individual request level (Layer 7), Application Load Balancer routes traffic to targets within Amazon Virtual Private Cloud (Amazon VPC) based on the content of the request. A similar approach is used with GCP, leveraging their various Global and Regional Load Balancing.
+
+Behind the Load Balancers are clusters of application and database servers.
+These are both pooled or dedicated. Dedicated servers are purchased by clients who require a single tenant or additional server capacity for specific sites or application end-points, above and beyond the standard hosting plans.
+
+Learn more:
+
+* [AWS Load Balancers](https://aws.amazon.com/elasticloadbalancing): Learn about Application, Network, and Classic Load Balancers.
+* [Google Cloud Load Balancing](https://cloud.google.com/load-balancing): High performance, scalable load balancing on Google Cloud Platform.
+
+
+## Disaster recovery
+We have compiled a Disaster Recovery Plan (DPR) that includes:
+
+* Guidelines for determining plan activation 
+* Technical response flow and recovery strategy
+* Guidelines for recovery procedures
+* References to key Business Resumption Plans and technical dependencies 
+* Rollback procedures that will be implemented to return to standard operating state
+* Checklists outlining considerations for escalation, incident management, and plan activation
+
+The overall disaster recovery strategy of platformOS is summarized in the table below.
+
+<img src="{{ 'images/developer-guide/about-platformos/dr-strategy.png' | asset_url }}" alt="Disaster Recovery Strategy" />
+
+A disaster recovery event can be broken out into three phases, the response, the resumption, and the restoration:
+
+* **Response Phase**: The immediate actions following a significant event.
+    * On call personnel paged
+    * Decision made around recovery strategies to be taken
+    * Full recovery team identified
+* **Resumption Phase**: Activities necessary to resume services after the team has been notified.
+    * Recovery procedures implemented
+    * Coordination with other departments executed as needed
+* **Restoration Phase**: Tasks taken to restore service to previous levels.
+    * Rollback procedures implemented
+    * Operations restored
+
+Learn more:
+
+* [AWS Disaster Recovery](https://aws.amazon.com/disaster-recovery/): AWS supports many disaster recovery architectures, from those built for smaller workloads to enterprise solutions that enable rapid failover at scale. AWS provides a set of cloud-based disaster recovery services that enable fast recovery of your IT infrastructure and data.
+* [Disaster Recovery on Google Cloud](https://medium.com/google-cloud/hosting-web-applications-on-google-cloud-an-overview-87d0962931a3) - Miniseries by Priyanka Vergadia
+
+
+platformOS supports many global brands, including Intel, Hallmark, Spark.co.nz.
+These brands also perform rigorous 3rd party penetration testing and require specific best practices to be adhered to. We’re proud to have an exceptional track record of over 5+ years servicing these clients.
