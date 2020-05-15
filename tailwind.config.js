@@ -4,7 +4,8 @@ module.exports = {
   purge: [
     './app/forms/**/*.liquid',
     './app/views/**/*.liquid',
-    './modules/graphql/public/views/**/*.html',
+    './modules/graphql/public/**/*.html',
+    './modules/graphql/template/*.mustache',
     './src/js/**/*.js',
   ],
   theme: {
