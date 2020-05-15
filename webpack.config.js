@@ -19,6 +19,7 @@ const plugins = [
 const config = {
   entry: {
     app: './src/app',
+    graphql: './modules/graphql/public/assets/graphql'
   },
   output: {
     filename: '[name].js',

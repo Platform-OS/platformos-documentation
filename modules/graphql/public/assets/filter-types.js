@@ -1,6 +1,6 @@
 (function() {
-  var HIDE_CLASS = 'slds-hide';
-  var ITEM_CLASS = 'slds-item';
+  var HIDE_CLASS = 'hidden';
+  var ITEM_CLASS = 'inline-block';
 
   function Item(li) {
     this.li = li;
@@ -45,7 +45,7 @@
     });
   };
 
-  var items = ItemList.fromSelector('nav .slds-navigation-list--vertical li');
+  var items = ItemList.fromSelector('nav ul li');
   var input = document.getElementById('type-search');
   var lastMatch = '';
 

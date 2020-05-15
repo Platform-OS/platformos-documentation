@@ -1,5 +1,5 @@
-(function() {
-  ready(function() {
+(function () {
+  ready(function () {
     var tables = window.document.getElementsByClassName('code');
 
     for (var i = 0; i < tables.length; i++) {
@@ -56,18 +56,3 @@
     }
   }
 })();
-
-// https://developer.mozilla.org/ru/docs/Web/API/Element/closest
-(function(e) {
-  e.closest =
-    e.closest ||
-    function(css) {
-      var node = this;
-
-      while (node) {
-        if (node.matches(css)) return node;
-        else node = node.parentElement;
-      }
-      return null;
-    };
-})(Element.prototype);
