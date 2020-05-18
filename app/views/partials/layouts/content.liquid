@@ -12,17 +12,17 @@
 
 {%- export pagesUpdatedAt, namespace: 'nav' -%}
 
-<div class="flex flex-wrap sm:flex-no-wrap relative bg-white">
+<div class="relative flex flex-wrap bg-white sm:flex-no-wrap">
   {% if has_sidebar == 'true' %}
-    <aside class="w-full sm:w-3/12 flex bg-pos-page-bg">
+    <aside class="flex w-full sm:w-3/12 bg-pos-page-bg">
       <div class="sm:w-1/4"></div>
 
-      <div class="w-full sm:w-3/4 px-4 py-6 sm:pt-20 sm:px-2 md:pl-16 md:pr-6">
-        <p class="sm:hidden text-lg text-center">
+      <div class="w-full px-4 py-6 sm:w-3/4 sm:pt-20 sm:px-2 md:pl-16 md:pr-6">
+        <p class="text-lg text-center sm:hidden">
           <a href="#content">Skip to content</a>
         </p>
 
-        <div class="hidden sm:flex absolute shadow-sm top-0 left-0 sm:w-3/12 h-16 items-center justify-center bg-white">
+        <div class="absolute top-0 left-0 items-center justify-center hidden h-16 bg-white sm:flex shadow-sm sm:w-3/12">
           {% if context.exports.category.name %}
             <span>
               {% capture icon_path %}svg/{{ context.exports.category.slug }}{% endcapture %}
@@ -59,7 +59,7 @@
         </div>
 
         {% if context.page.metadata.toc == true %}
-          <div class="ml-6 w-4/12" data-autotoc></div>
+          <div class="w-4/12 ml-6" data-autotoc></div>
         {% endif %}
       </div>
     </div>

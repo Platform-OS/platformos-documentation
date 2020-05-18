@@ -9,7 +9,7 @@ const generateTOCList = (headings) => {
   return headings
     .map((h) => {
       return `<li class="mb-0">
-        <a href="${h.href}" class="no-underline hover:text-pos-darkblue inline-block py-1">
+        <a href="${h.href}" class="inline-block py-1 no-underline hover:text-pos-darkblue">
           ${h.text}
         </a>
       </li>`;
@@ -27,9 +27,9 @@ const initialize = () => {
 
   const tocHTML = generateTOCList(parseHeadings(headings));
 
-  const tocDOM = `<div class="hidden md:block p-8 bg-pos-page-bg">
+  const tocDOM = `<div class="hidden p-8 md:block bg-pos-page-bg">
       <h4 class="mb-4 text-lg">On this page</h4>
-      <ul class="list-none pl-0">${tocHTML}</ul>
+      <ul class="pl-0 list-none">${tocHTML}</ul>
     </div>`;
 
   container.innerHTML = tocDOM;

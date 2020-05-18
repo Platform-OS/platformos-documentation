@@ -327,7 +327,7 @@ Then you can use it to display images.
 {% if models.total_entries > 0 %}
   <hr>
 
-  <div class="row my-2">
+  <div class="my-2 row">
     <div class="col-9">
       <h3>Last 5 processed images:</h3>
     </div>
@@ -337,7 +337,7 @@ Then you can use it to display images.
   {% for model in models.results %}
     {% assign versions = model | dig: "images" | first %}
 
-    <div class="card my-4">
+    <div class="my-4 card">
       <div class="card-body">
         <div class="row">
           {% for version in versions %}

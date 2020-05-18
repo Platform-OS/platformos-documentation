@@ -327,7 +327,7 @@ Now that you have a link pointing to {% raw %}`/list/show/{{ list.id }}`{% endra
  {%- assign id = context.params.slug3 -%}
  {% graphql list = 'list/read', id: id | fetch: 'models' | fetch: 'results' | first %}
 
- <h2 class="mr-10 mb-0">{{ list.title }}</h2>
+ <h2 class="mb-0 mr-10">{{ list.title }}</h2>
 ```
 {% endraw %}
 
@@ -386,11 +386,11 @@ Errors are handled the same way as previously.
   method="POST"
   action="/list/update/{{ list.id }}"
   x-show="open === true"
-  class="w-full flex mt-4">
+  class="flex w-full mt-4">
 
   <input type="text" name="title" placeholder="New title" value="{{ list.title }}" class="w-2/3" required>
 
-  <button class="button-primary ml-2">Save</button>
+  <button class="ml-2 button-primary">Save</button>
 </form>
 ```
 {% endraw %}
@@ -660,7 +660,7 @@ You might have noticed that the above filename is the same as in the one in the 
   <input type="text" name="content" value="{{ item.content }}" required class="w-1/2" />
   <input type="hidden" name="list_id" value="{{ list.id }}">
 
- <button class="button-primary ml-2">save</button>
+ <button class="ml-2 button-primary">save</button>
 </form>
 ```
 {% endraw %}

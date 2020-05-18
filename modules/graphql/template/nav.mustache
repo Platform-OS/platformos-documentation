@@ -1,12 +1,12 @@
-<aside class="w-84 flex-shrink-0 bg-white min-h-screen shadow-lg relative">
+<aside class="relative flex-shrink-0 min-h-screen bg-white shadow-lg w-84">
 
-  <a href="/" class="block no-underline text-center my-8">
+  <a href="/" class="block my-8 text-center no-underline">
     <span class="screen-reader-text">Home</span>
     {% include 'svg/logo', height: 37 %}
   </a>
 
-  <div class="mx-6 my-8 border-2 py-3 px-4 border-pos-divider flex items-center">
-    <input id="type-search" type="text" placeholder="Search a type" autofocus="" class="border-0 m-0 p-0 text-lg" />
+  <div class="flex items-center px-4 py-3 mx-6 my-8 border-2 border-pos-divider">
+    <input id="type-search" type="text" placeholder="Search a type" autofocus="" class="p-0 m-0 text-lg border-0" />
     <svg fill="none" class="text-pos-search" height="30" viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg">
       <g stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
         <path clip-rule="evenodd"
@@ -19,9 +19,9 @@
 
   <nav>
     <%#navigations%>
-    <h4 class="ml-6 uppercase font-light text-lg mb-2"><%title%></h4>
+    <h4 class="mb-2 ml-6 text-lg font-light uppercase"><%title%></h4>
 
-    <ul class="list-none p-0 m-0">
+    <ul class="p-0 m-0 list-none">
       <%#items%>
       <li <%#isActive%>class="text-pos-darkblue bg-pos-page-bg"<%/isActive%> title="<% text %>">
         <a href="<%{href}%>"><%text%></a>

@@ -633,7 +633,7 @@ You can improve usability of any long form (and in most cases anything more than
 {% endcomment %}
 
 {% if errors != empty %}
-  <div class="alert alert-danger mt-4 mb-4" role="alert">
+  <div class="mt-4 mb-4 alert alert-danger" role="alert">
   <h4 class="alert-heading">There is a problem</h4>
   <ul class="mb-0">
     {%- for error in errors -%}
@@ -704,7 +704,7 @@ metadata:
   <div class="col-10">
     <h1>{{ page.metadata.title }}</h1>
   </div>
-  <div class="col-2 text-right">
+  <div class="text-right col-2">
     <p><a href="/admin/product/new" class="btn btn-primary">Add a new product</a></p>
   </div>
 </div>
@@ -830,7 +830,7 @@ The router you’ve created also handles displaying details of the given product
 {% assign product = g.models.results.first %}
 
 <p><a href="/admin/products">&laquo; Products listing</a></p>
-<div class="d-flex mb-4">
+<div class="mb-4 d-flex">
   <h1 class="flex-grow-1">{{ product.name }}</h1>
 
   <div class="dropdown">
@@ -860,7 +860,7 @@ The router you’ve created also handles displaying details of the given product
   </div>
 </div>
 
-<div class="row mb-4">
+<div class="mb-4 row">
   <div class="col-sm-6">
     <table class="table">
       <tbody>
@@ -875,7 +875,7 @@ The router you’ve created also handles displaying details of the given product
       </tbody>
     </table>
   </div>
-  <div class="col-sm-6 text-right">
+  <div class="text-right col-sm-6">
     {% comment %} Display price {% endcomment %}
     <div class="display-4">{{ product.price | pricify_cents }}</div>
   </div>

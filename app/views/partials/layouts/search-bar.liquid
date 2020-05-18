@@ -1,14 +1,14 @@
-<div class="bg-white sm:bg-pos-page-bg bg-no-repeat bg-cover" style="background-image: url({{ 'images/svg/search-bg.svg' | asset_url }});">
+<div class="bg-white bg-no-repeat bg-cover sm:bg-pos-page-bg" style="background-image: url({{ 'images/svg/search-bg.svg' | asset_url }});">
   <div class="container">
     <form action="/" method="get">
-      <div class="ml-auto flex items-center w-full sm:w-84">
+      <div class="flex items-center w-full ml-auto sm:w-84">
         <input type="text" name="query"
-          class="search--input text-lg font-normal sm:font-thin border-0 pl-16 pr-8 py-3"
+          class="py-3 pl-16 pr-8 text-lg font-normal border-0 search--input sm:font-thin"
           style="background-color: transparent;"
           placeholder="Search documentation…"
           value="{{ context.params.query | default: '' | escape_javascript }}" />
 
-        <div class="relative text-pos-search flex items-center">
+        <div class="relative flex items-center text-pos-search">
           <svg fill="none" height="20" viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg"><g stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"><path clip-rule="evenodd" d="m15.5403 19.8028c4.0948-1.7402 6.0035-6.4704 4.2632-10.56518-1.7402-4.09476-6.4704-6.00348-10.56513-4.26325-4.09476 1.74023-6.00348 6.47043-4.26325 10.56513 1.74023 4.0948 6.47038 6.0035 10.56518 4.2633z" fill-rule="evenodd"/><path d="m18.0853 18.0844 6.248 6.2489"/></g></svg>
         </div>
       </div>

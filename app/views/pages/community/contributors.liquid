@@ -18,11 +18,11 @@ metadata:
   | map: "author"
 %}
 
-<ul class="list-none flex flex-wrap justify-between mt-8">
+<ul class="flex flex-wrap justify-between mt-8 list-none">
   {% for author in authors %}
     <li class="w-1/5 mb-8 text-center">
       {% assign avatar_url = "https://avatars0.githubusercontent.com/u/" | append: author.id | append: "?v=4&s=120" %}
-      <img loading="lazy" src="{{ avatar_url }}" alt="{{ author.login }} avatar" width="120" height="120" class="mb-0 mx-auto" />
+      <img loading="lazy" src="{{ avatar_url }}" alt="{{ author.login }} avatar" width="120" height="120" class="mx-auto mb-0" />
       <a href="{{ author.html_url }}" class="no-underline">{{ author.login }}</a>
     </li>
   {% endfor %}
