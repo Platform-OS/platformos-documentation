@@ -1,0 +1,24 @@
+---
+converter: markdown
+metadata:
+  title: CSV import error handling, sort by property defined in user.yml, multiple improvements 
+  description: May 18, 2020
+  skip_contribute_button: true
+  last_edit: false
+slug: release-notes/18-MAY-2020
+---
+
+#### {{ page.metadata.description }}
+
+<h4 class="release-note release-note__improved">IMPROVED</h4>
+
+* `namespace` is now an optional attribute in the `exports` tag, previously it was mandatory
+* `value_int` and `value_boolean` GraphQL arguments will work also with castable string data
+* added `property` argument in the `compact` filter to be better compatible with native Liquid implementation
+* possibility to sort by property defined in user.yml in the `users` GraphQL query
+* error handling of the new import CSV mechanism
+
+<h4 class="release-note release-note__fixed">FIXED</h4>
+
+* fixed edge case scenario when invalid argument was provided in the `parse_json` filter
+* fixed edge case scenario when resource was set to `Model` in Form
