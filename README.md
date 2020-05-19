@@ -56,14 +56,14 @@ Thank you to all our contributors!
 
 ### Required global dependencies
 
-- nodejs 8.10 and above
+- nodejs 12.10 and above
 - npm 6.1 and above
 
 ### Development
 
     npm ci # installs local dependencies
 
-    npm start # runs webpack in watch mode
+    npm start # runs webpack in watch mode, pos-cli sync with livereload 
 
 ### Build production assets
 
