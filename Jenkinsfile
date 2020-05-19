@@ -30,7 +30,7 @@ pipeline {
         MPKIT_TOKEN = credentials('POS_TOKEN')
       }
 
-      agent { docker { image 'node:12-alpine'; args '-u root' } }
+      agent { docker { image 'node:14-alpine'; args '-u root' } }
 
       steps {
         sh 'apk add make python g++'
