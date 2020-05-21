@@ -65,17 +65,15 @@ Here, we created an `api_call_notification` and then used the `pos-cli gui serve
     ```yaml
     {% raw %}
     ---
-    name: twilio_api_secret_create
     format: http
-    headers: |-
+    request_headers: |-
         {%- assign authBasic = context.constants.TWILIO_API_ACCOUNT_SID | append: ":" | append: context.constants.TWILIO_API_KEY_SID | base64_encode -%}
         {
             "Content-Type": "application/json",
             "Authorization": "Basic {{ authBasic }}"
         }
     request_type: POST
-    to: |-
-        https://api.twilio.com/2010-04-01/Accounts/{{ context.constants.TWILIO_API_ACCOUNT_SID }}/Keys.json
+    to: https://api.twilio.com/2010-04-01/Accounts/{{ context.constants.TWILIO_API_ACCOUNT_SID }}/Keys.json
     ---
     {% endraw %}
     ```
@@ -148,7 +146,7 @@ Here, we were not creating another API Key(Secret) — we were just receiving a 
     ---
     name: twilio_api_secret_create
     format: http
-    headers: |-
+    request_headers: |-
         {%- assign authBasic = context.constants.TWILIO_ACCOUNT_SID | append: ":" | append: context.constants.TWILIO_ACCOUNT_AUTH_TOKEN | base64_encode -%}
         {
             "Content-Type": "application/json",
