@@ -68,7 +68,7 @@ to: http://example.com/test-endpoint.json
 format: http
 request_type: GET
 callback: "{%- assign response_json = response.body | to_hash -%}{% graphql res = 'persist_in_custom_attribute', user_id: form.id, third_party_api_id: response_json.third_party_api_id %}"
-headers: '{
+request_headers: '{
   "Content-Type": "application/json"
 }'
 ---

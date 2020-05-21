@@ -51,8 +51,7 @@ trigger_condition: >
   {% raw  %}{%- graphql g_file = 'get_file_attachment', file_id: data.file_id -%}
   {% if g_file.customizations.results[0].document.content_type contains "pdf" %}true{% else %}false{% endif %}{% endraw  %}
 request_type: POST
-callback: ""
-headers: '{
+request_headers: '{
   "Content-Type": "application/json"
 }'
 ---
