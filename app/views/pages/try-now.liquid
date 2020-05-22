@@ -1,4 +1,5 @@
 ---
+layout_name: empty
 metadata:
   title: Try out platformOS
   description: platformOS is a model-based application development platform that enables you to create and host anything from small websites to large enterprise applications and even entire SaaS products
@@ -7,76 +8,142 @@ metadata:
   last_edit: false
 ---
 
-<div class="mx-auto mt-8 text-lg text-center sm:w-10/12">
-  <p>platformOS is a model-based application development platform that enables you to create and host anything from small websites to large enterprise applications and even entire SaaS products.</p>
+<!DOCTYPE html>
+<html lang="en">
 
-  <p>On this page, you can find different ways to try out platformOS according to your level of technical expertise.</p>
+<head>
+  {%- include 'layouts/lib/context-variables' -%}
+  {% include 'layouts/head/head' %}
+</head>
 
-  <p>So the question is:</p>
+<body class="antialiased homepage bg-pos-page-bg">
+  {% include 'layouts/header' %}
+  {% include 'layouts/search-bar' %}
 
-  <p class="text-xl font-semibold break-normal whitespace-no-wrap pointer-events-none">What would you like to do?</p>
-</div>
+  <main class="bg-no-repeat">
 
-<div class="flex flex-wrap w-full mt-8 md:flex-no-wrap">
-  <div class="w-full sm:w-1/2">
-    <h2 class="w-full text-center break-normal pointer-events-none">
-      Install a site with a single click.
-    </h2>
+    <div class="py-4 bg-white">
+      <div class="container">
 
-    <div class="px-6 py-4 border border-pos-divider">
-      {%- include 'svg/get-started', width: '42px' -%}
-      <h3 class="inline-block ml-2 pointer-events-none">1-Click Install</h3>
+        <div class="w-full breadcrumbs">
+          <ul class="flex flex-wrap justify-end text-sm list-none sm:flex-no-wrap">
+            <li class="flex items-center">
+              <a href="/" class="no-underline text-pos-blue hover:text-pos-darkblue hover:underline">Documentation</a>
+            </li>
 
-      <div class="pb-4 mt-4 ml-12">
-        <ul>
-          <li>Register on the Partner Portal</li>
-          <li>Create a fully functional demo site  with a single click</li>
-          <li>Install a blog</li>
-        </ul>
+            <li>
+              <svg class="mx-2" width="11" height="11"><use xlink:href="#arrow-right"></use></svg>
+            </li>
 
-        <p>Absolutely no coding required.</p>
+            <li class="flex items-center">
+              <a class="no-underline text-pos-blue hover:text-pos-darkblue hover:underline" href="/try-now">
+                Try now
+              </a>
+            </li>
+          </ul>
+        </div>
 
-        <a class="font-semibold no-underline hover:text-pos-darkblue"
-          href="https://partners.platformos.com/accounts/sign_up?journey_type=nontechnical">
-          CREATE DEMO SITE <svg width="10" height="11"><use xlink:href="#arrow-right"></use></svg>
-        </a>
+        <h1 class="text-5xl text-center text-pos-darkblue">Try out platformOS</h1>
+
+        <div class="mx-auto mt-8 mb-12 text-lg text-center sm:w-8/12">
+          <p>platformOS is a model-based application development platform that enables you to create and host anything from small websites to large enterprise applications and even entire SaaS products.</p>
+
+          <p>On this page, you can find different ways to try out platformOS according to your level of technical expertise.</p>
+
+          <p>So the question is:</p>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="sm:w-1/12"></div>
 
-  <div class="w-full mt-8 sm:mt-0 sm:w-1/2">
-    <h2 class="w-full text-center break-normal pointer-events-none">
-      Build a basic ‘Hello, World!’ app.
-    </h2>
+    <div class="container">
+      <div class="mt-12 text-center">
+        <p class="text-3xl font-medium break-normal">What would you like to do?</p>
+      </div>
 
-    <div class="px-6 py-4 border border-pos-divider">
+      <div class="flex flex-wrap justify-center w-full mt-12 mb-16 md:flex-no-wrap">
+        <div class="w-full sm:w-5/12">
 
-      {%- include 'svg/best-practices', width: '42px' -%}
-      <h3 class="inline-block ml-2 pointer-events-none">Sandbox</h3>
+          <div class="px-6 py-4 bg-white shadow-md hover:shadow-box">
+            {%- include 'svg/get-started', width: '48px' -%}
+            <h3 class="inline-block ml-2 pointer-events-none">1-Click Install</h3>
 
-      <div class="pb-4 mt-4 ml-12">
-        <ul>
-          <li>Register on the Partner Portal</li>
-          <li>Clone a platformOS codebase from our demo GitHub repository</li>
-          <li>Use it as your own sandbox</li>
-          <li>Play around – we will show you how</li>
-        </ul>
+            <div class="pb-4 mt-4 md:ml-16">
+              <ul class="font-light">
+                <li>Register on the Partner Portal</li>
+                <li>Create a fully functional demo site  with a single click</li>
+                <li>Install a blog</li>
+              </ul>
 
-        <p> You will need basic programming skills. </p>
+              <div class="flex my-4 font-medium">
+                <svg width="22" height="18" class=""><use xlink:href="#read-glasses"></use></svg>
+                <p class="pl-2 ml-2 border-l border-pos-divider">
+                  Absolutely no coding required.
+                </p>
+              </div>
 
-        <a class="font-semibold no-underline hover:text-pos-darkblue"
-          href="https://partners.platformos.com/accounts/sign_up?journey_type=semitechnical">
-          PLAY AROUND <svg width="10" height="11"><use xlink:href="#arrow-right"></use></svg>
-        </a>
+              <a class="flex items-center font-medium no-underline text-pos-blue hover:text-pos-darkblue"
+                href="https://partners.platformos.com/accounts/sign_up?journey_type=nontechnical">
+                CREATE DEMO SITE
+                <svg width="13" height="14" class="ml-2"><use xlink:href="#arrow-right"></use></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="sm:w-6"></div>
+
+        <div class="w-full mt-8 sm:mt-0 sm:w-5/12">
+          <div class="px-6 py-4 bg-white shadow-md hover:shadow-box">
+
+            {%- include 'svg/best-practices', width: '48px' -%}
+            <h3 class="inline-block ml-2">Sandbox</h3>
+
+            <div class="pb-4 mt-4 md:ml-16">
+              <ul class="font-light">
+                <li>Register on the Partner Portal</li>
+                <li>Clone a platformOS codebase from our demo GitHub repository</li>
+                <li>Use it as your own sandbox</li>
+                <li>Play around – we will show you how</li>
+              </ul>
+
+              <div class="flex my-4 font-medium">
+                <svg width="22" height="18" class=""><use xlink:href="#read-glasses"></use></svg>
+                <p class="pl-2 ml-2 border-l border-pos-divider">
+                  You will need basic programming skills.
+                </p>
+              </div>
+
+              <a class="font-medium no-underline hover:text-pos-darkblue"
+                href="https://partners.platformos.com/accounts/sign_up?journey_type=semitechnical">
+                PLAY AROUND <svg width="10" height="11"><use xlink:href="#arrow-right"></use></svg>
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
 
+    {% content_for callout_content %}
+      <h2 class="mt-12 text-4xl font-medium break-normal">Do you want to dive deeper?</h2>
+      <br/>
+      <a href="/get-started/todo-app/build-todo-list-app" class="mb-12 btn btn-primary">Build your own ToDo App based on our guide!</a>
+    {% endcontent_for %}
 
-<div class="mt-16 text-center">
-  <p class="text-lg">Do you want to dive deeper?</p>
-  <p><a href="/get-started/todo-app/build-todo-list-app">Build your own ToDo App based on our guide!</a></p>
-</div>
+    {% include 'layouts/content/callout' %}
+  </main>
+
+  {% include 'layouts/footer' %}
+
+  {%- include 'layouts/body/icons' -%}
+  {%- include 'layouts/body/javascripts_bottom' -%}
+
+  <svg xmlns="http://www.w3.org/2000/svg" hidden>
+    <defs>
+      <symbol id="read-glasses" fill="none" viewBox="0 0 22 18">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.125 12.126h15M4.125 14.626h15"/><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6.625 7.126a3.125 3.125 0 100-6.25 3.125 3.125 0 000 6.25zM15.375 7.126a3.125 3.125 0 100-6.25 3.125 3.125 0 000 6.25z" clip-rule="evenodd"/><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 4.06a1.25 1.25 0 112.5 0M20.375 4.001H18.5M3.5 4.001H1.625M20.375 17.126H4.125a2.5 2.5 0 01-2.5-2.5v-2.5a2.5 2.5 0 012.5-2.5h16.25"/>
+      </symbol>
+    </defs>
+  </svg>
+</body>
+</html>
