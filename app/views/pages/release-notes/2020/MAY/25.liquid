@@ -1,0 +1,36 @@
+---
+converter: markdown
+metadata:
+  title:
+  description: May 25, 2020
+  skip_contribute_button: true
+  last_edit: false
+slug: release-notes/25-MAY-2020
+---
+
+#### {{ page.metadata.description }}
+
+<h4 class="release-note release-note__new">NEW</h4>
+
+* Added `request_allowed` flag to Form to control whether a form will be available as an endpoint (which is deprecated). If `false`, the form will be usable only through GraphQL mutation. Default is `true`.
+
+<h4 class="release-note release-note__improved">IMPROVED</h4>
+
+* error message for not sending Email Notification
+* added more examples to extract_url_params and link to the official RFC
+* `to_mobile_number` filter will add `+` if the phone starts with country code
+* `map` filter implementation and its description
+* added case insensitive modifier and multiline option to `regex_matches` and `matches` filters
+* *DEPRECATION* rename `headers` to `request_headers` in ApiCalls to avoid ambiguity and be consistent with `response_headers` in Page
+* handling different formats than `html` for error pages triggered by Authorization Policy
+* error message when empty zip file is provided as an input to the new import script
+* error message when a hash was provided as a query name to `graphql` tag
+* error message when empty hash was provided as argument to `related_models` argument in GraphQL query
+* error message when trying to fetch `model_schema_name` for `models` GraphQL query when both were soft deleted
+
+
+<h4 class="release-note release-note__fixed">FIXED</h4>
+
+* overwriting email and password validation messages
+* Authorization Policies sometimes were invoked twice
+* Authorization Policies sometimes were returning `200` status code instead of the one provided in `http_status`
