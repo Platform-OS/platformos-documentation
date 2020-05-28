@@ -15,8 +15,6 @@ Using layouts, you can extract the common elements of many pages to one place. U
 
 All layouts should be located in the `views/layouts` directory. By default, all Pages use the layout called `application`, but you can create as many layouts as needed, and decide which page uses which layout. This is why the very first layout should be named `views/layouts/application.html.liquid`.
 
-{% include 'alert/note', content: 'If you create a layout using the GraphQL mutation `admin_liquid_layout_create`, include the `layouts/` prefix in the path, for example, adding `layouts/modules/homepage` will allow you to set `layout_name` in a page to `modules/homepage`. The `layouts/` prefix also applies to `admin_liquid_layout_update`.' %}
-
 ## Minimal example
 
 At a minimum, the content of the layout should look like this:
@@ -27,7 +25,7 @@ At a minimum, the content of the layout should look like this:
 {% endraw %}
 ```
 
-This layout only renders the content of the page, and is equivalent of passing `layout_name: ''` in the page definition.
+This layout only renders the content of the page, and is equivalent of passing `layout: ''` in the page definition.
 
 ## Usual example
 
@@ -63,13 +61,13 @@ If you want to have layouts for your non-html pages, just put `.<format>` before
 
 Examples:
 
-* document.pdf.liquid
+* document.txt.liquid
 * document.csv.liquid
 * layout.xml.liquid
 * email.txt.liquid
 * email.html.liquid
 
-In the page `my-example-page.pdf.liquid` you will put `layout_name: document` and it will recognize which layout to use (the same as the format of the page).
+In the page `my-example-page.txt.liquid` you will put `layout: document` and it will recognize which layout to use (the same as the format of the page).
 
 ### Rendering page content in layout
 

@@ -7,9 +7,10 @@ metadata:
 
 **Pages** are the most essential components of our platform, that define content displayed at a given path. All pages have to be located in the `views/pages` directory. Each page is represented by a single file with `liquid` extension.
 
-Each page is accessible on the URL indicated by its location in the codebase if not otherwise specified in the page configuration `slug` property. For example, the page `app/views/pages/get-started/hello-world.liquid` deployed to the domain `https://example.com` will be automatically accessible at `https://example.com/get-started/hello-world`.
+Each page is accessible on the URL indicated by its location in the codebase if not otherwise specified in the page configuration `slug` property. For example, the page `app/views/pages/get-started/hello-world.html.liquid` deployed to the domain `https://example.com` will be automatically accessible at `https://example.com/get-started/hello-world`.
 
 {% include 'alert/note', content: 'In examples, we often add the `slug` property to show where the page will be accessible, even if it would not be required because it is the same as the default.' %}
+{% include 'alert/note', content: 'Due to the SEO best practices, we automatically replace underscore with dash, so both `hello-world.liquid` and `hello_world.liquid` would evaluate to `hello-world`. In such scenario, the one that is updated as the last one will be used.' %}
 
 ## Page configuration
 
@@ -21,7 +22,7 @@ See below a sample page configuration file:
 
 ```yaml
 ---
-layout_name: my_custom_layout
+layout: my_custom_layout
 converter: markdown
 ---
 ```
@@ -33,9 +34,8 @@ A paragraph explaining what I do.
 
 Explanation:
 
-* `layout_name: my_custom_layout`: The page uses the layout `views/layouts/my_custom_layout.liquid`.
+* `layout: my_custom_layout`: The page uses the layout `views/layouts/my_custom_layout.liquid`.
 * `converter: markdown`: It converts markdown in the body of the page to HTML.
-* `searchable: true`: It is indexed and accessible via GraphQL query.
 
 ## Available properties
 
@@ -43,15 +43,13 @@ Explanation:
 | ------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------- | -------- |
 | authorization_policies | Array of authorization policies run before rendering the page |                                                              |               | No       |
 | converter              |                                                              | markdown                                                   |               | No       |
-| handler                |                                                              |                                                              |               | No       |
-| layout_name            | Defines which layout from `views/layouts/` you would like to use for pages with html format. <br /><br />If you don't want to use any layout, set it to an empty string. It will be equivalent to just rendering page content.<br /><br />Note: Currently, excluding this property altogether will cause the page to use the layout last used for the current page. If no layout has been used, it will use the default `application` layout. |                                                              | `application` | No       |
+| layout            | Defines which layout from `views/layouts/` you would like to use for pages with html format. <br /><br />If you don't want to use any layout, set it to an empty string. It will be equivalent to just rendering page content.<br /><br />Note: Currently, excluding this property altogether will cause the page to use the layout last used for the current page. If no layout has been used, it will use the default `application` layout. |                                                              | `application` | No       |
 | max_deep_level         | Defines what is the intended nesting level of the slug. For example, if the slug is `test` and you set max deep level to 1, then path like /test/something will raise 404. However, if you set it to 2, then it will render the page. This is useful for SEO to avoid duplicated content.                                                               | positive integer                                                               |               | No       | 3
 | metadata               | Object that you can define and access via `context.page.metadata` in different places |                                                              |               | No       |
 | method                 |                                                              | get<br />post<br />put<br />delete                   | get         | No       |
 | redirect_code          | Status that should be added to http response                 | 301<br /> 302                                            | 302               | No       |
 | redirect_to            | URL to a page you want to redirect                           |                                                              |               | No       |
 | response_headers       | JSON object that you can define to override most of the http headers |                                                              |               | No       |
-| searchable             | Indication that this page should be indexed and accessed via GraphQL query | true                                                         | false         | No       |
 | slug                   | Use the `slug` property to overwrite the default  slug.   |                                                              | The default slug is automatically created based on the page's location in the codebase. For example, a page `app/views/pages/get-started/hello-world.liquid` has the default slug `get-started/hello-world`. | No      |
 
 Everything after the front matter is the body of the page.
@@ -81,18 +79,15 @@ To define which format the endpoint will be available for, place `.<format>` bef
 | rss       | feed.rss.liquid            |
 | css       | datepicker.css.liquid      |
 | js        | server-constants.js.liquid |
-| pdf       | purchase-order.pdf.liquid  |
 | txt       | notes.txt.liquid           |
 | ics       | calendar.ics.liquid           |
 
-
-{% include 'alert/warning', content: 'For PDF it is only possible to render plain text. We are working on enhancing this feature by allowing to include images.' %}
 
 ## Accessing different formats
 
 You can have multiple pages with the same slug, but with different formats, and access them at the same time.
 
-For example, you can have both `html`, `pdf` and `txt` version of a page with `Hello world`:
+For example, you can have both `html`, `csv` and `txt` version of a page with `Hello world`:
 
 ##### app/views/pages/hello.html.liquid
 
@@ -102,9 +97,9 @@ Will be accessible under URL: `https://example.com/hello`
 Hello world
 ```
 
-##### app/views/pages/hello.pdf.liquid
+##### app/views/pages/hello.csv.liquid
 
-Will be accessible under the URL: `https://example.com/hello.pdf`
+Will be accessible under the URL: `https://example.com/hello.csv`
 
 ```liquid
 Hello world
@@ -118,7 +113,17 @@ Will be accessible under the URL: `https://example.com/hello.txt`
 Hello world
 ```
 
-Note that the `html` format is implicit, default, you don't need to specify it in the URL.
+Note that the `html` format is implicit, default, you don't need to specify it in the URL or the file name.
+
+## Method
+
+To define to which method the endpoint will respond, define `method` in the Page configuration. One page can respond to exactly one method.
+
+### POST/PUT/PATCH/DELETE methods and Cross-Site Request Forgery attacks
+
+Cross-Site Request Forgety allows attacker to trick an user to execute endpoint without his knowledge. We prevent Cross-Site Request Forgery (CSRF) attacks by requiring CSRF Token to be provided for every request to a Page which is not GET. If the token is missing, then `context.current_user` would appear as null, because the user session will be invalidated. To be able to access `context.current_user`, you need to provide valid CSRF Token. For [Forms](/developer-guide/forms/forms#content) we handle it automatically by adding a hidden parameter with name `authenticity_token`. However, if you manually trigger a POST/PUT/PATCH/DELETE AJAX request, you need to remember about populating `X-CSRF-Token` header with value from `context.authenticity_token` and also specify `X-Requested-With: XMLHttpRequest` header. Common practice is to include a `meta` tag in the layout, for example `<meta content="{{ context.authenticity_token }}" name="csrf-token">` and use this value to execute AJAX request.
+
+If you are building JSON API, for example for a mobile app, you might want to authenticate users using [JWT tokens](/developer-guide/users/authenticating-user-with-jwt-token#content).
 
 ## Related topics
 
