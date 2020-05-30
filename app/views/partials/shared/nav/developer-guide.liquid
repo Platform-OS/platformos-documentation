@@ -1,6 +1,7 @@
 <li class="mt-6 mb-4 text-base topic-group">
   <h3>DEVELOPMENT</h3>
 </li>
+
 <li class="{% if cp contains 'about-platformos' %}active{% endif %}">
   <a href="/developer-guide/about-platformos/about-platformos">About platformOS</a>
   {% if cp contains 'about-platformos' %}
@@ -10,30 +11,25 @@
     </ul>
   {% endif %}
 </li>
+
 <li class="{% if cp contains 'platformos-workflow/development-workflow' %}active{% endif %}">
   <ul class="list-none">
     {% include "shared/nav/link", href: "/developer-guide/platformos-workflow/development-workflow", text: "Development Workflow" %}
   </ul>
 </li>
-<li class="{% if cp contains 'platformos-workflow/pos-cli' %}active{% endif %}">
-  <ul class="list-none">
-    {% include "shared/nav/link", href: "/developer-guide/platformos-workflow/pos-cli", text: "pos-cli" %}
-  </ul>
-</li>
-<li class="{% if cp contains 'platformos-workflow/effective-development-using-pos-cli' %}active{% endif %}">
-  <ul class="list-none">
-    {% include "shared/nav/link", href: "/developer-guide/platformos-workflow/effective-development-using-pos-cli", text: "Effective Development Using the pos-cli" %}
-  </ul>
-</li>
+
 <li class="{% if cp contains 'platformos-workflow/codebase' %}active{% endif %}">
   <ul class="list-none">
     {% include "shared/nav/link", href: "/developer-guide/platformos-workflow/codebase", text: "Codebase" %}
   </ul>
 </li>
-<li class="{% if cp contains 'graphql' %}active{% endif %}">
-  <a href="/developer-guide/graphql/developing-graphql-queries-using-pos-cli-gui">GraphQL</a>
-  <ul class="list-none">
-    {% include "shared/nav/link", href: "/developer-guide/graphql/developing-graphql-queries-using-pos-cli-gui", text: "Developing GraphQL Queries Using the pos-cli GUI" %}
+
+<li class="{% if cp contains 'developer-guide/pos-cli' %}active{% endif %}">
+  <a href="/developer-guide/pos-cli">pos-cli</a>
+  <ul class="submenu">
+    {% include "shared/nav/link", href: "/developer-guide/pos-cli", text: "pos-cli" %}
+    {% include "shared/nav/link", href: "/developer-guide/pos-cli/developing-graphql-queries-using-pos-cli-gui", text: "Developing GraphQL Queries Using the pos-cli GUI" %}
+    {% include "shared/nav/link", href: "/developer-guide/pos-cli/effective-development-using-pos-cli", text: "Effective Development Using the pos-cli" %}
   </ul>
 </li>
 
