@@ -19,9 +19,10 @@ In order to correctly communicate with the platformOS engine and API, your codeb
 | assets                  | asset       | Directory for static assets, like fonts, images, stylesheets, and scripts.                                                                                                                                                                                    | [Assets](#assets)                                                       |
 | authorization_policies  | Liquid      | Directory for .liquid files that contains Authorization Policy configuration files. Authorization Policies define rules that control whether a user has access to a form or page.                                                                                                                                                 | [Authorization Policies](#authorization-policies)           |
 | model_schemas      | YAML        | Directory for .yml files that define Model Schemas. Model Schemas define custom objects, including their fields and associations and allow you to create persistence containers for your custom forms.                                                                                                                  | [Models](#models)                   |
-| forms     | Liquid      | Directory for .liquid files that define Forms. Forms define forms including their fields, validation, redirects, and callbacks. Each of the Liquid files should include configuration (including associated Authorization Policies, Notifications, etc.), along with Liquid code which renders HTML.  | [Forms](#forms)                               |
+| emails     | Liquid      | Directory for .liquid files that define Email notifications. | [Notifications](/developer-guide/notifications/notifications)                               |
+| api_calls     | Liquid      | Directory for .liquid files that define API calls notifications. | [Notifications](/developer-guide/notifications/notifications)                               |
+| smses     | Liquid      | Directory for .liquid files that define SMS notifications. | [Notifications](/developer-guide/notifications/notifications)                               |
 | graphql           | GraphQL     | Directory for .graphql files, each defining one GraphQL Query. GraphQL queries retrieve information from or insert information into the databases. Retrieved information is made available in Liquid.                                                                                                                                               | [GraphQL](https://graphql.org/learn/)                                                   |
-| notifications           | Liquid      | Directory for files that define Notifications, which then can be associated with Form.                                                                                                                                                                                                                              | [Notifications](#notifications)                                 |
 | views/pages             | Liquid      | Directory for files that define pages, the most essential building blocks of a platformOS site.                                                                                   | [Views](#views-pages-layouts-and-partials)                                                          |
 | views/layouts           | Liquid      | Directory for layouts. Layouts are wrappers around your page content. They ensure consistent outer content for similarly designed pages.                                                                                                                                                                                          | [Views](#views-pages-layouts-and-partials)                                                      |
 | views/partials          | Liquid      | Directory for partials  &ndash;  reusable snippets of Liquid code usually used to render HTML.                                                                                                                                                                                                                                    | [Views](#views-pages-layouts-and-partials)                                                                                        |
@@ -50,17 +51,17 @@ Example directory structure of `views` with sample files:
 app
 └── views
     ├── layouts
-    │   ├── 1col.html.liquid
-    └── pages
+    │   └── 1col.html.liquid
+    ├── pages
     │   ├── index.html.liquid
-    │   ├── unauthorized.html.liquid
+    │   └── unauthorized.html.liquid
     └── partials
-        ├── layout
+        └── layout
             ├── constants.liquid
             ├── foot.liquid
             ├── footer.liquid
             ├── head.liquid
-            ├── header.liquid
+            └── header.liquid
 ```
 
 {% include "alert/tutorial", content: "Follow our step-by-step tutorials to learn more about <a href='/developer-guide/pages/pages'>pages</a> and <a href='/developer-guide/pages/layouts'>layouts</a>." %}
@@ -77,14 +78,14 @@ Example directory structure of `assets` with sample files:
 app
 └── assets
     ├── fonts
-    └── images
+    ├── images
     │   ├── favicon.ico
-    └── scripts
+    ├── scripts
     │   ├── app.js
     │   ├── vendor.js
     └── styles
         ├── app.css
-        ├── vendor.css
+        └── vendor.css
 ```
 
 {% include "alert/tutorial", content: "Follow our step-by-step tutorials to learn more about <a href='/developer-guide/assets/assets'>assets</a>." %}
@@ -110,7 +111,7 @@ Example directory structure of `forms` with sample files:
 app
 └── forms
     ├── create_contact_request_form.liquid
-    ├── feedback_form.liquid
+    └── feedback_form.liquid
 ```
 
 {% include "alert/tutorial", content: "Follow our step-by-step tutorials to learn more about <a href='/developer-guide/forms/forms'>forms</a>." %}
@@ -125,10 +126,10 @@ Example directory structure of `user_profile_types` with sample files:
 
 ```shell
 app
-└── user.yml
+├── user.yml
 └── user_profile_types
     ├── developer.yml
-    ├── client.yml
+    └── client.yml
 ```
 
 {% include "alert/tutorial", content: "Follow our step-by-step tutorials to learn more about <a href='/developer-guide/users/users'>users</a>." %}
@@ -144,7 +145,7 @@ Example directory structure of `model_schemas` with sample files:
 ```shell
 app
 └── model_schemas
-    ├── blog_post.yml
+    └── blog_post.yml
 ```
 
 {% include "alert/tutorial", content: "Follow our step-by-step tutorials to learn more about <a href='/developer-guide/models/models-model-schemas'>Model Schemas</a> and <a href='/developer-guide/properties/properties'>Properties</a>." %}
@@ -155,17 +156,17 @@ app
 
 Notifications can be delayed, and you can use Liquid, GraphQL, and trigger conditions to decide if a notification should be sent. They are a powerful mechanism used for example to welcome new users, follow up after they've added their first item, or reach out to them if they have been inactive for a while.
 
-Example directory structure of `notifications` with sample files:
+Each notification has its own directory:
 
 ```shell
 app
 └──
   ├── api_calls
-  │   ├── ping_example_com_on_user_sign_up.liquid
-  └── emails
-  │   ├── welcome_user.liquid
+  │   └── ping_example_com_on_user_sign_up.liquid
+  ├── emails
+  │   └── welcome_user.liquid
   └── smses
-      ├── welcome_user.liquid
+      └── welcome_user.liquid
 ```
 
 {% include "alert/tutorial", content: "Follow our step-by-step tutorials to learn more about <a href='/developer-guide/notifications/notifications'>notifications</a>." %}
@@ -181,7 +182,7 @@ Example directory structure of `authorization_policies` with sample files:
 ```shell
 app
 └── authorization_policies
-    ├── example_policy.liquid
+    └── example_policy.liquid
 ```
 
 {% include "alert/tutorial", content: "Follow our step-by-step tutorials to learn more about <a href='/developer-guide/authorization-policy/authorization-policy'>Authorization Policies</a>." %}
@@ -196,7 +197,7 @@ Example directory structure of `translations` with sample files:
 app
 └── translations
     ├── en.yml
-    ├── pl.yml
+    └── pl.yml
 ```
 
 {% include "alert/tutorial", content: "Follow our step-by-step tutorials to learn more about <a href='/developer-guide/translations/translations'>translations</a>." %}
@@ -216,7 +217,7 @@ Example directory structure of `modules` with sample files:
 ```shell
 app
 modules
-├──admincms
+└──admincms
   ├── private
   │   └── graphql
   │       ├── get_models.graphql
