@@ -272,17 +272,9 @@ updateForm.addEventListener("submit", Update);
 
 The delete operation also needs `method` and `id` because underneath it all, it is just an update.
 
-#### A note on soft and hard delete
+#### Soft and hard delete
 
-**Soft delete**
-
-When you delete a record, by default, we set the value of `deleted_at` to the timestamp. Queries either show those records by default or not. The `deleted_at: { exists: false }` filter is available in some GraphQL queries for application developers to choose explicitly if the results should include records with `deleted_at` set. By default deleted records are not returned by GraphQL queries like `models` and `users`.
-We do that because some workflows need this for safety reasons. For example, it makes it possible to restore records removed by accident. To do it, you can use the [user_update](/api-reference/graphql/rootmutation.html) or the [model_update](/api-reference/graphql/rootmutation.html) mutation and set `deleted_at` to `null`.
-
-**Hard delete**
-
-We have a 30 day retention period for soft-deleted records. That means that after 30 days from the `delete_at` timestamp those records will be removed and they will no longer be available for restoration.
-That also means we will not charge you after 30 days for storing those records. If your workflow requires longer retention you should be prepared to back up those records by for example exporting instance data (using the [`pos-cli export`](/developer-guide/data-import-export/export) command) and keeping it somewhere safe.
+Read [Data Backup and Removal](/developer-guide/models/data-backup-removal) to get familiar with data retention and backups in platformOS.
 
 ##### app/views/partials/delete.liquid
 
