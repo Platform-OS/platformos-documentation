@@ -258,20 +258,17 @@
 <li class="pt-6 mt-6 mb-4 text-base border-t topic-group border-pos-divider">
   <h3>DATA MANAGEMENT</h3>
 </li>
-<li class="{% if cp contains 'data-management' or cp contains 'data-import-export' %}active{% endif %}">
+<li class="{% if cp contains 'data-import-export' %}active{% endif %}">
   <a href="/developer-guide/data-import-export/import">Data Import/Export</a>
-  {% if cp contains 'data-management' or cp contains 'data-import-export' %}
+  {% if cp contains 'data-import-export' %}
     <ul class="submenu">
       {% include "shared/nav/link", href: "/developer-guide/data-import-export/import", text: "Data Import" %}
       {% include "shared/nav/link", href: "/developer-guide/data-import-export/import-files", text: "Data Import: Files" %}
       {% include "shared/nav/link", href: "/developer-guide/data-import-export/export", text: "Data Export" %}
       {% include "shared/nav/link", href: "/developer-guide/data-import-export/model-relations", text: "Model Relations" %}
+      {% include "shared/nav/link", href: "/developer-guide/data-import-export/migrating-data", text: "Migrating Data" %}
     </ul>
   {% endif %}
-</li>
-
-<li class="{% if cp contains 'data-management/migrating-data' %}active{% endif %}">
-  {% include "shared/nav/link", href: "/developer-guide/data-management/migrating-data", text: "Migrating Data" %}
 </li>
 
 <li class="{% if cp contains 'data-management/cleaning-instance' %}active{% endif %}">
