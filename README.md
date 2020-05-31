@@ -1,4 +1,7 @@
 <img alt="Tested with TestCafe" src="https://img.shields.io/badge/tested%20with-TestCafe-2fa4cf.svg"><img alt="Dependencies status" src="https://img.shields.io/david/mdyd-dev/nearme-documentation.svg">
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Contribute content
 
@@ -23,6 +26,18 @@ Go to the file you would like to change, [click edit and commit changes](https:/
 ## Contributors
 
 Thank you to all our contributors!
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/diana-lakatos"><img src="https://avatars0.githubusercontent.com/u/4191691?v=4" width="100px;" alt=""/><br /><sub><b>Diana Lakatos</b></sub></a><br /><a href="https://github.com/mdyd-dev/nearme-documentation/commits?author=diana-lakatos" title="Documentation">📖</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-enable -->
+<!-- prettier-ignore-end -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
 
 [<img alt="pavelloz" src="https://avatars1.githubusercontent.com/u/546845?v=4&s=117" width="117">](https://github.com/pavelloz) |[<img alt="diana-lakatos" src="https://avatars0.githubusercontent.com/u/4191691?v=4&s=117" width="117">](https://github.com/diana-lakatos) |[<img alt="Slashek" src="https://avatars3.githubusercontent.com/u/30107?v=4&s=117" width="117">](https://github.com/Slashek) |[<img alt="piotrze" src="https://avatars0.githubusercontent.com/u/96238?v=4&s=117" width="117">](https://github.com/piotrze) |[<img alt="lemingos" src="https://avatars0.githubusercontent.com/u/95296?v=4&s=117" width="117">](https://github.com/lemingos) |[<img alt="chrisdanek" src="https://avatars1.githubusercontent.com/u/1758834?v=4&s=117" width="117">](https://github.com/chrisdanek) |
 :---: |:---: |:---: |:---: |:---: |:---: |
