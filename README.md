@@ -1,6 +1,6 @@
 <img alt="Tested with TestCafe" src="https://img.shields.io/badge/tested%20with-TestCafe-2fa4cf.svg"><img alt="Dependencies status" src="https://img.shields.io/david/mdyd-dev/nearme-documentation.svg">
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Contribute content
@@ -34,6 +34,7 @@ Thank you to all our contributors!
     <td align="center"><a href="https://github.com/diana-lakatos"><img src="https://avatars0.githubusercontent.com/u/4191691?v=4" width="100px;" alt=""/><br /><sub><b>Diana Lakatos</b></sub></a><br /><a href="https://github.com/mdyd-dev/nearme-documentation/commits?author=diana-lakatos" title="Documentation">📖</a></td>
     <td align="center"><a href="https://github.com/pavelloz"><img src="https://avatars1.githubusercontent.com/u/546845?v=4" width="100px;" alt=""/><br /><sub><b>Paweł Kowalski</b></sub></a><br /><a href="https://github.com/mdyd-dev/nearme-documentation/commits?author=pavelloz" title="Documentation">📖</a> <a href="https://github.com/mdyd-dev/nearme-documentation/commits?author=pavelloz" title="Code">💻</a> <a href="https://github.com/mdyd-dev/nearme-documentation/commits?author=pavelloz" title="Tests">⚠️</a></td>
     <td align="center"><a href="https://github.com/Slashek"><img src="https://avatars3.githubusercontent.com/u/30107?v=4" width="100px;" alt=""/><br /><sub><b>Maciej Krajowski-Kukiel</b></sub></a><br /><a href="https://github.com/mdyd-dev/nearme-documentation/commits?author=Slashek" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/szabosteve"><img src="https://avatars3.githubusercontent.com/u/22324794?v=4" width="100px;" alt=""/><br /><sub><b>István Zoltán Szabó</b></sub></a><br /><a href="https://github.com/mdyd-dev/nearme-documentation/commits?author=szabosteve" title="Documentation">📖</a></td>
   </tr>
 </table>
 
