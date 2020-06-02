@@ -1,0 +1,26 @@
+---
+layout_name: application
+converter: markdown
+metadata:
+  title: Preventing Duplicated Content
+  description: This best practice explains how platformOS prevents the indexing of non-production sites to avoid the website being flagged as duplicated content.  
+---
+
+This best practice explains how platformOS prevents the indexing of non-production sites to avoid the website being flagged as duplicated content. 
+
+SEO helps you get more organic traffic to your website, and one of the most important aspects is to have good, original content. Having duplicated content is treated as a disadvantage in the eyes of search engines.
+
+platformOS adds the proper `x-robots-tag` to:
+
+* all staging Instances, because they are used for testing
+* production Instances that have no custom domain added, because usually they are temporary Instances while a migration or tests are in progress
+
+```shell
+$ curl -I https://documentation-staging.staging.oregon.platform-os.com
+
+HTTP/2 200
+...
+x-robots-tag: noindex, nofollow
+```
+
+`noindex, nofollow` prevents robots from indexing the page altogether, hence not flagging it as duplicated content, until you are ready with your production domain.
