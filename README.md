@@ -1,6 +1,6 @@
 <img alt="Tested with TestCafe" src="https://img.shields.io/badge/tested%20with-TestCafe-2fa4cf.svg"><img alt="Dependencies status" src="https://img.shields.io/david/mdyd-dev/nearme-documentation.svg">
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Contribute content
@@ -32,6 +32,7 @@ Thank you to all our contributors!
 <table>
   <tr>
     <td align="center"><a href="https://github.com/diana-lakatos"><img src="https://avatars0.githubusercontent.com/u/4191691?v=4" width="100px;" alt=""/><br /><sub><b>Diana Lakatos</b></sub></a><br /><a href="https://github.com/mdyd-dev/nearme-documentation/commits?author=diana-lakatos" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/pavelloz"><img src="https://avatars1.githubusercontent.com/u/546845?v=4" width="100px;" alt=""/><br /><sub><b>Paweł Kowalski</b></sub></a><br /><a href="https://github.com/mdyd-dev/nearme-documentation/commits?author=pavelloz" title="Documentation">📖</a> <a href="https://github.com/mdyd-dev/nearme-documentation/commits?author=pavelloz" title="Code">💻</a> <a href="https://github.com/mdyd-dev/nearme-documentation/commits?author=pavelloz" title="Tests">⚠️</a></td>
   </tr>
 </table>
 
