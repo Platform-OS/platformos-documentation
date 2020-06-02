@@ -7,80 +7,80 @@ metadata:
 
 This guide will help you create an SMS Notification to send a text message to a newly signed up user using our Twilio integration.
 
+{% include 'alert/note', content: 'If you want to send SMS via GraphQL, please check sms_send GraphQL Mutation.' %}
+
 ## Requirements
-To follow the steps in this tutorial, you should understand the concept of notifications. You'll also use the sign-up form you created in a previous tutorial. As you'll use our Twilio integration, you need to ensure that the `to` number is formatted according to Twilio's phone number format guideline.
+
+To follow the steps in this tutorial, you should understand the concept of notifications. You'll also use the sign-up form you created in a previous tutorial and a user property `phone_number`. As you'll use our Twilio integration, you need to ensure that the `to` number is formatted according to Twilio's phone number format guideline.
 
 * [Form Configuration](/developer-guide/forms/form-configuration)
 * [Notifications](/developer-guide/notifications/notifications)
+* [Creating a Property for All Users](/developer-guide/users/creating-user-property)
 * [Creating a Sign-Up Form](/developer-guide/users/creating-sign-up-form)
 * [Twilio's phone number format guideline](https://support.twilio.com/hc/en-us/articles/223183008-Formatting-International-Phone-Numbers)
 
 ## Steps
 
-Creating an SMS Notification is a three-step process:
+Creating an SMS Notification is a two-step process:
 
 <div data-autosteps></div>
 
-### Step 1: Extend sign up form with mobile number
-
-As you haven't collected the mobile phone number in the sign-up form yet, as a first step, extend the sign-up form.
-
-##### app/forms/developer/sign_up.liquid
-
-```yaml
----
-fields:
-  mobile_number:
-    validation:
-      presence: true
-      phone_number: true
----
-```
-
-```liquid
-{% raw %}
-<label for="mobile_number">Mobile number</label>
-
-<input name="{{ form.fields.mobile_number.name }}"
-  value="{{ form.fields.mobile_number.value }}"
-  id="mobile_number"
-  type="text">
-
-{% if form.errors.mobile_number %}
-  <p>{{ form.errors.mobile_number }}</p>
-{% endif %}
-{% endraw %}
-```
-
-On the production site, you have to take into consideration that users might not know their country code, or what a country code is. For simplicity in this example though, assume that the user provides correct input.
-
-### Step 2: Create SMS Notification
+### Step 1: Create SMS Notification
 
 ##### app/smses/welcome_user.liquid
 
 ```liquid
 {% raw %}
 ---
-to: '{{ form.mobile_number }}'
+to: '{{ form.properties.phone_number }}'
 ---
 Hello {{ form.first_name }} via sms.
 {% endraw %}
 ```
 
-### Step 3: Add SMS Notification to sign up form
+This assumes that you have already  [created a Sign-Up Form](/developer-guide/users/creating-sign-up-form) and [configured phone_number property](/developer-guide/users/creating-user-property).
 
-Add the SMS Notification you created to the sign-up form.
+Please note, the phone number should include country code. On the production site, you have to take into consideration that users might not know their country code, or what a country code is. For simplicity in this example though, assume that the user provides correct input. For production, you might find [to_mobile_number][/api-reference/liquid/platformos-filters#to_mobile_number] useful.
+
+### Step 2: Add SMS Notification to the Sign-Up Form
+
+Add the SMS Notification you created to the Sign-Up Form configuration.
 
 The SMS notification name is a path of the file relative to the `smses` directory, without extension.
 
-For app/smses/**welcome_user**.liquid - the bolded part is the name (physical_file_path).
+In our example the path to the file is app/smses/**welcome_user**.liquid and the bolded part is the name - `welcome_user`. As the result of adding:
 
 ```yaml
 sms_notifications:
   - welcome_user
 ```
 
-{% include 'alert/important', content: 'We do not send real text messages on staging by default. Because any error with sending real text messages on staging might be more costly than sending emails. If you want to test SMS on staging, please change `enable_sms_and_api_workflow_alerts_on_staging` flag to `true` in your Partner Portal instance configuration.' %}
+to the Sign-Up Form, the content of `forms/developer_sign_up.liquid` at minimum the configuration section should look as follows:
+
+{% raw %}
+```yaml
+---
+name: developer_sign_up
+resource: User
+resource_owner: anyone
+fields:
+  email:
+  password:
+  first_name:
+    validation: { presence: true }
+  properties:
+    phone_number:
+      validation:
+        phone_number: true
+  ...
+sms_notifications:
+  - welcome_user
+---
+```
+{% endraw %}
+
+{% include 'alert/important', content: 'If the sms does not arrive to your phone after a minute, please check logs using `pos-cli logs <env>`. If you configured Form and Sms correctly, you will find there information about the issue. For example, the phone number might be in invalid format (missing country code for example) or if you develop on staging you might need to ensure that in your Partner Portal instance configuration the `enable_sms_and_api_workflow_alerts_on_staging` flag is set to `true` .' %}
+
 
 ## Next steps
 
