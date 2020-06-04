@@ -4,9 +4,10 @@ module.exports = {
   purge: [
     './app/forms/**/*.liquid',
     './app/views/**/*.liquid',
-    './modules/graphql/public/**/*.html',
-    './modules/graphql/template/*.mustache',
     './src/js/**/*.js',
+    './modules/graphql/**/*.js',
+    './modules/graphql/**/*.html',
+    './modules/graphql/**/*.mustache',
   ],
   theme: {
     colors: {
