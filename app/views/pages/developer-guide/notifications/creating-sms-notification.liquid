@@ -7,7 +7,7 @@ metadata:
 
 This guide will help you create an SMS Notification to send a text message to a newly signed up user using our Twilio integration.
 
-{% include 'alert/note', content: 'If you want to send SMS via GraphQL, please check sms_send GraphQL Mutation.' %}
+{% include 'alert/note', content: 'If you want to send the SMS via GraphQL, please check the sms_send GraphQL Mutation.' %}
 
 ## Requirements
 
@@ -38,9 +38,9 @@ Hello {{ form.first_name }} via sms.
 {% endraw %}
 ```
 
-This assumes that you have already  [created a Sign-Up Form](/developer-guide/users/creating-sign-up-form) and [configured phone_number property](/developer-guide/users/creating-user-property).
+This assumes that you have already [created a Sign-Up Form](/developer-guide/users/creating-sign-up-form) and [configured the phone_number property](/developer-guide/users/creating-user-property).
 
-Please note, the phone number should include country code. On the production site, you have to take into consideration that users might not know their country code, or what a country code is. For simplicity in this example though, assume that the user provides correct input. For production, you might find [to_mobile_number][/api-reference/liquid/platformos-filters#to_mobile_number] useful.
+Please note, that the phone number should include a country code. On the production site, you have to take into consideration that users might not know their country code, or what a country code is. For simplicity in this example though, assume that the user provides the correct input. For production, you might find [to_mobile_number][/api-reference/liquid/platformos-filters#to_mobile_number] useful.
 
 ### Step 2: Add SMS Notification to the Sign-Up Form
 
@@ -55,7 +55,7 @@ sms_notifications:
   - welcome_user
 ```
 
-to the Sign-Up Form, the content of `forms/developer_sign_up.liquid` at minimum the configuration section should look as follows:
+to the Sign-Up Form, the content of `forms/developer_sign_up.liquid` in the configuration section should look as follows:
 
 {% raw %}
 ```yaml
@@ -79,7 +79,7 @@ sms_notifications:
 ```
 {% endraw %}
 
-{% include 'alert/important', content: 'If the sms does not arrive to your phone after a minute, please check logs using `pos-cli logs <env>`. If you configured Form and Sms correctly, you will find there information about the issue. For example, the phone number might be in invalid format (missing country code for example) or if you develop on staging you might need to ensure that in your Partner Portal instance configuration the `enable_sms_and_api_workflow_alerts_on_staging` flag is set to `true` .' %}
+{% include 'alert/important', content: 'If the SMS does not arrive to your phone after a minute, please check logs using `pos-cli logs <env>`. If you configured Form and SMS correctly, you will find there information about the issue. For example, the phone number might be in an invalid format (missing country code, for example) or if you develop on staging you might need to ensure that in your Partner Portal Instance configuration the `enable_sms_and_api_workflow_alerts_on_staging` flag is set to `true` .' %}
 
 
 ## Next steps
