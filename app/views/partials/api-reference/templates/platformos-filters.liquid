@@ -1,5 +1,6 @@
 {%- for item in data.filters -%}
   {%- assign aliases = item.aliases -%}
+  {%- assign description = item.description -%}
   {%- assign returns = item.returns -%}
   {%- assign params = item.params -%}
   {%- assign examples = item.examples -%}
@@ -15,7 +16,11 @@
     {%- endif -%}
   </h2>
 
-{% if returns.size > 0 %}
+  {% if description.size > 0 %}
+    <p>{{ description }}</p>
+  {% endif %}
+
+  {% if returns.size > 0 %}
     <h4>
       Returns:
       {% for r in returns %}
