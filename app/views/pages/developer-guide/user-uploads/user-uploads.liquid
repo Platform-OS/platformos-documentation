@@ -32,7 +32,7 @@ Direct S3 upload is a way for developers to deliver a faster experience for thei
 
 ## How it works
 
-Now let's look at how things are glued together in the case of platformOS.In order to start, you create a property either in `user.yml` OR in your `<model_schema>.yml`. The property type is `upload`. You can use `options` to configure whether the file should be private or public, max file size, generated versions etc.
+Now let's look at how things are glued together in the case of platformOS. In order to start, create a property either in `user.yml` OR in your `<model_schema>.yml`. The property type is `upload`. You can use `options` to configure whether the file should be private or public, max file size, generated versions, etc.
 
 ### Upload
 
@@ -53,7 +53,7 @@ properties:
 ```
 
 2. Browser: POST file
-  This is the stage where `upload_url` and `upload_url_payload` - results from the `property_upload_presigned_url` mutation - will be consumed by the browser. The combination of URL, payload and file from the user is a complete package that has to be sent over to S3. Your view can look like this:
+  This is the stage where `upload_url` and `upload_url_payload` - results from the `property_upload_presigned_url` mutation - will be consumed by the browser. The combination of URL, payload, and file from the user is a complete package that has to be sent over to S3. Your view can look like this:
 
 {% raw %}
 ```liquid
@@ -74,7 +74,7 @@ properties:
 {% endraw %}
 
 3. S3: Return URL to file
-  S3 will return status 204 and XML response with URL to file on S3, if everything went well. Otherwise it will return status 4xx and error reason in XML format.
+  S3 will return status 204 and an XML response with the URL to the file on S3, if everything went well. Otherwise it will return status 4xx and the reason for the error in XML format.
 
 4. Browser: POST URL to application
   Until now, platformOS doesn't know anything about the file that the user has been uploading. This step is meant to change that. Using any method you wish, you need to send the URL to the uploaded file to the application server. Because `file` is just an URL (string) property in a model, you update that property just like any other.
@@ -105,10 +105,10 @@ mutation model_create($direct_url: String!) {
 
 ### Images and processing
 
-If you want your users to be able to upload images and automatically generate multiple versions of it (for example a thumbnail) you can achieve it by using `versions` option of property upload.
+If you want your users to be able to upload images and automatically generate multiple versions of it (for example a thumbnail) you can achieve it by using the `versions` option of property upload.
 Read more on how to [implement image upload with version processing using Direct S3 upload and Uppy](/developer-guide/user-uploads/uploading-files-directly-amazons3-using-uppy).
 
 ## FAQ
 
 1. platformOS is multi-cloud, does this mean implementation will be different for every cloud provider?
-  No. If you follow our recommendations from step 2 and use `for` loop to automatically generate form for direct upload, we will be able to replace S3 with any other compatible service.
+  No. If you follow our recommendations from step 2 and use a `for` loop to automatically generate the form for direct upload, we will be able to replace S3 with any other compatible service.
