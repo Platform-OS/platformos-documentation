@@ -1,0 +1,197 @@
+---
+converter: markdown
+metadata:
+  title: Background Jobs
+  description: In this article, we share our experience on how you can improve your application performance by utilizing our background liquid tag.
+---
+
+In this article, we share our experience on how you can improve your application performance by utilizing our [background liquid tag](/api-reference/liquid/platformos-tags#background).
+
+## Synchronous vs asynchronous
+
+To explain synchronous and asynchronous concept of the code, we will take definition from a school, because we think it explains this concept in a more friendly way.
+
+### Synchronous
+
+<blockquote>
+  Synchronous learning is when classes occur on set schedules and time frames. Students and instructors are online at the same time in synchronous classes since lectures, discussions, and presentations take place at specific hours. All students must be online at that exact time in order to participate in the class.
+</blockquote>
+
+Source: [https://www.elearners.com](https://www.elearners.com/education-resources/degrees-and-programs/synchronous-vs-asynchronous-classes/)
+
+In terms of code, it means that operations are executed one by one. Every task needs to finish, before next is executed.
+
+```js
+const log = msg => console.log(msg);
+
+log('Hello');
+log('World');
+```
+
+This code will log messages in the same order as they appear on the screen:
+
+```shell
+Hello
+World
+```
+
+### Asynchronous
+
+<blockquote>
+  Asynchronous classes let students complete their work on their own time. Students are given a timeframe – it's usually a one-week window – during which they need to connect to their class at least once or twice. The good news is that in asynchronous courses, you could hit the books no matter what hour of day (or night).
+</blockquote>
+
+Source: [https://www.elearners.com](https://www.elearners.com/education-resources/degrees-and-programs/synchronous-vs-asynchronous-classes/)
+
+In terms of code, it means that operations are pushed to a different context and program executes onward, without waiting for them to finish.
+
+```js
+const log = msg => console.log(msg);
+
+log('Start');
+setTimeout(() => { log('Hello'); }, 5000);
+setTimeout(() => { log('World'); }, 1000);
+log('Finish');
+```
+
+This piece of code will log:
+
+1. `Start` - Immadiately
+2. `Finish` - Immadiately
+3. `World` - Delayed by one second
+4. `Hello` - Delayed by five seconds
+
+Tasks in `setTimeout` functions are run asynchronously. We know it is asynchronous, because order of messages logged is not the same as defined in code, but when the tasks actually finished.
+
+Asynchronous code is usually used to maximize the efficiency of CPU cycles, minimizing block time of the main thread, and wait time for situations where those operations can be potentially long running.
+
+## Why background jobs
+
+In platformOS [background tag](/api-reference/liquid/platformos-tags#background) allows you to push some operations to the asynchronous queue that will be run independently of currently served http request. This means it will not block server response to the user.
+Background jobs should be used as performance improvement everytime work is time consuming (subjectively, we usually try to push work over 1 second to background job).
+
+## Priorities
+
+You can choose priority for your job based on the time-sensitivity of it and estimated time of computation needed. All of them have different timeouts after the job will be killed no matter if its finished or not.
+
+| Priority | Timeout   |
+|----------------|-----------|
+| high           | 1 minute  |
+| default        | 5 minutes |
+| low            | 4 hours   |
+
+
+* If you need something to happen as soon as possible, choose `high` priority.
+* If you need more than one minute of computation time, or there is a risk of exceeding 1 minute, choose `default` priority.
+* If its a non time sensitive job, or it is a long running job, choose `low` priority.
+
+## Execution scope
+
+```liquid
+{% raw %}
+{% background priority: 'low', delay: 5, max_attempts: 3, source_name: "my custom job", data: my_data, hey: 'hello' %}
+{% endbackground %}
+{% endraw %}
+```
+
+Background tag creates completely new execution context, so you will only have access to variables explicitly provided to the background tag: "data" and "hey". Note that you will not have access to the "my_data" variable. Also note
+that the result of this background tag will not be rendered, and you will not have access to any variable inside the background tag.
+
+## Example 1 - high priority job
+
+Download a JSON file and put its value into the model field. In this example, we will download JSON file with currency rates for USD and put resulted JSON into a database to use it further down the road.
+
+```liquid
+{% raw %}
+
+{% assign currency = context.params.currency %}
+
+{% background priority: 'high', source_name: "update-currency-rates", currency: currency %}
+  {% capture url %}https://example.com/currency-rates.json?currency={{ currency }}{% endcapture %}
+
+  {% assign data = url | download_file | parse_json %}
+
+  {% graphql g, currency: "USD", rates: data %}
+    mutation update_currency($currency: String!, $rates: String!) {
+      model_update(
+        id: 1337
+        model: {
+          model_schema_name: $currency
+          properties: [{ name: "rates", value: $rates }]
+        }
+      ) {
+        id
+      }
+    }
+  {% endgraphql %}
+{% endbackground %}
+{% endraw %}
+```
+
+This whole operation, because it was pushed out to background job, will not block rendering of the page, hence standard request timeout is not applied to it. It can run as long as the timeout of this particular priority - 1 minute.
+
+## Example 2 - normal priority job
+
+In this case we will update one field (price) in all 500 products in an e-commerce store. In real application discount would probably be a separate field, but for purpose of example lets assume there is no such field.
+
+```liquid
+{% raw %}
+
+{% background priority: 'normal', source_name: "apply-discount %}
+  {% graphql products %}
+    query products {
+      models(
+        per_page: 1000
+        filter: {
+          model_schema_name: { exact: "products" }
+        }
+      ) {
+        results {
+          id
+          price: property_int(name: "price_cents")
+        }
+      }
+    }
+  {% endgraphql %}
+
+  {% assign prods = products | fetch: "models" | fetch: "results" %}
+
+  {% for prod in prods %}
+    {% comment %}Apply 15% discount{% endcomment %}
+
+    {% assign newPrice = prod.price | times: 0.85 | floor %}
+
+    {% graphql updated, prod_id: prod.id, new_price: newPrice %}
+      mutation update_prices($new_price: Int!, $prod_id: Int!) {
+        model_update(
+          id: $prod_id
+          model: {
+            model_schema_name: "products"
+            properties: [{ name: "price_cents", value: $new_price }]
+          }
+        ) {
+          id
+        }
+      }
+    {% endgraphql %}
+  {% endfor %}
+
+{% endbackground %}
+{% endraw %}
+```
+
+This operation probably will not take more than one minute, but because this is not time sensitive task, we will let it run in the normal priority queue.
+
+## Example 3 - long running job
+
+When you need to do something that is very time consuming, use `low` priority. We don't have any use case for that yet, but maybe you have - we got you covered.
+
+```liquid
+{% raw %}
+{% background priority: 'low', max_attempts: 3, source_name: "long-running-job %}
+  {% comment %}
+    Code
+  {% endcomment %}
+{% endbackground %}
+{% endraw %}
+```
