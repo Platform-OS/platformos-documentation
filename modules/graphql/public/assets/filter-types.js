@@ -2,10 +2,10 @@
   var HIDE_CLASS = 'hidden';
   var ITEM_CLASS = 'inline-block';
 
-  function Item(li) {
-    this.li = li;
-    this.type = li.title;
-    this.typeLowerCase = li.title.toLowerCase();
+  function Item(el) {
+    this.li = el;
+    const title = el.querySelector('a').textContent;
+    this.typeLowerCase = title.toLowerCase();
   }
 
   Item.prototype.contains = function(searchText) {
