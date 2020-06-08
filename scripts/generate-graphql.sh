@@ -1,4 +1,6 @@
-#!/usr/bin/env bash
+#!/bin/bash
+
+source .env
 
 npx graphdoc --force \
   --endpoint ${MPKIT_URL}/api/graph \
