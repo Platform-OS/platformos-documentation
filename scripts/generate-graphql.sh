@@ -1,6 +1,8 @@
-set -e
+#!/usr/bin/env bash
 
-time npx graphdoc --force \
+source .env
+
+npx graphdoc --force \
   --endpoint ${MPKIT_URL}/api/graph \
   --template "modules/graphql/template" \
   --extension html \
