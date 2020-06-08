@@ -24,9 +24,15 @@
     <h4>
       Returns:
       {% for r in returns %}
-        {% for t in r.types %}
-          {{ t | escape }}{% unless forloop.last %},{% endunless %}
-        {% endfor %}
+        <strong>
+          {% for t in r.types %}
+            {{ t | escape }}{% unless forloop.last %},{% endunless %}
+          {% endfor %}
+        </strong>
+
+        {% if r.description.size > 1 %}
+        - {{ r.description }}
+        {% endif %}
       {% endfor %}
     </h4>
   {% endif %}
