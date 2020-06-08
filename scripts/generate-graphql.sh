@@ -1,5 +1,3 @@
-#!/bin/bash
-
 source .env
 
 npx graphdoc --force \
