@@ -1,0 +1,38 @@
+---
+layout: ''
+method: post
+slug: __performance-report
+response_headers: '{ "Content-Type": "application/json" }'
+---
+{% parse_json arguments %}
+{{ context.post_params }}
+{% endparse_json %}
+
+{% graphql g, args: arguments %}
+mutation create_performance_report($everything: Int!, $instantpage: Boolean!) {
+  model_create(
+    model: {
+      model_schema_name: "performance"
+      properties: [
+        { name: "everything", value_int: $everything },
+        { name: "instantpage", value_boolean: $instantpage }
+      ]
+    }
+  ) {
+    id
+  }
+}
+{% endgraphql %}
+
+{% assign errors = g | fetch: "errors" | json %}
+{% assign id = g | fetch: "model_create" | fetch: "id" | plus: 0 %}
+
+{% if id %}
+  {
+    "id": {{ id }}
+  }
+{% else %}
+  {
+    "errors": {{ errors }}
+  }
+{% endif %}
