@@ -13,7 +13,7 @@ var chart = new Chart(ctx, {
         {
           type: 'time',
           time: {
-            unit: 'minute',
+            unit: 'hour',
           },
         },
       ],
