@@ -82,7 +82,7 @@ properties:
 5. Application: Save URL to the database
   After getting the URL to a file from the browser, usually you want this URL to be saved in a model for future reference. You store it the same way as any other string - if the property type is `upload`, we will do all the magic behind the scenes:
   
-```
+```graphql
 mutation model_create($direct_url: String!) {
   model_create(
     model: {
@@ -96,7 +96,7 @@ mutation model_create($direct_url: String!) {
 ```
   When you need the URL to the file, as always, you need to use GraphQL and query for the model containing the property to get it using `property_upload`, for example:
   
-  ```
+  ```graphql
   query get_documents {
     models(per_page: 20 filter: { model_schema_name: { value: "documents" } }) {
       results {
