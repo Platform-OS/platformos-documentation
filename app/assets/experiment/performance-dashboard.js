@@ -2,7 +2,7 @@ var el = document.getElementById('comparison');
 var ctx = el.getContext('2d');
 
 var chart = new Chart(ctx, {
-  type: 'line',
+  type: 'scatter',
   data: {
     datasets: window.datasets,
   },
