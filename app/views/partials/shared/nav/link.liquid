@@ -1,18 +1,7 @@
-{% assign slugFromHref = href | remove_first: '/' %}
-{% assign updatedAt = context.exports.nav.pagesUpdatedAt | select: slug: slugFromHref | first | fetch: 'updated_at' | default: '1 month ago' | to_time %}
-{% assign daysSinceLastUpdate = updatedAt | time_diff: 'now', 'days' | round %}
-
-{%- capture isNew -%}
-{%- if daysSinceLastUpdate < 8 -%}true{%- else -%}false{%- endif -%}
-{%- endcapture -%}
-
 <li>
   <a href="{{ href }}"
     {% if context.headers.REQUEST_URI == href %}class="text-pos-blue"{% endif %}
   >
     {{ text }}
-    {%- if isNew == "true" -%}
-      <span class="new">New!</span>
-    {%- endif -%}
   </a>
 </li>
