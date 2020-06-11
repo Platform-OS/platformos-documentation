@@ -8,8 +8,13 @@
 {% endif %}
 
 {%- if r == 1 %}
-  <script>window.instantpage = true;</script>
-  <script src="{{ 'vendor/instantpage.js' | asset_url }}" type="module" defer></script>
+  <script src="{{ 'vendor/quicklink.js' | asset_url }}"></script>
+  <script>
+    window.instantpage = true;
+    window.addEventListener('load', () =>{
+      quicklink.listen();
+    });
+</script>
 {%- endif %}
 
 <!--
