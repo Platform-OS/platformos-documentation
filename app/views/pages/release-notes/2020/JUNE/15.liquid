@@ -1,7 +1,7 @@
 ---
 converter: markdown
 metadata:
-  title: Api Call Notifications improvements, error handling improvements
+  title: API Call Notifications improvements, error handling improvements
   description: June 15, 2020
   skip_contribute_button: true
   last_edit: false
@@ -12,12 +12,12 @@ slug: release-notes/15-JUNE-2020
 
 <h4 class="release-note release-note__improved">IMPROVED</h4>
 
-* ApiCall Notification error handling for various scenarios, for example target endpoint error responses (Timeout, SSL error etc.),
-* Deprecated `format` property of Api Call Notification, which was not used for anything other than validation
-* no need for {% raw %}{% if form %}...{% endif %}{% endraw %} in `Form`'s `default_payload` anymore - disabled liquid processing during validating whether `default_payload` is a valid JSON if it includes any Liquid Tag. This also avoids invoking a unknowingly during sync/deploy.
-* error message when trying to use `related_model` and using `property` in `join_on_property` of type `array`
-* error messages for `admin_mutation_*` mutation like physical file path already taken, liquid syntax error etc.
+* API Call Notification error handling for various scenarios, for example, target endpoint error responses (Timeout, SSL error, etc.),
+* Deprecated the `format` property of API Call Notification, which was not used for anything other than validation
+* No need for {% raw %}{% if form %}...{% endif %}{% endraw %} in `Form`'s `default_payload` anymore - disabled Liquid processing during validating whether `default_payload` is a valid JSON if it includes any Liquid Tag. This also avoids unknowingly invoking a code during sync/deploy.
+* Error message when trying to use `related_model` and using `property` in `join_on_property` of type `array`
+* Error messages for `admin_mutation_*` mutation like physical file path already taken, Liquid syntax error, etc.
 
 <h4 class="release-note release-note__fixed">FIXED</h4>
 
-* Error when `null` value is provided as `request_headers` for Api Call Notification
+* Error when `null` value is provided as `request_headers` for API Call Notification
