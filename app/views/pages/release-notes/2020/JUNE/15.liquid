@@ -1,0 +1,23 @@
+---
+converter: markdown
+metadata:
+  title: API Call Notifications improvements, error handling improvements
+  description: June 15, 2020
+  skip_contribute_button: true
+  last_edit: false
+slug: release-notes/15-JUNE-2020
+---
+
+#### {{ page.metadata.description }}
+
+<h4 class="release-note release-note__improved">IMPROVED</h4>
+
+* API Call Notification error handling for various scenarios, for example, target endpoint error responses (Timeout, SSL error, etc.),
+* Deprecated the `format` property of API Call Notification, which was not used for anything other than validation
+* No need for {% raw %}{% if form %}...{% endif %}{% endraw %} in `Form`'s `default_payload` anymore - disabled Liquid processing during validating whether `default_payload` is a valid JSON if it includes any Liquid Tag. This also avoids unknowingly invoking a code during sync/deploy.
+* Error message when trying to use `related_model` and using `property` in `join_on_property` of type `array`
+* Error messages for `admin_mutation_*` mutation like physical file path already taken, Liquid syntax error, etc.
+
+<h4 class="release-note release-note__fixed">FIXED</h4>
+
+* Error when `null` value is provided as `request_headers` for API Call Notification
