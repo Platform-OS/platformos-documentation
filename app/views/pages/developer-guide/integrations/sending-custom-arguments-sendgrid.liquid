@@ -78,7 +78,7 @@ slug: admin/mail_send
 
 ### Step 2: Gather, validate, and send form data  
 
-Create the Javascript code that gathers the form data, validates it, and sends it to the app:
+Create the Javascript code that gathers the form data, validates it, and sends it to the app. *Note: The code below assumes that the jQuery library is present.* 
 
 ```javascript
   $('#mail-send').click((event) => {
@@ -227,11 +227,16 @@ mutation mail_send($data: HashObject) {
 Create an API Call Notification. This file is a configuration file that contains API interfacing information such as the API URL, API key, and the API request body.
 It is recommended that the API key is not entered in clear text, but instead stored as a site constant, and fetched as follows:
 
-```"Authorization": "{{ 'Bearer ' | append: context.constants.sendgrid_api_key }}"```
+```liquid
+{% raw %}
+"Authorization": "{{ 'Bearer ' | append: context.constants.sendgrid_api_key }}"
+{% endraw %}
+```
 
 #### notifications/api_call_notifications/mail_send.liquid
 
 ```liquid
+{% raw %}
 ---
 name: mail_send
 to: https://api.sendgrid.com/v3/mail/send
@@ -251,4 +256,5 @@ headers: >
   }
 ---
 {{ data }}
+{% endraw %}
 ```
