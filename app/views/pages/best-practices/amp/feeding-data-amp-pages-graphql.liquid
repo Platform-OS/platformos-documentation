@@ -126,7 +126,7 @@ query get_products($slug: String) {
       name: property(name: "name")
       slug: property(name: "slug")
       description: property(name: "description")
-      photo: custom_image(name: "photo") { url }
+      photo: property_upload(name: "photo") { url }
       price: property(name: "price")
     }
   }
@@ -152,7 +152,7 @@ properties:
 - name: price
   type: float
 - name: photo
-  type: photo
+  type: upload
 ```
 
 ### Step 4: Display product details

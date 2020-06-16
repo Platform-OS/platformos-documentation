@@ -29,11 +29,9 @@ An alternative name given to the result of a field to avoid conflicts during dat
     results { id }
   }
 
-  car_photos: models(per_page: 20, filter: { name: { value: "car_photos"} }) {
+  cars: models(per_page: 20, filter: { name: { value: "cars"} }) {
     results {
-      photos: custom_images(name: "photo") {
-        url
-      }
+      name: property(name: "name")
     }
   }
 }

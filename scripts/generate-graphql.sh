@@ -1,6 +1,4 @@
-set -e
-
-time npx graphdoc --force \
+npx graphdoc --force \
   --endpoint ${MPKIT_URL}/api/graph \
   --template "modules/graphql/template" \
   --extension html \

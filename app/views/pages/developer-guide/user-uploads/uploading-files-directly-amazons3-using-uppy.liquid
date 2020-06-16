@@ -31,53 +31,54 @@ There will be only one property in Model Schema used in this example (photo), bu
 name: uppy
 properties:
 - name: photo
-  type: photo
-  image_versions:
-    large_bw: # version name
-      output:
-        format: jpeg # output format
-        quality: 70 # output quality
-      resize:
-        width: 1600 # width of the image - in this case max width
-        height: 1200 # max height of the image - in this case max height
-        fit: inside # preserve aspect ratio, do not crop the image, make sure all pixels are within viewport
-        without_enlargement: false # if image is smaller than width/height, do not enlarge it
-      manipulate:
-        greyscale: true # make image greyscale (similar to css "filter: grayscale(1)")
-        blur: 20 # blur using gaussian mask (similar to css "filter: blur(1.5rem)")
-        flatten: red # merge alpha transparency channel (if exists) with given color
-    small:
-      output:
-        format: webp
-        quality: 80
-      resize:
-        width: 640
-        height: 480
-        fit: cover
-        position: top # define the gravity direction or strategy when cropping the image using fit cover or contain
-    thumb:
-      output:
-        format: png
-        quality: 80
-      resize:
-        width: 200
-        fit: contain
-        background: "rgba(255, 255, 255, 0.5)" # if resized image is not covering whole viewport, set background color
-    center:
-      output:
-        format: jpeg
-        quality: 100
-      resize:
-        height: 400
-        width: 400
-        fit: cover
+  type: upload
+  options:
+    content_length:
+      lte: 2048  # maximum file size will be 2048KB
+    versions:
+      - name: large_bw    # version name
+        output:
+          format: jpeg    # output format
+          quality: 70     # output quality
+        resize:
+          width: 1600     # width of the image - in this case max width
+          height: 1200    # height of the image - in this case max height
+          fit: inside     # preserve aspect ratio, do not crop the image, make sure all pixels are within viewport
+          without_enlargement: false              # if image is smaller than width/height, do not enlarge it
+        manipulate:
+          greyscale: true   # make image greyscale (similar to css "filter: grayscale(1)")
+          blur: 20          # blur using gaussian mask (similar to css "filter: blur(1.5rem)")
+          flatten: red      # merge alpha transparency channel (if exists) with given color
+      - name: small
+        output:
+          format: webp
+          quality: 80
+        resize:
+          width: 640
+          height: 480
+          fit: cover
+          position: top   # define the gravity direction or strategy when cropping the image using fit cover or contain
+      - name: thumb
+        output:
+          format: png
+          quality: 80
+        resize:
+          width: 200
+          fit: contain
+          background: "rgba(255, 255, 255, 0.5)"  # if resized image is not covering whole viewport, set background color
+      - name: center
+        output:
+          format: jpeg
+          quality: 100
+        resize:
+          height: 400
+          width: 400
+          fit: cover
 ```
 
 ### Step 2: Get presign data and expose it using a form
 
-To upload a file to AWS S3 directly, you will need some server-generated data, called signature. This information is from GraphQL. It takes `model_schema_name` and `property_name` as arguments so it can forward `image_versions` from the model.
-
-In this case we are limiting file size on the storage side to 2MB using `content_length`.
+To upload a file to AWS S3 directly, you will need the server-generated data called signature. This information is from GraphQL. It takes `model_schema_name` and `property_name` as arguments. Other options like versions, content_length, ACL are taken from property configuration.
 
 ##### modules/direct_s3_upload/public/views/pages/images.liquid
 
@@ -89,21 +90,13 @@ slug: direct-s3-upload/images
 
 {% graphql data %}
 mutation presign {
-  image_presign_url(
-    options: {
-      content_length: { gte: 0, lte: 2048 }   # minimum and maximum file size in KiB
-      model_property: {
-        model_schema_name: "modules/direct_s3_upload/uppy"
-        property_name: "photo"
-      }
+  property_upload_presigned_url(model_schema_name: "modules/direct_s3_upload/uppy", property_name: "my_upload") {
+      upload_url
+      upload_url_payload
     }
-  ) {
-    upload_url            # url to s3 where you will post data.
-    upload_url_payload    # series of fields required for the request to be valid
-  }
 }
 {% endgraphql %}
-{% assign data = data.image_presign_url %}
+{% assign data = data.property_upload_presigned_url %}
 
 <form action="{{ data.upload_url }}"
   data-s3-uppy="form"
@@ -261,26 +254,23 @@ slug: direct-s3-upload/images/model_create
 method: post
 ---
 {% if context.params.user_id %}
-{% graphql model, direct_url: context.params.direct_url, user_id: context.params.user_id %}
-mutation model_create($direct_url: String!, $user_id: ID!) {
-  model_create(model: {
-    custom_model_type_name: "modules/direct_s3_upload/uppy"
-    user_id: $user_id
-    custom_images: {
-      name: "photo"
-      direct_url: $direct_url
+  {% graphql model, direct_url: context.params.direct_url, user_id: context.params.user_id %}
+    mutation model_create($direct_url: String!, $user_id: ID!) {
+      model_create(model: {
+        custom_model_type_name: "modules/direct_s3_upload/uppy"
+        user_id: $user_id
+        properties: [{ name: "my_upload" value: $direct_url }]
+      }) {
+        id
+      }
     }
-  }) {
-    id
-  }
-}
-{% endgraphql %}
-{{ model | fetch: "model_create" | json }}
+  {% endgraphql %}
+  {{ model | fetch: "model_create" }}
 {% endif %}
 ```
 {% endraw %}
 
-{% include 'alert/note', content: 'You might want to add a check so that users can only add images to their own accounts.' %}
+{% include 'alert/note', content: 'You might want to add an authorization policy to ensure that users can only add images to their own accounts.' %}
 
 ### Step 5: Show the results
 
@@ -303,12 +293,9 @@ query get_models($per_page: Int = 5, $user_id: ID!) {
     total_entries
     results {
       id
-      images {
-        original: url
-        large_bw: url(version: "large_bw")
-        small: url(version: "small")
-        thumb: url(version: "thumb")
-        center: url(version: "center")
+      my_upload: property_upload(name: "my_upload") {
+        url
+        versions
       }
     }
   }
@@ -335,17 +322,18 @@ Then you can use it to display images.
 
   <!-- Show all versions next to each other -->
   {% for model in models.results %}
-    {% assign versions = model | dig: "images" | first %}
-
-    <div class="my-4 card">
+    {% assign versions = model | dig: "my_upload", "versions" %}
+    <div class="card my-4">
       <div class="card-body">
         <div class="row">
+            <div class="col-sm-2">
+              <h4>Original</h4>
+              <a href="{{ model.my_upload.url }}"><img src="{{ model.my_upload.url }}" alt="Original" width="150"></a>
+            </div>
           {% for version in versions %}
             <div class="col-sm-2">
               <h4>{{ version[0] }}</h4>
-              <a href="{{ version[1] }}">
-                <img src="{{ version[1] }}" alt="{{ version[0] }}" width="150">
-              </a>
+              <a href="{{ version[1] }}"><img src="{{ version[1] }}" alt="{{ version[0] }}" width="150"></a>
             </div>
           {% endfor %}
         </div>

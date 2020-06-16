@@ -74,6 +74,16 @@ password_confirmation:
     virtual: true
 ```
 
+### email
+
+Checks if a provided value is a valid email address.
+
+```yaml
+author_email:
+  validation:
+    email: true
+```
+
 ### inclusion / exclusion
 
 ```yaml
@@ -98,23 +108,6 @@ phone:
       with: \A[+]?[\d \-()]+\z
       allow_blank: true
       message: This seems to be an invalid phone number. Please try using numbers only
-```
-
-### file_content_type
-
-```yaml
-custom_attachments:
-  document:
-    file:
-      validation:
-        presence: true
-        file_content_type:
-          allow:
-          - image/jpeg
-          - image/png
-          - application/pdf
-          - application/msword
-          - application/vnd.ms-excel
 ```
 
 ### length

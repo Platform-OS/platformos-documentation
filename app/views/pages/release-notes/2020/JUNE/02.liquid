@@ -1,0 +1,23 @@
+---
+converter: markdown
+metadata:
+  title: Replaced layout_name and layout_path with layout, improved error messages
+  description: June 02, 2020
+  skip_contribute_button: true
+  last_edit: false
+slug: release-notes/02-JUNE-2020
+---
+
+#### {{ page.metadata.description }}
+
+<h4 class="release-note release-note__new">NEW</h4>
+
+* *DEPRECATION* added `layout` to Page and EmailNotification and deprecated `layout_name` for Page and `layout_path` for EmailNotification
+* added `email` validator
+
+<h4 class="release-note release-note__improved">IMPROVED</h4>
+
+* improved error messages in multiple places when invalid `model_schema_name` is provided (for example, forms, model_create mutation, etc.)
+* added information about max limit for fetching related_models/related_users to 10.000
+* error handling for `sum_array` when invalid argument is provided
+* validation for admin_* mutations to provide proper information about duplicated physical file path

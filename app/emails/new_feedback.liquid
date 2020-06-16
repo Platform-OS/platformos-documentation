@@ -3,6 +3,7 @@ to: documentation@platform-os.com
 from: 'platformOS <noreply@platform-os.com>'
 reply_to: '{{ form.model.customization.properties.email }}'
 subject: Documentation - New Feedback
+trigger_condition: '{% if form.properties.message.size > 1 %}true{% else %}false{% endif %}'
 ---
 {% assign properties = form.properties %}
 

@@ -32,50 +32,87 @@ Direct S3 upload is a way for developers to deliver a faster experience for thei
 
 ## How it works
 
-Now let's look at how things are glued together in the case of platformOS.
+Now let's look at how things are glued together in the case of platformOS. In order to start, create a property either in `user.yml` OR in your `<model_schema>.yml`. The property type is `upload`. You can use `options` to configure whether the file should be private or public, max file size, generated versions, etc.
 
-There are two types of files in platformOS
-
-1. Attachments - Documents of any file type, they're private (soon it will be configurable). `Content-Disposition` is configurable.
-2. Images - Most popular graphical files on the web, i.e. jpeg, png, webp, gif, svg. Images are always public and `Content-Disposition` is always inline. This type of upload is meant to be displayed on the web.
-
-Both types can have file size validation, so you can decide how small or big of a file users will be able to upload.
-
-### Attachments
+### Upload
 
 This is a high level description of what happens in a successful file upload flow:
 
 <img loading="lazy" src="{{ 'images/developer-guide/user-uploads/flowchart-attachments.svg' | asset_url }}" alt="Attachments flow">
 
 1. Application: Presign URL requested via GraphQL
-  To be able to upload a file to S3, our server is creating a presigned URL. What you as a developer need to do is to get the URL using the `attachment_presign_url` mutation and point it to a model and property that it will be using. For example, model `documents` and property `resume`.
+To be able to upload a file to S3, our server is creating a presigned URL. What you as a developer need to do is to get the URL using the `property_upload_presigned_url` mutation and point it to a model and property that it will be using. For example, you can define a model `documents` and property `resume` with type `upload` in `app/model_schemas/documents.yml`:
+
+```yaml
+name: documents
+properties:
+  - name: resume
+    type: upload
+    options:
+      acl: private # default is public
+```
 
 2. Browser: POST file
-  This is the stage where `upload_url` and `upload_url_payload` - results from the `attachment_presign_url` mutation - will be consumed by the browser. The combination of URL, payload and file from the user is a complete package that has to be sent over to S3.
+  This is the stage where `upload_url` and `upload_url_payload` - results from the `property_upload_presigned_url` mutation - will be consumed by the browser. The combination of URL, payload, and file from the user is a complete package that has to be sent over to S3. Your view can look like this:
+
+{% raw %}
+```liquid
+{% graphql data %}
+  mutation presign {
+    property_upload_presigned_url(model_schema_name: "documents", property_name: "resume") {
+      upload_url
+      upload_url_payload
+    }
+  }
+{% endgraphql %}
+<form action="{{ data.upload_url }}">
+  {% for field in data.upload_url_payload %}
+    <input type="hidden" name="{{ field[0] }}" value='{{ field[1] }}'>
+  {% endfor %}
+</form>
+```
+{% endraw %}
 
 3. S3: Return URL to file
-  S3 will return status 204 and XML response with URL to file on S3, if everything went well. Otherwise it will return status 4xx and error reason in XML format.
+  S3 will return status 204 and an XML response with the URL to the file on S3, if everything went well. Otherwise it will return status 4xx and the reason for the error in XML format.
 
 4. Browser: POST URL to application
-  Until now, platformOS doesn't know anything about the file that the user has been uploading. This step is meant to change that. Using any method you wish, you need to send the URL to the uploaded file to the application server. Because `file` is just a property in a model, you update that property just like any other.
+  Until now, platformOS doesn't know anything about the file that the user has been uploading. This step is meant to change that. Using any method you wish, you need to send the URL to the uploaded file to the application server. Because `file` is just an URL (string) property in a model, you update that property just like any other.
 
 5. Application: Save URL to the database
-  After getting the URL to a file from the browser, usually you want this URL to be saved in a model for future reference.
+  After getting the URL to a file from the browser, usually you want this URL to be saved in a model for future reference. You store it the same way as any other string - if the property type is `upload`, we will do all the magic behind the scenes:
 
-When you need the URL to the file, as always, you need to use GraphQL and query for the model containing the property.
+```graphql
+mutation model_create($direct_url: String!) {
+  model_create(
+    model: {
+      model_schema_name: "documents"
+      properties: [{ name: "resume" value: $direct_url }]
+      }
+  ) {
+    id
+  }
+}
+```
 
-### Images
+When you need the URL to the file, as always, you need to use GraphQL and query for the model containing the property to get it using `property_upload`, for example:
 
-Images are mostly the same, with some additions for your convenience.
+```graphql
+query get_documents {
+  models(per_page: 20 filter: { model_schema_name: { value: "documents" } }) {
+    results {
+      my_upload: property_upload(name: "resume") { url }
+    }
+  }
+}
+```
 
-1. You can define versions that will be generated by asynchronous serverless function after the original file has been uploaed to S3.
-2. When retrieving URLs, you need to specify to which version you want to get the URL to.
+### Images and processing
 
-<img loading="lazy" src="{{ 'images/developer-guide/user-uploads/flowchart-images.svg' | asset_url }}" alt="Attachments flow">
-
-Read more on how to [implement image upload using Direct S3 upload and Uppy](/developer-guide/user-uploads/uploading-files-directly-amazons3-using-uppy).
+If you want your users to be able to upload images and automatically generate multiple versions of it (for example a thumbnail) you can achieve it by using the `versions` option of property upload.
+Read more on how to [implement image upload with version processing using Direct S3 upload and Uppy](/developer-guide/user-uploads/uploading-files-directly-amazons3-using-uppy).
 
 ## FAQ
 
 1. platformOS is multi-cloud, does this mean implementation will be different for every cloud provider?
-  No. It is the same for all cloud providers.
+  No. If you follow our recommendations from step 2 and use a `for` loop to automatically generate the form for direct upload, we will be able to replace S3 with any other compatible service.

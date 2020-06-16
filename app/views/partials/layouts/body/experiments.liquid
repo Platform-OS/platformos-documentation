@@ -1,0 +1,23 @@
+{%- assign min = 1 -%}
+{%- assign max = 3 -%}
+{%- assign diff = max | minus: min -%}
+{%- assign r = "now" | date: "%N" | modulo: diff | plus: min -%}
+
+{% if context.session.test == blank %}
+  {% session test = r %}
+{% endif %}
+
+{%- if r == 1 %}
+  <script src="{{ 'vendor/quicklink.js' | asset_url }}"></script>
+  <script>
+    window.instantpage = true;
+    window.addEventListener('load', () =>{
+      quicklink.listen();
+    });
+</script>
+{%- endif %}
+
+<!--
+  Session_ID: {{ context.session.session_id }}
+  Instantpage: {{ context.session.test }}
+-->

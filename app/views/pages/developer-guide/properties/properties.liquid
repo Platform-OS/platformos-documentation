@@ -5,16 +5,201 @@ metadata:
   description: Properties are used to build custom forms and gather input from the user.
 ---
 
-**Properties** are used to build custom forms and gather input from the user.
+**Properties** are used to persist data in platformOS.
 
-## Types of Properties
+## Defining a Property
 
-* [User-Defined Properties](/developer-guide/properties/user-defined): Properties you can create on demand.
+Properties are defined in YML configuration files for [Model Schemas](/developer-guide/models/models-model-schemas). You have to provide a `name` and a `type`. For example:
 
-platformOS also provides a few Properties for you to use:
+```yaml
+properties:
+- name: name
+  type: string
+- name: enabled
+  type: boolean
+- name: age
+  type: integer
+```
 
-* [Arrays](/developer-guide/properties/arrays): used to store multiple values for the same property.
+The above configuration adds three properties: "name" of type _string_, "enabled" of type _boolean_, and "age" of type _integer_.
 
-* [Custom Images](/developer-guide/properties/custom-images): used to add one or many images to the configuration.
+## Property Types
 
-* [Custom Attachments](/developer-guide/properties/custom-attachments): used to add one or many files to the configuration.
+Each Property is described with the type of data that is stored within the database.
+Please note that when processing your Property in Liquid, types are automatically converted to those supported by [Liquid Data Types](/api-reference/liquid/types).
+
+The table below lists available data types for Property configuration, that are used to configure fields on the database:
+
+| Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | Example                     |
+|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------|
+| array    | Arrays hold lists of variables of any type. See [Arrays](./arrays)                                                                                                                                                                                                                                                                                                                                                                                                                                   | [1, 2, 3]                   |
+| boolean  | Booleans are used to represent true/false values.                                                                                                                                                                                                                                                                                                                                                                                                                                                    | true                        |
+| date     | Stores Date                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | "2017-07-07"                |
+| datetime | Stores DateTime with time zone. It is recommended to store date and time in one format, so if you provide it in different formats, platformOS will convert it to ISO 8601; that’s what GraphQL expects as well. Please note the [`to_time`](/api-reference/liquid/platformos-filters#to_time) filter which is very powerful in terms of parsing time. You can display dates/times in any format you want using the [`localize`](/api-reference/liquid/platformos-filters#localize-aliases-l) filter. | "2017-07-07 14:00:00 +0000" |
+| float    | Real numbers                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | 1.0                         |
+| integer  | Whole numbers that can be positive, negative, or 0                                                                                                                                                                                                                                                                                                                                                                                                                                                   | 1                           |
+| upload    | See [User Uploads](/developer-guide/user-uploads/user-uploads)                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |                             |
+| string   | A UTF-8 character sequence                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | "Some String"               |
+
+## Grouping into models
+
+You can group your Properties into [Custom Models](/developer-guide/models/models-model-schemas).
+
+### Form
+
+You can configure Properties settings in Form similarly to other parameters:
+
+```yaml
+...
+fields:
+  properties:
+    name:
+      validation:
+        presence: true
+    age:
+      validation:
+        presence: true
+```
+
+```liquid
+{% raw %}
+{% form %}
+  <label for="name">Name</label>
+  <input value="{{ form.fields.properties.name.value }}" name="{{ form.fields.properties.name.name }}" id="name" type="text">
+  {% if form.errors['properties.name'] %}
+    <p>{{ form.errors['properties.name'] }}</p>
+  {% endif %}
+{% endform %}
+{% endraw %}
+```
+
+For more information see our [Form Builder Reference](/developer-guide/forms/form-configurations) and our [Building a Contact Form with Models](/developer-guide/models/building-contact-form-with-model) tutorial.
+
+## Fetching a Property with GraphQL depending on type
+
+Properties depend on their parent objects and are accessible in the query after mapping the name of the Property with the query attribute name. You can do that with the family of `property` defined in (GraphQL PropertiesInterface)[/api-reference/graphql/propertiesinterface.html], for example:
+
+```graphql
+query get_models {
+  models(
+    per_page: 20,
+    filter: {
+      model_schema_name: { value: "employee" }
+    }
+  ) {
+    results {
+      name: property(name: "name")
+      age: property_int(name: "age")
+      enabled: property_boolean(name: "enabled")
+    }
+  }
+}
+```
+
+## Filtering Properties with GraphQL
+
+You can filter GraphQL results based on object properties values. All options are defined in [GraphQL PropertyFilterInput](/api-reference/graphql/propertyfilterinput.html). Some examples:
+
+### value - matches the value of given property.
+
+
+```graphql
+query get_all_johns {
+  models(
+    per_page: 20,
+    filter: {
+      properties: [{ name: "name", value: "John" }]
+    }
+  ) {
+    results {
+      first_name: property(name: "name")
+    }
+  }
+}
+```
+
+### value_int - matches the value of given property.
+
+
+```graphql
+query get_all_models_with_age_14 {
+  models(
+    per_page: 20,
+    filter: {
+      properties: [{ name: "age", value_int: 14 }]
+    }
+  ) {
+    results {
+      first_name: property(name: "name")
+      age: property(name: "age")
+    }
+  }
+}
+```
+
+### values - matches array of values with given `values_operator`: `OR` or `AND`.
+
+```graphql
+query get_all_johns_and_annas {
+  models(
+    per_page: 20,
+    filter: {
+      properties: [{ name: "name", values: ["John", "Anna"], values_operator: OR }]
+    }
+  ) {
+    results {
+      first_name: property(name: "name")
+    }
+  }
+}
+```
+
+### range - available options for range are: `lt`, `lte`, `gt`, `gte`:
+
+```graphql
+query get_all_adults_below_60 {
+  models(
+    per_page: 20,
+    filter: {
+      properties: [{ name: "age", range: { gte: $adult_age_treshold, lt: 60 } }]
+    }
+  ) {
+    results {
+      first_name: property(name: "name")
+    }
+  }
+}
+```
+
+`range` uses [ISO 8601 date-time formats](https://www.cryptosys.net/pki/manpki/pki_iso8601datetime.html), for example:
+
+```graphql
+{
+  name: "last_time_active",
+  range: {
+    lte: "2019-10-02T08:13:00",
+    gte: "2019-09-01T08:13:00"
+  }
+}
+```
+
+
+
+### exists
+
+```graphql
+query get_all_with_name {
+  models(
+    per_page: 20,
+    filter: {
+      properties: [{ name: "name", exists: true }]
+    }
+  ) {
+    results {
+      first_name: property(name: "name")
+    }
+  }
+}
+```
+
+Please note that the above examples are only valid for Properties defined on Model Schema. Please refer to the GraphQL schema in order to filter Properties defined on different parents than Model Schemas.

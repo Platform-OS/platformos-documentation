@@ -1,6 +1,7 @@
 <li class="mt-6 mb-4 text-base topic-group">
   <h3>DEVELOPMENT</h3>
 </li>
+
 <li class="{% if cp contains 'about-platformos' %}active{% endif %}">
   <a href="/developer-guide/about-platformos/about-platformos">About platformOS</a>
   {% if cp contains 'about-platformos' %}
@@ -10,30 +11,25 @@
     </ul>
   {% endif %}
 </li>
+
 <li class="{% if cp contains 'platformos-workflow/development-workflow' %}active{% endif %}">
   <ul class="list-none">
     {% include "shared/nav/link", href: "/developer-guide/platformos-workflow/development-workflow", text: "Development Workflow" %}
   </ul>
 </li>
-<li class="{% if cp contains 'platformos-workflow/pos-cli' %}active{% endif %}">
-  <ul class="list-none">
-    {% include "shared/nav/link", href: "/developer-guide/platformos-workflow/pos-cli", text: "pos-cli" %}
-  </ul>
-</li>
-<li class="{% if cp contains 'platformos-workflow/effective-development-using-pos-cli' %}active{% endif %}">
-  <ul class="list-none">
-    {% include "shared/nav/link", href: "/developer-guide/platformos-workflow/effective-development-using-pos-cli", text: "Effective Development Using the pos-cli" %}
-  </ul>
-</li>
+
 <li class="{% if cp contains 'platformos-workflow/codebase' %}active{% endif %}">
   <ul class="list-none">
     {% include "shared/nav/link", href: "/developer-guide/platformos-workflow/codebase", text: "Codebase" %}
   </ul>
 </li>
-<li class="{% if cp contains 'graphql' %}active{% endif %}">
-  <a href="/developer-guide/graphql/developing-graphql-queries-using-pos-cli-gui">GraphQL</a>
-  <ul class="list-none">
-    {% include "shared/nav/link", href: "/developer-guide/graphql/developing-graphql-queries-using-pos-cli-gui", text: "Developing GraphQL Queries Using the pos-cli GUI" %}
+
+<li class="{% if cp contains 'developer-guide/pos-cli' %}active{% endif %}">
+  <a href="/developer-guide/pos-cli">pos-cli</a>
+  <ul class="submenu">
+    {% include "shared/nav/link", href: "/developer-guide/pos-cli/pos-cli", text: "pos-cli" %}
+    {% include "shared/nav/link", href: "/developer-guide/pos-cli/developing-graphql-queries-using-pos-cli-gui", text: "Developing GraphQL Queries Using the pos-cli GUI" %}
+    {% include "shared/nav/link", href: "/developer-guide/pos-cli/effective-development-using-pos-cli", text: "Effective Development Using the pos-cli" %}
   </ul>
 </li>
 
@@ -122,10 +118,10 @@
   {% if cp contains 'properties' %}
     <ul class="submenu">
       {% include "shared/nav/link", href: "/developer-guide/properties/properties", text: "Properties" %}
-      {% include "shared/nav/link", href: "/developer-guide/properties/user-defined", text: "User-Defined Properties" %}
       {% include "shared/nav/link", href: "/developer-guide/properties/arrays", text: "Arrays" %}
-      {% include "shared/nav/link", href: "/developer-guide/properties/custom-attachments", text: "Custom Attachments" %}
-      {% include "shared/nav/link", href: "/developer-guide/properties/custom-images", text: "Custom Images" %}
+      {% include "shared/nav/link", href: "/developer-guide/properties/uploads", text: "Uploads" %}
+      {% include "shared/nav/link", href: "/developer-guide/properties/custom-attachments", text: "[DEPRECATED] Custom Attachments" %}
+      {% include "shared/nav/link", href: "/developer-guide/properties/custom-images", text: "[DEPRECATED] Custom Images" %}
     </ul>
   {% endif %}
 </li>
@@ -262,20 +258,17 @@
 <li class="pt-6 mt-6 mb-4 text-base border-t topic-group border-pos-divider">
   <h3>DATA MANAGEMENT</h3>
 </li>
-<li class="{% if cp contains 'data-management' or cp contains 'data-import-export' %}active{% endif %}">
+<li class="{% if cp contains 'data-import-export' %}active{% endif %}">
   <a href="/developer-guide/data-import-export/import">Data Import/Export</a>
-  {% if cp contains 'data-management' or cp contains 'data-import-export' %}
+  {% if cp contains 'data-import-export' %}
     <ul class="submenu">
       {% include "shared/nav/link", href: "/developer-guide/data-import-export/import", text: "Data Import" %}
       {% include "shared/nav/link", href: "/developer-guide/data-import-export/import-files", text: "Data Import: Files" %}
       {% include "shared/nav/link", href: "/developer-guide/data-import-export/export", text: "Data Export" %}
       {% include "shared/nav/link", href: "/developer-guide/data-import-export/model-relations", text: "Model Relations" %}
+      {% include "shared/nav/link", href: "/developer-guide/data-import-export/migrating-data", text: "Migrating Data" %}
     </ul>
   {% endif %}
-</li>
-
-<li class="{% if cp contains 'data-management/migrating-data' %}active{% endif %}">
-  {% include "shared/nav/link", href: "/developer-guide/data-management/migrating-data", text: "Migrating Data" %}
 </li>
 
 <li class="{% if cp contains 'data-management/cleaning-instance' %}active{% endif %}">
@@ -302,6 +295,7 @@
       {% include "shared/nav/link", href: "/developer-guide/integrations/integrating-sendgrid-api-call-notifications", text: "Integrating SendGrid Using API Call Notifications" %}
       {% include "shared/nav/link", href: "/developer-guide/integrations/authenticating-domain-sendgrid", text: "Authenticating Your Domain on SendGrid" %}
       {% include "shared/nav/link", href: "/developer-guide/integrations/adding-sendgrid-instance", text: "Adding SendGrid to an Instance" %}
+      {% include "shared/nav/link", href: "/developer-guide/integrations/sending-custom-arguments-sendgrid", text: "Sending custom_arguments to Sendgrid via API Call Notification" %}
       {% include "shared/nav/link", href: "/developer-guide/integrations/integrating-twilio-api-call-notifications", text: "Integrating Twilio Using API Call Notifications" %}
       {% include "shared/nav/link", href: "/developer-guide/integrations/integrating-mailchimp-api-call-notifications", text: "Integrating Mailchimp Using API Call Notifications" %}
       {% include "shared/nav/link", href: "/developer-guide/integrations/integrating-activecampaign-api-call-notifications", text: "Integrating ActiveCampaign Using API Call Notifications" %}
