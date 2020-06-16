@@ -1,0 +1,12 @@
+query get_performance_report($instantpage: Boolean!) {
+  models(
+    per_page: 1000
+    sort: { created_at: { order: ASC } }
+    filter: { properties: { name: "instantpage", value_boolean: $instantpage } }
+  ) {
+    results {
+      x: created_at
+      y: property(name: "everything")
+    }
+  }
+}

@@ -1,0 +1,269 @@
+---
+converter: markdown
+metadata:
+  title: Sending custom_arguments to Sendgrid via API Call Notification
+  description: This guide will help you send custom_arguments to Sendgrid using API Call Notifications.
+---
+
+This guide will help you send custom_arguments to Sendgrid using API Call Notifications.
+
+## Requirements
+To follow this tutorial, you should be familiar with creating API Call Notifications. You also have to have access to SendGrid, and be familiar with the SendGrid API.
+
+* [Creating an API Call Notification](/developer-guide/notifications/creating-api-call-notification)
+* [SendGrid API Reference, Contacts API - Recipients: POST](https://sendgrid.api-docs.io/v3.0/contacts-api-recipients/add-recipients)
+
+## Steps
+
+<div data-autosteps></div>
+
+### Step 1: Create email form
+
+Create a page with a form.
+
+##### views/pages/mail_send.liquid
+
+```liquid
+{% raw %}
+---
+slug: admin/mail_send
+---
+<div class="form-element">
+  <label>Subject</label>
+  <div>
+    <input type="text" id="mail-subject"/>
+  </div>
+
+  <label class="mt-3">To:</label>
+  <div>
+    <input type="text" id="mail-to"/>
+  </div>
+
+  <label class="mt-3">Cc:</label>
+  <div>
+    <input type="text" id="mail-cc"/>
+  </div>
+
+  <label class="mt-3">Bcc:</label>
+  <div>
+    <input type="text" id="mail-bcc"/>
+  </div>
+
+  <label class="mt-3">From:</label>
+  <div>
+    <input type="text" id="mail-from"/>
+  </div>
+
+  <label class="mt-3">Content (html)</label>
+  <div>
+    <textarea id="mail-html-content" rows="6" cols="55"></textarea>
+  </div>
+
+  <label class="mt-3">Content (plain text)</label>
+  <div>
+    <textarea id="mail-plain-content" rows="6" cols="55"></textarea>
+  </div>
+
+  <label class="mt-3">Custom Arguments</label>
+  <div>
+    <textarea id="mail-custom-arguments" rows="6" cols="55">
+    { "example": "argument" }
+    </textarea>
+  </div>
+
+  <button type="button" id="mail-send" class="mt-3 btn btn-primary">Send</button>
+</div>
+{% endraw %}
+```
+
+### Step 2: Gather, validate, and send form data
+
+Create the Javascript code that gathers the form data, validates it, and sends it to the app. *Note: The code below assumes that the jQuery library is present.*
+
+```javascript
+$('#mail-send').click((event) => {
+  // scanning the recipient fields for addresses separated by commas, semicolons or spaces
+  let to = $('#mail-to').val().match(/[^\s,;]{6,}/g);
+  let cc = $('#mail-cc').val().match(/[^\s,;]{6,}/g);
+  let bcc = $('#mail-bcc').val().match(/[^\s,;]{6,}/g);
+
+  if (!to) {
+    alert('Enter at least one address in the To field');
+    return;
+  }
+
+  var custom_args;
+  try {
+    // validating the custom args json data
+    custom_args = JSON.parse($('#mail-custom-arguments').val());
+  } catch (err) {
+    alert('Invalid JSON in Custom Arguments');
+    return;
+  }
+
+  $.ajax({
+    type: 'POST',
+    dataType: 'json',
+    url: '/admin/mail_send.json',
+    data: {
+      subject: $('#mail-subject').val(),
+      to: to,
+      cc: cc,
+      bcc: bcc,
+      from: $('#mail-from').val(),
+      html_content: $('#mail-html-content').val(),
+      plain_content: $('#mail-plain-content').val(),
+      custom_args: custom_args,
+    },
+    success: function (data) {
+      if (data.status >= 200 && data.status < 300) {
+        alert('Mail sent successfully');
+      } else if (data.status >= 400 && data.status < 500) {
+        // In case of error we display the error message(s) returned by Sendgrid
+        alert(
+          JSON.parse(data.body)
+            .errors.map((err) => err.message)
+            .join('\n')
+        );
+      } else {
+        // some API internal error
+        alert('An error occurred');
+      }
+    },
+    error: function (data) {
+      alert('Could not send request');
+    },
+  });
+});
+```
+
+### Step 3: Create endpoint to receive and relay form data
+
+Create the app endpoint that receives the form data and relays it to Sendgrid, after which it makes the Sendgrid response available to the Javascript code. This endpoint builds a JSON payload ready to be used as a Sendgrid request, based on the form data. Don't build the JSON directly in Javascript for security reasons. Execute a GraphQL mutation that sends the payload, then output the response from Sendgrid.
+
+##### views/pages/mail_send.json.liquid
+
+```liquid
+{% raw %}
+---
+slug: admin/mail_send
+format: json
+method: post
+---
+{% parse_json request_data %}
+  {
+    "personalizations": [
+      {
+        "to": [
+          {%- for email in params.to -%}
+          {
+            "email": {{ email | to_json }}
+          } {%- unless forloop.last -%}, {%- endunless -%}
+          {%- endfor -%}
+        ]
+        {%- if params.cc != blank -%}
+        ,
+        "cc": [
+          {%- for email in params.cc -%}
+          {
+            "email": {{ email | to_json }}
+          } {%- unless forloop.last -%}, {%- endunless -%}
+          {%- endfor -%}
+        ]
+        {%- endif -%}
+        {%- if params.bcc != blank -%}
+        ,
+        "bcc": [
+          {%- for email in params.bcc -%}
+          {
+            "email": {{ email | to_json }}
+          } {%- unless forloop.last -%}, {%- endunless -%}
+          {%- endfor -%}
+        ]
+        {%- endif -%}
+      }
+    ],
+    "from": {
+      "email": {{ params.from | to_json }}
+    },
+    "subject": {{ params.subject | to_json }},
+    "custom_args": {{ params.custom_args | to_json }},
+    "content": [
+      {%- if params.plain_content != blank -%}
+      {
+        "type": "text/plain",
+        "value": {{ params.plain_content | to_json }}
+      },
+      {%- endif -%}
+      {
+        "type": "text/html",
+        "value": {{ params.html_content | to_json }}
+      }
+    ]
+  }
+{% endparse_json %}
+
+{% graphql g = 'mail_send', data: request_data %}
+{{ g.api_call_send.response }}
+{% endraw %}
+```
+
+### Step 4: Create GraphQL mutation
+
+Create a GraphQL mutation. The "template" specifies a so-called "API Call Notification".
+
+##### graph_queries/mail_send.graphql
+
+```graphql
+mutation mail_send($data: HashObject) {
+  api_call_send(
+    data: $data
+    template: { name: "mail_send" }
+  ) {
+    response {
+      status
+      body
+    }
+    errors {
+      message
+    }
+  }
+}
+```
+
+### Step 5: Create API Call Notification
+
+Create an API Call Notification. This file is a configuration file that contains API interfacing information such as the API URL, API key, and the API request body.
+It is recommended that the API key is not entered in clear text, but instead stored as a site constant, and fetched as follows:
+
+```liquid
+{% raw %}
+"Authorization": "{{ 'Bearer ' | append: context.constants.sendgrid_api_key }}"
+{% endraw %}
+```
+
+##### notifications/api_call_notifications/mail_send.liquid
+
+```liquid
+{% raw %}
+---
+name: mail_send
+to: https://api.sendgrid.com/v3/mail/send
+enabled: true
+format: https
+trigger_condition: true
+request_type: post
+callback: >
+  {%- assign response_data = response.body | to_hash -%}
+  {% if response_data.errors %}
+    {%- log response_data.errors, type: 'mail_send' -%}
+  {% endif %}
+headers: >
+  {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer <<SENDGRID_API_KEY_HERE>>"
+  }
+---
+{{ data }}
+{% endraw %}
+```
