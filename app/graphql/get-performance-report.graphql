@@ -2,7 +2,7 @@ query get_performance_report($instantpage: Boolean!) {
   models(
     per_page: 1000
     sort: { created_at: { order: ASC } }
-    filter: { properties: [{ name: "instantpage", value_boolean: $instantpage }, { name: "everything", range: { gt: "0", lt: "10000" } }] }
+    filter: { properties: [{ name: "instantpage", value_boolean: $instantpage }, { name: "everything", range: { gt: "0", lt: "4000" } }] }
   ) {
     results {
       x: created_at

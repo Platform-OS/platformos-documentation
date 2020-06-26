@@ -9,6 +9,12 @@ var chart = new Chart(ctx, {
 
   options: {
     scales: {
+      yAxes: [{
+        ticks: {
+            suggestedMin: 100,
+            suggestedMax: 4000
+        }
+      }],
       xAxes: [
         {
           type: 'time',
