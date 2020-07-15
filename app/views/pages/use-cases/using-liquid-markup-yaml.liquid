@@ -1,0 +1,102 @@
+---
+converter: markdown
+metadata:
+  title: Using Liquid Markup in YAML
+  description: This use case describes the recommended syntax when using Liquid markup in YAML in platformOS. 
+---
+
+This use case describes the recommended syntax (the use of `'`, `"`, `>`, `|`, and indentation) when using Liquid markup in YAML in platformOS.   
+
+## Requirements
+
+To follow this use case, you should be familiar with basic platformOS concepts, and the topics in the Get Started section. You should also know how Liquid markup and YAML are used in platformOS: 
+
+* **Liquid markup** is a template language used in platformOS to build dynamic pages, and to provide dynamic configuration (e.g. based on currently logged in user). We have added platformOS-specific filters and tags — see our [Complete Guide to Liquid Markup](/api-reference/liquid/introduction) to learn more. 
+* **YAML** is a human-friendly data serialization standard used in platformOS for setting properties in configuration files. To learn more, visit the [Official YAML Documentation](https://yaml.org/start.html).
+* [Get Started](/get-started)
+
+## Using Liquid markup in YAML 
+
+We demonstrate our recommendations on this example: 
+
+```liquid
+{% raw %}
+---
+to: 'https://example.com/endpoint/{{ form.id }}'
+format: http
+callback: >
+  {% log response, type: 'response object' %}
+  {% assign response_hash = response.body | parse_json %}
+  {% log response_hash, type: 'response body as hash' %}
+request_type: POST
+request_headers: '{
+  "Content-Type": "application/json"
+}'
+---
+{
+  "first_name": "{{ form.first_name }}",
+  "id": "{{ form.id }}"
+}
+{% endraw %}
+```
+
+Take a look at each of these keys and how values are formatted:
+
+1. The `to` value is using `'` to wrap the string, you could use `"` as well. 
+2. `format` and `request_type` are not using any quotes since they are optional with single line values unless you have some special characters inside.
+3. `request_headers` uses a `'` to wrap the string inside, and this is the only valid quote format, since the string itself uses `"`. Notice, that the third line is not indented. You could alternatively use backslashes inside to escape the `" ` like so:  
+
+```yaml 
+request_headers: "{
+  \"Content-Type\": \"application/json\"
+}"
+```
+
+and then you are free to use `"`. Quotes are needed since this is a multiline string. 
+
+4. `callback` uses yet another syntax for multiline content. When you use `>` you need to indent the content with two spaces but you don’t have to escape any characters inside and do not have to wrap the value in quotes. Alternatively, you could use `|` instead of `>` as it differs only with how new lines are treated.
+
+{% include 'alert/tip', content: 'Check out this article on [YAML Syntax](https://docs.ansible.com/ansible/latest/reference_appendices/) to see all of these items explained.' %}
+
+## Conclusion
+
+Take a look at the example code: 
+
+```liquid
+{% raw %}
+headers: |-
+{%- assign token = context.constants.api_user_name | append: ":" | append: context.constants.api_user_password -%} 
+'{
+  "Content-Type": "application/json",
+  "Authorization": "Basic {{ token | base64_encode }}"
+}'
+---
+{% endraw %}
+```
+
+You may notice two different approaches mixed here. I the example, the developer used `|` - (yet another alternative, stripping whitespace around the value) but did not indent the code. You also added quotes around JSON, but in this case, it would include them as part of the value and result in invalid JSON. The example could be written as: 
+
+```liquid
+{% raw %}
+headers: |-
+  {%- assign token = context.constants.api_user_name | append: ":" | append: context.constants.api_user_password -%} 
+  {
+    "Content-Type": "application/json",
+    "Authorization": "Basic {{ token | base64_encode }}"
+  }
+{% endraw %}
+```
+
+or
+
+```liquid
+{% raw %}
+headers: '{%- assign token = context.constants.api_user_name | append: ":" | append: context.constants.api_user_password -%} 
+{
+  "Content-Type": "application/json",
+  "Authorization": "Basic {{ token | base64_encode }}"
+}'
+{% endraw %}
+```
+
+We recommend the first approach as you don’t have to think about escaping any characters inside.
