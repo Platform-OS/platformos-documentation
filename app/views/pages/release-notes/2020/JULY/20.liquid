@@ -1,0 +1,28 @@
+---
+converter: markdown
+metadata:
+  title: Liquid upgrade, data_export mutation, fixes
+  description: June 22, 2020
+  skip_contribute_button: true
+  last_edit: false
+slug: release-notes/22-JUNE-2020
+---
+
+#### {{ page.metadata.description }}
+
+<h4 class="release-note release-note__new">NEW</h4>
+
+* Liquid engine upgrade; adds new `liquid` and `echo` tags
+* `data_export` mutation which triggers the export task similarly to pos-cli data export, with the possibility of extra filtering and scoping for users and models
+* possibility of invalidating authorization tokens used by pos-cli via the Partner Portal
+
+<h4 class="release-note release-note__fixed">FIXED</h4>
+
+* `graphql` tag was not overwritten properly when variable was used multiple times inline 
+* error handling of unknown resource type in `include_form` tag
+* error handling for notifications
+* error handling when the `form` tag is used outside of the `include_form` scope
+* remove unnecessary noise when pulling schema via pos-cli pull
+* error handling when invalid time zone is provided to time filters
+
+
