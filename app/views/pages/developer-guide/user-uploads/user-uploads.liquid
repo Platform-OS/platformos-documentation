@@ -65,8 +65,8 @@ properties:
     }
   }
 {% endgraphql %}
-<form action="{{ data.upload_url }}">
-  {% for field in data.upload_url_payload %}
+<form action="{{ data.property_upload_presigned_url.upload_url }}">
+  {% for field in data.property_upload_presigned_url.upload_url_payload %}
     <input type="hidden" name="{{ field[0] }}" value='{{ field[1] }}'>
   {% endfor %}
 </form>
