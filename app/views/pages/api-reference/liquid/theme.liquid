@@ -1,0 +1,49 @@
+---
+converter: markdown
+metadata:
+  title: 'Liquid - Tags: Theme'
+  description: Liquid Tags - Theme
+  toc: true
+---
+
+## liquid
+Allows writing multiple tags within one set of delimiters. Use the [echo](/api-reference/liquid/theme#echo) tag to output an expression within a ```{% raw %}{% liquid %}{% endraw %}``` tag.
+
+#### Input
+
+```liquid
+{% raw %}
+{% liquid
+case section.blocks.size
+when 1
+  assign column_size = ''
+when 2
+  assign column_size = 'one-half'
+when 3
+  assign column_size = 'one-third'
+else
+  assign column_size = 'one-quarter'
+endcase %}
+{% endraw %}
+```
+
+## echo
+Outputs an expression in the rendered HTML. This is identical to wrapping an expression in ```{% raw %}{{{% endraw %}``` and ```{% raw %}}}{% endraw %}```, but works inside liquid tags and supports filters.
+
+#### Input
+
+```liquid
+{% raw %}
+
+
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+
+```
+
+
+{% include 'reference/liquid/resource-note-shopify' %}
