@@ -90,7 +90,7 @@ Use the `pos-cli env add` command and authenticate with your **Partner Portal** 
 {% include 'alert/tip', content: 'You can copy this command pre-filled with your email and Instance URL from your Instance page on the Partner Portal.' %} 
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
-pos-cli env add <YOUR_ENV_NAME> --email <YOUR_EMAIL> --url <YOUR_INSTANCE_URL>
+pos-cli env add [YOUR_ENV_NAME] --email [YOUR_EMAIL] --url [YOUR_INSTANCE_URL]
 </code></pre>
 
 For example:
@@ -125,7 +125,7 @@ npm run build
 To be able to see your marketplace on your site, you have to deploy your codebase using the pos-cli deploy command. 
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
-pos-cli deploy <YOUR_ENV_NAME>
+pos-cli deploy [YOUR_ENV_NAME]
 </code></pre>
 
 For example: 
@@ -145,7 +145,7 @@ To set up Stripe integration:
 
 1. Go to [https://stripe.com](https://stripe.com) and register your Stripe Connect account.
 2. Copy and add the redirect URI in your [Stripe Connect settings](https://dashboard.stripe.com/test/settings/applications) under Integration/Redirects: 
-`<YOUR_INSTANCE_URL>/payments/account/success`, for example: `https://mymarketplace.staging.oregon.platform-os.com/payments/account/success`. You can find this link on your Dashboard on the `Marketplace Setup` page. 
+`[YOUR_INSTANCE_URL]/payments/account/success`, for example: `https://mymarketplace.staging.oregon.platform-os.com/payments/account/success`. You can find this link on your Dashboard on the `Marketplace Setup` page. 
 3. Enter your Stripe public key, secret key, and Stripe Connect account client ID. 
    * **Marketplace Owner Fee (percent)**: The fee that the seller pays for selling through the marketplace. For example, if the product costs 50$, the buyer pays 50$, then the seller gets 50$ minus the marketplace fee. In this example, if the marketplace fee is set to 10 (percent), then the seller will get 45$. The marketplace owner would get 5$ but as a default, the marketplace owner pays the fees for using Stripe Connect, so they will get 5$ minus Stripe's fee. 
    * **Stripe Publishable Key**: find under [Developers/API keys](https://dashboard.stripe.com/test/apikeys) 
