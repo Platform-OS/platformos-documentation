@@ -2,12 +2,12 @@
 converter: markdown
 metadata:
   title: pOS Marketplace Template
-  description: Start exploring platformOS by using our pOS Marketplace Template.  
+  description: Start exploring platformOS by using our pOS Marketplace Template.
 ---
 
-The **pOS Marketplace Template** is a fully functional marketplace built on platformOS with features like user onboarding, ad listings and ads, purchase and checkout process, and online payment. Following the tutorial, you can deploy this code within minutes to have a list of working features and start customizing the back- and front-end code.  
+The **pOS Marketplace Template** is a fully functional marketplace built on platformOS with features like user onboarding, ad listings and ads, purchase and checkout process, and online payment. Following the tutorial, you can deploy this code within minutes to have a list of working features and start customizing the back- and front-end code.
 
-<img loading="lazy" src="{{ 'images/get-started/Marketplace_MVP.png' | asset_url }}" alt="Screenshot of the demo marketplace" />
+<img loading="lazy" src="{{ 'images/get-started/Marketplace_MVP.jpeg' | asset_url }}" alt="Screenshot of the demo marketplace" />
 
 ## Preview
 
@@ -78,7 +78,7 @@ Select the `Staging/Unbilled` Billing Plan that appears, and click on the Create
 
 {% include "alert/note", content: "Make sure you remember your **Partner Portal** account email and password — you will need them to authenticate your environments. If you logged in using Google or Github, go to the Instance details view in Partner Portal where you will see the pos-cli command ready for copy and paste. It shows all the parameters you need, so in this case, you won't need to remember your password." %}
 
-On your local environment create a new directory and change to it. This is where you will put the codebase for your marketplace. 
+On your local environment create a new directory and change to it. This is where you will put the codebase for your marketplace.
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
 mkdir marketplace
@@ -89,7 +89,7 @@ Add your Instance to the pos-cli. This will ensure that you can use the pos-cli 
 
 Use the `pos-cli env add` command and authenticate with your **Partner Portal** credentials.
 
-{% include 'alert/tip', content: 'You can copy this command pre-filled with your email and Instance URL from your Instance page on the Partner Portal.' %} 
+{% include 'alert/tip', content: 'You can copy this command pre-filled with your email and Instance URL from your Instance page on the Partner Portal.' %}
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
 pos-cli env add [YOUR_ENV_NAME] --email [YOUR_EMAIL] --url [YOUR_INSTANCE_URL]
@@ -107,15 +107,15 @@ A message _"Environment [your Instance URL] as staging has been added successful
 
 If you need to create a new project, you can initialize the directory structure using the `pos-cli init` command. You can either initialize platformOS core or download the directory structure from a given git repository and extract it in your current directory.
 
-Create your codebase by cloning our marketplace GitHub repository. 
+Create your codebase by cloning our marketplace GitHub repository.
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
 pos-cli init --url https://github.com/mdyd-dev/product-marketplace-template.git
 </code></pre>
 
-## Step 5: Build assets 
+## Step 5: Build assets
 
-Install the marketplace package and any packages that it depends on then build it using npm commands. 
+Install the marketplace package and any packages that it depends on then build it using npm commands.
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
 npm install
@@ -124,32 +124,32 @@ npm run build
 
 ## Step 6: Deploy
 
-To be able to see your marketplace on your site, you have to deploy your codebase using the pos-cli deploy command. 
+To be able to see your marketplace on your site, you have to deploy your codebase using the pos-cli deploy command.
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
 pos-cli deploy [YOUR_ENV_NAME]
 </code></pre>
 
-For example: 
+For example:
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
 pos-cli deploy staging
 </code></pre>
 
-A progress indicator shows that the deployment is in progress, and once it finishes, a _"Deploy succeeded after <time>"_ is displayed.
+A progress indicator shows that the deployment is in progress, and once it finishes, a _"Deploy succeeded after [time]"_ is displayed.
 
-## Step 7: Set up your marketplace 
+## Step 7: Set up your marketplace
 
-To access the admin panel of your marketplace register a user with this email address: `admin@example.com`. 
-Enter the `Admin` section from the main menu and go to the `Marketplace Setup` section. 
+To access the admin panel of your marketplace register a user with this email address: `admin@example.com`.
+Enter the `Admin` section from the main menu and go to the `Marketplace Setup` section.
 
-To set up Stripe integration: 
+To set up Stripe integration:
 
 1. Go to [https://stripe.com](https://stripe.com) and register your Stripe Connect account.
-2. Copy and add the redirect URI in your [Stripe Connect settings](https://dashboard.stripe.com/test/settings/applications) under Integration/Redirects: 
-`[YOUR_INSTANCE_URL]/payments/account/success`, for example: `https://mymarketplace.staging.oregon.platform-os.com/payments/account/success`. You can find this link on your Dashboard on the `Marketplace Setup` page. 
-3. Enter your Stripe public key, secret key, and Stripe Connect account client ID. 
-   * **Marketplace Owner Fee (percent)**: The fee that the seller pays for selling through the marketplace. For example, if the product costs 50$, the buyer pays 50$, then the seller gets 50$ minus the marketplace fee. In this example, if the marketplace fee is set to 10 (percent), then the seller will get 45$. The marketplace owner would get 5$ but as a default, the marketplace owner pays the fees for using Stripe Connect, so they will get 5$ minus Stripe's fee. 
-   * **Stripe Publishable Key**: find under [Developers/API keys](https://dashboard.stripe.com/test/apikeys) 
-   * **Stripe Secret Key**: find under [Developers/API keys](https://dashboard.stripe.com/test/apikeys) 
+2. Copy and add the redirect URI in your [Stripe Connect settings](https://dashboard.stripe.com/test/settings/applications) under Integration/Redirects:
+`[YOUR_INSTANCE_URL]/payments/account/success`, for example: `https://mymarketplace.staging.oregon.platform-os.com/payments/account/success`. You can find this link on your Dashboard on the `Marketplace Setup` page.
+3. Enter your Stripe public key, secret key, and Stripe Connect account client ID.
+   * **Marketplace Owner Fee (percent)**: The fee that the seller pays for selling through the marketplace. For example, if the product costs 50$, the buyer pays 50$, then the seller gets 50$ minus the marketplace fee. In this example, if the marketplace fee is set to 10 (percent), then the seller will get 45$. The marketplace owner would get 5$ but as a default, the marketplace owner pays the fees for using Stripe Connect, so they will get 5$ minus Stripe's fee.
+   * **Stripe Publishable Key**: find under [Developers/API keys](https://dashboard.stripe.com/test/apikeys)
+   * **Stripe Secret Key**: find under [Developers/API keys](https://dashboard.stripe.com/test/apikeys)
    * **Stripe Owner Connect account client ID**: find under [Integration](https://dashboard.stripe.com/test/settings/applications)
