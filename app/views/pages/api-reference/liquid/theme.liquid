@@ -34,15 +34,19 @@ Outputs an expression in the rendered HTML. This is identical to wrapping an exp
 
 ```liquid
 {% raw %}
-
-
+{% liquid
+if product.featured_image
+  echo product.featured_image | img_tag
+else
+  echo 'product-1' | placeholder_svg_tag
+endif %}
 {% endraw %}
 ```
 
 #### Output
 
 ```liquid
-
+<img src="//cdn.shopify.com/s/files/1/0159/3350/products/red_shirt_small.jpg?v=1398706734" alt="Red Shirt Small" />
 ```
 
 
