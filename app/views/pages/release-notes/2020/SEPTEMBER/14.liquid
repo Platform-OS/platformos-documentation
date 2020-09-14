@@ -1,0 +1,22 @@
+---
+converter: markdown
+metadata:
+  title: New admin_* mutations, improvements
+  description: September 14, 2020
+  skip_contribute_button: true
+  last_edit: false
+slug: release-notes/14-SEPTEMBER-2020
+---
+
+#### {{ page.metadata.description }}
+
+<h4 class="release-note release-note__new">NEW</h4>
+
+* new GraphQL mutation `admin_asset_update`, which moves asset from one place to another based on physical_file_path
+* add `csrf_request_valid` to `context` which evalutes to false if the request was triggered without a valid CSRF token
+* new GraphQL mutations `admin_graphql_*`
+
+<h4 class="release-note release-note__improved">IMPROVED</h4>
+
+* do not allow to update private admin resources (like Page, Form, etc. ) via GraphQL, except for Model Schema
+* do not include deleted User Profiles in GraphQL results
