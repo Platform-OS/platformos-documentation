@@ -161,7 +161,7 @@ pipeline {
 }
 
 def commitInfo() {
-  GITHUB_URL = "https://github.com/mdyd-dev/nearme-documentation"
+  GITHUB_URL = "https://github.com/mdyd-dev/platformos-documentation"
 
   commitSha = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
   commitAuthor = sh(returnStdout: true, script: 'git log --format="%an" -1').trim()
