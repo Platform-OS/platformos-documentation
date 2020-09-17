@@ -11,7 +11,7 @@ Doing time consuming operations on the server before a page starts to be deliver
 
 {% include "alert/note", content: "Just because there are ways to mitigate this, it doesn't mean you should not fix the root cause of slowdowns. This usually means that you are doing something wrong and fixing lazy loading ad-hoc shouldn't be the only fix you do. Still, it can give you a room to breathe until you find a way to fix it permanently. Although users suffer less from this issue, the server is still getting swamped. Make sure not to forget about the root cause of the performance issues because perceived performance for users is so good after this simple optimization. Strive for faster server responses and quicker load times with user experience in mind." %}
 
-See a simulated slow code using a for loop and some randomization: [Slow code implementation](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/fragment_lazy_load/public/views/partials/slow-code.liquid)
+See a simulated slow code using a for loop and some randomization: [Slow code implementation](https://github.com/mdyd-dev/platformos-examples/blob/master/modules/fragment_lazy_load/public/views/partials/slow-code.liquid)
 
 ## Problem: example + source code
 
@@ -21,7 +21,7 @@ Plain and simple, everything is rendered in one run, slow code is included direc
 
 _Long wait, big initial HTML_
 
-- [See source code](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/fragment_lazy_load/public/views/pages/normal.liquid)
+- [See source code](https://github.com/mdyd-dev/platformos-examples/blob/master/modules/fragment_lazy_load/public/views/pages/normal.liquid)
 - [See live example](https://examples.platform-os.com/fragment-lazy-load)
 - [See pagespeed report](https://developers.google.com/speed/pagespeed/insights/?url=https%3A%2F%2Fexamples.platform-os.com%2Ffragment-lazy-load&tab=desktop)
 
@@ -39,7 +39,7 @@ We've added a "spinner" to inform the user that something is going to show up th
 
 _The file starts to download much faster and is much smaller, so it renders sooner._
 
-- [Source code](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/fragment_lazy_load/public/views/pages/lazy-inline.liquid)
+- [Source code](https://github.com/mdyd-dev/platformos-examples/blob/master/modules/fragment_lazy_load/public/views/pages/lazy-inline.liquid)
 - [Live example](https://examples.platform-os.com/fragment-lazy-load/lazy-inline)
 - [Pagespeed report](https://developers.google.com/speed/pagespeed/insights/?url=https%3A%2F%2Fexamples.platform-os.com%2Ffragment-lazy-load%2Finline-lazy&tab=desktop)
 
@@ -51,7 +51,7 @@ Very similar to solution 1, but this time the JavaScript is in an external js fi
 
 _Same situation, snappy rendering and small file_
 
-- [Source code](https://github.com/mdyd-dev/marketplace-nearme-example/blob/master/modules/fragment_lazy_load/public/views/pages/lazy-external.liquid)
+- [Source code](https://github.com/mdyd-dev/platformos-examples/blob/master/modules/fragment_lazy_load/public/views/pages/lazy-external.liquid)
 - [Live example](https://examples.platform-os.com/fragment-lazy-load/lazy-external)
 - [Pagespeed report](https://developers.google.com/speed/pagespeed/insights/?url=https%3A%2F%2Fexamples.platform-os.com%2Ffragment-lazy-load%2Flazy-external&tab=desktop)
 
