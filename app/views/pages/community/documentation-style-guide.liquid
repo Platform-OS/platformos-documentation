@@ -6,7 +6,7 @@ metadata:
 
 Thank you for contributing to our documentation!
 
-To keep the tone and style of our documentation consistent, we created this style guide that contains organization, writing, style, and image guidelines for both the user and developer documentation of the platformOS solution.
+To keep the tone and style of our documentation consistent, we created this style guide that contains organization, writing, style, and image guidelines for the developer documentation of platformOS core and platformOS modules. 
 
 The style guide contains writing guidelines for:
 
@@ -17,9 +17,7 @@ The style guide contains writing guidelines for:
 
 ### Audience
 
-We have identified the following proto-personas using our product and visiting our documentation site.
-
-Proto-personas are descriptions for the types of users that will be interacting with our documentation site. The user personas help us share a specific, consistent understanding of various audience groups. Proposed solutions can be guided by how well they meet the needs of individual user personas. Features can be prioritised based on how well they address the needs of one or more personas.
+{% include 'alert/note', content: 'Personas are descriptions for the types of users that are interacting with our documentation site. The user personas help us share a specific, consistent understanding of various audience groups. Proposed solutions can be guided by how well they meet the needs of individual user personas. Features can be prioritized based on how well they address the needs of one or more personas.' %}
 
 Our target audience combines technical and non-technical personas.
 
@@ -115,37 +113,32 @@ Use Markdown formatting for all documentation content (except auto-generated API
 
 Headings help users find relevant information. ([Click here to learn more about the importance of headings.](https://m.eliteediting.com.au/what-are-headings-and-why-are-they-important/))
 
-Don't use `#` (h1) headings in your articles, as they should be reserved for article titles.
+Don't use `#` (h1) headings in your articles, as they are reserved for article titles.
 
 Use `##` (h2) headings to separate important sections of the article. They are automatically anchored, so they make direct linking possible.
 
-Use `###` (h3) headings as you see fit to improve readability and scannability of your content.
+Use `###` (h3) headings as you see fit to improve the readability and scannability of your content.
 
 ### Code examples
 
-Code examples are probably the most important part of the documentation &ndash; the more there are, the better. There is a built-in code highlighter that works for many different programming languages.
+Code examples are one of the most important parts of the documentation &ndash; the more there are, the better. There is a built-in code highlighter that works for many different programming languages.
 
+**Inline**
 Wrap inline snippets of code with `.
 
-To add a code sample, use the code block, followed by the language you want to use:
+**Code samples**
+To add a code sample, use the code block (triple backticks), followed by the language you want to use, for example: 
 
-
+<pre><code class="language-html">
 ```html
-<h1>Code.ruby = 'awesome'</h1>
-<script>
-document.write('attack');
-</script>
+</pre></code>
+
+Add your code snippet and close the block:
+<pre><code class="language-html">
 ```
+</pre></code>
 
-which will result in
-
-```html
-<h1>Code.ruby = 'awesome'</h1>
-<script>
-document.write('attack');
-</script>
-```
-
+**Liquid code samples**
 To add liquid markup examples, wrap the whole block in the `{{ "{% raw "}}%}` tag:
 
 <pre><code class="language-liquid">
@@ -202,7 +195,7 @@ metadata:
   breadcrumbs: false
 ```
 
-## Automatically generated steps
+### Automatically generated steps
 
 If you have steps in your article, place `<div data-autosteps></div>` inside of the page.
 This will generate steps from h2 headings on that page.
@@ -224,7 +217,13 @@ Don't use screenshots to show:
 * Form configuration view (use Markdown code examples instead)
 * Table with parameters description (use Markdown table instead)
 
-[to be added: information about uploading and linking to images]
+To insert an image, add it to the `app/assets/images` directory. Create a directory inside `images` if needed (if there is no directory created yet for the section you are adding your image to). Once you added the image, insert it into the page like this:
+
+```liquid
+{% raw %}
+<img loading="lazy" src="{{ 'images/best-practices/qa/list_browsers.png' | asset_url }}" alt="The list of browsers available in your system." />
+{% endraw %}
+``` 
 
 ### Videos
 
@@ -292,7 +291,12 @@ Our release notes include the following information about each release:
 * improvements
 * fixes
 
-Each section lists items in bullet points, and separates in-house development ideas from features, improvements, and fixes suggested by our community.
+Each section lists items in bullet points.
 
 **[Release notes template](https://github.com/mdyd-dev/platformos-documentation/blob/master/app/views/pages/release-notes/DD-MONTH-YYYY.liquid)**
 
+### Use cases
+
+Use cases describe interactions between the user and the system to accomplish a specific task. Use cases tell users how to obtain the end result. They usually address a technical audience and focus on the problem and the solution, so they should include detailed descriptions of the technical implementation and code examples. 
+
+**[Use case template](https://github.com/mdyd-dev/platformos-documentation/blob/master/app/views/pages/doc-templates/template-use-case.liquid)** 
