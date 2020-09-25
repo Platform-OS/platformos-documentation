@@ -1,0 +1,67 @@
+---
+converter: markdown
+metadata:
+  title: Installing the Sendgrid Email Marketing Module
+  description: This guide will help you install the platformOS Sendgrid Email Marketing Module.
+---
+
+This guide will help you install the platformOS Sendgrid Email Marketing Module.
+
+## Requirements
+
+To follow the steps in this tutorial, you should have set up a platformOS Instance and your codebase. It helps if you know how to install a module, but we also describe the process specifically for the Sendgrid Email Marketing Module in this tutorial.
+
+Additionally, you will need to have a Sendgrid account. 
+
+* [Get Started](/get-started)
+* [Installing Module](/developer-guide/modules/installing-module)
+
+## Steps
+
+Installing the Sendgrid Email Marketing Module is a three-step process:
+
+<div data-autosteps></div>
+
+### Step 1: Install Sendgrid Email Marketing Module
+
+Log in to the [Partner Portal](https://partners.platformos.com/) and go to your Instance detail view.
+In the Available modules section, search for "Sendgrid Email Marketing" and click Install. You will receive an Email Notification when the installation process is complete.
+
+### Step 2: Create a password
+
+The Sendgrid Email Marketing Module is secure, so you will need to create a password to gain access to the admin pages.
+
+To do this you will need to add the following GraphQL query, where <<PASSWORD>> is the value you want to use to gain access to the functionality:
+
+```graphql
+mutation set_admin_pwd {
+  constant_set(name: "admin_pwd", value: "<<PASSWORD>>") {
+    name
+    value
+  }
+}
+```
+
+### Step 3: Connect to your Sendgrid account
+
+You will need to have a Sendgrid account to use this module. If you do not already have an account, follow our tutorial about [Adding Sendgrid to an Instance](https://documentation.platformos.com/developer-guide/integrations/adding-sendgrid-instance).
+
+Add the following GraphQL query, where <<KEY HERE>> is the value for your Sendgrid API key, which can be found in your Sendgrid account on the [API Keys page](https://app.sendgrid.com/settings/api_keys):
+
+```graphql
+mutation set_sendgrid_key {
+  constant_set(
+    name: "sendgrid_api_key"
+    value: "<<KEY HERE>>"
+  ) {
+    name
+    value
+  } 
+}
+```
+
+The path for the campaigns functionality will be /admin/email_campaigns, for example, https://www.domain.com/admin/email_campaigns. 
+
+
+## Next steps
+Congratulations! You have installed the Sendgrid Email Marketing Module. Now you can begin sending emails straight from your Instance.
