@@ -10,6 +10,15 @@ An **activity** is a semantic description of an action.
 Get familiar with the [W3C Recommendation for Activity Streams 2.0](https://www.w3.org/TR/2017/REC-activitystreams-core-20170523/). Most examples and part of the implementation you'll find in this guide are based on this specification, that provides a JSON-based syntax that is sufficient to express metadata about activities in a rich, human-friendly but machine-processable and extensible manner. This can include constructing natural-language descriptions or visual representations about the activity, associating actionable information with various types of objects, communicating or recording activity logs, or delegation of potential actions to other applications.
 
 ## Activities
+
+Activities (activity list) is an activity stream and it is an immutable list of immutable objects (activities/events that happened it the past).
+
+- By design you can only add an entry
+- Generally you are not allowed to change it - the list or any item from the list
+- Each activity has uniq UUID
+- Activities are to be shared between actors of the system
+- Single activity record is a representation of an event that happened in a system
+
 After each specified action, you have to create an activity and then publish the activity UUID to specific feeds.
 
 ### Example
