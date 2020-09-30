@@ -1,8 +1,8 @@
 ---
 converter: markdown
 metadata:
-  title: Handle read activities
-  description:
+  title: Handling Read Activities
+  description: This guide will help you handle an unread counter and mark your activites as read.
 ---
 
 This guide will help you handle an unread counter and mark your activites as read.
@@ -49,19 +49,19 @@ query get_activities(
 }
 ```
 
-You can see, that `unread_count` appears in the response.
+Notice that `unread_count` appears in the response.
 
-### Step 3: Reset unread counter.
+### Step 3: Reset unread counter
 
-You can reset `unread_count` with the same query but set `$reset_last_read` to `true`.
+You can reset `unread_count` with the same query by setting `$reset_last_read` to `true`.
 
-### Step 4: Handle read activities one buy one.
+### Step 4: Handle read activities one by one
 
-Let's imagine the following scenario:
+Imagine the following scenario:
 - you want to reset the counter when the user visits the activities (or notifications) page
-- but you want to keep unread the activites that the user has not clicked jet
+- but you want to keep the activites that the user has not clicked yet unread 
 
-You can implement this scenatio with the following steps:
+You can implement this scenario with the following steps:
 
 #### 1: Create another stream to store the clicked/read activities
 
@@ -85,7 +85,7 @@ You can implement this scenatio with the following steps:
   assign clicked_uuids = gclicked.streams.results | map: 'payload' | map: 'uuid'
 %}
 ```
-#### 3: Create a wrapper and handle if an activity is clicked before
+#### 3: Create a wrapper and handle if an activity has been clicked before
 
 ```liquid
 {% capture 'notifications' -%}
