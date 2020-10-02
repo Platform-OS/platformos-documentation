@@ -75,6 +75,7 @@ You can implement this scenario with the following steps:
 **2: Get them when you load the main activities**
 
 ```liquid
+{% raw %}
 {% liquid
   assign current_page = context.params.current_page | to_positive_integer: 1
 
@@ -84,10 +85,12 @@ You can implement this scenario with the following steps:
   assign notifications = g.streams.results
   assign clicked_uuids = gclicked.streams.results | map: 'payload' | map: 'uuid'
 %}
+{% endraw %}
 ```
 **3: Create a wrapper and handle if an activity has been clicked before**
 
 ```liquid
+{% raw %}
 {% capture 'notifications' -%}
   { "total_entries": {{ g.streams.total_entries | json }},
     "unread_count": {{ g.streams.unread_count | json }},
@@ -113,11 +116,13 @@ You can implement this scenario with the following steps:
 {%- endcapture -%}
 
 {% assign notifications = notifications | to_hash %}
+{% endraw %}
 ```
 
 **4: Mark all notifications as clicked.**
 
 ```liquid
+{% raw %}
 {% liquid 
   assign recipients = context.current_user.id | split: "|"
   graphql notifications = 'get_activities', user_id: context.current_user.id | dig: 'streams', 'results'
@@ -126,4 +131,5 @@ You can implement this scenario with the following steps:
     graphql pg = 'activity_publish',  uuid: notification.uuid, feed_ids: recipients, feed_type: 'UserNotifications.Read'
   endfor
 %}
+{% endraw %}
 ```
