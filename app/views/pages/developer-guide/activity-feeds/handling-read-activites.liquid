@@ -1,0 +1,129 @@
+---
+converter: markdown
+metadata:
+  title: Handling Read Activities
+  description: This guide will help you handle an unread counter and mark your activites as read.
+---
+
+This guide will help you handle an unread counter and mark your activites as read.
+
+## Requirements
+This is an advanced tutorial. To follow it, you should be familiar with basic platformOS concepts, the topics in the Get Started section, and activity feeds.
+
+* [platformOS Workflow](/developer-guide/platformos-workflow/development-workflow)
+* [Get Started](/get-started)
+* [Activity Feeds](/developer-guide/activity-feeds/activity-feeds)
+* [Implementing Activity Feeds](/developer-guide/activity-feeds/implementing-activity-feeds)
+
+## Steps
+
+<div data-autosteps></div>
+
+### Step 1: Create activities and store them in a feed like in [Implementing Activity Feeds](/developer-guide/activity-feeds/implementing-activity-feeds).
+
+### Step 2: Get unread counter with your stream
+
+```graphql
+query get_activities(
+  $user_id: ID!
+  $feed_type: String!
+  $per_page: Int
+  $page: Int
+  $reset_last_read: false
+) {
+  streams(
+    feed_id: $user_id
+    feed_type: $feed_type
+    per_page: $per_page
+    page: $page
+    reset_last_read: $reset_last_read
+  ) {
+    total_entries
+    unread_count
+    results {
+      id
+      uuid
+      payload
+    }
+  }
+}
+```
+
+Notice that `unread_count` appears in the response.
+
+### Step 3: Reset unread counter
+
+You can reset `unread_count` with the same query by setting `$reset_last_read` to `true`.
+
+### Step 4: Handle read activities one by one
+
+Imagine the following scenario:
+- you want to reset the counter when the user visits the activities (or notifications) page
+- but you want to keep the activites that the user has not clicked yet unread 
+
+You can implement this scenario with the following steps:
+
+#### 1: Create another stream to store the clicked/read activities
+
+```liquid
+{% raw %}
+{% assign recipients = context.current_user.id | split: "|" %}
+{% graphql gp = 'activity_publish', uuid: activity.uuid, feed_ids: recipients, feed_type: 'UserNotifications.Read' %}
+{% endraw %}
+```
+
+#### 2: Get them when you load the main activities
+
+```liquid
+{% liquid
+  assign current_page = context.params.current_page | to_positive_integer: 1
+
+  graphql g = 'get_activities', user_id: context.current_user.id, feed_type: 'UserNotifications'
+  graphql gclicked = 'get_activities', user_id: context.current_user.id, feed_type: 'UserNotifications.Read'
+
+  assign notifications = g.streams.results
+  assign clicked_uuids = gclicked.streams.results | map: 'payload' | map: 'uuid'
+%}
+```
+#### 3: Create a wrapper and handle if an activity has been clicked before
+
+```liquid
+{% capture 'notifications' -%}
+  { "total_entries": {{ g.streams.total_entries | json }},
+    "unread_count": {{ g.streams.unread_count | json }},
+    "results": [
+      {%- for notification in notifications -%}
+        {%- assign is_clicked = false -%}
+        {%- if clicked_uuids contains notification.uuid -%}
+          {%- assign is_clicked = true -%}
+        {%- endif -%}
+        {%- unless forloop.first -%},{%- endunless -%}
+        {
+          "id": {{ notification.id | json }},
+          "uuid": {{ notification.uuid | json }},
+          "clicked": {{ is_clicked | json -}},
+          "payload": {
+            {%- for field in notification.payload -%}
+              "{{ field[0] }}" : {{ field[1] | json }}{%- unless forloop.last -%},{%- endunless -%}
+            {%- endfor -%}
+          }
+        }
+      {%- endfor -%}
+    ]}
+{%- endcapture -%}
+
+{% assign notifications = notifications | to_hash %}
+```
+
+#### 4: Mark all notifications as clicked.
+
+```liquid
+{% liquid 
+  assign recipients = context.current_user.id | split: "|"
+  graphql notifications = 'get_activities', user_id: context.current_user.id | dig: 'streams', 'results'
+
+  for notification in notifications
+    graphql pg = 'activity_publish',  uuid: notification.uuid, feed_ids: recipients, feed_type: 'UserNotifications.Read'
+  endfor
+%}
+```
