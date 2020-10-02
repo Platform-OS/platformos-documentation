@@ -63,7 +63,7 @@ Imagine the following scenario:
 
 You can implement this scenario with the following steps:
 
-#### 1: Create another stream to store the clicked/read activities
+**1: Create another stream to store the clicked/read activities**
 
 ```liquid
 {% raw %}
@@ -72,7 +72,7 @@ You can implement this scenario with the following steps:
 {% endraw %}
 ```
 
-#### 2: Get them when you load the main activities
+**2: Get them when you load the main activities**
 
 ```liquid
 {% liquid
@@ -85,7 +85,7 @@ You can implement this scenario with the following steps:
   assign clicked_uuids = gclicked.streams.results | map: 'payload' | map: 'uuid'
 %}
 ```
-#### 3: Create a wrapper and handle if an activity has been clicked before
+**3: Create a wrapper and handle if an activity has been clicked before**
 
 ```liquid
 {% capture 'notifications' -%}
@@ -115,7 +115,7 @@ You can implement this scenario with the following steps:
 {% assign notifications = notifications | to_hash %}
 ```
 
-#### 4: Mark all notifications as clicked.
+**4: Mark all notifications as clicked.**
 
 ```liquid
 {% liquid 
