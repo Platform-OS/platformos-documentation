@@ -68,7 +68,7 @@ You can implement this scenario with the following steps:
 ```liquid
 {% raw %}
 {% assign recipients = context.current_user.id | split: "|" %}
-{% graphql gp = 'activity_publish', uuid: activity.uuid, feed_ids: recipients, feed_type: 'UserNotifications.Clicked' %}
+{% graphql gp = 'activity_publish', uuid: activity.uuid, feed_ids: recipients, feed_type: 'UserNotifications.Read' %}
 {% endraw %}
 ```
 
@@ -79,7 +79,7 @@ You can implement this scenario with the following steps:
   assign current_page = context.params.current_page | to_positive_integer: 1
 
   graphql g = 'get_activities', user_id: context.current_user.id, feed_type: 'UserNotifications'
-  graphql gclicked = 'get_activities', user_id: context.current_user.id feed_type: 'UserNotifications.Click'
+  graphql gclicked = 'get_activities', user_id: context.current_user.id, feed_type: 'UserNotifications.Read'
 
   assign notifications = g.streams.results
   assign clicked_uuids = gclicked.streams.results | map: 'payload' | map: 'uuid'
@@ -123,7 +123,7 @@ You can implement this scenario with the following steps:
   graphql notifications = 'get_activities', user_id: context.current_user.id | dig: 'streams', 'results'
 
   for notification in notifications
-    graphql pg = 'activity_publish',  uuid: notification.uuid, feed_ids: recipients, feed_type: 'UserNotifications.Click'
+    graphql pg = 'activity_publish',  uuid: notification.uuid, feed_ids: recipients, feed_type: 'UserNotifications.Read'
   endfor
 %}
 ```
