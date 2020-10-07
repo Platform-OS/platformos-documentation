@@ -1,0 +1,148 @@
+---
+converter: markdown
+metadata:
+  title: Core Concepts of the pOS Product Marketplace Template 
+  description: An overview of the business logic, presentation logic, data queries, categories, and tests for the pOS Product Marketplace Template. 
+---
+
+The **pOS Product Marketplace Template** is a fully functional marketplace built on platformOS with features like user onboarding, ad listings and ads, purchase and checkout process, and online payment. Following the tutorial, you can deploy this code within minutes to have a list of working features and start customizing the back- and front-end code.
+
+This topic describes the core concepts like the business logic, presentation logic, data queries, categories, and tests for the pOS Product Marketplace Template. 
+
+## Requirements
+
+To explore the pOS Product Marketplace Template, follow our Get Started guide to set up your development environment and install the template. 
+
+* [Get Started: pOS Marketplace Template](/get-started/marketplace-template/marketplace-template)
+
+## Business logic
+
+### General rules 
+Business logic and presentation logic are separated and should not interfere with each other, meaning:
+
+* no HTML tags in business logic
+* no data queries in presentation layer
+
+### Commands
+
+Command is our concept to encapsulate business rules. By following our recommendation, you can improve the consistency of your code to make it easier to onboard new developers to the project and take over existing projects. We use the same pattern for all of our templates. The advantage of using this architecture is that it is easy to re-use the command - you can execute it in a live web request as well as a background job. It is also easy to copy it across different projects.
+
+- Location: `/app/views/partials/lib/commands`
+- For business logic use commands
+- A generic command consists of 3 stages:
+  - **Build**: This is the place where you build input for the command; if you are proficient with platformOS - equivalent of `Form`'s `default_payload`
+  - **Validate**: This is the place where you validate the input - for example, you ensure all required fields are provided, you check uniqueness, check the format of the input (numbers are really numbers and not letters), etc. This always returns a hash with two keys - `valid` being either `true` or `false`, and if `false` - `errors` with details why validation has failed.
+  - **Execute**: If validation succeeds, proceed with executing the command. Any error raised here should be considered a 500 server error. If you allow errors here, it means there is something wrong with the code organisation, as all checks to prevent errors should be done in the `validate` step.
+
+- Commands are designed to be easily executed as background jobs [heavy commands - external API call, expensive operations computations, reports]
+- Each command might produce an event 
+
+
+### Command workflow
+
+This command workflow describes the three stages and validations of a command. 
+
+<img loading="lazy" src="{{ 'images/developer-guide/pos-product-marketplace/pmt_commands.png' | asset_url }}" alt="Process diagram of the command workflow - build, check, execute" />
+
+**Build**
+
+* Security first: 
+* Build object based on preferred command schema
+* Collect data from various sources: session, user input, database
+* Cast types and convert, for example, string into arrays, string to int, etc. 
+* Filter out forbidden parameters from user input
+
+Example: `context. exports.object`
+
+```json
+{
+	"name": "ObjectName"
+	"price": null
+}
+```
+
+**Check** 
+
+* Validate the object properties data types
+* Validate the object against business rules
+* User permission check: Can the user edit a specific field?
+
+Example:
+
+```json
+{
+	"name": "ObjectName"
+	"price": null,
+	"errors": {
+		"price": ["app.errors.blank"]
+	},
+	"valid": false
+}
+```
+
+If the object validation fails:
+
+* the user should correct data soft errors
+* render form with error messages
+
+If the object validation succeeds, proceed to the *Execute* stage. 
+
+**Execute**
+
+Execute command core function, for example:
+
+* Save the object in the database
+* Send API request
+* Make payment
+
+If the object validation fails:
+
+* Log error
+* Notify development team
+* Render 500 error 
+
+If the object validation succeeds, redirect and notify the user about the successful operation. 
+
+
+## Data queries
+
+- Location: `app/views/partials/lib/data/queries`
+- Generally, these are wrappers on GraphQL queries
+
+## Presentation views: HTML/JSON
+
+To ensure a maintainable and easy to change frontend, we follow a couple of important rules. First of all, all our frontend code is inside the `theme` directory. Those files should not know about the existence of any other files outside of theme. All data needed for the frontend should be explicitly provided to them - there shouldn't be any GraphQL queries inside theme. If you need extra data that are not provided by default, we suggest to make all GraphQL queries inside a page (which you can treat as a Controller in the MVC architecture) and explicitly provide the result of this query to the partial.
+
+- Location: `app/views/partials/theme`
+- Partials to be aware of ONLY local variables - no context.session OR context.exports are allowed
+- Prepare/fetch external data in a page and pass it to partials as a local variable
+- No GraphQL queries are allowed within the `theme` folder
+
+## Events
+
+- Each command produces an event
+- Example: when a user logs in the system produces the `user_session_created` event `{ actor: { id: LOGGED_USER_ID } }`
+- Then the event can be asynchronously consumed by a consumer
+
+## Consumers
+
+- Location: `app/views/partials/lib/consumers`
+
+## Categories
+
+Categories can be adjusted by:
+- editing: https://github.com/mdyd-dev/marketplace-template-poc/blob/master/app/views/partials/lib/queries/raw_category_list.liquid
+- adding a translation to the `app/translations/en_categies.liquid` file
+
+## Tests
+
+### e2e tests
+
+Testcafe tests are located in the `test/` directory.
+
+```
+testcafe "chromium:headless" test --skip-js-errors
+```
+
+
+ 
