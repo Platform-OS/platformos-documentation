@@ -1,7 +1,16 @@
 {% include "shared/nav/link", href: "/community", text: "Welcome" %}
 {% include "shared/nav/link", href: "/community/contributors", text: "Our Contributors" %}
 {% include "shared/nav/link", href: "/community/contributor-guide", text: "Contributor Guide" %}
-{% include "shared/nav/link", href: "/community/documentation-style-guide", text: "Documentation Style Guide" %}
+
+<li class="{% if cp == '/community/documentation-style-guide' %}active{% endif %}">
+  <a href="/community/documentation-style-guide">Documentation Style Guide</a>
+  <ul class="submenu">
+    {% include "shared/nav/link", href: "/community/documentation-style-guide#writing-guidelines", text: "Writing guidelines" %}
+    {% include "shared/nav/link", href: "/community/documentation-style-guide#format", text: "Format" %}
+    {% include "shared/nav/link", href: "/community/documentation-style-guide#style-guides-for-content-types", text: "Style guides for content types" %}
+    {% include "shared/nav/link", href: "/community/documentation-style-guide#writing-for-accessibility", text: "Writing for accessibility" %}
+  </ul>
+</li>
 
 <li class="{% if cp contains '/user-research' %}active{% endif %}">
   <a href="/community/user-research/user-research-platformos">User Research</a>
