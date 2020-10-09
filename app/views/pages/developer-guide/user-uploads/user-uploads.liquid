@@ -38,7 +38,7 @@ Now let's look at how things are glued together in the case of platformOS. In or
 
 This is a high level description of what happens in a successful file upload flow:
 
-<img loading="lazy" src="{{ 'images/developer-guide/user-uploads/flowchart-attachments.svg' | asset_url }}" alt="Attachments flow">
+<img loading="lazy" src="{{ 'images/developer-guide/user-uploads/flowchart-attachments.svg' | asset_url }}" alt="Diagram showing the Attachments flow. Steps detailed after image.">
 
 1. Application: Presign URL requested via GraphQL
 To be able to upload a file to S3, our server is creating a presigned URL. What you as a developer need to do is to get the URL using the `property_upload_presigned_url` mutation and point it to a model and property that it will be using. For example, you can define a model `documents` and property `resume` with type `upload` in `app/model_schemas/documents.yml`:
