@@ -19,7 +19,7 @@ const plugins = [
 const config = {
   entry: {
     app: './src/app',
-    graphql: './modules/graphql/public/assets/graphql'
+    graphql: './modules/graphql/public/assets/graphql',
   },
   output: {
     filename: '[name].js',
@@ -38,19 +38,29 @@ const config = {
     rules: [
       {
         test: /\.js$/,
-        loader: 'babel-loader?retainLines=true&cacheDirectory',
+        loader: 'babel-loader',
+        options: {
+          retainLines: true,
+          cacheDirectory: true,
+        },
       },
       {
         test: /(\.css)$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader?url=false', 'postcss-loader'],
+        use: [MiniCssExtractPlugin.loader, { loader: 'css-loader', options: { url: false } }, 'postcss-loader'],
       },
       {
         test: /\.gif$/,
-        use: ['file-loader?name=[name].gif'],
+        loader: 'file-loader',
+        options: {
+          name: '[name].gif',
+        },
       },
       {
         test: /\.(eot|ttf|otf|svg|woff(2))?$/,
-        loader: 'file-loader?name=fonts/[name].[ext]',
+        loader: 'file-loader',
+        options: {
+          name: 'fonts/[name].[ext]',
+        },
       },
     ],
   },
