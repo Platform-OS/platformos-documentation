@@ -42,12 +42,12 @@ Creating SEO friendly category listings is a three-step process:
 {% endraw %}
 ```
 
-* Decode current_url into params with Liquid filter `extract_url_params`:
+* Decode current page url into params with Liquid filter `extract_url_params`:
 
 
 ```liquid
 {% raw %}
-{% assign url_params = current_full_path | extract_url_params: url_template %}
+{% assign url_params = context.location.pathname | extract_url_params: url_template %}
 {% endraw %}
 ```
 
@@ -107,7 +107,7 @@ Add the GraphQL query you created to your page, and pass extracted params to it:
 ```liquid
 {% raw %}
 {% assign url_template = '/catalogue/{country}/{city}' %}
-{% assign url_params = current_full_path | extract_url_params: url_template %}
+{% assign url_params = context.location.pathname | extract_url_params: url_template %}
 
 <div class="results">
   <form action="." method="GET">
