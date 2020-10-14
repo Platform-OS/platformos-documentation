@@ -11,7 +11,7 @@ Doing time consuming operations on the server before a page starts to be deliver
 
 {% include "alert/note", content: "Just because there are ways to mitigate this, it doesn't mean you should not fix the root cause of slowdowns. This usually means that you are doing something wrong and fixing lazy loading ad-hoc shouldn't be the only fix you do. Still, it can give you a room to breathe until you find a way to fix it permanently. Although users suffer less from this issue, the server is still getting swamped. Make sure not to forget about the root cause of the performance issues because perceived performance for users is so good after this simple optimization. Strive for faster server responses and quicker load times with user experience in mind." %}
 
-See a simulated slow code using a for loop and some randomization: [Slow code implementation](https://github.com/mdyd-dev/platformos-examples/blob/master/modules/fragment_lazy_load/public/views/partials/slow-code.liquid)
+Simulated slow code using a for loop and some randomization: [Slow code implementation](https://github.com/mdyd-dev/platformos-examples/blob/master/modules/fragment_lazy_load/public/views/partials/slow-code.liquid)
 
 ## Problem: example + source code
 
@@ -21,9 +21,9 @@ Plain and simple, everything is rendered in one run, slow code is included direc
 
 _Long wait, big initial HTML_
 
-- [See source code](https://github.com/mdyd-dev/platformos-examples/blob/master/modules/fragment_lazy_load/public/views/pages/normal.liquid)
-- [See live example](https://examples.platform-os.com/fragment-lazy-load)
-- [See pagespeed report](https://developers.google.com/speed/pagespeed/insights/?url=https%3A%2F%2Fexamples.platform-os.com%2Ffragment-lazy-load&tab=desktop)
+- [Source code](https://github.com/mdyd-dev/platformos-examples/blob/master/modules/fragment_lazy_load/public/views/pages/normal.liquid)
+- [Live example](https://examples.platform-os.com/fragment-lazy-load)
+- [Pagespeed report](https://developers.google.com/speed/pagespeed/insights/?url=https%3A%2F%2Fexamples.platform-os.com%2Ffragment-lazy-load&tab=desktop)
 
 ## Solution
 
@@ -61,11 +61,11 @@ The asynchronous nature of AJAX requests means that as soon as the given request
 
 Because you had to split the page into smaller chunks, you can now implement cache more precisely. One fragment you can expire after one hour, one after one day and one not cache at all. This is very useful when you did a split on a big GQL query that now can be reasoned on a "feature" basis.
 
-When looking at PageSpeed reports look at the film strip - this is the most important from the user's perspective. Users need to see that something is happening as soon as possible and ideally less important things are downloaded later or never (lazy loading with scroll observer is often used for images for example).
+When looking at PageSpeed reports look at the film strip - this is the most important from the user's perspective. Users need to know that something is happening as soon as possible and ideally less important things are downloaded later or never (lazy loading with scroll observer is often used for images for example).
 
 <img loading="lazy" src="{{ 'images/best-practices/performance/fragment-lazy-loading/slow-filmstrip.png' | asset_url }}" alt="Slow implementation filmstrip">
 
-_Slow version: user sees nothing for a long time, then everything appears_
+_Slow version: nothing is displayed for a long time, then everything appears_
 
 <img loading="lazy" src="{{ 'images/best-practices/performance/fragment-lazy-loading/lazy-loading-filmstrip.png' | asset_url }}" alt="Lazy loading filmstrip">
 

@@ -95,7 +95,7 @@ sh 'lighthouse-ci https://documentation.platformos.com > $HOME/tmp/lighthouse-ho
 sh 'lighthouse-ci https://documentation.platformos.com/developer-guide/glossary > $HOME/tmp/lighthouse-content.txt'
 ```
 
-Run `lighthouse-ci` on given URLs and output the report to their respective text files. In this line we could also add treshold below which lighthouse-ci would use `exit 1` and fail the build. But we didn't see the need for that.
+Run `lighthouse-ci` on given URLs and output the report to their respective text files. In this line we could also add treshold below which lighthouse-ci would use `exit 1` and fail the build. But we didn't think we needed that.
 
 ```shell
 lighthouseHome = sh(returnStdout: true, script: 'grep perf $HOME/tmp/lighthouse-home.txt').trim()
