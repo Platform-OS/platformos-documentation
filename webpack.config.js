@@ -27,7 +27,6 @@ const config = {
     graphql: './modules/graphql/public/assets/graphql',
   },
   output: {
-    filename: '[name].js',
     chunkFilename: '[name].[chunkhash:3].js',
     publicPath: '',
     path: path.resolve('app/assets'),
@@ -67,12 +66,7 @@ const config = {
         },
         extractComments: false,
       }),
-    ],
-    splitChunks: {
-      cacheGroups: {
-        vendors: false, // Do not emit vendors~* files that are almost empty in this setup
-      },
-    },
+    ]
   },
   plugins: plugins,
   mode: production ? 'production' : 'development',
