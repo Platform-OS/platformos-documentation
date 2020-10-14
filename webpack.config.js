@@ -34,6 +34,10 @@ const config = {
     assetsSort: '!size',
     children: false,
   },
+  node: {
+    Buffer: false,
+    process: false
+  },
   module: {
     rules: [
       {
