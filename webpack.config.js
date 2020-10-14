@@ -53,20 +53,6 @@ const config = {
         test: /(\.css)$/,
         use: [MiniCssExtractPlugin.loader, { loader: 'css-loader', options: { url: false } }, 'postcss-loader'],
       },
-      {
-        test: /\.gif$/,
-        loader: 'file-loader',
-        options: {
-          name: '[name].gif',
-        },
-      },
-      {
-        test: /\.(eot|ttf|otf|svg|woff(2))?$/,
-        loader: 'file-loader',
-        options: {
-          name: 'fonts/[name].[ext]',
-        },
-      },
     ],
   },
   optimization: {
