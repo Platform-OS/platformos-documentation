@@ -1,8 +1,8 @@
 const path = require('path');
-const glob = require('glob-all');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const WebpackRequireFrom = require('webpack-require-from');
 const TerserPlugin = require('terser-webpack-plugin');
+const webpack = require('webpack');
 
 const production = process.env.NODE_ENV === 'production';
 
@@ -14,6 +14,11 @@ const plugins = [
   new WebpackRequireFrom({
     variableName: 'window.__CONTEXT__.cdnUrl',
   }),
+  new webpack.DefinePlugin({
+    'process.env': {
+      NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+    },
+  })
 ];
 
 const config = {
