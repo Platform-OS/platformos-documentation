@@ -4,9 +4,6 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const WebpackRequireFrom = require('webpack-require-from');
 const TerserPlugin = require('terser-webpack-plugin');
 
-const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
-const smp = new SpeedMeasurePlugin({ disable: !process.env.MEASURE });
-
 const production = process.env.NODE_ENV === 'production';
 
 const plugins = [
@@ -19,7 +16,7 @@ const plugins = [
   }),
 ];
 
-const config = smp.wrap({
+const config = {
   entry: {
     app: './src/app',
     graphql: './modules/graphql/public/assets/graphql',
@@ -88,6 +85,6 @@ const config = smp.wrap({
   },
   plugins: plugins,
   mode: production ? 'production' : 'development',
-});
+};
 
 module.exports = config;

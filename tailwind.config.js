@@ -1,6 +1,12 @@
 const defaultTheme = require('tailwindcss/defaultTheme');
 
 module.exports = {
+  future: {
+    removeDeprecatedGapUtilities: true,
+    purgeLayersByDefault: true,
+    defaultLineHeights: true,
+    standardFontWeights: true
+  },
   purge: [
     './app/forms/**/*.liquid',
     './app/views/**/*.liquid',
@@ -62,15 +68,5 @@ module.exports = {
     variants: {
       textColor: ['responsive',  'group-hover', 'hover', 'focus']
     }
-  },
-  corePlugins: {
-    gridTemplateColumns: false,
-    gridColumn: false,
-    gridColumnStart: false,
-    gridColumnEnd: false,
-    gridTemplateRows: false,
-    gridRow: false,
-    gridRowStart: false,
-    gridRowEnd: false,
   },
 };
