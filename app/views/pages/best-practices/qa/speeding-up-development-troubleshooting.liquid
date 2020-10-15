@@ -9,7 +9,7 @@ Development speed is a factor that you should always take into account (not only
 
 ## Use live mode
 
-You can speed up development by developing in live mode — as opposed to headless mode —, where you can see the changes you made to your local codebase immediately in your browser. This is the case when two monitors come in handy because you don't have to switch between your code editor and your browser.
+You can speed up development by developing in live mode — as opposed to headless mode —, where changes you made to your local codebase are immediately displayed in your browser. This is the case when two monitors come in handy because you don't have to switch between your code editor and your browser.
 
 ## Prepare for scaling
 
@@ -17,7 +17,7 @@ To make your tests future-proof, always write them with the [concurrency setting
 
 If tests are running for more than 5 minutes, developers tend to lose focus and switch context to different tasks after pushing their code. This means you’re not only wasting time because of long-running tests, but also because of [context switching](https://www.petrikainulainen.net/software-development/processes/the-cost-of-context-switching/). Some say switching focus from one task to another takes around 15 minutes, others lean towards 30 minutes — either way, it’s a lot of time to lose repeatedly. If your tests are finished within 2 minutes it’s less likely that the developer will start doing something else.
 
-1.  Ideally, run tests with **concurrency 4** every now and then, and see if you have race conditions or other non-atomic tests that need to be addressed. Sometimes the solution is as simple as putting things into an .after hook to ensure that what you are trying to test is tested always after a certain action.
+1.  Ideally, run tests with **concurrency 4** every now and then, and check if you have race conditions or other non-atomic tests that need to be addressed. Sometimes the solution is as simple as putting things into an .after hook to ensure that what you are trying to test is tested always after a certain action.
 
     Note: _This is probably not the perfect solution, because you don't get proper messages in the console and you are tightly coupling operations, but I don't yet know how to make it much better. If you have some ideas, please ping me at [pawel@platform-os.com](mailto:pawel@platform-os.com)._
 
@@ -48,7 +48,7 @@ test('Delete, Read', async t => {});
 
 # Troubleshooting
 
-Sometimes things go wrong. Sometimes you will recognize what the problem is at first glance because you might have seen this issue before, but other times your terminal goes red and you have no idea why — it _should_ work, right!?
+Sometimes things go wrong. Sometimes you will recognize what the problem is at first glance because you might have encountered this issue before, but other times your terminal goes red and you have no idea why — it _should_ work, right!?
 
 We’ve encountered many of those moments before, so we'll share our recommendations for troubleshooting steps in the order that saved us the most time during test development.
 
@@ -64,7 +64,7 @@ Investigate event handlers attached to elements. If a page has some very slow Ja
 
 ## A picture is worth a thousand words
 
-Do the following to see exactly what TestCafe is doing on the page:
+Do the following to explore exactly what TestCafe is doing on the page:
 
 1.  Turn off the **:headless** setting in your CLI to make TestCafe open a graphical version of the browser.
 2.  Add **t.debug()** in your code to pause the execution of a test at a certain point. Just before it fails is usually a good start. After the browser had stopped, you can unblock the browser and click in it yourself. You can also open developer tools and inspect elements like you normally would.
@@ -80,7 +80,7 @@ We sometimes just add await automatically and we’re ashamed of it, so it is mo
 
 ## Ask for a second pair of eyes
 
-We can't even count how many times someone fixed a problem with a simple observation after days of frustrating debugging. There is a point in troubleshooting when you just can’t see new approaches anymore.
+We can't even count how many times someone fixed a problem with a simple observation after days of frustrating debugging. There is a point in troubleshooting when you just can’t come up with new approaches anymore.
 
 The first method would be to context switch to something different for an amount of time (let’s say one day) and not think about the problem to be able to come back to it with a fresh mind.
 

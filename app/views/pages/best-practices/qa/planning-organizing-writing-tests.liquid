@@ -169,7 +169,7 @@ _Page object is a design pattern which has become popular in test automation for
 
 A couple of best practices to follow when using page objects:
 
-1.  Page objects should serve you, not the other way around. Don't try to extract everything into page objects. If your objects are getting bloated to the point that you see a hundred lines and variables, it is quite possible that you went overboard, and your test code will become hard to understand and maintain. Maybe it's time to split the fixture into multiple ones. Maybe it's time to verify if you only test the end result, the goal of your user.
+1.  Page objects should serve you, not the other way around. Don't try to extract everything into page objects. If your objects are getting bloated to the point that there are a hundred lines and variables, it is quite possible that you went overboard, and your test code will become hard to understand and maintain. Maybe it's time to split the fixture into multiple ones. Maybe it's time to verify if you only test the end result, the goal of your user.
 
 2.  Try to write self-containing tests that will not depend on files that are not directly connected to the feature currently tested. This isn't always a 100% possible - prefer duplication over multiple dependencies if that happens.
 
@@ -187,7 +187,7 @@ A couple of best practices to follow when using page objects:
 
 ### platformOS modules
 
-If you keep your tests independent, you can clearly see what is a "feature test" and what is "integration test". This will also make it very easy for you to distribute the test and test it on your CI.
+If you keep your tests independent, you can clearly distinguish between a "feature test" and an "integration test". This will also make it very easy for you to distribute the test and test it on your CI.
 
 A feature (module) test checks if a feature is working correctly without any external factors. Think about it as you think about a pure function - you give it _input A_ and expect _output A_.
 
@@ -295,7 +295,7 @@ await t.expect(updateProfile.files.ajaxImage.count).eql(1);
 
 ### Avoiding excessive chaining
 
-It is very tempting to just chain everything into one big chain of commands in TestCafe, but it hurts readability. It's easier to see the fails and keep lines from breaking when using prettier formatting. We try to keep one .expect per line when asserting.
+It is very tempting to just chain everything into one big chain of commands in TestCafe, but it hurts readability. It's easier to find the fails and keep lines from breaking when using prettier formatting. We try to keep one .expect per line when asserting.
 
 ```js
 // Bad
@@ -457,7 +457,7 @@ test.enablePageReloads('Too short password is not accepted', () => {});
 
 TestCafe has access to all performance metrics in the browser via [_ClientFunction_](https://devexpress.github.io/testcafe/documentation/test-api/obtaining-data-from-the-client/), and if you want to, you can use it to measure [Real User Metrics](https://developers.google.com/web/fundamentals/performance/user-centric-performance-metrics) and create assertions that keep your performance numbers in check. This will prevent your application from getting slowed down by inefficient code. It will also help your team to respect [performance budgets](https://timkadlec.com/remembers/2019-03-07-performance-budgets-that-stick/) if you have those.
 
-Below, you can see a snapshot of the _performance_ object available in modern browsers. You can calculate differences between these points in time to know how long certain operations took or how much system memory your app uses.
+Below, there is a snapshot of the _performance_ object available in modern browsers. You can calculate differences between these points in time to know how long certain operations took or how much system memory your app uses.
 
 ```js
 // Snapshot of `performance` object for your disposal
