@@ -5,7 +5,7 @@ metadata:
   description: Build your custom data structure without any limitations with Model Schemas.
 ---
 
-Let's use the example to see exactly what is happening at each stage of Model Schema definition life cycle.
+Let's use the example to follow exactly what is happening at each stage of Model Schema definition life cycle.
 
 ## Step 1: Requirements
 
@@ -30,7 +30,7 @@ touch app/model_schemas/todo.yml
 Using the editor of choice, add the definition of Model Schema.
 
 The code below is the description of properties that Model will accept and the name of Model Schema object that is used to identify the object.
-For full list of Types that can be used see [Property Types](/developer-guide/properties#property-types)
+For a full list of Types that can be used visit [Property Types](/developer-guide/properties#property-types)
 
 ```yaml
 name: todo
@@ -95,14 +95,14 @@ In [Building Contact Form With Model tutorial](/developer-guide/models/building-
 
   * **Model Schema definition delete** - you can only delete your Model Schema object if there is no related Model object. Use [models_delete_all](/api-reference/graphql/rootmutation.html) mutation to delete all related Model objects.
 
-      If you try to deploy with orphaned Model, you will see the following message:
+      If you try to deploy with orphaned Model, you will get the following message:
 
       ```bash
       Cannot delete record because of dependent model of type: todo
       Use the mutation below to remove dependent objects:
       mutation { models_delete_all(model_schema_name: "todo") { count } }
       ```
-  * **name change** - as platformOS detects Model Schema definition by its name, if you change it is equal with adding new Model Schema, please note that Model objects are not automatically migrated and will be treated as orphaned with next deploy attempt, see error message above.
+  * **name change** - as platformOS detects Model Schema definition by its name, if you change it is equal with adding new Model Schema, please note that Model objects are not automatically migrated and will be treated as orphaned with next deploy attempt, as described in the error message above.
   * **add new Model Schema property** - adding new properties is a valid change that does not need additional actions, the data remains untouched.
   * **delete of Model Schema property** - deletion of the property is a valid change, data stored in related Model properties will remain saved but will not be accessible. Use migration to remove the data prior to the change.
   * **property edition** - is a valid change and is equal to the removal of property with old name and creation of new property, data is not migrated.
