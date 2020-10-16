@@ -502,6 +502,23 @@ In this example, `product_price` is empty, so the default value is used.
 {{ product_price | default: 2.99 }}
 ```
 
+To allow variables to return `false` instead of the default value, you can use the `allow_false` parameter.
+
+#### Input
+
+```liquid
+{% raw %}
+{{ settings.flag | default: true, allow_false: true }}
+{% endraw %}
+```
+
+#### Output
+
+```
+<!-- If settings.flag is false -->
+false
+```
+
 ## divided_by
 
 Divides a number by the specified number.
