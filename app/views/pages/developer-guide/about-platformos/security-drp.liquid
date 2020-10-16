@@ -70,7 +70,13 @@ We have compiled a Disaster Recovery Plan (DPR) that includes:
 
 The overall disaster recovery strategy of platformOS is summarized in the table below.
 
-<img src="{{ 'images/developer-guide/about-platformos/dr-strategy.png' | asset_url }}" alt="Disaster Recovery Strategy" />
+| Data Center Disruption                                                | Significant Dependency Disruption                            | Significant network or other issues                                             |
+|-----------------------------------------------------------------------|------------------------------------------------------------------------------------|---------------------------------------------------------------------------------|
+| Failover to alternate Data Center                                     | Reroute core functions to backup / alternate zone                                  | Reroute operations to backup processing unit / service (load balancing, caching) |
+| Reroute core processes to another Data Center (without full failover) | Participate in recovery strategies as available                                    | Wait for service to be restored, communicate with core stakeholders as needed   |
+| Operate at a deprecated service level                                 | Wait for the restoration of service, provide communication as needed to stakeholders |                                                                                 |
+| Take no action                                                        |                                                                                    |                                                                                 |
+
 
 A disaster recovery event can be broken out into three phases, the response, the resumption, and the restoration:
 
