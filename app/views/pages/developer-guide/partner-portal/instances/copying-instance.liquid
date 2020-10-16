@@ -5,7 +5,19 @@ metadata:
   description: This guide will help you copy everything from an Instance to another Instance.
 ---
 
-This guide will help you copy everything from an Instance to another Instance. The Instance Copy feature copies everything including private folders (modules or app), modules, and all assets (no matter the location, file type, or size). You might use it, for example, for working, building, experiementing on staging and when the Instance is ready you can migrate it to production. Or you can take a backup of your production Instance and restore it on your staging environment for debugging purposes. 
+This guide will help you copy everything from an Instance to another Instance. 
+
+The Instance Copy feature copies: 
+
+* private folders (modules or app), modules, and all assets (no matter the location, file type, or size)
+* ID's of User, Model, User Profile, Authentication, as well as deprecated resources: CustomAddress, CustomAttachment, CustomImage 
+* all data in Models (including pages) for everything including assets, S3 uploads / property uploads
+
+But it does not copy:
+
+* the ID's for activities, API call notifications, constants, assets, pages, forms, partials, layouts, Authorization Policies, background jobs, email and SMS notifications, GraphQL
+
+You might use the Instance Copy feature, for example, for working, building, experiementing on staging and when the Instance is ready you can migrate it to production. Or you can take a backup of your production Instance and restore it on your staging environment for debugging purposes. 
 
 ## Requirements
 To follow the steps in this tutorial, you should be able to log in to the Partner Portal, and have two Instances you created or have access to.
