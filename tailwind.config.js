@@ -46,7 +46,7 @@ module.exports = {
     },
     extend: {
       boxShadow: {
-        box: '0px 10px 30px rgba(52, 61, 75, 0.3)'
+        box: '0px 8px 18px rgba(52, 61, 75, 0.3)'
       },
       fontFamily: {
         sans: ['Gotham', ...defaultTheme.fontFamily.sans],
@@ -56,10 +56,6 @@ module.exports = {
         '84': '21rem',
         '96': '24rem',
       }
-    },
-    screens: {
-      sm: '640px',
-      md: '1024px'
     },
     container: {
       center: true,
