@@ -36,7 +36,7 @@ For ease and speed of development a couple of tools have been used in this proje
 - [TailwindCSS](https://tailwindcss.com/) - A utility-first CSS framework for rapidly building custom designs
 - [Alpine.js](https://github.com/alpinejs/alpine) - A minimal framework for composing JavaScript behavior in your markup
 
-If you see HTML code snippets that contain some data attributes or enigmatic CSS classes, those are TailwindCSS and Alpine.js in action. The functionality will work just fine without them, but we wanted to show a more user friendly experience without using heavy JavaScript frameworks.
+If you find HTML code snippets that contain some data attributes or enigmatic CSS classes, those are TailwindCSS and Alpine.js in action. The functionality will work just fine without them, but we wanted to show a more user friendly experience without using heavy JavaScript frameworks.
 
 ## Application functionality
 
@@ -154,7 +154,7 @@ Before you start implementing features, you need some ground work. A basic layou
 Hello world
 ```
 
-Now when you go to the root URL of your Instance, you will see `Hello world`. Now you have a place to put your content.
+Now when you go to the root URL of your Instance, `Hello world` is displayed. Now you have a place to put your content.
 
 ### Model schema
 
@@ -231,7 +231,7 @@ Something went wrong :(
 
 `method: post` allows you to accept post requests.
 
-You are creating a list with a given title and using JavaScript to redirect the user to this list if there were no errors. If there is an error, the user will see an error returned by GraphQL. In a real application, you might want to handle this better.
+You are creating a list with a given title and using JavaScript to redirect the user to this list if there were no errors. If there is an error, the user will get an error returned by GraphQL. In a real application, you might want to handle this better.
 
 ##### app/views/pages/index.liquid
 
@@ -249,7 +249,7 @@ You are creating a list with a given title and using JavaScript to redirect the 
 
 The form action corresponds to the file location of the page from point 2. The page file is located in `pages/list/create.liquid` and its method is set to accept post, so you are sending a post request to the `/list/create` path. You also need to send the `title` field required by GraphQL, so you use `input` with `type text` and validate its existence client-side by adding the `required` attribute.
 
-You can see a lot of data attributes (like `x-data`, `x-show`, `@click`) which are non standard. Those are *Alpine.js* directives that allow you to quickly add basic interactivity in HTML markup. No build process necessary. It is a perfect tool for this use case.
+You can find a lot of data attributes (like `x-data`, `x-show`, `@click`) which are non standard. Those are *Alpine.js* directives that allow you to quickly add basic interactivity in HTML markup. No build process necessary. It is a perfect tool for this use case.
 
 ### Step 2: View all lists
 
