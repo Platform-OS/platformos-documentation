@@ -10,12 +10,38 @@ This guide will help you copy everything from an Instance to another Instance.
 The Instance Copy feature copies: 
 
 * private folders (modules or app), modules, and all assets (no matter the location, file type, or size)
-* ID's of User, Model, User Profile, Authentication, as well as deprecated resources: CustomAddress, CustomAttachment, CustomImage 
 * all data in Models (including pages) for everything including assets, S3 uploads / property uploads
 
-But it does not copy:
+### Object ID rules
 
-* the ID's for activities, API call notifications, constants, assets, pages, forms, partials, layouts, Authorization Policies, background jobs, email and SMS notifications, GraphQL
+Each object in PlatformOS is identified with a unique ID and a related object type. Most of the time, these are hidden under the hood. They become instrumental when building CMS solutions, where objects like pages or partials are created dynamically.
+
+IDs for different object types behave differently during instance copy.
+
+Following object types **WILL** retain their ID and have the same ID on the original and the copied instance.
+
+* User
+* Model
+* User Profile
+* Authentication
+* CustomAddress (deprecated)
+* CustomAttachment (deprecated)
+* CustomImage (deprecated) 
+
+Following object types **WILL NOT** retain their IDs and have a different ID on the original and the copied instance.
+
+* activities
+* API call notifications
+* constants
+* assets
+* pages
+* forms
+* partials
+* layouts
+* Authorization Policies
+* background jobs
+* email and SMS notifications
+* GraphQL
 
 You might use the Instance Copy feature, for example, for working, building, experiementing on staging and when the Instance is ready you can migrate it to production. Or you can take a backup of your production Instance and restore it on your staging environment for debugging purposes. 
 
