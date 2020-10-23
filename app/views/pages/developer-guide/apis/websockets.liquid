@@ -1,0 +1,70 @@
+---
+converter: markdown
+metadata:
+title: Using websockets
+description: This guide will help you create communication channels using WebSockets.
+---
+
+This guide will help you create communication channels using WebSockets.
+
+## Requirements
+This is an advanced tutorial. To follow it, you should be familiar with basic platformOS concepts, HTML, Liquid, APIs and Forms, and the topics in the Get Started section.
+
+* [platformOS Workflow](/developer-guide/platformos-workflow/development-workflow)
+* [Get Started](/get-started)
+* [APIs and Forms](/developer-guide/forms/form-configurations)
+* [Building a Contact Form with Models](/developer-guide/models/building-contact-form-with-model)
+
+## Steps
+
+Creating communication channels is a 2 step process:
+
+<div data-autosteps></div>
+
+### Step 1: Create Frontend implementation
+
+Using your prefered package manager install https://www.npmjs.com/package/actioncable and configure it as follows:
+
+```js
+import { createConsumer } from "@rails/actioncable"
+
+export default createConsumer('/websocket')
+```
+
+Using the instance of the consumer you can create subscriptnions as described here https://www.npmjs.com/package/actioncable.
+The important thing is selecting the first parameter name to match Step 2 all other parameter are optional and depend on the implementation you are going for.
+
+```
+// Subscribing to messages from the frontend
+const subscription = consumer.subscriptions.create({ channel: "conversate", sender_name: "Sender"}, {
+  received(data) {
+    console.log("Received", data)
+  }
+});
+
+// Sending messages from the frontend
+const messageData = { message: newMessage.value, from_id: userId, sender_name: userName, to_id: recipientId, timestamp: new Date() };
+subscriptions.send(messageData);
+```
+
+### Step 2: Create backend implementation
+
+Create partial in "channels" subfolder that matches the name of the channel from step 1.
+
+##### app/views/partials/channels/conversate.html.liquid
+
+```liquid
+log context["params"]
+```
+
+This partial will get executet on every message (on every `subscription.send()` call). You can implement any logic in that partial, for example you can save messages in a model
+
+```liquid
+graphql result = 'chat/create_message', message: context["params"]["message"], timestamp: context["params"]["timestamp"], from_id: fromId, to_id: toId
+```
+
+There is no constraint on what can be done in the backend, you can send emails, create customizations anything that is possible on a regular page.
+
+### Further development
+
+There is a follow up work being done to let backend push events to channels, but even without that it's easy to implement data flow depending on models that are shared by channels and the backend.
