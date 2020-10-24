@@ -11,7 +11,7 @@
     "postinstall": "node ./scripts/check-node-version.js",
     "start": "npx concurrently \"webpack-cli -w\" \"pos-cli sync dev -o -l\"",
     "clean": "git clean -Xfq app/assets/*.{css,js,LICENSE*}",
-    "build": "NODE_ENV=production npx webpack-cli",
+    "build": "NODE_ENV=production npx webpack-cli --no-color",
     "deploy": "npm run clean && npm run build && pos-cli deploy",
     "test": "docker run -v $PWD/tests/e2e:/tests -e \"MP_URL=$MP_URL\" -it platformos/testcafe 'testcafe \"chromium:headless --no-sandbox\" /tests'",
     "test-ci": "testcafe 'chromium:headless --no-sandbox' --screenshots-on-fails --screenshots=screenshots tests/e2e",
