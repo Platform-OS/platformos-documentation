@@ -92,3 +92,18 @@ jobs:
       - name: Deploy
         run: |
           npx @platformos/pos-cli deploy
+
+  lighthouse_ci:
+    needs: deploy_production
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 1
+    env:
+      MPKIT_URL: ${{ secrets.MPKIT_URL_PRODUCTION }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '14.x'
+      - run: npm i -g @lhci/cli
+      - run: lhci autorun --githubToken ${{ github.token }}
