@@ -1,0 +1,94 @@
+name: Build
+
+# TODO: Add cache action - https://github.com/actions/cache
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  # pre_job:
+  #   # continue-on-error: true # Uncomment once integration is finished
+  #   runs-on: ubuntu-latest
+  #   # Map a step output to a job output
+  #   outputs:
+  #     should_skip: ${{ steps.skip_check.outputs.should_skip }}
+  #   steps:
+  #     - id: skip_check
+  #       uses: fkirc/skip-duplicate-actions@master
+  #       with:
+  #         github_token: ${{ github.token }}
+  #         paths_ignore: '["**/README.md"]'
+
+  build:
+    # needs: pre_job
+    # if: ${{ needs.pre_job.outputs.should_skip != 'true' }}
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 1
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '14.x'
+
+      - name: Build
+        run: |
+          npm ci
+          npm run build
+
+  deploy_staging:
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 1
+    env:
+      MPKIT_URL: ${{ secrets.MPKIT_URL_STAGING }}
+      MPKIT_EMAIL: ${{ secrets.MPKIT_EMAIL }}
+      MPKIT_TOKEN: ${{ secrets.MPKIT_TOKEN }}
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '14.x'
+
+      - name: Deploy
+        run: |
+          npx @platformos/pos-cli deploy
+
+  test_staging:
+    needs: deploy_staging
+    runs-on: ubuntu-latest
+    container: platformos/testcafe:latest
+    strategy:
+      max-parallel: 1
+    env:
+      MPKIT_URL: ${{ secrets.MPKIT_URL_STAGING }}
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v1
+      - name: Run testcafe
+        run: |
+          testcafe "chromium:headless" tests
+
+  deploy_production:
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 1
+    env:
+      MPKIT_URL: ${{ secrets.MPKIT_URL_PRODUCTION }}
+      MPKIT_EMAIL: ${{ secrets.MPKIT_EMAIL }}
+      MPKIT_TOKEN: ${{ secrets.MPKIT_TOKEN }}
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '14.x'
+
+      - name: Deploy
+        run: |
+          npx @platformos/pos-cli deploy
