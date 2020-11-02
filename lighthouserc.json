@@ -1,11 +1,17 @@
 {
   "ci": {
     "assert": {
-    "preset": "lighthouse:no-pwa",
-    "assertions": {
-        "categories:performance": ["error", {"aggregationMethod": "optimistic", "minScore": 0.90}],
-        "categories:accessibility": ["error", {"aggregationMethod": "optimistic", "minScore": 0.90}]
-    }
+      "preset": "lighthouse:no-pwa",
+      "assertions": {
+        "categories:performance": [
+          "warn",
+          { "aggregationMethod": "optimistic", "minScore": 0.9 }
+        ],
+        "categories:accessibility": [
+          "warn",
+          { "aggregationMethod": "optimistic", "minScore": 0.8 }
+        ]
+      }
     },
     "collect": {
       "method": "node",
@@ -13,8 +19,7 @@
       "headful": false,
       "numberOfRuns": 2,
       "url": [
-        "https://documentation.platformos.com/",
-        "https://documentation.platformos.com/developer-guide/glossary"
+        "https://documentation.platformos.com/"
       ]
     }
   }
