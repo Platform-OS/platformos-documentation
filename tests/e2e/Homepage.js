@@ -6,7 +6,7 @@ import LayoutPO from './page-objects/Layout';
 
 const Layout = new LayoutPO();
 
-fixture('Homepage').page(process.env.MP_URL);
+fixture('Homepage').page(process.env.MPKIT_URL);
 
 test('There are no liquid errors on the page', async () => {
   await Layout.checkLiquidErrors();

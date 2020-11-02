@@ -4,7 +4,7 @@ import LayoutPO from './page-objects/Layout';
 
 const Layout = new LayoutPO();
 
-fixture('Layout').page(process.env.MP_URL);
+fixture('Layout').page(process.env.MPKIT_URL);
 
 test.skip('Conditional layout parts are working: feedback, last edit', async t => {
 

@@ -1,6 +1,6 @@
 import { Selector } from 'testcafe';
 
-fixture('Autosteps').page(`${process.env.MP_URL}/developer-guide/users/authenticating-user-with-jwt-token`);
+fixture('Autosteps').page(`${process.env.MPKIT_URL}/developer-guide/users/authenticating-user-with-jwt-token`);
 
 test('Are generated and linked', async t => {
   const container = await Selector('[data-autosteps]');
@@ -38,7 +38,7 @@ test('Generated steps have correct text', async t => {
 });
 
 
-fixture('Table of Contents').page(`${process.env.MP_URL}/api-reference/liquid/types`);
+fixture('Table of Contents').page(`${process.env.MPKIT_URL}/api-reference/liquid/types`);
 
 test('Is generated', async t => {
   const container = await Selector('[data-autotoc]');
@@ -51,14 +51,14 @@ test('Is generated', async t => {
   // await t.expect(secondEl.textContent).eql('Number');
 });
 
-fixture('Syntax highlighting').page(`${process.env.MP_URL}/developer-guide/users/authenticating-user-with-jwt-token`);
+fixture('Syntax highlighting').page(`${process.env.MPKIT_URL}/developer-guide/users/authenticating-user-with-jwt-token`);
 
 test('Is working', async t => {
   await t.expect(Selector('span.token').exists).ok();
   await t.expect(Selector('span.operator').exists).ok();
 });
 
-fixture('Deep links').page(`${process.env.MP_URL}/get-started/quickstart-guide`);
+fixture('Deep links').page(`${process.env.MPKIT_URL}/get-started/quickstart-guide`);
 
 test('Deep linking to headers is working', async t => {
   await t.wait(100);// sometimes testcafe starts a test before js is initialized? investigate
