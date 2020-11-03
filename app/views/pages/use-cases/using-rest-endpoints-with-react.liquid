@@ -7,7 +7,7 @@ metadata:
 
 ## Problem
 
-How to use platformOS as a REST backend for your React app? The goal is to easily define new endpoints for your React app.
+How to use platformOS as a REST backend for your React app? The goal is to easily define new endpoints for your React app and have your app ready for local development communication with your instance via proxy.
 
 This article is based on React version 17.
 
@@ -19,7 +19,7 @@ To follow this article, you should have your development environment and a platf
 
 ## Solution
 
-Using platformOS as a REST api for your React app is a seven-step process.
+Using platformOS as a REST api for your React app is a eight-step process.
 
 <div data-autosteps></div>
 
@@ -184,7 +184,7 @@ function App() {
   const { register, handleSubmit, errors } = useForm<Inputs>();
 
   async function onSubmit(data: Inputs) {
-    const response = await fetch('api/users', {
+    const response = await fetch('/api/users', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -239,3 +239,51 @@ function App() {
 
 export default App;
 ```
+
+### Step 8: Set up proxy for local API calls
+
+Due to security issues you should not use:
+
+```
+response_headers: >
+  {
+    "Access-Control-Allow-Origin": "*"
+  }
+```
+
+So you need to use a [proxy](https://create-react-app.dev/docs/proxying-api-requests-in-development/). To do this, you need to install `http-proxy-middleware`
+
+```shell
+/my-app$ npm install http-proxy-middleware --save
+```
+
+and create `my-app/src/setupProxy.js`:
+
+```node
+const { createProxyMiddleware } = require('http-proxy-middleware');
+
+module.exports = function (app) {
+  app.use(
+    '/api',
+    createProxyMiddleware({
+      target: 'https://your-platformos-instance.com/',
+      secure: false,
+      changeOrigin: true,
+    })
+  );
+};
+```
+
+After that you can run your local environment with
+
+```shell
+/my-app$ npm run start
+```
+
+and synchronize your platformOS files with
+
+```shell
+/$ pos-cli sync dev
+```
+
+and your api calls will be handled by your instance.
