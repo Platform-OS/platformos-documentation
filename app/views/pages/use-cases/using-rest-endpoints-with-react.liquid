@@ -169,11 +169,29 @@ In the logic part, you can use your previously created graphql file with the par
 
 Now you have everything to store a user so you can modify your React app's `/my-app/src/App.tsx` and append a form on it. In this example you will use typescript and react hook form to implement the POST request and you can see the created user's ID in the JavaScript console.
 
+We _strongly recommend_ to use [axios](https://github.com/axios/axios) as the `csrf-token` is very important and it's easy to set up with:
+
+```javascript
+axios.defaults.xsrfCookieName = 'CSRF-TOKEN';
+axios.defaults.xsrfHeaderName = 'X-CSRF-Token';
+```
+
+So install and use that instead of `fetch`
+
+```shell
+/my-app$ npm install axios --save
+```
+
 ```tsx
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import axios from 'axios';
+
 import logo from './logo.svg';
 import './App.css';
+
+axios.defaults.xsrfCookieName = 'CSRF-TOKEN';
+axios.defaults.xsrfHeaderName = 'X-CSRF-Token';
 
 type Inputs = {
   name: string;
@@ -184,18 +202,11 @@ function App() {
   const { register, handleSubmit, errors } = useForm<Inputs>();
 
   async function onSubmit(data: Inputs) {
-    const response = await fetch('/api/users', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
-    const responseData = await response.json();
-    if (response.ok) {
-      console.log(responseData);
-    } else {
-      console.error(responseData);
+    try {
+      const response = await axios.post('/api/users', data);
+      console.log(response);
+    } catch (err) {
+      console.error(err);
     }
   }
 
