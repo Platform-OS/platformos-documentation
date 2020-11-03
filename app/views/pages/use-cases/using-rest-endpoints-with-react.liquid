@@ -1,0 +1,241 @@
+---
+converter: markdown
+metadata:
+  title: Using REST endpoints with a React app
+  description: This use case describes how to use platformOS as a REST backend service for a React app.
+---
+
+## Problem
+
+How to use platformOS as a REST backend for your React app? The goal is to easily define new endpoints for your React app.
+
+This article is based on React version 17.
+
+To follow this article, you should have your development environment and a platformOS Instance set up, be familiar with pages, layouts and React as well.
+
+- [Get Started](/get-started)
+- [Pages and Layouts](/developer-guide/pages/pages)
+- [Creating a React app](https://reactjs.org/docs/create-a-new-react-app.html)
+
+## Solution
+
+Using platformOS as a REST api for your React app is a seven-step process.
+
+<div data-autosteps></div>
+
+### Step 1: Create place for React app files
+
+The source files of a web app are not part of platformOS and can be stored anywhere you want.
+In this example, to keep it together in one repo and in one project, you'll create the React app directly in your instance's folder but not inside the `/app` folder because it is not recommended to deploy your source files to the server, only the built and minified ones.
+
+Navigate to your instance folder and create new app with:
+
+`npx create-react-app my-app --template typescript`
+
+Instead of `my-app` you can also use another name for your project and it is not required to use typescript of course.
+
+Now you have `/app`, `modules` and `my-app` folders in your local instance.
+
+### Step 2: Create your React build as your platformOS page
+
+You can find `package.json` under `my-app`. You need to add three new scripts:
+
+1. a layout script to copy the built `index.html` to your platformOS app's index page
+2. one to clear the `assets` folder
+3. and one to use the built folder as the `assets`
+
+```json
+    "layout": "cp ./build/index.html ../app/views/pages/index.html.liquid",
+    "assets:remove": "rm -rf ../app/assets/web-app",
+    "assets:copy": "mv ./build/ ../app/assets/web-app"
+```
+
+After that you can use these script in your `build` script:
+
+```json
+"build": "react-scripts build && npm run layout && npm run assets:remove && npm run assets:copy"
+```
+
+### Step 3: Set up your app's public folder
+
+platformOS stores your assets in a different cloud so you need to set up your instance's [Public Folder](https://create-react-app.dev/docs/using-the-public-folder/) with [Environment Variables](https://create-react-app.dev/docs/adding-custom-environment-variables/)
+
+For this you need to set up the `PUBLIC_URL` variable in your React app's `.env` file under the app's root folder:
+
+```shell
+PUBLIC_URL=https://uploads.staging.oregon.platform-os.com/instances/[INSTANCE ID]/assets/
+```
+
+#### How to get `your-uploads-path`?
+
+Put this code into some page liquid file and check what the server returns in the website's source code:
+
+```liquid
+{% raw  %}
+{{ "" | asset_url }}
+{% endraw %}
+```
+
+It will look similar to:
+
+```shell
+https://uploads.staging.oregon.platform-os.com/instances/<YOUR-INSTANCE-ID>/assets/
+```
+
+We strongly recommend to wrap your build files into another folder like `app/assets/web-app`, because in the future you might want to store other assets, for example graphic files for emails, in the `app/assets/` folder.
+
+Now you can test it: build your React app and deploy your instance
+
+```shell
+/my-app$ npm run build
+/$ pos-cli deploy dev
+```
+
+and you can see a standard React page as your instance's home page.
+
+### Step 4: Prepare your endpoints' headers
+
+As you will receive json with your endpoint, you need to create a liquid file under `app/views/partials/shared/api/headers.liquid` to render the necessary headers:
+
+```liquid
+{
+  "Content-Type": "application/json"
+}
+```
+
+### Step 5: Create your model's schema
+
+You can define your data models under `app/model_schemas/`. In this example you will create basic users so create `app/model_schemas/user.yml`:
+
+```yml
+name: user
+properties:
+  - name: name
+    type: string
+  - name: email
+    type: string
+```
+
+### Step 6: Create a REST endpoint to store a new user
+
+You need to create a graphql mutations to store your data.You can collect these graphql files under `app/graphql/` folder.
+
+As you want to store a new user you need to create your mutation under `app/graphql/users/create_user.graphql`:
+
+```graphql
+mutation create_user($name: String!, $email: String!) {
+  user: model_create(
+    model: {
+      model_schema_name: "user"
+      properties: [
+        { name: "name", value: $name }
+        { name: "email", value: $email }
+      ]
+    }
+  ) {
+    id
+  }
+}
+```
+
+After that you can define a new page in your platformOS instance and use that as a REST endpoint of your React app. You can define new pages by creating new liquid files under `app/views/pages/` but it's recommended to collect your REST files in an `api` subfolder.
+
+So you can define a new REST endpoint to store your users by creating `app/views/pages/api/users/post.liquid`:
+
+```liquid
+---
+slug: api/users
+method: post
+layout: ''
+response_headers: >
+  {% render 'shared/api/headers' %}
+---
+
+{% liquid
+  graphql result = 'users/create_user', name: context.params.name, email: context.params.email
+  unless result.user
+    response_status 400
+  endunless
+%}
+
+{{ result }}
+```
+
+As you can see, you can define your endpoint's slug and method, you don't need a layout and you can use your previously created `headers.liquid` file to render you response header.
+
+In the logic part, you can use your previously created graphql file with the parameters from the context and based on that's result you can set an error status code. As the result is in `json` format, just render it and it will contain everything.
+
+### Step 7: Use your REST endpoint in your React app
+
+Now you have everything to store a user so you can modify your React app's `/my-app/src/App.tsx` and append a form on it. In this example you will use typescript and react hook form to implement the POST request and you can see the created user's ID in the JavaScript console.
+
+```tsx
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import logo from './logo.svg';
+import './App.css';
+
+type Inputs = {
+  name: string;
+  email: string;
+};
+
+function App() {
+  const { register, handleSubmit, errors } = useForm<Inputs>();
+
+  async function onSubmit(data: Inputs) {
+    const response = await fetch('api/users', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    const responseData = await response.json();
+    if (response.ok) {
+      console.log(responseData);
+    } else {
+      console.error(responseData);
+    }
+  }
+
+  return (
+    <div className="App">
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>Create a new user</p>
+
+        <div>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <input
+              name="name"
+              placeholder="Name"
+              ref={register({
+                required: 'Required',
+              })}
+            />
+            {errors.name && errors.name.message}
+
+            <input
+              name="email"
+              placeholder="Email"
+              ref={register({
+                required: 'Required',
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  message: 'invalid email address',
+                },
+              })}
+            />
+            {errors.email && errors.email.message}
+
+            <button type="submit">Save</button>
+          </form>
+        </div>
+      </header>
+    </div>
+  );
+}
+
+export default App;
+```
