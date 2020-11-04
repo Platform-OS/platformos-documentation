@@ -30,9 +30,9 @@ In this example, to keep it together in one repo and in one project, you'll crea
 
 Navigate to your instance folder and create new app with:
 
-`npx create-react-app react-app --template typescript`
+`npx create-react-app react-app`
 
-Instead of `react-app` you can also use another name for your project and it is not required to use typescript of course.
+Instead of `react-app` you can also use another name for your project.
 
 Now you have `/app`, `modules` and `react-app` folders in your local instance.
 
@@ -173,7 +173,7 @@ We’re calling the `books/create_book` graphql mutation using the request param
 
 ### Step 7: Use your REST endpoint in your React app
 
-Our API endpoint is ready. The next step is adding a book form in the `/react-app/src/App.tsx` file. In this example, we will use Typescript and [react-hook-form](https://react-hook-form.com/) to implement the POST request. In the end, the created book's ID will be logged to the JavaScript console.
+Our API endpoint is ready. The next step is adding a book form in the `/react-app/src/App.jsx` file. In this example, we will use [react-hook-form](https://react-hook-form.com/) to implement the POST request. In the end, the created book's ID will be logged to the JavaScript console.
 
 We recommend using [axios](https://github.com/axios/axios) as it allows you to add the required `csrf-token` to every request easily.
 
@@ -186,7 +186,7 @@ axios.defaults.xsrfHeaderName = 'X-CSRF-Token';
 /react-app$ npm install axios --save
 ```
 
-```tsx
+```jsx
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
@@ -197,15 +197,10 @@ import './App.css';
 axios.defaults.xsrfCookieName = 'CSRF-TOKEN';
 axios.defaults.xsrfHeaderName = 'X-CSRF-Token';
 
-type Inputs = {
-  title: string;
-  subtitle: string;
-};
-
 function App() {
-  const { register, handleSubmit, errors, formState } = useForm<Inputs>();
+  const { register, handleSubmit, errors, formState } = useForm();
 
-  async function onSubmit(data: Inputs) {
+  async function onSubmit(data) {
     try {
       const response = await axios.post('/api/books', data);
       console.log(response);
