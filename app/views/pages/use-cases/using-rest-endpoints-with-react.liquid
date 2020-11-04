@@ -109,31 +109,31 @@ Your endpoints will serve content as JSON. You need to create a liquid file unde
 
 ### Step 5: Create your model's schema
 
-You can define your data models under `app/model_schemas/`. In this example you will create basic users so create `app/model_schemas/user.yml`:
+You can define your data models under `app/model_schemas/`. In this example you will store basic book infos so create `app/model_schemas/book.yml`:
 
 ```yml
-name: user
+name: book
 properties:
-  - name: name
+  - name: title
     type: string
-  - name: email
+  - name: subtitle
     type: string
 ```
 
-### Step 6: Create a REST endpoint to store a new user
+### Step 6: Create a REST endpoint to store a new book
 
 Create graphql mutations to store your data. You should place these graphql files in the `app/graphql/` folder.
 
-To add a new user, create a new file `app/graphql/users/create_user.graphql`:
+To add a new book, create a new file `app/graphql/books/create_book.graphql`:
 
 ```graphql
-mutation create_user($name: String!, $email: String!) {
-  user: model_create(
+mutation($title: String!, $subtitle: String) {
+  book: model_create(
     model: {
-      model_schema_name: "user"
+      model_schema_name: "book"
       properties: [
-        { name: "name", value: $name }
-        { name: "email", value: $email }
+        { name: "title", value: $title }
+        { name: "subtitle", value: $subtitle }
       ]
     }
   ) {
@@ -144,12 +144,12 @@ mutation create_user($name: String!, $email: String!) {
 
 The next step is creating a new page used as a REST endpoint for your React application. We recommend storing all endpoints used in the API inside the `app/views/pages/api` folder to ensure separation from other site sections.
 
-Additionally, when planning to use different request methods for one URL like `POST /api/users`, `GET /api/users`, etc. we suggest naming the files after the request method related to the given endpoint. Endpoint responsible for adding new users should be placed in `app/views/pages/api/users/post.liquid`.
+Additionally, when planning to use different request methods for one URL like `POST /api/books`, `GET /api/books`, etc. we suggest naming the files after the request method related to the given endpoint. Endpoint responsible for adding new books should be placed in `app/views/pages/api/books/post.liquid`.
 
 ```liquid
 {% raw %}
 ---
-slug: api/users
+slug: api/books
 method: post
 layout: ''
 response_headers: >
@@ -157,8 +157,8 @@ response_headers: >
 ---
 
 {% liquid
-  graphql result = 'users/create_user', name: context.params.name, email: context.params.email
-  unless result.user
+  graphql result = 'books/create_book', title: context.params.title, subtitle: context.params.subtitle
+  unless result.book
     response_status 400
   endunless
 %}
@@ -169,11 +169,11 @@ response_headers: >
 
 We’ve defined the endpoint’s slug and method and removed the default layout. Previously created `headers.liquid` file is used to render the appropriate response header.
 
-We’re calling the `users/create_user` graphql mutation using the request parameters. All graphql results always return valid JSON. On error, the `result.user` key will not be present, and we should add an appropriate error response status code. Finally, render the whole `result` object. It will contain either the new user id or error message when creating the user failed.
+We’re calling the `books/create_book` graphql mutation using the request parameters. All graphql results always return valid JSON. On error, the `result.book` key will not be present, and we should add an appropriate error response status code. Finally, render the whole `result` object. It will contain either the new book id or error message when creating the book failed.
 
 ### Step 7: Use your REST endpoint in your React app
 
-Our API endpoint is ready. The next step is adding a user form in the `/react-app/src/App.tsx` file. In this example, we will use Typescript and [react-hook-form](https://react-hook-form.com/) to implement the POST request. In the end, the created user's ID will be logged to the JavaScript console.
+Our API endpoint is ready. The next step is adding a book form in the `/react-app/src/App.tsx` file. In this example, we will use Typescript and [react-hook-form](https://react-hook-form.com/) to implement the POST request. In the end, the created book's ID will be logged to the JavaScript console.
 
 We recommend using [axios](https://github.com/axios/axios) as it allows you to add the required `csrf-token` to every request easily.
 
@@ -198,16 +198,16 @@ axios.defaults.xsrfCookieName = 'CSRF-TOKEN';
 axios.defaults.xsrfHeaderName = 'X-CSRF-Token';
 
 type Inputs = {
-  name: string;
-  email: string;
+  title: string;
+  subtitle: string;
 };
 
 function App() {
-  const { register, handleSubmit, errors } = useForm<Inputs>();
+  const { register, handleSubmit, errors, formState } = useForm<Inputs>();
 
   async function onSubmit(data: Inputs) {
     try {
-      const response = await axios.post('/api/users', data);
+      const response = await axios.post('/api/books', data);
       console.log(response);
     } catch (err) {
       console.error(err);
@@ -215,39 +215,30 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Create a new user</p>
+    <div>
+      <h1>Save a new book</h1>
 
-        <div>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <input
-              name="name"
-              placeholder="Name"
-              ref={register({
-                required: 'Required',
-              })}
-            />
-            {errors.name && errors.name.message}
+      <div>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <input
+            name="title"
+            placeholder="Title"
+            ref={register({
+              required: 'Required',
+            })}
+          />
+          <label htmlFor="title">{errors.title && errors.title.message}</label>
 
-            <input
-              name="email"
-              placeholder="Email"
-              ref={register({
-                required: 'Required',
-                pattern: {
-                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  message: 'invalid email address',
-                },
-              })}
-            />
-            {errors.email && errors.email.message}
+          <input name="subtitle" placeholder="Subtitle" ref={register()} />
+          <label htmlFor="subtitle">
+            {errors.subtitle && errors.subtitle.message}
+          </label>
 
-            <button type="submit">Save</button>
-          </form>
-        </div>
-      </header>
+          <button type="submit" disabled={formState.isSubmitting}>
+            Save
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
