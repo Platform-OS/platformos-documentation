@@ -1,22 +1,16 @@
 {
   "ci": {
+    "upload": {
+      "target": "temporary-public-storage"
+    },
     "assert": {
-      "preset": "lighthouse:no-pwa",
+      "preset": "lighthouse:recommended",
       "assertions": {
-        "categories:performance": [
-          "warn",
-          { "aggregationMethod": "optimistic", "minScore": 0.9 }
-        ],
-        "categories:accessibility": [
-          "warn",
-          { "aggregationMethod": "optimistic", "minScore": 0.8 }
-        ]
+        "offscreen-images": "off",
+        "uses-webp-images": "off"
       }
     },
     "collect": {
-      "method": "node",
-      "additive": false,
-      "headful": false,
       "numberOfRuns": 2,
       "url": [
         "https://documentation.platformos.com/"
