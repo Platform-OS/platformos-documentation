@@ -44,6 +44,8 @@ You can find `package.json` under `my-app`. You need to add three new scripts:
 2. one to clear the `assets` folder
 3. and one to use the built folder as the `assets`
 
+On Unix based OS systems it seems like this, but maybe you need to install and use [cpy](https://www.npmjs.com/package/cpy-cli) and [rimraf](https://www.npmjs.com/package/rimraf) if you are using Windows.
+
 ```json
     "layout": "cp ./build/index.html ../app/views/pages/index.html.liquid",
     "assets:remove": "rm -rf ../app/assets/web-app",
