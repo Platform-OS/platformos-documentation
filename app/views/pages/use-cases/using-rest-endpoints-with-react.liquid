@@ -30,15 +30,15 @@ In this example, to keep it together in one repo and in one project, you'll crea
 
 Navigate to your instance folder and create new app with:
 
-`npx create-react-app my-app --template typescript`
+`npx create-react-app react-app --template typescript`
 
-Instead of `my-app` you can also use another name for your project and it is not required to use typescript of course.
+Instead of `react-app` you can also use another name for your project and it is not required to use typescript of course.
 
-Now you have `/app`, `modules` and `my-app` folders in your local instance.
+Now you have `/app`, `modules` and `react-app` folders in your local instance.
 
 ### Step 2: Create your React build as your platformOS page
 
-You can find `package.json` under `my-app`. You need to add three new scripts:
+You can find `package.json` under `react-app`. You need to add three new scripts:
 
 1. a layout script to copy the built `index.html` to your platformOS app's index page
 2. one to clear the `assets` folder
@@ -70,7 +70,7 @@ PUBLIC_URL=https://uploads.staging.oregon.platform-os.com/instances/[INSTANCE ID
 
 #### How to get `your-uploads-path`?
 
-`asset_url` filter can be used to fetch the root folder for serving assets. 
+`asset_url` filter can be used to fetch the root folder for serving assets.
 
 ```liquid
 {% raw  %}
@@ -84,12 +84,12 @@ It will look similar to:
 https://uploads.staging.oregon.platform-os.com/instances/<YOUR-INSTANCE-ID>/assets/
 ```
 
-We strongly recommend placing all generated assets in a subfolder, e.g. `app/assets/web-app`.  Doing so ensures no future conflicts once additional, unrelated assets are added to the project (like graphic files used in emails or a separate admin panel app.)
+We strongly recommend placing all generated assets in a subfolder, e.g. `app/assets/web-app`. Doing so ensures no future conflicts once additional, unrelated assets are added to the project (like graphic files used in emails or a separate admin panel app.)
 
 To test it, build your React app and deploy your instance.
 
 ```shell
-/my-app$ npm run build
+/react-app$ npm run build
 /$ pos-cli deploy dev
 ```
 
@@ -165,11 +165,11 @@ response_headers: >
 
 We’ve defined the endpoint’s slug and method and removed the default layout. Previously created `headers.liquid` file is used to render the appropriate response header.
 
-We’re calling the `users/create_user` graphql mutation using the request parameters. All graphql results always return valid JSON. On error, the `result.user` key will not be present, and we should add an appropriate error response status code. Finally, render the whole `result` object. It will contain either the new user id or error message when creating the user failed. 
+We’re calling the `users/create_user` graphql mutation using the request parameters. All graphql results always return valid JSON. On error, the `result.user` key will not be present, and we should add an appropriate error response status code. Finally, render the whole `result` object. It will contain either the new user id or error message when creating the user failed.
 
 ### Step 7: Use your REST endpoint in your React app
 
-Our API endpoint is ready. The next step is adding a user form in the `/my-app/src/App.tsx` file. In this example, we will use Typescript and [react-hook-form](https://react-hook-form.com/) to implement the POST request. In the end, the created user's ID will be logged to the JavaScript console.
+Our API endpoint is ready. The next step is adding a user form in the `/react-app/src/App.tsx` file. In this example, we will use Typescript and [react-hook-form](https://react-hook-form.com/) to implement the POST request. In the end, the created user's ID will be logged to the JavaScript console.
 
 We recommend using [axios](https://github.com/axios/axios) as it allows you to add the required `csrf-token` to every request easily.
 
@@ -178,9 +178,8 @@ axios.defaults.xsrfCookieName = 'CSRF-TOKEN';
 axios.defaults.xsrfHeaderName = 'X-CSRF-Token';
 ```
 
-
 ```shell
-/my-app$ npm install axios --save
+/react-app$ npm install axios --save
 ```
 
 ```tsx
@@ -254,14 +253,13 @@ export default App;
 
 ### Step 8: Set up proxy for local API calls during development
 
-
 During development, your site will most likely be served from the `localhost` domain. We do not want to add CORS headers to our API and open it to external websites due to security concerns. To resolve this issue, we need to use a [proxy](https://create-react-app.dev/docs/proxying-api-requests-in-development/). We can achieve that by installing `http-proxy-middleware`
 
 ```shell
-/my-app$ npm install http-proxy-middleware --save
+/react-app$ npm install http-proxy-middleware --save
 ```
 
-Create `my-app/src/setupProxy.js`
+Create `react-app/src/setupProxy.js`
 
 ```node
 const { createProxyMiddleware } = require('http-proxy-middleware');
@@ -281,7 +279,7 @@ module.exports = function (app) {
 After that you can run your local environment with
 
 ```shell
-/my-app$ npm start
+/react-app$ npm start
 ```
 
 and synchronize your platformOS files with
