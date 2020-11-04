@@ -100,9 +100,11 @@ It should result in the default create-react-app page as your instance's home pa
 Your endpoints will serve content as JSON. You need to create a liquid file under `app/views/partials/shared/api/headers.liquid` to render the necessary headers:
 
 ```liquid
+{% raw %}
 {
   "Content-Type": "application/json"
 }
+{% endraw %}
 ```
 
 ### Step 5: Create your model's schema
@@ -145,6 +147,7 @@ The next step is creating a new page used as a REST endpoint for your React appl
 Additionally, when planning to use different request methods for one URL like `POST /api/users`, `GET /api/users`, etc. we suggest naming the files after the request method related to the given endpoint. Endpoint responsible for adding new users should be placed in `app/views/pages/api/users/post.liquid`.
 
 ```liquid
+{% raw %}
 ---
 slug: api/users
 method: post
@@ -161,6 +164,7 @@ response_headers: >
 %}
 
 {{ result }}
+{% endraw %}
 ```
 
 We’ve defined the endpoint’s slug and method and removed the default layout. Previously created `headers.liquid` file is used to render the appropriate response header.
