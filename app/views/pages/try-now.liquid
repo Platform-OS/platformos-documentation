@@ -45,12 +45,18 @@ metadata:
 
         <h1 class="text-5xl text-center text-pos-darkblue">Try out platformOS</h1>
 
-        <div class="mx-auto mt-8 mb-12 text-lg text-center sm:w-8/12">
-          <p>platformOS is a model-based application development platform that enables you to create and host anything from small websites to large enterprise applications and even entire SaaS products.</p>
+        <div class="grid my-10 text-lg md:grid-cols-2 gap-x-16">
+          <div class="prose prose-md">
+            <p>
+              On this page, you can find different ways to try out platformOS according to your level of technical expertise.
+            </p>
 
-          <p>On this page, you can find different ways to try out platformOS according to your level of technical expertise.</p>
+            <p>
+              Our demo video shows you in real-time how fast you can build a fully functional web site, install the Blog module and the Product marketplace solution with Community functionality, and import thousands of example products.
+            </p>
+          </div>
 
-          <p>So the question is:</p>
+          {% include 'shared/video', id: 'CgviBexmLQw' %}
         </div>
       </div>
     </div>
@@ -137,6 +143,7 @@ metadata:
 
   {%- include 'layouts/body/icons' -%}
   {%- include 'layouts/body/javascripts_bottom' -%}
+  {% yield 'javascripts_conditional' %}
 
   <svg xmlns="http://www.w3.org/2000/svg" hidden>
     <defs>
