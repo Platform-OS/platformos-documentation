@@ -11,7 +11,7 @@ How to use platformOS as a REST backend for your React app? The goal is to easil
 
 This article is based on React version 17.
 
-To follow this article, you should have your development environment and a platformOS Instance set up, be familiar with pages, layouts and React as well.
+To follow this article, you should have your development environment and a platformOS Instance set up, be familiar with pages, layouts, and React.
 
 - [Get Started](/get-started)
 - [Pages and Layouts](/developer-guide/pages/pages)
@@ -60,7 +60,7 @@ After that you can use these script in your `build` script:
 
 ### Step 3: Set up your app's public folder
 
-platformOS stores your assets in a different cloud so you need to set up your instance's [Public Folder](https://create-react-app.dev/docs/using-the-public-folder/) with [Environment Variables](https://create-react-app.dev/docs/adding-custom-environment-variables/)
+platformOS serves static assets from CDN, so you need to set up your instance's [Public Folder](https://create-react-app.dev/docs/using-the-public-folder/) with [Environment Variables](https://create-react-app.dev/docs/adding-custom-environment-variables/)
 
 For this you need to set up the `PUBLIC_URL` variable in your React app's `.env` file under the app's root folder:
 
@@ -70,7 +70,7 @@ PUBLIC_URL=https://uploads.staging.oregon.platform-os.com/instances/[INSTANCE ID
 
 #### How to get `your-uploads-path`?
 
-Put this code into some page liquid file and check what the server returns in the website's source code:
+`asset_url` filter can be used to fetch the root folder for serving assets. 
 
 ```liquid
 {% raw  %}
@@ -84,20 +84,20 @@ It will look similar to:
 https://uploads.staging.oregon.platform-os.com/instances/<YOUR-INSTANCE-ID>/assets/
 ```
 
-We strongly recommend to wrap your build files into another folder like `app/assets/web-app`, because in the future you might want to store other assets, for example graphic files for emails, in the `app/assets/` folder.
+We strongly recommend placing all generated assets in a subfolder, e.g. `app/assets/web-app`.  Doing so ensures no future conflicts once additional, unrelated assets are added to the project (like graphic files used in emails or a separate admin panel app.)
 
-Now you can test it: build your React app and deploy your instance
+To test it, build your React app and deploy your instance.
 
 ```shell
 /my-app$ npm run build
 /$ pos-cli deploy dev
 ```
 
-and you can see a standard React page as your instance's home page.
+It should result in the default create-react-app page as your instance's home page.
 
 ### Step 4: Prepare your endpoints' headers
 
-As you will receive json with your endpoint, you need to create a liquid file under `app/views/partials/shared/api/headers.liquid` to render the necessary headers:
+Your endpoints will serve content as JSON. You need to create a liquid file under `app/views/partials/shared/api/headers.liquid` to render the necessary headers:
 
 ```liquid
 {
@@ -120,9 +120,9 @@ properties:
 
 ### Step 6: Create a REST endpoint to store a new user
 
-You need to create a graphql mutations to store your data.You can collect these graphql files under `app/graphql/` folder.
+Create graphql mutations to store your data. You should place these graphql files in the `app/graphql/` folder.
 
-As you want to store a new user you need to create your mutation under `app/graphql/users/create_user.graphql`:
+To add a new user, create a new file `app/graphql/users/create_user.graphql`:
 
 ```graphql
 mutation create_user($name: String!, $email: String!) {
@@ -140,9 +140,9 @@ mutation create_user($name: String!, $email: String!) {
 }
 ```
 
-After that you can define a new page in your platformOS instance and use that as a REST endpoint of your React app. You can define new pages by creating new liquid files under `app/views/pages/` but it's recommended to collect your REST files in an `api` subfolder.
+The next step is creating a new page used as a REST endpoint for your React application. We recommend storing all endpoints used in the API inside the `app/views/pages/api` folder to ensure separation from other site sections.
 
-So you can define a new REST endpoint to store your users by creating `app/views/pages/api/users/post.liquid`:
+Additionally, when planning to use different request methods for one URL like `POST /api/users`, `GET /api/users`, etc. we suggest naming the files after the request method related to the given endpoint. Endpoint responsible for adding new users should be placed in `app/views/pages/api/users/post.liquid`.
 
 ```liquid
 ---
@@ -163,22 +163,21 @@ response_headers: >
 {{ result }}
 ```
 
-As you can see, you can define your endpoint's slug and method, you don't need a layout and you can use your previously created `headers.liquid` file to render you response header.
+We’ve defined the endpoint’s slug and method and removed the default layout. Previously created `headers.liquid` file is used to render the appropriate response header.
 
-In the logic part, you can use your previously created graphql file with the parameters from the context and based on that's result you can set an error status code. As the result is in `json` format, just render it and it will contain everything.
+We’re calling the `users/create_user` graphql mutation using the request parameters. All graphql results always return valid JSON. On error, the `result.user` key will not be present, and we should add an appropriate error response status code. Finally, render the whole `result` object. It will contain either the new user id or error message when creating the user failed. 
 
 ### Step 7: Use your REST endpoint in your React app
 
-Now you have everything to store a user so you can modify your React app's `/my-app/src/App.tsx` and append a form on it. In this example you will use typescript and react hook form to implement the POST request and you can see the created user's ID in the JavaScript console.
+Our API endpoint is ready. The next step is adding a user form in the `/my-app/src/App.tsx` file. In this example, we will use Typescript and [react-hook-form](https://react-hook-form.com/) to implement the POST request. In the end, the created user's ID will be logged to the JavaScript console.
 
-We _strongly recommend_ to use [axios](https://github.com/axios/axios) as the `csrf-token` is very important and it's easy to set up with:
+We recommend using [axios](https://github.com/axios/axios) as it allows you to add the required `csrf-token` to every request easily.
 
 ```javascript
 axios.defaults.xsrfCookieName = 'CSRF-TOKEN';
 axios.defaults.xsrfHeaderName = 'X-CSRF-Token';
 ```
 
-So install and use that instead of `fetch`
 
 ```shell
 /my-app$ npm install axios --save
@@ -253,16 +252,16 @@ function App() {
 export default App;
 ```
 
-### Step 8: Set up proxy for local API calls
+### Step 8: Set up proxy for local API calls during development
 
 
-So you need to use a [proxy](https://create-react-app.dev/docs/proxying-api-requests-in-development/). To do this, you need to install `http-proxy-middleware`
+During development, your site will most likely be served from the `localhost` domain. We do not want to add CORS headers to our API and open it to external websites due to security concerns. To resolve this issue, we need to use a [proxy](https://create-react-app.dev/docs/proxying-api-requests-in-development/). We can achieve that by installing `http-proxy-middleware`
 
 ```shell
 /my-app$ npm install http-proxy-middleware --save
 ```
 
-and create `my-app/src/setupProxy.js`:
+Create `my-app/src/setupProxy.js`
 
 ```node
 const { createProxyMiddleware } = require('http-proxy-middleware');
@@ -291,4 +290,4 @@ and synchronize your platformOS files with
 /$ pos-cli sync dev
 ```
 
-and your api calls will be handled by your instance.
+Your instance will now handle all API calls.
