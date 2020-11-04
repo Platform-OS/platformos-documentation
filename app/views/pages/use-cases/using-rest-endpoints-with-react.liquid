@@ -1,13 +1,13 @@
 ---
 converter: markdown
 metadata:
-  title: Using REST endpoints with a React app
+  title: Using REST Endpoints with a React App
   description: This use case describes how to use platformOS as a REST backend service for a React app.
 ---
 
 ## Problem
 
-How to use platformOS as a REST backend for your React app? The goal is to easily define new endpoints for your React app and have your app ready for local development communication with your instance via proxy.
+How to use platformOS as a REST backend for your React app? The goal is to easily define new endpoints for your React app and have your app ready for local development communication with your Instance via proxy.
 
 This article is based on React version 17.
 
@@ -19,22 +19,20 @@ To follow this article, you should have your development environment and a platf
 
 ## Solution
 
-Using platformOS as a REST api for your React app is a eight-step process.
-
 <div data-autosteps></div>
 
-### Step 1: Create place for React app files
+### Step 1: Create place for the React app files
 
 The source files of a web app are not part of platformOS and can be stored anywhere you want.
-In this example, to keep it together in one repo and in one project, you'll create the React app directly in your instance's folder but not inside the `/app` folder because it is not recommended to deploy your source files to the server, only the built and minified ones.
+In this example, to keep everything together in one repo and one project, you'll create the React app directly in your Instance's folder but not inside the `/app` folder. It is not recommended to deploy your source files to the server, only the built and minified ones.
 
-Navigate to your instance folder and create new app with:
+Navigate to your Instance folder and create the new app with:
 
 `npx create-react-app react-app`
 
-Instead of `react-app` you can also use another name for your project.
+Instead of `react-app`, you can also use another name for your project.
 
-Now you have `/app`, `modules` and `react-app` folders in your local instance.
+Now you have the `/app`, `modules`, and `react-app` folders in your local Instance.
 
 ### Step 2: Create your React build as your platformOS page
 
@@ -44,15 +42,15 @@ You can find `package.json` under `react-app`. You need to add three new scripts
 2. one to clear the `assets` folder
 3. and one to use the built folder as the `assets`
 
-On Unix based OS systems it seems like this, but maybe you need to install and use [cpy](https://www.npmjs.com/package/cpy-cli) and [rimraf](https://www.npmjs.com/package/rimraf) if you are using Windows.
-
+{% include 'alert/note', content: 'This example is built on a Unix-based system. On Windows, you might need to install and use [cpy](https://www.npmjs.com/package/cpy-cli) and [rimraf](https://www.npmjs.com/package/rimraf).' %}
+ 
 ```json
     "layout": "cp ./build/index.html ../app/views/pages/index.html.liquid",
     "assets:remove": "rm -rf ../app/assets/web-app",
     "assets:copy": "mv ./build/ ../app/assets/web-app"
 ```
 
-After that you can use these script in your `build` script:
+You can now use these scripts in your `build` script:
 
 ```json
 "build": "react-scripts build && npm run layout && npm run assets:remove && npm run assets:copy"
@@ -60,7 +58,7 @@ After that you can use these script in your `build` script:
 
 ### Step 3: Set up your app's public folder
 
-platformOS serves static assets from CDN, so you need to set up your instance's [Public Folder](https://create-react-app.dev/docs/using-the-public-folder/) with [Environment Variables](https://create-react-app.dev/docs/adding-custom-environment-variables/)
+platformOS serves static assets from a CDN, so you need to set up your Instance's [Public Folder](https://create-react-app.dev/docs/using-the-public-folder/) with [Environment Variables](https://create-react-app.dev/docs/adding-custom-environment-variables/)
 
 For this you need to set up the `PUBLIC_URL` variable in your React app's `.env` file under the app's root folder:
 
@@ -70,7 +68,7 @@ PUBLIC_URL=https://uploads.staging.oregon.platform-os.com/instances/[INSTANCE ID
 
 #### How to get `your-uploads-path`?
 
-`asset_url` filter can be used to fetch the root folder for serving assets.
+The `asset_url` filter can be used to fetch the root folder for serving assets.
 
 ```liquid
 {% raw  %}
@@ -78,26 +76,26 @@ PUBLIC_URL=https://uploads.staging.oregon.platform-os.com/instances/[INSTANCE ID
 {% endraw %}
 ```
 
-It will look similar to:
+It will be similar to:
 
 ```shell
 https://uploads.staging.oregon.platform-os.com/instances/<YOUR-INSTANCE-ID>/assets/
 ```
 
-We strongly recommend placing all generated assets in a subfolder, e.g. `app/assets/web-app`. Doing so ensures no future conflicts once additional, unrelated assets are added to the project (like graphic files used in emails or a separate admin panel app.)
+We strongly recommend placing all generated assets in a subfolder, e.g., `app/assets/web-app`. Doing so ensures no future conflicts once additional, unrelated assets are added to the project (like graphic files used in emails or a separate admin panel app.)
 
-To test it, build your React app and deploy your instance.
+To test it, build your React app and deploy your Instance.
 
 ```shell
 /react-app$ npm run build
 /$ pos-cli deploy dev
 ```
 
-It should result in the default create-react-app page as your instance's home page.
+It should result in the default create-react-app page as your Instance's home page.
 
 ### Step 4: Prepare your endpoints' headers
 
-Your endpoints will serve content as JSON. You need to create a liquid file under `app/views/partials/shared/api/headers.liquid` to render the necessary headers:
+Your endpoints will serve content as JSON. You need to create a Liquid file under `app/views/partials/shared/api/headers.liquid` to render the necessary headers:
 
 ```liquid
 {% raw %}
@@ -109,7 +107,7 @@ Your endpoints will serve content as JSON. You need to create a liquid file unde
 
 ### Step 5: Create your model's schema
 
-You can define your data models under `app/model_schemas/`. In this example you will store basic book infos so create `app/model_schemas/book.yml`:
+You can define your data models under `app/model_schemas/`. In this example, you will store basic book infos so create `app/model_schemas/book.yml`:
 
 ```yml
 name: book
@@ -122,7 +120,7 @@ properties:
 
 ### Step 6: Create a REST endpoint to store a new book
 
-Create graphql mutations to store your data. You should place these graphql files in the `app/graphql/` folder.
+Create GraphQL mutations to store your data. Place these GraphQL files in the `app/graphql/` folder.
 
 To add a new book, create a new file `app/graphql/books/create_book.graphql`:
 
@@ -142,9 +140,9 @@ mutation($title: String!, $subtitle: String) {
 }
 ```
 
-The next step is creating a new page used as a REST endpoint for your React application. We recommend storing all endpoints used in the API inside the `app/views/pages/api` folder to ensure separation from other site sections.
+The next step is to create a new page used as a REST endpoint for your React application. We recommend storing all endpoints used in the API inside the `app/views/pages/api` folder to ensure separation from other site sections.
 
-Additionally, when planning to use different request methods for one URL like `POST /api/books`, `GET /api/books`, etc. we suggest naming the files after the request method related to the given endpoint. Endpoint responsible for adding new books should be placed in `app/views/pages/api/books/post.liquid`.
+Additionally, when planning to use different request methods for one URL like `POST /api/books`, `GET /api/books`, etc., we suggest naming the files after the request method related to the given endpoint. Place the endpoint responsible for adding new books in `app/views/pages/api/books/post.liquid`.
 
 ```liquid
 {% raw %}
@@ -167,15 +165,15 @@ response_headers: >
 {% endraw %}
 ```
 
-We’ve defined the endpoint’s slug and method and removed the default layout. Previously created `headers.liquid` file is used to render the appropriate response header.
+You’ve defined the endpoint’s slug and method and removed the default layout. The previously created `headers.liquid` file is used to render the appropriate response header.
 
-We’re calling the `books/create_book` graphql mutation using the request parameters. All graphql results always return valid JSON. On error, the `result.book` key will not be present, and we should add an appropriate error response status code. Finally, render the whole `result` object. It will contain either the new book id or error message when creating the book failed.
+You’re calling the `books/create_book` GraphQL mutation using the request parameters. All GraphQL results always return valid JSON. On error, the `result.book` key will not be present, and you should add an appropriate error response status code. Finally, render the whole `result` object. It will contain either the new book id or an error message when creating the book has failed.
 
 ### Step 7: Use your REST endpoint in your React app
 
-Our API endpoint is ready. The next step is adding a book form in the `/react-app/src/App.jsx` file. In this example, we will use [react-hook-form](https://react-hook-form.com/) to implement the POST request. In the end, the created book's ID will be logged to the JavaScript console.
+The API endpoint is ready. The next step is to add a book form in the `/react-app/src/App.jsx` file. In this example, you will use [react-hook-form](https://react-hook-form.com/) to implement the POST request. In the end, the created book's ID will be logged to the JavaScript console.
 
-We recommend using [axios](https://github.com/axios/axios) as it allows you to add the required `csrf-token` to every request easily.
+We recommend using [axios](https://github.com/axios/axios) as it allows you to easily add the required `csrf-token` to every request.
 
 ```javascript
 axios.defaults.xsrfCookieName = 'CSRF-TOKEN';
@@ -243,7 +241,7 @@ export default App;
 
 ### Step 8: Set up proxy for local API calls during development
 
-During development, your site will most likely be served from the `localhost` domain. We do not want to add CORS headers to our API and open it to external websites due to security concerns. To resolve this issue, we need to use a [proxy](https://create-react-app.dev/docs/proxying-api-requests-in-development/). We can achieve that by installing `http-proxy-middleware`
+During development, your site will most likely be served from the `localhost` domain. You do not want to add CORS headers to our API and open it to external websites due to security concerns. To resolve this issue, you need to use a [proxy](https://create-react-app.dev/docs/proxying-api-requests-in-development/). You can achieve that by installing `http-proxy-middleware`.
 
 ```shell
 /react-app$ npm install http-proxy-middleware --save
@@ -278,4 +276,4 @@ and synchronize your platformOS files with
 /$ pos-cli sync dev
 ```
 
-Your instance will now handle all API calls.
+Your Instance will now handle all API calls.
