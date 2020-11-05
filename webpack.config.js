@@ -1,30 +1,14 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const WebpackRequireFrom = require('webpack-require-from');
-const TerserPlugin = require('terser-webpack-plugin');
 const webpack = require('webpack');
 
 const production = process.env.NODE_ENV === 'production';
 
-const plugins = [
-  new MiniCssExtractPlugin({
-    filename: '[name].css',
-    chunkFilename: '[name].css',
-  }),
-  new WebpackRequireFrom({
-    variableName: 'window.__CONTEXT__.cdnUrl',
-  }),
-  new webpack.DefinePlugin({
-    'process.env': {
-      NODE_ENV: JSON.stringify(process.env.NODE_ENV),
-    },
-  })
-];
-
-const config = {
+module.exports = {
   entry: {
-    app: './src/app',
-    graphql: './modules/graphql/public/assets/graphql',
+    'app': './src/app',
+    'graphql': './modules/graphql/public/assets/graphql',
   },
   output: {
     chunkFilename: '[name].[chunkhash:3].js',
@@ -41,34 +25,39 @@ const config = {
   module: {
     rules: [
       {
-        test: /\.js$/,
-        loader: 'babel-loader',
-        options: {
-          retainLines: true,
-          cacheDirectory: true,
-        },
-      },
-      {
         test: /(\.css)$/,
         use: [MiniCssExtractPlugin.loader, { loader: 'css-loader', options: { url: false } }, 'postcss-loader'],
       },
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        options: {
+          exclude: /node_modules/,
+          plugins: ['@babel/plugin-syntax-dynamic-import', '@babel/transform-object-assign'],
+          retainLines: true,
+          cacheDirectory: true,
+          presets: [
+            [
+              '@babel/preset-env'
+            ]
+          ]
+        },
+      },
     ],
   },
-  optimization: {
-    minimizer: [
-      new TerserPlugin({
-        parallel: true,
-        terserOptions: {
-          output: {
-            comments: false,
-          },
-        },
-        extractComments: false,
-      }),
-    ]
-  },
-  plugins: plugins,
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: '[name].css',
+      chunkFilename: '[name].css',
+    }),
+    new WebpackRequireFrom({
+      variableName: 'window.__CONTEXT__.cdnUrl',
+    }),
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+      },
+    }),
+  ],
   mode: production ? 'production' : 'development',
-};
-
-module.exports = config;
+}
