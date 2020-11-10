@@ -209,6 +209,23 @@ query get_all_johns_and_annas {
 }
 ```
 
+### not_value_in - does not matche array of values.
+
+```graphql
+query get_everyone_except_johns_and_annas {
+  models(
+    per_page: 20,
+    filter: {
+      properties: [{ name: "name", not_value_in: ["John", "Anna"] }]
+    }
+  ) {
+    results {
+      first_name: property(name: "name")
+    }
+  }
+}
+```
+
 ### range - available options for range are: `lt`, `lte`, `gt`, `gte`:
 
 ```graphql
