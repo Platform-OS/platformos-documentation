@@ -71,11 +71,13 @@ You can pass any number of parameters to a partial.
 ## Local variable using `with`
 
 Liquid has some issues when you try to use a variable that is named exactly the same as the partial.
-For example, for the `product.liquid` file, you would name the variable `product`.
-`include` has a method to deal with this issue, at least when you pass data to the partial.
-
-Anything after the `with` keyword will be assigned to a variable that is called the same as this partial.
-
+For example if you have this `car.liquid` partial:
+```liquid
+{% raw %}
+<p>This is the value of the variable called "car": {{ car }}<p>
+{% endraw %}
+```
+You won't be able to set `car` variable by passing it during the include:
 ```liquid
 {% raw %}
 {% parse_json cars %}
@@ -84,19 +86,23 @@ Anything after the `with` keyword will be assigned to a variable that is called 
   "model": "CRX"
 }]
 {% endparse_json %}
-{% include 'product' with cars[0] %}
+{% include 'car', car: cars[0] %}
 {% endraw %}
 ```
-
-Partial:
-
+but you will be able to set this variable by using `with`:
 ```liquid
 {% raw %}
-{{ product }}
+{% parse_json cars %}
+[{
+  "maker": "Honda",
+  "model": "CRX"
+}]
+{% endparse_json %}
+{% include 'car' with cars[0] %}
 {% endraw %}
 ```
 
-This will create the variable called `product` with hash inside of it.
+This will create the variable called `car` with hash inside of it.
 
 ```json
 {"maker"=>"Honda", "model"=>"CRX"}
@@ -106,7 +112,7 @@ The properties of hash are accessible using the `object["key"]` syntax, for exam
 
 ```liquid
 {% raw %}
-{{ product["maker"] }} => Honda
+{{ car["maker"] }} => Honda
 {% endraw %}
 ```
 
