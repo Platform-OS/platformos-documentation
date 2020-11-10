@@ -118,6 +118,24 @@ query get_all_johns {
 }
 ```
 
+### not_value - does not match the value of given property.
+
+
+```graphql
+query get_evrybody_except_johns {
+  models(
+    per_page: 20,
+    filter: {
+      properties: [{ name: "name", not_value: "John" }]
+    }
+  ) {
+    results {
+      first_name: property(name: "name")
+    }
+  }
+}
+```
+
 ### value_int - matches the value of given property.
 
 
