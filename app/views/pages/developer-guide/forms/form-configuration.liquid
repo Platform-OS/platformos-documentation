@@ -27,6 +27,7 @@ resource_owner: anyone
 redirect_to: /full-form-example
 flash_alert: This is flash alert (fail)
 flash_notice: This is flash notice (success)
+request_allowed: false
 spam_protection: "" # e.g. { recaptcha_v2: {} } - needs to be configured
 fields:
   properties:
@@ -144,6 +145,9 @@ The example above prints the "Hello from background" string to the output of [`p
 
 ### authorization_policies
 Array, list of names of [Authorization Policies](/developer-guide/authorization-policy/authorization-policy) that are protecting the form from unauthorized submission.
+
+### request_allowed
+Boolean, controls whether a form will be available as an endpoint (which is deprecated). If `false`, the form will be usable only through GraphQL mutation. Default is `true`.
 
 ### callback_actions
 String, Liquid Template code that is executed (synchronously, which means it will slow down response to the user) as soon as the form is successfully validated.
