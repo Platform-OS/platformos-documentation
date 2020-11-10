@@ -137,6 +137,25 @@ query get_all_models_with_age_14 {
 }
 ```
 
+### value_float - matches the value of given property.
+
+
+```graphql
+query get_all_models_with_discount_twenty {
+  models(
+    per_page: 20,
+    filter: {
+      properties: [{ name: "discount", value_float: 0.2 }]
+    }
+  ) {
+    results {
+      first_name: property(name: "name")
+      discount: property(name: "discount")
+    }
+  }
+}
+```
+
 ### value_in - matches array of values.
 
 ```graphql
