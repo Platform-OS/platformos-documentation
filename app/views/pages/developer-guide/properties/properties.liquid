@@ -156,6 +156,24 @@ query get_all_models_with_discount_twenty {
 }
 ```
 
+### value_boolean - matches the value of given property.
+
+
+```graphql
+query get_all_models_with_discount {
+  models(
+    per_page: 20,
+    filter: {
+      properties: [{ name: "discount", value_boolean: true }]
+    }
+  ) {
+    results {
+      first_name: property(name: "name")
+    }
+  }
+}
+```
+
 ### value_in - matches array of values.
 
 ```graphql
