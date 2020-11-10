@@ -15,7 +15,6 @@ module.exports = {
     publicPath: '',
     path: path.resolve('app/assets'),
   },
-  bail: true,
   stats: {
     modules: false,
     hash: false,
