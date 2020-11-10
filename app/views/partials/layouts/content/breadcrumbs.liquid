@@ -1,9 +1,9 @@
 {% assign slugTitleized = context.params.slug | titleize %}
 
-<div class="w-full my-4 breadcrumbs px-4 sm:px-0">
+<div class="w-full px-4 my-4 breadcrumbs sm:px-0">
   <ul class="flex flex-wrap justify-end list-none sm:flex-no-wrap">
     <li class="flex items-center">
-      <a href="/" class="no-underline text-pos-blue hover:text-pos-darkblue hover:underline">Documentation</a>
+      <a href="/" class="no-underline text-pos-darkblue hover:text-pos-blue hover:underline">Documentation</a>
     </li>
 
     <li>
@@ -11,7 +11,7 @@
     </li>
 
     <li class="flex items-center">
-      <a class="no-underline text-pos-blue hover:text-pos-darkblue hover:underline"
+      <a class="no-underline text-pos-darkblue hover:text-pos-blue hover:underline"
       href="/{{ category.slug | default: context.params.slug }}">
         {{ category.name | default: category.default_name | default: slugTitleized }}
       </a>
