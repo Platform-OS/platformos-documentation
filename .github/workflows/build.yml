@@ -5,20 +5,6 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    strategy:
-      max-parallel: 1
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
-        with:
-          node-version: '14.x'
-
-      - name: Install dependencies
-        run: |
-          npm ci
-
   deploy_staging:
     needs: build
     runs-on: ubuntu-latest
@@ -33,9 +19,11 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '14.x'
-      - name: Build
+      - name: Install npm dependencies
+        run: npm ci
+      - name: Build assets
         run: npm run build
-      - name: Deploy
+      - name: Deploy to staging
         run: npx @platformos/pos-cli deploy
 
   test_staging:
@@ -65,9 +53,11 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '14.x'
-      - name: Build
+      - name: Install npm dependencies
+        run: npm ci
+      - name: Build assets
         run: npm run build
-      - name: Deploy
+      - name: Deploy production
         run: npx @platformos/pos-cli deploy
 
   lighthouse_ci:
