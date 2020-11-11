@@ -4,7 +4,7 @@ metadata:
   title: platformOS Documentation
 response_headers: >
   {
-    "Link": "<{{ 'app.css' | asset_url }}>; rel=preload; as=style, <{{ 'fonts/Gotham-Medium.woff2' | asset_url }}>; rel=preload; as=font, <{{ 'fonts/Gotham-Medium.woff2' | asset_url }}>; rel=preload; as=font"
+    "Link": "<{{ '' | asset_url }}>; rel=preconnect, <{{ 'fonts/Gotham-Medium.woff2' | asset_url }}>; rel=preload; as=font"
   }
 ---
 <!DOCTYPE html>
@@ -12,6 +12,8 @@ response_headers: >
 
 <head>
   {% include 'layouts/head/head' %}
+  {% comment %}<style>{% include 'layouts/head/inline-css' %}</style>{% endcomment %}
+  <link rel="stylesheet" type="text/css" href="{{ 'app.css' | asset_url }}" />
   {%- include 'layouts/lib/context-variables' -%}
 </head>
 

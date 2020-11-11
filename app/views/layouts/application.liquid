@@ -2,27 +2,28 @@
 <html lang="en">
   <head>
     {%- include 'layouts/head/head' -%}
+    <link rel="stylesheet" type="text/css" href="{{ 'app.css' | asset_url }}" />
     {%- include 'layouts/lib/category-helpers' -%}
     {%- include 'layouts/lib/context-variables' -%}
-</head>
-<body class="antialiased bg-pos-page-bg">
-  {% include 'layouts/header' %}
-  {% include 'layouts/search-bar' %}
-  {% include 'layouts/content' %}
+  </head>
+  <body class="antialiased bg-pos-page-bg">
+    {% include 'layouts/header' %}
+    {% include 'layouts/search-bar' %}
+    {% include 'layouts/content' %}
 
-  {% unless context.page.metadata.feedback == false %}
-    {% include 'layouts/content/feedback' %}
-  {% endunless %}
+    {% unless context.page.metadata.feedback == false %}
+      {% include 'layouts/content/feedback' %}
+    {% endunless %}
 
-  {% include 'layouts/content/callout' %}
+    {% include 'layouts/content/callout' %}
 
-  {% include 'layouts/footer' %}
+    {% include 'layouts/footer' %}
 
-  {%- include 'layouts/body/home_icons' -%}
-  {%- include 'layouts/body/content_icons' -%}
-  {%- include 'layouts/body/javascripts_bottom' -%}
-  {% yield 'javascripts_conditional' %}
-</body>
+    {%- include 'layouts/body/home_icons' -%}
+    {%- include 'layouts/body/content_icons' -%}
+    {%- include 'layouts/body/javascripts_bottom' -%}
+    {% yield 'javascripts_conditional' %}
+  </body>
 </html>
 
 <!-- {{ context.version }} -->
