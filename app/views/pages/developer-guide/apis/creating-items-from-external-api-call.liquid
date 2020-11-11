@@ -21,11 +21,23 @@ Creating items from an external API call is a four-step process:
 
 <div data-autosteps></div>
 
-### Step 1: Create Model Schema
+### Step 1: Prepare your endpoints' headers
 
-Create the following Model Schema:
+Your endpoints will serve content as JSON. You need to create a Liquid file under `app/views/partials/shared/api/headers.liquid` to render the necessary headers:
 
-##### app/model_schemas/flowers.yml
+```liquid
+{% raw %}
+{
+  "Content-Type": "application/json"
+}
+{% endraw %}
+```
+
+### Step 2: Create your model's schema
+
+You can define your data models under `app/model_schemas/`. In this example, you will store basic flower infos so create `app/model_schemas/flower.yml`:
+
+##### app/model_schemas/flower.yml
 
 ```yaml
 name: flower
@@ -36,33 +48,67 @@ properties:
   type: integer
 ```
 
-### Step 2: Create Form
+### Step 3: Create a REST endpoint to store a new flower
 
-Define what data you expect, and required validations:
+Create GraphQL mutations to store your data. Place these GraphQL files in the `app/graphql/` folder.
 
-##### app/forms/import_flowers.liquid
+To add a new flower, create a new file `app/graphql/books/create_flower.graphql`:
 
-```yaml
----
-name: import_flowers
-resource: flower
-fields:
-  properties:
-    name:
-      validation:
-        presence: true
-    creator_id:
-      validation:
-        presence: true
-resource_owner: anyone
----
+##### app/graphql/books/create_flower.graphql
+
+```graphql
+mutation($name: String!, $creator_id: Int!) {
+  flower: model_create(
+    model: {
+      model_schema_name: "book"
+      properties: [
+        { name: "name", value: $name }
+        { name: "creator_id", value_int: $creator_id }
+      ]
+    }
+  ) {
+    id
+  }
+}
 ```
 
-### Step 3: Generate API token
+The next step is to create a new page used as a REST endpoint for your web application. We recommend storing all endpoints used in the API inside the `app/views/pages/api` folder to ensure separation from other site sections.
 
-Log in to the Partner Portal, and click your user icon on the top right. Select `Your Profile` and click on `Show/Hide` to show the **Access Key**.
+Additionally, when planning to use different request methods for one URL like `POST /api/flowers`, `GET /api/flowers`, etc., we suggest naming the files after the request method related to the given endpoint. Place the endpoint responsible for adding new books in `app/views/pages/api/flowers/post.liquid`.
 
-### Step 4: Create curl command
+##### app/views/pages/api/flowers/post.liquid
+
+```liquid
+{% raw %}
+---
+slug: api/flowers
+method: post
+layout: ''
+response_headers: >
+  {% render 'shared/api/headers' %}
+---
+
+{% liquid
+  graphql result = 'flowers/create_flower', name: context.params.name, creator_id: context.params.creator_id
+  unless result.flower
+    response_status 400
+  endunless
+%}
+
+{{ result }}
+{% endraw %}
+```
+
+You’ve defined the endpoint’s slug and method and removed the default layout. The previously created `headers.liquid` file is used to render the appropriate response header.
+
+You’re calling the `flowers/create_flower` GraphQL mutation using the request parameters. All GraphQL results always return valid JSON. On error, the `result.flower` key will not be present, and you should add an appropriate error response status code. Finally, render the whole `result` object. It will contain either the new flower id or an error message when creating the flower has failed.
+
+
+### Step 4: Generate API token
+
+Log in to the Partner Portal, and click your user icon on the top right. Select `Your Profile`, click on `Tokens` and then on `Show/Hide` to show the **Access Key**.
+
+### Step 5: Create curl command
 
 Here is an example POST request you need to send. You need to set:
 
@@ -70,10 +116,10 @@ Here is an example POST request you need to send. You need to set:
 * data payload in a JSON format
 
 <pre class="command-line" data-output="2-50" data-user="user" data-host="host"><code class="language-bash">
-curl https://example.platform-os.com/api/user/models
-  -H "Authorization: Token token=[YOUR API TOKEN]"
-  -H 'Content-Type: application/json'
-  --data '{"form": { "properties_attributes: {"name": "Red flowers", "creator_id":"1" }}, "form_name": "import_flowers", "parent_object_class":"CustomModelType","parent_object_id":"flower"}'
+curl --location --request POST 'https://example.platform-os.com/api/flowers' \
+--header 'Authorization: Token token=[YOUR API TOKEN]' \
+--header 'Content-Type: application/json' \
+--data-raw '{"name":"Red flowers","creator_id":1}'
 </code></pre>
 
 
