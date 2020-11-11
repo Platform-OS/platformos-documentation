@@ -11,8 +11,6 @@ module.exports = {
     './app/forms/**/*.liquid',
     './app/views/**/*.liquid',
     './src/js/**/*.js',
-    './modules/graphql/**/*.js',
-    './modules/graphql/**/*.html',
     './modules/graphql/**/*.mustache',
   ],
   theme: {
