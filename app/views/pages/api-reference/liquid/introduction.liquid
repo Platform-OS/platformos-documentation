@@ -124,3 +124,16 @@ is turned into a comment.
 Anything you put between  tags
 is turned into a comment.
 ```
+
+You can also use `comment` inside the `liquid` tag:
+
+```liquid
+{% raw %}
+{% liquid
+  comment
+    This is is my code comment
+  endcomment
+  echo 'This is not a comment'
+%}
+{% endraw %}
+```
