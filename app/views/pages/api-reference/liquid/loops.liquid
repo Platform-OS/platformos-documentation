@@ -254,6 +254,27 @@ will result in
 {% cycle 'A', 'B', 'C', 'D' %}
 ```
 
+## ifchanged
+
+The `ifchanged` tag is typically called inside a {% for %} loop because it executes a block of code but only outputs the result if this is the first time it was called or if the previous call had a different result.
+
+#### Input
+```liquid
+{% raw %}
+{% assign list = "1,1,1,1,3,3,3,2,1,3,1,2" | split: "," %}
+{% for item in list -%}
+    {%- ifchanged %} {{ item }} {% endifchanged -%}
+{%- endfor %}
+{% endraw %}
+```
+
+#### Output
+```liquid
+{% raw %}
+1 3 2 1 3 1 2
+{% endraw %}
+```
+
 ## tablerow
 
 Generates rows for an HTML table. Must be wrapped in opening `<table>` and closing `</table>` HTML tags. The [tablerowloop](/api-reference/liquid/objects#tablerowloop) object describes the full list of attributes available within a `tablerow`.
