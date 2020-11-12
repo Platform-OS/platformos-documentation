@@ -52,15 +52,15 @@ properties:
 
 Create GraphQL mutations to store your data. Place these GraphQL files in the `app/graphql/` folder.
 
-To add a new flower, create a new file `app/graphql/books/create_flower.graphql`:
+To add a new flower, create a new file `app/graphql/flowers/create_flower.graphql`:
 
-##### app/graphql/books/create_flower.graphql
+##### app/graphql/flowers/create_flower.graphql
 
 ```graphql
 mutation($name: String!, $creator_id: Int!) {
   flower: model_create(
     model: {
-      model_schema_name: "book"
+      model_schema_name: "flower"
       properties: [
         { name: "name", value: $name }
         { name: "creator_id", value_int: $creator_id }
@@ -74,7 +74,7 @@ mutation($name: String!, $creator_id: Int!) {
 
 The next step is to create a new page used as a REST endpoint for your web application. We recommend storing all endpoints used in the API inside the `app/views/pages/api` folder to ensure separation from other site sections.
 
-Additionally, when planning to use different request methods for one URL like `POST /api/flowers`, `GET /api/flowers`, etc., we suggest naming the files after the request method related to the given endpoint. Place the endpoint responsible for adding new books in `app/views/pages/api/flowers/post.liquid`.
+Additionally, when planning to use different request methods for one URL like `POST /api/flowers`, `GET /api/flowers`, etc., we suggest naming the files after the request method related to the given endpoint. Place the endpoint responsible for adding new flowers in `app/views/pages/api/flowers/post.liquid`.
 
 ##### app/views/pages/api/flowers/post.liquid
 
