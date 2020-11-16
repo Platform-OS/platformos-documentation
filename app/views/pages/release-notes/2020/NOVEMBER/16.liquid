@@ -1,0 +1,25 @@
+---
+converter: markdown
+metadata:
+  title: new routing engine, fixes
+  description: November 16, 2020
+  skip_contribute_button: true
+  last_edit: false
+slug: release-notes/16-NOVEMBER-2020
+---
+
+#### {{ page.metadata.description }}
+
+<h4 class="release-note release-note__improved">IMPROVED</h4>
+
+* [EXPERIMENTAL] New routing engine, which allows you to use named parameters in slug. Deployed to staging. For more information, visit [routing improvements details](https://github.com/mdyd-dev/platformos-documentation/issues/1279)
+* properties with the type `array` will have the default value of `[]` instead of `null`
+* allow to undelete Page
+
+<h4 class="release-note release-note__fixed">FIXED</h4>
+
+* edge case scenario when the legacy `slug` user property was changed even if `first_name` and `last_name` were not
+* `asset_update` mutation failing in some edge case scenarios
+* `hash_assign` failing without proper description in case of syntax error
+* `admin_pages` GraphQL query when `handler` field was included in the result set
+* sorting by property in GraphQL queries will put `null` values correctly at the beginning/at the end
