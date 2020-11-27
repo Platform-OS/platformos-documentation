@@ -5,7 +5,7 @@ metadata:
   description: This use case describes how to connect your Angular app (created with a CLI) with platformOS.
 ---
 
-## Problem 
+## Problem
 
 How to connect your Angular Single Page Application (SPA) that you created with the CLI to platformOS? The goal is to have your Angular app ready for local development communicating with the Instance by the API via proxy.
 
@@ -30,7 +30,9 @@ In this example, to keep it together in one repo and in one project, you'll crea
 
 Navigate to your Instance folder and create new app with:
 
-`$ng new web-app`
+```shell
+$ng new web-app
+```
 
 Pick scss as `stylesheet format`.
 
@@ -79,7 +81,9 @@ But now compiled files will be stored under `app/assets/web-app` (like for examp
 
 Open `web-app/package.json` and in `scripts` extend the `build` command:
 
-`"build": "ng build --prod --base-href / --deploy-url your-uploads-path/assets/web-app/",`
+```json
+"build": "ng build --prod --base-href / --deploy-url your-uploads-path/assets/web-app/",
+```
 
 Now your Angular app routing will know that your base-href is `/` and compiled files will be stored in `/assets/web-app/`.
 
@@ -101,13 +105,13 @@ You can do this in three steps:
 * open the `web-app/angular.json` config file, find the line with `"index": "src/index.html",` and change it to `"index": "src/app.html.liquid",`
 * open `web-app/package.json` and add commands
 
-```
+```shell
 "copyIndex": "cp ../app/assets/web-app/app.html.liquid ../app/views/layouts/",
 ```
 
 and
 
-```
+```shell
 "postbuild": "npm run copyIndex"
 ```
 
@@ -120,7 +124,7 @@ Now, in `app/views/pages/routing`, create the `index.html.liquid` page with the 
 
 ##### app/views/pages/routing/index.html.liquid
 
-```
+```yaml
 ---
 layout: app
 ---
@@ -138,7 +142,7 @@ For all these links, only one page has to be created:
 
 ##### app/views/pages/company.html.liquid
 
-```
+```yaml
 ---
 layout: app
 ---
@@ -213,7 +217,7 @@ Also, add the `"prebuild": "npm run cssAssetsPath",` command to run it before an
 
 And now in any of your `scss` files when you need assets you'll use:
 
-```scss
+```css
 @import '~styles/environments/asset-path.scss';
 
 .my-component {
@@ -224,7 +228,8 @@ And now in any of your `scss` files when you need assets you'll use:
 ### Step 6: Set up proxy for local API calls
 
 Due to security issues you should not use:
-```
+
+```yaml
 response_headers: >
   {
     "Access-Control-Allow-Origin": "*"
