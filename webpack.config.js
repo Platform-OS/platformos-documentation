@@ -15,12 +15,6 @@ module.exports = {
     publicPath: '',
     path: path.resolve('app/assets'),
   },
-  stats: {
-    modules: false,
-    hash: false,
-    assetsSort: '!size',
-    children: false,
-  },
   module: {
     rules: [
       {
@@ -33,7 +27,6 @@ module.exports = {
         options: {
           exclude: /node_modules/,
           plugins: ['@babel/plugin-syntax-dynamic-import', '@babel/transform-object-assign'],
-          retainLines: true,
           cacheDirectory: true,
           presets: [
             [
