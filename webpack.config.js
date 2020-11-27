@@ -40,7 +40,7 @@ module.exports = {
   plugins: [
     new MiniCssExtractPlugin({
       filename: '[name].css',
-      chunkFilename: '[name].css',
+      chunkFilename: '[name].[chunkhash:3].css',
     }),
     new WebpackRequireFrom({
       variableName: 'window.__CONTEXT__.cdnUrl',
