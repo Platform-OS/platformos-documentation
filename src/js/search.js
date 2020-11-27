@@ -1,4 +1,4 @@
-import(/* webpackChunkName: "search" */ 'docsearch.js/dist/cdn/docsearch.css');
+import 'docsearch.js/dist/cdn/docsearch.css';
 
 import docsearch from 'docsearch.js';
 
