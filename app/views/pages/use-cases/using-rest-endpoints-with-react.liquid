@@ -43,11 +43,11 @@ You can find `package.json` under `react-app`. You need to add three new scripts
 3. and one to use the built folder as the `assets`
 
 {% include 'alert/note', content: 'This example is built on a Unix-based system. On Windows, you might need to install and use [cpy](https://www.npmjs.com/package/cpy-cli) and [rimraf](https://www.npmjs.com/package/rimraf).' %}
- 
+
 ```json
-    "layout": "cp ./build/index.html ../app/views/pages/index.html.liquid",
-    "assets:remove": "rm -rf ../app/assets/web-app",
-    "assets:copy": "mv ./build/ ../app/assets/web-app"
+  "layout": "cp ./build/index.html ../app/views/pages/index.html.liquid",
+  "assets:remove": "rm -rf ../app/assets/web-app",
+  "assets:copy": "mv ./build/ ../app/assets/web-app"
 ```
 
 You can now use these scripts in your `build` script:
@@ -76,11 +76,10 @@ The `asset_url` filter can be used to fetch the root folder for serving assets.
 {% endraw %}
 ```
 
-It will be similar to:
+To obtain it run `pos-cli gui serve dev` to run `gui serve` on your `dev` enviornment.
+Then go to http://localhost:3333/gui/liquid - this is the place where you can evaluate any Liquid Markup against your instance.
 
-```shell
-https://uploads.staging.oregon.platform-os.com/instances/<YOUR-INSTANCE-ID>/assets/
-```
+For our documentation site it returned: `https://uploads.prod01.oregon.platform-os.com/instances/1/assets/`, and yours will be similar, depending on the region and instance ID.
 
 We strongly recommend placing all generated assets in a subfolder, e.g., `app/assets/web-app`. Doing so ensures no future conflicts once additional, unrelated assets are added to the project (like graphic files used in emails or a separate admin panel app.)
 
