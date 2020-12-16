@@ -1,0 +1,25 @@
+---
+converter: markdown
+metadata:
+  title: Resolving to www of subdomain
+  description: platformOS DNS and resolving to www of subdomain
+---
+
+{% include 'developer-guide/domains/intro' %}
+
+## platformOS DNS and resolving to www of subdomain (example: https://www.marketplace.example.com)
+
+1. Go to the Instance detail page in the platformOS Partner Portal: https://partners.platformos.com
+2. Click `Domains`.
+3. Click `Add new domain to your Instance`.
+4. Click `DNS Zone`.
+5. Add your subdomain name (do not add www), check the box if this will be your default domain, and finally click `Create DNS Zone`.
+6. From the Domains page, you'll want to refresh the page every few minutes until the status of the new domain changes to `reparking_domain`. Once it does, click `view`.
+
+### When you are ready to "Go Live", please continue.
+
+7. In your root domains DNS records, add the nameserver records for the subdomain with the values provided in the Parter Portal.
+8. Once the nameservers are recognized, you can click `I have changed Name Servers` on the DNS Zone page.
+9. Depending on how quickly the nameserver changes propagate, (from a few minutes to a few hours), you may have to click `I have changed Name Servers` a few times and refresh the page a few times. Do not be concerned if some of the records you created in the hosted zone appear and dissappear in the first few minutes after you update the nameservers. Once the Hosted Zone recognizes the change in nameservers, the stats for all your records should be `OK` and you should be all set.
+
+Congratulations! An SSL certificate has been created and applied to your Instance and your domain is now LIVE!

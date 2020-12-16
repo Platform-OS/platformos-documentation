@@ -365,20 +365,6 @@
   {% endif %}
 </li>
 
-<li class="{% if cp contains 'partner-portal/domains' %}active{% endif %}">
-  <a href="/developer-guide/partner-portal/domains/setting-up-domains-dns-ssl">Domains</a>
-  {% if cp contains 'partner-portal/domains' %}
-    <ul class="submenu">
-      {% include "shared/nav/link", href: "/developer-guide/partner-portal/domains/setting-up-domains-dns-ssl", text: "Setting Up Domains, DNS, and SSL Certificates" %}
-      {% include "shared/nav/link", href: "/developer-guide/partner-portal/domains/dns-setting-up-production-domain-records", text: "Adding DNS records to a DNS Zone" %}
-
-      {% include "shared/nav/link", href: "/developer-guide/partner-portal/domains/setting-up-production-domain", text: "OLD Setting Up a Production Domain" %}
-      {% include "shared/nav/link", href: "/developer-guide/partner-portal/domains/configuring-www-default-domain", text: "OLD Configuring www as the Default Domain" %}
-      {% include "shared/nav/link", href: "/developer-guide/partner-portal/domains/deleting-ssl-certificate", text: "OLD Deleting an SSL Certificate" %}
-    </ul>
-  {% endif %}
-</li>
-
 <li class="{% if cp contains 'partner-portal/billing-plans' %}active{% endif %}">
   <a href="/developer-guide/partner-portal/billing-plans/creating-billing-plan">Billing Plans</a>
   <ul class="submenu">
@@ -388,8 +374,48 @@
 </li>
 
 <li class="pt-6 mt-6 mb-2 text-base border-t topic-group border-pos-divider">
+  <h3 class="text-base">DOMAINS</h3>
+</li>
+
+<li class="{% if cp contains 'partner-portal/domains/platformos' %}active{% endif %}">
+  <a href="/developer-guide/partner-portal/domains/platformos/resolving-www-of-root-domain">Custom domain using platformOS DNS service</a>
+  {% if cp contains 'partner-portal/domains/platformos' %}
+    <ul class="submenu">
+      {% include "shared/nav/link", href: "/developer-guide/partner-portal/domains/platformos/resolving-www-of-root-domain", text: "Resolving to www of root domain" %}
+      {% include "shared/nav/link", href: "/developer-guide/partner-portal/domains/platformos/resolving-root-domain", text: "Resolving to root domain" %}
+      {% include "shared/nav/link", href: "/developer-guide/partner-portal/domains/platformos/resolving-www-of-subdomain", text: "Resolving to www of subdomain" %}
+      {% include "shared/nav/link", href: "/developer-guide/partner-portal/domains/platformos/resolving-subdomain", text: "Resolving to subdomain" %}
+    </ul>
+  {% endif %}
+</li>
+
+<li class="{% if cp contains 'partner-portal/domains/external' %}active{% endif %}">
+  <a href="/developer-guide/partner-portal/domains/external/resolving-www-of-root-domain">Custom domain using external DNS service</a>
+  {% if cp contains 'partner-portal/domains/external' %}
+    <ul class="submenu">
+      {% include "shared/nav/link", href: "/developer-guide/partner-portal/domains/external/resolving-www-of-root-domain", text: "Resolving to www of root domain" %}
+      {% include "shared/nav/link", href: "/developer-guide/partner-portal/domains/external/resolving-root-domain", text: "Resolving to root domain" %}
+      {% include "shared/nav/link", href: "/developer-guide/partner-portal/domains/external/resolving-www-of-subdomain", text: "Resolving to www of subdomain" %}
+      {% include "shared/nav/link", href: "/developer-guide/partner-portal/domains/external/resolving-subdomain", text: "Resolving to subdomain" %}
+    </ul>
+  {% endif %}
+</li>
+
+<li>
+  <a href="/developer-guide/partner-portal/domains/setting-up-domains-dns-ssl">Legacy method of resolving domains</a>
+  {% if cp contains 'partner-portal/domains' %}
+    <ul class="submenu">
+      {% include "shared/nav/link", href: "/developer-guide/partner-portal/domains/setting-up-production-domain", text: "OLD Setting Up a Production Domain" %}
+      {% include "shared/nav/link", href: "/developer-guide/partner-portal/domains/configuring-www-default-domain", text: "OLD Configuring www as the Default Domain" %}
+      {% include "shared/nav/link", href: "/developer-guide/partner-portal/domains/deleting-ssl-certificate", text: "OLD Deleting an SSL Certificate" %}
+    </ul>
+  {% endif %}
+</li>
+
+<li class="pt-6 mt-6 mb-2 text-base border-t topic-group border-pos-divider">
   <h3 class="text-base">SOLUTIONS</h3>
 </li>
+
 
 <li class="{% if cp contains '/developer-guide/pos-product-marketplace' %}active{% endif %}">
   <a href="/developer-guide/pos-product-marketplace/core-concepts">pOS Product Marketplace</a>

@@ -1,0 +1,32 @@
+---
+converter: markdown
+metadata:
+  title: External DNS - Resolving to root domain
+  description: External DNS and resolving to the root domain and using EXTERNAL DNS service
+---
+
+{% include 'developer-guide/domains/intro' %}
+
+## External DNS and resolving to the root domain and using EXTERNAL DNS service (example: https://example.com)
+
+1. In our example, we are assuming that your domain has already been set up before with your DNS provider and all records are in place from previous usage.
+2. Go to the Instance detail page in the platformOS Partner Portal: https://partners.platformos.com
+3. Click `Domains`.
+4. Click `Add new domain to your Instance`.
+5. Click `External DNS management`.
+6. Add your root domain name (do not add www), will this be your default domain, click `Create External DNS management`
+7. Refresh your page a few times until the status on the Domains page changes to `ownership_verification_pending`. Once it does, click `view`.
+8. We need to validate ownership of the domain so, in your DNS provider, please add the required CNAME record.
+9. Once you have added the CNAME, you can click `Ok. Done. I added requested records`.
+10. Refresh the page a few times (this may take longer) to allow for our system to verify the CNAME. Once it's done, you'll be provided with a couple options for FQDN's depending if your DNS provider is AWS or another provider. You'll also be asked to add the www CNAME record if you have not done so already for your domain. The reason for this is we automatically set up the www subdomain and redirect the root domain to it.
+
+### When you are ready to "Go Live", please continue.
+
+11. Add the provided FQDN to DNSMadeEasy as an ANAME record.
+12. Currently this process will create a www subdomain and a redirect from the root domain to the subdomain. We need to remove that. From the instance detail page, click on `Domains`.
+13. We will improve this shortly, but for now, in the URL that appears, remove the `/pp_dns`. Example, https://partners.platformos.com/instances/5253/pp_dns/domains we would change to https://partners.platformos.com/instances/5253/domains - From this page, we will remove the redirect from root to www, and add a redirect from www to root. Click `Edit` on the root domain.
+14. Make sure that `Use as default` is checked and that `redirect` is unchecked. Then click `Update Domain`.
+15. Next, click on `edit` for the www subdomain.
+16. Finally, make sure `Use as default` is unchecked and check `redirect`. Add the direct URL to the root domain and then choose your redirect code. Once completed, click `Update Domain`.
+
+Congratulations! An SSL certificate has been created and applied to your instance and your domain is now LIVE!

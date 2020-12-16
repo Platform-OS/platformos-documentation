@@ -1,0 +1,27 @@
+---
+converter: markdown
+metadata:
+  title: Resolving to www of root domain
+  description: platformOS DNS and resolving to www of root domain
+---
+
+{% include 'developer-guide/domains/intro' %}
+
+## platformOS DNS and resolving to www of root domain (example: https://www.example.com)
+
+1. Sign into your domain registrar and export your zone file, or save your current DNS records (if any) off to the side so you can add them to the platformOS hosted zone in a later step.
+2. Go to the Instance detail page in the platformOS Partner Portal: https://partners.platformos.com
+3. Click `Domains`.
+4. Click `Add new domain to your Instance`.
+5. Click `DNS Zone`.
+6. Add your root domain name (do not add www), check the box if this will be your default domain, and finally click `Create DNS Zone`.
+7. From the Domains page, you'll want to refresh the page every few minutes until the status of the new domain changes to `reparking_domain`. Once it does, click `view`.
+8. Now, add all your DNS records (if any) to the newly created DNS Zone by clicking `add additional record` to add each new record. This is all done `offline` so this won't impact your current live settings if your domain is currently in use. When done, click `Commit DNS Changes`.
+
+### When you are ready to "Go Live", please continue.
+
+9. Update the nameservers in your domain registrar and click `Save`.
+10. Once the nameservers are recognized in your domain registrar, click `I have changed Name Servers` on the DNS Zone page in your partner portal.
+11. Depending on how quickly the nameserver changes propagate, (from a few minutes, to a few hours), you may have to click `I have changed Name Servers` a few times and refresh the page a few times. Do not be concerned if some of the records you created in the hosted zone appear and dissappear in the first few minutes after you update the nameservers. Once the Hosted Zone recognizes the change in nameservers, the stats for all your records should be `OK` and you should be all set.
+
+Congratulations! An SSL certificate has been created and applied to your Instance and your domain is now LIVE!
