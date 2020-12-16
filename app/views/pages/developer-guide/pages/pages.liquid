@@ -10,7 +10,14 @@ metadata:
 Each page is accessible on the URL indicated by its location in the codebase if not otherwise specified in the page configuration `slug` property. For example, the page `app/views/pages/get-started/hello-world.html.liquid` deployed to the domain `https://example.com` will be automatically accessible at `https://example.com/get-started/hello-world`.
 
 {% include 'alert/note', content: 'In examples, we often add the `slug` property to show where the page will be accessible, even if it would not be required because it is the same as the default.' %}
-{% include 'alert/note', content: 'Due to the SEO best practices, we automatically replace underscore with dash, so both `hello-world.liquid` and `hello_world.liquid` would evaluate to `hello-world`. In such scenario, the one that is updated as the last one will be used.' %}
+
+## Named parameters
+
+You are able to use named parameters in the slug. For example, a slug `projects/:id` will resolve URL like https://example.com/projects/1 and you will be able to access the named parameter using `context.params`. In this example, `context.params.id` will return `1`.
+
+For optional parameters, use `(/:optional)` syntax. For example, `/search(/:country)(/:city)` will resolve all three types of URLs: `/search` (`context.params.country` and `context.params.city` will be nulls), `/search/Poland` (`context.params.country` will be `Poland`) and `/search/Poland/Warsaw` (`context.params.country` will be `Poland and `context.params.city` will be Warsaw).
+
+For backwards compatibility, named parameters will be also available at corresponding `slug` name.
 
 ## Page configuration
 
@@ -115,13 +122,14 @@ Hello world
 
 Note that the `html` format is implicit, default, you don't need to specify it in the URL or the file name.
 
+
 ## Method
 
 To define to which method the endpoint will respond, define `method` in the Page configuration. One page can respond to exactly one method.
 
 ### POST/PUT/PATCH/DELETE methods and Cross-Site Request Forgery attacks
 
-Cross-Site Request Forgety allows attacker to trick an user to execute endpoint without his knowledge. We prevent Cross-Site Request Forgery (CSRF) attacks by requiring CSRF Token to be provided for every request to a Page which is not GET. If the token is missing, then `context.current_user` would appear as null, because the user session will be invalidated. To be able to access `context.current_user`, you need to provide valid CSRF Token. For [Forms](/developer-guide/forms/forms#content) we handle it automatically by adding a hidden parameter with name `authenticity_token`. However, if you manually trigger a POST/PUT/PATCH/DELETE AJAX request, you need to remember about populating `X-CSRF-Token` header with value from `context.authenticity_token` and also specify `X-Requested-With: XMLHttpRequest` header. Common practice is to include a `meta` tag in the layout, for example `<meta content="{{ context.authenticity_token }}" name="csrf-token">` and use this value to execute AJAX request.
+Cross-Site Request Forgery allows attacker to trick an user to execute endpoint without his knowledge. We prevent Cross-Site Request Forgery (CSRF) attacks by requiring CSRF Token to be provided for every request to a Page which is not GET. If the token is missing, then `context.current_user` would appear as null, because the user session will be invalidated. To be able to access `context.current_user`, you need to provide valid CSRF Token. For [Forms](/developer-guide/forms/forms#content) we handle it automatically by adding a hidden parameter with name `authenticity_token`. However, if you manually trigger a POST/PUT/PATCH/DELETE AJAX request, you need to remember about populating `X-CSRF-Token` header with value from `context.authenticity_token` and also specify `X-Requested-With: XMLHttpRequest` header. Common practice is to include a `meta` tag in the layout, for example `<meta content="{{ context.authenticity_token }}" name="csrf-token">` and use this value to execute AJAX request.
 
 If you are building JSON API, for example for a mobile app, you might want to authenticate users using [JWT tokens](/developer-guide/users/authenticating-user-with-jwt-token#content).
 
