@@ -24,7 +24,7 @@ modules
         └─ assets
 ```
 
-`public` and `private` directories have the same structure as the standard `app` folder, but if developers try to download or preview files after the module has been deployed to an Instance, they will only be able to access the files from the `public` folder. 
+`public` and `private` directories have the same structure as the standard `app` folder, but if developers try to download or preview files after the module has been deployed to an Instance, they will only be able to access the files from the `public` folder.
 
 In general, when referencing files that are part of a module, platformOS uses a prefix which does not include any `public` or `private` folders (for example: `modules/admin/app.css` instead of `modules/admin/private/app.css`). This means that creators should not create files with the same name in both folders, as one will overwrite the other. This behavior gives creators flexibility: if they want to change the scope of the file, they can move it between the private and public folders without changing the code.
 
@@ -185,7 +185,9 @@ But it is referenced with the prefix:
 But when used in the module code they should be prefixed:
 
 ```liquid
+{% raw %}
 {{ 'modules/admin/strings.sample_string' | t }}
+{% endraw %}
 ```
 
 
