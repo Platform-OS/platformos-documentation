@@ -70,10 +70,11 @@ jobs:
       max-parallel: 1
     env:
       MPKIT_URL: ${{ secrets.MPKIT_URL_PRODUCTION }}
+      LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
           node-version: '14.x'
       - run: npm i -g @lhci/cli
-      - run: lhci autorun --rc-overrides.upload.target=temporary-public-storage --githubToken ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+      - run: lhci autorun
