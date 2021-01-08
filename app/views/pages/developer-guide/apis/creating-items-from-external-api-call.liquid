@@ -25,7 +25,7 @@ Creating items from an external API call is a four-step process:
 
 Create the following Table:
 
-##### app/model_schemas/flowers.yml
+##### app/schema/flowers.yml
 
 ```yaml
 name: flower
@@ -73,7 +73,7 @@ Here is an example POST request you need to send. You need to set:
 curl https://example.platform-os.com/api/user/models
   -H "Authorization: Token token=[YOUR API TOKEN]"
   -H 'Content-Type: application/json'
-  --data '{"form": { "properties_attributes: {"name": "Red flowers", "creator_id":"1" }}, "form_name": "import_flowers", "parent_object_class":"CustomRecordType","parent_object_id":"flower"}'
+  --data '{"form": { "properties_attributes: {"name": "Red flowers", "creator_id":"1" }}, "form_name": "import_flowers", "parent_object_class":"CustomModelType","parent_object_id":"flower"}'
 </code></pre>
 
 
