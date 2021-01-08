@@ -18,7 +18,7 @@ In order to correctly communicate with the platformOS engine and API, your codeb
 | .pos                    |             | Configuration file that specifies available endpoints. Usually, you want to have at least two endpoints &ndash; staging and production.                                                                                                                                                                                                   | [Development Workflow](/developer-guide/platformos-workflow/development-workflow)  |
 | assets                  | asset       | Directory for static assets, like fonts, images, stylesheets, and scripts.                                                                                                                                                                                    | [Assets](#assets)                                                       |
 | authorization_policies  | Liquid      | Directory for .liquid files that contains Authorization Policy configuration files. Authorization Policies define rules that control whether a user has access to a form or page.                                                                                                                                                 | [Authorization Policies](#authorization-policies)           |
-| model_schemas      | YAML        | Directory for .yml files that define Model Schemas. Model Schemas define custom objects, including their fields and associations and allow you to create persistence containers for your custom forms.                                                                                                                  | [Models](#models)                   |
+| model_schemas      | YAML        | Directory for .yml files that define Tables. Tables define custom objects, including their fields and associations and allow you to create persistence containers for your custom forms.                                                                                                                  | [Records](#models)                   |
 | emails     | Liquid      | Directory for .liquid files that define Email notifications. | [Notifications](/developer-guide/notifications/notifications)                               |
 | api_calls     | Liquid      | Directory for .liquid files that define API calls notifications. | [Notifications](/developer-guide/notifications/notifications)                               |
 | smses     | Liquid      | Directory for .liquid files that define SMS notifications. | [Notifications](/developer-guide/notifications/notifications)                               |
@@ -120,7 +120,7 @@ app
 
 **Users** are accounts that any of your users can have. Users are identified by their unique email addresses. You can define  properties for all users in the user.yml file.
 
-**User Profiles** are roles in the application. Each User Profile can be associated with any number of Properties and Model Schemas. All users are assigned a User Profile named Default. The difference between User Profile and Model Schema is that each user can have maximum one profile of a given name (but can have many different profiles), whereas they can have many custom models with the same name. From a practical perspective, it is very simple to create an `upsert` operation on a UserProfile (i.e. create user profile, or if it exists, update it).
+**User Profiles** are roles in the application. Each User Profile can be associated with any number of Properties and Tables. All users are assigned a User Profile named Default. The difference between User Profile and Table is that each user can have maximum one profile of a given name (but can have many different profiles), whereas they can have many custom models with the same name. From a practical perspective, it is very simple to create an `upsert` operation on a UserProfile (i.e. create user profile, or if it exists, update it).
 
 Example directory structure of `user_profile_types` with sample files:
 
@@ -134,11 +134,11 @@ app
 
 {% include "alert/tutorial", content: "Follow our step-by-step tutorials to learn more about <a href='/developer-guide/users/users'>users</a>." %}
 
-### Models
+### Records
 
-**Model Schema** is an object that describes all Model objects that belong to it. Think of Model Schemas as a custom database table, which allows you to build highly customized features. Use them to group Properties, and allow the user to provide multiple values for each of them.
+**Table** is an object that describes all Record objects that belong to it. Think of Tables as a custom database table, which allows you to build highly customized features. Use them to group Properties, and allow the user to provide multiple values for each of them.
 
-**Properties** are fields that you attach to a User Profile, Model Schema, etc. Think of them as custom database columns (though complex types, like attachments and images should be treated as separate database tables). We also provide some Properties to jumpstart your development.
+**Properties** are fields that you attach to a User Profile, Table, etc. Think of them as custom database columns (though complex types, like attachments and images should be treated as separate database tables). We also provide some Properties to jumpstart your development.
 
 Example directory structure of `model_schemas` with sample files:
 
@@ -148,7 +148,7 @@ app
     └── blog_post.yml
 ```
 
-{% include "alert/tutorial", content: "Follow our step-by-step tutorials to learn more about <a href='/developer-guide/models/models-model-schemas'>Model Schemas</a> and <a href='/developer-guide/properties/properties'>Properties</a>." %}
+{% include "alert/tutorial", content: "Follow our step-by-step tutorials to learn more about <a href='/developer-guide/records/records-tables'>Tables</a> and <a href='/developer-guide/properties/properties'>Properties</a>." %}
 
 ### Notifications
 

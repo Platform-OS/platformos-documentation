@@ -2,10 +2,10 @@
 converter: markdown
 metadata:
   title: Using the GeoJSON format for Geolocation
-  description: This guide will help you build a working site on which one can find models in a maximum distance of X km's from given geo point coordinates.
+  description: This guide will help you build a working site on which one can find records in a maximum distance of X km's from given geo point coordinates.
 ---
 
-This guide will help you build a working site on which one can find models in a maximum distance of X km's from given geo point coordinates.
+This guide will help you build a working site on which one can find records in a maximum distance of X km's from given geo point coordinates.
 
 **GeoJSON** is a geospatial data interchange format based on JSON for encoding a variety of geographic data structures. It defines several types of JSON objects and the manner in which they are combined to represent data about geographic features, their properties, and their spatial extents.
 
@@ -51,21 +51,21 @@ The following geometry types are supported:
 To learn more, read the [official GeoJSON documentation](https://tools.ietf.org/html/rfc7946).
 
 ## Requirements
-To follow the steps in this tutorial, you should be familiar with Model Schemas, data imports, and Form.
+To follow the steps in this tutorial, you should be familiar with Tables, data imports, and Form.
 
-* [Models and Model Schemas](/developer-guide/models/models-model-schemas)
+* [Records and Tables](/developer-guide/records/records-record-schemas)
 * [Data Import](/developer-guide/data-import-export/import)
 * [Form](/developer-guide/forms/form-configuration)
 
 ## Steps
 
-Using the GeoJSON format to find all models in a maximum distance from geopoint coordinates is a four-step process:
+Using the GeoJSON format to find all records in a maximum distance from geopoint coordinates is a four-step process:
 
 <div data-autosteps></div>
 
-### Step 1: Prepare Model Schema definition
+### Step 1: Prepare Table definition
 
-Create `model_schemas/company.yaml`:
+Create `schema/company.yaml`:
 
 ```yaml
 name: company
@@ -86,9 +86,9 @@ Create a GraphQL mutation `createCompany.graphql`:
 
 ```graphql
 mutation createCompany($location: JSONPayload, $city: String, $timezone: String, $name: String){
-  model_create(
-    model: {
-      model_schema_name: "company"
+  record_create(
+    record: {
+      table: "company"
       properties: [
         { name: "name" value: $name }
         { name: "city" value: $city }
@@ -151,9 +151,9 @@ Create the GraphQL query `graphql/search.graphql`:
 
 ```graphql
 query search($point: GeometryJSON, $distance: Int) {
-  companies: models(
+  companies: records(
     per_page: 20
-    name: { value: "modules/geo_models/company" }
+    name: { value: "modules/geo_records/company" }
     filter: {
       properties: [
         {
@@ -212,9 +212,9 @@ You can do this by appending a plus filter with a `0` argument - literally addin
 
 **Code samples**
 
-* [form_configurations/create_company.liquid](https://github.com/mdyd-dev/platformos-examples/blob/master/modules/geo_models/public/forms/create_company.liquid)
-* [views/pages/geo/company-new.liquid](https://github.com/mdyd-dev/platformos-examples/blob/master/modules/geo_models/public/views/pages/geo/company-new.liquid)
-* [views/pages/geo/programmer-new.liquid](https://github.com/mdyd-dev/platformos-examples/blob/master/modules/geo_models/public/views/pages/geo/programmer-new.liquid)
-* [views/pages/geo/company-search.liquid](https://github.com/mdyd-dev/platformos-examples/blob/master/modules/geo_models/public/views/pages/geo/company-search.liquid)
-* [model_schemas/company.yml](https://github.com/mdyd-dev/platformos-examples/blob/master/modules/geo_models/public/model_schemas/company.yml)
-* [graph_queries/search.graphql](https://github.com/mdyd-dev/platformos-examples/blob/master/modules/geo_models/public/graphql/search.graphql)
+* [form_configurations/create_company.liquid](https://github.com/mdyd-dev/platformos-examples/blob/master/modules/geo_records/public/forms/create_company.liquid)
+* [views/pages/geo/company-new.liquid](https://github.com/mdyd-dev/platformos-examples/blob/master/modules/geo_records/public/views/pages/geo/company-new.liquid)
+* [views/pages/geo/programmer-new.liquid](https://github.com/mdyd-dev/platformos-examples/blob/master/modules/geo_records/public/views/pages/geo/programmer-new.liquid)
+* [views/pages/geo/company-search.liquid](https://github.com/mdyd-dev/platformos-examples/blob/master/modules/geo_records/public/views/pages/geo/company-search.liquid)
+* [schema/company.yml](https://github.com/mdyd-dev/platformos-examples/blob/master/modules/geo_records/public/schema/company.yml)
+* [graph_queries/search.graphql](https://github.com/mdyd-dev/platformos-examples/blob/master/modules/geo_records/public/graphql/search.graphql)

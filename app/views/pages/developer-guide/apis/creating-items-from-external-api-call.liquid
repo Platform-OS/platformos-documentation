@@ -2,10 +2,10 @@
 converter: markdown
 metadata:
   title: Creating Items from an External API Call
-  description: This guide will help you create items from an external API call. The example shows the steps of creating a Model from existing data through an API call to our service.
+  description: This guide will help you create items from an external API call. The example shows the steps of creating a Record from existing data through an API call to our service.
 ---
 
-This guide will help you create items from an external API call. The example shows the steps of creating a Model from existing data through an API call to our service.
+This guide will help you create items from an external API call. The example shows the steps of creating a Record from existing data through an API call to our service.
 
 ## Requirements
 This is an advanced tutorial. To follow it, you should be familiar with basic platformOS concepts, HTML, Liquid, APIs and Forms, and the topics in the Get Started section.
@@ -13,7 +13,7 @@ This is an advanced tutorial. To follow it, you should be familiar with basic pl
 * [platformOS Workflow](/developer-guide/platformos-workflow/development-workflow)
 * [Get Started](/get-started)
 * [APIs and Forms](/developer-guide/forms/form-configurations)
-* [Building a Contact Form with Models](/developer-guide/models/building-contact-form-with-model)
+* [Building a Contact Form with Records](/developer-guide/records/building-contact-form-with-records)
 
 ## Steps
 
@@ -21,9 +21,9 @@ Creating items from an external API call is a four-step process:
 
 <div data-autosteps></div>
 
-### Step 1: Create Model Schema
+### Step 1: Create Table
 
-Create the following Model Schema:
+Create the following Table:
 
 ##### app/model_schemas/flowers.yml
 
@@ -73,7 +73,7 @@ Here is an example POST request you need to send. You need to set:
 curl https://example.platform-os.com/api/user/models
   -H "Authorization: Token token=[YOUR API TOKEN]"
   -H 'Content-Type: application/json'
-  --data '{"form": { "properties_attributes: {"name": "Red flowers", "creator_id":"1" }}, "form_name": "import_flowers", "parent_object_class":"CustomModelType","parent_object_id":"flower"}'
+  --data '{"form": { "properties_attributes: {"name": "Red flowers", "creator_id":"1" }}, "form_name": "import_flowers", "parent_object_class":"CustomRecordType","parent_object_id":"flower"}'
 </code></pre>
 
 

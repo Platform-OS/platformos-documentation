@@ -1,11 +1,11 @@
 ---
 converter: markdown
 metadata:
-  title: Managing Models using AJAX (CRUD operations)
-  description: This guide will help you create, list, update, and delete Models using JavaScript.
+  title: Managing Records using AJAX (CRUD operations)
+  description: This guide will help you create, list, update, and delete Records using JavaScript.
 ---
 
-This guide will help you create, list, update, and delete Models using JavaScript and GraphQL.
+This guide will help you create, list, update, and delete Records using JavaScript and GraphQL.
 
 ## Requirements
 
@@ -14,15 +14,15 @@ This guide will help you create, list, update, and delete Models using JavaScrip
 
 ## Steps
 
-Managing Models using AJAX by implementing the full CRUD cycle is a five-step process:
+Managing Records using AJAX by implementing the full CRUD cycle is a five-step process:
 
 <div data-autosteps></div>
 
-### Step 1: Define prerequisites: Model Schema, Form, Page, javascript functions used in multiple places
+### Step 1: Define prerequisites: Table, Form, Page, javascript functions used in multiple places
 
 Create required files for your implementation:
 
-##### app/model_schemas/feedback.yml
+##### app/schema/feedback.yml
 
 ```yaml
 name: feedback
@@ -81,7 +81,7 @@ First, create a simple form that works without JavaScript:
 {% form html-data-form: "create" %}
   {% assign p = form.fields.properties %}
 
-  <h2>Create new feedback (model)</h2>
+  <h2>Create new feedback (record)</h2>
   <label>
     <input type="radio" name='{{ p.rate.name }}' value="Excellent">
     Excellent
@@ -131,7 +131,7 @@ First, you'll need a GraphQL query to pull out the data:
 
 ```graphql
 query feedback($per_page: Int = 10) {
-  models(
+  records(
     filter: {
       name: { value: "feedback" }
     },
@@ -156,7 +156,7 @@ Then you need to create a page that returns JSON with the data:
 ```liquid
 {%- raw -%}
 {%- graphql recent = "modules/feedback/feedback", per_page: 10 -%}
-{{ recent.models.results | json }}
+{{ recent.records.results | json }}
 {% endraw %}
 ```
 
@@ -212,7 +212,7 @@ refreshReadButton.addEventListener("click", Read);
 The update form is similar to Create, with a couple of differences:
 
 1. Add hidden input with `_method` set to PUT
-2. Send ID of Model you want to edit
+2. Send ID of Record you want to edit
 
 ##### app/views/partials/update.liquid
 
@@ -222,9 +222,9 @@ The update form is similar to Create, with a couple of differences:
   {% comment %} Set method using hidden input to tell the server we are updating {% endcomment %}
   <input type="hidden" name="_method" value="PUT" />
 
-  {% comment %} Let user decide which model to edit {% endcomment %}
-  <label for="model_id">Model ID</label>
-  <input type="text" name='model_id' value="" required>
+  {% comment %} Let user decide which record to edit {% endcomment %}
+  <label for="record_id">Record ID</label>
+  <input type="text" name='record_id' value="" required>
 
   <label>
     <input type="radio" name='{{ p.rate.name }}' value="Excellent">
@@ -256,7 +256,7 @@ JavaScript is also very similar, but it takes ID from input defined above and pu
 
 const Update = event => {
   event.preventDefault();
-  const id = event.target.querySelector('[name="model_id"]').value;
+  const id = event.target.querySelector('[name="record_id"]').value;
 
   request({
     url: `${event.target.getAttribute("action")}/${id}`,
@@ -274,7 +274,7 @@ The delete operation also needs `method` and `id` because underneath it all, it 
 
 #### Soft and hard delete
 
-Read [Data Backup and Removal](/developer-guide/models/data-backup-removal) to get familiar with data retention and backups in platformOS.
+Read [Data Backup and Removal](/developer-guide/records/data-backup-removal) to get familiar with data retention and backups in platformOS.
 
 ##### app/views/partials/delete.liquid
 
@@ -282,8 +282,8 @@ Read [Data Backup and Removal](/developer-guide/models/data-backup-removal) to g
 {%- raw -%}
 {% form html-data-form: "delete" %}
   <input type="hidden" name="_method" value="DELETE" />
-  <label for="model_id">Model ID</label>
-  <input type="text" name='model_id' value="" required>
+  <label for="record_id">Record ID</label>
+  <input type="text" name='record_id' value="" required>
   <button>Delete</button>
 {% endform %}
 {% endraw %}
@@ -294,7 +294,7 @@ Read [Data Backup and Removal](/developer-guide/models/data-backup-removal) to g
 ```javascript
 const Delete = event => {
   event.preventDefault();
-  const id = event.target.querySelector('[name="model_id"]').value;
+  const id = event.target.querySelector('[name="record_id"]').value;
 
   request({
     url: `${event.target.getAttribute("action")}/${id}`,
@@ -314,4 +314,4 @@ To play with a live example (in much fuller form and with additional information
 
 ## Next steps
 
-Congratulations! You know how to implement CRUD operations for Models.
+Congratulations! You know how to implement CRUD operations for Records.

@@ -16,7 +16,7 @@ For example, you can delete a record like this:
 
 ```graphql
 mutation DefaultDelete {
-  model_delete(id: "3") {
+  record_delete(id: "3") {
     deleted_at
   	id
   }
@@ -28,8 +28,8 @@ From now on, most GraphQL queries will not show those records anymore. You can g
 Fo example:
 
 ```graphql
-query models {
-  models(
+query records {
+  records(
     per_page: 10
     filter: {
       deleted_at: { exists: true }
@@ -62,9 +62,9 @@ Assume it is `30 April 2020`, you would set `deleted_at` to a date that is more 
 
 ```graphql
 mutation Delete {
-  model_update(
+  record_update(
     id: "3"
-    model: {
+    record: {
       deleted_at: "2020-03-15T14:28:48.153Z"
     }
   ) {
@@ -82,9 +82,9 @@ If you want to bring back a record, you can nullify `deleted_at` and this record
 
 ```graphql
 mutation Undelete {
-  model_update(
+  record_update(
     id: "3"
-    model: { deleted_at: null }
+    record: { deleted_at: null }
   ) {
     id
   }

@@ -1,0 +1,115 @@
+---
+converter: markdown
+metadata:
+  title: Persisting Data With Records
+  description: Build your custom data structure without any limitations with Tables.
+---
+
+Let's use the example to follow exactly what is happening at each stage of Table definition life cycle.
+
+## Step 1: Requirements
+
+I want to store my "todo list" in platformOS
+
+**Todo list:**
+
+| Task                 | Priority |
+|----------------------|----------|
+| Clean the apartment  | Low      |
+| Do the homework      | High     |
+
+
+## Step 2: Table File
+Create definition file in your project repository that will describe my Table:
+
+```bash
+touch app/schema/todo.yml
+```
+
+## Step 3: Definition of Table
+Using the editor of choice, add the definition of Table.
+
+The code below is the description of properties that Record will accept and the name of Table object that is used to identify the object.
+For a full list of Types that can be used visit [Property Types](/developer-guide/properties#property-types)
+
+```yaml
+name: todo
+properties:
+- name: task
+  type: string
+- name: priority
+  type: string
+```
+
+## Step 4: Sync/Deploy Table definition.
+
+At the moment of deploy pos-cli is asking platformOS if Table object with name `todo` already exists, if so it will be updated with given definition otherwise new object is created.
+
+You can verify this step with GraphQL query:
+
+```graphql
+{
+  admin_tables {
+    results {
+      name
+      properties {
+        name
+      }
+    }
+  }
+}
+```
+
+the result for that query depending on your instance state should be similar to:
+
+```json
+{
+  "data": {
+    "admin_tables": {
+      "results": [
+        {
+          "name": "todo",
+          "properties": [
+            {
+              "name": "task"
+            },
+            {
+              "name": "priority"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
+```
+
+## Step 5: Record Creation
+
+In [Building Contact Form With Record tutorial](/developer-guide/records/building-contact-form-with-record) you will learn in details how to create Records.
+
+## Step 6: Table change
+
+  As you know by now Records and Table objects are strictly related as the definition of properties allows for storing the data in platformOS backend systems.
+  Once you have data persisted within Record you need to be aware of how changes in Table affect your Record objects:
+
+  * **Table definition delete** - you can only delete your Table object if there is no related Record object. Use [records_delete_all](/api-reference/graphql/rootmutation.html) mutation to delete all related Record objects.
+
+      If you try to deploy with orphaned Record, you will get the following message:
+
+      ```bash
+      Cannot delete record because of dependent record of type: todo
+      Use the mutation below to remove dependent objects:
+      mutation { records_delete_all(table: "todo") { count } }
+      ```
+  * **name change** - as platformOS detects Table definition by its name, if you change it is equal with adding new Table, please note that Record objects are not automatically migrated and will be treated as orphaned with next deploy attempt, as described in the error message above.
+  * **add new Table property** - adding new properties is a valid change that does not need additional actions, the data remains untouched.
+  * **delete of Table property** - deletion of the property is a valid change, data stored in related Record properties will remain saved but will not be accessible. Use migration to remove the data prior to the change.
+  * **property edition** - is a valid change and is equal to the removal of property with old name and creation of new property, data is not migrated.
+
+
+## Step 7: Mutations
+
+What you have done in steps 2, 3 and 4 can be done with [admin_table_create](/api-reference/graphql/rootmutation.html) mutation.
+In your platformOS instance, the result would be exactly the same, but you can now create CMS system where the user can define their own records with a few clicks in the user interface.
+Please note that the same rules apply for Table deletion as when you delete it with pos-cli

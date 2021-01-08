@@ -1,11 +1,11 @@
 ---
 converter: markdown
 metadata:
-  title: Building a Contact Form with Models
-  description: This guide will help you understand the process of building a contact form backed up with Model.
+  title: Building a Contact Form with Records
+  description: This guide will help you understand the process of building a contact form backed up with Record.
 ---
 
-This guide will help you understand the process of building a contact form backed up with Model. Whenever you need to build a simple contact form, blog functionality, or complex API endpoint, you can define any data structure you need with Models.
+This guide will help you understand the process of building a contact form backed up with Record. Whenever you need to build a simple contact form, blog functionality, or complex API endpoint, you can define any data structure you need with Records.
 
 ## Requirements
 
@@ -17,15 +17,15 @@ This guide will help you understand the process of building a contact form backe
 
 ## Steps
 
-Building a Contact Form with Models is a nine-step process:
+Building a Contact Form with Records is a nine-step process:
 
 <div data-autosteps></div>
 
-### Step 1: Define Contact &ndash; Model Schema
+### Step 1: Define Contact &ndash; Table
 
-To define a new Model Schema, use YAML files placed in the `model_schemas` directory. In the key-value format, you can define a name for your Model, and an array of Properties for the Model object. To build a Contact Form, you'll need email, name, and description attributes on the Model that you can call a `contact`.
+To define a new Table, use YAML files placed in the `schema` directory. In the key-value format, you can define a name for your Record, and an array of Properties for the Record object. To build a Contact Form, you'll need email, name, and description attributes on the Record that you can call a `contact`.
 
-##### app/model_schemas/contact.yml
+##### app/schema/contact.yml
 
 ```yaml
 name: contact
@@ -38,7 +38,7 @@ properties:
   type: string
 ```
 
-The basic Configuration of the Model consists of a name and the list of Properties. In the example above, you have defined three attributes of type `string`.
+The basic Configuration of the Record consists of a name and the list of Properties. In the example above, you have defined three attributes of type `string`.
 
 For more information on Properties please visit the [Properties Documentation](/developer-guide/properties/properties/).
 
@@ -72,13 +72,13 @@ The above definition allows name, email, and description attributes and defines 
 
 ### Step 3: Fetch saved data with GraphQL
 
-Now that you have created the `Contact` Model Schema in the previous step, you can proceed to fetch this data with GraphQL. To define get_contacts query, create file `get_contacts.graphql` file in `graphql` directory.
+Now that you have created the `Contact` Table in the previous step, you can proceed to fetch this data with GraphQL. To define get_contacts query, create file `get_contacts.graphql` file in `graphql` directory.
 
 ```graphql
 query get_contacts($id: ID) {
-  models(
+  records(
     filter: {
-      model_schema_name: { value: "modules/contacts/contact" },
+      table: { value: "modules/contacts/contact" },
       id: { value: $id }
     },
     per_page: 100
@@ -96,7 +96,7 @@ query get_contacts($id: ID) {
 To check if the above query works properly you can head to the next section to learn how to embed query results with page view or use [pos-cli gui](/developer-guide/graphql/developing-graphql-queries-using-graphiql)
 
 
-### Step 4: Render Models within page
+### Step 4: Render Records within page
 
 Display contacts as a list with the possibility to get to the contact details view.
 As a first step, you need a page that will respond to given paths:
@@ -114,9 +114,9 @@ Page slug for the above URL map will simply be `contacts` as the ID passed in th
 {%- graphql g = "modules/contacts/get_contacts", id: id -%}
 
 {%- if id == blank -%}
-  {% include 'modules/contacts/contacts/list', contacts: g.models.results %}
+  {% include 'modules/contacts/contacts/list', contacts: g.records.results %}
 {%- else -%}
-  {% include 'modules/contacts/contacts/show', contact: g.models.results.first %}
+  {% include 'modules/contacts/contacts/show', contact: g.records.results.first %}
 {%- endif -%}
 {% endraw %}
 ```
@@ -156,7 +156,7 @@ Page slug for the above URL map will simply be `contacts` as the ID passed in th
 
 ### Step 5: Build Contact Form with HTML
 
-In Step 2: Define Contact Form-Data Creation, you have created a form file called `contact_form`, that configures the form object. This was a minimal example to allow sending requests to our API endpoint, and create Model objects. Now you can extend this file with HTML, that renders the form to our users. The HTML part of the file comes after the configuration part, i.e. after the closing `---` tag.
+In Step 2: Define Contact Form-Data Creation, you have created a form file called `contact_form`, that configures the form object. This was a minimal example to allow sending requests to our API endpoint, and create Record objects. Now you can extend this file with HTML, that renders the form to our users. The HTML part of the file comes after the configuration part, i.e. after the closing `---` tag.
 
 ```yaml
 ---
@@ -218,7 +218,7 @@ To display the form on the previously created `contacts` page you have to includ
 {% endraw %}
 ```
 
-As a result, you should be able to create Model objects, called Contact with simple form submission, and list them after fetching with GraphQL.
+As a result, you should be able to create Record objects, called Contact with simple form submission, and list them after fetching with GraphQL.
 
 ### Step 6: Delete contact
 
@@ -282,7 +282,7 @@ to: '{{ form.properties.email }}'
 {% endraw %}
 ```
 
-All request parameters are now accessible in `form.model` object, so you can compose any email you want. Next step is linking `contact_notification` in the `contact_form` by adding to form configuration inside `forms/contact_form.liquid` file.
+All request parameters are now accessible in `form.record` object, so you can compose any email you want. Next step is linking `contact_notification` in the `contact_form` by adding to form configuration inside `forms/contact_form.liquid` file.
 
 ```yaml
 email_notifications:
@@ -301,7 +301,7 @@ To play with a live example (in much fuller form and with additional information
 
 ## Next steps
 
-Congratulations! You have learned how to build forms with Model. You can now explore our reference documentation for Properties and Model Schemas:
+Congratulations! You have learned how to build forms with Record. You can now explore our reference documentation for Properties and Tables:
 
 * [Properties](/developer-guide/properties/properties)
-* [Models and Model Schemas](/developer-guide/models/models-model-schemas)
+* [Records and Tables](/developer-guide/records/records-record-schemas)

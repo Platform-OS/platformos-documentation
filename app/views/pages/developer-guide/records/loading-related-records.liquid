@@ -1,34 +1,34 @@
 ---
 converter: markdown
 metadata:
-  title: Loading Related Models
-  description: This guide will help you load related models while avoiding n+1.
+  title: Loading Related Records
+  description: This guide will help you load related records while avoiding n+1.
 ---
 
-This guide will help you load related models while avoiding n+1. n+1 queries slow down the process, because displaying each record produces a request for another model.
+This guide will help you load related records while avoiding n+1. n+1 queries slow down the process, because displaying each record produces a request for another record.
 
 ## Requirements
 
-This is an advanced tutorial. To follow it, you should be familiar with basic platformOS concepts, the topics in the Get Started section, Model Schemas, and Properties. For testing, you should be familiar with measuring the execution time of Liquid code fragments using the time_diff filter.
+This is an advanced tutorial. To follow it, you should be familiar with basic platformOS concepts, the topics in the Get Started section, Tables, and Properties. For testing, you should be familiar with measuring the execution time of Liquid code fragments using the time_diff filter.
 
 * [platformOS Workflow](/developer-guide/platformos-workflow/development-workflow)
 * [Get Started](/get-started)
-* [Models and Model Schemas](/developer-guide/models/models-model-schemas)
+* [Records and Tables](/developer-guide/records/records-record-schemas)
 * [Properties](/developer-guide/properties/properties)
 * [Measuring Execution Time of Liquid Code Fragments (time_diff)](/best-practices/backend-performance/measuring-execution-time-liquid-time-diff)
 
 ## Steps
 
-The guide's sample scenario walks you through two different approaches to demonstrate the difference between the naive and the recommended approach. **When implementing related models, use the second, recommended approach.**
+The guide's sample scenario walks you through two different approaches to demonstrate the difference between the naive and the recommended approach. **When implementing related records, use the second, recommended approach.**
 
-Loading related models in this demonstrative scenario is a five-step process:
+Loading related records in this demonstrative scenario is a five-step process:
 
 <div data-autosteps></div>
 
-### Step 1: Create models
-The data schema in this scenario consists of two models: `company` and `programmer`. The programmer model has a `company_id` property which references a corresponding company model [foreign key].
+### Step 1: Create records
+The data schema in this scenario consists of two records: `company` and `programmer`. The programmer record has a `company_id` property which references a corresponding company record [foreign key].
 
-##### app/model_schemas/company.yml
+##### app/schema/company.yml
 
 ```yaml
 name: company
@@ -41,7 +41,7 @@ properties:
   type: string
 ```
 
-##### app/model_schemas/programmer.yml
+##### app/schema/programmer.yml
 
 ```yaml
 name: programmer
@@ -86,17 +86,17 @@ The goal is to load programmers' data along with related company by joining prog
 | programmer-7@example.com | senior           | Company #8   | company-8.com |
 
 
-### Step 2: Load related model for each record (not recommended)
+### Step 2: Load related record for each record (not recommended)
 In this approach, you use two GraphQL queries:
 
 ##### app/graphql/programmers.grapqhl
 
 ```graphql
 query programmers {
-  programmers: models(
+  programmers: records(
     per_page: 20,
     filter: {
-      model_schema_name: { value: "programmer" }
+      table: { value: "programmer" }
     }
   ) {
     total_entries
@@ -111,15 +111,15 @@ query programmers {
 
 ```graphql
 query company($id: ID) {
-  companies: models(
+  companies: records(
     per_page: 20,
     filter: {
-      model_schema_name: { value: "company" },
+      table: { value: "company" },
       id: { value: $id }
     }
   ) {
     results {
-      model_schema_name
+      table
       id
       deleted_at
       properties
@@ -128,7 +128,7 @@ query company($id: ID) {
 }
 ```
 
-While displaying the programmer collection — for each programmer record — you fetch the related company model using the `company` GraphQL query:
+While displaying the programmer collection — for each programmer record — you fetch the related company record using the `company` GraphQL query:
 
 ```liquid
 {% raw %}
@@ -161,14 +161,14 @@ Test the approach described in step 2. The results of [Measuring Execution Time 
 |               | 1314.053 |
 
 
-The results show that this approach produces slow output. The n+1 queries slow down the process, because displaying each record produces a request for another model.
+The results show that this approach produces slow output. The n+1 queries slow down the process, because displaying each record produces a request for another record.
 
-### Step 4: Request data from related model within GraphQL query (recommended)
+### Step 4: Request data from related record within GraphQL query (recommended)
 
-To avoid n+1 queries, request company data within the `programmers` GraphQL query. Load related data at once along with the programmer collection using new GraphQL field called `related_model`.
+To avoid n+1 queries, request company data within the `programmers` GraphQL query. Load related data at once along with the programmer collection using new GraphQL field called `related_record`.
 
 ```graphql
-related_model(join_on_property: "company_id") { properties }
+related_record(join_on_property: "company_id") { properties }
 ```
 
 `join_on_property` argument is required and is used as a foreign key of the company collection. In SQL language this could look similarly:
@@ -181,16 +181,16 @@ and after updating your GraphQL query would look like this:
 
 ```graphql
 query programmers {
-  programmers: models(
+  programmers: records(
     filter: {
-      model_schema_name: { value: "programmer" }
+      table: { value: "programmer" }
     },
     per_page: 200
   ) {
     total_entries
     results {
       properties
-      company: related_model(model_schema_name: "company", join_on_property: "company_id") {
+      company: related_record(table: "company", join_on_property: "company_id") {
         url: property(name: "url")
         properties
       }
@@ -222,13 +222,13 @@ Test the second approach using the same measurement method. The results:
 
 |                 | overall |
 |-----------------|---------|
-| benchmark-model | 122.504 |
+| benchmark-record | 122.504 |
 |                 | 160.885 |
 |                 | 134.064 |
 |                 | 160.051 |
 |                 | 131.056 |
 
-Requesting data from the related model within the GraphQL query delivers results 10 times faster.
+Requesting data from the related record within the GraphQL query delivers results 10 times faster.
 
 ## Live example and source code
 

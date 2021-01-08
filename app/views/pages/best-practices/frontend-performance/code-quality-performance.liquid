@@ -106,8 +106,5 @@ Avoid 3rd party javascript code if possible - it can cause data leaks, MiTM atta
 * Cache everything that you can, like pages or fragments. platformOS provides excellent [tools for caching](/best-practices/backend-performance/static-cache), and they can make your webpage blazingly fast. You have huge flexibility in that regard, experiment and take advantage of it.
 * Lazy-load: Using front-end and back-end techniques (AJAX and pages respectively) you can prevent a page from being blocked for too long on the TTFB phase until you figure out a proper fix for your long-running blocks of code.
 * Asynchronous calls: Using our background job mechanisms (like [async callbacks](/developer-guide/forms/form-configuration#async_callback_actions) or [API call notifications](/developer-guide/notifications/creating-api-call-notification)) you can perform actions in the background without blocking the main thread (http request → response flow) which allows you to architect your application in a much more performant way than in the standard synchronous paradigm.
-* Lack of n+1: Observe your DB queries closely. Use profiler, logs, and the time_diff filter to measure the timing of your code block executions to find bottlenecks and remove them. We introduced [related models](/developer-guide/custom-model-types/loading-related-models) in platformOS to make your life easier when it comes to removing n+1 issues.
+* Lack of n+1: Observe your DB queries closely. Use profiler, logs, and the time_diff filter to measure the timing of your code block executions to find bottlenecks and remove them. We introduced [related records](/developer-guide/records/loading-related-records) in platformOS to make your life easier when it comes to removing n+1 issues.
 * Pull exactly what you need from the DB using GraphQL — and nothing more. Keep your queries tidy. As a side effect, this will make your partial caching easier.
-
-
-
