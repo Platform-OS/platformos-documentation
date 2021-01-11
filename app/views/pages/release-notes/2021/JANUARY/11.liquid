@@ -1,0 +1,31 @@
+---
+converter: markdown
+metadata:
+  title: Multiple improvements across various features
+  description: December 07, 2020
+  skip_contribute_button: true
+  last_edit: false
+slug: release-notes/11-JANUARY-2021
+---
+
+#### {{ page.metadata.description }}
+
+<h4 class="release-note release-note__new">NEW</h4>
+
+* platformOS cookie is marked as secure
+* preview of a public interface for checking data modifications (User, Record) with `admin_versions` — currently it displays changes during the last 7 days.
+* added new `is_json_valid` filter
+* added support for Sendgrid unique arguments to EmailNotification
+* added admin_pages_delete_all mutation
+
+<h4 class="release-note release-note__improved">IMPROVED</h4>
+
+* possibility to put Table definitions (old ModelSchema) in the `app/schema` directory
+* performance of querying for total number of records, without returning actual records
+* `function` tag now has access to the `context` variable by default
+* `pos-cli sync` by default now uploads assets directly to S3
+* YAML parser now allows three dashes as a value of a field
+* removed ambiguity when selecting Instances to copy in the Partner Portal
+* error message when providing invalid credentials to pos-cli now clearly states the login or password is invalid
+* renaming Model to Record and ModelSchema to Table, along with adding corresponding GraphQL queries and mutations
+* allow to filter pages by `deleted_at` in `admin_pages` mutation
