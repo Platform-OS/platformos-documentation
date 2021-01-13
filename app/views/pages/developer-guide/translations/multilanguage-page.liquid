@@ -192,6 +192,34 @@ Hello John. Take a look at my website: https://documentation.platformos.com
 Czesc Pawel. Zerknij na moja strone www: https://platform-os.com
 ```
 
+## Pluralization
+
+In many languages — including English — there are only two forms, a singular and a plural, for a given string, e.g. "1 message" and "2 messages". Other languages (Arabic, Japanese, Russian and many more) have different grammars that have additional or fewer plural forms. Thus, the `t` provides a flexible pluralization feature.
+
+The `count` interpolation variable has a special role in that it both is interpolated to the translation and used to pick a pluralization from the translations according to the pluralization rules defined in the pluralization backend. By default, only the English pluralization rules are applied.
+
+If you set this to your lanuge file:
+
+```yml
+about_x_item:
+  one: 'One item'
+  other: '%{count} items'
+```
+than
+
+```liquid
+{% raw %}
+{{ 'about_x_item' | t: count: 12 }}
+{{ 'about_x_item' | t: count: 1 }}
+{% endraw %}
+```
+renders
+
+```
+12 items
+One item
+```
+
 ### Live example and source code
 
 Compilation of all examples above:
