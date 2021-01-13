@@ -11,7 +11,29 @@ English is the default language.
 
 If there is a `language` query param in the URL, it will respect its value. For example `/contact?language=de`.
 
-The language can also be set in [`context.session`](/developer-guide/variables/context-variable#context-session).
+The language can also be set in [`context.session`](/developer-guide/variables/context-variable#context-session) and you can modify it with `?language=` param.
+
+## Switching between laguages
+
+You can check and set the language to switch with the following code:
+
+```liquid
+{% raw %}
+{% liquid
+  assign language_switch_url = context.localtion.pathname
+  assign language_icon = 'language-pl'
+  if context.session.language == 'pl'
+    assign language_switch_url = language_switch_url | append: '?language=en'
+    assign language_icon = 'language-en'
+  else
+    assign language_switch_url = language_switch_url | append: '?language=pl'
+  endif
+%}
+<a href="{{ language_switch_url }}" aria-label="Change language">
+  {%- include "svg/icons", icon: language_icon -%}
+</a>
+{% endraw %}
+```
 
 ## Simple usage
 
