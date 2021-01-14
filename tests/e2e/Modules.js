@@ -72,7 +72,7 @@ test('Deep linking is working with utf8 characters in the heading id/href', asyn
   const heading = await Selector('#step-2-define-contact-form-–-form-object');
 
   await t.navigateTo(
-    '/developer-guide/records/building-contact-form-with-model#step-2-define-contact-form-–-form-object'
+    '/developer-guide/records/building-contact-form-with-records#step-2-define-contact-form-–-form-object'
   );
 
   await t.expect(await heading.exists).ok();
