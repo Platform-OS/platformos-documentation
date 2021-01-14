@@ -1,11 +1,11 @@
 ---
 converter: markdown
 metadata:
-  title: Loading Related Models From an Array Property
-  description: This guide will help you load related models from array property while avoiding n+1.
+  title: Loading Related Records From an Array Property
+  description: This guide will help you load related records from array property while avoiding n+1.
 ---
 
-The `related models` graphql argument can be a really powerful tool that allows you to quickly build flexible structures.
+The `related records` graphql argument can be a really powerful tool that allows you to quickly build flexible structures.
 Using `foreign_property` along with `join_on_property` you can define relationships on the fly and load any nested data within a single query.
 
 We extended the scope of the `join_on_property` and now it also accepts and resolves queries with the property of array type.
@@ -24,21 +24,21 @@ You need to figure out something better - you need an extra structure.
 
 ## Requirements
 
-This is an advanced tutorial. To follow it, you should be familiar with Model Schemas, Properties, and Loding Related Models
+This is an advanced tutorial. To follow it, you should be familiar with Tables, Properties, and Loding Related Records
 
-* [Models and Model Schemas](/developer-guide/models/models-model-schemas)
+* [Records and Tables](/developer-guide/records/records-record-schemas)
 * [Properties](/developer-guide/properties/properties)
-* [Loading Related Models](/developer-guide/models/loading-related-models)
+* [Loading Related Records](/developer-guide/records/loading-related-records)
 
 ## Steps
 
-Loading related models form an array property following this scenario is a four-step process:
+Loading related records form an array property following this scenario is a four-step process:
 
 <div data-autosteps></div>
 
-### Step 1: Create model type
+### Step 1: Create record type
 
-Create a special model type `ranking`.
+Create a special record type `ranking`.
 
 ```graphql
 name: ranking
@@ -64,13 +64,13 @@ It consists of three properties of the type array which will serve as cache cont
 
 ### Step 2: Create first record
 
-Now create the first record of the `ranking` model schema that executes the following query:
+Now create the first record of the `ranking` record schema that executes the following query:
 
 ```graphql
 mutation createRanking {
-  model_create(
-    model: {
-      model_schema_name: "ranking"
+  record_create(
+    record: {
+      table: "ranking"
     }
   ) {
     id
@@ -83,10 +83,10 @@ mutation createRanking {
 You are now ready to populate the ranking record.
 
 ```graphql
-mutation updateModel($companies: [String], $vips: [String], $featured: [String]) {
-  model_update(
+mutation updateRecord($companies: [String], $vips: [String], $featured: [String]) {
+  record_update(
     id: 167655
-    model: {
+    record: {
       properties: [
         {
           name: "company_ids",
@@ -110,10 +110,10 @@ mutation updateModel($companies: [String], $vips: [String], $featured: [String])
 Alternatively, you can add a single ID to a specific field with the following query:
 
 ```graphql
-mutation updateModel($name: String!, $id: String) {
-  model_update(
+mutation updateRecord($name: String!, $id: String) {
+  record_update(
     id: 167655
-    model: {
+    record: {
       properties: [
         { name: $name, array_append: $id }
       ]
@@ -132,7 +132,7 @@ Finally you are ready to fetch the ranking record.
 
 ```graphql
 query rankings {
-  rankings: models(
+  rankings: records(
     per_page: 1,
     sort: {
       created_at: { order: DESC }
@@ -142,26 +142,26 @@ query rankings {
     }
   ) {
     results {
-      vips: related_models(
+      vips: related_records(
         join_on_property: "vip_programmer_ids",
         foreign_property: "id",
-        model_schema_name:"programmer"
+        table:"programmer"
       ) {
         name: property(name: "name")
       }
 
-      featured: related_models(
+      featured: related_records(
         join_on_property: "featured_programmer_ids",
         foreign_property: "id",
-        model_schema_name:"programmer"
+        table:"programmer"
       ) {
         name: property(name: "name")
       }
 
-      companies: related_models(
+      companies: related_records(
         join_on_property: "company_ids",
         foreign_property: "id",
-        model_schema_name:"company"
+        table:"company"
       ) {
         name: property(name: "name")
       }

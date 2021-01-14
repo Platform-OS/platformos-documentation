@@ -27,7 +27,7 @@ After installing the Blog Module, you can add your first blog post (and edit all
 {% include 'alert/tutorial', content: 'Follow our <a href="/developer-guide/blog/blog-post-form">step-by-step tutorial to add a blog post to your blog</a>.' %}
 
 ## Architecture
-The platformOS Blog is built entirely on Models, so its architecture can be easily modified. Not only is it possible to alter core module features &ndash; it&apos;s very simple to add new ones.
+The platformOS Blog is built entirely on Records, so its architecture can be easily modified. Not only is it possible to alter core module features &ndash; it&apos;s very simple to add new ones.
 
 The Blog Module enables you to set up two different types of blogs:
 
@@ -42,7 +42,7 @@ Out of the box, there are two Model Schemas at the core of the Blog Module:
 
 By editing the generated configuration files, you can easily alter or add Attributes of Model Schemas.
 
-{% include 'alert/concept', content: 'Learn more about <a href="/developer-guide/models/models-model-schemas">Model Schemas</a> and <a href="/developer-guide/blog/blog-model-schemas">Blog Model Schemas</a>.' %}
+{% include 'alert/concept', content: 'Learn more about <a href="/developer-guide/records/records-tables">Model Schemas</a> and <a href="/developer-guide/blog/blog-model-schemas">Blog Model Schemas</a>.' %}
 
 ### Settings and posts
 Blog settings and posts are fetched with GraphQL queries. The flexibility of GraphQL helps you implement any search functionality you need. Every property added to the configuration will be available to add to the installed queries.
@@ -157,6 +157,6 @@ Analytics for the main blog and user blogs are the same (as they are ultimately 
 
 ### Content migration
 
-We are working on import scripts for external blog engines. We’ve started with importing blog content from Hubspot, and although it currently works on our servers only, it was a great proof of concept that showed how easily we can import external blog content from various sources. We are going to build a bulk create/update endpoint for Models that will enable our Channel Partners to build any import that is needed (e.g. Adobe Business Catalyst, Medium, Wordpress).
+We are working on import scripts for external blog engines. We’ve started with importing blog content from Hubspot, and although it currently works on our servers only, it was a great proof of concept that showed how easily we can import external blog content from various sources. We are going to build a bulk create/update endpoint for Records that will enable our Channel Partners to build any import that is needed (e.g. Adobe Business Catalyst, Medium, Wordpress).
 
 {% include 'shared/want_to_learn_more_section' %}

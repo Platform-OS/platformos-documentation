@@ -82,17 +82,17 @@ default_payload: |-
 ```
 {% endraw %}
 
-The configuration part of the form defines the API endpoint where the server listens to specific requests and invokes all actions defined in the form. The implementation part is what is displayed as HTML to your user. It is optional because sometimes you will only want to configure the server and the request will come from another source like in the example form tutorial: [Building a Contact Form with Models](/developer-guide/models/building-contact-form-with-model#step-2-define-contact-form-–-form-object). For more information about the implementation part head to the [Rendering Form](/developer-guide/forms/form-rendering) tutorial.
+The configuration part of the form defines the API endpoint where the server listens to specific requests and invokes all actions defined in the form. The implementation part is what is displayed as HTML to your user. It is optional because sometimes you will only want to configure the server and the request will come from another source like in the example form tutorial: [Building a Contact Form with Records](/developer-guide/records/building-contact-form-with-records#step-2-define-contact-form-–-form-object). For more information about the implementation part head to the [Rendering Form](/developer-guide/forms/form-rendering) tutorial.
 
 
 ## Required form configuration options
 
 ### resource
-Either the name of your Model Schema or [User](/developer-guide/users/users)</a>.
+Either the name of your Table or [User](/developer-guide/users/users)</a>.
 
 Examples:
 
-* [Minimal form example](/developer-guide/forms/forms#minimal-form-example) shows the example of **dynamic resource** based on Model Schema
+* [Minimal form example](/developer-guide/forms/forms#minimal-form-example) shows the example of **dynamic resource** based on Table
 
 * [Creating a Sign-Up Form](/developer-guide/users/creating-sign-up-form#step-2-configure-forms) shows the **predefined class resource** example.
 
@@ -239,7 +239,7 @@ Available values are:
 | Resource | Available resource owners |
 |---|---|
 | User | self, anyone |
-| Model | creator, anyone |
+| Record | creator, anyone |
 
 This is very useful when you want to restrict user permissions to modify only records that were previously created by that user.
 
