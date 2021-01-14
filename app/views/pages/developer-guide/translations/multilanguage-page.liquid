@@ -11,7 +11,29 @@ English is the default language.
 
 If there is a `language` query param in the URL, it will respect its value. For example `/contact?language=de`.
 
-The language can also be set in [`context.session`](/developer-guide/variables/context-variable#context-session).
+The language can also be set in [`context.session`](/developer-guide/variables/context-variable#context-session) and you can modify it with `?language=` param.
+
+## Switching between laguages
+
+You can check and set the language to switch using the following code:
+
+```liquid
+{% raw %}
+{% liquid
+  assign language_switch_url = context.localtion.pathname
+  assign language_icon = 'language-pl'
+  if context.session.language == 'pl'
+    assign language_switch_url = language_switch_url | append: '?language=en'
+    assign language_icon = 'language-en'
+  else
+    assign language_switch_url = language_switch_url | append: '?language=pl'
+  endif
+%}
+<a href="{{ language_switch_url }}" aria-label="Change language">
+  {%- include "svg/icons", icon: language_icon -%}
+</a>
+{% endraw %}
+```
 
 ## Simple usage
 
@@ -168,6 +190,34 @@ Hello John. Take a look at my website: https://documentation.platformos.com
 
 ```liquid
 Czesc Pawel. Zerknij na moja strone www: https://platform-os.com
+```
+
+## Pluralization
+
+In many languages — including English — there are only two forms, a singular and a plural, for a given string, e.g. "1 message" and "2 messages". Other languages (Arabic, Japanese, Russian and many more) have different grammars that have additional or fewer plural forms. Thus, the `t` provides a flexible pluralization feature.
+
+The `count` interpolation variable has a special role in that it both is interpolated to the translation and used to pick a pluralization from the translations according to the pluralization rules defined in the pluralization backend. By default, only the English pluralization rules are applied.
+
+If you set this to your language file:
+
+```yml
+about_x_item:
+  one: 'One item'
+  other: '%{count} items'
+```
+then
+
+```liquid
+{% raw %}
+{{ 'about_x_item' | t: count: 12 }}
+{{ 'about_x_item' | t: count: 1 }}
+{% endraw %}
+```
+renders
+
+```
+12 items
+One item
 ```
 
 ### Live example and source code
