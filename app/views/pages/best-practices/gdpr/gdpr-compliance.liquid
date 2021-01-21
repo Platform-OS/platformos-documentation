@@ -100,9 +100,9 @@ If you are using a third-party email provider for newsletter subscription or a c
 
 This is some example code of a simple opt-in newsletter subscription form and an unsubscribe form implemented in platformOS.
 
-Model Schema
+Table
 
-##### app/model_schemas/newsletter.yml
+##### app/schema/newsletter.yml
 
 ```yaml
 name: Newsletter
@@ -183,7 +183,7 @@ query get_newsletter(
   $email: String
 )
 {
-  models (
+  records (
     filter: {
       name: { exact: "newsletter" }
       properties: [

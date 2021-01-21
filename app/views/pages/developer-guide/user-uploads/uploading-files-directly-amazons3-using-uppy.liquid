@@ -25,7 +25,7 @@ Uploading images directly to Amazon S3 is a four-step process:
 
 There will be only one property in Table used in this example (photo), but it will generate 4 different versions of the image uploaded by the user. Apart from explicitly defined versions, there is also an `original` version that is always there.
 
-##### modules/direct_s3_upload/public/model_schemas/uppy.yml
+##### modules/direct_s3_upload/public/schema/uppy.yml
 
 ```yml
 name: uppy
@@ -78,7 +78,7 @@ properties:
 
 ### Step 2: Get presign data and expose it using a form
 
-To upload a file to AWS S3 directly, you will need the server-generated data called signature. This information is from GraphQL. It takes `model_schema_name` and `property_name` as arguments. Other options like versions, content_length, ACL are taken from property configuration.
+To upload a file to AWS S3 directly, you will need the server-generated data called signature. This information is from GraphQL. It takes `table` and `property_name` as arguments. Other options like versions, content_length, ACL are taken from property configuration.
 
 ##### modules/direct_s3_upload/public/views/pages/images.liquid
 
@@ -90,7 +90,7 @@ slug: direct-s3-upload/images
 
 {% graphql data %}
 mutation presign {
-  property_upload_presigned_url(model_schema_name: "modules/direct_s3_upload/uppy", property_name: "my_upload") {
+  property_upload_presigned_url(table: "modules/direct_s3_upload/uppy", property_name: "my_upload") {
       upload_url
       upload_url_payload
     }
@@ -151,7 +151,7 @@ However, before you can use any scripts, you need to load them.
 {% raw %}<script src="{{ 'modules/direct_s3_upload/images.js' | asset_url }}" defer></script> {% endraw %}
 ```
 
-This is the final `images.js` file, responsible for uploading the image, logging its URL, creating the model, and showing the confirmation box.
+This is the final `images.js` file, responsible for uploading the image, logging its URL, creating the record, and showing the confirmation box.
 
 ##### modules/direct_s3_upload/public/assets/images.js
 
@@ -203,7 +203,7 @@ uppy.on('upload-success', (_file, data) => {
 uppy.on('complete', ({ failed, successful }) => {
   /*
     For every successfully uploaded image to S3, send request to the Instance
-    that will create a model with the uploaded image's URL as direct_url param.
+    that will create a record with the uploaded image's URL as direct_url param.
   */
   Promise.all(successful.map(({ response }) => createImage(response.body.location)))
   .then(() => {
@@ -229,8 +229,8 @@ const createImage = imageUrl => {
   // Get logged in user id
   const userId = _form.dataset.s3UppyUserId;
 
-  // Create model for this user with s3 image url
-  return fetch('/direct-s3-upload/images/model_create', {
+  // Create record for this user with s3 image url
+  return fetch('/direct-s3-upload/images/record_create', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -241,22 +241,22 @@ const createImage = imageUrl => {
 };
 ```
 
-### Step 4: Create page that will create the model with the image
+### Step 4: Create page that will create the record with the image
 
-For fetch to succeed, you need to create a page under the `/direct-s3-upload/images/model_create` path. It will execute the `model_create` mutation with params passed in the XHR request.
+For fetch to succeed, you need to create a page under the `/direct-s3-upload/images/record_create` path. It will execute the `record_create` mutation with params passed in the XHR request.
 
-##### modules/direct_s3_upload/public/views/pages/model_create.liquid
+##### modules/direct_s3_upload/public/views/pages/record_create.liquid
 
 {% raw %}
 ```liquid
 ---
-slug: direct-s3-upload/images/model_create
+slug: direct-s3-upload/images/record_create
 method: post
 ---
 {% if context.params.user_id %}
-  {% graphql model, direct_url: context.params.direct_url, user_id: context.params.user_id %}
-    mutation model_create($direct_url: String!, $user_id: ID!) {
-      model_create(model: {
+  {% graphql record, direct_url: context.params.direct_url, user_id: context.params.user_id %}
+    mutation record_create($direct_url: String!, $user_id: ID!) {
+      record_create(record: {
         custom_model_type_name: "modules/direct_s3_upload/uppy"
         user_id: $user_id
         properties: [{ name: "my_upload" value: $direct_url }]
@@ -265,7 +265,7 @@ method: post
       }
     }
   {% endgraphql %}
-  {{ model | fetch: "model_create" }}
+  {{ record | fetch: "record_create" }}
 {% endif %}
 ```
 {% endraw %}
@@ -276,17 +276,17 @@ method: post
 
 To check the results of image processing, get some of them from the database and display them.
 
-First you need a query to fetch models.
+First you need a query to fetch records.
 
-##### modules/direct_s3_upload/public/graph_queries/get_models.graphql
+##### modules/direct_s3_upload/public/graph_queries/get_records.graphql
 
 ```graphql
-query get_models($per_page: Int = 5, $user_id: ID!) {
-  models(
+query get_records($per_page: Int = 5, $user_id: ID!) {
+  records(
     per_page: $per_page
     sort: { created_at: { order: DESC } }
     filter: {
-      model_schema_name: { value: "modules/direct_s3_upload/uppy" },
+      table: { value: "modules/direct_s3_upload/uppy" },
       user_id: { value: $user_id }
     }
   ) {
@@ -309,9 +309,9 @@ Then you can use it to display images.
 {% raw %}
 ```liquid
 <!-- Get recently uploaded images for this user, in all versions -->
-{% graphql models = "modules/direct_s3_upload/get_models", user_id: context.current_user.id | dig: "models" %}
+{% graphql records = "modules/direct_s3_upload/get_records", user_id: context.current_user.id | dig: "records" %}
 
-{% if models.total_entries > 0 %}
+{% if records.total_entries > 0 %}
   <hr>
 
   <div class="my-2 row">
@@ -321,14 +321,14 @@ Then you can use it to display images.
   </div>
 
   <!-- Show all versions next to each other -->
-  {% for model in models.results %}
-    {% assign versions = model | dig: "my_upload", "versions" %}
+  {% for record in records.results %}
+    {% assign versions = record | dig: "my_upload", "versions" %}
     <div class="card my-4">
       <div class="card-body">
         <div class="row">
             <div class="col-sm-2">
               <h4>Original</h4>
-              <a href="{{ model.my_upload.url }}"><img src="{{ model.my_upload.url }}" alt="Original" width="150"></a>
+              <a href="{{ record.my_upload.url }}"><img src="{{ record.my_upload.url }}" alt="Original" width="150"></a>
             </div>
           {% for version in versions %}
             <div class="col-sm-2">

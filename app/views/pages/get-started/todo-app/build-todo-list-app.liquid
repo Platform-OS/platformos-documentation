@@ -74,7 +74,7 @@ app/
 │       ├── delete.graphql
 │       ├── read.graphql
 │       └── update.graphql
-├── model_schemas
+├── schema
 │   ├── item.yml
 │   └── list.yml
 └── views
@@ -93,9 +93,9 @@ app/
             └── update.liquid
 ```
 
-### Defining models
+### Defining Records
 
-To have a list, which contains items, you will need two models.
+To have a list, which contains items, you will need two Records.
 
 1. List, with a title
 2. Item, with content, completed status and list ID that specifies which list it belongs to
@@ -156,11 +156,11 @@ Hello world
 
 Now when you go to the root URL of your Instance, `Hello world` is displayed. Now you have a place to put your content.
 
-### Model schema
+### Tables
 
-To create an object in the Database you need to define its structure. In this case you need two models.
+To create an object in the Database you need to define its structure. In this case you need two Records.
 
-##### app/model_schemas/list.yml
+##### app/schema/list.yml
 
 ```yaml
 name: list
@@ -168,7 +168,7 @@ properties:
   - name: title
     type: string
 ```
-##### app/model_schemas/item.yml
+##### app/schema/item.yml
 
 ```yaml
 name: item
@@ -196,9 +196,9 @@ All database operations in this application follow the same structure and have t
 
 ```graphql
  mutation create($title: String!) {
-   model_create(
-     model: {
-       model_schema_name: "list"
+   record_create(
+     record: {
+       table: "list"
        properties: { name: "title", value: $title }
      }
    ) {
@@ -217,7 +217,7 @@ method: post
 {%- assign title = context.params.title -%}
 
 {% graphql result = 'list/create', title: title %}
-{% assign list = result | fetch: "model_create" %}
+{% assign list = result | fetch: "record_create" %}
 
 {% if list.id %}
 <script>window.location.href = '/list/show/{{ list.id }}';</script>
@@ -259,10 +259,10 @@ Now that you can create a list with a title, show 10 of them on your homepage, s
 
 ```graphql
  query index {
-   models(
+   records(
      per_page: 10
      filter: {
-       model_schema_name: { value: "list" }
+       table: { value: "list" }
        properties: { name: "title", exists: true }
      }
      sort: { updated_at: { order: DESC } }
@@ -279,7 +279,7 @@ Now that you can create a list with a title, show 10 of them on your homepage, s
 
 {% raw %}
 ```liquid
- {% graphql lists = 'index' | fetch: 'models' | fetch: 'results' %}
+ {% graphql lists = 'index' | fetch: 'records' | fetch: 'results' %}
 
  {% if lists.size > 0 %}
    <ol>
@@ -305,10 +305,10 @@ Now that you have a link pointing to {% raw %}`/list/show/{{ list.id }}`{% endra
 
 ```graphql
  query read($id: ID!) {
-   models(
+   records(
      per_page: 1
      filter: {
-       model_schema_name: { value: "list" }
+       table: { value: "list" }
        id: { value: $id }
      }
    ) {
@@ -325,7 +325,7 @@ Now that you have a link pointing to {% raw %}`/list/show/{{ list.id }}`{% endra
 {% raw %}
 ```liquid
  {%- assign id = context.params.slug3 -%}
- {% graphql list = 'list/read', id: id | fetch: 'models' | fetch: 'results' | first %}
+ {% graphql list = 'list/read', id: id | fetch: 'records' | fetch: 'results' | first %}
 
  <h2 class="mb-0 mr-10">{{ list.title }}</h2>
 ```
@@ -341,9 +341,9 @@ To rename a list, you need to update its title field. As usual, you need a Graph
 
 ```graphql
  mutation update($id: ID!, $title: String!) {
-   model_update(
+   record_update(
      id: $id
-     model: { properties: { name: "title", value: $title } }
+     record: { properties: { name: "title", value: $title } }
    ) {
      id
      title: property(name: "title")
@@ -364,7 +364,7 @@ Note that ID is required as well, because you have to tell the system which list
  {%- assign title = context.params.title -%}
 
  {% graphql result = 'list/update', id: id, title: title %}
- {% assign list = result | fetch: "model_update" %}
+ {% assign list = result | fetch: "record_update" %}
 
  {% if list.id %}
  <script>window.location.href = '/list/show/{{ id }}';</script>
@@ -405,7 +405,7 @@ Because you did not connect any tasks to your lists, all of them are empty. This
 
 ```graphql
  mutation delete($id: ID!) {
-   model_delete(id: $id) {
+   record_delete(id: $id) {
      id
    }
  }
@@ -421,7 +421,7 @@ Because you did not connect any tasks to your lists, all of them are empty. This
  {%- assign id = context.params.slug3 -%}
 
  {% graphql result = 'list/delete', id: id %}
- {% assign list = result | fetch: "model_delete" %}
+ {% assign list = result | fetch: "record_delete" %}
 
  {% if list.id %}
  <script>window.location.href = '/';</script>
@@ -465,9 +465,9 @@ Now that you have all your list operations ready, start handling items.
 
 ```graphql
  mutation create($list_id: String!, $content: String!) {
-   model_create(
-     model: {
-       model_schema_name: "item"
+   record_create(
+     record: {
+       table: "item"
        properties: [
          { name: "list_id", value: $list_id }
          { name: "content", value: $content }
@@ -492,7 +492,7 @@ Now that you have all your list operations ready, start handling items.
  {%- assign content = context.params.content -%}
 
  {% graphql result = 'item/create', list_id: list_id, content: content %}
- {% assign item = result | fetch: "model_create" %}
+ {% assign item = result | fetch: "record_create" %}
 
  {% if item.id %}
  <script>window.location.href = '/list/show/{{ list_id }}';</script>
@@ -528,9 +528,9 @@ To create a task attached to a list, you need the list's ID. It is passed in the
 
 ```graphql
  mutation update($id: ID!, $completed: Boolean!) {
-   model_update(
+   record_update(
      id: $id
-     model: {
+     record: {
        properties: [
          { name: "completed", value_boolean: $completed }
        ]
@@ -555,7 +555,7 @@ To create a task attached to a list, you need the list's ID. It is passed in the
    {% graphql result = 'item/update_completed', id: id, completed: completed %}
  {% endif %}
 
- {% assign item = result | fetch: "model_update" %}
+ {% assign item = result | fetch: "record_update" %}
 
  {% if item.id %}
  <script>window.location.href = '/list/show/{{ context.params.list_id }}';</script>
@@ -606,9 +606,9 @@ Additionally, you submit the form as soon as the user checks/unchecks the checkb
 
 ```graphql
  mutation update($id: ID!, $content: String!) {
-   model_update(
+   record_update(
      id: $id
-     model: {
+     record: {
        properties: [
          { name: "content", value: $content }
        ]
@@ -633,7 +633,7 @@ Additionally, you submit the form as soon as the user checks/unchecks the checkb
    {% graphql result = 'item_update_content', id: id, content: content %}
  {% endif %}
 
- {% assign item = result | fetch: "model_update" %}
+ {% assign item = result | fetch: "record_update" %}
 
  {% if item.id %}
  <script>window.location.href = '/list/show/{{ context.params.list_id }}';</script>
@@ -671,7 +671,7 @@ You might have noticed that the above filename is the same as in the one in the 
 
 ```graphql
  mutation delete($item_id: ID!) {
-   model_delete(id: $item_id) {
+   record_delete(id: $item_id) {
      id
    }
  }
@@ -688,7 +688,7 @@ You might have noticed that the above filename is the same as in the one in the 
  {%- assign list_id = context.params.list_id -%}
 
  {% graphql result = 'item_delete', item_id: item_id %}
- {% assign item = result | fetch: "model_delete" %}
+ {% assign item = result | fetch: "record_delete" %}
 
  {% if item.id %}
  <script>window.location.href = '/list/show/{{ list_id }}';</script>

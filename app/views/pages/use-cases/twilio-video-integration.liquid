@@ -108,23 +108,23 @@ Here, we were not creating another API Key(Secret) — we were just receiving a 
     {% endraw %}
     ```
 
-2. **Create a virtual model**
+2. **Create a virtual record**
 
-    To be able to submit a form you need to have a `model_schema` connected to it. In this case we do not need any data, so we can create what we call a `virtual_model` like below. This allows for a form with no data or properties to be submitted.
+    To be able to submit a form you need to have a `table` connected to it. In this case we do not need any data, so we can create what we call a `virtual_record` like below. This allows for a form with no data or properties to be submitted.
 
-    ##### app/model_schemas/virtual_model.yml
+    ##### app/schema/virtual_record.yml
     ```yaml
-    name: virtual_model
+    name: virtual_record
     ```
 
 3. **Create a form**
 
-    The simplest of forms, a button with a resource of our `virtual_model` schema and an `api_call_notification` that will be triggered on submit.
+    The simplest of forms, a button with a resource of our `virtual_record` schema and an `api_call_notification` that will be triggered on submit.
 
     ```yaml
     ---
     name: twilio_api_call
-    resource: virtual_model
+    resource: virtual_record
     api_call_notifications:
         - twilio_api_secret_create
     ---

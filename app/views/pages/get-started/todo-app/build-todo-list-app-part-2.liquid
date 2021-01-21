@@ -47,7 +47,7 @@ app/
 │       ├── delete.graphql
 │       ├── read.graphql
 │       └── update.graphql
-├── model_schemas
+├── schema
 │   ├── item.yml
 │   └── list.yml
 ├── emails
@@ -77,11 +77,11 @@ app/
             └── wrong_password.liquid
 ```
 
-### Step 1: Adding new properties to an existing model
+### Step 1: Adding new properties to an existing record
 
-Adding new properties to a model is identical to creating a new model. Add properties with types in your model definition and sync the file to the server.
+Adding new properties to a Record is identical to creating a new Record. Add properties with types in your Record definition and sync the file to the server.
 
-##### app/model_schemas/list.yml
+##### app/schema/list.yml
 
 ```diff
 name: list
@@ -94,11 +94,11 @@ name: list
 +  type: string
 ```
 
-To test if the properties have been added you can use GraphQL. We chose  the `admin_model_schemas` query to list attributes and their types of a given model_schema, in this type, the `list` schema.
+To test if the properties have been added you can use GraphQL. We chose  the `admin_tables` query to list attributes and their types of a given Table, in this type, the `list` schema.
 
 ```graphql
-query model_props {
-  admin_model_schemas(filter: {
+query record_props {
+  admin_tables(filter: {
     name: { value:"list" }
   }) {
     results {
@@ -117,7 +117,7 @@ Executing this query resulted in:
 ```json
 {
   "data": {
-    "admin_model_schemas": {
+    "admin_tables": {
       "results": [
         {
           "name": "list",
@@ -142,7 +142,7 @@ Executing this query resulted in:
 }
 ```
 
-Which means that the `password` and `email` fields have been added to the model schema.
+Which means that the `password` and `email` fields have been added to the Table.
 
 ### Step 2: Adding password protection
 
@@ -154,9 +154,9 @@ You need to adapt your list creation query to accept more arguments. Those field
 
 ```diff
 +mutation create($title: String!, $email: String, $password: String) {
-  model_create(
-    model: {
-      model_schema_name: "list"
+  record_create(
+    record: {
+      table: "list"
       properties: [
         { name: "title", value: $title }
 +       { name: "email", value: $email }
@@ -292,7 +292,7 @@ Now you need to handle checking the password for correctness and showing the lis
 
 ```diff
 {% raw %}
-{% graphql list = 'list/read', id: id | fetch: 'models' | fetch: 'results' | first %}
+{% graphql list = 'list/read', id: id | fetch: 'records' | fetch: 'results' | first %}
 
 {% if list.password.size > 0 %}
 +  {% if context.params.password == list.password %}

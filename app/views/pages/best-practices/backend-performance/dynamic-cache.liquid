@@ -74,9 +74,9 @@ Random Seed: {{ 5 | random_string }}
 
 ## Example 2
 
-You can cache a page depending on the last update of multiple models to invalidate the cache only when needed. This might be used to refresh page content after new products have been added to the store you manage.
+You can cache a page depending on the last update of multiple records to invalidate the cache only when needed. This might be used to refresh page content after new products have been added to the store you manage.
 
-##### app/views/pages/dynamic-models.liquid
+##### app/views/pages/dynamic-records.liquid
 
 ```liquid
 {% raw %}
@@ -84,48 +84,48 @@ You can cache a page depending on the last update of multiple models to invalida
 dynamic_cache:
   layout: true
   key: >
-    {%- graphql model = 'models_updated_at' | fetch: 'models' | fetch: 'results' | first -%}
-    {{ context.page.slug | append: model.updated_at }}
+    {%- graphql record = 'records_updated_at' | fetch: 'records' | fetch: 'results' | first -%}
+    {{ context.page.slug | append: record.updated_at }}
 ---
-{% graphql models = 'modules/caches/get_models' | fetch: 'models' | fetch: 'results' %}
+{% graphql records = 'modules/caches/get_records' | fetch: 'records' | fetch: 'results' %}
 
-This page cache will be invalidated when any of the `programmer` or `company` models changes or when this page is updated. Whichever comes first. <br>
+This page cache will be invalidated when any of the `programmer` or `company` records changes or when this page is updated. Whichever comes first. <br>
 
 Random string: {{ 18 | random_string }} <br>
 
 <ul>
-  {% for item in models %}
-    <li>[{{ item.updated_at }}] {{ item.model_schema_name }} - {{ item.email }}</li>
+  {% for item in records %}
+    <li>[{{ item.updated_at }}] {{ item.table }} - {{ item.email }}</li>
   {% endfor %}
 </ul>
 {% endraw %}
 ```
 
-##### app/graphql/get_models.graphql
+##### app/graphql/get_records.graphql
 
 ```graphql
-query models {
-  models(
+query records {
+  records(
     per_page: 3
     sort: { updated_at: { order: DESC } }
-    filter: { model_schema_name: { value_in: ["modules/n_plus_one/programmer", "modules/n_plus_one/company"] } }) {
+    filter: { table: { value_in: ["modules/n_plus_one/programmer", "modules/n_plus_one/company"] } }) {
     results {
       email: property(name: "email")
       updated_at
-      model_schema_name
+      table
     }
   }
 }
 ```
 
-##### app/graphql/models_updated_at.graphql
+##### app/graphql/records_updated_at.graphql
 
 ```graphql
-query models_updated_at {
-  models(
+query records_updated_at {
+  records(
     per_page: 1
     sort: { updated_at: { order: DESC } }
-    filter: { model_schema_name: { value_in: ["modules/n_plus_one/programmer", "modules/n_plus_one/company"] } }
+    filter: { table: { value_in: ["modules/n_plus_one/programmer", "modules/n_plus_one/company"] } }
   ) {
     results {
       updated_at
@@ -143,5 +143,5 @@ Authenticity token example:
 
 Records example:
 
-* [Source code](https://github.com/mdyd-dev/platformos-examples/blob/master/modules/caches/public/views/pages/dynamic-models.liquid)
-* [Live demo](https://examples.platform-os.com/dynamic-models)
+* [Source code](https://github.com/mdyd-dev/platformos-examples/blob/master/modules/caches/public/views/pages/dynamic-records.liquid)
+* [Live demo](https://examples.platform-os.com/dynamic-records)

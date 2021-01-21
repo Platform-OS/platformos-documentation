@@ -32,7 +32,7 @@ Direct S3 upload is a way for developers to deliver a faster experience for thei
 
 ## How it works
 
-Now let's look at how things are glued together in the case of platformOS. In order to start, create a property either in `user.yml` OR in your `<model_schema>.yml`. The property type is `upload`. You can use `options` to configure whether the file should be private or public, max file size, generated versions, etc.
+Now let's look at how things are glued together in the case of platformOS. In order to start, create a property either in `user.yml` OR in your `<table>.yml`. The property type is `upload`. You can use `options` to configure whether the file should be private or public, max file size, generated versions, etc.
 
 ### Upload
 
@@ -41,7 +41,7 @@ This is a high level description of what happens in a successful file upload flo
 <img loading="lazy" src="{{ 'images/developer-guide/user-uploads/flowchart-attachments.svg' | asset_url }}" alt="Diagram showing the Attachments flow. Steps detailed after image.">
 
 1. Application: Presign URL requested via GraphQL
-To be able to upload a file to S3, our server is creating a presigned URL. What you as a developer need to do is to get the URL using the `property_upload_presigned_url` mutation and point it to a model and property that it will be using. For example, you can define a model `documents` and property `resume` with type `upload` in `app/model_schemas/documents.yml`:
+To be able to upload a file to S3, our server is creating a presigned URL. What you as a developer need to do is to get the URL using the `property_upload_presigned_url` mutation and point it to a record and property that it will be using. For example, you can define a record `documents` and property `resume` with type `upload` in `app/schema/documents.yml`:
 
 ```yaml
 name: documents
@@ -59,7 +59,7 @@ properties:
 ```liquid
 {% graphql data %}
   mutation presign {
-    property_upload_presigned_url(model_schema_name: "documents", property_name: "resume") {
+    property_upload_presigned_url(table: "documents", property_name: "resume") {
       upload_url
       upload_url_payload
     }
@@ -77,16 +77,16 @@ properties:
   S3 will return status 204 and an XML response with the URL to the file on S3, if everything went well. Otherwise it will return status 4xx and the reason for the error in XML format.
 
 4. Browser: POST URL to application
-  Until now, platformOS doesn't know anything about the file that the user has been uploading. This step is meant to change that. Using any method you wish, you need to send the URL to the uploaded file to the application server. Because `file` is just an URL (string) property in a model, you update that property just like any other.
+  Until now, platformOS doesn't know anything about the file that the user has been uploading. This step is meant to change that. Using any method you wish, you need to send the URL to the uploaded file to the application server. Because `file` is just an URL (string) property in a record, you update that property just like any other.
 
 5. Application: Save URL to the database
-  After getting the URL to a file from the browser, usually you want this URL to be saved in a model for future reference. You store it the same way as any other string - if the property type is `upload`, we will do all the magic behind the scenes:
+  After getting the URL to a file from the browser, usually you want this URL to be saved in a record for future reference. You store it the same way as any other string - if the property type is `upload`, we will do all the magic behind the scenes:
 
 ```graphql
-mutation model_create($direct_url: String!) {
-  model_create(
-    model: {
-      model_schema_name: "documents"
+mutation record_create($direct_url: String!) {
+  record_create(
+    record: {
+      table: "documents"
       properties: [{ name: "resume" value: $direct_url }]
       }
   ) {
@@ -95,11 +95,11 @@ mutation model_create($direct_url: String!) {
 }
 ```
 
-When you need the URL to the file, as always, you need to use GraphQL and query for the model containing the property to get it using `property_upload`, for example:
+When you need the URL to the file, as always, you need to use GraphQL and query for the record containing the property to get it using `property_upload`, for example:
 
 ```graphql
 query get_documents {
-  models(per_page: 20 filter: { model_schema_name: { value: "documents" } }) {
+  records(per_page: 20 filter: { table: { value: "documents" } }) {
     results {
       my_upload: property_upload(name: "resume") { url }
     }

@@ -41,9 +41,9 @@ The table below lists available data types for Property configuration, that are 
 | upload    | Learn more in [User Uploads](/developer-guide/user-uploads/user-uploads)                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |                             |
 | string   | A UTF-8 character sequence                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | "Some String"               |
 
-## Grouping into models
+## Grouping into records
 
-You can group your Properties into [Custom Records](/developer-guide/records/records-tables).
+You can group your Properties into [Records](/developer-guide/records/records-tables).
 
 ### Form
 
@@ -80,11 +80,11 @@ For more information visit our [Form Builder Reference](/developer-guide/forms/f
 Properties depend on their parent objects and are accessible in the query after mapping the name of the Property with the query attribute name. You can do that with the family of `property` defined in (GraphQL PropertiesInterface)[/api-reference/graphql/propertiesinterface.html], for example:
 
 ```graphql
-query get_models {
-  models(
+query get_records {
+  records(
     per_page: 20,
     filter: {
-      model_schema_name: { value: "employee" }
+      table: { value: "employee" }
     }
   ) {
     results {
@@ -105,7 +105,7 @@ You can filter GraphQL results based on object properties values. All options ar
 
 ```graphql
 query get_all_johns {
-  models(
+  records(
     per_page: 20,
     filter: {
       properties: [{ name: "name", value: "John" }]
@@ -123,7 +123,7 @@ query get_all_johns {
 
 ```graphql
 query get_evrybody_except_johns {
-  models(
+  records(
     per_page: 20,
     filter: {
       properties: [{ name: "name", not_value: "John" }]
@@ -140,8 +140,8 @@ query get_evrybody_except_johns {
 
 
 ```graphql
-query get_all_models_with_age_14 {
-  models(
+query get_all_records_with_age_14 {
+  records(
     per_page: 20,
     filter: {
       properties: [{ name: "age", value_int: 14 }]
@@ -159,8 +159,8 @@ query get_all_models_with_age_14 {
 
 
 ```graphql
-query get_all_models_with_discount_twenty {
-  models(
+query get_all_records_with_discount_twenty {
+  records(
     per_page: 20,
     filter: {
       properties: [{ name: "discount", value_float: 0.2 }]
@@ -178,8 +178,8 @@ query get_all_models_with_discount_twenty {
 
 
 ```graphql
-query get_all_models_with_discount {
-  models(
+query get_all_records_with_discount {
+  records(
     per_page: 20,
     filter: {
       properties: [{ name: "discount", value_boolean: true }]
@@ -196,7 +196,7 @@ query get_all_models_with_discount {
 
 ```graphql
 query get_all_johns_and_annas {
-  models(
+  records(
     per_page: 20,
     filter: {
       properties: [{ name: "name", value_in: ["John", "Anna"] }]
@@ -213,7 +213,7 @@ query get_all_johns_and_annas {
 
 ```graphql
 query get_everyone_except_johns_and_annas {
-  models(
+  records(
     per_page: 20,
     filter: {
       properties: [{ name: "name", not_value_in: ["John", "Anna"] }]
@@ -230,7 +230,7 @@ query get_everyone_except_johns_and_annas {
 
 ```graphql
 query get_all_adults_below_60 {
-  models(
+  records(
     per_page: 20,
     filter: {
       properties: [{ name: "age", range: { gte: $adult_age_treshold, lt: 60 } }]
@@ -261,7 +261,7 @@ query get_all_adults_below_60 {
 
 ```graphql
 query get_all_with_name {
-  models(
+  records(
     per_page: 20,
     filter: {
       properties: [{ name: "name", exists: true }]

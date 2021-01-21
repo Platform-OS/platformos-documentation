@@ -40,7 +40,7 @@ An example of module code split into two directories, inside the `modules` direc
 admincms
 ├── private
 │   └── graphql
-│       ├── get_models.graphql
+│       ├── get_records.graphql
 │       └── get_pages.graphql
 └── public
     └── views
@@ -111,14 +111,14 @@ layout: modules/admin/settings
 
 ### Records
 
-##### modules/admin/private/models/resume.yml
+##### modules/admin/private/records/resume.yml
 
 ```graphql
 query get_resumes {
-  models(
+  records(
     per_page: 5
     filter: {
-      model_schema_name: { value: "modules/admin/resume" }
+      table: { value: "modules/admin/resume" }
     }
   ) {
     results {
@@ -162,7 +162,7 @@ query get_blog_instance(
   $slug: String
   $scope: String
 ) {
-  models(
+  records(
   ...
 ) {
 }
