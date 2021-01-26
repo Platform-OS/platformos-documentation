@@ -257,7 +257,7 @@ method: post
   {% graphql record, direct_url: context.params.direct_url, user_id: context.params.user_id %}
     mutation record_create($direct_url: String!, $user_id: ID!) {
       record_create(record: {
-        custom_model_type_name: "modules/direct_s3_upload/uppy"
+        table: "modules/direct_s3_upload/uppy"
         user_id: $user_id
         properties: [{ name: "my_upload" value: $direct_url }]
       }) {
