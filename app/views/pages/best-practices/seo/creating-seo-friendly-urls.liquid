@@ -53,7 +53,7 @@ Creating SEO friendly category listings is a three-step process:
 
 ### Step 2: Prepare GraphQL query
 
-Assuming you have the following Model Schema `model_schemas/catalogue_listings.yml` already in place:
+Assuming you have the following Table `schema/catalogue_listings.yml` already in place:
 ```yaml
 name: catalogue_listings
 properties:
@@ -66,10 +66,10 @@ properties:
 Create a GraphQL query with country and city.
 ```graphql
 query get_catalogue_listings($country: String, $city: String) {
-  models(
+  records(
     per_page: 20,
     filter: {
-      name: {
+      table: {
         value: "catalogue_listings"
       }
       properties: [
@@ -116,9 +116,9 @@ Add the GraphQL query you created to your page, and pass extracted params to it:
       city: url_params.city
     %}
 
-    <strong>{{ g.models.total_entries }}</strong>
+    <strong>{{ g.records.total_entries }}</strong>
     <ul>
-    {% for item in g.models.results %}
+    {% for item in g.records.results %}
       <li>
         {{ item.id }} - {{ item.name }} - {{ item.country }} - {{ item.city }}
       </li>

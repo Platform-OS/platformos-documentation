@@ -25,11 +25,11 @@ An alternative name given to the result of a field to avoid conflicts during dat
 
 ```graphql
 {
-  notes: models(per_page: 20, filter: { name: { value: "notes" } }) {
+  notes: records(per_page: 20, filter: { table: { value: "notes" } }) {
     results { id }
   }
 
-  cars: models(per_page: 20, filter: { name: { value: "cars"} }) {
+  cars: records(per_page: 20, filter: { table: { value: "cars"} }) {
     results {
       name: property(name: "name")
     }
@@ -109,9 +109,9 @@ An operation for creating, modifying and destroying data.
 
 ```graphql
 mutation edit_car($car_id: ID!, $color: String!) {
-  model_update(
+  record_update(
     id: $car_id
-    model: {
+    record: {
       properties: { name: "color", value: $color }
     }
   ) { id }

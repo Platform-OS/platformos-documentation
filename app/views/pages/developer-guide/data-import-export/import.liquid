@@ -7,12 +7,12 @@ metadata:
 
 This topic describes **data import** including fast data imports using CSV files.
 
-Data to be imported needs to be in JSON format, it is an array of [user data](/api-reference/graphql/userimport.html) and array of [models data](/api-reference/graphql/customizationimport.html):
+Data to be imported needs to be in JSON format, it is an array of [user data](/api-reference/graphql/userimport.html) and array of [records data](/api-reference/graphql/customizationimport.html):
 
 ```json
 {
   "users": [...],
-  "models": [...]
+  "records": [...]
 }
 ```
 
@@ -20,14 +20,14 @@ You can generate data from an existing Instance with the `pos-cli data export` c
 
 ## General information
 
-- Before import, your model schemas need to be deployed.
+- Before import, your Tables need to be deployed.
 
-- When importing data, the `id` fields will be changed. Relations will be kept. If you have your own relations defined in properties, you need to first describe them in model schema files - [read more about this here](/developer-guide/data-import-export/model-relations).
+- When importing data, the `id` fields will be changed. Relations will be kept. If you have your own relations defined in properties, you need to first describe them in Table files - [read more about this here](/developer-guide/data-import-export/record-relations).
 
 - If you test your imports and need to clean Instance data, use the `pos-cli data clean` command. Note, that this command will work only on staging Instances.
 
 - When you run import twice, it will try to match previously imported data without removing existing changes. Example:
-  1. You have a model `shirt` with properties: `color`, `size`
+  1. You have a record `shirt` with properties: `color`, `size`
   2. First import adds new `shirt` with JSON: `{ "id": 1, "properties": { "color": "red" }}`
   3. User sets attributes of `shirt`, now `shirt` has the following properties: `{ "color": "green", "size": "large" }`
   4. Second import with the same file changes `shirt` object to: `{ "color": "red", "size": "large" }`
@@ -49,12 +49,12 @@ Under the hood, the CLI uses the GraphQL import API that's described in the next
 
 ### Input format
 
-The required data format is a JSON file with users and models keys that have an array of maps. Each of those collections needs to be in the same format as a corresponding GraphQL mutation. Under the hood import is just a set of mutations: [`import_users()`](/api-reference/graphql/rootmutation.html), [`import_models()`](/api-reference/graphql/rootmutation.html). When importing data using the CLI, the file should contain data in a format that matches the following structure:
+The required data format is a JSON file with users and records keys that have an array of maps. Each of those collections needs to be in the same format as a corresponding GraphQL mutation. Under the hood import is just a set of mutations: [`import_users()`](/api-reference/graphql/rootmutation.html), [`import_records()`](/api-reference/graphql/rootmutation.html). When importing data using the CLI, the file should contain data in a format that matches the following structure:
 
 ```json
 {
   "users": [<UserImport],
-  "models": [<CustomizationImport>],
+  "records": [<CustomizationImport>],
 }
 ```
 
@@ -100,7 +100,7 @@ Example data import file `data.json`
       ]
     }
   ],
-  "models": [
+  "records": [
     {
       "id": 1,
       "user_id": 1000,
@@ -165,17 +165,17 @@ pos-cli data import --path=data.json staging-instance
 
 It is possible to import data using GraphQL mutations. This gives you more flexibility, and even allows you to create your own import tool as a website feature. Please remember to handle authentication properly.
 
-There are two main mutations for importing [`import_users()`](/api-reference/graphql/rootmutation.html) and [`import_models()`](/api-reference/graphql/rootmutation.html). You can create a page that will import sent data.
+There are two main mutations for importing [`import_users()`](/api-reference/graphql/rootmutation.html) and [`import_records()`](/api-reference/graphql/rootmutation.html). You can create a page that will import sent data.
 
 ##### app/graphql/import_data.graphql
 
 ```graphql
 mutation import_data(
     $users: [UserImport!]!,
-    $models: [CustomizationImport!]!
+    $records: [CustomizationImport!]!
   ) {
   import_users(users: $users) { ids }
-  import_models(models: $models) { ids }
+  import_records(records: $records) { ids }
 }
 ```
 
@@ -188,7 +188,7 @@ method: post
 ---
 {% graphql res = "import_data",
   users: context.params.users,
-  models: context.params.models
+  records: context.params.records
 %}
 
 {{ g | json }}
@@ -227,12 +227,12 @@ pos-cli data import --zip --path=archive.zip staging-instance
 Inside the ZIP archive there should be CSV files with data to be imported. For example:
 
 ```bash
-models.csv
+records.csv
 users.csv
 user_profiles.csv
 ```
 
-- Before import, your model schemas need to be deployed.
+- Before import, your Tables need to be deployed.
 - CSV files only support comma separated values, if in doubt, it might be a good idea to use a linter like [CSVlint](https://github.com/Clever/csvlint) to check the file.
 - A well formatted file has a header with names of columns available for the given type, and one or more rows of data.
 
@@ -258,7 +258,7 @@ And now importing will just update the data of matching rows. Even if you add ne
 Additionally, not all columns are required, so for example this will work as well:
 
 ```csv
-properties,model_schema
+properties,table
 "{""name"": ""Buy milk"", ""done"": ""false""}",todo
 "{""name"": ""Do code reviews"", ""done"": ""true""}",todo
 ```

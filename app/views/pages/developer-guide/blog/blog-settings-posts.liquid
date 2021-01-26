@@ -29,12 +29,12 @@ You can fetch all post details with:
 
 ```graphql
 query get_blog_posts($per_page: Int = 20, $page: Int, $title: String, $id: ID, $slug: String, $published_at_lte: String, $published_at_lt: String, $published_at_gt: String, $published_at_gte: String, $tags: [String!], $blog_instance_id: String) {
-  blog_posts: models(
+  blog_posts: records(
     per_page: $per_page,
     page: $page,
     filter: {
       id: { value: $id },
-      name: { value: "blog_post" },
+      table: { value: "blog_post" },
       properties: [
         { name: "tags", value_in: $tags },
         { name: "blog_instance_id", value: $blog_instance_id },

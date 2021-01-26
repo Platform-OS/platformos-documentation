@@ -112,9 +112,9 @@ Create the GraphQL query that fetches product data.
 
 ```graphql
 query get_products($slug: String) {
-  products: models(
+  products: records(
     filter: {
-      name: { value: "product" }
+      table: { value: "product" }
       properties: [
         { name: "slug", value: $slug }
       ]
@@ -136,9 +136,9 @@ query get_products($slug: String) {
 #### Notes
 
 * If the optional slug argument is omitted, then it returns all products.
-* `price` is a property defined in the product Model Schema's .yml file, which is found in the `model_schemas` directory.
+* `price` is a property defined in the product Table's .yml file, which is found in the `schema` directory.
 
-##### app/model_schemas/product.yml
+##### app/schema/product.yml
 
 ```yaml
 name: product

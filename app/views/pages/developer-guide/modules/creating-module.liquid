@@ -31,7 +31,7 @@ This is the structural overview of the module you'll create:
 admincms
 ├── private
 │   └── graphql
-│       ├── get_models.graphql
+│       ├── get_records.graphql
 │       └── get_pages.graphql
 └── public
     └── views
@@ -43,16 +43,16 @@ admincms
 
 Create a GraphQL query that pulls a list of Records.
 
-##### modules/admincms/private/graphql/get_models.graphql
+##### modules/admincms/private/graphql/get_records.graphql
 
 ```graphql
-query get_models {
-  models(
+query get_records {
+  records(
     per_page: 10
     sort: [{ name: "id", order: "desc" }]
   ) {
     results {
-      human_name
+      table
       properties
     }
   }
@@ -89,7 +89,7 @@ slug: admincms
 <div class="row">
   <div class="col-xs-12 col-lg-6">
     <h3> Records </h3>
-    {%- graphql c = "modules/admincms/get_models" -%}
+    {%- graphql c = "modules/admincms/get_records" -%}
     <table class="table table-compact">
       <thead>
         <tr>
@@ -98,10 +98,10 @@ slug: admincms
         </tr>
       </thead>
       <tbody>
-        {% for model in c.models.results %}
+        {% for record in c.records.results %}
           <tr>
-            <td> {{ model.human_name }} </td>
-            <td> {{ model.properties }} </td>
+            <td> {{ record.human_name }} </td>
+            <td> {{ record.properties }} </td>
           </tr>
         {% endfor %}
       </tbody>

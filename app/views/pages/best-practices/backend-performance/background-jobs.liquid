@@ -99,7 +99,7 @@ that the result of this background tag will not be rendered, and you will not ha
 
 ## Example 1 - high priority job
 
-Download a JSON file and put its value into the model field. In this example, we will download the JSON file with currency rates for USD and put the resulted JSON into a database to use it further down the road.
+Download a JSON file and put its value into the record field. In this example, we will download the JSON file with currency rates for USD and put the resulted JSON into a database to use it further down the road.
 
 ```liquid
 {% raw %}
@@ -113,10 +113,10 @@ Download a JSON file and put its value into the model field. In this example, we
 
   {% graphql g, currency: "USD", rates: data %}
     mutation update_currency($currency: String!, $rates: String!) {
-      model_update(
+      record_update(
         id: 1337
-        model: {
-          model_schema_name: $currency
+        record: {
+          table: $currency
           properties: [{ name: "rates", value: $rates }]
         }
       ) {
@@ -140,10 +140,10 @@ In this case, we will update one field (price) in all 500 products in an e-comme
 {% background priority: 'normal', source_name: 'apply-discount' %}
   {% graphql products %}
     query products {
-      models(
+      records(
         per_page: 1000
         filter: {
-          model_schema_name: { exact: "products" }
+          table: { exact: "products" }
         }
       ) {
         results {
@@ -154,7 +154,7 @@ In this case, we will update one field (price) in all 500 products in an e-comme
     }
   {% endgraphql %}
 
-  {% assign prods = products | fetch: "models" | fetch: "results" %}
+  {% assign prods = products | fetch: "records" | fetch: "results" %}
 
   {% for prod in prods %}
     {% comment %}Apply 15% discount{% endcomment %}
@@ -163,10 +163,10 @@ In this case, we will update one field (price) in all 500 products in an e-comme
 
     {% graphql updated, prod_id: prod.id, new_price: newPrice %}
       mutation update_prices($new_price: Int!, $prod_id: Int!) {
-        model_update(
+        record_update(
           id: $prod_id
-          model: {
-            model_schema_name: "products"
+          record: {
+            table: "products"
             properties: [{ name: "price_cents", value: $new_price }]
           }
         ) {
