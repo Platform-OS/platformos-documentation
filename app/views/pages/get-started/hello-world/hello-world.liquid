@@ -1,0 +1,416 @@
+---
+converter: markdown
+metadata:
+  title: "Hello, World!"
+  description: This tutorial will teach you how to set up your development environment, create a simple site, make a small change on the home page, and deploy it.
+---
+
+Welcome to the first part of our Get Started guide, that will teach you how to set up your development environment, create a simple site, make a small change on the home page, and deploy it. This is to make sure you have everything you need and everything works. 
+
+## Prerequisite: Register on the Partner Portal
+
+{% include 'alert/important', content: 'You might already have access to the Partner Portal if a registered Partner created an account for you. If you already have a Partner Portal account, please skip this step.' %}
+
+The [Partner Portal](https://partners.platform-os.com/) is an online interface, where you can create, manage and configure your sites (called Instances), and create and manage the permissions of other users (called Partners).
+
+To register on the Partner Portal, go to https://partners.platformos.com/accounts/sign_up, use your GitHub or Google account, or fill in the form:
+
+
+| Field   | Description                                             | Example                   |
+|--------------|---------------------------------------------------------|---------------------------|
+| First Name   | Your first name                                         | John                      |
+| Last Name    | Your last name                                          | Smith                     |
+| Email        | Your email address                                      | john.smith@helloworld.com |
+| Password     | Your password should consist of at least six characters that are a combination of uppercase and lowercase letters, numbers and symbols.                              | Uk9bpBMJ6s                |
+
+
+Once registered, you will get an email verification. Click on the Accept verification link to activate your account.
+
+## Step 1: Create an Instance
+
+{% include 'alert/tip', content: 'If you go through the Hello, World! onboarding steps when registering on the Partner Portal, you only have to enter a name for your demo Instance, and we create it for you.' %}
+
+To be able to deploy your site, you have to create an **Instance** on the Partner Portal. Instances have a URL, and they represent different development environments, like staging or production. We recommend creating a staging environment for going through the steps in this tutorial.
+
+On the Partner Portal, in the menu on the left under `Create`, select `Instance`, and fill in the form:
+
+| Field  | Description                                                                                     | Example           |
+|-------------|-------------------------------------------------------------------------------------------------|-------------------|
+| Name        | The name of your Instance                                                                       | HelloWorld        |
+| Tags        | Enter up to 5 tags (optional). You can use tags to group your Instances, for example by project or client. | demo, test        |
+| Partner     | Select the Partner the Instance will belong to.                                                 | HelloWorldPartner |
+| Data Center | Select an endpoint (staging or production).                                                     | STAGING           |
+
+Select the `Staging/Unbilled` Billing Plan that appears, and click on the Create button. We create the Instance, and once it's done (in a couple of minutes), send you an email with a link to your Instance and other useful information.
+
+## Step 2: Install the pos-cli 
+
+The [pos-cli](/developer-guide/pos-cli/pos-cli) is a command line interface that helps you deploy configuration files and assets to your platformOS site.
+
+{%- capture content -%}You will need a recent version of NPM (Node Package Manager) installed on your computer to install the pos-cli. NPM is distributed with Node.js, which means that by installing Node.js, you automatically get NPM installed on your computer. If you haven't installed Node.js yet, follow [this tutorial](https://www.npmjs.com/get-npm) to install it. {%- endcapture -%}
+{% include 'alert/important', content: content %}
+
+Once you have Node.js installed, start your command-line tool (for example, Terminal on a Mac, or Git Bash on Windows), and enter:
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+npm install -g @platformos/pos-cli
+</code></pre>
+
+If your Node.js is installed for all users you might need to use sudo to install npm packages globally:
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+sudo npm install -g @platformos/pos-cli
+</code></pre>
+
+Use the following command to test the pos-cli:
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+pos-cli -v
+</code></pre>
+
+If the pos-cli has been installed correctly, running this command displays the version of your pos-cli. If the pos-cli hasn't been installed, running this command gives a command not found error.
+
+## Step 3: Create your codebase
+
+{% include 'alert/tip', content: 'If you go through the Hello, World! onboarding steps when registering on the Partner Portal,  you can download the codebase of your demo Instance instead of creating it with the pos-cli init command.' %}
+
+In order to correctly communicate with the platformOS engine and API, your codebase should be organized into a specific directory structure. You can create your codebase organized into the the required directory structure using the pos-cli's `init` command.
+
+`pos-cli init` downloads the directory structure in a zip file, and extracts it into the current directory. This means the best way to start is to create a directory for all of your projects and a directory for your project inside of it.
+
+Example directory structure before `pos-cli init`:
+
+```shell
+projects
+└── hello-world
+```
+
+Change into the `hello-world` directory and run the `pos-cli init` command:
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+pos-cli init
+</code></pre>
+
+This command creates the required directories, configuration files, and some example files in the directory you specified.{%- capture content -%}Make sure you invoke this command where you have permissions to create a directory.
+{%- endcapture -%}
+{% include 'alert/important', content: content %}
+
+If the directory is empty, the command shows a success message:
+
+```shell
+$ pos-cli init
+[11:35:06] Directory structure successfully created.
+```
+
+If it is not empty (don't forget to think of hidden files), it will require your confirmation by adding the `--force` flag. Be aware that it will override your files if they conflict.
+
+```shell
+$ pos-cli init
+[11:36:10] Cloning failed. Reason: destination directory is not empty, aborting. Use option force to override.
+```
+
+```shell
+$ pos-cli init --force
+[11:36:43] Directory structure successfully created.
+```
+
+Once you've installed the required directory structure, locate and explore it – this is how your codebase for your platformOS Instances should be organized.
+
+Example directory structure after running `pos-cli init`:
+
+```shell
+.
+├── LICENSE
+├── app
+│   ├── assets
+│   │   ├── fonts
+│   │   │   ├── Gotham-Bold.woff2
+│   │   │   ├── Gotham-Book.woff2
+│   │   │   ├── Gotham-Light.woff2
+│   │   │   └── Gotham-Medium.woff2
+│   │   ├── images
+│   │   │   ├── logo-black.svg
+│   │   │   ├── logo.svg
+│   │   │   └── welcome.svg
+│   │   ├── scripts
+│   │   │   ├── app.js
+│   │   │   ├── sw.js
+│   │   │   └── vendor.js
+│   │   └── styles
+│   │       └── app.css
+│   ├── authorization_policies
+│   │   ├── example_policy.liquid
+│   │   └── failing_policy.liquid
+│   ├── forms
+│   ├── graphql
+│   │   └── example.graphql
+│   ├── model_schemas
+│   ├── api_calls
+│   │   └── example.liquid
+│   ├── emails
+│   │   └── example.liquid
+│   ├── smses
+│   │       └── example.liquid
+│   ├── translations
+│   │   ├── en.yml
+│   │   └── pl.yml
+│   ├── user_profile_types
+│   └── views
+│       ├── layouts
+│       │   ├── 1col.html.liquid
+│       │   └── application.html.liquid
+│       ├── pages
+│       │   ├── admin.html.liquid
+│       │   ├── index.html.liquid
+│       │   └── unauthorized.html.liquid
+│       └── partials
+│           └── layout
+│               ├── head.liquid
+│               └── scripts.liquid
+└── modules
+    └── example
+        ├── private
+        │   ├── assets
+        │   ├── authorization_policies
+        │   ├── forms
+        │   ├── graphql
+        │   ├── model_schemas
+        │   ├── api_calls
+        │   ├── emails
+        │   ├── smses
+        │   ├── translations
+        │   ├── user_profile_types
+        │   └── views
+        │       ├── layouts
+        │       ├── pages
+        │       └── partials
+        └── public
+            ├── assets
+            ├── authorization_policies
+            ├── forms
+            ├── graphql
+            ├── model_schemas
+            ├── api_calls
+            ├── emails
+            ├── smses
+            ├── translations
+            ├── user_profile_types
+            └── views
+                ├── layouts
+                ├── pages
+                └── partials
+```
+
+To learn more about the required directories and files, visit [platformOS Codebase](/developer-guide/platformos-workflow/codebase).
+
+### pos-cli wizard
+
+{% include 'alert/tip', content: 'Use the pos-cli wizard to start from existing example code.' %}
+
+pos-cli init’s wizard feature helps you download and install specific example code that the platformOS development team has provided.
+
+Video tutorial:
+
+{% include 'shared/video', id: 'WjZ79k6njTM' %}
+
+
+Usage:
+
+In your terminal, enter:
+
+```shell
+$ pos-cli init --wizard
+```
+
+This will give you a list of options to choose from:
+
+* empty: Initialize the platformOS directory structure to start from scratch.
+* Hello world: Initialize the directory structure and install the application code of the [Hello, World!](/get-started/hello-world/hello-world#prerequisite-register-on-the-partner-portal) example.
+* Todo app: Initialize the directory structure and install the application code of the [Building a ToDo List App](/get-started/todo-app/build-todo-list-app) example.
+* Product Marketplace Template: Initialise the directory structure and install the [Product Marketplace Template](/get-started/marketplace-template/marketplace-template) solution.
+
+Select the option you’d like to install and choose the branch you’d like to use from GitHub (the default is the master branch). The code is pulled to your local environment, and you can deploy it to your platformOS Instance.
+
+## Step 4: Change something on your homepage
+
+Locate the `index.html.liquid` file in your codebase.
+
+##### app/views/pages/index.html.liquid
+
+```liquid
+{% raw %}
+<div class="flex flex-row flex-wrap min-h-screen justify-start items-start">
+
+  <div class="w-full">
+    <div class="bg-ex-darkblue w-full shadow-xl flex items-center h-16">
+      <img src="{{ 'images/logo.svg' | asset_url }}" alt="platformOS Logo" width="175" class="ml-4">
+
+      <p class="text-white font-semibold -mt-px ml-3 pl-3 border-l border-ex-lightblue">
+        Hello world
+        <span class="font-light">Your platformOS starter</span>ini
+      </p>
+    </div>
+
+    <div class="w-full flex justify-center items-start bg-white border-b-2 border-ex-lightgrey">
+      <img src="{{ 'images/welcome.svg' | asset_url }}" alt="Hello world!" class="sm:h-96 lg:h-128">
+    </div>
+  </div>
+
+  <div class="my-10 px-10 md:px-0 w-full">
+    <h2 class="text-2xl font-semibold text-center">
+      Welcome to your Demo instance!
+    </h2>
+
+    <div class="max-w-2xl mx-auto mt-10">
+      <p class="font-semibold text-gray-700">
+        No matter what language you speak or frontend frameworks you love, platformOS speaks your language — your unlimited development platform.
+      </p>
+      <p class="mt-4 font-light">
+        This is your Demo Instance: a fully functional example platformOS site that you can use as your own Sandbox. Follow the steps in our Hello, World! tutorial to change something on this site, and check back here to confirm how it has changed. By the time you finish, you’ll be set up to start working on platformOS.
+      </p>
+    </div>
+  </div>
+
+  <div class="bg-ex-lightgrey mt-auto w-full">
+    <div class="max-w-2xl flex justify-between items-center mx-auto py-3">
+      <img src="{{ 'images/logo-black.svg' | asset_url }}" alt="platformOS Logo" width="135" class="logo-black">
+
+      <ul class="font-light text-sm">
+        <li><a href="https://documentation.platformos.com" target="_blank">Documentation</a></li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+{% endraw %}
+```
+
+Open it in a code editor of your choice, locate the "Welcome to your Demo instance!" line and change it to "This is my first platformOS instance!".
+
+```liquid
+{% raw %}
+<div class="flex flex-row flex-wrap min-h-screen justify-start items-start">
+
+  <div class="w-full">
+    <div class="bg-ex-darkblue w-full shadow-xl flex items-center h-16">
+      <img src="{{ 'images/logo.svg' | asset_url }}" alt="platformOS Logo" width="175" class="ml-4">
+
+      <p class="text-white font-semibold -mt-px ml-3 pl-3 border-l border-ex-lightblue">
+        Hello world
+        <span class="font-light">Your platformOS starter</span>
+      </p>
+    </div>
+
+    <div class="w-full flex justify-center items-start bg-white border-b-2 border-ex-lightgrey">
+      <img src="{{ 'images/welcome.svg' | asset_url }}" alt="Hello world!" class="sm:h-96 lg:h-128">
+    </div>
+  </div>
+
+  <div class="my-10 px-10 md:px-0 w-full">
+    <h2 class="text-2xl font-semibold text-center">
+      This is my first platformOS instance!
+    </h2>
+
+    <div class="max-w-2xl mx-auto mt-10">
+      <p class="font-semibold text-gray-700">
+        No matter what language you speak or frontend frameworks you love, platformOS speaks your language — your unlimited development platform.
+      </p>
+      <p class="mt-4 font-light">
+        This is your Demo Instance: a fully functional example platformOS site that you can use as your own Sandbox. Follow the steps in our Hello, World! tutorial to change something on this site, and check back here to confirm how it has changed. By the time you finish, you’ll be set up to start working on platformOS.
+      </p>
+    </div>
+  </div>
+
+  <div class="bg-ex-lightgrey mt-auto w-full">
+    <div class="max-w-2xl flex justify-between items-center mx-auto py-3">
+      <img src="{{ 'images/logo-black.svg' | asset_url }}" alt="platformOS Logo" width="135" class="logo-black">
+
+      <ul class="font-light text-sm">
+        <li><a href="https://documentation.platformos.com" target="_blank">Documentation</a></li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+{% endraw %}
+```
+
+Save your changes.
+
+## Step 5: Authenticate your environment
+
+{% include "alert/note", content: "Make sure you remember your **Partner Portal** account email and password — you will need them to authenticate your environments. If you logged in using Google or Github, go to the Instance details view in Partner Portal where you will find the pos-cli command ready for copy and paste. It shows all the parameters you need, so in this case, you won't need to remember your password." %}
+
+Now, you have to specify which Instance will be which environment. For example, you set up one Instance for staging, and another one for production. This information is stored in a config file.
+
+Regardless of what your Instance is called, after you specify it as `staging`, you can refer to it as `staging` in all commands where applicable, and you won't have to use the Instance name or the URL of the Instance again.
+
+To add your environment to the config file, run the `env add` command, and authenticate with your **Partner Portal** credentials.
+
+{% include 'alert/note', content: 'Run all commands discussed in this tutorial in the project root directory (one level above the `app` directory).' %}
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+pos-cli env add [environment] --email [your email] --url [your Instance URL]
+</code></pre>
+
+{% include 'alert/tip', content: 'You can copy this command pre-filled with your email and Instance URL from your Instance page on the Partner Portal.' %}
+
+Example:
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+pos-cli env add staging --email myemail@example.com --url https://example.com
+</code></pre>
+
+A message _"Environment [your Instance URL] as staging has been added successfully."_ is displayed.
+
+## Step 6: Deploy or sync
+
+To be able to check your changes on your site, you have to deploy those changes to your Instance.{% capture content %}This step describes two different methods. If this is your first go, we recommend to follow the process described in the "Deploying" section.
+{% endcapture %}
+{% include 'alert/note', content: content %}
+
+## Deploying
+
+To deploy all changes, run the `deploy` command:
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+pos-cli deploy [environment]
+</code></pre>
+
+Example:
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+pos-cli deploy staging
+</code></pre>
+
+A progress indicator shows that the deployment is in progress, and once it finishes, a _"Deploy succeeded after <time>"_ is displayed.
+
+We recommend to first deploy to staging, test, and only then trigger a deployment to production. In practice, deploy creates a zip file that contains all your files, and sends it to the API. It is then processed in the background. We store each zip file, so that you can roll back in case something goes wrong.{% capture content %}Learn more about our recommendations for version control and deployment on platformOS in the <a href="/developer-guide/platformos-workflow/development-workflow">Development Workflow</a> topic.
+{% endcapture %}
+{% include 'alert/tutorial', content: content %}
+
+## Syncing
+
+To immediately push changes in your codebase to the environment, run the `sync` command:
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+pos-cli sync [environment]
+</code></pre>
+
+Example:
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+pos-cli sync staging
+</code></pre>
+
+Using the sync command feels like working on localhost. It is recommended to use sync only for staging environments, as pushing changes immediately to production can be dangerous. Please note, that unlike deploy, this command will not delete resources when you delete the file.
+
+<br/>
+After you have deployed your Instance, refresh your site in your browser. The home page has changed to include the text you added.
+
+<br/>
+
+Read [Effective Development Using pos-cli](/developer-guide/pos-cli/effective-development-using-pos-cli.liquid) for more information.
+
+
+<strong>Congratulations, you have finished our Hello, World! guide: You have set up your environment and learned how to change something on your site and deploy it.</strong>
