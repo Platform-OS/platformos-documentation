@@ -1,0 +1,102 @@
+---
+converter: markdown
+metadata:
+  title: Front-End Guidelines
+  description: This article provides front-end code rules and best practices for developing and contributing code to the pOS Product Marketplace Template.   
+---
+
+This article provides front-end code rules and best practices for developing and contributing code to the pOS Product Marketplace Template but you will hopefully find these guidelines helpful when developing your own projects as well. 
+
+## Presentation views: HTML/JSON
+
+To ensure a maintainable and easy to change frontend, we follow a couple of important rules.
+
+First of all, all our frontend code is inside the `theme` directory. Those files should not know about the existence of any other files outside of theme. All data needed for the frontend should be explicitly provided to them - there shouldn't be any GraphQL queries inside theme. If you need extra data that are not provided by default, we suggest to make all GraphQL queries inside a page (which you can treat as a Controller in the MVC architecture) and explicitly provide the result of this query to the partial.
+
+The theme is located in `app/views/partials/theme`.
+
+- Partials to be aware of ONLY local variables - no `context.session` OR `context.exports` are allowed, think [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection)
+- Prepare/fetch external data in a page and pass it to partials as a local variable
+- No GraphQL queries are allowed within the `theme` folder. Theme is used to display data, not fetch it
+
+## Environment setup
+We include the `.editorconfig` file that will tell your code editor what coding style to apply. Use a plugin that will handle the file, for example, [EditorConfig for VS Code](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig). This will make your code consistent with the team's standards.
+
+## Before you start to code
+1. Make sure you understand the task you are working on and have every information needed to handle it.
+2. Think through if the change you are working on will benefit the base [Template](https://github.com/Platform-OS/product-marketplace-template) or should you include it just in the related project.
+3. Each change should be made in a separate [branch](https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging), so create one for your code.
+4. Choose a short but meaningful name for the branch (for example, `homepage-slider` instead of `new-code`).
+
+## General recommendations
+- Do not leave any unnecessary commented code. If you think something should be done later, create a task instead of commenting it in code.
+- Make sure the part of the website you are working on is behaving nicely on smaller and larger screen resolutions.
+- Make sure the part of the website you are working on is looking good when you zoom in in the browser to 200%.
+- Optimize all images you are adding to a project, resize them if you don't need a high resolution version
+	- For PNGs you can use [TinyPNG](https://tinypng.com)
+	- For SVGs use [SVGOMG](https://jakearchibald.github.io/svgomg/)
+	- You can also use [ImageOptim](https://imageoptim.com/) or [Squoosh](https://squoosh.app) for any image type
+	- Use the `picture` tag instead of `img` to provide the most appropriate size for a given viewport.
+	- Set `width` and `height` attributes for your images so the page can be rendered faster.
+- When doing bigger changes check your page using [Google Lighthouse](https://developers.google.com/web/tools/lighthouse) and check for the improvements it recommends.
+- When doing a change in any of the existing elements, make sure that you update the corresponding tests.
+	- When working on a new feature, build new tests for it.
+- Please use meaningful commits messages to describe what exactly was done.
+
+### HTML
+- Use [semantic tags](https://www.internetingishard.com/html-and-css/semantic-html/) as much as possible.
+- Try not to use too many HTML elements. The simpler the code the better.
+- All non-text content elements should have accessible labels
+	- Images should have `alt` attributes, clickable icons should have titles, etc.
+- If you are repeating a part of a code a lot, consider creating a partial or adding it to the Style Guide.
+- Use the appropriate HTML5 input types for a given form field.
+- Remember you can validate the forms easily using the [`pattern`](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/pattern), `required`, and related attributes.
+- Do not hardcode any strings, use the translations instead.
+
+### SEO
+If you are working on a new Page, think about whether it should be easily shareable across social media (for example product details page, user profile page). If yes, then:
+
+- Ensure friendly URLs (for example /products/my-product-name instead of /products/1);
+- Ensure that OpenGraph tags are set.
+
+### CSS
+- The project uses [Tailwind CSS](https://tailwindcss.com) so we are using so-called [utility classes](https://tailwindcss.com/docs/utility-first) and trying to avoid writing our own CSS if possible.
+- There are some exceptions from the above, additional reusable classes were created for the most commonly used building blocks, you can find the list of those under the `/style-guide` URL of your project. Avoid duplicating those and use them whenever possible to keep the design consistent.
+- To modify colors, spacings, shadow styles, etc. please use the `tailwind.config.js` file, not the CSS.
+- If creating additional CSS make sure to place it in a separate file and `@import`ing it in `components.css`.
+- The Template supports multiple languages, so we need to consider left-to-right reading direction. We are ensuring this by not using directional CSS properties like `margin-left`. Instead we are using `margin-inline-start` – so called [logical properties](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Logical_Properties). To achieve this with Tailwind we rely on the [tailwindcss-rtl](https://github.com/20lives/tailwindcss-rtl) plugin.
+
+### JavaScript
+- Avoid loading heavy third-party libraries if they can be replaced by a simpler self-made solution.
+- Create a separate file for the module you are working on and then load it in `app.js` using one of these methods:
+  - `import './js/module';` for small files that are used across the site (less than 5 kb)
+  - `import('./js/search');` for files that are used across the site to load them asynchronously (more than 5 kb)
+  - ```
+    if ($q('code[class*="language-"]')) {
+      import('./js/syntaxHighlighting');
+    }
+    ```
+    for large files and code that is used only in certain situations depending on the page you are on
+- Use meaningful function/class names, and if needed, describe what they are doing and what arguments they take in comments.
+- Remember to cache your DOM requests for additional speed.
+
+### Security
+- Never use `html_safe` or equivalent on user input (potential XSS attack).
+- If you create a new page, make sure you start with authentication (if the user needs to be logged in at all to view it) and authorization rules (Should the currently logged in user have permission to access this Page).
+- Do not rely solely on frontend validation, always make sure there's backend validation as well.
+
+### Peer review
+- When finished working on your code and you'd like to contribute it, create a pull request for it in our  [product-marketplace-template
+GitHub repository](https://github.com/Platform-OS/product-marketplace-template).
+- Do a self-review first. Read the changes you've made and try to get into the reviewer's mindset. What is not clear, what could be improved?
+- Make sure the tests are all green.
+- Make sure there are no JavaScript errors.
+- Place a link to your task card in the PR description so the reviewer can understand what was your task.
+- Some reviewers are checking the PRs from time to time, but you might want to bring attention to your PR by asking for review in the appropriate Slack channel or on the [pOS Community](https://community.platformos.com/) site.
+- When you are done with the changes after a code review, write a comment to notify the reviewer that the code is ready for review round.
+- Sometimes you might not agree with the reviewer. If so, reply to a comment and discuss why.
+
+
+
+
+
