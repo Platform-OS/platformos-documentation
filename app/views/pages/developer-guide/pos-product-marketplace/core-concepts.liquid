@@ -2,7 +2,7 @@
 converter: markdown
 metadata:
   title: Core Concepts of the pOS Product Marketplace Template
-  description: An overview of the business logic, presentation logic, data queries, categories, and tests for the pOS Product Marketplace Template.
+  description: An overview of the business logic, commands, data queries, events, and categories for the pOS Product Marketplace Template.
 ---
 
 The **pOS Product Marketplace Template** is a fully functional marketplace built on platformOS with features like user onboarding, ad listings and ads, purchase and checkout process, and online payment. Following the tutorial, you can deploy this code within minutes to have a list of working features and start customizing the back- and front-end code.
@@ -110,25 +110,16 @@ Data queries are located in `app/views/partials/lib/data/queries`
 
 - Generally, these are wrappers on GraphQL queries
 
-## Presentation views: HTML/JSON
-
-To ensure a maintainable and easy to change frontend, we follow a couple of important rules.
-
-First of all, all our frontend code is inside the `theme` directory. Those files should not know about the existence of any other files outside of theme. All data needed for the frontend should be explicitly provided to them - there shouldn't be any GraphQL queries inside theme. If you need extra data that are not provided by default, we suggest to make all GraphQL queries inside a page (which you can treat as a Controller in the MVC architecture) and explicitly provide the result of this query to the partial.
-
-Theme is located in `app/views/partials/theme`
-
-- Partials to be aware of ONLY local variables - no `context.session` OR `context.exports` are allowed, think [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection)
-- Prepare/fetch external data in a page and pass it to partials as a local variable
-- No GraphQL queries are allowed within the `theme` folder. Theme is used to display data, not fetch it
 
 ## Events
+
+**General**
 
 - Each command produces an event
 - Example: when a user logs in the system produces the `user_session_created` event, which looks similar to this: `{ actor: { id: LOGGED_USER_ID } }`
 - Then the event can be asynchronously consumed by a consumer
 
-## Consumers
+**Consumers**
 
 Consumers are located in `app/views/partials/lib/consumers`.
 
@@ -138,16 +129,4 @@ Categories can be adjusted by:
 
 1. First editing `app/views/partials/lib/queries/raw_category_list.liquid` file
 2. Then adding a translation to the `app/translations/en_categies.liquid` file
-
-## Tests
-
-### e2e tests
-
-Testcafe tests are located in the `test/` directory. To run them on your local machine, run:
-
-```sh
-npm test
-```
-
-
 
