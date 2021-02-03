@@ -1,0 +1,43 @@
+---
+converter: markdown
+metadata:
+  title: Design Guidelines
+  description: This article provides information about the Design Style Guide of the pOS Product Marketplace Template.  
+---
+
+This article provides information about the Design Style Guide of the pOS Product Marketplace Template that you can use when contributing to or developing your own projects on the pOS Product Marketplace. 
+
+The [Design Style Guide](https://getmarketplace.co/style-guide) is a single place to see all visual styles such as headers, links, buttons, colors, fonts, and other common user interface elements of the application. Since the Marketplace Template is a foundation for building various applications, it is a **perfect place to start** designing and customizing it your own way.
+
+- It allows you to build a theme and customize the site much faster.
+- It helps you build new pages easier thanks to the list of available interface elements.
+- Design consistency is easier to maintain.
+- Designers, developers, and content owners can use it as a single point of reference.
+- New members to the team will have an easier start with all available elements documented.
+- It allows you to standarize both code and design across the whole site.
+
+When using the Template you can find the guidelines via the `/style-guide` URL.
+
+## How to use
+
+Each interface element has an example of how it looks and works and also an example of code (or a class name) next to it that allows you to copy & paste to use.
+
+- Start by customizing the colors in `tailwind.config.js`. For reference of other customization options, please refer to the [official Tailwind CSS documentation](https://tailwindcss.com/docs).
+- Customize the typography and basic web elements in `body.css` or in a corresponding CSS component file in `src/components/`.
+- Customize the shared user interface elements by editing their template partials in `theme/simple/ui`.
+
+## When to add
+
+Each interface element used more than once on the site should be extracted to a separate component. For the guideline to fulfill its role, it needs to be adequately maintained.
+
+There are three places where you can add and edit the interface elements:
+
+- The colors, shadows, font stacks, and spacings can be edited and added to `tailwind.config.js`.
+- The basic interface elements like headings, buttons, and links are styled in `src/css` folder. The CSS should be used **only for components that don't rely on the HTML structure** to work.
+- More advanced components that are depending on their HTML structure should be extracted to a *template partial* and are stored in `theme/simple/ui`. Template partials use the [Liquid](https://documentation.platformos.com/api-reference/liquid/introduction) templating language.
+
+When adding an element to the guidelines, make sure that you do not duplicate anything that is already there. *Do you really need a 6th version of the button?* Each added element should:
+
+- have a working example;
+- have some simple documentation on how to use it in the form of a code sample or class name;
+- be placed correctly in a corresponding section for easier navigation through the document.
