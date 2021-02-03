@@ -1,0 +1,89 @@
+---
+converter: markdown
+metadata:
+  title: Generators
+  description: Using a generator to create boilerplate files for your project.   
+---
+
+To improve the workflow for creating a new resource you can use a generator that will create boilerplate files for your project.
+
+Generators follow development guidelines.
+
+
+### CRUD
+
+The CRUD generator will create all files needed to create, update, and delete.
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+./scaffold/bin/generate resource --help
+	Usage: generate <model_name> <attribute_name:type_attribute...> ex. generate car car_model:string year:integer
+	Generate model files for basic operations create, read, update, delete
+</code></pre>
+
+The resource generator expects a record name, and a list of fields with names and their types.
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+./scaffold/bin/generate resource car model:string color:string year:int
+	create scaffold/generators/crud/templates/translations/cars.yml
+	create app/model_schemas/car.yml
+	create app/graphql/cars/create.graphql
+	create app/graphql/cars/delete.graphql
+	create app/graphql/cars/search.graphql
+	create app/graphql/cars/update.graphql
+	create app/views/partials/lib/queries/cars/find.liquid
+	create app/views/partials/lib/queries/cars/search.liquid
+	create app/views/partials/lib/commands/cars/create.liquid
+	create app/views/partials/lib/commands/cars/create/build.liquid
+	create app/views/partials/lib/commands/cars/create/check.liquid
+	create app/views/partials/lib/commands/cars/delete.liquid
+	create app/views/partials/lib/commands/cars/delete/check.liquid
+	create app/views/partials/lib/commands/cars/update/build.liquid
+	create app/views/partials/lib/commands/cars/update/check.liquid
+	create app/views/pages/cars/create.liquid
+	create app/views/pages/cars/delete.liquid
+	create app/views/pages/cars/edit.liquid
+	create app/views/pages/cars/index.liquid
+	create app/views/pages/cars/new.liquid
+	create app/views/pages/cars/show.liquid
+	create app/views/pages/cars/update.liquid
+	create app/views/partials/theme/simple/cars/edit.liquid
+	create app/views/partials/theme/simple/cars/empty_state.liquid
+	create app/views/partials/theme/simple/cars/form.liquid
+	create app/views/partials/theme/simple/cars/index.liquid
+	create app/views/partials/theme/simple/cars/new.liquid
+	create app/views/partials/theme/simple/cars/show.liquid
+</code></pre>
+
+After deploy, you can access the page where you can list, create, update, and delete objects: https://your-instance-domain.com/cars
+
+Now you have a good place to start for customizing it to your needs.
+
+
+### REST API
+
+The REST API generator will create JSON endpoints.
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+./scaffold/bin/generate rest-api --help
+	Usage: generate <model_name>
+	Example:
+	generate rest-api car
+</code></pre>
+
+The REST API generator expects a record name.
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+./scaffold/bin/generate rest-api car
+	 create app/views/pages/api/cars/create.json.liquid
+	 create app/views/pages/api/cars/delete.json.liquid
+	 create app/views/pages/api/cars/show.json.liquid
+	 create app/views/pages/api/cars/update.json.liquid
+REST api endpoints generated
+</code></pre>
+
+### For automation / CI/CD purposes:
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+docker run -u $(id -u ${USER}):$(id -g ${USER}) -it --rm -v $(pwd):/app -w /app node:12-alpine npm install
+docker run -u $(id -u ${USER}):$(id -g ${USER}) -it --rm -v $(pwd):/app -w /app node:12-alpine ./scaffold/bin/generate resource RESOURCENAME PROPERTY:TYPE ...
+</code></pre>
