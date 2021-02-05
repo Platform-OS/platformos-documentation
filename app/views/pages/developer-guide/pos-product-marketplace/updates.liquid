@@ -1,0 +1,36 @@
+---
+converter: markdown
+metadata:
+  title: Updates
+  description: This article describes how to update your apps when a new version of the pOS Product Marketplace Template is released.    
+---
+This article describes how to update your apps when a new version of the pOS Product Marketplace Template is released.  
+
+You most probably build your own app based on this template by cloning the pOS Product Marketplace Template repository. From time to time, the core template is updated. If you’d like to update your dependent project with the changes applied to the template you can merge those to your own repository.
+
+First, set the upstream to the template repository:
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+git remote add upstream https://github.com/mdyd-dev/product-marketplace-template.git
+</code></pre>
+
+After doing this once, you will be able to merge changes from the template to your own project repository:
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+git checkout master
+git pull
+git checkout -b update
+git fetch upstream
+git merge upstream/master --no-commit
+</code></pre>
+
+After this, you will most likely have to resolve some conflicts if your code differs from the template. It is up to you to choose which changes you  would like to keep and which will be overwritten by the changes in the template. When you resolved the conflicts and kept only the changes you want, push them to your repository:
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+git add *
+git commit -m "Resolving conflicts after update"
+git push
+</code></pre>
+
+After these operations you will have a separate branch that has been updated with the code from the main template repository.
+

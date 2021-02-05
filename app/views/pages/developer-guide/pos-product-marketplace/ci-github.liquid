@@ -1,0 +1,43 @@
+---
+converter: markdown
+metadata:
+  title: Continuous Integration with GitHub Actions
+  description: This article describes how to set up the pOS Product Marketplace Template for continuous integration using GitHub actions.    
+---
+This article describes how to set up the pOS Product Marketplace Template for continuous integration using GitHub actions. 
+
+To enable GitHub actions, set your CI Instance variables. 
+
+Variables for authenticity validation:
+
+* `MPKIT_URL_PR`
+* `MPKIT_URL_QA`
+
+CI Instances where you want to deploy, run tests, and if the tests pass, this will trigger deploy to the live Instance:
+
+* `MPKIT_URL_LIVE`
+* `MPKIT_EMAIL`
+* `MPKIT_TOKEN`
+
+
+To set these variables, go to your repository settings, then enter the 'Secrets' section from the left-side navigation menu. 
+
+Add 'repository secret' by clicking the 'New repository secret' button.
+
+In the name field, type the name of the variable, for example:
+
+```
+Name: MPKIT_URL_QA
+Value: https://your-qa-instance.example.com/
+```
+
+
+### How does this workflow work?
+
+pull_requests will be triggered when someone in your repository performs a pull request. This will deploy your code to the MPKIT_URL_PR Instance, and tests will be executed.
+
+Push_master will be triggered after merge to master. This will deploy your code to the MPKIT_URL_QA Instance, tests will be executed. If tests pass, this will trigger deploy to the live Instance.  
+
+### Set workflow
+
+All workflow files can be found in the `.github/workflows` directory. For complete installation instructions visit [Quickstart for GitHub Actions](https://docs.github.com/en/free-pro-team@latest/actions/quickstart).
