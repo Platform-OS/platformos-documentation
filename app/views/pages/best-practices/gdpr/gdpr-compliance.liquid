@@ -37,40 +37,21 @@ To inform users about the way you handle personal data, you should write a Priva
 * How someone can get in touch with you (e.g. to delete their data)
 * Links to the privacy policies of third-party applications you use (e.g. chat, email provider)
 
-In platformOS, you gather and update data through Liquid forms. Here's an example of a user sign-up form for clients.
+## Cookie notification
 
-##### app/forms/client_sign_up.liquid
+The opt-in requirement applies to cookie notifications, too. Implied consent (e.g. user closing the cookie notification window) is not enough. Any new visitor to your website should click to opt-in, so the notification should have a button and a link to your cookie policy as well.
 
-```liquid
-{% raw %}
----
-name: onboarding
-resource: User
-resource_owner: anyone
-redirect_to: /
-fields:
-  name:
-    validation: { presence: true }
-  email:
-  password:
-  profiles:
-    client:
-      properties:
----
+The cookie policy should describe what you collect and why, even for third-party applications, like Google Analytics.
 
-{% form %}
-  {% assign f = form.fields %}
+platformOS Partners can implement a cookie notification in many ways, for example by adding a JavaScript cookie alert popup to their sites.  You can use available [cookie consent solutions](https://cookieconsent.insites.com/demos/) or reuse code from a [GitHub repository](https://github.com/insites/cookieconsent).
 
-  <input type="text" name="{{ f.name.name }}" value="{{ f.name.value }}">
-  <input type="email" name="{{ f.email.name }}" value="{{ f.email.value }}">
-  <input type="password" name="{{ f.password.name }}" value="{{ f.password.value }}">
+## Data security
 
-  <button>Register</button>
-{% endform %}
-{% endraw %}
-```
+The regulation expects data controllers to ensure the security of personal data. This means you should use some kind of encryption (e.g. SSL), and implement digital security measures. You should have the ability to recover and restore data from a disaster and implement a workflow for regular testing of security issues.
 
-You can use the same form with slight modifications to gather and update data: use the form with `resource_id: [id]` to let a user update data.
+You have to consider data breaches and their consequences, have a data breach response plan that ensures you can inform your users about the data breach promptly, and report the data breach to your supervisory authority in less than 72 hours.
+
+We use [Amazon Elastic Compute Cloud (Amazon EC2)](https://aws.amazon.com/ec2/) as server infrastructure, and [Amazon Simple Storage Service (Amazon S3)](https://aws.amazon.com/s3/) for data storage. All AWS services including these are GDPR compliant, learn more about them in detail in their [GDPR Center](https://aws.amazon.com/compliance/gdpr-center/).
 
 ## Data erasure
 
@@ -95,155 +76,6 @@ You should inform your users about the purpose and way you will use their data. 
 Consent should always be opt-in, and not opt-out. This means users should actively give their consent to you for using their data (e.g. by clicking a button or selecting a checkbox). Implied consent is not allowed, so you can’t use a pre-ticked checkbox and consider it consent if the user hasn’t unchecked it. You are not allowed to bundle checkboxes (users should  not be able to check more boxes at once), and you should make it easy for your users to withdraw their consent.
 
 If you are using a third-party email provider for newsletter subscription or a chat application, make sure they follow GDPR requirements as well.
-
-### platformOS example
-
-This is some example code of a simple opt-in newsletter subscription form and an unsubscribe form implemented in platformOS.
-
-Table
-
-##### app/schema/newsletter.yml
-
-```yaml
-name: Newsletter
-properties:
-  - name: email
-    type: string
-```
-
-Page
-
-##### app/views/pages/newsletter/join.liquid
-
-```liquid
-{% raw %}
----
-slug: newsletter
-layout: home
----
-<h1>Join Newsletter</h1>
-{% include_form 'newsletter_form' %}
-{% endraw %}
-```
-
-Form
-
-##### app/forms/newsletter/join.liquid
-
-```liquid
-{% raw %}
----
-name: newsletter_form
-resource: newsletter
-flash_notice: Thank you for joining our newsletter
-redirect_to: '/newsletter/thank-you?email={{ form.properties.email }}'
-fields:
-  properties:
-    email:
-      validation:
-        presence: true
----
-{% form %}
-  {% assign f = form.fields %}
-  <input type="text" name="{{ f.properties.email.name }}" value="{{ f.properties.email.value }}">
-  <button>Save</button>
-{% endform %}
-{% endraw %}
-```
-
-<img loading="lazy" src="{{ 'images/best-practices/gdpr/join_newsletter.png' | asset_url }}" alt="Screenshot of Join newsletter block" />
-
-Thank you page
-
-##### app/views/pages/newsletter/thankyou.liquid
-
-```liquid
-{% raw %}
----
-slug: newsletter/thank-you
-layout: home
----
-<h1>Newsletter</h1>
-
-You are now subscribed to our newsletter.
-If you wish to unsubscribe place click on <a href="/newsletter/unsubscribe?email={{ context.params.email }}">this link</a>
-{% endraw %}
-```
-
-<img loading="lazy" src="{{ 'images/best-practices/gdpr/thankyou_page.png' | asset_url }}" alt="Screenshot of the Thank you page" />
-
-Get newsletter graph for an email
-
-Query returning newsletters for particular user requires email as an argument.
-
-##### app/graphql/newsletter/get.graphql
-
-```graphql
-query get_newsletter(
-  $email: String
-)
-{
-  records (
-    filter: {
-      table: { value: "newsletter" }
-      properties: [
-        {
-          name: "email"
-          value: $email
-        }
-      }
-    ]
-  )
-  {
-    results {
-      email: property(name: "email")
-      id
-    }
-  }
-}
-```
-
-Unsubscribe form
-
-##### app/forms/newsletter/unsubscribe.liquid
-
-```liquid
-{% raw %}
----
-name: unsubscribe_newsletter_form
-resource: newsletter
-flash_notice: You are now unsubscribed
-redirect_to: /
-fields:
-  properties:
-    email:
-      validation:
-        presence: true
----
-{% form method: 'delete' %}
-  <button>Unsubscribe</button>
-{% endform %}
-{% endraw %}
-```
-
-<img loading="lazy" src="{{ 'images/best-practices/gdpr/unsubscribe.png' | asset_url }}" alt="Screenshot of the Unsubscribe form" />
-
-## Cookie notification
-
-The opt-in requirement applies to cookie notifications, too. Implied consent (e.g. user closing the cookie notification window) is not enough. Any new visitor to your website should click to opt-in, so the notification should have a button and a link to your cookie policy as well.
-
-The cookie policy should describe what you collect and why, even for third-party applications, like Google Analytics.
-
-platformOS Partners can implement a cookie notification in many ways, for example by adding a JavaScript cookie alert popup to their sites.  You can use available [cookie consent solutions](https://cookieconsent.insites.com/demos/) or reuse code from a [GitHub repository](https://github.com/insites/cookieconsent).
-
-## Data security
-The regulation expects data controllers to ensure the security of personal data. This means you should use some kind of encryption (e.g. SSL), and implement digital security measures. You should have the ability to recover and restore data from a disaster and implement a workflow for regular testing of security issues.
-
-You have to consider data breaches and their consequences, have a data breach response plan that ensures you can inform your users about the data breach promptly, and report the data breach to your supervisory authority in less than 72 hours.
-
-
-
-We use [Amazon Elastic Compute Cloud (Amazon EC2)](https://aws.amazon.com/ec2/) as server infrastructure, and [Amazon Simple Storage Service (Amazon S3)](https://aws.amazon.com/s3/) for data storage. All AWS services including these are GDPR compliant, learn more about them in detail in their [GDPR Center](https://aws.amazon.com/compliance/gdpr-center/).
 
 ## Payment gateways
 
