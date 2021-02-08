@@ -1,0 +1,179 @@
+---
+converter: markdown
+metadata:
+  title: GDPR Technical Implementation in platformOS
+  description: Examples of technical implementation of GDPR.
+---
+
+The [General Data Protection Regulation (GDPR)](http://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32016R0679&from=EN) sets data protection and privacy guidelines for handling personal data of individuals within the European Union (EU). As such, it applies not only to all organizations established in the EU that handle personal data but also to any non-EU established organization that processes personal data of individuals who are in the EU. The GDPR came into force on 25 May 2018.
+
+Learn more about [GDPR compliance](/best-practices/gdpr/gdpr-compliance) in our related article.
+
+## Implementation example
+
+In platformOS, you gather and update data through Liquid forms. Here's an example of a user sign-up form for clients.
+
+##### app/forms/client_sign_up.liquid
+
+```liquid
+{% raw %}
+---
+name: onboarding
+resource: User
+resource_owner: anyone
+redirect_to: /
+fields:
+  name:
+    validation: { presence: true }
+  email:
+  password:
+  profiles:
+    client:
+      properties:
+---
+
+{% form %}
+  {% assign f = form.fields %}
+
+  <input type="text" name="{{ f.name.name }}" value="{{ f.name.value }}">
+  <input type="email" name="{{ f.email.name }}" value="{{ f.email.value }}">
+  <input type="password" name="{{ f.password.name }}" value="{{ f.password.value }}">
+
+  <button>Register</button>
+{% endform %}
+{% endraw %}
+```
+
+You can use the same form with slight modifications to gather and update data: use the form with `resource_id: [id]` to let a user update data.
+
+### platformOS example
+
+This is some example code of a simple opt-in newsletter subscription form and an unsubscribe form implemented in platformOS.
+
+### Table
+
+##### app/schema/newsletter.yml
+
+```yaml
+name: Newsletter
+properties:
+  - name: email
+    type: string
+```
+
+### Page
+
+##### app/views/pages/newsletter/join.liquid
+
+```liquid
+{% raw %}
+---
+slug: newsletter
+layout: home
+---
+<h1>Join Newsletter</h1>
+{% include_form 'newsletter_form' %}
+{% endraw %}
+```
+
+### Form
+
+##### app/forms/newsletter/join.liquid
+
+```liquid
+{% raw %}
+---
+name: newsletter_form
+resource: newsletter
+flash_notice: Thank you for joining our newsletter
+redirect_to: '/newsletter/thank-you?email={{ form.properties.email }}'
+fields:
+  properties:
+    email:
+      validation:
+        presence: true
+---
+{% form %}
+  {% assign f = form.fields %}
+  <input type="text" name="{{ f.properties.email.name }}" value="{{ f.properties.email.value }}">
+  <button>Save</button>
+{% endform %}
+{% endraw %}
+```
+
+<img loading="lazy" src="{{ 'images/best-practices/gdpr/join_newsletter.png' | asset_url }}" alt="Screenshot of Join newsletter block" />
+
+### Thank you page
+
+##### app/views/pages/newsletter/thankyou.liquid
+
+```liquid
+{% raw %}
+---
+slug: newsletter/thank-you
+layout: home
+---
+<h1>Newsletter</h1>
+
+You are now subscribed to our newsletter.
+If you wish to unsubscribe place click on <a href="/newsletter/unsubscribe?email={{ context.params.email }}">this link</a>
+{% endraw %}
+```
+
+<img loading="lazy" src="{{ 'images/best-practices/gdpr/thankyou_page.png' | asset_url }}" alt="Screenshot of the Thank you page" />
+
+### Get newsletter graph for an email
+
+Query returning newsletters for particular user requires email as an argument.
+
+##### app/graphql/newsletter/get.graphql
+
+```graphql
+query get_newsletter(
+  $email: String
+)
+{
+  records (
+    filter: {
+      table: { value: "newsletter" }
+      properties: [
+        {
+          name: "email"
+          value: $email
+        }
+      }
+    ]
+  )
+  {
+    results {
+      email: property(name: "email")
+      id
+    }
+  }
+}
+```
+
+### Unsubscribe form
+
+##### app/forms/newsletter/unsubscribe.liquid
+
+```liquid
+{% raw %}
+---
+name: unsubscribe_newsletter_form
+resource: newsletter
+flash_notice: You are now unsubscribed
+redirect_to: /
+fields:
+  properties:
+    email:
+      validation:
+        presence: true
+---
+{% form method: 'delete' %}
+  <button>Unsubscribe</button>
+{% endform %}
+{% endraw %}
+```
+
+<img loading="lazy" src="{{ 'images/best-practices/gdpr/unsubscribe.png' | asset_url }}" alt="Screenshot of the Unsubscribe form" />
