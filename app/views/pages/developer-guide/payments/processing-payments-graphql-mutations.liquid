@@ -76,8 +76,8 @@ The configuration and data are prepared. You now need to wrap it in the format t
 {% parse_json "refund_data" %}
   {
     "properties": [
-       { "name": "config", "value": "{{ config | json | escape_javascript }}" },
-       { "name": "data", "value":  "{{ data | json | escape_javascript }}" }
+       { "name": "config", "value": "{{ config | escape_javascript }}" },
+       { "name": "data", "value":  "{{ data | escape_javascript }}" }
      ]
   }
 {% endparse_json %}
