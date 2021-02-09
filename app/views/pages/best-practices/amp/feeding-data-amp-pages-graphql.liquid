@@ -86,10 +86,10 @@ Create the JSON endpoint, a dynamically generated JSON document from which AMP f
   "items": [
     {% for product in results %}
       {
-        "name": {{ product.name | json }},
-        "slug": {{ product.slug | json }},
-        "description": {{ product.description | json }},
-        "image": {{ product.photo.url | json }},
+        "name": {{ product.name }},
+        "slug": {{ product.slug }},
+        "description": {{ product.description }},
+        "image": {{ product.photo.url }},
         "price": {{ product.price }}
       }{% unless forloop.last %},{% endunless %}
     {% endfor %}

@@ -59,7 +59,7 @@ You can reset `unread_count` with the same query by setting `$reset_last_read` t
 
 Imagine the following scenario:
 - you want to reset the counter when the user visits the activities (or notifications) page
-- but you want to keep the activites that the user has not clicked yet unread 
+- but you want to keep the activites that the user has not clicked yet unread
 
 You can implement this scenario with the following steps:
 
@@ -92,8 +92,8 @@ You can implement this scenario with the following steps:
 ```liquid
 {% raw %}
 {% capture 'notifications' -%}
-  { "total_entries": {{ g.streams.total_entries | json }},
-    "unread_count": {{ g.streams.unread_count | json }},
+  { "total_entries": {{ g.streams.total_entries }},
+    "unread_count": {{ g.streams.unread_count }},
     "results": [
       {%- for notification in notifications -%}
         {%- assign is_clicked = false -%}
@@ -102,12 +102,12 @@ You can implement this scenario with the following steps:
         {%- endif -%}
         {%- unless forloop.first -%},{%- endunless -%}
         {
-          "id": {{ notification.id | json }},
-          "uuid": {{ notification.uuid | json }},
-          "clicked": {{ is_clicked | json -}},
+          "id": {{ notification.id }},
+          "uuid": {{ notification.uuid }},
+          "clicked": {{ is_clicked -}},
           "payload": {
             {%- for field in notification.payload -%}
-              "{{ field[0] }}" : {{ field[1] | json }}{%- unless forloop.last -%},{%- endunless -%}
+              "{{ field[0] }}" : {{ field[1] }}{%- unless forloop.last -%},{%- endunless -%}
             {%- endfor -%}
           }
         }
@@ -123,7 +123,7 @@ You can implement this scenario with the following steps:
 
 ```liquid
 {% raw %}
-{% liquid 
+{% liquid
   assign recipients = context.current_user.id | split: "|"
   graphql notifications = 'get_activities', user_id: context.current_user.id | dig: 'streams', 'results'
 
