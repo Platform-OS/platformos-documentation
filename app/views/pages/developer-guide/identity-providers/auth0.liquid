@@ -1,25 +1,26 @@
 ---
 converter: markdown
 metadata:
-  title: Identity provider - auth0
+  title: Identity provider - Auth0
   description: This guide will help you configure and integrate with Auth0.
 ---
 This guide will help you configure and integrate with Auth0.
 
 ## Requirements
+
 To follow the steps in this tutorial, you should be familiar with Users and Identity Providers. This guide builds on previous tutorials in the **Developer Guide: Identity Providers** section.
 
 * [Users](/developer-guide/users/users)
 
-### Step 1: Create application on your auth0 account https://auth0.com/
+### Step 1: Create application on your Auth0 account `https://auth0.com/`
 
-### Step 2: In auth0 admin set Allowed Callback URLs to https://<YOUR_DOMAIN>/auth/auth0/callback
+### Step 2: In Auth0 admin set Allowed Callback URLs to `https://<YOUR_DOMAIN>/auth/auth0/callback`
 
-### Step 3: In auth0 admin set Allowed Web Origins to https://<YOUR_DOMAIN>
+### Step 3: In Auth0 admin set Allowed Web Origins to `https://<YOUR_DOMAIN>`
 
-### Step 4: Configure Partner Poral
+### Step 4: Configure Partner Portal
 
-Copy `Client ID`, `Client Secret` and `Domain` from auth0. Then go to `https://partners.platformos.com/instances/<YOUR INSTANCE ID>/edit`, switch to edit mode and add the following JSON to `integrations`:
+Copy `Client ID`, `Client Secret` and `Domain` from Auth0. Then go to `https://partners.platformos.com/instances/<YOUR INSTANCE ID>/edit`, switch to edit mode and add the following JSON to `integrations`:
 ```json
 "auth0": {
   "client_id": "<CLIENT ID>",
@@ -28,6 +29,6 @@ Copy `Client ID`, `Client Secret` and `Domain` from auth0. Then go to `https://p
 }
 ```
 
-### Step 5: Use /auth/auth0 on your Instance
+### Step 5: Use `/auth/auth0` on your Instance
 
 For example, you can add a link to the "Log In / Sign Up" Liquid page that points to `/auth/auth0`.
