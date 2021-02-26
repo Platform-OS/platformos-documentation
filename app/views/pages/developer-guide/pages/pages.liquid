@@ -73,6 +73,25 @@ The Homepage slug is `/`, which will work for both https://example.com and https
 <p>A paragraph explaining what we do</p>
 ```
 
+## Subdomains
+
+You can add subdomains in the header of a page like this:
+
+```liquid
+---
+layout_name: 1col
+format: html
+slug: mypage
+layout_name: ''
+subdomain: subdomain1
+---
+<h1>Page with domain</h1>
+```
+
+The page will match the current request and will be displayed only if the specified subdomain matches the subdomain of the request. You can specify any number of subdomain parts and the system will attempt to match the subdomains of the request from left to right. 
+
+This means `subdomain: subdomain1.example2.example3` will match a request coming in for the domain `subdomain1.example2.example3.site.com`. `subdomain: site` will match a request coming in for the domain `site.com`.
+
 ## Formats
 
 To define which format the endpoint will be available for, place `.<format>` before the file extension.
@@ -129,9 +148,9 @@ To define to which method the endpoint will respond, define `method` in the Page
 
 ### POST/PUT/PATCH/DELETE methods and Cross-Site Request Forgery attacks
 
-Cross-Site Request Forgery allows attacker to trick an user to execute endpoint without his knowledge. We prevent Cross-Site Request Forgery (CSRF) attacks by requiring CSRF Token to be provided for every request to a Page which is not GET. If the token is missing, then `context.current_user` would appear as null, because the user session will be invalidated. To be able to access `context.current_user`, you need to provide valid CSRF Token. For [Forms](/developer-guide/forms/forms#content) we handle it automatically by adding a hidden parameter with name `authenticity_token`. However, if you manually trigger a POST/PUT/PATCH/DELETE AJAX request, you need to remember about populating `X-CSRF-Token` header with value from `context.authenticity_token` and also specify `X-Requested-With: XMLHttpRequest` header. Common practice is to include a `meta` tag in the layout, for example `<meta content="{{ context.authenticity_token }}" name="csrf-token">` and use this value to execute AJAX request.
+Cross-Site Request Forgery allows an attacker to trick users into executing an endpoint without them knowing. We prevent Cross-Site Request Forgery (CSRF) attacks by requiring a CSRF Token to be provided for every request to a Page which is not GET. If the token is missing, then `context.current_user` would appear as null, because the user session will be invalidated. To be able to access `context.current_user`, you need to provide a valid CSRF Token. For [Forms](/developer-guide/forms/forms) we handle it automatically by adding a hidden parameter with the name `authenticity_token`. However, if you manually trigger a POST/PUT/PATCH/DELETE AJAX request, you need to remember about populating `X-CSRF-Token` header with value from `context.authenticity_token` and also specify `X-Requested-With: XMLHttpRequest` header. Common practice is to include a `meta` tag in the layout, for example `<meta content="{{ context.authenticity_token }}" name="csrf-token">` and use this value to execute AJAX request.
 
-If you are building JSON API, for example for a mobile app, you might want to authenticate users using [JWT tokens](/developer-guide/users/authenticating-user-with-jwt-token#content).
+If you are building a JSON API, for example for a mobile app, you might want to authenticate users using [JWT tokens](/developer-guide/users/authenticating-user-with-jwt-token#content).
 
 ## Related topics
 
