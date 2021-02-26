@@ -1,0 +1,96 @@
+---
+converter: markdown
+metadata:
+  title: Generating and Uploading a PDF
+  description: This guide will help you generate and upload a PDF file.
+---
+
+This guide will help you generate and upload a PDF file.
+
+## Requirements
+This is an advanced tutorial. To follow it, you should be familiar with Records, Tables, and uploads.  
+
+* [Records and Tables](/developer-guide/records/records-tables)
+* [Uploads](/developer-guide/properties/uploads)
+* [User Uploads](/developer-guide/user-uploads/user-uploads)
+
+## Steps
+
+<div data-autosteps></div>
+
+### Step 1: Create Table
+
+Start with a Table like this: 
+
+##### app/schema/model_with_upload.yml
+
+```yml
+name: model_with_upload
+properties:
+- name: the_upload
+  type: upload
+```
+
+### Step 2: Generate PDF and upload it to S3 
+
+Once you have the Table defined in step 1, you can generate a PDF and upload it to S3 from an HTML source by passing the HTML code in "content". 
+
+##### app/graphql/generate_pdf.graphql
+
+```graphql
+mutation {
+  record_create(
+    record: {
+      table: "model_with_upload"
+      properties: [ { 
+        name: "the_upload"
+        value_upload: {
+          type: pdf
+          content: "<html><head><title>Test PDF</title></head><body><h1>This will be the content of the pdf</h1></body></html>"
+        }
+      } ]
+    }
+  ) {
+    id
+    url: property_upload(name:"the_upload", expires_in: 600) {
+      extension
+      file_name
+      url
+      versions
+    }
+  }
+}
+```
+
+### Step 3: Access PDF 
+
+`expires_in` sets an expiration timeout for the link, in seconds. To get the S3 link after the expiration time, you may use this query but don't forget to set a new expiration time, otherwise the file will not be accessible. 
+
+##### app/graphql/get_pdf_requests.graphql
+
+```graphql
+query {
+  records(
+    per_page: 3
+    filter: {
+      id: { value: 57 } # optional
+      table: { value: "model_with_upload" }
+    }
+  ) {
+    results {
+      id
+      url: property_upload(name:"the_upload", expires_in: 600) {
+        extension
+        file_name
+        url
+        versions
+      }
+    }
+  }
+}
+```
+
+## Source code
+
+The complete [source code](https://github.com/mdyd-dev/platformos-examples/tree/master/modules/pdf_generation) can be found on GitHub.
+
