@@ -1,0 +1,82 @@
+---
+converter: markdown
+metadata:
+  title: Adding hCaptcha Spam Protection
+  description: This guide will help you add spam protection to your forms using hCaptcha. 
+---
+This guide will help you add spam protection to your forms using [hCaptcha](https://www.hcaptcha.com/).
+
+To add hCaptcha to a form, create an Authorization Policy and add it to your form. 
+
+## Requirements
+
+To follow this tutorial, you should be familiar with forms, form configuration options, and Authorization Policies, including how to add an Authorization Policy and associate it with a form.   
+* [Forms](/developer-guide/forms/forms)
+* [Form Configuration Options](/developer-guide/forms/form-configuration) 
+* [Authorization Policy](/developer-guide/authorization-policy/authorization-policy)
+* [Adding an Authorization Policy](/developer-guide/authorization-policy/adding-authorization-policy)
+* [Associating an Authorization Policy with a Form](/developer-guide/authorization-policy/associating-authorization-policy-form)
+
+## Steps
+
+<div data-autosteps></div>
+
+### Step 1: Create Authorization Policy for the hCaptcha
+
+##### app/authorization_policies/is_hcaptcha_authorized.liquid
+
+```liquid
+{% raw %}
+---
+name: is_hcaptcha_authorized
+redirect_to: /sign-in-hcaptcha
+flash_alert: Invalid captcha authorization.
+---
+{{ context.params | hcaptcha }}
+{% endraw %}
+```
+
+### Step 2: Add form configuration header to your form in the configuration body
+
+##### app/forms/sign_in_with_hcaptcha.liquid
+
+```liquid
+{% raw %}
+---
+name: sign_in_with_hcaptcha
+resource: Session
+authorization_policies:
+  - modules/sign_in_hcaptcha/is_hcaptcha_authorized
+fields:
+  email:
+  password:
+---
+{% form html-class: 'w-50' %}
+  <div class="form-group">
+    <label for="form_email">Email</label>
+    <input class="form-control" name="{{ form.fields.email.name }}" value="{{ form.fields.email.value}}" id="form_email" type="email">
+  </div>
+
+  <div class="form-group">
+    <label for="form_password">Password</label>
+    <input class="form-control" name="{{ form.fields.password.name }}" id="form_password" type="password">
+    {% if form.errors.password %}
+      <p>{{ form.errors.password }}</p>
+    {% endif %}
+  </div>
+
+  <div class="form-group">
+    {{ form.errors.base }}
+  </div>
+
+  {% spam_protection "hcaptcha" %}
+
+  <button class="btn btn-primary">Log In</button>
+{% endform %}
+{% endraw %}
+```
+
+## Live example and source code
+To play with the live example visit the [sign-in-hcaptcha](https://examples.platform-os.com/sign-in-hcaptcha) page.
+
+[Source code](https://github.com/mdyd-dev/platformos-examples/tree/master/modules/sign_in_hcaptcha) can be found on GitHub.
