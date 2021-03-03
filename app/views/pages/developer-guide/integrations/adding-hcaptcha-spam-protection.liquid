@@ -4,13 +4,15 @@ metadata:
   title: Adding hCaptcha Spam Protection
   description: This guide will help you add spam protection to your forms using hCaptcha. 
 ---
-This guide will help you add spam protection to your forms using [hCaptcha](https://www.hcaptcha.com/).
+This guide will help you add spam protection to your forms using [hCaptcha](https://www.hcaptcha.com/). It includes:
 
-To add hCaptcha to a form, create an Authorization Policy and add it to your form. 
+* a tutorial for creating an Authorization Policy and adding it to your form
+* an example of adding a regular form in a page (without form configuration) with the hcaptcha tags inside
+* an example of protecting the page with the slug `/main-content`
 
 ## Requirements
 
-To follow this tutorial, you should be familiar with forms, form configuration options, and Authorization Policies, including how to add an Authorization Policy and associate it with a form.   
+To follow this topic, you should be familiar with forms, form configuration options, and Authorization Policies, including how to add an Authorization Policy and associate it with a form.   
 * [Forms](/developer-guide/forms/forms)
 * [Form Configuration Options](/developer-guide/forms/form-configuration) 
 * [Authorization Policy](/developer-guide/authorization-policy/authorization-policy)
@@ -22,6 +24,8 @@ To follow this tutorial, you should be familiar with forms, form configuration o
 <div data-autosteps></div>
 
 ### Step 1: Create Authorization Policy for the hCaptcha
+
+To add hCaptcha to a form, first create an Authorization Policy. 
 
 ##### app/authorization_policies/is_hcaptcha_authorized.liquid
 
@@ -37,6 +41,8 @@ flash_alert: Invalid captcha authorization.
 ```
 
 ### Step 2: Add form configuration header to your form in the configuration body
+
+Add the Authorization Policy it to your form. 
 
 ##### app/forms/sign_in_with_hcaptcha.liquid
 
@@ -73,6 +79,118 @@ fields:
 
   <button class="btn btn-primary">Log In</button>
 {% endform %}
+{% endraw %}
+```
+
+## Example 1: Regular form in a page (without form configuration)
+This example shows how to add a regular form in a page (without form configuration) with the hcaptcha tags inside. This form posts to a page which has an authorization policy with the same content as in the example above. 
+
+#### app/authorization_policies/check_authencity_token.liquid
+
+```liquid
+{% raw %}
+---
+name: check_authenticity_token
+redirect_to: /unauthorized
+flash_alert: Sorry
+---
+{{ context.csrf_request_valid }}
+{% endraw %}
+```
+
+#### app/views/pages/regular_form_in_page.liquid
+
+```liquid
+{% raw %}
+---
+slug: regular_form_in_page
+layout_name: 1col
+---
+
+<h1>Test hcaptcha in a regular form page.</h1>
+
+<form action="/regular_page_post" method="post">
+  <input type="hidden" name="authenticity_token" value="{{ context.authenticity_token }}" />
+
+  {% spam_protection "hcaptcha" %}
+
+  <input type="submit" name="submit" value="Submit" />
+</form>
+{% endraw %}
+```
+
+#### app/views/pages/regular_page_post.liquid
+
+```liquid
+{% raw %}
+---
+slug: regular_page_post
+layout_name: 1col
+method: post
+authorization_policies:
+  - check_regular_hcaptcha_authorized
+  - check_authenticity_token
+---
+
+Protected page
+{% endraw %}
+```
+
+## Example 2: Protect page with the slug /main-content
+To protect the page with the slug `/main-content`, create two pages:
+
+* `/main-content`
+* `/content-protection`
+
+`/main-content` has an authorization policy with the same content as above, and uses `redirect_to /content-protection` (when the hcaptcha check fails). `/content-protection` has a regular form in it (no form configuration) with hcaptcha tags inside and posts to `/main-content`. This way main-content is hcaptcha protected by content-protection.
+
+#### app/authorization_policies/check_authorized_for_content.liquid
+
+```liquid
+{% raw %}
+---
+name: check_authorized_for_content
+redirect_to: /content-protection
+flash_alert: Please solve the captcha correctly.
+---
+{{ params | hcaptcha }}
+{% endraw %}
+```
+
+#### app/views/pages/main-content.liquid
+
+```liquid
+{% raw %}
+---
+slug: main-content
+layout_name: 1col
+method: post
+authorization_policies:
+  - check_authorized_for_content
+---
+
+Protected content
+{% endraw %}
+```
+
+#### app/views/pages/content-protection.liquid
+
+```liquid
+{% raw %}
+---
+slug: content-protection
+layout_name: 1col
+---
+
+<h1>Please solve the captcha below to access the protected content.</h1>
+
+<form action="/main-content" method="post">
+  <input type="hidden" name="authenticity_token" value="{{ context.authenticity_token }}" />
+
+  {% spam_protection "hcaptcha" %}
+
+  <input type="submit" name="submit" value="Submit" />
+</form>
 {% endraw %}
 ```
 
