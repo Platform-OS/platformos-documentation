@@ -85,6 +85,19 @@ fields:
 ## Example 1: Regular form in a page (without form configuration)
 This example shows how to add a regular form in a page (without form configuration) with the hcaptcha tags inside. This form posts to a page which has an authorization policy with the same content as in the example above. 
 
+#### app/authorization_policies/check_regular_hcaptcha_authorized.liquid
+
+```liquid
+{% raw %}
+---
+name: check_regular_hcaptcha_authorized
+redirect_to: /unauthorized
+flash_alert: Sorry
+---
+{{ params | hcaptcha }}
+{% endraw %}
+```
+
 #### app/authorization_policies/check_authencity_token.liquid
 
 ```liquid
