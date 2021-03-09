@@ -211,20 +211,17 @@ All database operations in this application follow the same structure and have t
 
 {% raw %}
 ```liquid
----
-method: post
----
-{%- assign title = context.params.title -%}
-
-{% graphql result = 'list/create', title: title %}
-{% assign list = result | fetch: "record_create" %}
-
+{% liquid 
+  assign title = context.params.title
+  graphql result = 'list/create', title: title
+  assign list = result | fetch: "record_create"
+%}
 {% if list.id %}
-<script>window.location.href = '/list/show/{{ list.id }}';</script>
+  <script>window.location.href = '/list/show/{{ list.id }}';</script>
 {% else %}
-Something went wrong :(
-<br>
-{{ result.errors }}
+  Something went wrong :(
+  <br>
+  {{ result.errors }}
 {% endif %}
 ```
 {% endraw %}
@@ -324,8 +321,10 @@ Now that you have a link pointing to {% raw %}`/list/show/{{ list.id }}`{% endra
 
 {% raw %}
 ```liquid
- {%- assign id = context.params.slug3 -%}
- {% graphql list = 'list/read', id: id | fetch: 'records' | fetch: 'results' | first %}
+ {% liquid
+   assign id = context.params.slug3
+   graphql list = 'list/read', id: id | fetch: 'records' | fetch: 'results' | first 
+ %}
 
  <h2 class="mb-0 mr-10">{{ list.title }}</h2>
 ```
@@ -360,11 +359,12 @@ Note that ID is required as well, because you have to tell the system which list
  ---
  method: post
  ---
- {%- assign id = context.params.slug3 -%}
- {%- assign title = context.params.title -%}
-
- {% graphql result = 'list/update', id: id, title: title %}
- {% assign list = result | fetch: "record_update" %}
+ {% liquid
+   assign id = context.params.slug3
+   assign title = context.params.title
+   graphql result = 'list/update', id: id, title: title
+   assign list = result | fetch: "record_update"
+ %}
 
  {% if list.id %}
  <script>window.location.href = '/list/show/{{ id }}';</script>
@@ -418,10 +418,11 @@ Because you did not connect any tasks to your lists, all of them are empty. This
  ---
  method: post
  ---
- {%- assign id = context.params.slug3 -%}
-
- {% graphql result = 'list/delete', id: id %}
- {% assign list = result | fetch: "record_delete" %}
+ {% liquid
+   assign id = context.params.slug3
+   graphql result = 'list/delete', id: id
+   assign list = result | fetch: "record_delete"
+ %}
 
  {% if list.id %}
  <script>window.location.href = '/';</script>
@@ -488,11 +489,12 @@ Now that you have all your list operations ready, start handling items.
  ---
  method: post
  ---
- {%- assign list_id = context.params.slug3 -%}
- {%- assign content = context.params.content -%}
-
- {% graphql result = 'item/create', list_id: list_id, content: content %}
- {% assign item = result | fetch: "record_create" %}
+ {%
+   assign list_id = context.params.slug3
+   assign content = context.params.content
+   graphql result = 'item/create', list_id: list_id, content: content
+   assign item = result | fetch: "record_create" 
+ %}
 
  {% if item.id %}
  <script>window.location.href = '/list/show/{{ list_id }}';</script>
@@ -626,8 +628,10 @@ Additionally, you submit the form as soon as the user checks/unchecks the checkb
  ---
  method: post
  ---
- {%- assign id = context.params.slug3 -%}
- {%- assign content = context.params.content -%}
+ {% liquid
+   assign id = context.params.slug3
+   assign content = context.params.content
+ %}
 
  {% if content.size > 0 %}
    {% graphql result = 'item_update_content', id: id, content: content %}
