@@ -67,8 +67,10 @@ You can implement this scenario with the following steps:
 
 ```liquid
 {% raw %}
-{% assign recipients = context.current_user.id | split: "|" %}
-{% graphql gp = 'activity_publish', uuid: activity.uuid, feed_ids: recipients, feed_type: 'UserNotifications.Read' %}
+{% liquid
+  assign recipients = context.current_user.id | split: "|"
+  graphql gp = 'activity_publish', uuid: activity.uuid, feed_ids: recipients, feed_type: 'UserNotifications.Read'
+%}
 {% endraw %}
 ```
 

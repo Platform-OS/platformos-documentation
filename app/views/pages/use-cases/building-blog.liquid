@@ -79,10 +79,11 @@ To access parameters passed in the URL in Liquid markup, use the `extract_url_pa
 
 ```liquid
 {% raw %}
-{% assign example_url = "/cars/honda/crx" %}
-
-{% assign url_template = '/cars/{maker}/{model}' %}
-{% assign url_params = example_url | extract_url_params: url_template %}
+{% liquid
+  assign example_url = "/cars/honda/crx"
+  assign url_template = '/cars/{maker}/{model}'
+  assign url_params = example_url | extract_url_params: url_template
+%}
 
 {{ url_params }} => {"maker"=>"honda", "model"=>"crx"}
 {{ url_params.maker }} => "honda"

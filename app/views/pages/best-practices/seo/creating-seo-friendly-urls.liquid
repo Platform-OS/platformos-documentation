@@ -106,8 +106,10 @@ Add the GraphQL query you created to your page, and pass extracted params to it:
 
 ```liquid
 {% raw %}
-{% assign url_template = '/catalogue/{country}/{city}' %}
-{% assign url_params = context.location.pathname | extract_url_params: url_template %}
+{% liquid
+  assign url_template = '/catalogue/{country}/{city}'
+  assign url_params = context.location.pathname | extract_url_params: url_template
+%}
 
 <div class="results">
   <form action="." method="GET">

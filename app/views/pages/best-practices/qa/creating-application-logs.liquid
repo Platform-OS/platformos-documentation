@@ -28,9 +28,11 @@ Create a page using the `log` Liquid tag, and sync it.
 
 ```liquid
 {% raw %}
-{% log 'This is a message' %}
-{% log params, type: 'request-params' %}
-{% log 'This will be an error', type: 'error' %}
+{% liquid
+  log 'This is a message'
+  log params, type: 'request-params'
+  log 'This will be an error', type: 'error'
+%}
 {% endraw %}
 ```
 
