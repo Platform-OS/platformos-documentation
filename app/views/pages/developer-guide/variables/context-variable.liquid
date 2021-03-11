@@ -86,8 +86,10 @@ Available attributes are:
 URL: `www.mysite.com/app/admin/content/nyc/brooklyn/main`
 {% raw %}
 ```liquid
-{% assign template = '/app/admin/content/{city}/{area}/{street}' %}
-{% assign params = context.location.pathname | extract_url_params: template %}
+{% liquid
+  assign template = '/app/admin/content/{city}/{area}/{street}'
+  assign params = context.location.pathname | extract_url_params: template
+%}
 
 "params": {
   "city": "nyc",
@@ -212,8 +214,10 @@ It is possible to promote a local variable so it is available in the `context.ex
 
 {% raw %}
 ```liquid
-{% assign foo = "bar" %}
-{% export foo, namespace: "baz" %}
+{% liquid
+  assign foo = "bar"
+  export foo, namespace: "baz"
+%}
 {{ context.exports.baz.foo }}
 ```
 {% endraw %}
