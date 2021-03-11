@@ -39,8 +39,10 @@ On the page of your choice, use the predefined `gateway_request_form` and config
 
 ```liquid
 {% raw %}
-{% assign gateway_name = 'stripe' %}
-{% export gateway_name, namespace: "payments"  %}
+{% liquid
+  assign gateway_name = 'stripe'
+  export gateway_name, namespace: "payments"
+%}
 
 {%- parse_json 'data' -%}
   {

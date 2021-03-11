@@ -173,8 +173,10 @@ pl:
 
 ```liquid
 {% raw %}
-{% assign my_name = context.params.name | default: "Pawel" %}
-{% assign url = context.params.url | default: "https://example.com" %}
+{% liquid
+  assign my_name = context.params.name | default: "Pawel"
+  assign url = context.params.url | default: "https://example.com"
+%}
 
 {{ 'personal.hello' | t: name: my_name, url: url }}
 {% endraw %}

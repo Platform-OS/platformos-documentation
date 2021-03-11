@@ -110,8 +110,10 @@ Page slug for the above URL map will simply be `contacts` as the ID passed in th
 
 ```liquid
 {% raw %}
-{%- assign id = context.params.slug2 -%}
-{%- graphql g = "modules/contacts/get_contacts", id: id -%}
+{% liquid
+  assign id = context.params.slug2
+  graphql g = "modules/contacts/get_contacts", id: id
+%}
 
 {%- if id == blank -%}
   {% include 'modules/contacts/contacts/list', contacts: g.records.results %}
