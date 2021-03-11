@@ -79,8 +79,10 @@ Create the JSON endpoint, a dynamically generated JSON document from which AMP f
 
 ```liquid
 {% raw %}
-{% graphql g = 'get_products' %}
-{% assign results = g.products.results %}
+{% liquid
+  graphql g = 'get_products'
+  assign results = g.products.results
+%}
 
 {
   "items": [
@@ -166,8 +168,10 @@ Create the `/product-details` page that loads when visitors click on a product f
 layout: application
 ---
 {% raw %}
-{% graphql g = 'get_products', slug: params.slug2 %}
-{% assign product = g.products.results.first %}
+{% liquid
+  graphql g = 'get_products', slug: params.slug2
+  assign product = g.products.results.first
+%}
 
 <h1>{{ product.name }}</h1>
 <amp-img src="{{ product.photo.url }}" layout="responsive"></amp-img>

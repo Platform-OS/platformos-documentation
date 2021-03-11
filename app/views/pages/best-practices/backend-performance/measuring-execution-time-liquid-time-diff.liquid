@@ -52,11 +52,11 @@ The `graph_duration` and `render_duration` variables store partial execution tim
 
 ```liquid
 {% raw %}
-{% assign __start = "now" | to_time %}
-
-{% graphql g = 'modules/n_plus_one/programmers' %}
-
-{% assign __graph = "now" | to_time %}
+{% liquid
+  assign __start = "now" | to_time
+  graphql g = 'modules/n_plus_one/programmers'
+  assign __graph = "now" | to_time
+%}
 
 {% for programmer in g.programmers.results %}
   <tr>
@@ -66,15 +66,15 @@ The `graph_duration` and `render_duration` variables store partial execution tim
   </tr>
 {% endfor %}
 
-{% assign __render = "now" | to_time %}
-
-{% assign _total_duration = __start | time_diff: __render %}
-{% assign _graph_duration = __start | time_diff: __graph %}
-{% assign _render_duration = __graph | time_diff: __render %}
-
-{% log _total_duration, type: "benchmark-total" %}
-{% log _graph_duration, type: "benchmark-graph" %}
-{% log _render_duration, type: "benchmark-render" %}
+{% liquid
+  assign __render = "now" | to_time
+  assign _total_duration = __start | time_diff: __render
+  assign _graph_duration = __start | time_diff: __graph
+  assign _render_duration = __graph | time_diff: __render
+  log _total_duration, type: "benchmark-total"
+  log _graph_duration, type: "benchmark-graph"
+  log _render_duration, type: "benchmark-render"
+%}
 {% endraw %}
 ```
 

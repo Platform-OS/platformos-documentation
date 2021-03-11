@@ -244,10 +244,12 @@ The list below describes all the parameters we needed to fill to create the Toke
 
 ```liquid
 {% raw %}
-{%- assign now_timestamp = 'now' | date: '%s' -%}
-{%- assign exp_timestamp = 'now' | add_to_time: 1 | date: '%s' -%}
-{%- assign identity = 'unique-Id-Name' -%}
-{%- assign room = '' -%}
+{% liquid
+  assign now_timestamp = 'now' | date: '%s'
+  assign exp_timestamp = 'now' | add_to_time: 1 | date: '%s'
+  assign identity = 'unique-Id-Name'
+  assign room = ''
+%}
 
 {%- parse_json payload -%}
 {

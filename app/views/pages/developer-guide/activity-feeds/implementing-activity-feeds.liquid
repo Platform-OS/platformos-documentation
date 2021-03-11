@@ -93,11 +93,12 @@ and use it in Liquid like
 
 ```liquid
 {% raw %}
-{% assign user_id = 1 %}
-{% assign recipients = "" | split: "|" %}
-{% assign recipients = recipients | add_to_array: user_id %}
-
-{% graphql gp = 'activity_publish', uuid: ga.activity.uuid, feed_ids: recipients, feed_type: 'UserNotifications' %}
+{% liquid
+  assign user_id = 1
+  assign recipients = "" | split: "|"
+  assign recipients = recipients | add_to_array: user_id
+  graphql gp = 'activity_publish', uuid: ga.activity.uuid, feed_ids: recipients, feed_type: 'UserNotifications'
+%}
 {% endraw %}
 ```
 
