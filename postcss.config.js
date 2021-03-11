@@ -1,15 +1,18 @@
-const csso = require('postcss-csso')({ comments: false });
+const cssnano = require('cssnano')({
+  'safe': true,
+  'calc': false // calc is no longer necessary, as it is already done by postcss-fixes due to precision rounding reasons
+})
 
 module.exports = () => {
   const prod = process.env.NODE_ENV === 'production';
+
   return {
     plugins: [
-      require('postcss-fixes'),
-      require('postcss-import'),
-      require('postcss-nested'),
-      require('autoprefixer'),
-      require('tailwindcss'),
-      prod ? csso : undefined // keep csso after purgecss, or it will break
+      require('postcss-fixes')(),
+      require('postcss-import')(),
+      require('autoprefixer')(),
+      require('tailwindcss')(),
+      prod ? cssnano : undefined
     ]
   };
 };
