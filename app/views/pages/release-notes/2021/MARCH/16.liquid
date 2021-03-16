@@ -1,0 +1,17 @@
+---
+converter: markdown
+metadata:
+  title: New filters and flag
+  description: March 16, 2021
+  skip_contribute_button: true
+  last_edit: false
+slug: release-notes/16-MARCH-2021
+---
+
+#### {{ page.metadata.description }}
+
+<h4 class="release-note release-note__new">NEW</h4>
+
+* When implementing the chat functionality, now you are able to create `channels/<channel_name>/subscribed.liquid` which works the same as an Authorization Policy: if it evaluates to true, the user will have access to the channel, otherwise they won’t. This will prevent listening to other people's DMs, etc. If the `subscribed.liquid` file is not created, then there is no authorization and we assume this is a public channel. 
+* Added new flag `do_not_add_return_to_to_authorization_policies` which can be set in `app/config.yml` 
+* Added new filters `amount_to_fractional` and `fractional_to_amount`
