@@ -15,7 +15,7 @@
     "build:graphql": "./scripts/generate-graphql.sh",
     "deploy": "npm run build && pos-cli deploy",
     "test": "docker run -v $PWD/tests/e2e:/tests -e \"MP_URL=$MP_URL\" -it platformos/testcafe 'testcafe \"chromium:headless --no-sandbox\" /tests'",
-    "test-ci": "testcafe 'chromium:headless --no-sandbox' --screenshots-on-fails --screenshots=screenshots tests/e2e",
+    "test-ci": "npx testcafe 'chromium:headless --no-sandbox' --screenshots-on-fails --screenshots=screenshots tests/e2e",
     "test-local": "npx testcafe \"chrome:headless\" tests/e2e"
   },
   "graphdoc": {
@@ -48,9 +48,5 @@
   "dependencies": {
     "docsearch.js": "^2.6.3",
     "prismjs": "1.23.0"
-  },
-  "peerDependencies": {
-    "@platform-os/testcafe-helpers": "^2",
-    "testcafe": "1.12.0"
   }
 }
