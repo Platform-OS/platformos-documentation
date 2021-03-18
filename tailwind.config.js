@@ -1,12 +1,12 @@
 const defaultTheme = require('tailwindcss/defaultTheme');
 
 module.exports = {
-  future: {
-    removeDeprecatedGapUtilities: true,
-    purgeLayersByDefault: true,
-    defaultLineHeights: true,
-    standardFontWeights: true
-  },
+  // future: {
+  //   removeDeprecatedGapUtilities: true,
+  //   purgeLayersByDefault: true,
+  //   defaultLineHeights: true,
+  //   standardFontWeights: true
+  // },
   purge: [
     './app/forms/**/*.liquid',
     './app/views/**/*.liquid',
