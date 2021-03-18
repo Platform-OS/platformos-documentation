@@ -11,7 +11,7 @@ module.exports = () => {
       require('postcss-fixes')(),
       require('postcss-import')(),
       require('autoprefixer')(),
-      require('tailwindcss')(),
+      require('@tailwindcss/jit')(),
       prod ? cssnano : undefined
     ]
   };
