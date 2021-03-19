@@ -7,8 +7,9 @@ metadata:
 This guide will help you add spam protection to your forms using [hCaptcha](https://www.hcaptcha.com/). It includes:
 
 * a tutorial for creating an Authorization Policy and adding it to your form
-* an example of adding a regular form in a page (without form configuration) with the hcaptcha tags inside
-* an example of protecting the page with the slug `/main-content`
+* [an example of adding a regular form in a page](/developer-guide/integrations/adding-hcaptcha-spam-protection#example-1-regular-form-in-a-page-without-form-configuration) (without form configuration) with the hcaptcha tags inside
+* [an example of protecting the page](/developer-guide/integrations/adding-hcaptcha-spam-protection#example-2-protect-page-with-the-slug-main-content) with the slug `/main-content`
+* [an example of implementing hCaptcha using YML and GraphQL mutations](/developer-guide/integrations/adding-hcaptcha-spam-protection#example-3-implementing-hcaptcha-using-yml-and-graphql-mutations)
 
 ## Requirements
 
@@ -204,6 +205,77 @@ layout_name: 1col
 
   <input type="submit" name="submit" value="Submit" />
 </form>
+{% endraw %}
+```
+
+## Example 3: Implementing hCaptcha using YML and GraphQL mutations
+
+hCaptcha can also be used to protect a form implemented using the form configuration feature. In the example below, `hcaptcha` is added under spam_protection for the form configuration. The form is included from the `captcha_form` page. When successfully submitted, it will create a model of type `model_with_title` and will redirect to `/success_page`.
+
+#### app/schema/model_with_title.yml
+
+```yaml
+---
+name: model_with_title
+custom_attributes:
+- name: title
+  type: string
+---
+```
+
+#### app/forms/form_with_captcha.liquid
+
+```liquid
+{% raw %}
+---
+name: form_with_captcha
+resource: model_with_title
+resource_owner: "anyone"
+configuration:
+spam_protection:
+  hcaptcha:
+fields:
+  properties:
+    title:
+return_to: /success_page
+---
+
+{% form html-novalidate: true, html-class: 'model-form' %}
+
+<input name="{{ form.fields.properties.title.name }}" value="{{ form.fields.properties.title.value }}" type="text" />
+
+{% spam_protection 'hcaptcha' %}
+
+<input type="submit" name="submit" value="Submit" />
+
+{% endform %}
+{% endraw %}
+```
+
+#### app/views/pages/captcha_form.liquid
+
+```liquid
+{% raw %}
+---
+slug: captcha_form
+layout_name: 1col
+---
+
+<h1>Test captcha form.</h1>
+
+{% include_form 'form_with_captcha' %}
+{% endraw %}
+```
+
+#### app/views/pages/success_page.liquid
+
+```liquid
+{% raw %}
+---
+slug: success_page
+---
+
+Success!
 {% endraw %}
 ```
 
