@@ -37,8 +37,9 @@ jobs:
       MPKIT_URL: ${{ secrets.MPKIT_URL_STAGING }}
     steps:
       - uses: actions/checkout@v1
+      - uses: microsoft/playwright-github-action@v1
       - name: Run tests
-        run: testcafe "chromium:headless" tests
+        run: npx codeceptjs run
 
   deploy_production:
     needs: test_staging
