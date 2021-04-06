@@ -2,7 +2,7 @@ name: Build
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, codecept ]
 
 jobs:
   deploy_staging:
@@ -30,14 +30,16 @@ jobs:
   test_staging:
     needs: deploy_staging
     runs-on: ubuntu-latest
-    container: platformos/testcafe:latest
+    container: mcr.microsoft.com/playwright
     strategy:
       max-parallel: 1
     env:
       MPKIT_URL: ${{ secrets.MPKIT_URL_STAGING }}
+      PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
     steps:
       - uses: actions/checkout@v1
-      - uses: microsoft/playwright-github-action@v1
+      - name: Install npm dependencies
+        run: npm ci
       - name: Run tests
         run: npx codeceptjs run
 
