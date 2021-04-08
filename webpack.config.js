@@ -20,7 +20,7 @@ module.exports = {
     minimize: true,
     minimizer: [
       new ESBuildMinifyPlugin({
-        target: 'es2015'
+        css: true
       }),
     ],
   },
@@ -38,9 +38,6 @@ module.exports = {
         test: /\.js$/,
         loader: 'esbuild-loader',
         exclude: /node_modules/,
-        options: {
-          target: 'es2015',
-        },
       },
     ],
   },
