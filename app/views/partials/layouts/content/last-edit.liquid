@@ -2,5 +2,5 @@
   {%- assign slugFromHref = context.location.href | remove_first: '/' %}
   {%- assign updatedAt = context.exports.nav.pagesUpdatedAt | select: slug: slugFromHref | first | fetch: "updated_at" | date: "%b %d, %Y" %}
 
-  <div class="mt-3 mb-6 text-sm">Last edit: {{ updatedAt }}</div>
+  <div class="mt-3 mb-6 text-sm" data-test="lastEdit">Last edit: {{ updatedAt }}</div>
 {%- endunless %}
