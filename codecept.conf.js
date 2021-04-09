@@ -2,16 +2,12 @@ const { setHeadlessWhen, setWindowSize } = require('@codeceptjs/configure');
 
 setWindowSize(1440, 900);
 
-// turn on headless mode when running with HEADLESS=true environment variable
-// export HEADLESS=true && npx codeceptjs run
-setHeadlessWhen(process.env.HEADLESS);
-
 exports.config = {
   tests: './tests/codecept/*_test.js',
   output: './tmp',
   helpers: {
     Playwright: {
-      url: process.env.MPKIT_URL || 'https://pawel-docs.staging.oregon.platform-os.com' || 'https://documentation.platformos.com',
+      url: process.env.MPKIT_URL,
       show: false,
       browser: 'chromium'
     }
