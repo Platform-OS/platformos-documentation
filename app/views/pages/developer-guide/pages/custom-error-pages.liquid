@@ -38,5 +38,36 @@ The resource you were looking for does not exist.
 | 500           | Server Error  | If there is an error that cannot be handled gracefully, a server error page is displayed.                                                                                                                                                             |
 | 503           | Maintenance   | You can [enable maintenance mode through the Partner Portal](/developer-guide/partner-portal/instances/updating-instance-configuration) (check the `maintenance_mode` attribute).                                                                                         |
 
+## Other formats
+
+Just as any other page error pages can have various formats, responding to different requests.
+
+For example, our documentation page will return error if page in `json` format does not exist:
+
+* Page: [https://documentation.platformos.com/missing_page.json](https://documentation.platformos.com/missing_page.json)
+* Source code: [app/views/pages/404.json.liquid](https://github.com/mdyd-dev/platformos-documentation/blob/master/app/views/pages/404.json.liquid)
+
+You can create any error page to any format supported by [Pages](/developer-guide/pages/pages).
+
+### Examples
+
+##### app/views/pages/404.txt.liquid
+
+```text
+This text file does not exist. Double check URL in the address bar.
+```
+
+##### app/views/pages/404.xml.liquid
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<Error>
+  <Message>This file does not exist.</Message>
+</Error>
+```
+
+Note: In this case we did not include `slug` or `format` properties in page definition, because they are both defined inside the file name, but you can still do it if you prefer.
+
 ## Related topics
+
 * [Pages](/developer-guide/pages/pages)
