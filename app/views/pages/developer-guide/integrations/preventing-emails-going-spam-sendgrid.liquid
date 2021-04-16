@@ -1,0 +1,108 @@
+---
+converter: markdown
+metadata:
+  title: Preventing Emails from Going to SPAM with SendGrid
+  description: This article describes how to authenticate your domain with SendGrid.
+---
+
+This article describes how to authenticate your domain with SendGrid. This will assist in keeping your notifications out of SPAM filters/folders by showing email providers that SendGrid has your permission to send emails on your behalf.
+
+Read more about Domain Authentication with SendGrid here: https://SendGrid.com/docs/ui/account-and-settings/how-to-set-up-domain-authentication
+
+## Requirements
+To follow this tutorial, you should have already created a production Instance on platformOS. You will also need access to the DNS records for the domain being used for the Instance.
+
+To learn more about integrating and authenticating SendGrid, check out these tutorials: 
+
+* [Integrating SendGrid Using API Call Notifications
+](/developer-guide/integrations/integrating-sendgrid-api-call-notifications)
+* [Authenticating Your Domain on SendGrid
+](/developer-guide/integrations/authenticating-domain-sendgrid)
+* [Adding SendGrid to an Instance
+](/developer-guide/integrations/adding-sendgrid-instance)
+
+## Setup 
+
+### Starting from scratch? Need to enable SendGrid integration? Follow the steps below:
+
+1. In the platformOS Partner Portal, go to your Instance detail page.
+2. Click on "Integrations".
+3. Click on "Manage SendGrid".
+4. To create your new SendGrid account, enter an email/password. You'll want to keep the password info as you'll need it to get into your SendGrid account at https://SendGrid.com. Click "Enable SendGrid Integration".
+5. You'll be redirected to the Instance detail page and see a notification "We're preparing SendGrid integration. Refresh page in a few minutes."
+6. Click "Update Configuration". 
+7. In the config data, grab what is in the ""s for "user_name" in the SendGrid attribute.
+6. Visit https://app.SendGrid.com/login/.
+7. Enter your user_name and the password you used to create the account in step 4 above.
+8. In the left navigation, click on "Settings" and then "Sender Authentication".
+9. For Domain Authentication, click "Get Started".
+10. Select "Other Host (Not listed)" and then enter "platformOS" in the "Which DNS Host" field.
+11. Decide if you want to rewrite all tracking links to use the domain you choose (read more about that here: https://SendGrid.com/docs/ui/account-and-settings/how-to-set-up-link-branding/#-What-is-link-branding)
+12. Click "Next".
+13. Enter your domain (This is the domain that you will use for the Instance, example.com or xyc.example.com, etc.) and click "Next".
+14. You'll be provided with several CNAME records. Add these to your domain's DNS records/zone.
+15. After you have added the records, click "I've added these records" and click "verify". (Note: this can take a few minutes as your DNS provider updates.)
+16. You'll get an "It worked!" notification and a button to click back to the "Sender Authentication" page. Your domain has now been authenticated (and your link branding too if you selected it).
+
+### Have already enabled SendGrid integration? See below:
+
+1. Visit https://app.SendGrid.com/login/.
+2. Enter your user_name and the password you used to create the account (when you enabled the integration in the pOS partner portal) - If you don't remember that information, you can find your user_name by going to the Instance detail page in the pOS partner portal, clicking "Update Configuration" and grabbing it from the "SendGrid" section of the config. For the password, if you don't have it, you'll want to go through the password reset here: https://app.SendGrid.com/forgot_password. It will send an email to the email you provided when you enabled SendGrid for the Instance. Note, this will not impact your Instance's ability to send email notifications.
+3. Once you are able to access your account on https://app.SendGrid.com/, continue:
+4. In the left navigation, click on "Settings" and then "Sender Authentication".
+5. For Domain Authentication, click "Get Started".
+6. Select "Other Host (Not listed)" and then enter "platformOS" in the "Which DNS Host" field.
+7. Decide if you want to rewrite all tracking links to use the domain you choose (read more about that here: https://SendGrid.com/docs/ui/account-and-settings/how-to-set-up-link-branding/#-What-is-link-branding)
+8. Click "Next".
+9. Enter your domain (This is the domain that you will use for the Instance, example.com or xyz.example.com, etc.) and click "Next".
+10. You'll be provided with several CNAME records. Add these to your domain's DNS records/zone.
+11. After you have added the records, click "I've added these records" and click "verify". (Note: this can take a few minutes as your DNS provider updates.)
+12. You'll get an "It worked!" notification and a button to click back to the "Sender Authentication" page. Your domain has now been authenticated (and your link branding too if you selected it).
+
+
+## Troubleshooting
+
+### Emails getting stuck in spam folders/filters
+There are some tweaks you can make to your DNS records to help ensure that your emails are getting to your users' inboxes and not getting caught up in their spam folders/filters.
+
+{% include 'alert/tutorial', content: 'If you are managing DNS externally, learn to set it up following the steps in these tutorials: [External DNS - Resolving to root domain](/developer-guide/partner-portal/domains/external/resolving-root-domain) and [External DNS - Resolving to www of subdomain](/developer-guide/partner-portal/domains/external/resolving-www-of-subdomain).' %}
+
+#### Solution 1
+Add the sendgrid.net lookup to your current SFP record for your domain.
+
+**Example**
+
+If your current record (TXT or SPF) is
+
+```
+"v=spf1 a mx include:_spf.google.com include:spf.protection.outlook.com ~all"
+```
+
+you can add
+
+```
+include:sendgrid.net
+```
+
+prior to the `~all` at the end, resulting in
+
+```
+"v=spf1 a mx include:_spf.google.com include:spf.protection.outlook.com include:sendgrid.net ~all"
+```
+
+Learn more about it here: [https://sendgrid.com/docs/Glossary/spf.html](https://sendgrid.com/docs/Glossary/spf.html)
+
+#### Solution 2
+Add DKIM records to your DNS records as described here: [https://sendgrid.com/docs/Glossary/dkim.html](https://sendgrid.com/docs/Glossary/dkim.html)
+
+
+
+
+
+
+
+
+
+
+
+
