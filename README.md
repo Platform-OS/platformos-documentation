@@ -1,4 +1,4 @@
-<img alt="Tested with TestCafe" src="https://img.shields.io/badge/tested%20with-TestCafe-2fa4cf.svg"><img alt="Dependencies status" src="https://img.shields.io/david/mdyd-dev/platformos-documentation.svg">
+<img alt="Tested by CodeceptJS" src="https://img.shields.io/badge/Tested%20by-CodeceptJS-green">
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-29-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
