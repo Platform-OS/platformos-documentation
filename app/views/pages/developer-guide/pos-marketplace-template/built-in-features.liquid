@@ -1,0 +1,289 @@
+---
+converter: markdown
+metadata:
+  title: Built-In Features of the pOS Marketplace Template
+  description: This article includes the latest list of features in the pOS Marketplace Template.
+---
+
+This article includes the latest list of features in the pOS Marketplace Template. We describe each feature through user stories — short, simple descriptions of the feature told from the perspective of the person who uses it. 
+
+We continuously add new features and update this list. 
+
+
+## Roles 
+
+The user stories in the feature list refer to these predefined roles: 
+
+* **Anonymous user**: A user browsing the marketplace who has not registered (yet). 
+* **Registered user**: A user who has registered an account on the marketplace. 
+* **Buyer**: User who purchases items on the marketplace. Currently, the Buyer can use the shopping cart functionality without registering but has to register during checkout.  
+* **Merchant**: _(Invited by admins only)_ User registered as a Merchant on the marketplace, sells items.  
+* **Admin**: User registered as an administrator of the marketplace, have permissions to manage and explore user activity (Buyers, Merchants).  
+* **Company Employee**: Employees and other team members (e.g. contractors) of the company that owns the marketplace. 
+
+
+## Features 
+
+
+### Sign-up 
+
+Sign-up functionality including verification for already taken email address and valid email format. 
+
+
+#### User stories 
+
+As a **Buyer**, 
+
+
+
+* I can sign up. 
+* I cannot sign up using an already taken email address. 
+* I cannot sign up using an invalid email address. 
+
+
+### Login 
+
+Login functionality for different roles in the marketplace (Admin, Buyer, Merchant) that includes verification of credentials, email addresses, and consent to Terms of Service and Privacy Policy. It also includes a password reset functionality. 
+
+
+#### User stories 
+
+As a **Buyer**, 
+
+* I can log in using valid credentials.
+
+As a **Merchant**, 
+
+* I can log in using valid credentials. 
+
+As an **Admin**, 
+
+* I can log in using valid credentials.
+
+As a **registered user**, 
+
+* I have to provide a valid email address (the system verifies validity). 
+* I can request to reset my password. 
+* I can enter the reset password page form and reset my password. 
+* I must agree to Terms of Service and Privacy Policy conditions. 
+
+
+### Language 
+
+Language-switcher functionality. 
+
+
+#### User stories
+
+As an **anonymous user**, 
+
+* I can change between different languages of the marketplace. 
+* I can browse the user interface and item details in the language I selected. 
+
+
+### Shopping Cart
+
+Shopping Cart functionality for anonymous and registered users (Buyers) to put items in the shopping cart, remove them, change their quantities, and pay for them. 
+
+
+#### User stories
+
+As an **anonymous user**, 
+
+* I can add a product to the shopping cart.
+* I can register and add another product to the same shopping cart as a registered user. 
+* I can remove an item from the shopping cart. 
+* I can change the quantity of an item in the shopping cart. 
+* I can see the number of items in the shopping cart in navigation. 
+* I can see the price for each product and the total price for all products added to the cart. 
+* I can continue shopping after adding an item to the cart.
+* I can't add/have more than the limit provides for maximum shopping cart price and/or max line items.
+
+As a **registered user**,
+
+* I can add a product to the shopping cart. 
+* I can add the same product to the shopping cart. 
+* I can add another product to the shopping cart from the same Merchant.
+* I can add another product to the shopping cart from another Merchant.
+* I can remove an item from the shopping cart.
+* I can go back to the shopping cart if I abandon the flow before Payment.
+* I can change the quantity of an item in the shopping cart. 
+* I can see the number of items in the shopping cart in navigation. 
+* I can continue shopping after adding an item to the cart.
+* I can't add/have more than the limit provides for maximum shopping cart price and/or max line items.
+
+
+### Search 
+
+Search functionality for items, with quick search feature, and sorting by price, relevance, merchant, category, and keyword. 
+
+
+#### User stories 
+
+As an **anonymous** or **registered user**,
+
+* I can see a list of relevant products when I enter a search keyword. 
+* I can sort search results by price (ascending and descending) and relevance.
+* I can set a minimum and maximum Price.
+* I can set a category filter and min/max price all at once.
+* I can search for products belonging to multiple merchants.
+* I can use 'quick search' for quick product search. 
+* I won't see affiliate links when sorting by price. 
+* I am taken to the product detail page after clicking a product image or name in the search results. 
+
+As a **Buyer**, 
+
+* I can see SEO friendly URLs for items.
+* I can see SEO friendly search page.
+* I can search for items by category, and keyword.
+* I can browse products belonging to a selected Merchant.
+* I can see a list of all Merchants.
+
+
+### Products  
+
+Functionality related to the display of items sold on the marketplace. 
+
+#### User stories 
+
+As a **registered user**, 
+
+* I can add a product to the wishlist.
+* I can remove a product from the wishlist.
+* I can access the wishlist with a list of items that I could add.
+
+As a **Buyer,**
+
+* I can see the merchant's name that the product belongs to.
+* I can contact a merchant to obtain more information about a product. 
+* I can see if an item is out of stock.
+* I can see if a product is available only on a merchant's site.
+* I can see shipping type information in the product details page.
+* I can see the price before and after the discount. 
+
+
+### Merchant 
+
+Features for Merchants.
+
+
+#### User stories 
+
+As a **Merchant**, 
+
+* I can list my Inventory. 
+* I can give each of my employees separate credentials.
+* I can manage stock for items.
+
+
+### Orders 
+
+Features for managing orders. 
+
+
+#### User stories 
+
+As a **Merchant**, 
+
+* I can see my orders. 
+* I receive an order confirmation via email.
+* I can cancel orders.
+* I can see details of orders.
+* I can see the status of an order.
+* I get notified if a Buyer cancels an order.
+* I can set my order to automatically expire after 'x' time in case the Buyer doesn't pay for this order.
+
+As a **Buyer**,
+
+* I receive an order confirmation via email.
+* I can cancel my unpaid order.
+* I can see my orders.
+* I can see the details of orders.
+* I can change my order's delivery address.
+* I can see the status of my order.
+* I can choose a delivery option between pick-up by myself and shipping to address.
+
+As a **registered user**,
+
+* I can see my order history. 
+* I can proceed to checkout.
+* I can pay for my order using mobicash. 
+
+
+### Delivery 
+
+Functionalities related to shipping and delivery. 
+
+
+#### User stories 
+
+As a **Merchant**, 
+
+* I can reject the return request.
+* I can approve the return request.
+* I can see return request details.
+* I can mark an order as ready to be picked up. 
+* I can mark an order as shipped. 
+
+As a **Buyer**, 
+
+* my default address persists. 
+* I can return an item within X days (per Item).
+* I am informed about delivery updates.
+* I can select a method for returning an item (store or delivery).
+* I have the possibility to return a specific quantity of the product I ordered. 
+
+
+### Profile 
+
+User profile-related functionality. 
+
+As a **Buyer**, 
+
+* I can change my email, first name, last name, and mobile phone number. 
+
+As a **registered user**, 
+
+* I can set a username. 
+* I can change my username.
+* I can upload an avatar. 
+* I can visit another user’s profile.
+* I can see another user’s products added to the marketplace, users following and followed by. 
+* I can follow another user.   
+* If I follow another user, I can see the activity of followed users in the activity feed on the marketplace. 
+
+
+### Company Admin Portal 
+
+The Company Admin Portal provides management functionalities for the employees of the marketplace owner. 
+
+
+#### User stories  
+
+As a **Company Employee**, 
+
+* I can log in to the Admin Portal. 
+* I can see all the sold items. 
+* I can see the list of signed up users. 
+* I can see the list of imported products. 
+* I can see submitted orders. 
+* I can monitor all eCommerce activities in one dashboard. 
+
+
+### Other 
+
+#### User stories 
+
+As an **anonymous user**, 
+
+* I can contact the support of the marketplace owner company. 
+* I can enter terms of service, FAQ, privacy policy pages. 
+* I’m directed to a 404 page if I enter a page that doesn’t exist. 
+
+As a **registered user**,
+
+* I receive emails in the language that I set up during registration. 
+
+As a **Buyer**, 
+
+* I can share a link to the product and see a nice summary of the link (using OG tags). 
