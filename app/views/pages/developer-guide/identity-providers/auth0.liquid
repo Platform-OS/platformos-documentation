@@ -6,11 +6,25 @@ metadata:
 ---
 This guide will help you configure and integrate with Auth0.
 
+This is how Auth0 works:
+
+1. If the user tries to use auth0 with abc@example.com and such a user does not exist an account is created. 
+
+2. If the user tries to use auth0 with abc@example.com and such a user exists but is not connected to auth0 this is what happens: 
+   * If the user is logged in as abc@example.com, connecting the accounts is allowed, next time the user will be able to log in using auth0. 
+   * If the user is not logged in, an error message is displayed saying such an account exists and is not connected to auth0. 
+   * If the user is logged in to a different account, they are notified that they are logged in to a different account and need to log out. 
+3. If the user tries to use auth0 with abc@example.com and such a user is connected to auth0 then they are allowed to log in. 
+   * If the user is not logged in, they are allowed to log in. 
+   * If the user is logged in with a different email, an error message is displayed saying they need to log out. 
+
 ## Requirements
 
 To follow the steps in this tutorial, you should be familiar with Users and Identity Providers. This guide builds on previous tutorials in the **Developer Guide: Identity Providers** section.
 
 * [Users](/developer-guide/users/users)
+
+## Steps
 
 ### Step 1: Create application on your Auth0 account `https://auth0.com/`
 
