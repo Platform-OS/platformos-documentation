@@ -12,6 +12,17 @@ The integration allows you to:
 * Connect currently logged in User with a User from an external service
 * Register new User with data (name, email) provided by an external service
 
+This is **how identity providers work**:
+
+1. If the user tries to use an identity provider with abc@example.com and such a user does not exist an account is created. 
+2. If the user tries to use an identity provider with abc@example.com and such a user exists but is not connected to the identity provider this is what happens: 
+   * If the user is logged in as abc@example.com, connecting the accounts is allowed, next time the user will be able to log in using the identity provider. 
+   * If the user is not logged in, an error message is displayed saying such an account exists and is not connected to the identity provider. 
+   * If the user is logged in to a different account, they are notified that they are logged in to a different account and need to log out. 
+3. If the user tries to use the identity provider with abc@example.com and such a user is connected to the identity provider then they are allowed to log in. 
+   * If the user is not logged in, they are allowed to log in. 
+   * If the user is logged in with a different email, an error message is displayed saying they need to log out.
+
 ## Requirements
 
 To follow the steps in this tutorial, you should be familiar with users. This guide builds on previous tutorials in the **Developer Guide: Users** section.
