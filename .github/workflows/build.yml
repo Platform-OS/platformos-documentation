@@ -38,8 +38,8 @@ jobs:
       PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
     steps:
       - uses: actions/checkout@v1
-      - run: npm ci
-      - run: npm i playwright
+      - name: Install test framework
+        run: npm i playwright codeceptjs @codeceptjs/configure
       - run: npm test
 
   deploy_production:
