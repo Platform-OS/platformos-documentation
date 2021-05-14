@@ -14,9 +14,7 @@
     "build": "NODE_ENV=production npx webpack-cli",
     "build:graphql": "./scripts/generate-graphql.sh",
     "deploy": "npm run build && pos-cli deploy",
-    "test": "docker run -v $PWD/tests/e2e:/tests -e \"MP_URL=$MP_URL\" -it platformos/testcafe 'testcafe \"chromium:headless --no-sandbox\" /tests'",
-    "test-ci": "npx testcafe 'chromium:headless --no-sandbox' --screenshots-on-fails --screenshots=screenshots tests/e2e",
-    "test-local": "npx testcafe \"chrome:headless\" tests/e2e"
+    "test": "npx codeceptjs run"
   },
   "graphdoc": {
     "output": "./modules/graphql/public/views/pages/api-reference/graphql",
@@ -33,6 +31,7 @@
     "css-loader": "5.2.4",
     "esbuild-loader": "^2.13.0",
     "mini-css-extract-plugin": "1.6.0",
+    "pkg-dir": "^5.0.0",
     "pos-graphdocs": "^2.6.15",
     "postcss": "8.2.14",
     "postcss-fixes": "^2.0.1",

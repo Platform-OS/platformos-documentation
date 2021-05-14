@@ -30,19 +30,15 @@ jobs:
   test_staging:
     needs: deploy_staging
     runs-on: ubuntu-latest
-    container: mcr.microsoft.com/playwright
     strategy:
       max-parallel: 1
     env:
       MPKIT_URL: ${{ secrets.MPKIT_URL_STAGING }}
     steps:
       - uses: actions/checkout@v1
-      - name: Install npm dependencies
-        run: npm ci
-      # - name: Install playwright
-        # run: npm i playwright
-      - name: Run tests
-        run: npx codeceptjs run
+      - uses: microsoft/playwright-github-action@v1
+      - run: npm ci
+      - run: npm test
 
   deploy_production:
     needs: test_staging
