@@ -1,4 +1,4 @@
-npx graphdoc --force \
+pos-graphdocs --force \
   --endpoint ${MPKIT_URL}/api/graph \
   --template "modules/graphql/template" \
   --extension html \
