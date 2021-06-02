@@ -1,7 +1,4 @@
 <img alt="Tested by CodeceptJS" src="https://img.shields.io/badge/Tested%20by-CodeceptJS-green">
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-29-orange.svg?style=flat-square)](#contributors-)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Contribute content
 
@@ -68,6 +65,9 @@ Thank you to all our contributors!
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/Agsiegert"><img src="https://avatars1.githubusercontent.com/u/4143205?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Antony Siegert</b></sub></a><br /><a href="#content-Agsiegert" title="Content">🖋</a></td>
+    <td align="center"><a href="http://secondgate.pl/"><img src="https://avatars.githubusercontent.com/u/1907443?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Łukasz Krysiewicz</b></sub></a><br /><a href="#content-z-x" title="Content">🖋</a></td>
+    <td align="center"><a href="https://github.com/andrew-3"><img src="https://avatars.githubusercontent.com/u/52176193?v=4?s=100" width="100px;" alt=""/><br /><sub><b>andrew-3</b></sub></a><br /><a href="https://github.com/mdyd-dev/nearme-documentation/commits?author=andrew-3" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/JoshCarterWeb"><img src="https://avatars.githubusercontent.com/u/19346636?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Josh Carter</b></sub></a><br /><a href="https://github.com/mdyd-dev/nearme-documentation/commits?author=JoshCarterWeb" title="Documentation">📖</a></td>
   </tr>
 </table>
 
