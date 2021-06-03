@@ -48,11 +48,6 @@ module.exports = {
     }),
     new WebpackRequireFrom({
       variableName: 'window.__CONTEXT__.cdnUrl',
-    }),
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify(process.env.NODE_ENV),
-      },
     })
   ],
   mode: production ? 'production' : 'development',
