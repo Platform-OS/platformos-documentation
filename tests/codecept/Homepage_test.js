@@ -9,13 +9,17 @@ Scenario('There are no liquid errors', ({ I }) => {
   I.checkLiquidErrors();
 });
 
-Scenario('Page is not slow', async ({ I }) => {
+Scenario('Page is fast', async ({ I }) => {
   I.amOnPage('/');
 
   let data = await I.grabDataFromPerformanceTiming();
 
-  console.log('data.responseEnd:', data.responseEnd);
-  console.log('data.loadEventEnd:', data.loadEventEnd);
-  assert.ok(data.responseEnd < 600);
-  assert.ok(data.loadEventEnd < 800);
+  const maxResponseEnd = 800;
+  const maxRoadEventEnd = 1000;
+
+  const actualResponseEnd = data.responseEnd;
+  const actualRoadEventEnd = data.loadEventEnd;
+
+  assert.ok(actualResponseEnd < maxResponseEnd, `responseEnd is ${actualResponseEnd}. Limit: ${maxResponseEnd}`);
+  assert.ok(actualRoadEventEnd < maxRoadEventEnd, `loadEventEnd is ${actualRoadEventEnd}. Limit: ${maxRoadEventEnd}`);
 });

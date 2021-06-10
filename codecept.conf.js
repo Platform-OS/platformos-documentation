@@ -6,10 +6,9 @@ exports.config = {
   tests: './tests/codecept/*_test.js',
   output: './tmp',
   helpers: {
-    Playwright: {
+    Puppeteer: {
       url: process.env.MPKIT_URL,
-      show: false,
-      browser: 'chromium'
+      show: false
     }
   },
   include: {

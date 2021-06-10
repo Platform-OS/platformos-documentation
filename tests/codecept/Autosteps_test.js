@@ -5,10 +5,9 @@ Feature('Autosteps');
 Scenario('Are generated and linked', async ({ I }) => {
   I.amOnPage('/developer-guide/users/authenticating-user-with-jwt-token');
 
-  let mainSelector = '[data-autosteps]';
-  let header = locate('a').inside(mainSelector).first();
+  let header = locate('a').inside('[data-autosteps]').first();
 
-  I.seeElement(mainSelector);
+  I.seeElement('h2#steps');
 
   let firstStepText = await I.grabTextFrom('h3[id] span');
   let firstStepId = await I.grabAttributeFrom('h3[id]', 'id');

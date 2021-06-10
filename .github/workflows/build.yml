@@ -30,16 +30,14 @@ jobs:
   test_staging:
     needs: deploy_staging
     runs-on: ubuntu-latest
-    container: mcr.microsoft.com/playwright
     strategy:
       max-parallel: 1
     env:
       MPKIT_URL: ${{ secrets.MPKIT_URL_STAGING }}
-      PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
     steps:
       - uses: actions/checkout@v1
       - name: Install test framework
-        run: npm i playwright codeceptjs @codeceptjs/configure
+        run: npm i --save-dev codeceptjs @codeceptjs/configure puppeteer
       - run: npm test
 
   deploy_production:
