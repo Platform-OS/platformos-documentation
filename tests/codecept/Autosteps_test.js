@@ -2,10 +2,13 @@ const assert = require('assert');
 
 Feature('Autosteps');
 
+const stepsContainer = '[data-autosteps]';
+const stepsLinks = 'ul.content__autosteps a';
+
 Scenario('Are generated and linked', async ({ I }) => {
   I.amOnPage('/developer-guide/users/authenticating-user-with-jwt-token');
 
-  let header = locate('a').inside('[data-autosteps]').first();
+  let header = locate('a').inside(stepsContainer).first();
 
   I.seeElement('h2#steps');
 
@@ -21,18 +24,14 @@ Scenario('Are generated and linked', async ({ I }) => {
 })
 
 Scenario('Steps have correct texts', async ({ I }) => {
-  let mainSelector = '[data-autosteps]';
-
-  I.see('Step 1: Fetch JWT token for a user', mainSelector);
-  I.see('Step 2: Create a page with a policy that checks the JWT token', mainSelector);
-  I.see('Step 3: Send signed request', mainSelector);
+  I.see('Step 1: Fetch JWT token for a user', stepsLinks);
+  I.see('Step 2: Create a page with a policy that checks the JWT token', stepsLinks);
+  I.see('Step 3: Send signed request', stepsLinks);
 });
 
 
 Scenario('Generate same number of links as there are steps', async ({ I }) => {
-  I.amOnPage('/developer-guide/users/authenticating-user-with-jwt-token');
-
-  let stepsNumber = await I.grabNumberOfVisibleElements('[data-autosteps] a');
+  let stepsNumber = await I.grabNumberOfVisibleElements(stepsLinks);
   let headersNumber = await I.grabNumberOfVisibleElements('h3[id]');
 
   assert.ok(stepsNumber === headersNumber);

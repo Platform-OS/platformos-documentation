@@ -7,8 +7,9 @@ exports.config = {
   output: './tmp',
   helpers: {
     Puppeteer: {
-      url: process.env.MPKIT_URL,
-      show: false
+      url: process.env.MPKIT_URL,,
+      restart: false, // restart browser between Scenarios
+      show: false // show Chromium browser while running tests
     }
   },
   include: {

@@ -14,12 +14,7 @@ Scenario('Page is fast', async ({ I }) => {
 
   let data = await I.grabDataFromPerformanceTiming();
 
-  const maxResponseEnd = 800;
-  const maxRoadEventEnd = 1000;
-
-  const actualResponseEnd = data.responseEnd;
-  const actualRoadEventEnd = data.loadEventEnd;
-
-  assert.ok(actualResponseEnd < maxResponseEnd, `responseEnd is ${actualResponseEnd}. Limit: ${maxResponseEnd}`);
-  assert.ok(actualRoadEventEnd < maxRoadEventEnd, `loadEventEnd is ${actualRoadEventEnd}. Limit: ${maxRoadEventEnd}`);
+  const MAX_LOADEVENTEND = 1000;
+  const actualLoadEventEnd = data.loadEventEnd;
+  assert.ok(actualLoadEventEnd < MAX_LOADEVENTEND, `loadEventEnd is ${actualLoadEventEnd}. Limit: ${MAX_LOADEVENTEND}`);
 });

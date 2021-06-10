@@ -2,10 +2,10 @@ module.exports = function() {
   return actor({
 
     checkLiquidErrors: () => {
-      I.dontSee('Liquid Error');
-      I.dontSee('RenderFormTag Error');
-      I.dontSee('QueryGraphTag Error');
-      I.dontSee('translation missing');
+      I.dontSee('Liquid Error', 'body');
+      I.dontSee('RenderFormTag Error', 'body');
+      I.dontSee('QueryGraphTag Error', 'body');
+      I.dontSee('translation missing', 'body');
     }
 
   });
