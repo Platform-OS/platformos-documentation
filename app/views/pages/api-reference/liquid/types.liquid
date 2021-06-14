@@ -129,6 +129,20 @@ You can, however, use the split filter to break a string into an array of substr
 {% endraw %}
 ```
 
+### Searching in arrays
+
+#### contains
+
+You can check for the presence of a substring in a string, but `contains` can also check for the presence of a string in an array of strings. You can use it only for searching strings. You cannot use it to check for an object in an array of objects.
+
+```liquid
+{% raw %}
+{% if site.users contains 'Tobi' %}
+  Tobi is in users.
+{% endif %}
+{% endraw %}
+```
+
 ## Truthy and falsy values
 
 In programming, anything that returns true in a conditional is called truthy. Anything that returns false in a conditional is called falsy. All object types can be described as either truthy or falsy.
