@@ -143,6 +143,22 @@ You can check for the presence of a substring in a string, but `contains` can al
 {% endraw %}
 ```
 
+#### any
+You can check if the given array contains at least one of the queried string/number.
+
+##### params
+
+- array (Array) - array to search in - default: []
+- query (StringNumber) - String/Number compared to each item in the given array - default: 'true'
+
+```liquid
+{% raw %}
+{% if site.users | any: 'Tobi' %}
+  Tobi is in users.
+{% endif %}
+{% endraw %}
+```
+
 ## Truthy and falsy values
 
 In programming, anything that returns true in a conditional is called truthy. Anything that returns false in a conditional is called falsy. All object types can be described as either truthy or falsy.
