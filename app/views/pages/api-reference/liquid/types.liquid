@@ -137,6 +137,7 @@ You can check for the presence of a substring in a string, but `contains` can al
 
 ```liquid
 {% raw %}
+{% comment %} site.users = ["Tobi", "Laura", "Tetsuro", "Adam"] {% endcomment %}
 {% if site.users contains 'Tobi' %}
   Tobi is in users.
 {% endif %}
@@ -153,6 +154,7 @@ You can check if the given array contains at least one of the queried string/num
 
 ```liquid
 {% raw %}
+{% comment %} site.users = ["Tobi", "Laura", "Tetsuro", "Adam"] {% endcomment %}
 {% if site.users | any: 'Tobi' %}
   Tobi is in users.
 {% endif %}
