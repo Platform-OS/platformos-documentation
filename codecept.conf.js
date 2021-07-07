@@ -1,6 +1,6 @@
-const { setHeadlessWhen, setWindowSize } = require('@codeceptjs/configure');
+const { setWindowSize } = require('@codeceptjs/configure');
 
-setWindowSize(1440, 900);
+setWindowSize(1366, 768);
 
 exports.config = {
   tests: './tests/codecept/*_test.js',
@@ -13,8 +13,7 @@ exports.config = {
     }
   },
   include: {
-    I: './tests/codecept/helpers/steps_helper.js',
-    LiquidErrors: './tests/codecept/helpers/liquidErrors_helper.js'
+    I: './tests/codecept/helpers/steps_helper.js'
   },
   bootstrap: null,
   mocha: {},
