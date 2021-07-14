@@ -2,13 +2,19 @@
 {%- if context.exports.category.name.size > 0 -%}true{%- endif -%}
 {%- endcapture -%}
 
-{% comment %} This cache self-invalidates when deploy/sync changes any view/translation {% endcomment %}
-{% parse_json pagesUpdatedAt %}
-  {%- cache pagesUpdatedAtCache -%}
-    {%- graphql g = 'pages_updated_at' | dig: 'admin_pages', 'results' -%}
-    {{- g -}}
-  {%- endcache -%}
-{% endparse_json %}
+{% if has_sidebar == 'true' %}
+  {% comment %}
+    This cache self-invalidates when deploy/sync changes any view/translation
+    Because it is used to display badges in sidebar, it is only executed on pages
+    that have sidebar.
+  {% endcomment %}
+  {% parse_json pagesUpdatedAt %}
+    {%- cache pagesUpdatedAtCache -%}
+      {%- graphql g = 'pages_updated_at' | dig: 'admin_pages', 'results' -%}
+      {{- g -}}
+    {%- endcache -%}
+  {% endparse_json %}
+{% endif %}
 
 {%- export pagesUpdatedAt, namespace: 'nav' -%}
 
