@@ -266,61 +266,6 @@ Here the input value is a string:
 {{ "3.5" | ceil }}
 ```
 
-## compact
-
-Removes any `nil` values from an array.
-
-For this example, assume `site.pages` is an array of content pages for a website, and some of these pages have an attribute called category that specifies their content category.
-If we map those categories to an array, some of the array items might be nil if any pages do not have a category attribute.
-
-#### Input
-
-```liquid
-{% raw %}
-{% assign site_categories = site.pages | map: 'category' %}
-
-{% for category in site_categories %}
-  {{ category }}
-{% endfor %}
-{% endraw %}
-```
-
-#### Output
-
-```liquid
-  business
-  celebrities
-
-  lifestyle
-  sports
-
-  technology
-```
-
-By using compact when we create our `site_categories` array, we can remove all the `nil` values in the array.
-
-#### Input
-
-```liquid
-{% raw %}
-{% assign site_categories = site.pages | map: 'category' | compact %}
-
-{% for category in site_categories %}
-  {{ category }}
-{% endfor %}
-{% endraw %}
-```
-
-#### Output
-
-```liquid
-  business
-  celebrities
-  lifestyle
-  sports
-  technology
-```
-
 ## concat
 
 Concatenates (joins together) multiple arrays. The resulting array contains all the items from the input arrays.
