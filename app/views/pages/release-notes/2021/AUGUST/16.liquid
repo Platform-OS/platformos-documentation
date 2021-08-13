@@ -1,0 +1,29 @@
+---
+converter: markdown
+metadata:
+  title: Contants, logs in pos-cli gui serve, hyphens allowed in function parameter names
+  description: August 16, 2021
+  skip_contribute_button: true
+  last_edit: false
+slug: release-notes/16-AUG-2021
+---
+
+#### {{ page.metadata.description }}
+
+<h4 class="release-note release-note__new">NEW</h4>
+
+* added constants editor to `pos-cli gui` serve at `http://localhost:3333/Constants`
+* added logs to `pos-cli gui serve` at `http://localhost:3333/Logs`
+* hyphens are now allowed in function parameter names, so you may call a function like below:
+
+```liquid
+{% raw %}
+{% liquid
+  assign foo = 'hello'
+  function res = 'myfunc', context: context, some-param: foo
+%}
+{% endraw %}
+```
+
+
+
