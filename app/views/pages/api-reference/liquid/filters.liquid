@@ -849,27 +849,6 @@ A sentence before. {{ "          So much room for activities!          " | lstri
 
 {% include 'alert/important', content: 'We have overwritten the map filter so it will not work in the standard way. Visit the [reference for the platformOS map filter](/api-reference/liquid/platformos-filters#map) to learn more.' %}
 
-#### Input
-
-```liquid
-{% raw %}
-{% assign all_categories = site.pages | map: "category" %}
-{% for item in all_categories %}
-{{ item }}
-{% endfor %}
-{% endraw %}
-```
-
-#### Output
-
-```liquid
-business
-celebrities
-lifestyle
-sports
-technology
-```
-
 ## minus
 
 Subtracts a number from another number.
@@ -1735,4 +1714,3 @@ Converts any URL-unsafe characters in a string into percent-encoded characters.
 ```liquid
 {{ "Nikola Tesla" | url_encode }}
 ```
-
