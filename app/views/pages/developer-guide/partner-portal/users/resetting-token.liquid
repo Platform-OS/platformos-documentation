@@ -1,0 +1,40 @@
+---
+converter: markdown
+metadata:
+  title: Resetting token
+  description: This guide will help you reset leaked user or instance token on the Partner Portal.
+---
+
+Sometimes tokens get leaked by accidental copy & paste into slack, or by commiting `.pos` file into version control. Fortunately we have taken steps to minimize impact of that after that happens:
+
+1. Tokens are per-instance, per-user. Meaning if you leak your token for one environment, whoever finds it, will be able to only impact this one environment.
+2. Tokens can be quickly deleted/turned off on an environment basis in Partner Portal
+
+## How to delete my token
+
+1. Go to your [account settings in Partner Portal](https://partners.platformos.com/me/) at https://partners.platformos.com/me/
+2. Click button "Tokens"
+3. Find your instance name on the list of all your tokens
+4. Click "Delete" button on the right of it
+
+## How to generate new token
+
+To generate new token you need to add environment again in the same way as you did for the first time:
+
+```
+pos-cli env add --email <your email> --url <url> <enviornment>
+```
+
+If you name your environment the same as before, it will be overwritten with new token.
+
+Read more about [using pos-cli](https://documentation.platformos.com/get-started/marketplace-template/marketplace-template#step-3-add-instance-to-pos-cli).
+
+
+## Legacy tokens
+
+Before August 19, 2020 tokens were global, so resetting your token will turn off this token for all your environments. After August 19, 2020 environments added using pos-cli are scoped to only this one environment, so it is enough to just delete token for that one environment and re-add it again.
+
+### How to know if my token is current or legacy?
+
+* Currently tokens consists of small letter, big letter, numbers, underscore (_), dashes (-) and are 43 characters long.
+* Legacy tokens contains only small letters and numbers and are 40 characters long.
