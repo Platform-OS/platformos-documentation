@@ -1,40 +1,40 @@
 ---
 converter: markdown
 metadata:
-  title: Resetting token
-  description: This guide will help you reset leaked user or instance token on the Partner Portal.
+  title: Resetting a Token
+  description: This guide will help you reset a leaked user or Instance token on the Partner Portal.
 ---
 
-Sometimes tokens get leaked by accidental copy & paste into slack, or by commiting `.pos` file into version control. Fortunately we have taken steps to minimize impact of that after that happens:
+Sometimes tokens get leaked by accidental copy & paste into Slack, or by commiting the `.pos` file into version control. We have taken steps to minimize the impact of leaked tokens through the following:
 
-1. Tokens are per-instance, per-user. Meaning if you leak your token for one environment, whoever finds it, will be able to only impact this one environment.
-2. Tokens can be quickly deleted/turned off on an environment basis in Partner Portal
+1. Tokens are per-instance, per-user. Meaning if you leak your token for one environment, whoever finds it will only be able to impact this one environment.
+2. Tokens can be quickly deleted/turned off on an environment basis in the Partner Portal. 
 
 ## How to delete my token
 
 1. Go to your [account settings in Partner Portal](https://partners.platformos.com/me/) at https://partners.platformos.com/me/
-2. Click button "Tokens"
-3. Find your instance name on the list of all your tokens
-4. Click "Delete" button on the right of it
+2. Click the "Tokens" button 
+3. Find your Instance name on the list of all your tokens
+4. Click the "Delete" button associated with the Instance
 
-## How to generate new token
+## How to generate a new token
 
-To generate new token you need to add environment again in the same way as you did for the first time:
+To generate a new token, you need to add the environment again in the same way as you did for the first time:
 
 ```
 pos-cli env add --email <your email> --url <url> <enviornment>
 ```
 
-If you name your environment the same as before, it will be overwritten with new token.
+If you name your environment the same as before, it will be overwritten with the new token.
 
-Read more about [using pos-cli](https://documentation.platformos.com/get-started/marketplace-template/marketplace-template#step-3-add-instance-to-pos-cli).
+Read more about [using the pos-cli](https://documentation.platformos.com/get-started/marketplace-template/marketplace-template#step-3-add-instance-to-pos-cli).
 
 
 ## Legacy tokens
 
-Before August 19, 2020 tokens were global, so resetting your token will turn off this token for all your environments. After August 19, 2020 environments added using pos-cli are scoped to only this one environment, so it is enough to just delete token for that one environment and re-add it again.
+Before August 19, 2020 tokens were global, so resetting your token will turn off this token for all your environments. After August 19, 2020 environments added using pos-cli are scoped to only this one environment, so it is enough to delete the token for that one environment and re-add it.
 
 ### How to know if my token is current or legacy?
 
-* Currently tokens consists of small letter, big letter, numbers, underscore (_), dashes (-) and are 43 characters long.
-* Legacy tokens contains only small letters and numbers and are 40 characters long.
+* Currently tokens consist of lowercase and uppercase letters, numbers, underscore (_), dashes (-) and are 43 characters long.
+* Legacy tokens contain only lowercase letters and numbers and are 40 characters long.
