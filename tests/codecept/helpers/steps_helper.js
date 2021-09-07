@@ -1,7 +1,7 @@
 module.exports = function() {
   return actor({
 
-    checkLiquidErrors: () => {
+    checkLiquidErrors: (I) => {
       I.dontSee('Liquid Error', 'body');
       I.dontSee('RenderFormTag Error', 'body');
       I.dontSee('QueryGraphTag Error', 'body');
