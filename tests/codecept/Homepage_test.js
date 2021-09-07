@@ -2,9 +2,7 @@ const assert = require('assert');
 
 Feature('Homepage');
 
-const { I, liquidErrors } = inject();
-
-Scenario('There are no liquid errors', ({ I }) => {
+Scenario('There are no liquid errors', ({ I, checkLiquidErrors }) => {
   I.amOnPage('/');
   I.checkLiquidErrors();
 });

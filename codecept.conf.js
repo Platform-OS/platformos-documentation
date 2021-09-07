@@ -13,7 +13,7 @@ exports.config = {
     }
   },
   include: {
-    I: './tests/codecept/helpers/steps_helper.js'
+    checkLiquidErrors: './tests/codecept/helpers/checkLiquidErrors.js'
   },
   bootstrap: null,
   mocha: {},
