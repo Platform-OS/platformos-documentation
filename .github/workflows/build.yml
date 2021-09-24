@@ -36,17 +36,6 @@ jobs:
       MPKIT_URL: ${{ secrets.MPKIT_URL_STAGING }}
     steps:
       - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
-        with:
-          node-version: '14.x'
-      - name: Configure Puppeteer Cache
-        uses: actions/cache@v2
-        with:
-          path: ~/node_modules/puppeteer/.local-chromium/
-          key: ${{ runner.os }}-node-${{ hashFiles('**/node_modules/puppeteer/package.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-${{ hashFiles('**/node_modules/puppeteer/package.json') }}
-            ${{ runner.os }}-node-
       - name: Install test framework
         run: npm i codeceptjs @codeceptjs/configure puppeteer
       - run: npm test
