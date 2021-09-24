@@ -39,12 +39,11 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '14.x'
-          cache: 'npm'
-      - name: Configure NPM Cache
+      - name: Configure Puppeteer Cache
         uses: actions/cache@v2
         with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          path: ~/node_modules/puppeteer/.local-chromium/
+          key: ${{ runner.os }}-node-${{ hashFiles('node_modules/puppeteer/package.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
       - name: Install test framework
