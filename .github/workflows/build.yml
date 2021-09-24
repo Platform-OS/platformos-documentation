@@ -18,12 +18,6 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '14.x'
-      - uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
       - name: Install npm dependencies
         run: npm ci
       - name: Build assets
@@ -42,6 +36,9 @@ jobs:
       MPKIT_URL: ${{ secrets.MPKIT_URL_STAGING }}
     steps:
       - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '14.x'
       - uses: actions/cache@v2
         with:
           path: ~/.npm
@@ -66,12 +63,6 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '14.x'
-      - uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
       - name: Install npm dependencies
         run: npm ci
       - name: Build assets
