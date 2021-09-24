@@ -43,8 +43,9 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/node_modules/puppeteer/.local-chromium/
-          key: ${{ runner.os }}-node-${{ hashFiles('node_modules/puppeteer/package.json') }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/node_modules/puppeteer/package.json') }}
           restore-keys: |
+            ${{ runner.os }}-node-${{ hashFiles('**/node_modules/puppeteer/package.json') }}
             ${{ runner.os }}-node-
       - name: Install test framework
         run: npm i codeceptjs @codeceptjs/configure puppeteer
