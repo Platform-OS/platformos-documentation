@@ -14,5 +14,8 @@ Scenario('Page is fast', async ({ I }) => {
 
   const MAX_LOADEVENTEND = 1000;
   const actualLoadEventEnd = data.loadEventEnd;
-  assert.ok(actualLoadEventEnd < MAX_LOADEVENTEND, `loadEventEnd is ${actualLoadEventEnd}. Limit: ${MAX_LOADEVENTEND}`);
+
+  await tryTo(() => {
+    assert.ok(actualLoadEventEnd < MAX_LOADEVENTEND, `loadEventEnd is ${actualLoadEventEnd}. Limit: ${MAX_LOADEVENTEND}`);
+  });
 });
