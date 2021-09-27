@@ -230,10 +230,14 @@ To insert an image, add it to the `app/assets/images` directory. Create a direct
 
 **Screencasts**
 
-Upload videos to Youtube, and insert the generated embed code. Uncheck "Show suggested videos when the video finishes.", so that the embed code Youtube generates looks like this:
+Upload the video to Youtube and copy its video ID. For example, the video with the URL `https://www.youtube.com/watch?v=zm5Iw7jsyC4` has the ID `zm5Iw7jsyC4`.  
 
-```html
-<iframe width="560" height="315" src="https://www.youtube.com/embed/cKbaP-8-VFE" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+Insert a video into the documentation by adding the ID like this:  
+
+```liquid
+{% raw %}
+{% include 'shared/video', id: 'zm5Iw7jsyC4' %}
+{% endraw %}
 ```
 
 **Terminal sessions**
