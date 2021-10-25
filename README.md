@@ -92,3 +92,7 @@ Thank you to all our contributors!
 ### Build production assets
 
     npm run build # runs webpack in production mode
+
+## Testing github.dev editing
+
+Its as simple as that
