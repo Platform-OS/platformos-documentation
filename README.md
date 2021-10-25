@@ -92,11 +92,3 @@ Thank you to all our contributors!
 ### Build production assets
 
     npm run build # runs webpack in production mode
-
-## End to end local testing
-
-We are using testcafe to run E2E tests
-
-    npm install -g testcafe
-
-    npm run test-local # uses headless chrome. use `npm run` for details
