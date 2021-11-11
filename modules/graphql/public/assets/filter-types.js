@@ -49,7 +49,39 @@
   var input = document.getElementById('type-search');
   var lastMatch = '';
 
+
+  function expandTitle(title){
+    title.classList.add('active');
+    let result = title.nextElementSibling;
+    result.classList.add("active");
+    if(title.firstElementChild.innerText === "+"){
+      title.firstElementChild.innerText = "-"
+    } else {
+      title.firstElementChild.innerText = "+"
+    }
+  }
+
+  function toggleTitles(){
+    let titles = document.querySelectorAll("nav>h4");
+    titles.forEach((title) => {
+      title.addEventListener("click", function(){
+        this.classList.toggle('active');
+        let result = this.nextElementSibling;
+        result.classList.toggle("active");
+
+        if(this.firstElementChild.innerText === "+"){
+          this.firstElementChild.innerText = "-"
+        } else {
+          this.firstElementChild.innerText = "+"
+        }
+      });
+    });
+  }
+
   function onChange() {
+    let titles = document.querySelectorAll("nav>h4:not(.active)");
+    titles.forEach(title => expandTitle(title));
+
     if (input.value === lastMatch) return;
 
     lastMatch = input.value;
@@ -59,4 +91,5 @@
   input.addEventListener('change', onChange);
   input.addEventListener('keyup', onChange);
   input.addEventListener('mouseup', onChange);
+  toggleTitles();
 })();
