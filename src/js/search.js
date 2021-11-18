@@ -3,7 +3,8 @@ import 'docsearch.js/dist/cdn/docsearch.css';
 import docsearch from 'docsearch.js';
 
 docsearch({
-  apiKey: '76cf08e1e1a7015f417f8a3e86b70c8f',
+  appId: 'DS6I5IN4HR',
+  apiKey: '2c5cfbdbf85e1dfb7c8d01f1ee6dc5cc',
   indexName: 'platformos',
   inputSelector: '.search--input',
   algoliaOptions: {
