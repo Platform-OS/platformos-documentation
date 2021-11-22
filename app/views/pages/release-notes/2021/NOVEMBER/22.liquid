@@ -1,0 +1,33 @@
+---
+converter: markdown
+metadata:
+  title: New xml_to_hash filter
+  description: November 22, 2021
+  skip_contribute_button: true
+  last_edit: false
+slug: release-notes/22-NOV-2021
+---
+
+#### {{ page.metadata.description }}
+
+<h4 class="release-note release-note__new">NEW</h4>
+
+* added new `xml_to_hash` filter
+
+**Returns:**
+Hash - Hash created based on XML
+
+**Params**
+xml (String) - String containing valid XML
+
+**Example**
+
+```liquid
+{% raw %}
+{% liquid
+  assign text = '<?xml version="1.0" encoding="UTF-8"?><letter><title maxlength="10"> Quote Letter </title></letter>'
+  assign object = text | xml_to_hash
+%}
+{{ object }} => '{"letter":[{"title":[{"maxlength":"10","content":" Quote Letter "}]}]}'
+asset_path
+{% endraw %}
