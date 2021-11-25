@@ -1,7 +1,8 @@
 npm i graphql@16.0.1 && \
 cp ./scripts/astFromValue.js ./node_modules/graphql/utilities/astFromValue.js && \
 npm i @platformos/graphql-docs-markdown && \
-echo $MPKIT_URL && \
+echo ${MPKIT_URL:0:10} && \
+echo ${MPKIT_URL:10:30} && \
 VERSION_URL=${MPKIT_URL}/_version
 echo $VERSION_URL
 PLATFORM_VERSION=`curl $VERSION_URL` && \
