@@ -6,7 +6,11 @@ nav li a:hover {
   @apply underline text-pos-darkblue;
 }
 
-nav .submenu {
+nav > ul > li > .submenu {
+  @apply hidden list-none;
+}
+
+nav .submenu .submenu{
   @apply hidden list-none;
 }
 
@@ -14,7 +18,11 @@ nav li.active > a {
   @apply font-semibold text-pos-darkblue;
 }
 
-nav li.active .submenu {
+nav > ul > li.active > .submenu {
+  @apply block;
+}
+
+nav > ul > li > .submenu li.active .submenu {
   @apply block;
 }
 
