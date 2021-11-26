@@ -31,18 +31,23 @@
   {% parse_json graphql_navigation %}
     {% render 'shared/nav/graphql-navigation' %}
   {% endparse_json %}
+
   {% for el3 in graphql_navigation.modules.graphql.public.views.pages['api-reference']['graphql'] %}
     <li class="graphql-navigation">
-      <a href="#">{{el3[0] | humanize}}<span>+</span></a>
+      <button class="leading-tight cursor-pointer">
+        <span class="inline-block w-4 text-lg pointer-events-none">+</span> {{ el3[0] | humanize }}
+      </button>
       <ul class="submenu">
-        {% assign categories =  el3[1] | hash_sort %}
+        {% assign categories = el3[1] | hash_sort %}
         {% for el4 in categories %}
           <li>
-            <a href="#">{{el4[0]}}<span>+</span></a>
+            <button class="leading-tight cursor-pointer">
+              <span class="inline-block w-4 text-lg pointer-events-none">+</span> {{ el4[0] }}
+            </button>
             <ul class="submenu">
               {% for el5 in el4[1] %}
                 <li>
-                  <a href="/api-reference/graphql/{{el3[0]}}/{{el4[0]}}/{{el5[0] | replace: '_', '-'}}">{{el5[0]}}</a>
+                  <a href="/api-reference/graphql/{{el3[0]}}/{{el4[0]}}/{{ el5[0] | replace: '_', '-' }}">{{ el5[0] }}</a>
                 </li>
               {% endfor %}
             </ul>
@@ -52,31 +57,3 @@
     </li>
   {% endfor %}
 {% endif %}
-
-<script>
-  function toggleTitles(){
-    document.querySelectorAll(".graphql-navigation>a").forEach((title) => {
-      title.addEventListener("click", function(){
-        this.parentElement.classList.toggle('active');
-        if(this.firstElementChild.innerText === "+"){
-          this.firstElementChild.innerText = "-"
-        } else {
-          this.firstElementChild.innerText = "+"
-        }
-      });
-    });
-
-
-    document.querySelectorAll(".graphql-navigation>.submenu>li>a").forEach((title) => {
-      title.addEventListener("click", function(){
-        this.parentElement.classList.toggle('active');
-        if(this.firstElementChild.innerText === "+"){
-          this.firstElementChild.innerText = "-"
-        } else {
-          this.firstElementChild.innerText = "+"
-        }
-      });
-    });
-  }
-  toggleTitles();
-</script>

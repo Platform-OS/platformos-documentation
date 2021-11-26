@@ -15,3 +15,7 @@ if ($q('code[class*="language-"]')) {
   import(/* webpackChunkName: "syntaxHighlighting" */ './js/syntaxHighlighting');
 }
 
+if ($q('.graphql-navigation')) {
+  import(/* webpackChunkName: "graphqlNavigation" */ './js/graphqlNavigation');
+}
+
