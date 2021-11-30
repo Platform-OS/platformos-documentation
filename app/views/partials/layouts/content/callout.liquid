@@ -11,7 +11,7 @@
     {% if context.page.metadata.questions == false %}
       {% yield "callout_content" %}
     {% else %}
-      {{ callout_questions }}
+      {{ callout_questions | html_safe }}
     {% endif %}
   </div>
 </div>
