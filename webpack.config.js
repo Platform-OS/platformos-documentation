@@ -57,7 +57,7 @@ module.exports = {
     }),
     new BrotliPlugin({
       asset: '[path].br',
-      test: /\.(js|css)$/,
+      test: /app\.(js|css)$/,
       threshold: 10240,
       minRatio: 0.8
   })
