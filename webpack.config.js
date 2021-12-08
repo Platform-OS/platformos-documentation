@@ -3,6 +3,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const WebpackRequireFrom = require('webpack-require-from');
 const webpack = require('webpack');
 const { ESBuildMinifyPlugin } = require('esbuild-loader');
+const BrotliPlugin = require('brotli-webpack-plugin');
 
 const production = process.env.NODE_ENV === 'production';
 
@@ -53,7 +54,13 @@ module.exports = {
       'process.env': {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV),
       },
-    })
+    }),
+    new BrotliPlugin({
+      asset: '[path].br',
+      test: /\.(js|css)$/,
+      threshold: 10240,
+      minRatio: 0.8
+  })
   ],
   mode: production ? 'production' : 'development',
 };
