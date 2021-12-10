@@ -142,11 +142,13 @@ pos-cli deploy staging
 
 A progress indicator shows that the deployment is in progress, and once it finishes, a _"Deploy succeeded after [time]"_ is displayed.
 
+Go to your Instance URL to explore the marketplace you just deployed. If you already had the Instance URL open in your browser, refresh to display the changes.  
+
 ## Step 7: Set up your marketplace
 
 To access the admin panel of your marketplace:
 
-1. Register a user with this email address: `admin@example.com`.
+1. Register a user with this email address: `admin@example.com`. You can enter any password. 
 2. Enter the `Admin` section from the main menu.
 3. Go to the `Marketplace Setup` section.
 
@@ -154,7 +156,7 @@ To set up Stripe integration:
 
 1. Go to [https://stripe.com](https://stripe.com) and register your Stripe Connect account.
 2. Copy and add the redirect URI in your [Stripe Connect settings](https://dashboard.stripe.com/test/settings/applications) under Integration/Redirects:
-`[YOUR_INSTANCE_URL]/payments/account/success`, for example: `https://mymarketplace.staging.oregon.platform-os.com/payments/account/success`. You can find this link on your Dashboard on the `Marketplace Setup` page.
+`[YOUR_INSTANCE_URL]/payments/account/success`, for example: `https://mymarketplace.staging.oregon.platform-os.com/payments/account/success`. You can find this link on your Dashboard on the `Setup` page.
 3. Enter your Stripe public key, secret key, and Stripe Connect account client ID.
    * **Marketplace Owner Fee (percent)**: The fee that the seller pays for selling through the marketplace. For example, if the product costs 50$, the buyer pays 50$, then the seller gets 50$ minus the marketplace fee. In this example, if the marketplace fee is set to 10 (percent), then the seller will get 45$. The marketplace owner would get 5$ but as a default, the marketplace owner pays the fees for using Stripe Connect, so they will get 5$ minus Stripe's fee.
    * **Stripe Publishable Key**: find under [Developers/API keys](https://dashboard.stripe.com/test/apikeys)
