@@ -18,4 +18,3 @@ if ($q('code[class*="language-"]')) {
 if ($q('.graphql-navigation')) {
   import(/* webpackChunkName: "graphqlNavigation" */ './js/graphqlNavigation');
 }
-

@@ -2,14 +2,12 @@ const defaultTheme = require('tailwindcss/defaultTheme');
 
 module.exports = {
   mode: 'jit',
-  purge: {
-    content: [
-      './app/forms/**/*.liquid',
-      './app/views/**/*.liquid',
-      './src/js/**/*.js',
-      './modules/graphql/template/*.mustache',
-    ],
-  },
+  content: [
+    './app/forms/**/*.liquid',
+    './app/views/**/*.liquid',
+    './src/js/**/*.js',
+    './modules/graphql/template/*.mustache',
+  ],
   theme: {
     extend: {
       colors: {
@@ -50,9 +48,6 @@ module.exports = {
     container: {
       center: true,
       padding: '0'
-    },
-    variants: {
-      textColor: ['responsive',  'group-hover', 'hover', 'focus']
     }
   },
 };
