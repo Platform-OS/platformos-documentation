@@ -1,0 +1,170 @@
+---
+converter: markdown
+metadata:
+  title: Best Editorial Experience in a DevPortal - DevPortal Awards 2021
+  description: The platformOS Documentation has won the Best Editorial Experience in a DevPortal category at the DevPortal Awards 2021. 
+---
+
+{% include 'awards/dpa2021' %}
+
+In this article, learn about the DevPortal Awards, the judges for the category, and why we won the **Best Editorial Experience in a DevPortal** award. 
+
+{% include 'awards/dpa2021_intro' %}
+
+## Best Editorial Experience in a DevPortal
+
+According to the judging criteria for this category, the experience of adding, documenting, and maintaining content within the winning developer portal has to be seamless, frictionless, and easy for developers, documentarians, and editorial reviewers. The winning team should have a quick or distinct approach to deploying the content on the developer portal.
+
+During the evaluation process, to identify the devportal with the best editorial experience,  judges asked questions like: 
+
+* How easy is it to keep your DevPortal content up to date? 
+* Are there a combination of editorial experiences made available? 
+* How does the DevPortal provide a synchronous experience for upstream developers, documentarians, marketeers, and editors? 
+* How much hand coding is required to update the DevPortal whether by a CI/CD process or within the DevPortal editor itself? 
+
+We competed in this category against: 
+
+* Amadeus for Developers
+* BRIAPI Developer Portal
+* KBC Developer Portal
+* Mercedes-Benz Developers
+* R3 Developer Portal
+* Twitter Developers
+
+
+## Judges
+
+The DevPortal Awards are a **peer-reviewed award** where expert-in-their-field jury members are invited and assigned to categories according to their expertise. In 2021, 11 judges worked on assessing the portals in 3 groups. The judges responsible for selecting the devportal with the **Best Editorial Experience** were:  
+
+* **Tom Johnson**: Tom Johnson is a senior technical writer based in Seattle and working for Google. He has a popular blog called [idratherbewriting.com](https://idratherbewriting.com/), which has a lot of visibility in the tech comm community, and a free API documentation course at [idratherbewriting.com/learnapidoc](https://idratherbewriting.com/learnapidoc/) that provides a great introduction to API documentation.
+* **Ellis Pratt**: Ellis is Director at Cherryleaf, a technical and UX content writing services company based in the UK. He is also a Council Member of the Institute of Scientific and Technical Communicators. You can listen to him on the [Cherryleaf Podcast](http://cherryleaf.podbean.com/), a podcast on becoming a better technical and business communicator. 
+* **Lukas Rosenstock**: Lukas is a software developer (mostly PHP, some JS), technical writer, API consultant, and entrepreneur. He serves multiple clients with his unique combination of coding expertise, a perspective on business strategy as well as a passion for great documentation. Lukas is also building CloudObjects, an API directory, community and platform for developer tools.
+* **Bob Watson**: Bob is Senior Technical Writer at Amazon Web Services. Through combining his extensive industry experience and academic research Bob aims to prepare tomorrow's engineers and technical communicators for the diverse challenges they'll face as professionals. You can read his blog at [Docs By Design](https://docsbydesign.com/), where he ponders technical writing, API documentation, and the world in general.
+
+Thank you to the judges for providing their expertise and for the enormous effort in evaluating all the nominees in the various categories.  
+
+
+## Why we won
+
+According to the Judges, we won the award for Best Editorial Experience because _“platformOS has built an outstanding docs as code workflow that leverages Git repositories to collaborate on content, and manage and track changes. Their publishing process includes automated testing of the documentation. On top of that, they have documented their process well, and provide style guides and clear instructions to their writers.”_
+
+
+### Editorial workflow
+
+When we started thinking about our editorial workflow we decided to come up with a process that could work for all participants, including developers in our team and community, but also writers, editors, or external contributors. 
+
+Our main target audience is developers, and they are the ones who contribute the most content to our documentation. As they already use some kind of version control system, most often git,  we selected a tool that they are already familiar with, GitHub. And to make the whole workflow easy to adopt for them, we follow a Docs as Code approach. Our editorial workflow for content is very similar to how code gets reviewed and deployed. All of [our code and content is on GitHub](https://github.com/mdyd-dev/platformos-documentation). In addition, for transparency and to have the same process for all participants, we process all project management tasks using [GitHub’s issue tracker](https://github.com/mdyd-dev/platformos-documentation/issues).
+
+This means that community members can open tickets, discuss issues, see what we are planning and what we are working on, including pull requests that are in review. This approach has proved to be very helpful for our community members because the whole life cycle of any task is fully transparent and they can follow the whole process end-to-end. Everything is collected on GitHub, for example, if we get feedback via the feedback block on our documentation site, we create a ticket on GitHub for that task. 
+
+<img loading="lazy" src="{{ 'images/awards/workflow.png' | asset_url }}" alt="The steps of our editorial workflow" />
+
+The steps of our editorial workflow:
+
+1. Write new content in Markdown using the templates. You can use any editor that can produce Github Flavored Markdown. 
+2. Submit the new topic as a pull request on Github. 
+3. Review. We have a peer-review system in place for code and docs alike. Topics are reviewed by both technical reviewers (developers) and writers. 
+4. Edit as needed. Repeat steps 3-4 until approved. 
+5. Merge approved pull request. 
+6. Deploy to staging, then to production
+
+Our documentation works with continuous integration and continuous deployment. Our CI/CD of choice,Github Actions, runs quality checks on every code merge to our master branch to ensure that the website will stay operational after the changes are deployed.
+
+### Issue tracking
+
+We handle the whole editorial workflow and project management in the same tool. We keep track of content needs and content production on the ‘Issues’ interface of our developer portal’s repository on GitHub. 
+
+Anyone can open an issue, which can be any type of task, a bug that needs fixing, a topic request, or some feedback on existing topics or plans that we have shared. 
+
+If the issue is related to an existing documentation topic, we add the link to the topic in the ticket. 
+
+Any discussion regarding a ticket happens right within the ticket itself, whether among platformOS team members or community members. This way everyone has access to the same information and each person has the opportunity to participate in the discussion. 
+
+We use labels to indicate various attributes of an issue/task, for example the ‘Type’ (is it a topic request, a bug, or is an update needed) or the ‘Scope’ (are they for the core product of platformOS or for peripheral modules) and so on. An issue can have multiple labels, and we can filter by labels. 
+
+We have two projects defined for our documentation site in the issue tracker, one of them is for tickets that are related to content like writing articles and updating existing articles, and the other one is for development tasks on the documentation site, for example, if something needs to be fixed on the front-end. 
+
+We assign people to tasks to know who is responsible for managing or accomplishing that task. We also use ‘Mentions’ to reference our team members or partners using GitHub. This way, the mentioned person gets notifications about the issue and any further changes made to it.  
+
+We sometimes use ‘Milestones’ when we have large tasks that can be broken down into smaller tickets, for example when we do our accessibility review and edits. 
+
+
+### CI/CDs
+
+**Continuous integration (CI) **means that code is continuously tested, integrated with other code changes and merged.** Continuous deployment (CD)** means that code is continuously deployed with each patch to the entire codebase.
+
+For documentation, CI/CD means that content is continuously tested, merged with each patch, and deployed. Deploying in this context means publishing.
+
+<img loading="lazy" src="{{ 'images/awards/cicd.png' | asset_url }}" alt="Diagram of our CI/CD workflow" />
+
+We use Markdown editors to edit content on our documentation site, and store the files locally (while editing) and on GitHub. We then use our own command line tool, pos-cli, to build the codebase, and GitHub Actions to deploy this to our staging and then finally to our production instance.
+
+Our documentation site is built on platformOS. We have a staging instance for development as well as a testing and production instance (being the live site if all tests are green). In applying continuous integration and continuous deployment: The system automatically runs tests, deploys to staging and then to production. Once completed, the team receives an automated notification. 
+
+To support a small footprint deployment process, we use Node.js. 
+
+### Automated testing 
+
+Besides the reviews by writers and subject matter experts included in our editorial workflow, we run automated tests as part of our CI/CD workflow. Testing for broken links, images, structure, performance, accessibility, etc. are part of these automated tests. 
+
+<img loading="lazy" src="{{ 'images/awards/tests.png' | asset_url }}" alt="The steps in our testing process" />
+
+Our CI/CD of choice - Github Actions - runs quality checks on every code merge to our master branch.
+
+The steps in our test process in order: 
+
+1. Test build assets and our auto-generated GraphQL documentation.
+2. Deploy the project to the staging environment using our command line interface tool. 
+3. Run end-to-end tests using CodeceptJS.
+4. Run Google Lighthouse on the production environment to catch possible performance regressions. 
+
+If all checks meet our standards, the system deploys the codebase (including content) to production. 
+
+
+### Ensuring consistency
+
+**Documentation Style Guide**
+
+We started developing our [Documentation Style Guide](https://documentation.platformos.com/community/documentation-style-guide) early on in the process of building our documentation site. Considerations in this regard came up during the discovery phase when it became clear that such information would help us and other contributors maintain consistency around published content. For example, as soon as we had an understanding of who our target audience is, we added that information to our style guide.
+
+To ensure a consistent communication style throughout our documentation, we went about  defining our standards for grammar, syntax, and the different types of technical content.  Over time we developed these guidelines that internal or external contributors are encouraged to follow:
+
+* A detailed description of our **target audience**, as anyone who contributes will need to understand who they are writing for.
+* For **grammar and syntax**, and with platformOS being headquartered in the US, we chose a well-known US English style guide.
+* We added sections on **tone and style**. Although these are quite straightforward, like using present tense, second person, active voice, we found that it was helpful to provide this guidance to achieve some measure of consistency between contributors. This also helps reduce the heavy lifting with the editorial review process prior to publishing.
+* We also describe the **format** we use. We ensure good usability by keeping our content well-structured. A well-defined structure is essential for accessibility —  it helps users understand the flow of the topic and provides a clear structure for screen readers and other assistive devices.
+* We describe **accessibility** guidelines and criteria for inclusive language to make sure the content we publish meets what’s considered best practice in this regard. 
+
+<img loading="lazy" src="{{ 'images/awards/styleguide.png' | asset_url }}" alt="A screenshot of our Documentation Style Guide" />
+
+Our documentation consists of different types of topics, like tutorials, concepts, references (e.g. API documentation). To help writers and editors contribute, we specify the structure of each content type in ready-to-use templates.
+
+**Templates**
+
+For our [templates](https://github.com/mdyd-dev/platformos-documentation/tree/master/app/views/pages/doc-templates), we were inspired by topic based authoring and [DITA](https://en.wikipedia.org/wiki/Darwin_Information_Typing_Architecture) in the sense that we decided to have three main content types for our documentation:
+
+* Tutorials that describe how to accomplish a task
+* Concepts that provide background information and context
+* References like our API Reference
+
+We started with outlining the structure for these content types, and creating the templates for each, but as we went about developing and using our documentation, we were motivated to create templates for other types of content too; such as release notes and use cases.  
+
+As our templates are written in Markdown they can be simply copied into your preferred editor.
+
+Each template includes non-changeable content as well as placeholders (with explanations/prompts for the expected copy). Placeholders also provide information on the recommended format (e.g. title), and any requirements or limitations (e.g. maximum number of characters).  
+
+<img loading="lazy" src="{{ 'images/awards/template.png' | asset_url }}" alt="A part of our tutorial template in the GitHub editor" />
+
+The editorial experience we currently provide is the result of continuous adjustment and fine-tuning prompted by the insights gleaned from applying various and ongoing [user research](https://documentation.platformos.com/community/user-research/user-research-platformos) activities.
+
+We are honored and grateful to have received this recognition for our work, and we would like to thank all members of our community who contributed to our documentation, whether providing feedback, requests, edits, new content, or participating in our user experience research. We hope you enjoy contributing to our documentation as much as we do. 
+
+
+## Related
+
+* [API The Docs 2021 — platformOS Developer Portal Demo and Q&A](https://documentation.platformos.com/community/meet-us/api-the-docs21): As the platformOS Documentation has been nominated for the Devportal Awards 2021, we have been invited to showcase our devportal and participate in a Q&A session at the [API The Docs](https://apithedocs.org/virtual-2021/platformos-developer-portal) conference. 
+* [What goes into an award winning developer portal in 2021?](https://pronovix.com/blog/what-goes-award-winning-developer-portal-2021): Interview with 2021 DevPortal Awards Jury
+* [Helping Your Community Contribute to Developer Documentation](https://documentation.platformos.com/community/meet-us/wtd20): At Write The Docs Prague 2020, we showed various fully remote processes platformOS developed to help community members contribute content and code to our developer portal. 
+* [Building Developer Documentation with a Fully Remote Team and Community](https://documentation.platformos.com/community/meet-us/devrelcon20): At DevRelCon Earth 2020, we showed the steps and iterations in our journey of building the platformOS developer portal, and talked about the approaches, processes, and tools we used to build our developer portal in a remote and distributed environment. 
+* [How to create an award-winning developer portal](https://cherryleaf.podbean.com/e/117-how-to-create-an-award-winning-developer-portal/): In this episode of the [Cherryleaf Podcast](https://www.cherryleaf.com/podcast/), Ellis Pratt discussed his experience as a judge at the DevPortal Awards 2021.
+* [The Best Developer Portals of 2021](https://pronovix.com/blog/best-developer-portals-2021): The 2021 DevPortal Awards saw 49 independent developer portals nominated for 18 award categories. Here are the winners, runners-up and notable mentions for 2021!
