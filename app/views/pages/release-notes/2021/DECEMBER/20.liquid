@@ -1,0 +1,24 @@
+---
+converter: markdown
+metadata:
+  title: CDN upgrades, new filters
+  description: December 20, 2021
+  skip_contribute_button: true
+  last_edit: false
+slug: release-notes/20-DEC-2021
+---
+
+#### {{ page.metadata.description }}
+
+<h4 class="release-note release-note__new">NEW</h4>
+
+* Enabled dynamic brotli compression on all of our CDNs
+* Upgraded CDN TLS version to 1.2 (2021)
+* Added `remote_records` and `remote_users`
+* Added `is_valid_email` filter
+* `admin_background_jobs` was updated and will return background jobs scheduled via the `{% raw %}{% background %}{% endraw %}` tag
+
+<h4 class="release-note release-note__fixed">FIXED</h4>
+
+* Fixed issue with the `cache` tag in the email
+* Assets won't disappear from `admin_assets` anymore when deleted unless the file was also physically removed from S3
