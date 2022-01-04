@@ -1,0 +1,195 @@
+---
+converter: markdown
+metadata:
+  title: What are WebSockets?
+  description: This guide will help you integrate WebSockets into your application.
+---
+
+This guide will help you integrate WebSockets into your application.
+
+## Requirements
+
+To understand this topic, you should be familiar with:
+ * [Liquid Template language](/api-reference/liquid/introduction)
+ * [pOS Marketplace Template](https://documentation.platformos.com/developer-guide/pos-marketplace-template/core-concepts)
+
+## What are WebSockets?
+
+
+[WebSocket](https://en.wikipedia.org/wiki/WebSocket) is a protocol for real-time communication between a client and a server.
+It allows to build interactive UI where data can be updated from server without need of doing http requests.
+Each client can subscribe to multiple channels and rooms. Messages sent to a certain room are then broadcasted to all subscribers of that room.
+pOS implementation of Websockets uses [ActionCable](https://guides.rubyonrails.org/action_cable_overview.html).
+In this guide we will show you how to integrate WebSockets into your application based on a chat functionality from the [pOS Marketplace Template](/developer-guide/pos-marketplace-template/core-concepts)
+
+## Steps
+
+<div data-autosteps></div>
+
+### Step 1: Set Up
+
+Make sure you have added the [@rails/actioncable](https://www.npmjs.com/package/actioncable) package `"@rails/actioncable": "^6.0.3-2"` to your `package.json` file. This package handles communication between the server and the client.
+
+
+### Step 2: Creating a connection
+
+Consumers require an instance of the connection on their side. This can be established using the code below.
+
+```javascript
+// modules/chat/src/js/consumer.js
+
+import { createConsumer } from "@rails/actioncable"
+
+export default createConsumer('/websocket')
+```
+
+### Step 3: Subscribing a channel
+
+A consumer becomes a subscriber by creating a subscription to a given channel:
+
+```javascript
+// modules/chat/src/js/chat.js
+import consumer from "./consumer";
+
+const chat = function(){
+
+  // cache 'this' value not to be overwritten later
+  const module = this;
+
+  module.createSubscription = () => {
+      module.channel = consumer.subscriptions.create(
+      {
+        channel: 'conversate', //channel name
+        room_id: module.conversationId, //room ID
+      }
+    )
+  }
+}
+```
+
+### Step 4: Handling callbacks
+
+There are 4 callbacks handled by the subscription that allows us to react on certain events, we can add handlers for them when we create subscription object:
+
+```javascript
+// modules/chat/src/js/chat.js
+import consumer from "./consumer";
+
+const chat = function(){
+
+  // cache 'this' value not to be overwritten later
+  const module = this;
+  module.createSubscription = () => {
+    module.channel = consumer.subscriptions.create(
+      {
+        channel: 'conversate',
+        room_id: module.conversationId
+      },
+      {
+        received: function(data){
+          // function responsible for handling new message
+          module.showMessage(data);
+        },
+
+        connected: function(){
+          // on connect we want to enable the message input
+          module.settings.messageInput.disabled = false;
+          module.settings.messageInput.focus();
+        },
+
+        rejected: function(){
+          // when connection has been rejected we want to notify the user about the error
+          module.blocked();
+        },
+
+        disconnected: function(){
+          // when consumer has been disconnected we want to notify the user about the error
+          module.blocked();
+        }
+      }
+    );
+  };
+}
+```
+
+### Step 5: Securing room subscription
+
+To make sure that only authorized users can access certain rooms (for example rooms for conversations where they are one of the pariticpants) we can use a partial that will be called when user tries to subscribe to a certain room.
+This file should be stored in `views/partials/channels/:channel_name/subscribed.liquid`. In this example we use code from the [pOS Marketplace Template](/developer-guide/pos-marketplace-template/core-concepts) and there channel is called `conversate`. This partial needs to return `true` string if current user is authorized to subscribe the room.
+
+```liquid
+{% raw %}
+{%- comment -%}
+modules/chat/public/views/partials/channels/conversate/subscribed.liquid
+{%- endcomment -%}
+
+{% liquid
+  function current_profile = 'lib/current_organization_profile', user_id: context.current_user.id
+  assign room_id = context.params.room_id
+  function conversation = 'modules/chat/lib/queries/conversations/find_by_participant', id: room_id, participant_id: current_profile.id
+
+  if conversation
+    echo 'true'
+  else
+    echo 'false'
+  endif
+%}
+{% endraw %}
+```
+In pOS Marketplace Template each user has a profile and the profile is linked with a conversation. If the conversation is found then we return `true` to confirm that user can subscribe to this room.
+
+### Step 6: Sending messages
+
+To send a message we need to call the `send` method on the subscription object we have created. This method takes Object as an argument.
+
+```javascript
+// modules/chat/src/js/chat.js
+
+module.sendMessage = (message) => {
+  let messageData = {
+    message: encodeHtml(message),
+    author_id: module.settings.currentUserId,
+    sender_name: module.settings.messageInput.getAttribute('data-from-name'),
+    created_at: new Date(),
+    create: true
+  };
+
+  module.channel.send(messageData);
+};
+```
+
+### Step 7: Setting server callback on received message
+
+You may want to trigger some code when server receives a message from a client. To do so you need to create a partial that will be called when the message is received. This file should be stored in `views/partials/channels/:channel_name/receive.liquid`. In this example we use code from the [pOS Marketplace Template](/developer-guide/pos-marketplace-template/core-concepts) and there channel is called `conversate`.
+
+`context.params` contains all fields that have been sent in previous step.
+
+```liquid
+{% raw %}
+{%- comment -%}
+modules/chat/public/views/partials/channels/conversate/receive.liquid
+{%- endcomment -%}
+
+{% liquid
+  function current_profile = 'lib/current_organization_profile', user_id: context.current_user.id
+  assign room_id = context.params.room_id
+  function conversation = 'modules/chat/lib/queries/conversations/find_by_participant', id: room_id, participant_id: current_profile.id
+  assign message_safe = context.params.message | raw_escape_string
+  assign object = '{}' | parse_json
+  hash_assign object['conversation_id'] = conversation.id
+  hash_assign object['autor_id'] = current_profile.id
+  hash_assign object['message'] = message_safe
+  function message = 'modules/chat/lib/commands/messages/create', object: object
+  if message.valid != true
+    log message, 'ERROR receive message'
+  else
+    function res = 'modules/chat/lib/commands/conversations/mark_unread', conversation: conversation, current_profile: current_profile
+  endif
+%}
+{% endraw %}
+```
+In this example we are retriving the conversation object and creating a message object to persist data in the database.
+
+### Other examples
+
+In [pOS Marketplace Template](/developer-guide/pos-marketplace-template/core-concepts) we have also implemented a notifications functionality that uses websockets to inform user that there are unread messages. You can find it in the file `modules/chat/src/js/notifications.js`.
