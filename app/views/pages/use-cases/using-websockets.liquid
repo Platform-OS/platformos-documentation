@@ -5,7 +5,7 @@ metadata:
   description: This guide will help you integrate WebSockets into your application.
 ---
 
-In this guide we will show you how to integrate WebSockets into your application based on the chat functionality we implemented for the [pOS Marketplace Template](/developer-guide/pos-marketplace-template/core-concepts). 
+In this guide we will show you how to integrate WebSockets into your application based on the chat functionality we implemented for the [pOS Marketplace Template](/developer-guide/pos-marketplace-template/core-concepts).
 [WebSocket](https://en.wikipedia.org/wiki/WebSocket) is a protocol for real-time communication between a client and a server. It allows to build an interactive UI where data can be updated from the server without the need of doing http requests. Each client can subscribe to multiple channels and rooms. Messages sent to a certain room are then broadcasted to all subscribers of that room. The pOS implementation of Websockets uses [ActionCable](https://guides.rubyonrails.org/action_cable_overview.html).
 
 ## Requirements
@@ -184,3 +184,28 @@ In this example, we are retrieving the conversation object and creating a messag
 ### Other examples
 
 In the [pOS Marketplace Template](/developer-guide/pos-marketplace-template/core-concepts), we have also implemented a notifications functionality that uses WebSockets to inform user about unread messages. You can find it in the file `modules/chat/src/js/notifications.js`.
+
+
+### Q&A
+
+1. Socket timeouts, how does it handle reconnect? Is that the job of the client or can the server reconnect in a permanent listen mode?
+
+JS client [@rails/actioncable](https://www.npmjs.com/package/actioncable) is responsible for reconnecting.
+
+2. Can the websocket service connect to anything else (ie. a notification service to receive events?)
+
+Yes, if that service handles websocket connections.
+
+3. Timeouts
+
+There is 5 seconds timeout for handling `subscribed.liquid` and `receive.liquid` partials.
+
+5. How do you define a message?
+
+Message is a JSON object.
+
+6. Parallel processing, assuming just one connection, but how does the server keep up if there are streams of events one after another,
+does it split off thread / processes in the background to cover this or queue this somehow?
+
+Each client has their connection and each connection is handled by a thread on the server side.
+If there are multiple incoming messages from a single connection then they are queued.
