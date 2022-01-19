@@ -186,13 +186,13 @@ In this example, we are retrieving the conversation object and creating a messag
 In the [pOS Marketplace Template](/developer-guide/pos-marketplace-template/core-concepts), we have also implemented a notifications functionality that uses WebSockets to inform user about unread messages. You can find it in the file `modules/chat/src/js/notifications.js`.
 
 
-### Q&A
+## Q&A
 
-1. Socket timeouts, how does it handle reconnect? Is that the job of the client or can the server reconnect in a permanent listen mode?
+1. Socket timeouts — how does it handle reconnect? Is that the job of the client or can the server reconnect in a permanent listen mode?
 
-JS client [@rails/actioncable](https://www.npmjs.com/package/actioncable) is responsible for reconnecting.
+The JS client [@rails/actioncable](https://www.npmjs.com/package/actioncable) is responsible for reconnecting.
 
-2. Can the websocket service connect to anything else (ie. a notification service to receive events?)
+2. Can the websocket service connect to anything else (a notification service to receive events)?
 
 Yes, if that service handles websocket connections.
 
