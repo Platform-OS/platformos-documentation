@@ -9,8 +9,8 @@
   },
   "scripts": {
     "watch": "npx webpack-cli -w",
-    "sync": "pos-cli sync -o -l dev",
-    "start": "npx concurrently npm:sync npm:watch",
+    "sync": "pos-cli sync -l dev",
+    "start": "NODE_ENV=development npx concurrently npm:sync npm:watch",
     "build": "NODE_ENV=production npx webpack-cli",
     "build:graphql": "./scripts/generate-graphql.sh",
     "deploy": "npm run build && pos-cli deploy",
@@ -40,6 +40,6 @@
   },
   "dependencies": {
     "docsearch.js": "^2.6.3",
-    "prismjs": "1.26.0"
+    "prismjs": "1.25.0"
   }
 }
