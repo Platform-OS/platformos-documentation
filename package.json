@@ -8,7 +8,7 @@
     "node": ">=12"
   },
   "scripts": {
-    "watch": "npx webpack-cli -w",
+    "watch": "NODE_ENV=development npx webpack-cli -w",
     "sync": "pos-cli sync -o -l dev",
     "start": "npx concurrently npm:sync npm:watch",
     "build": "NODE_ENV=production npx webpack-cli",
@@ -30,7 +30,6 @@
     "mini-css-extract-plugin": "2.4.5",
     "pkg-dir": "^4.2.0",
     "postcss": "8.4.5",
-    "postcss-fixes": "^3.0.0",
     "postcss-import": "^14.0.2",
     "postcss-loader": "6.2.1",
     "tailwindcss": "^3.0.7",

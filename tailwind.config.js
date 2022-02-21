@@ -1,7 +1,6 @@
 const defaultTheme = require('tailwindcss/defaultTheme');
 
 module.exports = {
-  mode: 'jit',
   content: [
     './app/forms/**/*.liquid',
     './app/views/**/*.liquid',
