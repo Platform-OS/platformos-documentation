@@ -1,4 +1,5 @@
 import 'docsearch.js/dist/cdn/docsearch.css';
+import '../css/overrides/docsearch.css';
 
 import docsearch from 'docsearch.js';
 

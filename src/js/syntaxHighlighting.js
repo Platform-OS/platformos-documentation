@@ -1,5 +1,6 @@
 // const liquidKeywords = /\b(?:comment|endcomment|if|elsif|else|endif|unless|endunless|for|endfor|case|endcase|when|in|break|assign|continue|limit|offset|range|reversed|raw|endraw|capture|endcapture|tablerow|endtablerow|include|form|endform|render_form|graphql|content_for|endcontent_for|yield|input|include_form|endinclude_form)\b/;
 
+import '../css/overrides/syntaxHighlighting.css';
 
 import 'prismjs';
 import 'prismjs/plugins/line-numbers/prism-line-numbers';
