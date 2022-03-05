@@ -1,5 +1,3 @@
-// const liquidKeywords = /\b(?:comment|endcomment|if|elsif|else|endif|unless|endunless|for|endfor|case|endcase|when|in|break|assign|continue|limit|offset|range|reversed|raw|endraw|capture|endcapture|tablerow|endtablerow|include|form|endform|render_form|graphql|content_for|endcontent_for|yield|input|include_form|endinclude_form)\b/;
-
 import '../css/overrides/syntaxHighlighting.css';
 
 import 'prismjs';
@@ -12,10 +10,8 @@ import 'prismjs/components/prism-css';
 import 'prismjs/components/prism-graphql';
 import 'prismjs/components/prism-javascript';
 import 'prismjs/components/prism-json';
-import 'prismjs/components/prism-markdown';
+import 'prismjs/components/prism-markup-templating';
 import 'prismjs/components/prism-yaml';
-import 'prismjs/components/prism-twig';
-
-Prism.languages.liquid = Prism.languages.twig;
+import 'prismjs/components/prism-liquid';
 
 Prism.highlightAll();
