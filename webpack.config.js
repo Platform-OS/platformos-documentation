@@ -15,6 +15,7 @@ module.exports = {
     chunkFilename: 'assets/[name].[chunkhash:3].js',
     publicPath: '',
     path: path.resolve('app'),
+    filename: 'assets/[name].js'
   },
   optimization: {
     minimize: true,
