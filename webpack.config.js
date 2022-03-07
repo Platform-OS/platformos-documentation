@@ -3,7 +3,6 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const WebpackRequireFrom = require('webpack-require-from');
 const webpack = require('webpack');
 const { ESBuildMinifyPlugin } = require('esbuild-loader');
-// const BrotliPlugin = require('brotli-webpack-plugin');
 
 const production = process.env.NODE_ENV === 'production';
 
@@ -13,9 +12,9 @@ module.exports = {
     graphql: './modules/graphql/public/assets/graphql',
   },
   output: {
-    chunkFilename: '[name].[chunkhash:3].js',
+    chunkFilename: 'assets/[name].[chunkhash:3].js',
     publicPath: '',
-    path: path.resolve('app/assets'),
+    path: path.resolve('app'),
   },
   optimization: {
     minimize: true,
@@ -44,8 +43,8 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: '[name].css',
-      chunkFilename: '[name].[chunkhash:3].css',
+      filename: 'views/partials/css/[name].css',
+      chunkFilename: 'assets/[name].[chunkhash:3].css',
     }),
     new WebpackRequireFrom({
       variableName: 'window.__CONTEXT__.cdnUrl',
@@ -55,12 +54,6 @@ module.exports = {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV),
       }
     })
-    // new BrotliPlugin({
-    //   asset: '[path].br',
-    //   test: /app\.(js|css)$/,
-    //   threshold: 10240,
-    //   minRatio: 0.8
-    // })
   ],
   mode: production ? 'production' : 'development',
 };
