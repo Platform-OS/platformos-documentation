@@ -48,7 +48,7 @@ module.exports = {
       chunkFilename: 'assets/[name].[chunkhash:3].css',
     }),
     new WebpackRequireFrom({
-      variableName: 'window.__CONTEXT__.cdnUrl',
+      methodName: 'window.__CONTEXT__.cdnUrl',
     }),
     new webpack.DefinePlugin({
       'process.env': {

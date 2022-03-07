@@ -1,1 +1,7 @@
-<script>window.__CONTEXT__ = { cdnUrl: "{{ '' | asset_url }}" };</script>
+<script>
+window.__CONTEXT__ = {
+  cdnUrl: function() {
+    return "{{ '' | asset_url }}".split(/assets\/$/g)[0];
+  }
+}
+</script>
