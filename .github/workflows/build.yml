@@ -62,6 +62,11 @@ jobs:
         run: npm run build:graphql
       - name: Deploy production
         run: npx @platformos/pos-cli deploy
+      - name: Warm cache
+        run: time curl $MPKIT_URL >> /dev/null
+      - run: time curl $MPKIT_URL >> /dev/null
+      - run: time curl $MPKIT_URL >> /dev/null
+      - run: time curl $MPKIT_URL >> /dev/null
       - run: time curl $MPKIT_URL >> /dev/null
 
   # lighthouse_ci:
