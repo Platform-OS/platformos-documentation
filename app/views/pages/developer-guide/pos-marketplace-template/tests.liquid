@@ -2,9 +2,10 @@
 converter: markdown
 metadata:
   title: Tests
-  description: This article describes how to use the End-To-End and Unit Tests included in the pOS Marketplace Template.    
+  description: This article describes how to use the End-To-End and Unit Tests included in the pOS Marketplace Template.
+converter: markdown
 ---
-This article describes how to use the End-To-End and unit tests included in the pOS Marketplace Template. 
+This article describes how to use the End-To-End and unit tests included in the pOS Marketplace Template.
 
 {% include 'alert/note', content: 'End-to-end testing is a best practice and a requirement if you would like to implement a maintainable platformOS end client build. Besides leveraging the test scripts included in the template, you can learn more about testing in our [End-to-End Testing](/best-practices/end-to-end-testing/installing-testcafe) guides. ' %}
 
@@ -31,7 +32,7 @@ And after that seed the test data:
 **2. Set the environment variable**
 
 First, set the environment variable to point to your Instance.
-	
+
 On **unix-based** operating systems you can do this by prefixing all your commands with:
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
@@ -39,7 +40,7 @@ MPKIT_URL=https://your-instance.example.com
 </code></pre>
 
 so your commands look like this:
-	
+
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
 MPKIT_URL=https://your-instance.example.com testcafe "chromium" test/ --debug-on-fail
 </code></pre>
@@ -92,11 +93,88 @@ Then open your browser and you can visit it at:
 ### Unit Tests
 
 Put tests into `app/views/partials/test/commands`, files should end with `_test.liquid`.
+W
+
 
 To run all tests, deploy code on Instance and go to page:
-`https://your-instance.example.com/tests/run`
-    
+`https://your-instance.example.com/tests`
+
 To run one test go to page:
 `https://your-instance.example.com/tests/run?name=commands/items/create/check_test`
-    
+
 Use assertion partials from `app/views/partials/test/assertions`.
+
+**Example of unit test file with user creating/deleting:**
+
+We will assign json data to two variables. First is for user data, and second for the profile data.
+
+User
+```js
+  % parse_json payload %
+  {
+    "username": "user name",
+    "email": "test@example.com",
+    "password": {{ "password" | json }},
+    "agreed": "true"
+  }
+  % endparse_json %
+```
+
+Profile
+```js
+  % parse_json profile %
+  {
+    "first_name": "first name",
+    "last_name": "last name",
+    "phone": "1234234"
+  }
+  % endparse_json %
+```
+
+Then we are creating user along with this function
+
+`#21 function user = 'lib/commands/users/create', object: payload, profile: profile`
+
+Validation check:
+
+```js
+unless user.valid
+  include 'test/register_error', contract: contract, field_name: 'user#valid', message: user.errors
+endunless
+```
+
+Test will try to find user in database by user id:
+
+```js
+function u = 'lib/queries/users/find', id: user.id
+
+unless u
+  include 'test/register_error', contract: contract, field_name: 'primary user', key: 'app.test.should.be_valid'
+endunless
+```
+
+Test will try to create user with same credentials. It checks whether user2 is created.
+
+```js
+function user2 = 'lib/commands/users/create', object: payload
+
+if user2.valid
+  include 'test/register_error', contract: contract, field_name: 'extra user', key: 'app.test.should.not.be_valid'
+endif
+
+if user2.id
+  include 'test/register_error', contract: contract, field_name: 'extra user', key: 'app.test.should.not.be_valid'
+endif
+```
+
+Test deletes the user, and checks if user exists in database by user id.
+
+```js
+function deleted = 'lib/commands/users/delete', object: u
+
+function u = 'lib/queries/users/find', id: user.id
+
+if u
+  include 'test/register_error', contract: contract, field_name: 'deleted user', key: 'app.test.should.be_valid'
+endif
+```
