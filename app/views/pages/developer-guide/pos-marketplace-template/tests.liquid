@@ -103,7 +103,7 @@ Use assertion partials from `app/views/partials/test/assertions`.
 
 **Example of unit test file with user creating/deleting:**
 
-We will assign json data to two variables. First is for user data, and second for the profile data.
+In this example, you will assign json data to two variables. The first one is for the user data, and the second one is for the profile data.
 
 User
 ```js
@@ -128,7 +128,7 @@ Profile
   % endparse_json %
 ```
 
-Then we are creating user along with this function
+Then you create the user along with this function:
 
 `#21 function user = 'lib/commands/users/create', object: payload, profile: profile`
 
@@ -140,7 +140,7 @@ unless user.valid
 endunless
 ```
 
-Test will try to find user in database by user id:
+The test will try to find the user in the database by user ID:
 
 ```js
 function u = 'lib/queries/users/find', id: user.id
@@ -150,7 +150,7 @@ unless u
 endunless
 ```
 
-Test will try to create user with same credentials. It checks whether user2 is created.
+The test will try to create the user with the same credentials. It checks whether user2 is created.
 
 ```js
 function user2 = 'lib/commands/users/create', object: payload
@@ -164,7 +164,7 @@ if user2.id
 endif
 ```
 
-Test deletes the user, and checks if user exists in database by user id.
+The test deletes the user, and checks if the user exists in the database by user ID.
 
 ```js
 function deleted = 'lib/commands/users/delete', object: u
