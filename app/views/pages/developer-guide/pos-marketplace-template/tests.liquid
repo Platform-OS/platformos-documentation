@@ -104,54 +104,74 @@ Use assertion partials from `app/views/partials/test/assertions`.
 
 In this example, you will assign json data to two variables. The first one is for the user data, and the second one is for the profile data.
 
-User
+### User
 ```js
-  % parse_json payload %
+  {% raw %}
+  {% parse_json payload %}
   {
     "username": "user name",
     "email": "test@example.com",
     "password": {{ "password" | json }},
     "agreed": "true"
   }
-  % endparse_json %
+  {% endparse_json %}
+  {% endraw %}
 ```
 
-Profile
+### Profile
 ```js
-  % parse_json profile %
+  {% raw %}
+  {% parse_json profile %}
   {
     "first_name": "first name",
     "last_name": "last name",
     "phone": "1234234"
   }
-  % endparse_json %
+  {% endparse_json %}
+  {% endraw %}
 ```
 
 Then you create the user along with this function:
 
-`#21 function user = 'lib/commands/users/create', object: payload, profile: profile`
+```js
+{% raw %}
+{% liquid
+function user = 'lib/commands/users/create', object: payload, profile: profile
+%}
+{% endraw %}
+```
 
 Validation check:
 
 ```js
+{% raw %}
+{% liquid
 unless user.valid
   include 'test/register_error', contract: contract, field_name: 'user#valid', message: user.errors
 endunless
+%}
+{% endraw %}
 ```
 
 The test will try to find the user in the database by user ID:
 
 ```js
+{% raw %}
+{% liquid
 function u = 'lib/queries/users/find', id: user.id
 
 unless u
   include 'test/register_error', contract: contract, field_name: 'primary user', key: 'app.test.should.be_valid'
 endunless
+%}
+{% endraw %}
 ```
 
 The test will try to create the user with the same credentials. It checks whether user2 is created.
 
 ```js
+{% raw %}
+{% liquid
 function user2 = 'lib/commands/users/create', object: payload
 
 if user2.valid
@@ -161,11 +181,15 @@ endif
 if user2.id
   include 'test/register_error', contract: contract, field_name: 'extra user', key: 'app.test.should.not.be_valid'
 endif
+%}
+{% endraw %}
 ```
 
 The test deletes the user, and checks if the user exists in the database by user ID.
 
 ```js
+{% raw %}
+{% liquid
 function deleted = 'lib/commands/users/delete', object: u
 
 function u = 'lib/queries/users/find', id: user.id
@@ -173,4 +197,6 @@ function u = 'lib/queries/users/find', id: user.id
 if u
   include 'test/register_error', contract: contract, field_name: 'deleted user', key: 'app.test.should.be_valid'
 endif
+%}
+{% endraw %}
 ```
