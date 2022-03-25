@@ -31,6 +31,11 @@ module.exports = {
           'success-text': '#166D12',
           'icon-feedback': '#8589A0'
         },
+        carbon: {
+          brand: '#00ffbc',
+          text: '#0e11a8'
+
+        }
       },
       boxShadow: {
         box: '0px 8px 18px rgba(52, 61, 75, 0.3)'

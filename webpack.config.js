@@ -12,10 +12,10 @@ module.exports = {
     graphql: './modules/graphql/public/assets/graphql',
   },
   output: {
-    chunkFilename: 'assets/[name].[chunkhash:3].js',
+    chunkFilename: '[name].[chunkhash:3].js',
     publicPath: '',
-    path: path.resolve('app'),
-    filename: 'views/partials/js/[name].js'
+    path: path.resolve('app/assets'),
+    filename: '[name].js'
   },
   optimization: {
     minimize: true,
@@ -44,8 +44,11 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: 'views/partials/css/[name].css',
-      chunkFilename: 'assets/[name].[chunkhash:3].css',
+      filename: '[name].css',
+      chunkFilename: '[name].[chunkhash:3].css',
+    }),
+    new webpack.optimize.MinChunkSizePlugin({
+      minChunkSize: 10000,
     }),
     new WebpackRequireFrom({
       methodName: 'window.__CONTEXT__.cdnUrl',

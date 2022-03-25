@@ -11,7 +11,7 @@
     "watch": "NODE_ENV=development npx webpack-cli -w",
     "sync": "pos-cli sync -o -l dev",
     "start": "npx concurrently npm:sync npm:watch",
-    "build": "NODE_ENV=production npx webpack-cli",
+    "build": "npx rimraf app/assets/*.{js,css} && NODE_ENV=production npx webpack-cli",
     "build:graphql": "./scripts/generate-graphql.sh",
     "deploy": "npm run build && pos-cli deploy",
     "test": "npx codeceptjs run"
