@@ -13,7 +13,7 @@
     "start": "npx concurrently npm:sync npm:watch",
     "prebuild": "npx rimraf app/assets/*.{js,css}",
     "build": "NODE_ENV=production npx webpack-cli",
-    "postbuild": "concurrently \"npm:prepare:*\"",
+    "postbuild": "npx concurrently \"npm:prepare:*\"",
     "build:graphql": "./scripts/generate-graphql.sh",
     "prepare:inlineCSS": "cp app/assets/app.css app/views/partials/css/app.css",
     "prepare:inlineJS": "cp app/assets/app.js app/views/partials/js/app.js",
