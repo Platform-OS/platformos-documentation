@@ -1,7 +1,7 @@
 const path = require('path');
+const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const WebpackRequireFrom = require('webpack-require-from');
-const webpack = require('webpack');
 const { ESBuildMinifyPlugin } = require('esbuild-loader');
 
 const production = process.env.NODE_ENV === 'production';

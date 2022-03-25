@@ -11,8 +11,12 @@
     "watch": "NODE_ENV=development npx webpack-cli -w",
     "sync": "pos-cli sync -o -l dev",
     "start": "npx concurrently npm:sync npm:watch",
-    "build": "npx rimraf app/assets/*.{js,css} && NODE_ENV=production npx webpack-cli",
+    "prebuild": "npx rimraf app/assets/*.{js,css}",
+    "build": "NODE_ENV=production npx webpack-cli",
+    "postbuild": "concurrently \"npm:prepare:*\"",
     "build:graphql": "./scripts/generate-graphql.sh",
+    "prepare:inlineCSS": "cp app/assets/app.css app/views/partials/css/app.css",
+    "prepare:inlineJS": "cp app/assets/app.js app/views/partials/js/app.js",
     "deploy": "npm run build && pos-cli deploy",
     "test": "npx codeceptjs run"
   },
