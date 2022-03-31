@@ -1,15 +1,16 @@
 import './app.css';
 
 import { $q } from './js/helpers/dom';
-
-import './js/sidebarMenu';
-import './js/deepLinks';
-import './js/autosteps'; // this HAS to be after deepLinks
-import './js/toc';
 import './js/externalLinks';
-import './js/feedback';
 
 import(/* webpackChunkName: "search" */ './js/search');
+
+import(/* webpackChunkName: "contentPages" */ './js/sidebarMenu');
+import(/* webpackChunkName: "contentPages" */ './js/deepLinks');
+import(/* webpackChunkName: "contentPages" */ './js/autosteps'); // this HAS to be after deepLinks
+import(/* webpackChunkName: "contentPages" */ './js/toc');
+import(/* webpackChunkName: "contentPages" */ './js/feedback');
+
 
 if ($q('code[class*="language-"]')) {
   import(/* webpackChunkName: "syntaxHighlighting" */ './js/syntaxHighlighting');

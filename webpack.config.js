@@ -48,7 +48,7 @@ module.exports = {
       chunkFilename: '[name].[chunkhash:3].css',
     }),
     new webpack.optimize.MinChunkSizePlugin({
-      minChunkSize: 10000,
+      minChunkSize: 15000,
     }),
     new WebpackRequireFrom({
       methodName: 'window.__CONTEXT__.cdnUrl',
