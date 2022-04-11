@@ -12,18 +12,18 @@ metadata:
 <html lang="en">
 
 <head>
-  {% include 'layouts/head/head' %}
-  {%- include 'layouts/lib/context-variables' -%}
+  {% render 'layouts/head/head', context: context, page: page %}
+  {%- render 'layouts/lib/context-variables' -%}
 </head>
 
 <body class="antialiased homepage bg-pos-page-bg">
-  {% include 'layouts/header' %}
+  {% render 'layouts/header' %}
 
   <main class="pt-16 bg-no-repeat bg-pos-page-bg" style="background-position: 60% 0; background-size: 132%; background-image: url({{ 'images/svg/header-bg.svg' | asset_url }})">
     <div class="container">
       <div class="text-center md:px-8">
         <div class="mx-auto md:w-3/5">
-          {% include 'home/search-form' %}
+          {% render 'home/search-form' %}
         </div>
       </div>
 
@@ -33,14 +33,14 @@ metadata:
         <p>Please select a category below or search above to find what you are looking for.</p>
       </div>
 
-      {% include 'home/section-options' %}
+      {% render 'home/section-options' %}
 
     </main>
-  {% include 'layouts/content/callout' %}
+  {% render 'layouts/content/callout', context: context %}
 
-  {% include 'layouts/footer' %}
+  {% render 'layouts/footer' %}
 
-  {%- include 'layouts/body/home_icons' -%}
+  {%- render 'layouts/body/home_icons' -%}
   {% render 'js/app', env: context.environment %}
 </body>
 </html>
