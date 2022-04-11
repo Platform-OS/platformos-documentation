@@ -12,8 +12,8 @@ layout: empty
   {% include 'layouts/head/favicon' %}
 
   {% render 'css/fonts' %}
-  {% render 'css/app' %}
-  {% include 'css/graphql' %}
+  {% render 'css/app', env: context.environment %}
+  {% render 'css/graphql', env: context.environment %}
   <title><% title %> | platformOS Documentation</title>
 </head>
 
@@ -21,6 +21,6 @@ layout: empty
   <%> nav %>
   <%> main %>
   <script>
-    {% include 'js/graphql.js' %}
+    {% render 'js/graphql', env: context.environment %}
   </script>
 </body>

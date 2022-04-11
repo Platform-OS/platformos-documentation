@@ -1,28 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    {%- include 'layouts/head/head' -%}
+    {%- render 'layouts/head/head', context: context, page: page -%}
     {% render 'css/fonts' %}
-    {% render 'css/app' %}
-    {%- include 'layouts/lib/category-helpers' -%}
-    {%- include 'layouts/lib/context-variables' -%}
+    {% render 'css/app', env: context.environment %}
+    {% render 'layouts/lib/category-helpers', context: context -%}
+    {% render 'layouts/lib/context-variables' -%}
   </head>
   <body class="antialiased bg-pos-page-bg">
-    {% include 'layouts/header' %}
-    {% include 'layouts/search-bar' %}
-    {% include 'layouts/content' %}
+    {% render 'layouts/header', context: context %}
+    {% render 'layouts/search-bar' %}
+    {% include 'layouts/content', context: context %}
 
     {% unless context.page.metadata.feedback == false %}
       {% include 'layouts/content/feedback' %}
     {% endunless %}
 
-    {% include 'layouts/content/callout' %}
+    {% render 'layouts/content/callout', context: context %}
 
-    {% include 'layouts/footer' %}
+    {% render 'layouts/footer' %}
 
-    {%- include 'layouts/body/home_icons' -%}
-    {%- include 'layouts/body/content_icons' -%}
-    {%- include 'layouts/body/javascripts_bottom' -%}
+    {%- render 'layouts/body/home_icons' -%}
+    {%- render 'layouts/body/content_icons' -%}
+    {%- render 'layouts/body/javascripts_bottom' -%}
     {% yield 'javascripts_conditional' %}
   </body>
 </html>

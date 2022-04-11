@@ -38,7 +38,7 @@
           {% endif %}
         </div>
 
-        {% include 'layouts/nav' %}
+        {% include 'layouts/nav', context: context %}
       </div>
     </aside>
   {% endif %}
@@ -47,7 +47,7 @@
     <div class="content category__{{ context.params.slug }} sm:pl-16 sm:pr-0">
 
       {% unless context.page.metadata.breadcrumbs == false %}
-        {% include 'layouts/content/breadcrumbs', category: context.exports.category %}
+        {% render 'layouts/content/breadcrumbs', context: context, category: context.exports.category %}
       {% endunless %}
 
       <div class="flex">
@@ -58,7 +58,7 @@
               <h1 class="text-3xl text-pos-darkblue">{{ context.page.metadata.title }}</h1>
             {% endif %}
 
-            {% include 'layouts/content/last-edit' %}
+            {% render 'layouts/content/last-edit', context: context %}
 
             {{ content_for_layout }}
           </div>

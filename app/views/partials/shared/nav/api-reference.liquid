@@ -38,18 +38,18 @@
         <span class="inline-block w-4 text-lg pointer-events-none">+</span> {{ el3[0] | humanize }}
       </button>
       <ul class="submenu">
-        {% assign categories = el3[1] | hash_sort %}
+        {%- assign categories = el3[1] | hash_sort -%}
         {% for el4 in categories %}
           <li>
             <button class="leading-tight cursor-pointer">
               <span class="inline-block w-4 text-lg pointer-events-none">+</span> {{ el4[0] }}
             </button>
             <ul class="submenu">
-              {% for el5 in el4[1] %}
+              {%- for el5 in el4[1] %}
                 <li>
                   <a href="/api-reference/graphql/{{el3[0]}}/{{el4[0]}}/{{ el5[0] | titleize | slugify  }}">{{ el5[0] }}</a>
                 </li>
-              {% endfor %}
+              {%- endfor %}
             </ul>
           </li>
         {% endfor %}

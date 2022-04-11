@@ -12,15 +12,15 @@ metadata:
 <html lang="en">
 
 <head>
-  {% include 'layouts/head/head' %}
+  {% render 'layouts/head/head' %}
   {% render 'css/fonts' %}
-  {% render 'css/app' %}
-  {%- include 'layouts/lib/context-variables' -%}
+  {% render 'css/app', env: context.environment %}
+  {%- render 'layouts/lib/context-variables' -%}
 </head>
 
 <body class="antialiased homepage bg-pos-page-bg">
-  {% include 'layouts/header' %}
-  {% include 'layouts/search-bar' %}
+  {% render 'layouts/header' %}
+  {% render 'layouts/search-bar' %}
 
   <main class="bg-no-repeat">
 
@@ -58,7 +58,7 @@ metadata:
             </p>
           </div>
 
-          {% include 'shared/video', id: 'CgviBexmLQw' %}
+          {% render 'shared/video', id: 'CgviBexmLQw' %}
         </div>
       </div>
     </div>
@@ -138,13 +138,13 @@ metadata:
       <a href="/get-started/todo-app/build-todo-list-app" class="mb-12 btn btn-primary">Build your own ToDo App based on our guide!</a>
     {% endcontent_for %}
 
-    {% include 'layouts/content/callout' %}
+    {% render 'layouts/content/callout' %}
   </main>
 
-  {% include 'layouts/footer' %}
+  {% render 'layouts/footer' %}
 
-  {%- include 'layouts/body/home_icons' -%}
-  {%- include 'layouts/body/javascripts_bottom' -%}
+  {%- render 'layouts/body/home_icons' -%}
+  {%- render 'layouts/body/javascripts_bottom' -%}
   {% yield 'javascripts_conditional' %}
 
   <svg xmlns="http://www.w3.org/2000/svg" hidden>
