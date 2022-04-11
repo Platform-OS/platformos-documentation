@@ -1,0 +1,5 @@
+{% if context.environment == "production" %}
+  <style>{% render 'css/source/app.css' %}</style>
+{% else %}
+  <link rel="stylesheet" href="{{ "app.css" | asset_url }}">
+{% endif %}

@@ -1,0 +1,5 @@
+{% if context.environment == "production" %}
+  <script>{% render 'js/source/graphql.js' %}</script>
+{% else %}
+  <script src='{{ "graphql.js" | asset_url }}'></script>
+{% endif %}
