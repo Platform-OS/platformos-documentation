@@ -200,9 +200,19 @@ app
 
 {% include "alert/tutorial", content: "Follow our step-by-step tutorials to learn more about <a href='/developer-guide/translations/translations'>translations</a>." %}
 
-### Config
+### <a name="config"></a> Configuration file `config.yml`
 
-**Config** is used to control the behavior of the application developed. It is a file located in [app/config.yml](/developer-guide/platformos-workflow/codebase/config)
+**config.yml** is used to control the behavior of the application developed. It is a file located in [app/config.yml](/developer-guide/platformos-workflow/codebase/config)
+
+| flag          | default value   | Explanation |
+|---------------|-----------------|-------------|
+|do_not_add_return_to_to_authorization_policies|false|By default, if the authorization policy fails and is set up to redirect, it automatically appends the return_to parameter. By setting the flag to true, the return_to parameter will not be appended|
+|escape_output_instead_of_sanitize|false|By default, any variable is sanitized before the output and treated as html and corrected, which is unideal as it can change the expected output. By setting this flag to true, the output will be escaped, not sanitized. We highly recommend setting this flag to true. |
+|liquid_raise_mode|false|By default, Liquid errors are displayed in line and the whole code is executed. By setting this flag, whenever there's any Liquid error - like parsing json fails, or GraphQL query receives invalid arguments, etc, a 500 page is raised instead and the rest of the code is not executed. This is generally the desired and expected behavior and we recommend setting this flag to true.|
+|skip_elasticsearch|false|If you do not use the `keyword` argument in `records`/`users` queries or `customizations`/`people` queries, you can increase performance by avoiding indexing data in the ELasticSearch by setting this flag to true.|
+|require_table_for_record_delete_mutation|false|The argument `table` for the `record_delete` mutation is optional by default, which can lead to security issues if the type of the record is not explicitly checked before executing the mutation. By setting the flag to true, you effectively make the `table` attribute required to avoid such vulnerability.|
+|safe_translate|false|By default, the `translate` filter (`t` is an alias for it) marks the output as html_safe. This can lead to XSS vulnerability, if you provide user input as a variable, which can contain JavaScript. In such scenario, you should explicitly use another filter, `translate_escape` (or `t_escape`). By setting this flag to true, the system will automatically use the equivalent of `t_escape` if you provide any variable to the translation key, making your application safer by default. We highly recommend setting this flag to `true`.|
+|slug_exact_match|false|By default, a page with slug `abc` will match not only  `example.com/abc`, but also URLs like `example.com/abc/1`, `example.com/abc/1/x` and to control this behavior, you should use max_deep_level. By setting this flag to true, only `example.com/abc` will be matched. Additionally, you will be able to use named parameters in the URLss, like /abc/:id. We highly recommend setting this flag to true.|
 
 ### Modules
 
