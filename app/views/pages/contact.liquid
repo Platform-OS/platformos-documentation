@@ -7,6 +7,12 @@ metadata:
   last_edit: false
 ---
 
+{% if context.flash.notice != blank %}
+  <div class="light-flash">
+    {{ context.flash.notice }}
+  </div>
+{% endif %}
+
 <div class='flex justify-between mt-4'>
   <div class='w-5/12'>
     {% include_form 'create_contact_request_form' %}
