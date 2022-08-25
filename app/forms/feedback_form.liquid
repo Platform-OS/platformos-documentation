@@ -2,6 +2,10 @@
 name: feedback_form
 resource: feedback
 resource_owner: anyone
+spam_protection:
+  recaptcha_v3:
+    action: feedback
+    minimum_score: 0.7
 fields:
   properties:
     path:
@@ -23,6 +27,8 @@ email_notifications:
 flash_notice: Thank you for your feedback.
 ---
 {% form html-data-feedback: 'form', html-class: 'py-16 container' %}
+  {% spam_protection "recaptcha_v3", action: "feedback" %}
+
   <input type="hidden" name="redirect_to" value="{{ context.location.pathname }}">
 
   {% assign p = form.fields.properties %}

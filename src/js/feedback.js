@@ -4,6 +4,7 @@ const form = () => $q('[data-feedback="form"]');
 const selectedValues = () => $qa('[data-feedback-selected-value]');
 const questionsContainer = () => $q('[data-feedback="questions"]');
 const questionValues = () => $qa('[data-feedback-value]');
+const recaptchaSiteKey = document.querySelector('[data-sitekey]').attributes['data-sitekey'].value;
 
 const toggleQuestionsContainer = addOrRemove =>
   questionsContainer().classList.toggle('hidden', addOrRemove);
@@ -42,6 +43,13 @@ const onRatingSelected = event => {
   sendFeedback().then(() => {
     showQuestion(selectedValue);
     toggleQuestionsContainer(false);
+
+    grecaptcha.execute(recaptchaSiteKey, {
+      action: 'feedback'
+    }).
+    then(function(token) {
+      document.querySelector('#g-recaptcha-response-data-feedback').value = token;
+    });
   });
 };
 
