@@ -165,21 +165,28 @@ modules/chat/public/views/partials/channels/conversate/receive.liquid
   function current_profile = 'lib/current_organization_profile', user_id: context.current_user.id
   assign room_id = context.params.room_id
   function conversation = 'modules/chat/lib/queries/conversations/find_by_participant', id: room_id, participant_id: current_profile.id
-  assign message_safe = context.params.message | raw_escape_string
-  assign object = '{}' | parse_json
-  hash_assign object['conversation_id'] = conversation.id
-  hash_assign object['autor_id'] = current_profile.id
-  hash_assign object['message'] = message_safe
-  function message = 'modules/chat/lib/commands/messages/create', object: object
-  if message.valid != true
-    log message, 'ERROR receive message'
+  if conversation
+    assign message_safe = context.params.message | raw_escape_string
+    assign object = '{}' | parse_json
+    hash_assign object['conversation_id'] = conversation.id
+    hash_assign object['autor_id'] = current_profile.id
+    hash_assign object['message'] = message_safe
+    function message = 'modules/chat/lib/commands/messages/create', object: object
+    if message.valid != true
+      log message, 'ERROR receive message'
+      echo "false"
+    else
+      function res = 'modules/chat/lib/commands/conversations/mark_unread', conversation: conversation, current_profile: current_profile
+    endif
   else
-    function res = 'modules/chat/lib/commands/conversations/mark_unread', conversation: conversation, current_profile: current_profile
+    echo "false"
   endif
 %}
 {% endraw %}
 ```
 In this example, we are retrieving the conversation object and creating a message object to persist data in the database.
+
+To avoid broadcasting (for example if the user is not authorized to add a message in a conversation or when an validation error is triggered) ensure the partial returns "false" (whitespace characters do not matter).
 
 ### Other examples
 
