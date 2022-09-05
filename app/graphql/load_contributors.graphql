@@ -1,0 +1,16 @@
+query load_contributors {
+  records: records(
+    per_page: 10
+    page: 1
+    filter: {
+      table: { value: "github_contributors" }
+    }
+  ) {
+    total_entries
+    total_pages
+    results {
+      id
+      github_contributors: property(name: "github_contributors")
+    }
+  }
+}

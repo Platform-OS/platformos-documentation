@@ -10,13 +10,7 @@ metadata:
 
 {% cache 'contributors' %}
 
-{% assign authors = "https://api.github.com/repos/mdyd-dev/platformos-documentation/stats/contributors"
-  | download_file
-  | to_hash
-  | default: "[]"
-  | reverse
-  | map: "author"
-%}
+{% function authors = 'contributors/get_authors' %}
 
 <ul class="flex flex-wrap justify-between mt-8 list-none">
   {% for author in authors %}

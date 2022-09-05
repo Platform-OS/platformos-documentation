@@ -1,0 +1,4 @@
+{% liquid
+  assign authors =  authors_raw | to_hash | default: "[]" | reverse | map: "author"
+  return authors
+%}

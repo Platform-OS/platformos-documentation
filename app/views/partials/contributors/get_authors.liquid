@@ -1,0 +1,20 @@
+{% liquid 
+  assign authors_raw = "https://api.github.com/repos/mdyd-dev/platformos-documentation/stats/contributors" | download_file
+
+  function authors = 'contributors/parse_raw_authors', authors_raw: authors_raw
+
+  if authors.size > 0
+    graphql existing = 'load_contributors'
+    if existing.records.results.size > 0
+      graphql g = 'save_contributors', id: existing.records.results.first.id, value: authors_raw
+    else
+      graphql g = 'create_contributors', value: authors_raw
+    endif
+  else
+    graphql g = 'load_contributors'
+    assign authors_raw = g.records.results.first.github_contributors
+    function authors = 'contributors/parse_raw_authors', authors_raw: authors_raw
+  endif
+
+  return authors
+%}
