@@ -4,7 +4,8 @@ const form = () => $q('[data-feedback="form"]');
 const selectedValues = () => $qa('[data-feedback-selected-value]');
 const questionsContainer = () => $q('[data-feedback="questions"]');
 const questionValues = () => $qa('[data-feedback-value]');
-const recaptchaSiteKey = document.querySelector('[data-sitekey]').attributes['data-sitekey'].value;
+let recaptchaSiteKey = null;
+if($q('[data-sitekey]')) recaptchaSiteKey = $q('[data-sitekey]').attributes['data-sitekey'].value;
 
 const toggleQuestionsContainer = addOrRemove =>
   questionsContainer().classList.toggle('hidden', addOrRemove);
