@@ -1,0 +1,12 @@
+mutation save_contributors($id: ID!, $value: String) {
+  record_update(
+    id: $id
+    record: {
+      properties: [
+        { name: "github_contributors", value: $value }
+      ]
+    }
+  ) {
+    id
+  }
+}
