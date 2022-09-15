@@ -9,7 +9,10 @@
   </head>
   <body class="antialiased bg-pos-page-bg">
     {% render 'layouts/header', context: context %}
-    {% render 'layouts/search-bar' %}
+    {% capture 'should_hide_search_bar' %}{% yield 'no_search_bar' %}{% endcapture %}
+    {% if should_hide_search_bar != 'true' %}
+      {% render 'layouts/search-bar' %}
+    {% endif %}
     {% include 'layouts/content', context: context %}
 
     {% unless context.page.metadata.feedback == false %}

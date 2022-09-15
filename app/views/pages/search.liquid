@@ -1,0 +1,30 @@
+---
+metadata:
+  title: Search
+  description: Learn, teach, and contribute to our community
+---
+
+{% content_for 'no_search_bar' %}true{% endcontent_for %}
+
+<header>
+	<div id="search-page-input-container" class="search-result-pages-input"></div>
+</header>
+<main id="search-result-pages">
+	<div id="search-page-real-hits" class="hidden"></div>
+	<div id="search-page-hits" class="hidden"></div>
+	<div id="search-page-pagination" class="hidden"></div>
+</main>
+
+<input type="hidden" id="search-page-query-parameter" value="{{ params.query }}" />
+
+{% raw %}
+<script type="text/html" id="search-page-hit-template">
+	<div class="search-page-hit">
+		<div class="search-page-hit-content">
+			<div class="search-page-hit-title"><a href="{{url}}">{{#helpers.highlight}}{ "attribute": "hierarchy.lvl0" }{{/helpers.highlight}}</a></div>
+			<div class="search-page-hit-body">{{#helpers.highlight}}{ "attribute": "hierarchy.lvl1" }{{/helpers.highlight}} {{#helpers.highlight}}{ "attribute": "hierarchy.lvl2" }{{/helpers.highlight}} {{#helpers.highlight}}{ "attribute": "hierarchy.lvl3" }{{/helpers.highlight}} {{#helpers.highlight}}{ "attribute": "hierarchy.lvl4" }{{/helpers.highlight}} {{#helpers.highlight}}{ "attribute": "hierarchy.lvl5" }{{/helpers.highlight}} {{#helpers.highlight}}{ "attribute": "hierarchy.lvl6" }{{/helpers.highlight}}</div>
+      <div class="search-page-hit-body">{{#helpers.highlight}}{ "attribute": "content" }{{/helpers.highlight}}</div>
+		</div>
+	</div>
+</script>
+{% endraw %}

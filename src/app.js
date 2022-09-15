@@ -19,3 +19,7 @@ if ($q('code[class*="language-"]')) {
 if ($q('.graphql-navigation')) {
   import(/* webpackChunkName: "graphqlNavigation" */ './js/graphqlNavigation');
 }
+
+if ($q('#search-result-pages')) {
+  import(/* webpackChunkName: "searchResultPages" */ './js/searchResultPages');
+}
