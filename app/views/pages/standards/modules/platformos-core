@@ -1,0 +1,16 @@
+---
+converter: markdown
+metadata:
+  title: platformOS Core Module
+  description:
+---
+
+The goal of the platformOS Core module is to extend the platformOS module system's possibilities.
+
+With the **hook system**, it's possible to use **SOLID's Open/Closed Principle** so you can modify the business logic in other modules in the application folder without changing the source of existing modules.
+
+There is a **variable storage** that can be used to set variables and get their value in the global scope.
+
+You can register your module and theme into the **module registry** with `hook_module_info`. In this info file, you can define your module's name, version, type (module or theme), and dependencies. Module registry will handle **dependency management** and **outdated versions**.
+
+There are **module helper** functions to check if a module or theme exists in the system, so that the other modules can use installed ones without hard dependencies.
