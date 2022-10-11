@@ -8,6 +8,7 @@ import(/* webpackChunkName: "search" */ './js/search');
 import(/* webpackChunkName: "contentPages" */ './js/sidebarMenu');
 import(/* webpackChunkName: "contentPages" */ './js/deepLinks');
 import(/* webpackChunkName: "contentPages" */ './js/autosteps'); // this HAS to be after deepLinks
+import(/* webpackChunkName: "contentPages" */ './js/scrollToId');
 import(/* webpackChunkName: "contentPages" */ './js/toc');
 import(/* webpackChunkName: "contentPages" */ './js/feedback');
 
