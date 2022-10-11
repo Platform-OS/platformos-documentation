@@ -25,7 +25,7 @@ const initialize = () => {
 
   const tocHTML = generateTOCList(parseHeadings(headings));
 
-  const tocDOM = `<div class="hidden p-8 md:block bg-pos-page-bg table-of-content">
+  const tocDOM = `<div class="hidden p-8 md:block md:mb-4 bg-pos-page-bg table-of-content md:sticky md:top-24">
       <h4 class="mb-4 text-lg">On this page</h4>
       <ul class="pl-0 list-none">${tocHTML}</ul>
     </div>`;
