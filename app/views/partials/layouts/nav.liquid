@@ -2,7 +2,7 @@
   {%- assign current_path = context.headers.REQUEST_URI -%}
   {%- capture nav_links_path %}shared/nav/{{ context.exports.category.slug }}{% endcapture %}
 
-  <nav class="sm:sticky sm:top-40 sm:self-start">
+  <nav class="sm:max-h-[calc(100vh-87px-130px)] sm:overflow-auto sm:sticky sm:top-40 sm:self-start">
     <ul class="text-sm list-none">
       {%- include nav_links_path, cp: current_path -%}
     </ul>
