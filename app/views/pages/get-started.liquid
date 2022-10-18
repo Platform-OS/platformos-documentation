@@ -3,12 +3,12 @@ metadata:
   title: Get Started
   description: Follow these step-by-step tutorials to set up your development environment and deploy your first platformOS site.
 converter: markdown
-layout: application
 ---
 
 Welcome to platformOS! Our Get Started guides will walk you through the steps of building a sample site or app on platformOS. They include detailed explanations for each step, example code, tips and best practices on development workflow and QA, and links to learn more.
 
-## What you need to know to start
+
+## What you need to know
 
 Besides standard web technologies like HTML, CSS, JavaScript, platformOS uses a couple of languages and technologies that you need to be familiar with to build a site on our platform.
 
@@ -28,7 +28,7 @@ Besides standard web technologies like HTML, CSS, JavaScript, platformOS uses a 
 
 **Liquid** is a template language that allows you to build dynamic pages and provide dynamic configuration. In the Get Started guide we will be using it to server-side render data and to manage how the page behaves depending on user's action. You can check out the following articles but you can also learn while doing – it should be simple to understand.
 
-- [A Complete Guide to Liquid Markup](https://documentation.platformos.com/api-reference/liquid/introduction) by the platformOS team
+- [A Complete Guide to Liquid Markup](/api-reference/liquid/introduction) by the platformOS team
 - [Learning Liquid](https://www.shopify.com/partners/blog/topics/learning-liquid)
 - [SHOPIFY LIQUID: Theme Programming for Beginners](https://www.youtube.com/watch?v=zBtwd2OfZsI)
 
@@ -38,13 +38,64 @@ Besides standard web technologies like HTML, CSS, JavaScript, platformOS uses a 
 - [Get started with YAML in 5 minutes](https://www.educative.io/blog/yaml-tutorial)
 
 
+## Not sure where to start?
 
-## Hello, World!
+Let’s build a simple website together! If you are new to platformOS, we propose that you start with a simple course that we’ve prepared.
 
-[Hello, World!](/get-started/hello-world/hello-world) is the first part of our Get Started guide, that will teach you how to set up your development environment, create a simple site, make a small change on the home page, and deploy it. This is to make sure you have everything you need and everything works. You can stop here and start experimenting based on our documentation, or you can move on to the second part of our Get Started guides.
+You will learn how to set up your environment, how to get a starter codebase and how to deploy everything to your platfromOS instance. Next, we’ll gona build a simple to-do app using all of the core platformOS concepts.
 
-## Build a ToDo List App
+Ready? Let’s learn how to [install and configure]() your development environment.
 
-[Build a ToDo List App](/get-started/todo-app/build-todo-list-app) is the second part of our Get Started guide that walks you through the steps of creating a ToDo List app on platformOS from setting up your development environment to deploying and testing your finished app. It explains basic concepts, main building blocks, and the logic behind platformOS, while also giving you some recommendations on workflow.
 
-[Build a ToDo List App - Part 2: Extend Your App](/get-started/todo-app/build-todo-list-app-part-2) shows you how to extend what you have built in part 1 to explore additional platformOS features in greater depth and learn about more best practices.
+## Quick start
+
+1. Go to Partner Portal and [sign up](https://partners.platformos.com/accounts/sign_up)
+2. [Create new instance](https://partners.platformos.com/instances/new) in Partner Portal
+3. Install pos-cli
+    platformOS command-line interface is distributed through NPM.
+  <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+npm install -g @platformos/pos-cli
+  </code></pre>
+4. Create an empty folder for your project
+5. Navigate to project's folder in command line
+  <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+cd x:\platformos-hello
+  </code></pre>
+6. Initialize platformOS directory structure
+  <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+pos-cli init
+  </code></pre>
+7. Authenticate your environment
+  <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+pos-cli env add &lt;environment&gt; --email &lt;your email&gt; --url &lt;your instance url&gt;
+  </code></pre>
+8. Upload your code to the instance
+  <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+pos-cli deploy &lt;environment&gt;
+  </code></pre>
+9. Upload code changes automatically when you save the file
+  <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+pos-cli sync &lt;environment&gt;
+  </code></pre>
+
+
+## Learn the core concepts
+- **[Developement workflow](/developer-guide/platformos-workflow/development-workflow)**
+  Learn the steps needed to deploy your code to a platfromOS instance.
+- **[Codebase structure](/developer-guide/platformos-workflow/codebase)**
+  A detailed walk through the directories and files required to work on the platform.
+- **[platformOS Command Line Interface](/developer-guide/pos-cli/pos-cli)**
+  Check out how to use the command line to interact with your instance.
+- **[Routing and templates](/developer-guide/pages/pages)**
+  Step-by-step guide on how the routing and creating subpages work on platformOS.
+- **[Schema](/developer-guide/users/users)**
+- **[Modules](/developer-guide/modules/modules)**
+  The platform supports and encourages building modular codebases. This guide will show you how to do that.
+- **[Data management](/developer-guide/data-import-export/import)**
+  If you need to import or export previously prepared data, you’ll find the answers here.
+
+
+## Still having questions?
+**Our community can help!** platfromOS community is an open forum for all users that help share the experience and knowledge gathered from working on platformOS-specific projects.
+
+[Join platformOS community](https://community.platformos.com/)
