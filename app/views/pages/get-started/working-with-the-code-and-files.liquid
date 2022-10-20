@@ -14,7 +14,7 @@ You write code locally, but it is executed remotely.
 
 In order for platformOS to understand and properly interpret your code, it needs to be organised in a specific way.
 
-The simplest method for getting the proper folder structure is to use pos-cli’s init command.
+The simplest method for getting the proper folder structure is to use `pos-cli init` command.
 
 Let’s start with creating an empty folder – named in this example platforms-hello – for your project and then navigating to it from the command line:
 
@@ -41,7 +41,7 @@ For pos-cli to know which instance is related to any particular codebase, we nee
 
 Your instance URL is available in the Partner Portal on the [Instances list](https://partners.platformos.com/instances).
 
-To store your instance URL in the configuration you just need to run a pos-cli’s env add command with your personal data in the parameters:
+To store your instance URL in the configuration you just need to run a `pos-cli env` add command with your personal data in the parameters:
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
 pos-cli env add &lt;environment&gt; --email &lt;your email&gt; --url &lt;your instance url&gt;
@@ -93,7 +93,7 @@ After this you shall be able to enter the URL of your instance in the browser an
 
 To test out the whole deployment process, let’s make some changes in the code.
 
-If you’re following this guide, you should be able to find a file named index.html.liquid in your codebase. Open it up in your code editor of choice and change any line. For example let’s locate a line with the welcome message:
+If you’re following this guide, you should be able to find a file named `app/views/pages/index.html.liquid` in your codebase. Open it up in your code editor of choice and change any line. For example, let’s locate a line with the welcome message:
 
 ```html
 Welcome to your Demo instance!
@@ -112,8 +112,6 @@ pos-cli deploy dev
 </code></pre>
 
 After visiting your instance URL or refreshing previously opened page, you should see the new message there.
-
-Ok, this works, but having to manually deploy each change would take far too much time. You wouldn’t want to enter any commands or wait so long for the pos-cli to send all of the files in your codebase each time you change a single line of your code. Because this is what the deploy command is doing – sending all the files in the codebase to the instance.
 
 
 ## Upload code changes automatically when you save the file
@@ -145,7 +143,7 @@ After the change, just save the file.
 
 In the command line you should see a confirmation message saying that the edited page was synced. Refreshing the page in the browser should confirm that everything worked and the new text content is in place.
 
-Syncing handles not only code changes, but also all the other assets. Images, JavaScript files or even GraphQL queries – any change in your project directories will be automatically reflected on your instance.
+Syncing handles not only code changes, but also all the other assets. Images, JavaScript files or even GraphQL queries – any change in your project directories will be automatically reflected on your instance. This also includes file renaming and deletion.
 
 
 ## Basic overlook on the directory structure
@@ -156,22 +154,22 @@ We have a whole separate article [describing each directory](/developer-guide/pl
 
 ### Assets
 
-Every **static**, publicly available, **asset** is stored in the app/assets folder. Images, JavaScript, fonts, CSS files or any downloadable documents should go here. We recommend a standarized set of subfolders for each type, so:
+Every **static**, publicly available, **asset** is stored in the app/assets folder. Images, JavaScript, fonts, CSS files or any downloadable documents should go here. You can organize the files any way you want, but you might want consider the following structure to separate various asset types:
 
 - app/assets/images for images
 - app/assets/scripts for JavaScript files
 - app/assets/styles for the page CSS
 - app/assets/fonts for the font files
 
-### Subpages
+### Page
 
-Every **subpage** that you want to create should be placed in app/views/pages. You can use pure HTML and extend it with Liquid.
+Every **page** that you want to create should be placed in app/views/pages. You can use pure HTML and extend it with Liquid.
 
 ### Data handling
 
 The **schema** (the structure of your database written in YAML) has it’s place in `app/model_schemas`. We are going to walk through creating them in the next sections of this tutorial.
 
-**GraphQL** queries are used to get the data from the database or save data in it. All of those queries have their place in `app/graphql`.
+**GraphQL** queries and mutations are used to get the data from the database or save data in it. All of those queries have their place in `app/graphql`.
 
 
 ## Next chapter
