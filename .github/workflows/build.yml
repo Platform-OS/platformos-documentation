@@ -24,6 +24,8 @@ jobs:
         run: npm run build
       - name: Build graphql docs
         run: npm run build:graphql
+      - name: Clean data on staging
+        run: npx @platformos/pos-cli data clean --include-schema
       - name: Deploy to staging
         run: npx @platformos/pos-cli deploy
 
