@@ -5,7 +5,7 @@ metadata:
   description:
 ---
 
-**Build a ToDo List App** is the second part of our Get Started guide that walks you through the steps of creating a ToDo List app on platformOS from setting up your development environment to deploying and testing your finished app. It explains basic concepts, main building blocks, and the logic behind platformOS, while also giving you some recommendations on workflow.
+**Build a ToDo List App** test is the second part of our Get Started guide that walks you through the steps of creating a ToDo List app on platformOS from setting up your development environment to deploying and testing your finished app. It explains basic concepts, main building blocks, and the logic behind platformOS, while also giving you some recommendations on workflow.
 
 ## Preview
 
@@ -211,7 +211,7 @@ All database operations in this application follow the same structure and have t
 
 {% raw %}
 ```liquid
-{% liquid 
+{% liquid
   assign title = context.params.title
   graphql result = 'list/create', title: title
   assign list = result | fetch: "record_create"
@@ -323,7 +323,7 @@ Now that you have a link pointing to {% raw %}`/list/show/{{ list.id }}`{% endra
 ```liquid
  {% liquid
    assign id = context.params.slug3
-   graphql list = 'list/read', id: id | fetch: 'records' | fetch: 'results' | first 
+   graphql list = 'list/read', id: id | fetch: 'records' | fetch: 'results' | first
  %}
 
  <h2 class="mb-0 mr-10">{{ list.title }}</h2>
@@ -493,7 +493,7 @@ Now that you have all your list operations ready, start handling items.
    assign list_id = context.params.slug3
    assign content = context.params.content
    graphql result = 'item/create', list_id: list_id, content: content
-   assign item = result | fetch: "record_create" 
+   assign item = result | fetch: "record_create"
  %}
 
  {% if item.id %}
