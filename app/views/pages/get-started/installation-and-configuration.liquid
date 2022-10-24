@@ -1,0 +1,63 @@
+---
+metadata:
+  title: Installation and Configuration
+  description: Follow these step-by-step tutorials to set up your development environment and deploy your first platformOS site.
+converter: markdown
+---
+
+
+There are three key steps for starting development on platformOS: [signing up on the Partner Portal](#sign-up-on-partner-portal), [creating an instance](#create-an-instance) and [installing the platformOS command line interface](#install-pos-cli).
+
+
+## Sign up on the Partner Portal
+
+The [Partner Portal](https://partners.platform-os.com/) is an online interface, where you can create, manage, and configure your sites.
+
+To interact with platformOS you will need to have an account, so the very first thing you need to do is [register on the Partner Portal](https://partners.platformos.com/accounts/sign_up).
+
+Make sure that you’ll verify your account by following the instructions you’ll find in the email we send you after the registration.
+
+
+## Create an instance
+
+For your web app to work, you need to have a place where you will be running your code and storing files. On platformOS such place is called an _instance_.{% include 'alert/tip', content: 'Each separate site that you can create in the Partner Portal is called an **instance**.' %}
+
+In order to create a new instance you need to be logged in the [Partner Portal](https://partners.platformos.com/) and in the left navigation you’ll find a [Create Instance](https://partners.platformos.com/instances/new) link.
+
+The _Instance name_ can be any name of your choice. The only other options you’ll need to choose are the _Data Center_ and _Billing plan_. For the needs of this guide we can use the _Staging_ environment, which is a **completely free** environment designed for testing and developement.
+
+Choosing the _Staging_ data center and clicking on the _Staging Unbilled_ plan should be enough for you to create your first instance. 
+
+On the list of instances, you may initially see your instance marked with the _SCHEDULED_TO_ACTIVATE_ status. This process usually takes only a couple of seconds.
+
+After a short while, you should see the status changed to _Active_ when you refresh the page. This means that you can go to the instance URL visible in the list and check if it's working. This URL is important: you’ll see all the code changes here. 
+
+
+## Install pos-cli
+
+The platformOS command line interface – or `pos-cli` – is a tool that will allow you to interact with your instance.
+
+The pos-cli offers a variety of options that you can explore in later sections of this guide, or you can jump right in to the [pos-cli documentation](/developer-guide/pos-cli/pos-cli).
+
+**To install the pos-cli** you’ll need a recent version of NPM (Node Package Manager) installed on your system. NPM is distributed with Node.js, so we recommend you follow the [official guide for installing Node.js and NPM](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm). If you get lost there, it might be the easiest to use the [node.js installer](https://nodejs.org/en/download/) that will look just like installing any other program on your system.
+
+Once you have Node.js installed, start your command-line tool of choice and run the following:<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+npm install -g @platformos/pos-cli
+</code></pre>
+
+The `-g` attribute means you are installing the tool globally. That might require having higher system permissions. On unix-based systems that means using sudo and on Windows it might require running your command-line tool with the administrative rights (it should be available in the right-click context menu).
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+sudo npm install -g @platformos/pos-cli
+</code></pre>
+
+After installing the pos-cli you should be able to test if everything ran successfully with the following command:
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+pos-cli -v
+</code></pre>
+
+If everything went smoothly, the version number of the pos-cli tool that you’ve just installed is displayed (for example: `4.7.1`).
+
+
+{% render 'alert/next', content: 'Working with the code and files', url: '/get-started/working-with-the-code-and-files/' %}
