@@ -211,7 +211,7 @@ All database operations in this application follow the same structure and have t
 
 {% raw %}
 ```liquid
-{% liquid 
+{% liquid
   assign title = context.params.title
   graphql result = 'list/create', title: title
   assign list = result | fetch: "record_create"
@@ -323,7 +323,7 @@ Now that you have a link pointing to {% raw %}`/list/show/{{ list.id }}`{% endra
 ```liquid
  {% liquid
    assign id = context.params.slug3
-   graphql list = 'list/read', id: id | fetch: 'records' | fetch: 'results' | first 
+   graphql list = 'list/read', id: id | fetch: 'records' | fetch: 'results' | first
  %}
 
  <h2 class="mb-0 mr-10">{{ list.title }}</h2>
@@ -493,7 +493,7 @@ Now that you have all your list operations ready, start handling items.
    assign list_id = context.params.slug3
    assign content = context.params.content
    graphql result = 'item/create', list_id: list_id, content: content
-   assign item = result | fetch: "record_create" 
+   assign item = result | fetch: "record_create"
  %}
 
  {% if item.id %}
