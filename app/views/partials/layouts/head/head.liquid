@@ -1,2 +1,5 @@
 {% render 'layouts/head/metatags', context: context, page: page %}
 {% render 'layouts/head/favicon' %}
+{% if context.environment == 'production'%}
+  <script defer data-domain="documentation.platformos.com" src="https://plausible.io/js/plausible.js"></script>
+{% endif %}
