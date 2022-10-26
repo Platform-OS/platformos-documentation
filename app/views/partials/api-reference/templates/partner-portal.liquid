@@ -2,7 +2,7 @@
   {% assign endpoint_name = item[0] %}
   {% assign examples = data.api[endpoint_name] %}
 
-  <h2>{{ endpoint_name }}</h2>
+  <h2 id="{{ endpoint_name | slugify }}">{{ endpoint_name }}</h2>
 
   {% for example in examples %}
 

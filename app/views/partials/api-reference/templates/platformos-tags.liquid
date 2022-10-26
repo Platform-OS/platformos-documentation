@@ -1,5 +1,5 @@
 {% for item in data.tags %}
-  <h2>{{ item.name }}</h2>
+  <h2 id="{{ item.name | slugify }}">{{ item.name }}</h2>
 
   {%- assign description = item.description -%}
   {%- assign params = item.params -%}
