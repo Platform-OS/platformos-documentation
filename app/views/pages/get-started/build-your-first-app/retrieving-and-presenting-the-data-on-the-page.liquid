@@ -1,0 +1,155 @@
+---
+metadata:
+  title: Retrieving and presenting the data on the page
+  description: Follow these step-by-step tutorials to build a simple To do application on platformOS.
+converter: markdown
+---
+
+The road to displaying the data on our page looks quite simple: we build a query that gets the data from the database and then we need to iterate over it with Liquid to show it on the page.
+
+
+## Getting the data from the database
+
+Let’s start with building a query that will pull the data from the `item` table. Any filename will be good of course, but we found that for the sake of extending the query in the future you might consider saving the query in `/app/graphql/item/search.graphql`:
+
+#### /app/graphql/item/search.graphql
+
+```graphql
+query item_search {
+  records: records(
+    per_page: 100
+    filter: {
+      table: { value: "item" }
+    }
+    sort: {
+      updated_at: { order: DESC }
+    }
+  ) {
+    total_entries
+    results {
+      id
+      title: property(name: "title")
+    }
+  }
+}
+```
+
+On the 1st line we are using the `query` keyword – it would be the case for getting the data out of the database. The _query name_ following the keyword is there mostly for our convenience.
+
+Then, on the 3rd line we are setting the maximum number of items we would like the database to return. You may consider any number, but keep in mind that the bigger it would be, the more time it will take the platform to return the data. In our example we probably won’t have a large number of items, but in the future you may consider using a pagination for larger datasets.
+
+We wouldn’t get far without actually telling the query in which table to look for the data. That’s the purpose of the `filter` keyword in lines 4 to 6. We want the results to come from the table called `item`.
+
+As a bonus, we would like to sort the results descending by the time they were created. This is what we are doing in lines 7 to 9.
+
+Finally, we would like to define what are the data we want the query to return. Lines 11 to 14 define that we need the number of results returned (this is what the `total_entries` keyword does), and then in the actual results we just need the `id` and `title` from our table.
+
+
+## Testing the query using GraphiQL
+
+Before we’ll use the query on our page, it would be a good idea to test if it works the way we want it to.
+
+To test the query we are going to use one of the tools built in the `pos-cli`. To start the tool we just need to use the following command:
+
+```bash
+pos-cli gui serve <instance alias>
+```
+
+When the application is running, we can go to [http://localhost:3333](http://localhost:3333) in our browser and choose _Go to GraphiQL_. We can then paste the GraphQL query we’ve just written to the text area on left and pressing the big play button on top, should result in the output of the query being presented in the right column.
+
+<img loading="lazy" src="{{ 'images/get-started/todo/gui_graphiql_query.jpg' | asset_url }}" alt="GraphiQL running the test query for our To do app">
+
+
+
+## Rendering the data on a page
+
+Assuming we have a page that we want to present the data on, and the query that will get the data for us, we can simply request for it using the Liquid’s graphql tag as follows:
+
+{% raw %}
+```liquid
+{% liquid
+  graphql items = 'item/search'
+%}
+```
+{% endraw %}
+
+We don’t have to use the full path to the GraphQL query as the platform knows where to look for those. That simple line will run the query (placed in `/app/graphql/item/search.graphql`) and assign the results of it to the variable `items`.
+
+The results are in the form of a _hash_. If you are comming from the JavaScript or PHP world you might name those _objects_.
+
+```javascript
+"records": {
+  "total_entries": 1,
+  "results": [
+    {
+      "id": "1",
+      "title": "Do the groceries"
+    }
+  ]
+}
+```
+
+When we have the array of items, we can then user the for loop to iterate on it and render them on page using Liquid:
+
+#### /app/pages/index.liquid
+
+{% raw %}
+```liquid
+{% for item in items.records.results %}
+  <li>
+    {{ item.title }}
+    <form action="">
+      <button type="submit">Mark as done</button>
+    </form>
+  </li>
+{% endfor %}
+```
+{% endraw %}
+
+As you can see above we are using a **single-line Liquid statements**, which are different from the Liquid code blocks as we can get by with just the {% raw %}`{% %}`{% endraw %}.
+
+This code will repeat whatever is between the {% raw %}`{% for %}`{% endraw %} and {% raw %}`{% endfor %}`{% endraw %} for every item we are getting back from the database. This is another pattern in Liquid – we are closing the tags with {% raw %}`{% end<tag> %}`{% endraw %} statement.
+
+There is one more thing we could do – to display an information when there are no items to show on the page. If you remember, we have requested the `total_entries` number in our GraphQL query. A simple `if` statement using it would be enough:
+
+#### /app/pages/index.liquid
+
+{% raw %}
+```liquid
+{% if items.records.total_entries == 0 %}
+  <div>There are no items in the list.</div>
+{% endif %}
+```
+{% endraw %}
+
+So, the final code of `/app/views/pages/index.liquid` would look like this:
+
+#### /app/views/pages/index.liquid
+
+{% raw %}
+```liquid
+{% liquid
+  graphql items = 'item/search'
+%}
+
+<ul>
+  {% for item in items.records.results %}
+    <li>
+      {{ item.title }}
+      <form action="">
+        <button type="submit">Mark as done</button>
+      </form>
+    </li>
+  {% endfor %}
+</ul>
+
+{% if items.records.total_entries == 0 %}
+  <div>There are no items in the list.</div>
+{% endif %}
+
+<form action="/item/create" method="post">
+  <input type="text" name="title">
+  <button type="submit">Add item</button>
+</form>
+```
+{% endraw %}
