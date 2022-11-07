@@ -39,9 +39,9 @@ Let’s start with a very simple HTML structure:
 ```
 {% endraw %}
 
-You may notice a special {% raw %}`{{ content_for_layout }}`{% endraw %} tag. This little thing here is Liquid.
+You may notice a new syntax – {% raw %}`{{ content_for_layout }}`{% endraw %}. This little thing here is Liquid.
 
-There will be many other tags and uses of Liquid in the future. This particular one is later automatically replaced by the actual page content that we will define in other `.liquid` files. So the content of other pages will be injected in place for {% raw %}`{{ content_for_layout }}`{% endraw %}. This makes the layout file a universal page structure for all of our content.
+There will be many other tags and uses of Liquid in the future. This particular one is just a special variable, available in the `layouts/` directory, that will be automatically replaced by the actual page content defined in other `.liquid` files. So the content of other pages will be injected in place for {% raw %}`{{ content_for_layout }}`{% endraw %}. This makes the layout file a universal page structure for all of our content.
 
 {% include 'alert/tip', content: 'Remember that you need to [synchronise](/get-started/working-with-the-code-and-files/#upload-code-changes-automatically-when-you-save-the-file) or deploy your changes to the instance to see the results.' %}
 
@@ -66,7 +66,7 @@ On platformOS this is a super straight-forward operation. When you add a new fil
 
 Ok, so let us actually do this. As described above – create a new file called `about.liquid` in `app/view/pages/` directory:
 
-#### app/views/pages/contact.liquid
+#### app/views/pages/about.liquid
 
 ```html
 <h2>About me</h2>
