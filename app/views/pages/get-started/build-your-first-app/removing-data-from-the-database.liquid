@@ -9,7 +9,7 @@ A simple GraphQL mutation is usually enough to remove a single entry from the da
 
 We would start by preparing a new GraphQL file that will handle the deletion of an item. We need to remember that when we have to delete a record from the database, we need to be able to point to it directly first. For that we are going to use the record’s unique _ID_.
 
-To follow the pattern established in the previous tutorial steps, let’s create the new file for the new – `/app/graphql/item/delete.graphql`:
+To follow the pattern established in the previous tutorial steps, let’s create the new file for the new GraphQL mutation – `/app/graphql/item/delete.graphql`:
 
 #### /app/graphql/item/delete.graphql
 
@@ -126,7 +126,7 @@ else
 		echo result.errors
 ```
 
-One last step we musn’t forget is to update the `index` page. We have a `form` with the button that we want to remove the item from the list, but we need to update it with the proper `action=""` and we need to pass the `id` of the item we plan to remove. We will do this in a hidden `input`:
+One last step we musn’t forget is to update the `index` page. We have a `form` with the button that – when clicked –  should remove the item from the list. We need to update the `<form>` with the proper `action=""` and we need to pass the `id` of the item we plan to remove. We will do this in a hidden `input`:
 
 #### /app/views/pages/index.liquid
 
