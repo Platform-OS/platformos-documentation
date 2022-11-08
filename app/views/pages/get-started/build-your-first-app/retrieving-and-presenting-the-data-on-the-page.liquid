@@ -132,6 +132,7 @@ So, the final code of `/app/views/pages/index.liquid` would look like this:
   graphql items = 'item/search'
 %}
 
+<!-- list of items -->
 <ul>
   {% for item in items.records.results %}
     <li>
@@ -143,14 +144,19 @@ So, the final code of `/app/views/pages/index.liquid` would look like this:
   {% endfor %}
 </ul>
 
+<!-- information shown when the list is empty -->
 {% if items.records.total_entries == 0 %}
   <div>There are no items in the list.</div>
 {% endif %}
 
+<!-- form for adding new item -->
 <form action="/item/create" method="post">
   <input type="text" name="title">
   <button type="submit">Add item</button>
 </form>
+
+<!-- link to the About Me page -->
+<a href="/about">About Me</a>
 ```
 {% endraw %}
 
