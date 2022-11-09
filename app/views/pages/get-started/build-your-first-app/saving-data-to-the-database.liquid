@@ -1,20 +1,20 @@
 ---
 metadata:
-  title: Saving data to the database
-  description: Follow these step-by-step tutorials to build a simple To do application on platformOS.
+  title: Saving Data to the Database
+  description: Follow these step-by-step tutorials to build a simple To Do List application on platformOS.
 converter: markdown
 ---
 
-platformOS uses GraphQL as a language of communication with the database, and YAML to build the database structure. The following tutorial will guide you through using those technologies to store and remove a simple set of data.
+platformOS uses GraphQL to communicate with the database, and YAML to build the database structure. The following tutorial will guide you through using these technologies to store and remove a simple set of data.
 
-Don’t worry if you never used any of those before. Both of them are build in a way that makes it easy to jump right into the development and learn as you go. platformOS offers a set of tools to make the development even easier.
+Don’t worry if you never used any of these before. Both of them are built in a way that makes it easy to jump right into the development and learn as you go. platformOS offers a set of tools to make the development even easier.
 
 
 ## Create the database structure using YAML
 
-The very first step would be to figure out the structure of the dabase we need. For our simple example we will need just a **single database table** in which we will save the **item’s title**.
+As a first step, figure out the structure of the dabase you need. For this simple example, you will only need a **single database table** in which you will save the **item’s title**.
 
-We would also need an **unique ID** for every record we store, but this part platformOS does **automatically** for us, so we don’t really have to think about it.
+You would also need a **unique ID** for every record you store, but this part platformOS does **automatically** for you, so youdo  don’t really have to think about it.
 
 | ID | Title                              |
 |----|------------------------------------|
@@ -22,9 +22,9 @@ We would also need an **unique ID** for every record we store, but this part pla
 | 2  | Clean up in the kitchen            |
 | 3  | Build my first app on platformOS   |
 
-To build a database table on platformOS you will have to *create a file* that will tell the platform what _properties_ (or _columns_ if you are used to think about the database as a table) do you need and what type of data would you like to store in them. Those files needs to be placed in a dedicated directory: `/app/schema/`.
+To build a database table on platformOS, you will have to *create a file* that will tell the platform what _properties_ (or _columns_ if you are used to think about the database as a table) you need and what type of data you would like to store in them. Those files need to be placed in a dedicated directory: `/app/schema/`.
 
-To describe the table structure we would use a simple data-serialization language called YAML. For a basic table like ours, we need to create a file named `item.yml`:
+To describe the table structure, use the data-serialization language called YAML. For a basic table like yours, create a file named `item.yml`:
 
 #### /app/schema/item.yml
 
@@ -36,11 +36,11 @@ properties:
 
 ```
 
-In the 1st line we’ve named our table and called it `item`. The 2nd line starts the list of properties that the table will have, those properties we then specify starting with a dash. In our case we need just a single property called `title`. That property will have to be a `string` as we described in the 4th line.
+In the line 1, you named your table and called it `item`. Line 2 starts the list of properties that the table will have, and you specify the properties starting with a dash. In this case, you need a single property called `title`. That property will have to be a `string` as described in line 4.
 
-YAML is written in a way that makes it easily readable by humas, so it shouldn't be long untill you’ll get a hang of it. What is important to remember is that the **indentation is very important** here as it basically describes the structure and dependencies in it.
+YAML is written in a way that makes it easily readable to humans, so it shouldn't be long until you’ll get the hang of it. What is important to remember is that the **indentation is very important** here as it basically describes the structure and dependencies in it.
 
-For the sake of having a complete picture of YAML structure, here is an extended example with three properties in the table:
+For the sake of having a complete picture of the YAML structure, here is an extended example with three properties in the table:
 
 ```yaml
 name: example
@@ -54,19 +54,19 @@ properties:
 ```
 
 
-## Browse the database tables using platformOS tool
+## Browse the database tables using a platformOS tool
 
-How can we make sure that the table we’ve just created is really there in the database?
+How can you make sure that the table you’ve just created is really there in the database?
 
-For this purpose, we have created a tool that allows you to browse through the tables and edit the records. To start the tool you need to run the following command:
+For this purpose, we have created a tool that allows you to browse through the tables and edit the records. Run this command to start the tool:
 
 ```bash
 pos-cli gui serve <instance alias>
 ```
 
-This will start an application that will help you administrate your instance. When the application is running you can then go to [http://localhost:3333](http://localhost:3333) in your browser.
+This starts an application to help you administer your instance. When the application is running you can go to [http://localhost:3333](http://localhost:3333) in your browser.
 
-There is a selection of tools you can use. The one that will allow us to look on the database is the one in the first box. Following _Go to Records_ link will open a list of tables that we’ve created using the YAML files.
+There is a selection of tools you can use. The one that will allow you to look at the database is the one in the first box. Click on the _Go to Records_ link to open a list of tables that you created using YAML files.
 
 If everything went right, you should see the newly created `item` table on the list.
 
@@ -75,11 +75,11 @@ If everything went right, you should see the newly created `item` table on the l
 
 ## Save the data in the database
 
-To actually save some data in the database, we need to start by creating a GraphQL query. The desired directory for those would be `/app/graphql/`.
+To actually save some data in the database, you need to start by creating a GraphQL query in the `/app/graphql/` directory. 
 
-In this example we do have just a single table in our application, so we could put the file directly in that folder, but when our application will grow, we might consider a more standarized way of organizing the queries.
+In this example, you only have a single table in your application, so you could put the file directly in that folder, but when your application will grow, you might want to consider a more standarized way of organizing the queries.
 
-So, to accomodate for those future grows, let’s save the file in `/app/graphql/item/create.graphql`:
+So, to accommodate for future growth, save the file in `/app/graphql/item/create.graphql`:
 
 #### /app/graphql/item/create.graphql
 
@@ -101,26 +101,26 @@ mutation item_create(
 }
 ```
 
-If you never seen GraphQL before it might feel there is a lot going on here.
+If you have never seen GraphQL before it might feel like there is a lot going on here.
 
-In the 1st line we are declaring a new _mutation_ – that is a name for any operation inserting new data or modifying an existing one. We are giving the mutation a name – `item_create`. Those names are there mostly for our convenience.
+In line 1 you declare a new _mutation_, that is a name for any operation inserting new data or modifying an existing one. You give the mutation a name `item_create`. Those names are there mostly for your convenience.
 
-In the 2nd line we are defining the variables that we will pass to the database as well as their types. The variables in GraphQL are preceded with the dollar sign (`$`).
+In line 2 you define the variables that you will pass to the database as well as their types. The variables in GraphQL are preceded with the dollar sign (`$`).
 
-In the line 4th we are using the function that will create a new record in the database.
+In line 4, you use the function that will create a new record in the database.
 
-The 6th line defines to which table we would like to save our new record.
+Line 6 defines which table you would like to save your new record to.
 
-From line 7th we are starting to list all of the properties that we want to update, and we are using the variable defined in line 2 to save it in the given property. So we will save the variable `$title` in the property called `title` of our table `item`.
+From line 7, you start to list all of the properties that you want to update, and you use the variable defined in line 2 to save it in the given property. So you will save the variable `$title` in the property called `title` of your table `item`.
 
-There is also the line 12th. Each query we run will return some data. This is the line where we can define what we want to get back after runing the query. In our case we will want the query to return an `id` of the newly created record and the `title` that was saved to the database. The returned result will be a _hash_ (or an _object_ if you are comming from the JavaScript world).
+There is also line 12. Each query you run will return some data. This is the line where you can define what you want to get back after running the query. In this case, you will want the query to return an `id` of the newly created record and the `title` that was saved to the database. The returned result will be a _hash_ (or an _object_ if you are coming from the JavaScript world).
 
 
-### Test out the query
+### Test the query
 
-We have the query written and saved in a `.graphql` file. How can we be sure the query does what we want it to?
+The query is written and saved in a `.graphql` file. How can you be sure the query does what you want it to?
 
-In the toolset available when `pos-cli gui serve <instance alias>` is running, we have an app called _GraphiQL_. This is a tool that allows us to test our queries. In the top text field we can **paste our query**. Then, there is a bottom panel called _Query variables_ that we need to expand. This would be the place to **pass the variables** we defined for the query. So, in our case it can be:
+In the toolset available when `pos-cli gui serve <instance alias>` is running, you have an app called _GraphiQL_. This is a tool that allows you to test your queries. In the top text field, **paste your query**. Then, expand the bottom panel called _Query variables_. **Pass the variables** you defined for the query here. So, in your case it can be:
 
 
 ```javascript
@@ -129,7 +129,7 @@ In the toolset available when `pos-cli gui serve <instance alias>` is running, w
 }
 ```
 
-Clicking the big _play_ button at the top will run the query. The result of it should be available in the right panel. If everything went OK we should see the `id` and `title`, exactly as we requested for the query results.
+Clicking the big _play_ button at the top will run the query. Its result should be available in the right panel. If everything went well, you should see the `id` and `title` exactly as you requested for the query results.
 
 ```javascript
 {
@@ -142,11 +142,11 @@ Clicking the big _play_ button at the top will run the query. The result of it s
 }
 ```
 
-<img loading="lazy" src="{{ 'images/get-started/todo/gui_graphiql_mutation.jpg' | asset_url }}" alt="GraphiQL running the test query for our To do app">
+<img loading="lazy" src="{{ 'images/get-started/todo/gui_graphiql_mutation.jpg' | asset_url }}" alt="GraphiQL running the test query for the To Do app">
 
 Please remember that the queries you run in _GraphiQL_ are operating on an actual database for your instance! This means that if you remove any data, it will be actually removed from your database.
 
-This also means, that after running our query, we can now go to the Records section of the `pos-cli gui serve` tool and see our first item in the `item` table (like described in the [section above](#browse-the-database-models-using-platformos-tool)).
+This also means, that after running your query, you can now go to the Records section of the `pos-cli gui serve` tool and see the first item in the `item` table (like described in the [section above](#browse-the-database-models-using-platformos-tool)).
 
 
 
@@ -154,11 +154,11 @@ This also means, that after running our query, we can now go to the Records sect
 
 {% render 'svg/save-data-to-database' %}
 
-To save the data that the user provided in our application we need three things: a [form with an input](/get-started/build-your-first-app/building-the-user-interface#a-to-do-app-necessary-interface-elements), a GraphQL query that will [save the data](/get-started/build-your-first-app/saving-data-to-the-database#save-the-data-in-the-database) and a page that will become a bridge between the user input and the query.
+To save the data that the user provided in the application you need three things: a [form with an input](/get-started/build-your-first-app/building-the-user-interface#a-to-do-app-necessary-interface-elements), a GraphQL query that will [save the data](/get-started/build-your-first-app/saving-data-to-the-database#save-the-data-in-the-database) and a page that will become a bridge between the user input and the query.
 
-If you are following this tutorial, we already have a form on our index page, we just wrote the GraphQL query, so the only thing left would be to build a page that will take the data from the `<form>` and pass it to the query.
+If you are following this tutorial, you already have a form on your index page, you just wrote the GraphQL query, so the only thing left would be to build a page that will take the data from the `<form>` and pass it to the query.
 
-To do this, let’s create a new page: `/app/views/pages/item/create.liquid`:
+To do this, create a new page: `/app/views/pages/item/create.liquid`:
 
 #### /app/views/pages/item/create.liquid
 
@@ -181,7 +181,7 @@ method: post
 ```
 {% endraw %}
 
-The page we are creating will accept some data from the user, so we want it to be available when it will be requested with the `POST` http method. On platformOS we define the method that the page will be available for in the page configuration section. This section needs to be placed on top of the page. The configuration needs to be placed between those lines with three dashes (`---`).
+The page you are creating will accept some data from the user, so you want it to be available when it will be requested with the `POST` http method. On platformOS, you define the method that the page will be available for in the page configuration section. This section needs to be placed on top of the page. The configuration needs to be placed between the lines with three dashes (`---`).
 
 ```liquid
 ---
@@ -189,7 +189,7 @@ method: post
 ---
 ```
 
-When we want to write a little more Liquid than just a single line, we need to put the code between those special {% raw %}`{% liquid %}`{% endraw %} tags.
+When you want to write more Liquid than a single line, put the code between {% raw %}`{% liquid %}`{% endraw %} tags.
 
 {% raw %}
 ```liquid
@@ -199,7 +199,7 @@ When we want to write a little more Liquid than just a single line, we need to p
 ```
 {% endraw %}
 
-This is a place where we are executing our GraphQL query. We are runing the query located in /app/graphql/item/create.graphql, but we don’t need to pass the whole path, as the platform knows where to look for the queries. We defined a variable called $title in our graphql, so we need to pass it to the query, but we don’t want it to be empty, that’s why we are assigning a value context.params.title to it. All of the query params passed to the page will be always available in the context.params variable.
+This is a place where you execute your GraphQL query. You run the query located in /app/graphql/item/create.graphql, but you don’t need to pass the whole path, as the platform knows where to look for the queries. You defined a variable called $title in your graphql, so you need to pass it to the query, but you don’t want it to be empty, that’s why you assign a value context.params.title to it. All query params passed to the page will be always available in the context.params variable.
 
 {% raw %}
 ```liquid
@@ -207,19 +207,19 @@ graphql result = 'item/create', title: context.params.title
 ```
 {% endraw %}
 
-If you remember, our GraphQL query will return the id and the title of the record we’ve just added. In this line we will make sure the query ended successfully by checking if the id is present in the results.
+Your GraphQL query will return the id and the title of the record you’ve just added. In this line you will make sure the query ended successfully by checking if the id is present in the results.
 
 ```liquid
 if result.record.id
 ```
 
-If the query went succesfully, we would like to redirect the user from our /item/create page to the index page. This is achieved with the help of Liquid’s redirect_to tag.
+If the query worked, you might want to redirect the user from your /item/create page to the index page using Liquid’s redirect_to tag.
 
 ```liquid
 redirect_to '/'
 ```
 
-In case something with the query went wrong, we would like to show the error that the GraphQL returns.
+In case something with the query went wrong, show the error that the GraphQL returns.
 
 ```liquid
 else
@@ -228,9 +228,9 @@ else
 endif
 ```
 
-If you never seen Liquid before, don’t worry – the syntax will become familiar after a little bit of using it.
+If you have never seen Liquid before, don’t worry, the syntax will become familiar after a little bit of using it.
 
-The last thing left for us to do before testing the whole thing, would be to add the URL to our newly created page in the `<form>` so that when user submits the form, it will redirect to the page that controlls the process of saving the data. Let’s get back to `/app/view/pages/index.liquid` and update the code:
+The last thing left for you to do before testing would be to add the URL to your newly created page in the `<form>` so that when the user submits the form, it will redirect to the page that controlls the process of saving the data. Let’s get back to `/app/view/pages/index.liquid` and update the code:
 
 #### /app/view/pages/index.liquid
 
@@ -240,9 +240,9 @@ The last thing left for us to do before testing the whole thing, would be to add
 
 ### Testing the flow
 
-To test out the whole flow we just need to get to the homepage of our application, put some text in the input field, and click the _Add item_ button.
+To test the whole flow, get to the homepage of your application, put some text in the input field, and click the _Add item_ button.
 
-We need to remember that we don’t pull the data from the database yet, so nothing on the page will actually change. That’s no problem since we know that we can [browse database records](#browse-the-database-tables-using-platformos-tool) using the tools from `pos-cli gui serve`.
+Remember that you don’t pull the data from the database yet, so nothing on the page will actually change. That’s no problem since you know that you can [browse database records](#browse-the-database-tables-using-platformos-tool) using the tools from `pos-cli gui serve`.
 
 
 {% render 'alert/next', content: 'Retrieving and presenting the data on the page', url: '/get-started/build-your-first-app/retrieving-and-presenting-the-data-on-the-page/' %}
