@@ -1,24 +1,24 @@
 ---
 metadata:
-  title: Building the user interface
-  description: Follow these step-by-step tutorials to build a simple To do application on platformOS.
+  title: Building the User Interface
+  description: Follow these step-by-step tutorials to build a simple To Do List application on platformOS.
 converter: markdown
 ---
 
 
-The very basic building block of any web application is it’s HTML structure. platformOS uses Liquid as a language for creating HTML templates.
+The basic building block of any web application is its HTML structure. platformOS uses Liquid as a language for creating HTML templates.
 
-In this context, you can think of _Liquid_ as an addition to your HTML that will allow you to split code into smaller fragments, render some repeating parts without actually repeating the code or showing the data pulled from the database on the page.
+In this context, you can think of _Liquid_ as an addition to your HTML that will allow you to split code into smaller fragments, render some repeating parts without actually repeating the code, or showing the data pulled from the database on the page.
 
-Liquid is parsed and executed **server-side**. All of the operations using Liquid are computed first on the server, and then the result of those operations is send to user browser.
+Liquid is parsed and executed **server-side**. All of the operations using Liquid are computed first on the server, and then the result of those operations is sent to the user's browser.
 
 
 
 ## Build the main application layout
 
-The main page’s HTML structure on platformOS is kept in `app/views/layouts/application.liquid`. Notice the file extension is `.liquid` – this is going to be a pattern for most of the files related to page’s structure. Specifically, the file named `application.liquid` is automatically used as a default structure for all pages in your application.
+The HTML structure of the main page on platformOS is kept in `app/views/layouts/application.liquid`. Notice the file extension is `.liquid` – this is going to be a pattern for most of the files related to a page’s structure. Specifically, the file named `application.liquid` is automatically used as a default structure for all pages in your application.
 
-Let’s start with a very simple HTML structure:
+Start with a very simple HTML structure:
 
 #### app/views/layouts/application.liquid
 
@@ -39,15 +39,15 @@ Let’s start with a very simple HTML structure:
 ```
 {% endraw %}
 
-You may notice a new syntax – {% raw %}`{{ content_for_layout }}`{% endraw %}. This little thing here is Liquid.
+You may notice a new syntax – {% raw %}`{{ content_for_layout }}`{% endraw %}. This is Liquid.
 
-There will be many other tags and uses of Liquid in the future. This particular one is just a special variable, available in the `layouts/` directory, that will be automatically replaced by the actual page content defined in other `.liquid` files. So the content of other pages will be injected in place for {% raw %}`{{ content_for_layout }}`{% endraw %}. This makes the layout file a universal page structure for all of our content.
+There will be many other tags and uses of Liquid in the future. This particular one is just a special variable, available in the `layouts/` directory, that will be automatically replaced by the actual page content defined in other `.liquid` files. So the content of other pages will be injected in place for {% raw %}`{{ content_for_layout }}`{% endraw %}. This makes the layout file a universal page structure for all of your content.
 
 {% include 'alert/tip', content: 'Remember that you need to [synchronise](/get-started/working-with-the-code-and-files/#upload-code-changes-automatically-when-you-save-the-file) or deploy your changes to the instance to see the results.' %}
 
-We can see this in action by creating another file – this one with the content that will be shown on the index page of our application.
+You can see this in action by creating another file – one with the content that will be shown on the index page of your application.
 
-All of the pages (or _subpages_) of our web application needs to be placed in a separate folder: `app/views/pages/`. Start by creating the index file with a simple text:
+All of the pages (or _subpages_) of your web application need to be placed in a separate folder: `app/views/pages/`. Start by creating the index file with a simple text:
 
 #### app/views/pages/index.liquid
 
@@ -55,16 +55,16 @@ All of the pages (or _subpages_) of our web application needs to be placed in a 
 <h2>Hello world!</h2>
 ```
 
-Now, when you go to your instance URL, you should see the application title that we defined in `application.html.liquid` as well as the content of `index.liquid`. Check out the source, it’s all there!
+Now, when you go to your instance URL, you should see the application title that you defined in `application.html.liquid` as well as the content of `index.liquid`. Check out the source, it’s all there!
 
 
-## Add new page to your application
+## Add a new page to your application
 
-Let’s say you would like to add an About me page to your application, that will show some personal information. We would like this page to be available under `/about` URL.
+Let’s assume you would like to add an About me page to your application that will show some personal information, and you would like this page to be available under the `/about` URL.
 
-On platformOS this is a super straight-forward operation. When you add a new file called `about.liquid` and save it in `app/view/pages/` folder, it will automatically be visible under /about URL on your instance. Basically – the file name becomes the URL.
+On platformOS, this is a straight-forward operation. When you add a new file called `about.liquid` and save it in `app/view/pages/` folder, it will automatically be visible under the /about URL on your instance. The file name basically becomes the URL.
 
-Ok, so let us actually do this. As described above – create a new file called `about.liquid` in `app/view/pages/` directory:
+As described above, create a new file called `about.liquid` in the `app/view/pages/` directory:
 
 #### app/views/pages/about.liquid
 
@@ -82,9 +82,9 @@ Later on, you might find a need to create more complex URLs that are not entirel
 
 ## A To Do App: Necessary Interface Elements
 
-<img loading="lazy" src="{{ 'images/get-started/todo/ui.jpg' | asset_url }}" alt="The layout we are implementing for our To do app">
+<img loading="lazy" src="{{ 'images/get-started/todo/ui.jpg' | asset_url }}" alt="The layout you are implementing for your To do app">
 
-Back to our _To Do_ application – on the index page we would need: a list of items (with a button to mark an item as done), an information shown when there are no items, a simple form for adding a new item to the list and – finally – the link to the _About me_ page:
+Back to your _To Do_ application. On the index page you would need: a list of items (with a button to mark an item as done), information shown when there are no items, a simple form for adding a new item to the list, and the link to the _About me_ page:
 
 #### app/views/pages/index.liquid
 
@@ -118,14 +118,14 @@ Back to our _To Do_ application – on the index page we would need: a list of i
 <a href="/about">About Me</a>
 ```
 
-Currently we are just using an example content and don’t have any logic here, that’s OK – we will add those in later steps of this tutorial.
+Currently, you are using example content and don’t have any logic here, that’s OK. You will add those in later steps of this tutorial.
 
 
 ## Adding visual styling with CSS
 
-What we would need here is a CSS file. Since the [publicly visible static files](/get-started/working-with-the-code-and-files/#basic-overview-of-the-directory-structure) are placed in `/app/assets/` directory, we will save our CSS file as `/app/assets/styles/app.css`.
+You need a CSS file here. Since the [publicly visible static files](/get-started/working-with-the-code-and-files/#basic-overview-of-the-directory-structure) are placed in the `/app/assets/` directory, you will save your CSS file as `/app/assets/styles/app.css`.
 
-We don’t need to get into details here, you can just copy this example CSS to make our app look a little nicer:
+We don’t need to get into details here, you can just copy this example CSS to make your app look a little nicer:
 
 #### /app/assets/styles/app.css
 
@@ -159,7 +159,7 @@ li {
 }
 ```
 
-We still need to **link the CSS file on our page**. The proper place for this would be the `/app/views/layouts/application.html.liquid` file of course:
+You still need to **link the CSS file on your page**. The proper place for this would be the `/app/views/layouts/application.html.liquid`:
 
 #### app/view/layout/application.liquid
 
@@ -172,9 +172,9 @@ We still need to **link the CSS file on our page**. The proper place for this wo
 ```
 {% endraw %}
 
-This is our chance to take a look at another Liquid feature – **filters**. Their function is to modify whatever content we provide to them. To use filters, we need to append the filter name after the pipe character (`|`). As you can see in the example above, we are using a filter called `asset_url`. It will take the string that we provide (in our case the relative path to our CSS file in the `/assets` folder) and modify it to automatically build the URL to our CSS file.
+Now, take a look at another Liquid feature: **filters**. Their function is to modify whatever content you provide to them. To use filters, append the filter name after the pipe character (`|`). As you can see in the example above, you are using a filter called `asset_url`. It will take the string that you provide (in this case, the relative path to your CSS file in the `/assets` folder) and modify it to automatically build the URL to your CSS file.
 
-The `asset_url` filter is super useful when working with static files. On one hand, it automatically builds the absolute URL to the file on platformOS CDN, on the other – it appends a query string generated each time the file changes. This is to make sure that your audience always gets the latest version of the file, not some cached one.
+The `asset_url` filter is super useful when working with static files. On one hand, it automatically builds the absolute URL to the file on the platformOS CDN, on the other hand, it appends a query string generated each time the file changes. This is to make sure that your audience always gets the latest version of the file instead of some cached one.
 
 #### Input:
 
