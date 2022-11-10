@@ -1,15 +1,15 @@
 ---
 metadata:
-  title: Removing data from the database
-  description: Follow these step-by-step tutorials to build a simple To do application on platformOS.
+  title: Removing Data from the Database
+  description: Follow these step-by-step tutorials to build a simple To Do List application on platformOS.
 converter: markdown
 ---
 
-A simple GraphQL mutation is usually enough to remove a single entry from the database. Let’s see how to do this on an example.
+A simple GraphQL mutation is usually enough to remove a single entry from the database. The example in this tutorial shows how to do this. 
 
-We would start by preparing a new GraphQL file that will handle the deletion of an item. We need to remember that when we have to delete a record from the database, we need to be able to point to it directly first. For that we are going to use the record’s unique _ID_.
+Start by preparing a new GraphQL file that will handle the deletion of an item. Remember that when you have to delete a record from the database, you need to be able to point to it directly first. For that, you are going to use the record’s unique _ID_.
 
-To follow the pattern established in the previous tutorial steps, let’s create the new file for the new GraphQL mutation – `/app/graphql/item/delete.graphql`:
+To follow the pattern established in the previous parts of this tutorial series, create the new file for the new GraphQL mutation – `/app/graphql/item/delete.graphql`:
 
 #### /app/graphql/item/delete.graphql
 
@@ -26,32 +26,32 @@ mutation item_delete(
 }
 ```
 
-If you are following this tutorial, you already know that a _mutation_ is a GraphQL term for any operation of inserting or editing data to the database. Removing data included.
+If you are following this tutorial, you already know that a _mutation_ is a GraphQL term for any operation of inserting or editing data to the database, icluding data removal.
 
-The 1st line is the place where we can give our mutation a name, but this is just for our own convenience.
+In line 1, give your mutation a name. This is just for your own convenience.
 
-As mentioned above, we need to be able to point to an record we want to remove, thus we will need a variable that will store the reference to the `id` of that record. The 2nd line is where we define our variable, as usuall preceded in GraphQL with a dollar sign (`$`). Then, we determine that the type of this variable needs to be of `ID`, which is a type reserved for that single purpose. The exclamation mark (`!`) at the end states that this particular variable is required for the query to work. It makes sense here, as we really can’t remove a record without knowing it’s ID. If we won’t pass an ID to the query, it will fail and return an error.
+As mentioned above, you need to be able to point to a record you want to remove, thus you will need a variable that will store the reference to the `id` of that record. Line 2 is where you define your variable, as usual, preceded in GraphQL with a dollar sign (`$`). Then, you determine that the type of this variable needs to be of `ID`, which is a type reserved for that single purpose. The exclamation mark (`!`) at the end states that this particular variable is required for the query to work. It makes sense here, as you really can’t remove a record without knowing its ID. If you won’t pass an ID to the query, it will fail and return an error.
 
-The `record_delete` function removes the record, but we need to tell it in which table it is located and what is its ID. We do that in lines 5 and 6. The `table` is hardcoded in this case, but the `id` is referencing the variable we’ve created in the 2nd line.
+The `record_delete` function removes the record, but you need to tell it in which table it is located and what its ID is in lines 5 and 6. The `table` is hardcoded in this case, but the `id` is referencing the variable you’ve created in line 2.
 
-Finally, we would like some kind of confirmation that the process succeded. In the line 8 we declare that we want the query to return the `id` of the record that has been removed to be sure it worked.
+Finally, you would like some kind of confirmation that the process succeeded. In line 8, you declare that you want the query to return the `id` of the record that has been removed to be sure it worked.
 
 
 ## Testing the query using GraphiQL
 
-Before actually using the query on the page, we would probably like to test if it was built properly.
+Before using the query on the page, you would probably like to test if it was built properly.
 
 If you are following this tutorial from the start, you already know what to do.
 
-We need to run the following command to start the administration interface for our platformOS instance:
+Run the following command to start the administration interface of your platformOS instance:
 
 ```bash
 pos-cli gui serve <instance alias>
 ```
 
-Then, we will be able to go to [http://localhost:3333](http://localhost:3333) in the browser and follow the _Go to GraphiQL_ link.
+Then, go to [http://localhost:3333](http://localhost:3333) in the browser and follow the _Go to GraphiQL_ link.
 
-In the GraphiQL tool we just need to paste our mutation in the left text area, and then expand the bottom section called Query variables where we can pass the ID of the item we want to remove. Assuming we have a database record with the `id` equal to `1`:
+In the GraphiQL tool, paste your mutation in the left text area, and then expand the bottom section called Query variables where you can pass the ID of the item you want to remove. Assuming you have a database record with the `id` equal to `1`:
 
 ```javascript
 {
@@ -59,22 +59,22 @@ In the GraphiQL tool we just need to paste our mutation in the left text area, a
 }
 ```
 
-Finally, pressing the big _Play_ button at the top will run the mutation and we should have a confirmation in the right box that the record with the `id` that was `1` was removed.
+Finally, pressing the big _Play_ button on top will run the mutation and you should have a confirmation in the right box that the record with the `id` that was `1` was removed.
 
 <img loading="lazy" src="{{ 'images/get-started/todo/gui_graphiql_delete.jpg' | asset_url }}" alt="GraphiQL running the delete mutation for our To do app">
 
-Please remember that all of the operations done in GraphiQL are working on the real data from your database. So if we’d removed a record, it will be gone forever and we can confim this by [using the Records section](/get-started/build-your-first-app/saving-data-to-the-database#browse-the-database-tables-using-platformos-tool) from the `pos-cli` tools.
+Please remember that all of the operations done in GraphiQL are working on the real data from your database. So if you’d removed a record, it will be gone forever and you can confim this by [using the Records section](/get-started/build-your-first-app/saving-data-to-the-database#browse-the-database-tables-using-platformos-tool) from the `pos-cli` tools.
 
 
 ## Using the application interface to delete a record
 
 {% render 'svg/delete-data-from-database' %}
 
-In this tutorial we’ve prepared a working list of `To do` items. Each of those items have a button next to it, that suppose to mark that item as done, effectively removing it from the list.
+In this tutorial, you’ve prepared a working list of `To Do` items. Each of those items has a button next to it, that's supposed to mark that item as done, effectively removing it from the list.
 
-The simplest way of making this work would be to use the mutation that we’ve just created. If we remove the record from the database, it will be gone from our list.
+The simplest way of making this work would be to use the mutation that you’ve just created. If you remove the record from the database, it will be gone from your list.
 
-To trigger the mutation, we would require a new page that will become a bridge between the user interface and the GraphQL mutation. Let’s create that new page under `/app/views/pages/item/delete.liquid`:
+To trigger the mutation, you would require a new page that will become a bridge between the user interface and the GraphQL mutation. Create that new page under `/app/views/pages/item/delete.liquid`:
 
 #### /app/views/pages/item/delete.liquid
 
@@ -97,7 +97,7 @@ method: post
 ```
 {% endraw %}
 
-We need to make the page available when requested with the `POST` http method. On platformOS we are doing this by using the page configuration section in the page code. Basically, anything between those lines with three dashes (`---`) placed on top of the page code is used to set various options for the current page.
+Make the page available when requested with the `POST` http method. On platformOS, you do this by using the page configuration section in the page code. Basically, anything between the lines with three dashes (`---`) placed on top of the page code is used to set various options for the current page.
 
 ```liquid
 ---
@@ -105,20 +105,20 @@ method: post
 ---
 ```
 
-We are using the `qraphql` tag in Liquid to trigger the mutation we’ve prepared in the previous step of this tutorial. The mutation requires us to pass the id of the record we want to delete. The query variables that we are passing to the page are always available in the `context.params` variable.
+Use the `qraphql` tag in Liquid to trigger the mutation you’ve prepared in the previous step of this tutorial. The mutation requires you to pass the id of the record you want to delete. The query variables that you are passing to the page are always available in the `context.params` variable.
 
 ```liquid
 graphql result = 'item/delete', id: context.params.id
 ```
 
-If the mutation will end successfully, we requested that the id of the removed record be returned. So if the id is present in the response, we can assume everything went OK and we can redirect the user to the homepage. This is done using the Liquid’s `redirect_to` tag. After the redirection, we should see that the record is removed.
+If the mutation ends successfully, you requested that the id of the removed record be returned. So if the id is present in the response, you can assume everything went well and you can redirect the user to the homepage. This is done using Liquid’s `redirect_to` tag. After the redirection, you should see that the record has been removed.
 
 ```liquid
 if result.record.id
 		redirect_to '/'
 ```
 
-When something goes wrong, we will not redirect the user to the homepage and instead we will display an error message returned from the GraphQL mutation.
+When something goes wrong, you will not redirect the user to the homepage and instead you will display an error message returned from the GraphQL mutation.
 
 ```liquid
 else
@@ -126,7 +126,7 @@ else
 		echo result.errors
 ```
 
-One last step we musn’t forget is to update the `index` page. We have a `form` with the button that – when clicked –  should remove the item from the list. We need to update the `<form>` with the proper `action=""` and we need to pass the `id` of the item we plan to remove. We will do this in a hidden `input`:
+One last step you musn’t forget is to update the `index` page. You have a `form` with the button that – when clicked –  should remove the item from the list. You need to update the `<form>` with the proper `action=""` and you need to pass the `id` of the item you plan to remove. Do this in a hidden `input`:
 
 #### /app/views/pages/index.liquid
 
@@ -139,4 +139,4 @@ One last step we musn’t forget is to update the `index` page. We have a `form`
 ```
 {% endraw %}
 
-To test the whole thing out we need to add an item, or a few, to our _To Do_ list and then just click on the _Mark as done_ button, which should effectively remove that particular item from our list.
+To test the data removal functionality, add an item or a few to your _To Do_ list and then click on the _Mark as done_ button, which should effectively remove that particular item from your list.
