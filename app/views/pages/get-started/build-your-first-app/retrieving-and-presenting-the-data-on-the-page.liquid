@@ -1,16 +1,16 @@
 ---
 metadata:
-  title: Retrieving and presenting the data on the page
-  description: Follow these step-by-step tutorials to build a simple To do application on platformOS.
+  title: Retrieving and Presenting the Data on the Page
+  description: Follow these step-by-step tutorials to build a simple To Do List application on platformOS.
 converter: markdown
 ---
 
-The road to displaying the data on our page looks quite simple: we build a query that gets the data from the database and then we need to iterate over it with Liquid to show it on the page.
+You can display the data on your page by building a query that gets the data from the database and then iterating over it with Liquid to show it on the page.
 
 
 ## Getting the data from the database
 
-Let’s start with building a query that will pull the data from the `item` table. Any filename will be good of course, but we found that for the sake of extending the query in the future you might consider saving the query in `/app/graphql/item/search.graphql`:
+Start with building a query that will pull the data from the `item` table. Any filename will be good of course, but we found that for the sake of extending the query in the future you might consider saving the query in `/app/graphql/item/search.graphql`:
 
 #### /app/graphql/item/search.graphql
 
@@ -34,28 +34,28 @@ query item_search {
 }
 ```
 
-On the 1st line we are using the `query` keyword – it would be the case for getting the data out of the database. The _query name_ following the keyword is there mostly for our convenience.
+On line 1 you use the `query` keyword for getting the data out of the database. The _query name_ following the keyword is there mostly for your convenience.
 
-Then, on the 3rd line we are setting the maximum number of items we would like the database to return. You may consider any number, but keep in mind that the bigger it would be, the more time it will take the platform to return the data. In our example we probably won’t have a large number of items, but in the future you may consider using a pagination for larger datasets.
+On line 3, you set the maximum number of items you would like the database to return. You may consider any number, but keep in mind that the bigger it is, the more time it will take the platform to return the data. In this example, you probably won’t have a large number of items, but in the future you may consider using a pagination for larger datasets.
 
-We wouldn’t get far without actually telling the query in which table to look for the data. That’s the purpose of the `filter` keyword in lines 4 to 6. We want the results to come from the table called `item`.
+You wouldn’t get far without telling the query in which table to look for the data. That’s the purpose of the `filter` keyword in lines 4 to 6. You want the results to come from the table called `item`.
 
-As a bonus, we would like to sort the results descending by the time they were created. This is what we are doing in lines 7 to 9.
+As a bonus, sort the results descending by the time they were created. This is what you are doing in lines 7 to 9.
 
-Finally, we would like to define what are the data we want the query to return. Lines 11 to 14 define that we need the number of results returned (this is what the `total_entries` keyword does), and then in the actual results we just need the `id` and `title` from our table.
+Finally, define what data you want the query to return. Lines 11 to 14 define the number of results returned (this is what the `total_entries` keyword does), and then in the actual results you need the `id` and `title` from your table.
 
 
 ## Testing the query using GraphiQL
 
-Before we’ll use the query on our page, it would be a good idea to test if it works the way we want it to.
+Before using the query on your page, it would be a good idea to test if it works the way you want it to.
 
-To test the query we are going to use one of the tools built in the `pos-cli`. To start the tool we just need to use the following command:
+To test the query, you are going to use one of the tools built in the `pos-cli`. To start the tool, use the following command:
 
 ```bash
 pos-cli gui serve <instance alias>
 ```
 
-When the application is running, we can go to [http://localhost:3333](http://localhost:3333) in our browser and choose _Go to GraphiQL_. We can then paste the GraphQL query we’ve just written to the text area on left and pressing the big play button on top, should result in the output of the query being presented in the right column.
+When the application is running, go to [http://localhost:3333](http://localhost:3333) in your browser and choose _Go to GraphiQL_. Paste the GraphQL query you’ve just written to the text area on left. Pressing the big play button on top should result in the output of the query being presented in the right column.
 
 <img loading="lazy" src="{{ 'images/get-started/todo/gui_graphiql_query.jpg' | asset_url }}" alt="GraphiQL running the test query for our To do app">
 
@@ -63,7 +63,7 @@ When the application is running, we can go to [http://localhost:3333](http://loc
 
 ## Rendering the data on a page
 
-Assuming we have a page that we want to present the data on, and the query that will get the data for us, we can simply request for it using the Liquid’s graphql tag as follows:
+Assuming you have a page that you want to present the data on, and the query that will get the data, request it using Liquid’s graphql tag as follows:
 
 {% raw %}
 ```liquid
@@ -73,7 +73,7 @@ Assuming we have a page that we want to present the data on, and the query that 
 ```
 {% endraw %}
 
-We don’t have to use the full path to the GraphQL query as the platform knows where to look for those. That simple line will run the query (placed in `/app/graphql/item/search.graphql`) and assign the results of it to the variable `items`.
+You don’t have to use the full path to the GraphQL query as the platform knows where to look for those. That simple line will run the query (placed in `/app/graphql/item/search.graphql`) and assign the results to the variable `items`.
 
 The results are in the form of a _hash_. If you are comming from the JavaScript or PHP world you might name those _objects_.
 
@@ -89,7 +89,7 @@ The results are in the form of a _hash_. If you are comming from the JavaScript 
 }
 ```
 
-When we have the array of items, we can then user the for loop to iterate on it and render them on page using Liquid:
+When you have the array of items, use the for loop to iterate on it and render them on the page using Liquid:
 
 #### /app/pages/index.liquid
 
@@ -106,11 +106,11 @@ When we have the array of items, we can then user the for loop to iterate on it 
 ```
 {% endraw %}
 
-As you can see above we are using a **single-line Liquid statements**, which are different from the Liquid code blocks as we can get by with just the {% raw %}`{% %}`{% endraw %}.
+As you can see above, you are using **single-line Liquid statements**, which are different from the Liquid code blocks as you can get by with just the {% raw %}`{% %}`{% endraw %}.
 
-This code will repeat whatever is between the {% raw %}`{% for %}`{% endraw %} and {% raw %}`{% endfor %}`{% endraw %} for every item we are getting back from the database. This is another pattern in Liquid – we are closing the tags with {% raw %}`{% end<tag> %}`{% endraw %} statement.
+This code will repeat whatever is between the {% raw %}`{% for %}`{% endraw %} and {% raw %}`{% endfor %}`{% endraw %} for every item you are getting back from the database. This is another pattern in Liquid – you are closing the tags with {% raw %}`{% end<tag> %}`{% endraw %} statement.
 
-There is one more thing we could do – to display an information when there are no items to show on the page. If you remember, we have requested the `total_entries` number in our GraphQL query. A simple `if` statement using it would be enough:
+There is one more thing you could do: display some information when there are no items to show on the page. As you have requested the number of  `total_entries` in your GraphQL query, an `if` statement using it would be enough:
 
 #### /app/pages/index.liquid
 
