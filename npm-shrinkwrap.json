@@ -9,8 +9,10 @@
       "version": "3.0.0",
       "dependencies": {
         "@platformos/graphql-docs-markdown": "^1.6.3",
+        "algoliasearch": "^4.14.2",
         "docsearch.js": "^2.6.3",
         "graphql": "^16.3.0",
+        "instantsearch.js": "^4.46.2",
         "prismjs": "1.27.0"
       },
       "devDependencies": {
@@ -31,6 +33,140 @@
       "engines": {
         "node": ">=12"
       }
+    },
+    "node_modules/@algolia/cache-browser-local-storage": {
+      "version": "4.14.2",
+      "resolved": "https://registry.npmjs.org/@algolia/cache-browser-local-storage/-/cache-browser-local-storage-4.14.2.tgz",
+      "integrity": "sha512-FRweBkK/ywO+GKYfAWbrepewQsPTIEirhi1BdykX9mxvBPtGNKccYAxvGdDCumU1jL4r3cayio4psfzKMejBlA==",
+      "dependencies": {
+        "@algolia/cache-common": "4.14.2"
+      }
+    },
+    "node_modules/@algolia/cache-common": {
+      "version": "4.14.2",
+      "resolved": "https://registry.npmjs.org/@algolia/cache-common/-/cache-common-4.14.2.tgz",
+      "integrity": "sha512-SbvAlG9VqNanCErr44q6lEKD2qoK4XtFNx9Qn8FK26ePCI8I9yU7pYB+eM/cZdS9SzQCRJBbHUumVr4bsQ4uxg=="
+    },
+    "node_modules/@algolia/cache-in-memory": {
+      "version": "4.14.2",
+      "resolved": "https://registry.npmjs.org/@algolia/cache-in-memory/-/cache-in-memory-4.14.2.tgz",
+      "integrity": "sha512-HrOukWoop9XB/VFojPv1R5SVXowgI56T9pmezd/djh2JnVN/vXswhXV51RKy4nCpqxyHt/aGFSq2qkDvj6KiuQ==",
+      "dependencies": {
+        "@algolia/cache-common": "4.14.2"
+      }
+    },
+    "node_modules/@algolia/client-account": {
+      "version": "4.14.2",
+      "resolved": "https://registry.npmjs.org/@algolia/client-account/-/client-account-4.14.2.tgz",
+      "integrity": "sha512-WHtriQqGyibbb/Rx71YY43T0cXqyelEU0lB2QMBRXvD2X0iyeGl4qMxocgEIcbHyK7uqE7hKgjT8aBrHqhgc1w==",
+      "dependencies": {
+        "@algolia/client-common": "4.14.2",
+        "@algolia/client-search": "4.14.2",
+        "@algolia/transporter": "4.14.2"
+      }
+    },
+    "node_modules/@algolia/client-analytics": {
+      "version": "4.14.2",
+      "resolved": "https://registry.npmjs.org/@algolia/client-analytics/-/client-analytics-4.14.2.tgz",
+      "integrity": "sha512-yBvBv2mw+HX5a+aeR0dkvUbFZsiC4FKSnfqk9rrfX+QrlNOKEhCG0tJzjiOggRW4EcNqRmaTULIYvIzQVL2KYQ==",
+      "dependencies": {
+        "@algolia/client-common": "4.14.2",
+        "@algolia/client-search": "4.14.2",
+        "@algolia/requester-common": "4.14.2",
+        "@algolia/transporter": "4.14.2"
+      }
+    },
+    "node_modules/@algolia/client-common": {
+      "version": "4.14.2",
+      "resolved": "https://registry.npmjs.org/@algolia/client-common/-/client-common-4.14.2.tgz",
+      "integrity": "sha512-43o4fslNLcktgtDMVaT5XwlzsDPzlqvqesRi4MjQz2x4/Sxm7zYg5LRYFol1BIhG6EwxKvSUq8HcC/KxJu3J0Q==",
+      "dependencies": {
+        "@algolia/requester-common": "4.14.2",
+        "@algolia/transporter": "4.14.2"
+      }
+    },
+    "node_modules/@algolia/client-personalization": {
+      "version": "4.14.2",
+      "resolved": "https://registry.npmjs.org/@algolia/client-personalization/-/client-personalization-4.14.2.tgz",
+      "integrity": "sha512-ACCoLi0cL8CBZ1W/2juehSltrw2iqsQBnfiu/Rbl9W2yE6o2ZUb97+sqN/jBqYNQBS+o0ekTMKNkQjHHAcEXNw==",
+      "dependencies": {
+        "@algolia/client-common": "4.14.2",
+        "@algolia/requester-common": "4.14.2",
+        "@algolia/transporter": "4.14.2"
+      }
+    },
+    "node_modules/@algolia/client-search": {
+      "version": "4.14.2",
+      "resolved": "https://registry.npmjs.org/@algolia/client-search/-/client-search-4.14.2.tgz",
+      "integrity": "sha512-L5zScdOmcZ6NGiVbLKTvP02UbxZ0njd5Vq9nJAmPFtjffUSOGEp11BmD2oMJ5QvARgx2XbX4KzTTNS5ECYIMWw==",
+      "dependencies": {
+        "@algolia/client-common": "4.14.2",
+        "@algolia/requester-common": "4.14.2",
+        "@algolia/transporter": "4.14.2"
+      }
+    },
+    "node_modules/@algolia/events": {
+      "version": "4.0.1",
+      "resolved": "https://registry.npmjs.org/@algolia/events/-/events-4.0.1.tgz",
+      "integrity": "sha512-FQzvOCgoFXAbf5Y6mYozw2aj5KCJoA3m4heImceldzPSMbdyS4atVjJzXKMsfX3wnZTFYwkkt8/z8UesLHlSBQ=="
+    },
+    "node_modules/@algolia/logger-common": {
+      "version": "4.14.2",
+      "resolved": "https://registry.npmjs.org/@algolia/logger-common/-/logger-common-4.14.2.tgz",
+      "integrity": "sha512-/JGlYvdV++IcMHBnVFsqEisTiOeEr6cUJtpjz8zc0A9c31JrtLm318Njc72p14Pnkw3A/5lHHh+QxpJ6WFTmsA=="
+    },
+    "node_modules/@algolia/logger-console": {
+      "version": "4.14.2",
+      "resolved": "https://registry.npmjs.org/@algolia/logger-console/-/logger-console-4.14.2.tgz",
+      "integrity": "sha512-8S2PlpdshbkwlLCSAB5f8c91xyc84VM9Ar9EdfE9UmX+NrKNYnWR1maXXVDQQoto07G1Ol/tYFnFVhUZq0xV/g==",
+      "dependencies": {
+        "@algolia/logger-common": "4.14.2"
+      }
+    },
+    "node_modules/@algolia/requester-browser-xhr": {
+      "version": "4.14.2",
+      "resolved": "https://registry.npmjs.org/@algolia/requester-browser-xhr/-/requester-browser-xhr-4.14.2.tgz",
+      "integrity": "sha512-CEh//xYz/WfxHFh7pcMjQNWgpl4wFB85lUMRyVwaDPibNzQRVcV33YS+63fShFWc2+42YEipFGH2iPzlpszmDw==",
+      "dependencies": {
+        "@algolia/requester-common": "4.14.2"
+      }
+    },
+    "node_modules/@algolia/requester-common": {
+      "version": "4.14.2",
+      "resolved": "https://registry.npmjs.org/@algolia/requester-common/-/requester-common-4.14.2.tgz",
+      "integrity": "sha512-73YQsBOKa5fvVV3My7iZHu1sUqmjjfs9TteFWwPwDmnad7T0VTCopttcsM3OjLxZFtBnX61Xxl2T2gmG2O4ehg=="
+    },
+    "node_modules/@algolia/requester-node-http": {
+      "version": "4.14.2",
+      "resolved": "https://registry.npmjs.org/@algolia/requester-node-http/-/requester-node-http-4.14.2.tgz",
+      "integrity": "sha512-oDbb02kd1o5GTEld4pETlPZLY0e+gOSWjWMJHWTgDXbv9rm/o2cF7japO6Vj1ENnrqWvLBmW1OzV9g6FUFhFXg==",
+      "dependencies": {
+        "@algolia/requester-common": "4.14.2"
+      }
+    },
+    "node_modules/@algolia/transporter": {
+      "version": "4.14.2",
+      "resolved": "https://registry.npmjs.org/@algolia/transporter/-/transporter-4.14.2.tgz",
+      "integrity": "sha512-t89dfQb2T9MFQHidjHcfhh6iGMNwvuKUvojAj+JsrHAGbuSy7yE4BylhLX6R0Q1xYRoC4Vvv+O5qIw/LdnQfsQ==",
+      "dependencies": {
+        "@algolia/cache-common": "4.14.2",
+        "@algolia/logger-common": "4.14.2",
+        "@algolia/requester-common": "4.14.2"
+      }
+    },
+    "node_modules/@algolia/ui-components-highlight-vdom": {
+      "version": "1.1.3",
+      "resolved": "https://registry.npmjs.org/@algolia/ui-components-highlight-vdom/-/ui-components-highlight-vdom-1.1.3.tgz",
+      "integrity": "sha512-KgSiQ+FQf+e2HDNgw9J66HmpbIdZA9VQpLwDn950DCgo7BEZQrMqgqkMPJhHYZfkPvRfxV+1T3XwS43zib8w4w==",
+      "dependencies": {
+        "@algolia/ui-components-shared": "1.1.3",
+        "@babel/runtime": "^7.0.0"
+      }
+    },
+    "node_modules/@algolia/ui-components-shared": {
+      "version": "1.1.3",
+      "resolved": "https://registry.npmjs.org/@algolia/ui-components-shared/-/ui-components-shared-1.1.3.tgz",
+      "integrity": "sha512-eBxvljiwvajSsg9Pz9nYNH+QH/b5q66Z4xRDr1LhICNuLibDF64mH+Vv4mg29qPxmmgMWlmWiwJQmQqR9Z229w=="
     },
     "node_modules/@babel/code-frame": {
       "version": "7.12.13",
@@ -56,6 +192,17 @@
         "@babel/helper-validator-identifier": "^7.14.0",
         "chalk": "^2.0.0",
         "js-tokens": "^4.0.0"
+      }
+    },
+    "node_modules/@babel/runtime": {
+      "version": "7.19.0",
+      "resolved": "https://registry.npmjs.org/@babel/runtime/-/runtime-7.19.0.tgz",
+      "integrity": "sha512-eR8Lo9hnDS7tqkO7NsV+mKvCmv5boaXFSZ70DnfhcgiEne8hv9oCEd36Klw74EtizEqLsy4YnW8UWwpBVolHZA==",
+      "dependencies": {
+        "regenerator-runtime": "^0.13.4"
+      },
+      "engines": {
+        "node": ">=6.9.0"
       }
     },
     "node_modules/@discoveryjs/json-ext": {
@@ -259,6 +406,16 @@
       "integrity": "sha512-CuPgU6f3eT/XgKKPqKd/gLZV1Xmvf1a2R5POBOGQa6uv82xpls89HU5zKeVoyR8XzHd1RGNOlQlvUe3CFkjWNQ==",
       "dev": true
     },
+    "node_modules/@types/google.maps": {
+      "version": "3.50.1",
+      "resolved": "https://registry.npmjs.org/@types/google.maps/-/google.maps-3.50.1.tgz",
+      "integrity": "sha512-Wd3+cZwIk2DhDDosYCvXREvBfRAy9eXTf44YOcOKXhzN88AnLOCO+vrKH0N+QiP3SUtf7A6hn3yVJrMdXIqp1g=="
+    },
+    "node_modules/@types/hogan.js": {
+      "version": "3.0.1",
+      "resolved": "https://registry.npmjs.org/@types/hogan.js/-/hogan.js-3.0.1.tgz",
+      "integrity": "sha512-D03i/2OY7kGyMq9wdQ7oD8roE49z/ZCZThe/nbahtvuqCNZY9T2MfedOWyeBdbEpY2W8Gnh/dyJLdFtUCOkYbg=="
+    },
     "node_modules/@types/json-schema": {
       "version": "7.0.9",
       "resolved": "https://registry.npmjs.org/@types/json-schema/-/json-schema-7.0.9.tgz",
@@ -276,6 +433,11 @@
       "resolved": "https://registry.npmjs.org/@types/parse-json/-/parse-json-4.0.0.tgz",
       "integrity": "sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==",
       "dev": true
+    },
+    "node_modules/@types/qs": {
+      "version": "6.9.7",
+      "resolved": "https://registry.npmjs.org/@types/qs/-/qs-6.9.7.tgz",
+      "integrity": "sha512-FGa1F62FT09qcrueBA6qYTrJPVDzah9a+493+o2PCXsesWHIn27G98TsSMs3WPNbZIEj4+VJf6saSFpvD+3Zsw=="
     },
     "node_modules/@webassemblyjs/ast": {
       "version": "1.11.1",
@@ -532,7 +694,7 @@
     "node_modules/agentkeepalive": {
       "version": "2.2.0",
       "resolved": "https://registry.npmjs.org/agentkeepalive/-/agentkeepalive-2.2.0.tgz",
-      "integrity": "sha1-xdG9SxKQCPEWPyNvhuX66iAm4u8=",
+      "integrity": "sha512-TnB6ziK363p7lR8QpeLC8aMr8EGYBKZTpgzQLfqTs3bR0Oo5VbKdwKf8h0dSzsYrB7lSCgfJnMZKqShvlq5Oyg==",
       "engines": {
         "node": ">= 0.10.0"
       }
@@ -601,36 +763,35 @@
       }
     },
     "node_modules/algoliasearch": {
-      "version": "3.35.1",
-      "resolved": "https://registry.npmjs.org/algoliasearch/-/algoliasearch-3.35.1.tgz",
-      "integrity": "sha512-K4yKVhaHkXfJ/xcUnil04xiSrB8B8yHZoFEhWNpXg23eiCnqvTZw1tn/SqvdsANlYHLJlKl0qi3I/Q2Sqo7LwQ==",
+      "version": "4.14.2",
+      "resolved": "https://registry.npmjs.org/algoliasearch/-/algoliasearch-4.14.2.tgz",
+      "integrity": "sha512-ngbEQonGEmf8dyEh5f+uOIihv4176dgbuOZspiuhmTTBRBuzWu3KCGHre6uHj5YyuC7pNvQGzB6ZNJyZi0z+Sg==",
       "dependencies": {
-        "agentkeepalive": "^2.2.0",
-        "debug": "^2.6.9",
-        "envify": "^4.0.0",
-        "es6-promise": "^4.1.0",
-        "events": "^1.1.0",
-        "foreach": "^2.0.5",
-        "global": "^4.3.2",
-        "inherits": "^2.0.1",
-        "isarray": "^2.0.1",
-        "load-script": "^1.0.0",
-        "object-keys": "^1.0.11",
-        "querystring-es3": "^0.2.1",
-        "reduce": "^1.0.1",
-        "semver": "^5.1.0",
-        "tunnel-agent": "^0.6.0"
-      },
-      "engines": {
-        "node": ">=0.8"
+        "@algolia/cache-browser-local-storage": "4.14.2",
+        "@algolia/cache-common": "4.14.2",
+        "@algolia/cache-in-memory": "4.14.2",
+        "@algolia/client-account": "4.14.2",
+        "@algolia/client-analytics": "4.14.2",
+        "@algolia/client-common": "4.14.2",
+        "@algolia/client-personalization": "4.14.2",
+        "@algolia/client-search": "4.14.2",
+        "@algolia/logger-common": "4.14.2",
+        "@algolia/logger-console": "4.14.2",
+        "@algolia/requester-browser-xhr": "4.14.2",
+        "@algolia/requester-common": "4.14.2",
+        "@algolia/requester-node-http": "4.14.2",
+        "@algolia/transporter": "4.14.2"
       }
     },
-    "node_modules/algoliasearch/node_modules/semver": {
-      "version": "5.7.1",
-      "resolved": "https://registry.npmjs.org/semver/-/semver-5.7.1.tgz",
-      "integrity": "sha512-sauaDf/PZdVgrLTNYHRtpXa1iRiKcaebiKQ1BJdpQlWH2lCvexQdX55snPFyK7QzpudqbCI0qXFfOasHdyNDGQ==",
-      "bin": {
-        "semver": "bin/semver"
+    "node_modules/algoliasearch-helper": {
+      "version": "3.11.1",
+      "resolved": "https://registry.npmjs.org/algoliasearch-helper/-/algoliasearch-helper-3.11.1.tgz",
+      "integrity": "sha512-mvsPN3eK4E0bZG0/WlWJjeqe/bUD2KOEVOl0GyL/TGXn6wcpZU8NOuztGHCUKXkyg5gq6YzUakVTmnmSSO5Yiw==",
+      "dependencies": {
+        "@algolia/events": "^4.0.1"
+      },
+      "peerDependencies": {
+        "algoliasearch": ">= 3.1 < 6"
       }
     },
     "node_modules/ansi-regex": {
@@ -956,6 +1117,11 @@
         "node": ">=6.0"
       }
     },
+    "node_modules/classnames": {
+      "version": "2.3.1",
+      "resolved": "https://registry.npmjs.org/classnames/-/classnames-2.3.1.tgz",
+      "integrity": "sha512-OlQdbZ7gLfGarSqxesMesDa5uz7KFbID8Kpq/SxIoNGDqY8lSYs0D+hhtBXhcdB3rcbXArFr7vlHheLk1voeNA=="
+    },
     "node_modules/cliui": {
       "version": "5.0.0",
       "resolved": "https://registry.npmjs.org/cliui/-/cliui-5.0.0.tgz",
@@ -1193,6 +1359,39 @@
         "stack-utils": "^1.0.1",
         "to-factory": "^1.0.0",
         "zepto": "^1.2.0"
+      }
+    },
+    "node_modules/docsearch.js/node_modules/algoliasearch": {
+      "version": "3.35.1",
+      "resolved": "https://registry.npmjs.org/algoliasearch/-/algoliasearch-3.35.1.tgz",
+      "integrity": "sha512-K4yKVhaHkXfJ/xcUnil04xiSrB8B8yHZoFEhWNpXg23eiCnqvTZw1tn/SqvdsANlYHLJlKl0qi3I/Q2Sqo7LwQ==",
+      "dependencies": {
+        "agentkeepalive": "^2.2.0",
+        "debug": "^2.6.9",
+        "envify": "^4.0.0",
+        "es6-promise": "^4.1.0",
+        "events": "^1.1.0",
+        "foreach": "^2.0.5",
+        "global": "^4.3.2",
+        "inherits": "^2.0.1",
+        "isarray": "^2.0.1",
+        "load-script": "^1.0.0",
+        "object-keys": "^1.0.11",
+        "querystring-es3": "^0.2.1",
+        "reduce": "^1.0.1",
+        "semver": "^5.1.0",
+        "tunnel-agent": "^0.6.0"
+      },
+      "engines": {
+        "node": ">=0.8"
+      }
+    },
+    "node_modules/docsearch.js/node_modules/semver": {
+      "version": "5.7.1",
+      "resolved": "https://registry.npmjs.org/semver/-/semver-5.7.1.tgz",
+      "integrity": "sha512-sauaDf/PZdVgrLTNYHRtpXa1iRiKcaebiKQ1BJdpQlWH2lCvexQdX55snPFyK7QzpudqbCI0qXFfOasHdyNDGQ==",
+      "bin": {
+        "semver": "bin/semver"
       }
     },
     "node_modules/dom-walk": {
@@ -1633,7 +1832,7 @@
     "node_modules/events": {
       "version": "1.1.1",
       "resolved": "https://registry.npmjs.org/events/-/events-1.1.1.tgz",
-      "integrity": "sha1-nr23Y1rQmccNzEwqH1AEKI6L2SQ=",
+      "integrity": "sha512-kEcvvCBByWXGnZy6JUlgAp2gBIUjfCAV6P6TgT1/aaQKcmuAEC4OZTV1I4EWQLz2gxZw76atuVyvHhTxvi0Flw==",
       "engines": {
         "node": ">=0.4.x"
       }
@@ -1749,9 +1948,9 @@
       }
     },
     "node_modules/foreach": {
-      "version": "2.0.5",
-      "resolved": "https://registry.npmjs.org/foreach/-/foreach-2.0.5.tgz",
-      "integrity": "sha1-C+4AUBiusmDQo6865ljdATbsG5k="
+      "version": "2.0.6",
+      "resolved": "https://registry.npmjs.org/foreach/-/foreach-2.0.6.tgz",
+      "integrity": "sha512-k6GAGDyqLe9JaebCsFCoudPPWfihKu8pylYXRlqP1J7ms39iPoTtk2fviNglIeQEwdh0bQeKJ01ZPyuyQvKzwg=="
     },
     "node_modules/forever-agent": {
       "version": "0.6.1",
@@ -1950,6 +2149,11 @@
         "hulk": "bin/hulk"
       }
     },
+    "node_modules/htm": {
+      "version": "3.1.1",
+      "resolved": "https://registry.npmjs.org/htm/-/htm-3.1.1.tgz",
+      "integrity": "sha512-983Vyg8NwUE7JkZ6NmOqpCZ+sh1bKv2iYTlUkzlWmA5JD2acKoxd4KVxbMmxX/85mtfdnDmTFoNKcg5DGAvxNQ=="
+    },
     "node_modules/http-signature": {
       "version": "1.2.0",
       "resolved": "https://registry.npmjs.org/http-signature/-/http-signature-1.2.0.tgz",
@@ -2067,6 +2271,29 @@
       "version": "2.0.4",
       "resolved": "https://registry.npmjs.org/inherits/-/inherits-2.0.4.tgz",
       "integrity": "sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ=="
+    },
+    "node_modules/instantsearch.js": {
+      "version": "4.46.2",
+      "resolved": "https://registry.npmjs.org/instantsearch.js/-/instantsearch.js-4.46.2.tgz",
+      "integrity": "sha512-gjr3mtMWbfuVyFbRy8s23ACcvpEPRtAFCZ20ecvi9gbjqoRdzZ3qWgwj7Vq7EIxm04Jx6kD9jZPa7qx7o8wn1g==",
+      "dependencies": {
+        "@algolia/events": "^4.0.1",
+        "@algolia/ui-components-highlight-vdom": "^1.1.2",
+        "@algolia/ui-components-shared": "^1.1.2",
+        "@types/google.maps": "^3.45.3",
+        "@types/hogan.js": "^3.0.0",
+        "@types/qs": "^6.5.3",
+        "algoliasearch-helper": "^3.11.1",
+        "classnames": "^2.2.5",
+        "hogan.js": "^3.0.2",
+        "htm": "^3.0.0",
+        "preact": "^10.10.0",
+        "qs": "^6.5.1 < 6.10",
+        "search-insights": "^2.1.0"
+      },
+      "peerDependencies": {
+        "algoliasearch": ">= 3.1 < 6"
+      }
     },
     "node_modules/interpret": {
       "version": "2.2.0",
@@ -2344,7 +2571,7 @@
     "node_modules/load-script": {
       "version": "1.0.0",
       "resolved": "https://registry.npmjs.org/load-script/-/load-script-1.0.0.tgz",
-      "integrity": "sha1-BJGTngvuVkPuSUp+PaPSuscMbKQ="
+      "integrity": "sha512-kPEjMFtZvwL9TaZo0uZ2ml+Ye9HUMmPwbYRJ324qF9tqMejwykJ5ggTyvzmrbBeapCAbk98BSbTeovHEEP1uCA=="
     },
     "node_modules/loader-runner": {
       "version": "4.2.0",
@@ -2459,7 +2686,7 @@
     "node_modules/min-document": {
       "version": "2.19.0",
       "resolved": "https://registry.npmjs.org/min-document/-/min-document-2.19.0.tgz",
-      "integrity": "sha1-e9KC4/WELtKVu3SM3Z8f+iyCRoU=",
+      "integrity": "sha512-9Wy1B3m3f66bPPmU5hdA4DR4PB2OfDU/+GS3yAB7IQozE3tqXaVv2zOjgla7MEGSRv95+ILmOuvhLkOK6wJtCQ==",
       "dependencies": {
         "dom-walk": "^0.1.0"
       }
@@ -2554,7 +2781,7 @@
     "node_modules/ms": {
       "version": "2.0.0",
       "resolved": "https://registry.npmjs.org/ms/-/ms-2.0.0.tgz",
-      "integrity": "sha1-VgiurfwAvmwpAd9fmGF4jeDVl8g="
+      "integrity": "sha512-Tpp60P6IUJDTuOq/5Z8cdskzJujfwqfOTkrwIwj7IRISpnkJnT6SyJ4PCPnGMoFjC9ddhal5KVIYtAt97ix05A=="
     },
     "node_modules/nanoid": {
       "version": "3.3.1",
@@ -3017,6 +3244,15 @@
       "integrity": "sha512-1NNCs6uurfkVbeXG4S8JFT9t19m45ICnif8zWLd5oPSZ50QnwMfK+H3jv408d4jw/7Bttv5axS5IiHoLaVNHeQ==",
       "dev": true
     },
+    "node_modules/preact": {
+      "version": "10.11.0",
+      "resolved": "https://registry.npmjs.org/preact/-/preact-10.11.0.tgz",
+      "integrity": "sha512-Fk6+vB2kb6mSJfDgODq0YDhMfl0HNtK5+Uc9QqECO4nlyPAQwCI+BKyWO//idA7ikV7o+0Fm6LQmNuQi1wXI1w==",
+      "funding": {
+        "type": "opencollective",
+        "url": "https://opencollective.com/preact"
+      }
+    },
     "node_modules/prettier": {
       "version": "2.5.1",
       "resolved": "https://registry.npmjs.org/prettier/-/prettier-2.5.1.tgz",
@@ -3039,7 +3275,7 @@
     "node_modules/process": {
       "version": "0.11.10",
       "resolved": "https://registry.npmjs.org/process/-/process-0.11.10.tgz",
-      "integrity": "sha1-czIwDoQBYb2j5podHZGn1LwW8YI=",
+      "integrity": "sha512-cdGef/drWFoydD1JsMzuFf8100nZl+GT+yacc2bEced5f9Rjk4z+WtFUTBu9PhOi9j/jfmBPu0mMEY4wIdAF8A==",
       "engines": {
         "node": ">= 0.6.0"
       }
@@ -3068,7 +3304,7 @@
     "node_modules/querystring-es3": {
       "version": "0.2.1",
       "resolved": "https://registry.npmjs.org/querystring-es3/-/querystring-es3-0.2.1.tgz",
-      "integrity": "sha1-nsYfeQSYdXB9aUFFlv2Qek1xHnM=",
+      "integrity": "sha512-773xhDQnZBMFobEiztv8LIl70ch5MSF/jUQVlhwFyBILqq96anmoctVIYz+ZRp0qbCKATTn6ev02M3r7Ga5vqA==",
       "engines": {
         "node": ">=0.4.x"
       }
@@ -3153,6 +3389,11 @@
       "dependencies": {
         "object-keys": "^1.1.0"
       }
+    },
+    "node_modules/regenerator-runtime": {
+      "version": "0.13.9",
+      "resolved": "https://registry.npmjs.org/regenerator-runtime/-/regenerator-runtime-0.13.9.tgz",
+      "integrity": "sha512-p3VT+cOEgxFsRRA9X4lkI1E+k2/CtnKtU4gcxyaCUreilL/vqI6CdZ3wxVUx3UOUg+gnUOQQcRI7BmSI656MYA=="
     },
     "node_modules/remove-trailing-separator": {
       "version": "1.1.0",
@@ -3318,6 +3559,14 @@
       "funding": {
         "type": "opencollective",
         "url": "https://opencollective.com/webpack"
+      }
+    },
+    "node_modules/search-insights": {
+      "version": "2.2.1",
+      "resolved": "https://registry.npmjs.org/search-insights/-/search-insights-2.2.1.tgz",
+      "integrity": "sha512-JDfVGZbKqTtiKVZjAVbkNw9C9f0ib80yx6Ea17M3z4RvPmuD0GYWXuFwA9++dpbreBEMH4TC3lQ29Zq7O4b5oA==",
+      "engines": {
+        "node": ">=8.16.0"
       }
     },
     "node_modules/semver": {
@@ -3723,7 +3972,7 @@
     "node_modules/through": {
       "version": "2.3.8",
       "resolved": "https://registry.npmjs.org/through/-/through-2.3.8.tgz",
-      "integrity": "sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU="
+      "integrity": "sha512-w89qg7PI8wAdvX60bMDP+bFoD5Dvhm9oLheFp5O4a2QF0cSBGsBX4qZmadPMvVqlLJBBci+WqGGOAPvcDeNSVg=="
     },
     "node_modules/to-factory": {
       "version": "1.0.0",
@@ -4162,6 +4411,140 @@
     }
   },
   "dependencies": {
+    "@algolia/cache-browser-local-storage": {
+      "version": "4.14.2",
+      "resolved": "https://registry.npmjs.org/@algolia/cache-browser-local-storage/-/cache-browser-local-storage-4.14.2.tgz",
+      "integrity": "sha512-FRweBkK/ywO+GKYfAWbrepewQsPTIEirhi1BdykX9mxvBPtGNKccYAxvGdDCumU1jL4r3cayio4psfzKMejBlA==",
+      "requires": {
+        "@algolia/cache-common": "4.14.2"
+      }
+    },
+    "@algolia/cache-common": {
+      "version": "4.14.2",
+      "resolved": "https://registry.npmjs.org/@algolia/cache-common/-/cache-common-4.14.2.tgz",
+      "integrity": "sha512-SbvAlG9VqNanCErr44q6lEKD2qoK4XtFNx9Qn8FK26ePCI8I9yU7pYB+eM/cZdS9SzQCRJBbHUumVr4bsQ4uxg=="
+    },
+    "@algolia/cache-in-memory": {
+      "version": "4.14.2",
+      "resolved": "https://registry.npmjs.org/@algolia/cache-in-memory/-/cache-in-memory-4.14.2.tgz",
+      "integrity": "sha512-HrOukWoop9XB/VFojPv1R5SVXowgI56T9pmezd/djh2JnVN/vXswhXV51RKy4nCpqxyHt/aGFSq2qkDvj6KiuQ==",
+      "requires": {
+        "@algolia/cache-common": "4.14.2"
+      }
+    },
+    "@algolia/client-account": {
+      "version": "4.14.2",
+      "resolved": "https://registry.npmjs.org/@algolia/client-account/-/client-account-4.14.2.tgz",
+      "integrity": "sha512-WHtriQqGyibbb/Rx71YY43T0cXqyelEU0lB2QMBRXvD2X0iyeGl4qMxocgEIcbHyK7uqE7hKgjT8aBrHqhgc1w==",
+      "requires": {
+        "@algolia/client-common": "4.14.2",
+        "@algolia/client-search": "4.14.2",
+        "@algolia/transporter": "4.14.2"
+      }
+    },
+    "@algolia/client-analytics": {
+      "version": "4.14.2",
+      "resolved": "https://registry.npmjs.org/@algolia/client-analytics/-/client-analytics-4.14.2.tgz",
+      "integrity": "sha512-yBvBv2mw+HX5a+aeR0dkvUbFZsiC4FKSnfqk9rrfX+QrlNOKEhCG0tJzjiOggRW4EcNqRmaTULIYvIzQVL2KYQ==",
+      "requires": {
+        "@algolia/client-common": "4.14.2",
+        "@algolia/client-search": "4.14.2",
+        "@algolia/requester-common": "4.14.2",
+        "@algolia/transporter": "4.14.2"
+      }
+    },
+    "@algolia/client-common": {
+      "version": "4.14.2",
+      "resolved": "https://registry.npmjs.org/@algolia/client-common/-/client-common-4.14.2.tgz",
+      "integrity": "sha512-43o4fslNLcktgtDMVaT5XwlzsDPzlqvqesRi4MjQz2x4/Sxm7zYg5LRYFol1BIhG6EwxKvSUq8HcC/KxJu3J0Q==",
+      "requires": {
+        "@algolia/requester-common": "4.14.2",
+        "@algolia/transporter": "4.14.2"
+      }
+    },
+    "@algolia/client-personalization": {
+      "version": "4.14.2",
+      "resolved": "https://registry.npmjs.org/@algolia/client-personalization/-/client-personalization-4.14.2.tgz",
+      "integrity": "sha512-ACCoLi0cL8CBZ1W/2juehSltrw2iqsQBnfiu/Rbl9W2yE6o2ZUb97+sqN/jBqYNQBS+o0ekTMKNkQjHHAcEXNw==",
+      "requires": {
+        "@algolia/client-common": "4.14.2",
+        "@algolia/requester-common": "4.14.2",
+        "@algolia/transporter": "4.14.2"
+      }
+    },
+    "@algolia/client-search": {
+      "version": "4.14.2",
+      "resolved": "https://registry.npmjs.org/@algolia/client-search/-/client-search-4.14.2.tgz",
+      "integrity": "sha512-L5zScdOmcZ6NGiVbLKTvP02UbxZ0njd5Vq9nJAmPFtjffUSOGEp11BmD2oMJ5QvARgx2XbX4KzTTNS5ECYIMWw==",
+      "requires": {
+        "@algolia/client-common": "4.14.2",
+        "@algolia/requester-common": "4.14.2",
+        "@algolia/transporter": "4.14.2"
+      }
+    },
+    "@algolia/events": {
+      "version": "4.0.1",
+      "resolved": "https://registry.npmjs.org/@algolia/events/-/events-4.0.1.tgz",
+      "integrity": "sha512-FQzvOCgoFXAbf5Y6mYozw2aj5KCJoA3m4heImceldzPSMbdyS4atVjJzXKMsfX3wnZTFYwkkt8/z8UesLHlSBQ=="
+    },
+    "@algolia/logger-common": {
+      "version": "4.14.2",
+      "resolved": "https://registry.npmjs.org/@algolia/logger-common/-/logger-common-4.14.2.tgz",
+      "integrity": "sha512-/JGlYvdV++IcMHBnVFsqEisTiOeEr6cUJtpjz8zc0A9c31JrtLm318Njc72p14Pnkw3A/5lHHh+QxpJ6WFTmsA=="
+    },
+    "@algolia/logger-console": {
+      "version": "4.14.2",
+      "resolved": "https://registry.npmjs.org/@algolia/logger-console/-/logger-console-4.14.2.tgz",
+      "integrity": "sha512-8S2PlpdshbkwlLCSAB5f8c91xyc84VM9Ar9EdfE9UmX+NrKNYnWR1maXXVDQQoto07G1Ol/tYFnFVhUZq0xV/g==",
+      "requires": {
+        "@algolia/logger-common": "4.14.2"
+      }
+    },
+    "@algolia/requester-browser-xhr": {
+      "version": "4.14.2",
+      "resolved": "https://registry.npmjs.org/@algolia/requester-browser-xhr/-/requester-browser-xhr-4.14.2.tgz",
+      "integrity": "sha512-CEh//xYz/WfxHFh7pcMjQNWgpl4wFB85lUMRyVwaDPibNzQRVcV33YS+63fShFWc2+42YEipFGH2iPzlpszmDw==",
+      "requires": {
+        "@algolia/requester-common": "4.14.2"
+      }
+    },
+    "@algolia/requester-common": {
+      "version": "4.14.2",
+      "resolved": "https://registry.npmjs.org/@algolia/requester-common/-/requester-common-4.14.2.tgz",
+      "integrity": "sha512-73YQsBOKa5fvVV3My7iZHu1sUqmjjfs9TteFWwPwDmnad7T0VTCopttcsM3OjLxZFtBnX61Xxl2T2gmG2O4ehg=="
+    },
+    "@algolia/requester-node-http": {
+      "version": "4.14.2",
+      "resolved": "https://registry.npmjs.org/@algolia/requester-node-http/-/requester-node-http-4.14.2.tgz",
+      "integrity": "sha512-oDbb02kd1o5GTEld4pETlPZLY0e+gOSWjWMJHWTgDXbv9rm/o2cF7japO6Vj1ENnrqWvLBmW1OzV9g6FUFhFXg==",
+      "requires": {
+        "@algolia/requester-common": "4.14.2"
+      }
+    },
+    "@algolia/transporter": {
+      "version": "4.14.2",
+      "resolved": "https://registry.npmjs.org/@algolia/transporter/-/transporter-4.14.2.tgz",
+      "integrity": "sha512-t89dfQb2T9MFQHidjHcfhh6iGMNwvuKUvojAj+JsrHAGbuSy7yE4BylhLX6R0Q1xYRoC4Vvv+O5qIw/LdnQfsQ==",
+      "requires": {
+        "@algolia/cache-common": "4.14.2",
+        "@algolia/logger-common": "4.14.2",
+        "@algolia/requester-common": "4.14.2"
+      }
+    },
+    "@algolia/ui-components-highlight-vdom": {
+      "version": "1.1.3",
+      "resolved": "https://registry.npmjs.org/@algolia/ui-components-highlight-vdom/-/ui-components-highlight-vdom-1.1.3.tgz",
+      "integrity": "sha512-KgSiQ+FQf+e2HDNgw9J66HmpbIdZA9VQpLwDn950DCgo7BEZQrMqgqkMPJhHYZfkPvRfxV+1T3XwS43zib8w4w==",
+      "requires": {
+        "@algolia/ui-components-shared": "1.1.3",
+        "@babel/runtime": "^7.0.0"
+      }
+    },
+    "@algolia/ui-components-shared": {
+      "version": "1.1.3",
+      "resolved": "https://registry.npmjs.org/@algolia/ui-components-shared/-/ui-components-shared-1.1.3.tgz",
+      "integrity": "sha512-eBxvljiwvajSsg9Pz9nYNH+QH/b5q66Z4xRDr1LhICNuLibDF64mH+Vv4mg29qPxmmgMWlmWiwJQmQqR9Z229w=="
+    },
     "@babel/code-frame": {
       "version": "7.12.13",
       "resolved": "https://registry.npmjs.org/@babel/code-frame/-/code-frame-7.12.13.tgz",
@@ -4186,6 +4569,14 @@
         "@babel/helper-validator-identifier": "^7.14.0",
         "chalk": "^2.0.0",
         "js-tokens": "^4.0.0"
+      }
+    },
+    "@babel/runtime": {
+      "version": "7.19.0",
+      "resolved": "https://registry.npmjs.org/@babel/runtime/-/runtime-7.19.0.tgz",
+      "integrity": "sha512-eR8Lo9hnDS7tqkO7NsV+mKvCmv5boaXFSZ70DnfhcgiEne8hv9oCEd36Klw74EtizEqLsy4YnW8UWwpBVolHZA==",
+      "requires": {
+        "regenerator-runtime": "^0.13.4"
       }
     },
     "@discoveryjs/json-ext": {
@@ -4345,6 +4736,16 @@
       "integrity": "sha512-CuPgU6f3eT/XgKKPqKd/gLZV1Xmvf1a2R5POBOGQa6uv82xpls89HU5zKeVoyR8XzHd1RGNOlQlvUe3CFkjWNQ==",
       "dev": true
     },
+    "@types/google.maps": {
+      "version": "3.50.1",
+      "resolved": "https://registry.npmjs.org/@types/google.maps/-/google.maps-3.50.1.tgz",
+      "integrity": "sha512-Wd3+cZwIk2DhDDosYCvXREvBfRAy9eXTf44YOcOKXhzN88AnLOCO+vrKH0N+QiP3SUtf7A6hn3yVJrMdXIqp1g=="
+    },
+    "@types/hogan.js": {
+      "version": "3.0.1",
+      "resolved": "https://registry.npmjs.org/@types/hogan.js/-/hogan.js-3.0.1.tgz",
+      "integrity": "sha512-D03i/2OY7kGyMq9wdQ7oD8roE49z/ZCZThe/nbahtvuqCNZY9T2MfedOWyeBdbEpY2W8Gnh/dyJLdFtUCOkYbg=="
+    },
     "@types/json-schema": {
       "version": "7.0.9",
       "resolved": "https://registry.npmjs.org/@types/json-schema/-/json-schema-7.0.9.tgz",
@@ -4362,6 +4763,11 @@
       "resolved": "https://registry.npmjs.org/@types/parse-json/-/parse-json-4.0.0.tgz",
       "integrity": "sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==",
       "dev": true
+    },
+    "@types/qs": {
+      "version": "6.9.7",
+      "resolved": "https://registry.npmjs.org/@types/qs/-/qs-6.9.7.tgz",
+      "integrity": "sha512-FGa1F62FT09qcrueBA6qYTrJPVDzah9a+493+o2PCXsesWHIn27G98TsSMs3WPNbZIEj4+VJf6saSFpvD+3Zsw=="
     },
     "@webassemblyjs/ast": {
       "version": "1.11.1",
@@ -4590,7 +4996,7 @@
     "agentkeepalive": {
       "version": "2.2.0",
       "resolved": "https://registry.npmjs.org/agentkeepalive/-/agentkeepalive-2.2.0.tgz",
-      "integrity": "sha1-xdG9SxKQCPEWPyNvhuX66iAm4u8="
+      "integrity": "sha512-TnB6ziK363p7lR8QpeLC8aMr8EGYBKZTpgzQLfqTs3bR0Oo5VbKdwKf8h0dSzsYrB7lSCgfJnMZKqShvlq5Oyg=="
     },
     "ajv": {
       "version": "6.12.6",
@@ -4640,32 +5046,32 @@
       "requires": {}
     },
     "algoliasearch": {
-      "version": "3.35.1",
-      "resolved": "https://registry.npmjs.org/algoliasearch/-/algoliasearch-3.35.1.tgz",
-      "integrity": "sha512-K4yKVhaHkXfJ/xcUnil04xiSrB8B8yHZoFEhWNpXg23eiCnqvTZw1tn/SqvdsANlYHLJlKl0qi3I/Q2Sqo7LwQ==",
+      "version": "4.14.2",
+      "resolved": "https://registry.npmjs.org/algoliasearch/-/algoliasearch-4.14.2.tgz",
+      "integrity": "sha512-ngbEQonGEmf8dyEh5f+uOIihv4176dgbuOZspiuhmTTBRBuzWu3KCGHre6uHj5YyuC7pNvQGzB6ZNJyZi0z+Sg==",
       "requires": {
-        "agentkeepalive": "^2.2.0",
-        "debug": "^2.6.9",
-        "envify": "^4.0.0",
-        "es6-promise": "^4.1.0",
-        "events": "^1.1.0",
-        "foreach": "^2.0.5",
-        "global": "^4.3.2",
-        "inherits": "^2.0.1",
-        "isarray": "^2.0.1",
-        "load-script": "^1.0.0",
-        "object-keys": "^1.0.11",
-        "querystring-es3": "^0.2.1",
-        "reduce": "^1.0.1",
-        "semver": "^5.1.0",
-        "tunnel-agent": "^0.6.0"
-      },
-      "dependencies": {
-        "semver": {
-          "version": "5.7.1",
-          "resolved": "https://registry.npmjs.org/semver/-/semver-5.7.1.tgz",
-          "integrity": "sha512-sauaDf/PZdVgrLTNYHRtpXa1iRiKcaebiKQ1BJdpQlWH2lCvexQdX55snPFyK7QzpudqbCI0qXFfOasHdyNDGQ=="
-        }
+        "@algolia/cache-browser-local-storage": "4.14.2",
+        "@algolia/cache-common": "4.14.2",
+        "@algolia/cache-in-memory": "4.14.2",
+        "@algolia/client-account": "4.14.2",
+        "@algolia/client-analytics": "4.14.2",
+        "@algolia/client-common": "4.14.2",
+        "@algolia/client-personalization": "4.14.2",
+        "@algolia/client-search": "4.14.2",
+        "@algolia/logger-common": "4.14.2",
+        "@algolia/logger-console": "4.14.2",
+        "@algolia/requester-browser-xhr": "4.14.2",
+        "@algolia/requester-common": "4.14.2",
+        "@algolia/requester-node-http": "4.14.2",
+        "@algolia/transporter": "4.14.2"
+      }
+    },
+    "algoliasearch-helper": {
+      "version": "3.11.1",
+      "resolved": "https://registry.npmjs.org/algoliasearch-helper/-/algoliasearch-helper-3.11.1.tgz",
+      "integrity": "sha512-mvsPN3eK4E0bZG0/WlWJjeqe/bUD2KOEVOl0GyL/TGXn6wcpZU8NOuztGHCUKXkyg5gq6YzUakVTmnmSSO5Yiw==",
+      "requires": {
+        "@algolia/events": "^4.0.1"
       }
     },
     "ansi-regex": {
@@ -4886,6 +5292,11 @@
       "integrity": "sha512-p3KULyQg4S7NIHixdwbGX+nFHkoBiA4YQmyWtjb8XngSKV124nJmRysgAeujbUVb15vh+RvFUfCPqU7rXk+hZg==",
       "dev": true
     },
+    "classnames": {
+      "version": "2.3.1",
+      "resolved": "https://registry.npmjs.org/classnames/-/classnames-2.3.1.tgz",
+      "integrity": "sha512-OlQdbZ7gLfGarSqxesMesDa5uz7KFbID8Kpq/SxIoNGDqY8lSYs0D+hhtBXhcdB3rcbXArFr7vlHheLk1voeNA=="
+    },
     "cliui": {
       "version": "5.0.0",
       "resolved": "https://registry.npmjs.org/cliui/-/cliui-5.0.0.tgz",
@@ -5074,6 +5485,35 @@
         "stack-utils": "^1.0.1",
         "to-factory": "^1.0.0",
         "zepto": "^1.2.0"
+      },
+      "dependencies": {
+        "algoliasearch": {
+          "version": "3.35.1",
+          "resolved": "https://registry.npmjs.org/algoliasearch/-/algoliasearch-3.35.1.tgz",
+          "integrity": "sha512-K4yKVhaHkXfJ/xcUnil04xiSrB8B8yHZoFEhWNpXg23eiCnqvTZw1tn/SqvdsANlYHLJlKl0qi3I/Q2Sqo7LwQ==",
+          "requires": {
+            "agentkeepalive": "^2.2.0",
+            "debug": "^2.6.9",
+            "envify": "^4.0.0",
+            "es6-promise": "^4.1.0",
+            "events": "^1.1.0",
+            "foreach": "^2.0.5",
+            "global": "^4.3.2",
+            "inherits": "^2.0.1",
+            "isarray": "^2.0.1",
+            "load-script": "^1.0.0",
+            "object-keys": "^1.0.11",
+            "querystring-es3": "^0.2.1",
+            "reduce": "^1.0.1",
+            "semver": "^5.1.0",
+            "tunnel-agent": "^0.6.0"
+          }
+        },
+        "semver": {
+          "version": "5.7.1",
+          "resolved": "https://registry.npmjs.org/semver/-/semver-5.7.1.tgz",
+          "integrity": "sha512-sauaDf/PZdVgrLTNYHRtpXa1iRiKcaebiKQ1BJdpQlWH2lCvexQdX55snPFyK7QzpudqbCI0qXFfOasHdyNDGQ=="
+        }
       }
     },
     "dom-walk": {
@@ -5364,7 +5804,7 @@
     "events": {
       "version": "1.1.1",
       "resolved": "https://registry.npmjs.org/events/-/events-1.1.1.tgz",
-      "integrity": "sha1-nr23Y1rQmccNzEwqH1AEKI6L2SQ="
+      "integrity": "sha512-kEcvvCBByWXGnZy6JUlgAp2gBIUjfCAV6P6TgT1/aaQKcmuAEC4OZTV1I4EWQLz2gxZw76atuVyvHhTxvi0Flw=="
     },
     "execa": {
       "version": "5.0.0",
@@ -5458,9 +5898,9 @@
       }
     },
     "foreach": {
-      "version": "2.0.5",
-      "resolved": "https://registry.npmjs.org/foreach/-/foreach-2.0.5.tgz",
-      "integrity": "sha1-C+4AUBiusmDQo6865ljdATbsG5k="
+      "version": "2.0.6",
+      "resolved": "https://registry.npmjs.org/foreach/-/foreach-2.0.6.tgz",
+      "integrity": "sha512-k6GAGDyqLe9JaebCsFCoudPPWfihKu8pylYXRlqP1J7ms39iPoTtk2fviNglIeQEwdh0bQeKJ01ZPyuyQvKzwg=="
     },
     "forever-agent": {
       "version": "0.6.1",
@@ -5602,6 +6042,11 @@
         "nopt": "1.0.10"
       }
     },
+    "htm": {
+      "version": "3.1.1",
+      "resolved": "https://registry.npmjs.org/htm/-/htm-3.1.1.tgz",
+      "integrity": "sha512-983Vyg8NwUE7JkZ6NmOqpCZ+sh1bKv2iYTlUkzlWmA5JD2acKoxd4KVxbMmxX/85mtfdnDmTFoNKcg5DGAvxNQ=="
+    },
     "http-signature": {
       "version": "1.2.0",
       "resolved": "https://registry.npmjs.org/http-signature/-/http-signature-1.2.0.tgz",
@@ -5685,6 +6130,26 @@
       "version": "2.0.4",
       "resolved": "https://registry.npmjs.org/inherits/-/inherits-2.0.4.tgz",
       "integrity": "sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ=="
+    },
+    "instantsearch.js": {
+      "version": "4.46.2",
+      "resolved": "https://registry.npmjs.org/instantsearch.js/-/instantsearch.js-4.46.2.tgz",
+      "integrity": "sha512-gjr3mtMWbfuVyFbRy8s23ACcvpEPRtAFCZ20ecvi9gbjqoRdzZ3qWgwj7Vq7EIxm04Jx6kD9jZPa7qx7o8wn1g==",
+      "requires": {
+        "@algolia/events": "^4.0.1",
+        "@algolia/ui-components-highlight-vdom": "^1.1.2",
+        "@algolia/ui-components-shared": "^1.1.2",
+        "@types/google.maps": "^3.45.3",
+        "@types/hogan.js": "^3.0.0",
+        "@types/qs": "^6.5.3",
+        "algoliasearch-helper": "^3.11.1",
+        "classnames": "^2.2.5",
+        "hogan.js": "^3.0.2",
+        "htm": "^3.0.0",
+        "preact": "^10.10.0",
+        "qs": "^6.5.1 < 6.10",
+        "search-insights": "^2.1.0"
+      }
     },
     "interpret": {
       "version": "2.2.0",
@@ -5901,7 +6366,7 @@
     "load-script": {
       "version": "1.0.0",
       "resolved": "https://registry.npmjs.org/load-script/-/load-script-1.0.0.tgz",
-      "integrity": "sha1-BJGTngvuVkPuSUp+PaPSuscMbKQ="
+      "integrity": "sha512-kPEjMFtZvwL9TaZo0uZ2ml+Ye9HUMmPwbYRJ324qF9tqMejwykJ5ggTyvzmrbBeapCAbk98BSbTeovHEEP1uCA=="
     },
     "loader-runner": {
       "version": "4.2.0",
@@ -5989,7 +6454,7 @@
     "min-document": {
       "version": "2.19.0",
       "resolved": "https://registry.npmjs.org/min-document/-/min-document-2.19.0.tgz",
-      "integrity": "sha1-e9KC4/WELtKVu3SM3Z8f+iyCRoU=",
+      "integrity": "sha512-9Wy1B3m3f66bPPmU5hdA4DR4PB2OfDU/+GS3yAB7IQozE3tqXaVv2zOjgla7MEGSRv95+ILmOuvhLkOK6wJtCQ==",
       "requires": {
         "dom-walk": "^0.1.0"
       }
@@ -6058,7 +6523,7 @@
     "ms": {
       "version": "2.0.0",
       "resolved": "https://registry.npmjs.org/ms/-/ms-2.0.0.tgz",
-      "integrity": "sha1-VgiurfwAvmwpAd9fmGF4jeDVl8g="
+      "integrity": "sha512-Tpp60P6IUJDTuOq/5Z8cdskzJujfwqfOTkrwIwj7IRISpnkJnT6SyJ4PCPnGMoFjC9ddhal5KVIYtAt97ix05A=="
     },
     "nanoid": {
       "version": "3.3.1",
@@ -6349,6 +6814,11 @@
       "integrity": "sha512-1NNCs6uurfkVbeXG4S8JFT9t19m45ICnif8zWLd5oPSZ50QnwMfK+H3jv408d4jw/7Bttv5axS5IiHoLaVNHeQ==",
       "dev": true
     },
+    "preact": {
+      "version": "10.11.0",
+      "resolved": "https://registry.npmjs.org/preact/-/preact-10.11.0.tgz",
+      "integrity": "sha512-Fk6+vB2kb6mSJfDgODq0YDhMfl0HNtK5+Uc9QqECO4nlyPAQwCI+BKyWO//idA7ikV7o+0Fm6LQmNuQi1wXI1w=="
+    },
     "prettier": {
       "version": "2.5.1",
       "resolved": "https://registry.npmjs.org/prettier/-/prettier-2.5.1.tgz",
@@ -6362,7 +6832,7 @@
     "process": {
       "version": "0.11.10",
       "resolved": "https://registry.npmjs.org/process/-/process-0.11.10.tgz",
-      "integrity": "sha1-czIwDoQBYb2j5podHZGn1LwW8YI="
+      "integrity": "sha512-cdGef/drWFoydD1JsMzuFf8100nZl+GT+yacc2bEced5f9Rjk4z+WtFUTBu9PhOi9j/jfmBPu0mMEY4wIdAF8A=="
     },
     "psl": {
       "version": "1.8.0",
@@ -6382,7 +6852,7 @@
     "querystring-es3": {
       "version": "0.2.1",
       "resolved": "https://registry.npmjs.org/querystring-es3/-/querystring-es3-0.2.1.tgz",
-      "integrity": "sha1-nsYfeQSYdXB9aUFFlv2Qek1xHnM="
+      "integrity": "sha512-773xhDQnZBMFobEiztv8LIl70ch5MSF/jUQVlhwFyBILqq96anmoctVIYz+ZRp0qbCKATTn6ev02M3r7Ga5vqA=="
     },
     "queue-microtask": {
       "version": "1.2.3",
@@ -6438,6 +6908,11 @@
       "requires": {
         "object-keys": "^1.1.0"
       }
+    },
+    "regenerator-runtime": {
+      "version": "0.13.9",
+      "resolved": "https://registry.npmjs.org/regenerator-runtime/-/regenerator-runtime-0.13.9.tgz",
+      "integrity": "sha512-p3VT+cOEgxFsRRA9X4lkI1E+k2/CtnKtU4gcxyaCUreilL/vqI6CdZ3wxVUx3UOUg+gnUOQQcRI7BmSI656MYA=="
     },
     "remove-trailing-separator": {
       "version": "1.1.0",
@@ -6556,6 +7031,11 @@
         "ajv": "^6.12.5",
         "ajv-keywords": "^3.5.2"
       }
+    },
+    "search-insights": {
+      "version": "2.2.1",
+      "resolved": "https://registry.npmjs.org/search-insights/-/search-insights-2.2.1.tgz",
+      "integrity": "sha512-JDfVGZbKqTtiKVZjAVbkNw9C9f0ib80yx6Ea17M3z4RvPmuD0GYWXuFwA9++dpbreBEMH4TC3lQ29Zq7O4b5oA=="
     },
     "semver": {
       "version": "7.3.6",
@@ -6837,7 +7317,7 @@
     "through": {
       "version": "2.3.8",
       "resolved": "https://registry.npmjs.org/through/-/through-2.3.8.tgz",
-      "integrity": "sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU="
+      "integrity": "sha512-w89qg7PI8wAdvX60bMDP+bFoD5Dvhm9oLheFp5O4a2QF0cSBGsBX4qZmadPMvVqlLJBBci+WqGGOAPvcDeNSVg=="
     },
     "to-factory": {
       "version": "1.0.0",
