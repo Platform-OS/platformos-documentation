@@ -13,18 +13,17 @@ platformOS offers an easy way of sending emails that could be used – for examp
 
 ## Enabling emails on the staging instance
 
-As a first step we would need to **enable sending emails** on the _staging_ instance. This step is not required on production instances, but the free _staging_ is restricted to sending emails only to a single address configured for testing. The emails send from those instances will always be redirected to the test address.
+As a first step we would need to **enable sending emails** on the _staging_ instance. This step is not required on production instances, but the free _staging_ is restricted to sending emails only to adresses preconfigured for testing. The emails send from those instances will always be redirected to the test addresses.
 
 To set the test email, we need to log in to the [Partner Portal](https://partners.platformos.com/) and choose the desired instance from the [Instances](https://partners.platformos.com/instances) list.
 
 Then, the _Update Configuration_ button will take us to the page where we can edit the desired values, but not before _Switching to edit mode_.
 
-What we seek here is a section of the configuration called `attributes` where we need to set two values – the `test_mode` and `test_email`. The first one is a boolean that we need to set to `true`, the second will be the test email address that all the emails for given instance will be send to:
+What we seek here is a section of the configuration called `attributes` where we need to change a single value – the `test_email`. It needs to be set to the test email address that all the emails for given instance will be send to:
 
 ```javascript
 [...]
 "attributes": {
-  "test_mode": true,
   "test_email": "your-email-address@example.com",
   [...]
 },
@@ -156,14 +155,14 @@ method: post
 
 
 {% liquid
-	graphql result = 'item/create', title: context.params.title
+	graphql item = 'item/create', title: context.params.title
 
-	if result.record.id
-+		graphql email = 'item/email/created', data: context.params
+	if item.record.id
++		graphql email = 'item/email/created', data: item
 		redirect_to '/'
 	else
 		echo 'Something went wrong'
-		echo result.errors
+		echo item.errors
 	endif
 %}
 ```
