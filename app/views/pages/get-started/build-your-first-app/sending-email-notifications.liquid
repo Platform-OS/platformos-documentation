@@ -155,14 +155,14 @@ method: post
 
 
 {% liquid
-	graphql item = 'item/create', title: context.params.title
+	graphql result = 'item/create', title: context.params.title
 
-	if item.record.id
-+		graphql email = 'item/email/created', data: item
+	if result.record.id
++		graphql email = 'item/email/created', data: context.params
 		redirect_to '/'
 	else
 		echo 'Something went wrong'
-		echo item.errors
+		echo result.errors
 	endif
 %}
 ```
