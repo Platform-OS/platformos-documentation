@@ -5,7 +5,7 @@ metadata:
 converter: markdown
 ---
 
-platformOS offers an easy way of sending emails that could be used – for example – as notifications about a change in the application.
+platformOS offers an easy way of sending emails that could be used, for example, as notifications about a change in the application.
 
 
 {% include 'alert/tip', content: 'You can check out the final code for this tutorial in a <a href="https://github.com/Platform-OS/tutorial-todo/tree/feature/emailNotification">separate branch</a> on GitHub' %}
@@ -13,13 +13,13 @@ platformOS offers an easy way of sending emails that could be used – for examp
 
 ## Enabling emails on the staging instance
 
-As a first step we would need to **enable sending emails** on the _staging_ instance. This step is not required on production instances, but the free _staging_ is restricted to sending emails only to adresses preconfigured for testing. The emails send from those instances will always be redirected to the test addresses.
+As a first step, you need to **enable sending emails** on the _staging_ instance. This step is not required on production instances, but the free _staging_ is restricted to sending emails only to adresses preconfigured for testing. The emails sent from those instances will always be redirected to the test addresses.
 
-To set the test email, we need to log in to the [Partner Portal](https://partners.platformos.com/) and choose the desired instance from the [Instances](https://partners.platformos.com/instances) list.
+To set the test email, log in to the [Partner Portal](https://partners.platformos.com/) and choose the instance from the [Instances](https://partners.platformos.com/instances) list.
 
-Then, the _Update Configuration_ button will take us to the page where we can edit the desired values, but not before _Switching to edit mode_.
+Click on the _Update Configuration_ button, then click on _Switching to edit mode_. Edit the desired values.
 
-What we seek here is a section of the configuration called `attributes` where we need to change a single value – the `test_email`. It needs to be set to the test email address that all the emails for given instance will be send to:
+Look for a section of the configuration called `attributes` and change the value of the `test_email`. It needs to be set to the test email address that all the emails for the instance will be sent to:
 
 ```javascript
 [...]
@@ -35,9 +35,9 @@ Remember to save the updates by clicking the _Update Instance configuration_ but
 
 ## Creating a layout for the emails
 
-platformOS treats emails in a similar way as standard HTML pages. We can create a separate layout for the emails and use Liquid to pass any data to it. Let’s start with creating the layout.
+platformOS treats emails similarly to standard HTML pages. You can create a separate layout for the emails and use Liquid to pass any data to it. Start with creating the layout.
 
-Assuming, for the purpose of this tutorial, that we would like an independent HTML structure for all of our emails, we can create a new layout in the `app/views/layout/` folder, in a file called `mailer.liquid`. The name can be anything you want of course.
+Assuming, for the purpose of this tutorial, that you would like an independent HTML structure for all of your emails, you can create a new layout in the `app/views/layout/` folder, in a file called `mailer.liquid`. The name can be anything you want.
 
 #### /app/views/layout/mailer.liquid
 
@@ -67,11 +67,11 @@ Assuming, for the purpose of this tutorial, that we would like an independent HT
 ```
 {% endraw %}
 
-The `{% raw %}{{ content_for_layout }}{% endraw %}` is a Liquid variable that will be replaced by the actual email content we’ll define in other `.liquid` files.
+The `{% raw %}{{ content_for_layout }}{% endraw %}` is a Liquid variable that will be replaced by the actual email content you’ll define in other `.liquid` files.
 
-If you ever styled an email, you know how many limitations the CSS for emails has. One of the rules to follow is that it’s safest to place the styles inline with the help of the `style` attribute. platformOS makes it easy – whatever styles you’ll include in the layout will be automatically converted to inline styles. In the case above – the `<h1>` will become `<h1 style="text-align: center;">`.
+If you ever styled an email, you know how many limitations the CSS for emails has. One of the rules to follow is that it’s safest to place the styles inline with the help of the `style` attribute. platformOS makes this easy: whatever styles you’ll include in the layout will be automatically converted to inline styles. In the case above, the `<h1>` will become `<h1 style="text-align: center;">`.
 
-For our _To Do_ app, let’s add an email notification when you add a new item on the list. The content of email messages should be kept in `app/emails/` folder. To follow the pattern we established in this tutorial we’re going to create the file as `app/emails/item/created.liquid`:
+For your _To Do_ app, add an email notification when you add a new item on the list. The content of email messages should be kept in the `app/emails/` folder. To follow the pattern you established in this tutorial you’re going to create the file as `app/emails/item/created.liquid`:
 
 #### /app/emails/item/created.liquid
 
@@ -88,18 +88,18 @@ A new item has been created: {{ data.title }}
 ```
 {% endraw %}
 
-The top-most part of the code, between the dashed lines (`---`) is the page configuration section. Those are the internal information passed to the platform to describe the page behavior or pass additional metadata.
+The top-most part of the code, between the dashed lines (`---`) is the page configuration section. These are internal information passed to the platform to describe the page behavior or pass additional metadata.
 
-For the email page we need to configure the recipient email address (`to:`), the sender (`from:`) and the `subject` of the message.
+For the email page, you need to configure the recipient email address (`to:`), the sender (`from:`), and the `subject` of the message.
 
-We’ve created a new layout file, especially for this occasion, so the 5th line tells the platform to use the file stored in `app/views/layout/mailer.liquid` as a scaffolding for the email content.
+You’ve created a new layout file specifically for this occasion, so line 5 tells the platform to use the file stored in `app/views/layout/mailer.liquid` as a scaffolding for the email content.
 
-The last line is just the content of the email we’re going to send. Since we would like to pass the title of the item added to the list, we are outputting the content of `data.title`. The `data` will be the name of the variable we are going to use in the GraphQL _mutation_ that will trigger sending the email.
+The last line is just the content of the email you’re going to send. Since you would like to pass the title of the item added to the list, you output the content of `data.title`. The `data` will be the name of the variable you are going to use in the GraphQL _mutation_ that will trigger sending the email.
 
 
 ## Using GraphQL to send an email
 
-To actually send an email through the platform we need to trigger it via GraphQL. To make it as simple as we can, let’s create a new file under `app/graphql/item/email/created.graphql` that will handle sending the email after we create a new item in the database:
+To actually send an email through the platform you need to trigger it via GraphQL. To make it as simple as you can, create a new file under `app/graphql/item/email/created.graphql` that will handle sending the email after you create a new item in the database:
 
 
 #### /app/graphql/item/email/created.graphql
@@ -118,18 +118,18 @@ mutation email_item_created(
 }
 ```
 
-We define a new _mutation_ – which is a GraphQL name for any operation that modify or create data – in the 1st line. The name of the mutation is just there for our convenience.
+In line 1, you define a new _mutation_ – which is a GraphQL name for any operation that modifies or creates data. The name of the mutation is just there for your convenience.
 
-In the 2nd line we are defining a variable called `data`. In GraphQL variable name is prefixed with an dollar sign (`$`). This will be the variable with all of the information we want to send in the email, so to handle all of that data we need it to be a _hash_ (also called an _object_ in other programming languages). The exclamation mark (`!`) in the end means that this variable is required for the mutation to run.
+In line 2, you define a variable called `data`. In GraphQL, the variable name is prefixed with a dollar sign (`$`). This will be the variable with all of the information you want to send in the email, so to handle all of that data you need it to be a _hash_ (also called an _object_ in other programming languages). The exclamation mark (`!`) in the end means that this variable is required for the mutation to run.
 
-Then, in the line 4th, we are using a function that will send the email using the Liquid template that we created in the previous steps of this tutorial (line 5th). In line 6th we are passing the `data` variable to this template. If you’ll check the `app/emails/item/created.liquid` file you will notice that we are using this `data` hash to output the title in the email’s content.
+In line 4, you use a function that will send the email using the Liquid template that you created in the previous steps of this tutorial (line 5). In line 6, you pass the `data` variable to this template. If you’ll check the `app/emails/item/created.liquid` file you will notice that this `data` hash is used to output the title in the email’s content.
 
-Starting from the line 8 we are defining what would we like to get returned after the mutation will do it’s thing. The `is_scheduled_to_send` is a boolean that will tell us if everything went right (when `true`) and the email is added to the queue and will be send. Alternatively, if something went wrong, we will have the error message returned, as defined in the 9th line.
+Starting from line 8, you define what you would like to get returned after the mutation will do its thing. The `is_scheduled_to_send` is a boolean that will tell you if everything went right (when `true`) and the email is added to the queue and will be sent. Alternatively, if something went wrong, you will have the error message returned, as defined in line 9.
 
 
 ## Trigger sending the email
 
-When we have [enabled emails on staging](#enabling-emails-on-the-staging-instance), [created the HTML](#creating-a-layout-for-the-emails) for the emails and [prepared the mutation](#using-graphql-to-send-an-email), the only thing left to do is to run the mutation when needed using Liquid.
+When you have [enabled emails on staging](#enabling-emails-on-the-staging-instance), [created the HTML](#creating-a-layout-for-the-emails) for the emails and [prepared the mutation](#using-graphql-to-send-an-email), the only thing left to do is to run the mutation when needed using Liquid.
 
 {% raw %}
 ```liquid
@@ -139,11 +139,11 @@ graphql email = 'item/email/created', data: <hash>
 ```
 {% endraw %}
 
-This simple line runs the mutation saved in `app/graphql/item/email/created.graphql`. We don’t need to pass the whole path to the file as the platform knows where to look for GraphQL files. We are also passing to it a single variable called `data` that we will use to assign the hash with the information needed for sending the email.
+This line runs the mutation saved in `app/graphql/item/email/created.graphql`. There's no need to pass the whole path to the file as the platform knows where to look for GraphQL files. You are also passing to it a single variable called `data` that you will use to assign the hash with the information needed for sending the email.
 
 If you are following this tutorial and building the _To Do_ app, then you probably would like to send the email after a new item has been added to the list.
 
-Since we have a separate page that handles this (`app\views\pages\item\create.liquid`), we can just plug into the right place and trigger the GraphQL mutation after the new item was successfully saved in the database:
+Since you have a separate page that handles this (`app\views\pages\item\create.liquid`), you can just plug into the right place and trigger the GraphQL mutation after the new item was successfully saved in the database:
 
 #### /app/views/pages/item/create.liquid
 
@@ -168,22 +168,22 @@ method: post
 ```
 {% endraw %}
 
-In the 10th line we are triggering the GraphQL created for sending emails, but only if the record was added successfully.
+In line 10, you trigger the GraphQL created for sending emails, but only if the record was added successfully.
 
-We are also passing the whole `context.params` hash as our `data` variable. This way every `<form>` element value will be passed to the GraphQL mutation, including the `title` that we are sending in the email.
+You also pass the whole `context.params` hash as your `data` variable. This way every `<form>` element value will be passed to the GraphQL mutation, including the `title` that you are sending in the email.
 
 <img src="{{ 'images/get-started/todo/email_basic.jpg' | asset_url }}" width="742" height="346">
 
-<p>When we have everything configured and ready, you should see an email sent to the address you’ve provided in the configuration on Partners Portal.</p>
+<p>When you have everything configured and ready, you should see an email sent to the address you’ve provided in the configuration on the Partner Portal.</p>
 
 
 ## Sending emails to addresses provided dynamically
 
-In the `app/emails/item/created.liquid` we’ve hardcoded the `to:` address, but in real life you will probably want to insert any address passed as a variable. For example when you’ll implement any form of user accounts and would like to send the emails to the owner of that account.
+In the `app/emails/item/created.liquid` you’ve hardcoded the `to:` address, but in real life you will probably want to insert any address passed as a variable. For example when you’ll implement any form of user accounts and would like to send the emails to the owner of that account.
 
-{% include 'alert/tip', content: 'Please remember that on the free <em>Staging</em> environment emails can be sent only for the test email address. To send emails to other addresses you will have to sign up for the <em>Production</em> environment.' %}
+{% include 'alert/tip', content: 'Please remember that on the free <em>Staging</em> environment emails can only be sent to the test email address. To send emails to other addresses you will have to sign up for the <em>Production</em> environment.' %}
 
-It is totally possible to use a variable in the configuration section of a page. As an example, in `app/emails/item/created.liquid` we could use `{% raw %}{{ data.recipient }}{% endraw %}`:
+It is totally possible to use a variable in the configuration section of a page. As an example, in `app/emails/item/created.liquid` you could use `{% raw %}{{ data.recipient }}{% endraw %}`:
 
 #### /app/emails/item/created.liquid
 
@@ -200,7 +200,7 @@ layout: mailer
 
 Notice that the Liquid variable is surrounded with quotation marks.
 
-This would also mean that we need to pass the `recipient` variable to our GraphQL mutation. Since we are passing the whole `context.params` as described above, we could just simply use a hidden form element in the `<form>`:
+This would also mean that you need to pass the `recipient` variable to your GraphQL mutation. Since you are passing the whole `context.params` as described above, you could use a hidden form element in the `<form>`:
 
 #### /app/views/pages/index.liquid
 
