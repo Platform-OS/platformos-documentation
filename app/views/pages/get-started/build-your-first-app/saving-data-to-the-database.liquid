@@ -14,7 +14,7 @@ Don’t worry if you never used any of these before. Both of them are built in a
 
 As a first step, figure out the structure of the dabase you need. For this simple example, you will only need a **single database table** in which you will save the **item’s title**.
 
-You would also need a **unique ID** for every record you store, but this part platformOS does **automatically** for you, so youdo  don’t really have to think about it.
+You would also need a **unique ID** for every record you store, but platformOS creates it **automatically**, so you don’t really have to think about it.
 
 | ID | Title                              |
 |----|------------------------------------|
@@ -61,7 +61,7 @@ How can you make sure that the table you’ve just created is really there in th
 For this purpose, we have created a tool that allows you to browse through the tables and edit the records. Run this command to start the tool:
 
 ```bash
-pos-cli gui serve <instance alias>
+pos-cli gui serve dev
 ```
 
 This starts an application to help you administer your instance. When the application is running you can go to [http://localhost:3333](http://localhost:3333) in your browser.
@@ -75,7 +75,7 @@ If everything went right, you should see the newly created `item` table on the l
 
 ## Save the data in the database
 
-To actually save some data in the database, you need to start by creating a GraphQL query in the `/app/graphql/` directory. 
+To actually save some data in the database, you need to start by creating a GraphQL mutation in the `/app/graphql/` directory.
 
 In this example, you only have a single table in your application, so you could put the file directly in that folder, but when your application will grow, you might want to consider a more standarized way of organizing the queries.
 
@@ -120,7 +120,7 @@ There is also line 12. Each query you run will return some data. This is the lin
 
 The query is written and saved in a `.graphql` file. How can you be sure the query does what you want it to?
 
-In the toolset available when `pos-cli gui serve <instance alias>` is running, you have an app called _GraphiQL_. This is a tool that allows you to test your queries. In the top text field, **paste your query**. Then, expand the bottom panel called _Query variables_. **Pass the variables** you defined for the query here. So, in your case it can be:
+In the toolset available when `pos-cli gui serve` is running, you have an app called _GraphiQL_. This is a tool that allows you to test your queries. In the top text field, **paste your query**. Then, expand the bottom panel called _Query variables_. **Pass the variables** you defined for the query here. So, in your case it can be:
 
 
 ```javascript
@@ -181,7 +181,7 @@ method: post
 ```
 {% endraw %}
 
-The page you are creating will accept some data from the user, so you want it to be available when it will be requested with the `POST` http method. On platformOS, you define the method that the page will be available for in the page configuration section. This section needs to be placed on top of the page. The configuration needs to be placed between the lines with three dashes (`---`).
+The page you are creating will accept some data from the user, so you want it to be available when it will be requested with the `POST` http method. On platformOS, you define the method that the page will be available for in the page configuration section. This section is called _frontmatter_ and it needs to be placed on top of the page. The configuration needs to be placed between the lines with three dashes (`---`).
 
 ```liquid
 ---

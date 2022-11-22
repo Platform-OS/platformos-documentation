@@ -5,7 +5,7 @@ metadata:
 converter: markdown
 ---
 
-One of the core concepts of platformOS is that you never work offline. You edit the files on your system in your favourite code editor, but you are constantly connected to your instance so that the platformOS engine can interpret and parse your codebase.
+One of the core concepts of platformOS is that you never work offline. You edit the files in your local filesystem with your favourite code editor, but you are constantly connected to your instance so that the platformOS engine can interpret and parse your codebase.
 
 You write code locally, but it is executed remotely.
 
@@ -16,10 +16,11 @@ In order for platformOS to understand and properly interpret your code, it needs
 
 The simplest method for getting the proper folder structure is to use the `pos-cli init` command.
 
-Start with creating an empty folder – named in this example platforms-hello – for your project and then navigating to it from the command line:
+Start with creating an empty folder – named in this example platformos-hello – for your project and then navigating to it from the command line:
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
-cd x:\platformos-hello
+mkdir platformos-hello
+cd platformos-hello
 </code></pre>
 
 Now, to automatically create the proper directory structure inside that folder use:
@@ -41,7 +42,7 @@ For pos-cli to know which instance is related to any particular codebase, you ne
 
 Your instance URL is available in the Partner Portal on the [Instances list](https://partners.platformos.com/instances).
 
-To store your instance URL in the configuration, run a `pos-cli env` add command with your personal data in the parameters:
+To store your instance URL in the configuration, run a `pos-cli env add` command with your personal data in the parameters:
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
 pos-cli env add &lt;environment&gt; --email &lt;your email&gt; --url &lt;your instance url&gt;
@@ -60,7 +61,7 @@ pos-cli env add dev --email myemail@example.com —-url https://my-instance.stag
 After running this command, you’ll get asked for your Partner Portal password to authenticate. Providing the correct password will be confirmed by pos-cli:
 
 ```bash
-Environment <your instance url> as <environment> has been added successfully.
+Environment <your instance url> as dev has been added successfully.
 ```
 
 
@@ -167,7 +168,7 @@ Every **page** that you want to create should be placed in app/views/pages. You 
 
 ### Data handling
 
-The place for **schema** (the structure of your database written in YAML) is `app/model_schemas`. We are going to walk through creating them in the next sections of this tutorial.
+The place for **schema** (the structure of your database written in YAML) is `app/schema`. We are going to walk through creating them in the next sections of this tutorial.
 
 **GraphQL** queries and mutations are used to get the data from the database or save data in it. All of those queries go to `app/graphql`.
 
