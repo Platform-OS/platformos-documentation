@@ -1,23 +1,23 @@
 ---
 converter: markdown
 metadata:
-  title: Software design principles
-  description: Software design principles
+  title: Software Design Principles
+  description: Some of the most important software design patterns and principles and how to implement them in a modular architecture.
 ---
 
-In this section we'll go through some of the most important software design patterns and principles and see how we can implement them in a modular architecture.
+This section explains some of the most important software design patterns and principles and shows how to implement them in a modular architecture.
 
 ## Single responsibility
-The single responsibility principle states that a software entity should have only a single purpose. This is one of the main pillars of modularity.
-Single responsibility means smaller units, lower complexity and fewer reasons to change the code in the future as the application becomes more and more complex.
+The single responsibility principle states that a software entity should only have a single purpose. This is one of the main pillars of modularity.
+Single responsibility means smaller units, lower complexity, and fewer reasons to change the code in the future as the application becomes more and more complex.
 
 
 ## Open-closed principle
 
 This principle states that software entities should be open for extension but closed for modification.
-This means that we should not have to modify our existing module to make it work for a use case in our application or to make it work together with another module.
+This means that you should not have to modify your existing module to make it work for a use case in your application or to make it work together with another module.
 
-The abstract permission module should work for any concrete permission type we need in our application or in our custom modules. Similarly, our abstract payment module should be able to handle any concrete payment method types we implement in our ecommerce solution.
+The abstract permission module should work for any concrete permission type you need in your application or in your custom modules. Similarly, your abstract payment module should be able to handle any concrete payment method types you implement in your ecommerce solution.
 This makes it possible to have distinct, isolated units that work together in a predictable way without the need for constant modifications/adjustments in existing modules.
 
 We achieved this goal by introducing the new [hook system](https://github.com/Platform-OS/pos-module-core#hooks) in the Core Module.
@@ -27,7 +27,7 @@ A hook is a means of executing custom code (function) either before, after, or i
 Back to the payment module example:
 A payment module provides a standard way and an interface (a set of rules) for other modules to extend its functionality.
 It's an abstract module that delegates the payment process to other modules and communicates with the app. This is the only main focus for the module (single responsibility).
-If we want to add a new payment type, we can implement it as a custom payment type module using the payment module's provided hooks, but we don't need to change the payment module's code.
+If you want to add a new payment type, you can implement it as a custom payment type module using the payment module's provided hooks, but you don't need to change the payment module's code.
 
 ## Liskov Substitution and the Interface Segregation Principle
 
@@ -36,7 +36,7 @@ We can translate this principle to our use case as: Independent modules implemen
 
 The interface segregation principle states that a software entity should never be forced to implement an interface that contains elements which it will never use.
 
-Keeping these two principles in mind can help us keeping our module ecosystem clean and healthy:
+Keeping these two principles in mind can help us keep our module ecosystem clean and healthy:
 During the planning and system design phase it's important to think of our modules as independent, interchangeable units where modules are not forced to provide data or implement functionalities outside their scope.
 
 A simple example for this case:
@@ -44,7 +44,7 @@ Our admin module provides a standard way for other modules to render their own a
 The User module can show the list of users, the Theme Manager module renders the theme switcher and theme editor UI, etc.
 But if we have a utility module that doesn't need its own admin page -- we shouldn't force the module to implement one.
 
-Another example could be an ecommerce solution where we want to implement various shipping types and carriers as independent modules. Most shipping types will need different data from our app, but that doesn't mean that every shipping type module should implement every specific method or property.
+Another example could be an ecommerce solution where you want to implement various shipping types and carriers as independent modules. Most shipping types will need different data from your app, but that doesn't mean that every shipping type module should implement every specific method or property.
 It's possible that a shipping type will need its own contract/interface. In this case it's the "main" ecommerce module's responsibility to make this possible for the utility modules.
 
 ## Loose coupling
@@ -71,7 +71,7 @@ The rule of thumb here is: Don't over-engineer it, but at least try to be DRY.
 
 ## KISS
 You should try to keep your software components simple and unnecessary complexity should be avoided.
-The code must be easily readable and understandable by ourselves and other developers.
+The code must be easily readable and understandable by you and other developers.
 Follow the principles of ['Keep It Simple, Stupid' (KISS)](https://en.wikipedia.org/wiki/KISS_principle).
 Hard to read or obfuscated code is difficult to maintain and debug. Don't be too clever, write code to be read.
 
