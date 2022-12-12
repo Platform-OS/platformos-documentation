@@ -279,6 +279,59 @@ Success!
 {% endraw %}
 ```
 
+## Example 4: Using an invisible hCaptcha
+
+hCaptcha can be configured to run in the "invisible" mode. Invisible mode means no checkbox is used, and the challenge will be displayed when the user attempts to submit the form.
+To use the invisible mode, you must add `invisible: true` to the spam_protection tag as below.
+
+#### app/forms/form_with_captcha.liquid
+
+```liquid
+{% raw %}
+---
+name: form_with_captcha
+resource: model_with_title
+resource_owner: "anyone"
+configuration:
+spam_protection:
+  hcaptcha:
+fields:
+  properties:
+    title:
+return_to: /success_page
+---
+
+{% form html-novalidate: true, html-class: 'model-form' %}
+
+<input name="{{ form.fields.properties.title.name }}" value="{{ form.fields.properties.title.value }}" type="text" />
+
+{% spam_protection 'hcaptcha', invisible: true %}
+
+<input type="submit" class="hcaptcha-submit-button" name="submit" text="Submit" />
+
+{% endform %}
+{% endraw %}
+```
+
+When using invisible mode the submit button must have the class `hcaptcha-submit-button`.
+
+To change this behavior, ensure there is no element `hcaptcha-submit-button` in the page, and override the default behavior with code similar to:
+
+```javascript
+function customhCaptchaOnLoad() {
+  let element = document.querySelector('.my-customized-image');
+  if(element) {
+    element.onclick = hCaptchaOnClick;
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  customhCaptchaOnLoad();
+});
+```
+
+The above code will use an element with the class `my-customized-image` as the trigger for form submitting with hCaptcha verification.
+
 ## Live example and source code
 To play with the live example visit the [sign-in-hcaptcha](https://examples.platform-os.com/sign-in-hcaptcha) page.
 
