@@ -1,0 +1,155 @@
+---
+layout_name: application
+converter: markdown
+metadata:
+  title: Developing GraphQL Queries Using the pos-cli GUI
+  description: This guide will introduce you to the GraphiQL IDE for GraphQL that is a part of the pos-cli tool.
+---
+
+This guide will introduce you to the GraphiQL IDE (integrated development environment) for GraphQL that is a part of the [`pos-cli`](/developer-guide/pos-cli/pos-cli) tool.
+
+The `pos-cli gui serve` command is the best way to develop your GraphQL queries. It communicates with the platformOS environment, running GraphQL queries against it. This means you have a live preview of data from your application.
+
+It communicates with the database directly, so you are eliminating errors stemming from data going through other layers and features of the system.
+
+When you are debugging an error - because you have direct control over a query and instant feedback after your changes — you can strip everything that you don't need, manipulate arguments passed, etc.
+
+## Requirements
+
+So that you can follow the steps in this tutorial, you have to have the `pos-cli` installed and your environment configured.
+
+* [Get Started Guide](/get-started): helps you get access to our platform, set up a site and install the pos-cli.
+* [Technologies](/developer-guide/about-platformos/about-platformos#technologies)
+
+## Starting the gui
+
+To start GraphiQL locally, run the `pos-cli gui serve [environment]` command.
+
+For example:
+
+<pre class="command-line" data-output="2-4" data-user="user" data-host="host"><code class="language-bash">
+$ pos-cli gui serve staging
+[18:05:01] Connected to https://documentation.platformos.com/
+[18:05:01] Admin: http://localhost:3333
+[18:05:01] ---
+[18:05:01] GraphiQL IDE: http://localhost:3333/gui/graphql
+[18:05:01] Liquid evaluator: http://localhost:3333/gui/liquid
+</code></pre>
+
+{% include "alert/note", content: "Replace `staging` with the environment name you want to develop on. To list all available environments use `pos-cli env list`" %}
+
+Do not close your terminal, do not end the command - `pos-cli gui serve` has to be running in the background for GraphiQL to work correctly.
+
+To start using it go to the link with graphql in it: `http://localhost:3333/gui/graphql`
+
+You will be greeted with the [graphiql editor](https://github.com/graphql/graphiql).
+
+This is how it looks with an example mutation already written, query variables, documentation and explorer opened.
+
+<img loading="lazy" src="{{ 'images/get-started/graphiql.png' | asset_url }}" alt="Screenshot of GraphiQL" />
+
+## UI and features overview
+
+The URL of the environment that GraphiQL was connected to when opened is displayed. This is to help you avoid running queries on the wrong environment (for example, deleting data from production instead of development).
+
+For our documentation it shows: `platformOS - https://documentation.platformos.com/`.
+
+### Main editor window
+
+This is the main area where you type queries and mutations to run against the environment. It is similar to your code editor in a way. It has line numbers, code folding, and even [keyboard shortcuts](https://defkey.com/codemirror-shortcuts) known from other editors. Not all of them are listed in the official documentation, but it is a good start.
+
+Worth mentioning here are:
+
+* CTRL+X (CMD+X on Mac) - cut line when nothing is selected
+* CTRL+J (CMD+J on Mac) - join current line with next line (removes line break)
+* CTRL+/ (CMD+/ on Mac) - comment and uncomment line(s)
+* CTRL+] (CMD+] on Mac) - indent line by one level
+* CTRL+[ (CMD+[ on Mac) - unindent line by one level
+
+<img loading="lazy" src="{{ 'images/graphiql/main-window.png' | asset_url }}" alt="GraphiQL main editor window" />
+
+When you are ready to run your query, you can either press the "Play button" or use the keyboard shortcut CTRL+ENTER (or CMD+ENTER on a Mac). Results of a query will be displayed on the right side (greyed out) of the window.
+
+You can have more than one query written in your editor. In this case, pressing the "Play button" will show you a dropdown with queries available to run. Select the one you want to run to run it.
+
+<img loading="lazy" src="{{ 'images/graphiql/multiple-queries.png' | asset_url }}" alt="Multiple queries" />
+
+If you wish to not have this step, you can either remove queries you don't need, or comment them out. In GraphQL, the `#` sign in front of a text makes everything after `#` a comment.
+
+<img loading="lazy" src="{{ 'images/graphiql/comments.png' | asset_url }}" alt="Comments in GraphQL" />
+
+If you don't know what you can use in any given moment you can press CTRL+SPACE to check if there are any autocomplete options. This way you don't have to have documentation open when writing.
+
+<img loading="lazy" src="{{ 'images/graphiql/autocomplete.png' | asset_url }}" alt="Autocomplete in GraphiQL" />
+
+### Default values
+
+When your query or mutation is accepting arguments, you can set default values for them. They will be used when those particular arguments have not been passed to the query.
+
+Example of using default argument values:
+
+```graphql
+query get_records($name: String = "feedback") {
+  records(
+    per_page: 10
+    filter: {
+      table: { value: $name }
+    }
+  ) {
+    results {
+      id
+    }
+  }
+}
+```
+
+{% include 'alert/note', content: 'Keep in mind that only non-required arguments can have default values. Required ones need to be populated from outside of the query, for example, from query variables.' %}
+
+### Query variables
+
+If you develop a query that accepts arguments, you can pass them in the bottom section of the editor. Click on `Query variables` to open it. This is the best way to pass required arguments without changing the original query.
+
+<img loading="lazy" src="{{ 'images/graphiql/variables.png' | asset_url }}" alt="Query variables" />
+
+GraphQL queries accept JSON format, which means it has to be an object and key names have to be in double quotes. Values are all valid JSON types, i.e. string, numbers, boolean.
+
+### Explorer
+
+Click the `Explorer` button above main editor window to open the explorer.
+
+The explorer is an interactive query builder which can speed up your query creation. It has two main sections - queries and mutations.
+
+You can use checkboxes next to properties to build your query. Put values (or choose if it is type Enum) next to the property name. The query will be updating in the main window.
+
+<img loading="lazy" src="{{ 'images/graphiql/explorer.png' | asset_url }}" alt="Explorer in GraphiQL" />
+
+On the bottom of the explorer you can find a dropdown to add a new query or mutation.
+
+<img loading="lazy" src="{{ 'images/graphiql/explorer-add-new.png' | asset_url }}" alt="Explorer in GraphiQL - Add new query, add new mutation" />
+
+When you use one of them, it will create a new query in the main editor, without name, but with a placeholder property filled in. Don't be intimidated by `__typename`. Explore the endpoint you are interested in if it didn't exist. If you decide that this query is not needed, just delete it from the main editor window or comment it out.
+
+### Docs
+
+On the right side you can traverse built-in interactive documentation. It is generated from GraphQL schema and has a list of all endpoints for both queries and mutations.
+
+<img loading="lazy" src="{{ 'images/graphiql/docs.png' | asset_url }}" alt="Documentation" />
+
+Green values are default values for a given argument.
+Values with `!` are required arguments.
+
+### History
+
+You can bring back queries that you have ran on all environments in the past by clicking on the "History" button.
+
+Example history:
+
+<img loading="lazy" src="{{ 'images/graphiql/history.png' | asset_url }}" alt="Screenshot of History listing previous queries" />
+
+Named queries are displayed by their names, unnamed are showing the beginning of the code.
+
+### Prettify
+
+If you want to apply default code formatting provided by GraphiQL, click on the "Prettify" button on the top. It is not the best solution out there, but for quick prototyping it is better than nothing.
+
+After you are finished with your query, and copied it over to your `.graphql` file, we recommend using [Prettier](https://prettier.io/), usually not directly, but using a plugin to your favorite editor, to format the code even better, and more consistently with your code style guide.

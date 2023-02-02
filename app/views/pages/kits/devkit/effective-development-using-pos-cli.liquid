@@ -1,0 +1,118 @@
+---
+converter: markdown
+metadata:
+  title: Effective Development Using the pos-cli
+  description: How to leverage npm tasks and the concurrently npm package to speed up your development.
+---
+
+When developing an application with platformOS, you need to use various `pos-cli` commands. Most commonly used are `sync`, `logs`, and  `gui serve`. Apart from `pos-cli` you might use some kind of assets bundler, like webpack in watch mode. When writing JavaScript, you might want to run your test runner in watch mode. If you want to reload your browser on every asset change, because you are styling the website, then you need another tool, for example, livereload.
+
+These are a lot of tools to run at the same time, each of them taking up one terminal window, which becomes cumbersome to manage. This article aims to make this issue a non-factor.
+
+{% include 'shared/video', id: '6rjV3peTMvw' %}
+
+<br />
+
+## npm tasks
+
+After some research, trials and educated guesses, we figured that packaging everything into npm tasks and running them concurrently is the way to go.
+
+The final result looks [like this](https://github.com/mdyd-dev/todo-app/blob/23b2dadd87dbade9e797556e88a0ff566fc60c8f/package.json#L3-L12), and was used to develop the [Todo App](/get-started/todo-app/build-todo-list-app) with no issues.
+
+```json
+"scripts": {
+  "clean": "rm -rf app/assets/*",
+  "dev-logs": "pos-cli logs dev",
+  "dev-sync": "pos-cli sync dev --livereload",
+  "dev-gui": "pos-cli gui serve dev",
+  "dev-watch": "npx webpack-cli -w",
+  "start": "npx concurrently npm:clean npm:dev-*"
+}
+```
+
+Read more about [npm scripts](https://docs.npmjs.com/misc/scripts).
+
+We are using webpack for assets bundling, pos-cli built-in livereload to refresh the browser on changes, and concurrently to run multiple tasks in one terminal.
+
+Having all those tasks defined one by one allows you to run them one by one when you need it:
+
+```shell
+$ npm run clean
+```
+
+{% include 'alert/note', content: 'Keep in mind that the command `rm -rf` does not exist on Windows, so if you are using Windows, change that command, or use [rimraf](https://www.npmjs.com/package/rimraf) for cross-platform compability.' %}
+
+## npx
+
+`npx` is a tool that allows you to run npm packages that expose executable files (binaries). If the package is not installed on your system (locally or globally), it will install it and then execute.
+
+You can run any npm package, without knowing if it's installed or not, just by prefixing it with `npx`. For example, we could rewrite the clean task to be cross platform like this:
+
+```shell
+$ npx rimraf app/assets/*
+```
+
+Read more about [npx](https://www.npmjs.com/package/npx).
+
+## livereload
+
+Livereload is broadcasting a "refresh" message when files that you defined are changed. In `pos-cli` livereload is watching `app` and `modules` directories and allowed [extensions](https://github.com/mdyd-dev/pos-cli/blob/46e3a40b5f52267396419de90a709910739ac22d/lib/watch-files-extensions.js).
+
+To enable LiveReload server you need to add `--livereload` (or `-l`) flag to your sync command.
+
+After you have your livereload server running, you need a client.
+Install the extension and when you are on a page that you want to be refreshed when files change, click the livereload extension icon.
+
+[Chrome extension](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei)
+[Firefox extension](https://addons.mozilla.org/en-US/firefox/addon/livereload-web-extension/)
+
+Look for an icon that looks similar to <img src="https://rawcdn.githack.com/livereload/livereload-extensions/0a8edb9cc7008249c23718386e19d99230e81179/Chrome/LiveReload/IconDisabled@2x.png" width="32" height="32" alt="Livereload icon">.
+
+## concurrently
+
+Finally, when you have all your tasks prepared, you need to run them all at once in one terminal, to avoid remembering long commands and occupying bunch of terminal windows.
+
+There is a lot of tools that can do that, including bash scripting, but we decided to use the npm package [concurrently](https://www.npmjs.com/package/concurrently).
+
+It has more options than we used in this article, for example coloring:
+
+<img loading="lazy" src="https://raw.githubusercontent.com/kimmobrunfeldt/concurrently/HEAD/docs/demo.gif" alt="concurrently" >
+
+## Putting it all together
+
+Finally, when you have all atomic npm tasks doing one thing, it's time to join them together to run them all using one command.
+
+```shell
+"start": "npx concurrently npm:clean npm:dev-*"
+```
+
+Explanation:
+
+1. Use the `start` task because it is the most appropriate and you don't need to write `run` before it to run it. You just write `npm start`, which is convenient.
+2. Use npx to run concurrently.
+3. Run the `clean` task to delete old assets.
+4. Run all tasks where the name starts with `dev-`, in this case:
+    logs - runs `pos-cli logs dev`
+    sync - runs `pos-cli sync dev`
+    gui - runs `pos-cli gui serve dev`
+    watch - runs webpack in development and watch mode
+
+## Final result
+
+All of this in practice:
+
+<img src="{{ 'images/developer-guide/pos-cli-workflow/final-result.svg' | asset_url }}" alt="Terminal recording" />
+
+At the beginning, there will be a lot of text going through your screen, because every task needs to execute and all of them leave some kind of trace in the console. But after this initial wall of text, only observing tasks should output things to the terminal, such as sync, logs, and webpack.
+
+All tasks run by concurrently stream their output to one terminal, and every line is prefixed with the name of the task that is responsible for a given entry.
+
+It also shows the exit code if the task has finished, like it did with the clean task:
+
+```shell
+[clean] npm run clean exited with code 0
+```
+
+That way you have a trace when a task goes wrong.
+
+That's it, this is the setup that can save you a lot of terminal windows, time and hopefully makes your development more efficient.
