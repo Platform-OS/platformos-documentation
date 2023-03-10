@@ -1,0 +1,51 @@
+---
+converter: markdown
+metadata:
+  title: Adding additional subdomains to your pOS instance
+  description: This guide provides an overview of how to add additional subdomains to your platformOS instance using platformOS's DNS web services. These domains don't count towards your domain limits/metrics. This will only work if the subdomain does not need it's own AWS SSL certificates.
+---
+{% include 'alert/note', content: 'We are continuously improving the UX of this functionality, trying to make it as user-friendly as possible. Some changes may apply.' %}
+
+This guide provides an overview of how to add additional subdomains to your platformOS instance using platformOS's DNS web services. These domains don't count towards your domain limits/metrics. Noting that this will only work if the subdomain does not need it's own AWS SSL certificates.
+
+## Requirements
+To be able to set up a production domain on the Partner Portal, you have to have access to the Partner Portal, have a production Instance, and you should be familiar with the recommended development workflow.
+
+* [Register on the Partner Portal](/get-started/installation-and-configuration/#sign-up-on-the-partner-portal)
+* [Create an Instance](/get-started/installation-and-configuration/#create-an-instance)
+* [Development Workflow](/developer-guide/platformos-workflow/development-workflow)
+
+Let's begin.
+
+## To point ANY subdomain (*.example.com) to your default domain (example.com)
+For this, you can simply create a wildcard (*) CNAME record in your pOS hosted zone:
+
+Name: *
+Type: CNAME
+Record/Value: example.com
+
+<img loading="lazy" src="{{ 'images/developer-guide/dns/wildcard.png' | asset_url }}" alt="wildcard CNAME image" />
+
+
+## To point a specific subdomain (abc.example.com) to your default domain (example.com)
+For this, you create a specific CNAME record in your pOS hosted zone:
+
+Name: abc
+Type: CNAME
+Record/Value: example.com
+
+<img loading="lazy" src="{{ 'images/developer-guide/dns/specific-subdomain.png' | asset_url }}" alt="specific subdomain CNAME image" />
+
+
+## To point a specific subdomain (abc.example.com) to your instance and have it resolve as that specific subdomain
+For this, you create a specific CNAME record in your pOS hosted zone:
+
+Vame: abc
+Type: CNAME
+Record/Value: example.com
+
+<img loading="lazy" src="{{ 'images/developer-guide/dns/specific-subdomain.png' | asset_url }}" alt="specific subdomain CNAME image" />
+
+and then go to the legacy domain page in the platformOS partner portal and add the new subdomain there. To get to the legacy domain page (if you don't see a button on your instance detail page), you need to remove the /pp_dns from the URL. Example: https://partners.platformos.com/instances/5253/pp_dns/domains would be changed to https://partners.platformos.com/instances/5253/domains
+
+<img loading="lazy" src="{{ 'images/developer-guide/dns/legacy-dns-page.png' | asset_url }}" alt="legacy dns page image" />
