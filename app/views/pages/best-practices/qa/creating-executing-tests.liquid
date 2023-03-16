@@ -1,0 +1,55 @@
+---
+converter: markdown
+metadata:
+  title: "Creating Test Cases and Executing Tests"
+  description: "This guide will help you create and execute tests."
+---
+
+This guide will help you create and execute tests. The process described must be adhered to by all members of the platformOS QA Team involved in testing code. 
+Feel free to use this process as an inspiration for your QA processes, as it aims to establish standards and improve productivity, quality, and should be helpful in attaining consistency for reliability in the long run. 
+
+## Requirements
+
+To follow this tutorial, you should be familiar with QA processes and testing in general. 
+
+- [How We Built Our QA Process](/best-practices/qa/how-we-built-our-qa-process)
+- [Testing](https://documentation.platformos.com/best-practices/qa/testing)
+
+## Steps
+
+<div data-autosteps></div>
+
+### Step 1: Create Test Cases
+All changes tested must have test cases with below listed details:
+
+1. Title:  Brief description defining the purpose of the test
+2. Requirements: Description of the change/enhancement. Ticket number.  
+3. Preconditions: Conditions tester must verify prior to test execution. Steps to add Test Data.
+4. Steps: Numbered distinct actions (step by step) for the tester to verify scenario listed in the Title of the test.
+5. Expected Results: Numbered distinct expectation aligned with steps to allow the tester to determine if the test has passed. Test is likely to fail if any of the expected results is not met.
+6. Notes:  This is optional information for the tester or anyone retesting this test case.
+
+### Step 2: Execute tests
+
+Testers MUST document their test results in a Test Run. Once the test run is executed  an automation task ticket should be created. However, test cases on the Test Run must not be executed until the functionality is ready for testing and requirements are clear. Test Run provides evidence and information about the final status for all test cases. When adding results, tester must verify:
+
+1. Status is selected based on all steps passing ( if exceptions are made they should be documented in the Comments section)
+2. Comments: Add details if needed
+3. Browser Used: Browser used during test
+4. Defect: Add ticket number for all failed tests
+5. File upload: Screenshots of test result screens must be uploaded to confirm testing complete and status is updated based on expected results and steps. 
+
+### Step 3: Test tickets step by step (create test case - execute Test Run - assign to automation)
+
+Once a ticket is assigned, progress in the order below:
+
+1. Create Test Section: Test section must be added to applicable location based on release, program, and functionality. Appropriate section title must be added associated with the change.
+2. Research, Explore Gather Information: Read the ticket in its entirety. Understand the change by gathering information related to how, who, what, and other details. 
+3. Add Place Holder Test Cases: based on the information gathered, add tests. 
+4. Research, Explore, Gather Information: Verify if testing is going in the right direction. Are there any changes missed?
+5. Update Place Holder Test Cases: Based on the assessment at step 4, add or modify tests.
+6. Add Test Run:  Add your test cases to the existing TestRun if it already exists.
+7. Add steps: Once the ticket is ready for testing and the testing path is confirmed, add details to the test cases such as steps, expected results, etc.
+8. Execute Test Run: Run tests and document results as defined above.
+9. Create Automation Task Ticket: Upon the execution of test cases on the Test Run an automation task ticket must be added. This ticket must be related to the original ticket and should include link to the Test Run location.
+
