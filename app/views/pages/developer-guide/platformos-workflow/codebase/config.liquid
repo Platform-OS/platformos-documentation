@@ -19,6 +19,8 @@ metadata:
 |skip_elasticsearch                                              |false|If you do not use the `keyword` argument in `records`/`users` queries or `customizations`/`people` queries, you can increase performance by avoiding indexing data in the ELasticSearch by setting this flag to true.|
 |slug_exact_match                                                |false|By default, a page with slug `abc` will match not only  `example.com/abc`, but also URLs like `example.com/abc/1`, `example.com/abc/1/x` and to control this behavior, you should use max_deep_level. By setting this flag to true, only `example.com/abc` will be matched. Additionally, you will be able to use named parameters in the URLss, like /abc/:id. We highly recommend setting this flag to true.|
 |websockets_require_csrf_token                                   |false|By default websocket connection does not check csrf token. By setting this flag to `true` connections to websocket require csrf token passed as on of the parameters.
+|maintenance                                   |null|Allows to setup mandatory password protection, useful when the site should be restricted only to users who know the password.
+
 
 
 Example `app/config.yml` file with recommended values:
@@ -38,3 +40,28 @@ slug_exact_match: true
 websockets_require_csrf_token: true
 ---
 ```
+
+## Maintenance - setting up password protection
+
+Example `config.yml` for enabling password protection:
+```yml
+maintenance:
+  enabled: true
+  password_constant: 'MAINTENANCE_PASSWORD'
+  partial: 'maintenance'
+```
+
+When a User enters the site, and `enabled` flag is set to `true`, he would be presented content from the partial defined in the config, in the above example `app/views/partials/maintenance.html.liquid` . Inside this partial you can display any html, and most likely you would like to include a form to allow to provide password:
+
+```liquid
+  <form action="/_maintenance" accept-charset="UTF-8" method="post">
+    <input type="hidden" name="authenticity_token" value="{{ context.authenticity_token }}">
+    <div>
+        <input type="password" name="password" id="password" value="" class="password" placeholder="Password" />
+        <input type="submit" name="commit" value="Submit" class="btn btn-blue" />
+    </div>
+  </form>
+```
+
+The `/_maintenance` endpoint is a built-in platformOS endpoint, which would verify that `context.params.password` is equal to the value of the constant defined in `password_constant`, in this scenario context.constants['MAINTENANCE_PASSWORD']. If there is a match, platformOS will store the information in the `session` and the user will not be prompted again to provide the password.
+
