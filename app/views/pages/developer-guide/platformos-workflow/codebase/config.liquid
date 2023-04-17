@@ -51,7 +51,7 @@ maintenance:
   partial: 'maintenance'
 ```
 
-When a User enters the site, and `enabled` flag is set to `true`, he would be presented content from the partial defined in the config, in the above example `app/views/partials/maintenance.html.liquid` . Inside this partial you can display any html, and most likely you would like to include a form to allow to provide password:
+When a user enters the site, and the `enabled` flag is set to `true`, they are presented with content from the partial defined in the config, in the above example `app/views/partials/maintenance.html.liquid`. Inside this partial you can display any html, and most likely you would like to include a form to allow to provide password:
 
 ```liquid
   <form action="/_maintenance" accept-charset="UTF-8" method="post">
@@ -63,5 +63,5 @@ When a User enters the site, and `enabled` flag is set to `true`, he would be pr
   </form>
 ```
 
-The `/_maintenance` endpoint is a built-in platformOS endpoint, which would verify that `context.params.password` is equal to the value of the constant defined in `password_constant`, in this scenario context.constants['MAINTENANCE_PASSWORD']. If there is a match, platformOS will store the information in the `session` and the user will not be prompted again to provide the password.
+The `/_maintenance` endpoint is a built-in platformOS endpoint, which verifies that `context.params.password` is equal to the value of the constant defined in `password_constant`, in this scenario context.constants['MAINTENANCE_PASSWORD']. If there is a match, platformOS stores the information in the `session` and the user will not be prompted again to provide the password.
 
