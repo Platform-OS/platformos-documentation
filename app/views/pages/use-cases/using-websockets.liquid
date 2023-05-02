@@ -188,6 +188,30 @@ In this example, we are retrieving the conversation object and creating a messag
 
 To avoid broadcasting (for example if the user is not authorized to add a message in a conversation or when an validation error is triggered) ensure the partial returns "false" (whitespace characters do not matter).
 
+### GraphQL mutation to broadcast to a channel and a room
+
+You can broadcast a message from the backend, to a specific channel and room, using the mutation `channel_send_message`.
+
+The mutation takes the `channel_name`, the `room_id`, and the JSON `payload` as mandatory arguments to send.
+
+For example:
+
+```graphql
+mutation broadcast_message {
+  channel_send_message(
+    channel_name: "conversate"
+    room_id: "12"
+    payload: {
+      message: "Some message",
+      author_id: 2,
+      sender_name: "Some Sender",
+      created_at: "2030-07-01 10:30:00",
+      create: true
+    }
+  )
+}
+```
+
 ### Other examples
 
 In the [pOS Marketplace Template](/developer-guide/pos-marketplace-template/core-concepts), we have also implemented a notifications functionality that uses WebSockets to inform user about unread messages. You can find it in the file [modules/chat/src/js/notifications.js](https://github.com/mdyd-dev/product-marketplace-template/blob/master/modules/chat/src/js/notifications.js).
