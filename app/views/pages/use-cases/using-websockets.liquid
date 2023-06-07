@@ -188,6 +188,27 @@ In this example, we are retrieving the conversation object and creating a messag
 
 To avoid broadcasting (for example if the user is not authorized to add a message in a conversation or when an validation error is triggered) ensure the partial returns "false" (whitespace characters do not matter).
 
+### Employing Cross-Site Request Forgery token validation
+
+If you've enabled `websockets_require_csrf_token` in your `app/config.yml`, the CSRF token must be passed as below:
+
+```javascript
+const token = csrfToken();
+createConsumer(`/websocket?authenticity_token=${token}`)
+```
+
+The `csrfToken` function can retrieve the `token` from the meta tag for example:
+
+```javascript
+const csrfToken = () => {
+  const meta = document.querySelector('meta[name="csrf-token"]');
+  if (!meta) { throw new Error('Unable to find CSRF token meta'); }
+  const token = meta.getAttribute('content');
+  if (!token) { throw new Error('Unable to get CSRF token value'); }
+  return token;
+}
+```
+
 ### GraphQL mutation to broadcast to a channel and a room
 
 You can broadcast a message from the backend, to a specific channel and room, using the mutation `channel_send_message`.
