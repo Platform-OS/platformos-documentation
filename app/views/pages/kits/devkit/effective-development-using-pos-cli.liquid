@@ -34,7 +34,7 @@ Read more about [npm scripts](https://docs.npmjs.com/misc/scripts).
 
 We are using webpack for assets bundling, pos-cli built-in livereload to refresh the browser on changes, and concurrently to run multiple tasks in one terminal.
 
-Having all those tasks defined one by one allows you to run them one by one when you need it:
+Having all those tasks defined one by one allows you to run them one by one as needed:
 
 ```shell
 $ npm run clean
@@ -46,7 +46,7 @@ $ npm run clean
 
 `npx` is a tool that allows you to run npm packages that expose executable files (binaries). If the package is not installed on your system (locally or globally), it will install it and then execute.
 
-You can run any npm package, without knowing if it's installed or not, just by prefixing it with `npx`. For example, we could rewrite the clean task to be cross platform like this:
+You can run any npm package, without knowing whether it’s installed or not, just by prefixing it with `npx`. For example, we could rewrite the clean task to be cross platform like this:
 
 ```shell
 $ npx rimraf app/assets/*
@@ -70,9 +70,9 @@ Look for an icon that looks similar to <img src="https://rawcdn.githack.com/live
 
 ## concurrently
 
-Finally, when you have all your tasks prepared, you need to run them all at once in one terminal, to avoid remembering long commands and occupying bunch of terminal windows.
+Finally, when you have all your tasks prepared, you need to run them all at once in one terminal, to avoid remembering long commands and occupying a bunch of terminal windows.
 
-There is a lot of tools that can do that, including bash scripting, but we decided to use the npm package [concurrently](https://www.npmjs.com/package/concurrently).
+There are a lot of tools that can do that, including bash scripting, but we decided to use the npm package [concurrently](https://www.npmjs.com/package/concurrently).
 
 It has more options than we used in this article, for example coloring:
 
@@ -105,7 +105,7 @@ All of this in practice:
 
 At the beginning, there will be a lot of text going through your screen, because every task needs to execute and all of them leave some kind of trace in the console. But after this initial wall of text, only observing tasks should output things to the terminal, such as sync, logs, and webpack.
 
-All tasks run by concurrently stream their output to one terminal, and every line is prefixed with the name of the task that is responsible for a given entry.
+All tasks run by concurrently streaming their output to one terminal, and every line is prefixed with the name of the task that is responsible for a given entry.
 
 It also shows the exit code if the task has finished, like it did with the clean task:
 
