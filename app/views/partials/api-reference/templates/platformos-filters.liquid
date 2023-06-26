@@ -49,6 +49,20 @@
             {%- endfor -%})
           {% if p.description.size > 1 %} - {{ p.description }}{% endif %}
           {% if p.default %} - default: {{ p.default }}{% endif %}
+          {% if p.options.size > 0 %}
+            <ul>
+              {% for o in p.options %}
+                <li>
+                  {{ o.name }}
+                  ({%- for t in o.types -%}
+                      {{- t | escape -}}
+                    {%- endfor -%})
+                  {% if o.description.size > 1 %} - {{ o.description }}{% endif %}
+                  {% if o.default %} - default: {{ o.default }}{% endif %}
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
         </li>
       {% endfor %}
     </ul>
