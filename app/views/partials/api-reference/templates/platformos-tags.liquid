@@ -23,13 +23,13 @@
       <tbody>
         {% for p in params %}
           <tr>
-            <td>{{ p.name | escape }}</td>
+            <td>{{ p.name }}</td>
             <td>
               {% for t in p.types %}
-                {{ t | escape }}
+                {{ t }}
               {% endfor %}
             </td>
-            <td>{% if p.description.size > 1 %}{{ p.description | escape | nl2br }}{% endif %}</td>
+            <td>{% if p.description.size > 1 %}{{ p.description | nl2br }}{% endif %}</td>
           </tr>
         {% endfor %}
       </tbody>
