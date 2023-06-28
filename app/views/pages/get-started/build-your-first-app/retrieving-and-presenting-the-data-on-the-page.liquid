@@ -52,7 +52,7 @@ Before using the query on your page, it would be a good idea to test if it works
 To test the query, you are going to use one of the tools built in the `pos-cli`. To start the tool, use the following command:
 
 ```bash
-pos-cli gui serve dev
+pos-cli gui serve staging
 ```
 
 When the application is running, go to [http://localhost:3333](http://localhost:3333) in your browser and choose _Go to GraphiQL_. Paste the GraphQL query you’ve just written to the text area on left. Pressing the big play button on top should result in the output of the query being presented in the right column.
@@ -91,7 +91,7 @@ The results are in the form of a _hash_. If you are comming from the JavaScript 
 
 When you have the array of items, use the for loop to iterate on it and render them on the page using Liquid:
 
-#### /app/pages/index.liquid
+#### /app/views/pages/index.liquid
 
 {% raw %}
 ```liquid
@@ -112,7 +112,7 @@ This code will repeat whatever is between the {% raw %}`{% for %}`{% endraw %} a
 
 There is one more thing you could do: display some information when there are no items to show on the page. As you have requested the number of  `total_entries` in your GraphQL query, an `if` statement using it would be enough:
 
-#### /app/pages/index.liquid
+#### /app/views/pages/index.liquid
 
 {% raw %}
 ```liquid

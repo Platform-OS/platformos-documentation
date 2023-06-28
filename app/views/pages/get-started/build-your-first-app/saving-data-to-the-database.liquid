@@ -12,7 +12,7 @@ Don’t worry if you never used any of these before. Both of them are built in a
 
 ## Create the database structure using YAML
 
-As a first step, figure out the structure of the dabase you need. For this simple example, you will only need a **single database table** in which you will save the **item’s title**.
+As a first step, figure out the structure of the database you need. For this simple example, you will only need a **single database table** in which you will save the **item’s title**.
 
 You would also need a **unique ID** for every record you store, but platformOS creates it **automatically**, so you don’t really have to think about it.
 
@@ -40,7 +40,7 @@ In the line 1, you named your table and called it `item`. Line 2 starts the list
 
 YAML is written in a way that makes it easily readable to humans, so it shouldn't be long until you’ll get the hang of it. What is important to remember is that the **indentation is very important** here as it basically describes the structure and dependencies in it.
 
-For the sake of having a complete picture of the YAML structure, here is an extended example with three properties in the table:
+For the sake of having a complete picture of the YAML structure, here is an extended example with three properties in the table. (This is an example, don’t copy it for the ToDoList purposes):
 
 ```yaml
 name: example
@@ -61,7 +61,7 @@ How can you make sure that the table you’ve just created is really there in th
 For this purpose, we have created a tool that allows you to browse through the tables and edit the records. Run this command to start the tool:
 
 ```bash
-pos-cli gui serve dev
+pos-cli gui serve staging
 ```
 
 This starts an application to help you administer your instance. When the application is running you can go to [http://localhost:3333](http://localhost:3333) in your browser.
@@ -120,7 +120,7 @@ There is also line 12. Each query you run will return some data. This is the lin
 
 The query is written and saved in a `.graphql` file. How can you be sure the query does what you want it to?
 
-In the toolset available when `pos-cli gui serve` is running, you have an app called _GraphiQL_. This is a tool that allows you to test your queries. In the top text field, **paste your query**. Then, expand the bottom panel called _Query variables_. **Pass the variables** you defined for the query here. So, in your case it can be:
+In the toolset available when `pos-cli gui serve` is running, you have an app called _GraphiQL_. This is a tool that allows you to test your queries. In the top text field, remove the pre-populate code and **paste your query**. Then, expand the bottom panel called _Query variables_. **Pass the variables** you defined for the query here. So, in your case it can be:
 
 
 ```javascript

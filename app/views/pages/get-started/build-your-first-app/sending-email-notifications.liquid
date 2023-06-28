@@ -13,13 +13,13 @@ platformOS offers an easy way of sending emails that could be used, for example,
 
 ## Enabling emails on the staging instance
 
-As a first step, you need to **enable sending emails** on the _staging_ instance. This step is not required on production instances, but the free _staging_ is restricted to sending emails only to adresses preconfigured for testing. The emails sent from those instances will always be redirected to the test addresses.
+As a first step, you need to **enable sending emails** on the _staging_ instance. This step is not required on production instances, but the free _staging_ is restricted to sending emails only to addresses preconfigured for testing. The emails sent from those instances will always be redirected to the test addresses.
 
 To set the test email, log in to the [Partner Portal](https://partners.platformos.com/) and choose the instance from the [Instances](https://partners.platformos.com/instances) list.
 
 Click on the _Update Configuration_ button, then click on _Switching to edit mode_. Edit the desired values.
 
-Look for a section of the configuration called `attributes` and change the value of the `test_email`. It needs to be set to the test email address that all the emails for the instance will be sent to:
+Look for a section of the configuration called `attributes` and change the value of the `test_email`. It needs to be set to the test email address to which all the emails for the instance will be sent to:
 
 ```javascript
 [...]
@@ -35,7 +35,7 @@ Remember to save the updates by clicking the _Update Instance configuration_ but
 
 ## Creating a layout for the emails
 
-platformOS treats emails similarly to standard HTML pages. You can create a separate layout for the emails and use Liquid to pass any data to it. Start with creating the layout.
+platformOS treats emails similarly to standard HTML pages. You can create a separate layout for the emails and use Liquid to pass any data to it. Start by creating the layout.
 
 Assuming, for the purpose of this tutorial, that you would like an independent HTML structure for all of your emails, you can create a new layout in the `app/views/layout/` folder, in a file called `mailer.liquid`. The name can be anything you want.
 
@@ -88,7 +88,7 @@ A new item has been created: {{ data.title }}
 ```
 {% endraw %}
 
-The top-most part of the code, between the dashed lines (`---`) is the page configuration section. These are internal information passed to the platform to describe the page behavior or pass additional metadata.
+The topmost part of the code, between the dashed lines (`---`) is the page configuration section. These are internal information passed to the platform to describe the page behavior or pass additional metadata.
 
 For the email page, you need to configure the recipient email address (`to:`), the sender (`from:`), and the `subject` of the message.
 
