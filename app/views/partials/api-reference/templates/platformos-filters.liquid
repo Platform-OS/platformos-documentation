@@ -17,24 +17,7 @@
   </h2>
 
   {% if description.size > 0 %}
-    <p>{{ description }}</p>
-  {% endif %}
-
-  {% if returns.size > 0 %}
-    <h4 class="break-all">
-      Returns:
-      {% for r in returns %}
-        <strong>
-          {% for t in r.types %}
-            {{ t | escape }}{% unless forloop.last %},{% endunless %}
-          {% endfor %}
-        </strong>
-
-        {% if r.description.size > 1 %}
-        - {{ r.description }}
-        {% endif %}
-      {% endfor %}
-    </h4>
+    <p>{{ description | join: ', ' }}</p>
   {% endif %}
 
   {% if params.size > 0 %}
@@ -45,20 +28,50 @@
           {{ p.name }}
 
           ({%- for t in p.types -%}
-              {{- t | escape -}}
+              {{- t  -}}
             {%- endfor -%})
           {% if p.description.size > 1 %} - {{ p.description }}{% endif %}
-          {% if p.default %} - default: {{ p.default }}{% endif %}
+          {% if p.default and p.options == blank  %} - default: {{ p.default }}{% endif %}
+          {% if p.options.size > 0 %}
+            <ul>
+              {% for o in p.options %}
+                <li>
+                  {{ o.name }}
+                  ({%- for t in o.types -%}
+                      {{- t  -}}
+                    {%- endfor -%})
+                  {% if o.description.size > 1 %} - {{ o.description }}{% endif %}
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
         </li>
       {% endfor %}
     </ul>
+  {% endif %}
+
+  {% if returns.size > 0 %}
+    <h4 class="break-word">Returns</h4>
+    <p>
+      {% for r in returns %}
+        <strong>
+          {% for t in r.types %}
+            {{ t }}{% unless forloop.last %},{% endunless %}
+          {% endfor %}
+        </strong>
+
+        {% if r.description.size > 1 %}
+        - {{ r.description }}
+        {% endif %}
+      {% endfor %}
+    </p>
   {% endif %}
 
   {% if examples.size > 0 %}
     <h4>Examples</h4>
     {% for e in examples %}
       <pre><code class="language-liquid">
-        {{ e | escape }}
+        {{ e }}
       </code></pre>
     {% endfor %}
   {% endif %}
