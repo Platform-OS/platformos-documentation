@@ -1,0 +1,18 @@
+{% liquid
+  assign ignored_slugs = '["404","debug","contact","disclaimer","license","search","sitemap","try-now"]' | parse_json
+  assign ignored_prefixes = '["release-notes","roadmap","community"]' | parse_json
+
+  graphql r  = 'pages/search_for_openai', not_slugs: ignored_slugs, limit: limit
+
+  assign all_pages = r.pages.results
+  assign pages = '[]' | parse_json
+
+  for page in all_pages
+    assign contains_invalid_prefix = page.slug | start_with: ignored_prefixes
+    unless contains_invalid_prefix
+      assign pages = pages | add_to_array: page
+    endunless
+  endfor
+
+  return pages
+%}
