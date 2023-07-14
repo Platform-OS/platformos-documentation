@@ -1,13 +1,13 @@
 {% liquid
+
   function pages = 'queries/pages/search_for_openai'
   function object = 'modules/openai/queries/embeddings/search'
   assign existing_embeddings = object.results
 
   assign report = '{ "created": { "slugs": [], "count": 0 }, "updated": { "slugs": [], "count": 0 }, "errors": { "slugs": [], "count": 0 }}' | parse_json
 
-
   for page in pages
-    hash_assign page['html_content'] = page.html_content | sanitize | strip
+    hash_assign page['html_content'] = page.html_content | html_to_text
   endfor
 
   assign pages_chunks = pages | array_in_groups_of: 50
@@ -25,8 +25,10 @@
         assign metadata = '{}' | parse_json
 
         hash_assign metadata['slug'] = page_chunk[i].slug
-        hash_assign pos_embedding_input['metadata'] = metadata
+        hash_assign metadata['page'] = '{}' | parse_json
+        hash_assign metadata['page_metadata'] = page_chunk[i].metadata
 
+        hash_assign pos_embedding_input['metadata'] = metadata
         hash_assign pos_embedding_input['embedding'] = emb.embedding
         hash_assign pos_embedding_input['content'] = page_chunk[i].html_content
 
