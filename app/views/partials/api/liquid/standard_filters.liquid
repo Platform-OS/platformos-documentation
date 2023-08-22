@@ -1,0 +1,1485 @@
+{% parse_json standard_filters %}
+{% raw %}
+[
+  {
+    "category": "format",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "The `date` filter accepts the same parameters as Ruby's strftime method for formatting the date. For a list of shorthand\nformats, refer to the [Ruby documentation](https://ruby-doc.org/core-3.1.1/Time.html#method-i-strftime) or\n[strftime reference and sandbox](http://www.strfti.me/).",
+    "parameters": [
+      {
+        "description": "The desired date format.",
+        "name": "format",
+        "required": false,
+        "types": [
+          "string"
+        ]
+      }
+    ],
+    "return_type": [
+      {
+        "type": "string",
+        "name": "",
+        "description": "",
+        "array_value": ""
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/blogs/potion-notions/how-to-tell-if-you-have-run-out-of-invisibility-potion",
+        "raw_liquid": "{{ article.created_at | date: '%B %d, %Y' }}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      },
+      {
+        "name": "The current date",
+        "description": "You can apply the `date` filter to the keywords `'now'` and `'today'` to output the current timestamp.\n\n&gt; Note:\n&gt; The timestamp will reflect the time that the Liquid was last rendered. Because of this, the timestamp might not be updated for every page view, depending on the context and caching.\n",
+        "syntax": "",
+        "path": "/",
+        "raw_liquid": "{{ 'now' | date: '%B %d, %Y' }}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      },
+      {
+        "name": "format",
+        "description": "Specify a locale-aware date format. You can use the following formats:\n\n- `abbreviated_date`\n- `basic`\n- `date`\n- `date_at_time`\n- `default`\n- `on_date`\n- `short` (deprecated)\n- `long` (deprecated)\n\n&gt; Note:\n&gt; You can also [define custom formats](/docs/api/liquid/filters/date-setting-format-options-in-locale-files) in your theme's locale files.\n",
+        "syntax": "string | date: format: string",
+        "path": "/blogs/potion-notions/how-to-tell-if-you-have-run-out-of-invisibility-potion",
+        "raw_liquid": "{{ article.created_at | date: format: 'abbreviated_date' }}",
+        "parameter": true,
+        "display_type": "text",
+        "show_data_tab": true
+      },
+      {
+        "name": "Setting format options in locale files",
+        "description": "You can define custom date formats in your [theme's storefront locale files](/themes/architecture/locales/storefront-locale-files). These custom formats should be included in a `date_formats` category:\n\n```json\n\"date_formats\": {\n  \"month_day_year\": \"%B %d, %Y\"\n}\n```\n",
+        "syntax": "",
+        "path": "/blogs/potion-notions/how-to-tell-if-you-have-run-out-of-invisibility-potion",
+        "raw_liquid": "{{ article.created_at | date: format: 'month_day_year' }}",
+        "parameter": true,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ],
+    "summary": "Converts a timestamp into another date format.",
+    "syntax": "string | date: string",
+    "name": "date"
+  },
+  {
+    "category": "math",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "",
+    "parameters": [],
+    "return_type": [
+      {
+        "type": "number",
+        "name": "",
+        "description": "",
+        "array_value": ""
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/",
+        "raw_liquid": "{{ -3 | abs }}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ],
+    "summary": "Returns the absolute value of a number.",
+    "syntax": "number | abs",
+    "name": "abs"
+  },
+  {
+    "category": "string",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "",
+    "parameters": [],
+    "return_type": [
+      {
+        "type": "string",
+        "name": "",
+        "description": "",
+        "array_value": ""
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/products/health-potion",
+        "raw_liquid": "{%-  assign path = product.url -%}\n\n{{ request.origin | append: path }}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ],
+    "summary": "Adds a given string to the end of a string.",
+    "syntax": "string | append: string",
+    "name": "append"
+  },
+  {
+    "category": "math",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "",
+    "parameters": [],
+    "return_type": [
+      {
+        "type": "number",
+        "name": "",
+        "description": "",
+        "array_value": ""
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/",
+        "raw_liquid": "{{ 4 | at_least: 5 }}\n{{ 4 | at_least: 3 }}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ],
+    "summary": "Limits a number to a minimum value.",
+    "syntax": "number | at_least",
+    "name": "at_least"
+  },
+  {
+    "category": "math",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "",
+    "parameters": [],
+    "return_type": [
+      {
+        "type": "number",
+        "name": "",
+        "description": "",
+        "array_value": ""
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/",
+        "raw_liquid": "{{ 6 | at_most: 5 }}\n{{ 4 | at_most: 5 }}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ],
+    "summary": "Limits a number to a maximum value.",
+    "syntax": "number | at_most",
+    "name": "at_most"
+  },
+  {
+    "category": "string",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "",
+    "parameters": [],
+    "return_type": [
+      {
+        "type": "string",
+        "name": "",
+        "description": "",
+        "array_value": ""
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/",
+        "raw_liquid": "{{ 'this sentence should start with a capitalized word.' | capitalize }}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ],
+    "summary": "Capitalizes the first word in a string and downcases the remaining characters.",
+    "syntax": "string | capitalize",
+    "name": "capitalize"
+  },
+  {
+    "category": "math",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "",
+    "parameters": [],
+    "return_type": [
+      {
+        "type": "number",
+        "name": "",
+        "description": "",
+        "array_value": ""
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/",
+        "raw_liquid": "{{ 1.2 | ceil }}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ],
+    "summary": "Rounds a number up to the nearest integer.",
+    "syntax": "number | ceil",
+    "name": "ceil"
+  },
+  {
+    "category": "array",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "&gt; Note:\n&gt; The `concat` filter won't filter out duplicates. If you want to remove duplicates, then you need to use the\n&gt; [`uniq` filter](/docs/api/liquid/filters/uniq).",
+    "parameters": [],
+    "return_type": [
+      {
+        "type": "array",
+        "name": "",
+        "description": "",
+        "array_value": "untyped"
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/collections/all",
+        "raw_liquid": "{%- assign types_and_vendors = collection.all_types | concat: collection.all_vendors -%}\n\nTypes and vendors:\n\n{% for item in types_and_vendors -%}\n  {%- if item != blank -%}\n    - {{ item }}\n  {%- endif -%}\n{%- endfor %}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ],
+    "summary": "Concatenates (combines) two arrays.",
+    "syntax": "array | concat: array",
+    "name": "concat"
+  },
+  {
+    "category": "default",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "",
+    "parameters": [
+      {
+        "description": "Whether to use false values instead of the default.",
+        "name": "allow_false",
+        "required": false,
+        "types": [
+          "boolean"
+        ]
+      }
+    ],
+    "return_type": [
+      {
+        "type": "untyped",
+        "name": "",
+        "description": "",
+        "array_value": ""
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/products/health-potion",
+        "raw_liquid": "{{ product.selected_variant.url | default: product.url }}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      },
+      {
+        "name": "allow_false",
+        "description": "By default, the  `default` filter's value will be used in place of `false` values. You can use the `allow_false` parameter to allow variables to return `false` instead of the default value.\n",
+        "syntax": "variable | default: variable, allow_false: boolean",
+        "path": "/products/health-potion",
+        "raw_liquid": "{%- assign display_price = false -%}\n\n{{ display_price | default: true, allow_false: true }}",
+        "parameter": true,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ],
+    "summary": "Sets a default value for any variable whose value is one of the following:\n\n- [`empty`](/docs/api/liquid/basics#empty)\n- [`false`](/docs/api/liquid/basics#truthy-and-falsy)\n- [`nil`](/docs/api/liquid/basics#nil)",
+    "syntax": "variable | default: variable",
+    "name": "default"
+  },
+  {
+    "category": "math",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "",
+    "parameters": [],
+    "return_type": [
+      {
+        "type": "number",
+        "name": "",
+        "description": "",
+        "array_value": ""
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/",
+        "raw_liquid": "{{ 4 | divided_by: 2 }}\n\n# divisor is an integer\n{{ 20 | divided_by: 7 }}\n\n# divisor is a float \n{{ 20 | divided_by: 7.0 }}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ],
+    "summary": "Divides a number by a given number. The `divided_by` filter produces a result of the same type as the divisor. This means if you divide by an integer, the result will be an integer, and if you divide by a float, the result will be a float.",
+    "syntax": "number | divided_by: number",
+    "name": "divided_by"
+  },
+  {
+    "category": "string",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "",
+    "parameters": [],
+    "return_type": [
+      {
+        "type": "string",
+        "name": "",
+        "description": "",
+        "array_value": ""
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/products/health-potion",
+        "raw_liquid": "{{ product.title | downcase }}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ],
+    "summary": "Converts a string to all lowercase characters.",
+    "syntax": "string | downcase",
+    "name": "downcase"
+  },
+  {
+    "category": "string",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "",
+    "parameters": [],
+    "return_type": [
+      {
+        "type": "string",
+        "name": "",
+        "description": "",
+        "array_value": ""
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/",
+        "raw_liquid": "{{ '&lt;p&gt;Text to be escaped.&lt;/p&gt;' | escape }}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ],
+    "summary": "Escapes special characters in HTML, such as `&lt;&gt;`, `'`, and `&amp;`, and converts characters into escape sequences. The filter doesn't effect characters within the string that don’t have a corresponding escape sequence.\".",
+    "syntax": "string | escape",
+    "name": "escape"
+  },
+  {
+    "category": "math",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "",
+    "parameters": [],
+    "return_type": [
+      {
+        "type": "number",
+        "name": "",
+        "description": "",
+        "array_value": ""
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/",
+        "raw_liquid": "{{ 1.2 | floor }}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ],
+    "summary": "Rounds a number down to the nearest integer.",
+    "syntax": "number | floor",
+    "name": "floor"
+  },
+  {
+    "category": "array",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "",
+    "parameters": [],
+    "return_type": [
+      {
+        "type": "string",
+        "name": "",
+        "description": "",
+        "array_value": ""
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/collections/sale-potions",
+        "raw_liquid": "{{ collection.all_tags | join }}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      },
+      {
+        "name": "Custom separator",
+        "description": "You can specify a custom separator for the joined items.\n",
+        "syntax": "array | join: string",
+        "path": "/collections/sale-potions",
+        "raw_liquid": "{{ collection.all_tags | join: ', ' }}",
+        "parameter": true,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ],
+    "summary": "Combines all of the items in an array into a single string, separated by a space.",
+    "syntax": "array | join",
+    "name": "join"
+  },
+  {
+    "category": "array",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "",
+    "parameters": [],
+    "return_type": [
+      {
+        "type": "untyped",
+        "name": "",
+        "description": "",
+        "array_value": ""
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/collections/all",
+        "raw_liquid": "{%- assign last_product = collection.products | last -%}\n\n{{ last_product.title }}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      },
+      {
+        "name": "Dot notation",
+        "description": "You can use the `last` filter with dot notation when you need to use it inside a tag or object output.\n",
+        "syntax": "",
+        "path": "/collections/all",
+        "raw_liquid": "{{ collection.products.last.title }}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ],
+    "summary": "Returns the last item in an array.",
+    "syntax": "array | last",
+    "name": "last"
+  },
+  {
+    "category": "string",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "",
+    "parameters": [],
+    "return_type": [
+      {
+        "type": "string",
+        "name": "",
+        "description": "",
+        "array_value": ""
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/",
+        "raw_liquid": "{%- assign text = '  Some potions create whitespace.      ' -%}\n\n\"{{ text }}\"\n\"{{ text | lstrip }}\"",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ],
+    "summary": "Strips all whitespace from the left of a string.",
+    "syntax": "string | lstrip",
+    "name": "lstrip"
+  },
+  {
+    "category": "array",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "",
+    "parameters": [],
+    "return_type": [
+      {
+        "type": "array",
+        "name": "",
+        "description": "",
+        "array_value": "untyped"
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/collections/sale-potions",
+        "raw_liquid": "{%- assign product_titles = collection.products | map: 'title' -%}\n\n{{ product_titles | join: ', ' }}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ],
+    "summary": "Creates an array of values from a specific property of the items in an array.",
+    "syntax": "array | map: string",
+    "name": "map"
+  },
+  {
+    "category": "math",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "",
+    "parameters": [],
+    "return_type": [
+      {
+        "type": "number",
+        "name": "",
+        "description": "",
+        "array_value": ""
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/",
+        "raw_liquid": "{{ 4 | minus: 2 }}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ],
+    "summary": "Subtracts a given number from another number.",
+    "syntax": "number | minus: number",
+    "name": "minus"
+  },
+  {
+    "category": "math",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "",
+    "parameters": [],
+    "return_type": [
+      {
+        "type": "number",
+        "name": "",
+        "description": "",
+        "array_value": ""
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/",
+        "raw_liquid": "{{ 12 | modulo: 5 }}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ],
+    "summary": "Returns the remainder of dividing a number by a given number.",
+    "syntax": "number | modulo: number",
+    "name": "modulo"
+  },
+  {
+    "category": "string",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "",
+    "parameters": [],
+    "return_type": [
+      {
+        "type": "string",
+        "name": "",
+        "description": "",
+        "array_value": ""
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/products/health-potion",
+        "raw_liquid": "{{ product.description | newline_to_br }}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ],
+    "summary": "Converts newlines (`\\n`) in a string to HTML line breaks (`&lt;br&gt;`).",
+    "syntax": "string | newline_to_br",
+    "name": "newline_to_br"
+  },
+  {
+    "category": "math",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "",
+    "parameters": [],
+    "return_type": [
+      {
+        "type": "number",
+        "name": "",
+        "description": "",
+        "array_value": ""
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/",
+        "raw_liquid": "{{ 2 | plus: 2 }}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ],
+    "summary": "Adds two numbers.",
+    "syntax": "number | plus: number",
+    "name": "plus"
+  },
+  {
+    "category": "string",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "",
+    "parameters": [],
+    "return_type": [
+      {
+        "type": "string",
+        "name": "",
+        "description": "",
+        "array_value": ""
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/products/health-potion",
+        "raw_liquid": "{%- assign origin = request.origin -%}\n\n{{ product.url | prepend: origin }}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ],
+    "summary": "Adds a given string to the beginning of a string.",
+    "syntax": "string | prepend: string",
+    "name": "prepend"
+  },
+  {
+    "category": "string",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "",
+    "parameters": [],
+    "return_type": [
+      {
+        "type": "string",
+        "name": "",
+        "description": "",
+        "array_value": ""
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/",
+        "raw_liquid": "{{ \"I can't do it!\" | remove: \"'t\" }}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ],
+    "summary": "Removes any instance of a substring inside a string.",
+    "syntax": "string | remove: string",
+    "name": "remove"
+  },
+  {
+    "category": "string",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "",
+    "parameters": [],
+    "return_type": [
+      {
+        "type": "string",
+        "name": "",
+        "description": "",
+        "array_value": ""
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/",
+        "raw_liquid": "{{ \"I hate it when I accidentally spill my duplication potion accidentally!\" | remove_first: ' accidentally' }}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ],
+    "summary": "Removes the first instance of a substring inside a string.",
+    "syntax": "string | remove_first: string",
+    "name": "remove_first"
+  },
+  {
+    "category": "string",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "",
+    "parameters": [],
+    "return_type": [
+      {
+        "type": "string",
+        "name": "",
+        "description": "",
+        "array_value": ""
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/products/komodo-dragon-scale",
+        "raw_liquid": "{{ product.handle | replace: '-', ' ' }}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ],
+    "summary": "Replaces any instance of a substring inside a string with a given string.",
+    "syntax": "string | replace: string, string",
+    "name": "replace"
+  },
+  {
+    "category": "string",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "",
+    "parameters": [],
+    "return_type": [
+      {
+        "type": "string",
+        "name": "",
+        "description": "",
+        "array_value": ""
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/products/komodo-dragon-scale",
+        "raw_liquid": "{{ product.handle | replace_first: '-', ' ' }}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ],
+    "summary": "Replaces the first instance of a substring inside a string with a given string.",
+    "syntax": "string | replace_first: string, string",
+    "name": "replace_first"
+  },
+  {
+    "category": "array",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "",
+    "parameters": [],
+    "return_type": [
+      {
+        "type": "array",
+        "name": "",
+        "description": "",
+        "array_value": "untyped"
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/collections/sale-potions",
+        "raw_liquid": "Original order:\n{{ collection.products | map: 'title' | join: ', ' }}\n\nReverse order:\n{{ collection.products | reverse | map: 'title' | join: ', ' }}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      },
+      {
+        "name": "Reversing strings",
+        "description": "You can't use the `reverse` filter on strings directly. However, you can use the [`split` filter](/docs/api/liquid/filters/split) to create an array of characters in the string, reverse that array, and then use the [`join` filter](/docs/api/liquid/filters/join) to combine them again.\n",
+        "syntax": "",
+        "path": "/collections/sale-potions",
+        "raw_liquid": "{{ collection.title | split: '' | reverse | join: '' }}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ],
+    "summary": "Reverses the order of the items in an array.",
+    "syntax": "array | reverse",
+    "name": "reverse"
+  },
+  {
+    "category": "math",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "",
+    "parameters": [],
+    "return_type": [
+      {
+        "type": "number",
+        "name": "",
+        "description": "",
+        "array_value": ""
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/",
+        "raw_liquid": "{{ 2.7 | round }}\n{{ 1.3 | round }}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      },
+      {
+        "name": "Round to a specific number of decimal places",
+        "description": "You can specify a number of decimal places to round to. If you don't specify a number, then the `round` filter rounds to the nearest integer.\n",
+        "syntax": "",
+        "path": "/",
+        "raw_liquid": "{{ 3.14159 | round: 2 }}",
+        "parameter": true,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ],
+    "summary": "Rounds a number to the nearest integer.",
+    "syntax": "number | round",
+    "name": "round"
+  },
+  {
+    "category": "string",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "",
+    "parameters": [],
+    "return_type": [
+      {
+        "type": "string",
+        "name": "",
+        "description": "",
+        "array_value": ""
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/",
+        "raw_liquid": "{%- assign text = '  Some potions create whitespace.      ' -%}\n\n\"{{ text }}\"\n\"{{ text | rstrip }}\"",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ],
+    "summary": "Strips all whitespace from the right of a string.",
+    "syntax": "string | rstrip",
+    "name": "rstrip"
+  },
+  {
+    "category": "array",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "The size of a string is the number of characters that the string includes. The size of an array is the number of items\nin the array.",
+    "parameters": [],
+    "return_type": [
+      {
+        "type": "number",
+        "name": "",
+        "description": "",
+        "array_value": ""
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/collections/sale-potions",
+        "raw_liquid": "{{ collection.title | size }}\n{{ collection.products | size }}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": false
+      },
+      {
+        "name": "Dot notation",
+        "description": "You can use the `size` filter with dot notation when you need to use it inside a tag or object output.\n",
+        "syntax": "",
+        "path": "/collections/sale-potions",
+        "raw_liquid": "{% if collection.products.size &gt;= 10 %}\n  There are 10 or more products in this collection.\n{% else %}\n  There are less than 10 products in this collection.\n{% endif %}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": false
+      }
+    ],
+    "summary": "Returns the size of a string or array.",
+    "syntax": "variable | size",
+    "name": "size"
+  },
+  {
+    "category": "string",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "By default, the substring has a length of one character, and the array series has one array item. However, you can\nprovide a second parameter to specify the number of characters or array items.",
+    "parameters": [],
+    "return_type": [
+      {
+        "type": "string",
+        "name": "",
+        "description": "",
+        "array_value": ""
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/collections/all",
+        "raw_liquid": "{{ collection.title | slice: 0 }}\n{{ collection.title | slice: 0, 5 }}\n\n{{ collection.all_tags | slice: 1, 2 | join: ', ' }}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      },
+      {
+        "name": "Negative index",
+        "description": "You can supply a negative index which will count from the end of the string.\n",
+        "syntax": "",
+        "path": "/collections/all",
+        "raw_liquid": "{{ collection.title | slice: -3, 3 }}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ],
+    "summary": "Returns a substring or series of array items, starting at a given 0-based index.",
+    "syntax": "string | slice",
+    "name": "slice"
+  },
+  {
+    "category": "array",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "",
+    "parameters": [],
+    "return_type": [
+      {
+        "type": "array",
+        "name": "",
+        "description": "",
+        "array_value": "untyped"
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/collections/all",
+        "raw_liquid": "{% assign tags = collection.all_tags | sort %}\n\n{% for tag in tags -%}\n  {{ tag }}\n{%- endfor %}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      },
+      {
+        "name": "Sort by an array item property",
+        "description": "You can specify an array item property to sort the array items by. You can sort by any property of the object that you're sorting.\n",
+        "syntax": "array | sort: string",
+        "path": "/collections/all",
+        "raw_liquid": "{% assign products = collection.products | sort: 'price' %}\n\n{% for product in products -%}\n  {{ product.title }}\n{%- endfor %}",
+        "parameter": true,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ],
+    "summary": "Sorts the items in an array in case-sensitive alphabetical, or numerical, order.",
+    "syntax": "array | sort",
+    "name": "sort"
+  },
+  {
+    "category": "array",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "&gt; Caution:\n&gt; You shouldn't use the `sort_natural` filter to sort numerical values. When comparing items an array, each item is converted to a\n&gt; string, so sorting on numerical values can lead to unexpected results.",
+    "parameters": [],
+    "return_type": [
+      {
+        "type": "array",
+        "name": "",
+        "description": "",
+        "array_value": "untyped"
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/collections/all",
+        "raw_liquid": "{% assign tags = collection.all_tags | sort_natural %}\n\n{% for tag in tags -%}\n  {{ tag }}\n{%- endfor %}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      },
+      {
+        "name": "Sort by an array item property",
+        "description": "You can specify an array item property to sort the array items by.\n",
+        "syntax": "array | sort_natural: string",
+        "path": "/collections/all",
+        "raw_liquid": "{% assign products = collection.products | sort_natural: 'title' %}\n\n{% for product in products -%}\n  {{ product.title }}\n{%- endfor %}",
+        "parameter": true,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ],
+    "summary": "Sorts the items in an array in case-insensitive alphabetical order.",
+    "syntax": "array | sort_natural",
+    "name": "sort_natural"
+  },
+  {
+    "category": "string",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "",
+    "parameters": [],
+    "return_type": [
+      {
+        "type": "array",
+        "name": "",
+        "description": "",
+        "array_value": "string"
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/products/health-potion",
+        "raw_liquid": "{%- assign title_words = product.handle | split: '-' -%}\n\n{% for word in title_words -%}\n  {{ word }}\n{%- endfor %}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ],
+    "summary": "Splits a string into an array of substrings based on a given separator.",
+    "syntax": "string | split: string",
+    "name": "split"
+  },
+  {
+    "category": "string",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "",
+    "parameters": [],
+    "return_type": [
+      {
+        "type": "string",
+        "name": "",
+        "description": "",
+        "array_value": ""
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/",
+        "raw_liquid": "{%- assign text = '  Some potions create whitespace.      ' -%}\n\n\"{{ text }}\"\n\"{{ text | strip }}\"",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ],
+    "summary": "Strips all whitespace from the left and right of a string.",
+    "syntax": "string | strip",
+    "name": "strip"
+  },
+  {
+    "category": "string",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "",
+    "parameters": [],
+    "return_type": [
+      {
+        "type": "string",
+        "name": "",
+        "description": "",
+        "array_value": ""
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/products/health-potion",
+        "raw_liquid": "&lt;!-- With HTML --&gt;\n{{ product.description }}\n\n&lt;!-- HTML stripped --&gt;\n{{ product.description | strip_html }}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ],
+    "summary": "Strips all HTML tags from a string.",
+    "syntax": "string | strip_html",
+    "name": "strip_html"
+  },
+  {
+    "category": "string",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "",
+    "parameters": [],
+    "return_type": [
+      {
+        "type": "string",
+        "name": "",
+        "description": "",
+        "array_value": ""
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/products/health-potion",
+        "raw_liquid": "&lt;!-- With newlines --&gt;\n{{ product.description }}\n\n&lt;!-- Newlines stripped --&gt;\n{{ product.description | strip_newlines }}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ],
+    "summary": "Strips all newline characters (line breaks) from a string.",
+    "syntax": "string | strip_newlines",
+    "name": "strip_newlines"
+  },
+  {
+    "category": "math",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "",
+    "parameters": [],
+    "return_type": [
+      {
+        "type": "number",
+        "name": "",
+        "description": "",
+        "array_value": ""
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/",
+        "raw_liquid": "{{ 2 | times: 2 }}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ],
+    "summary": "Multiplies a number by a given number.",
+    "syntax": "number | times: number",
+    "name": "times"
+  },
+  {
+    "category": "string",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "If the specified number of characters is less than the length of the string, then an ellipsis (`...`) is appended to\nthe truncated string. The ellipsis is included in the character count of the truncated string.",
+    "parameters": [],
+    "return_type": [
+      {
+        "type": "string",
+        "name": "",
+        "description": "",
+        "array_value": ""
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/blogs/potion-notions/how-to-tell-if-you-have-run-out-of-invisibility-potion",
+        "raw_liquid": "{{ article.title | truncate: 15 }}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      },
+      {
+        "name": "Specify a custom ellipsis",
+        "description": "You can provide a second parameter to specify a custom ellipsis. If you don't want an ellipsis, then you can supply an empty string.\n",
+        "syntax": "string | truncate: number, string",
+        "path": "/blogs/potion-notions/how-to-tell-if-you-have-run-out-of-invisibility-potion",
+        "raw_liquid": "{{ article.title | truncate: 15, '--' }}\n{{ article.title | truncate: 15, '' }}",
+        "parameter": true,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ],
+    "summary": "Truncates a string down to a given number of characters.",
+    "syntax": "string | truncate: number",
+    "name": "truncate"
+  },
+  {
+    "category": "string",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "If the specified number of words is less than the number of words in the string, then an ellipsis (`...`) is appended to\nthe truncated string.\n\n&gt; Caution:\n&gt; HTML tags are treated as words, so you should strip any HTML from truncated content. If you don't strip HTML, then\n&gt; closing HTML tags can be removed, which can result in unexpected behavior.",
+    "parameters": [],
+    "return_type": [
+      {
+        "type": "string",
+        "name": "",
+        "description": "",
+        "array_value": ""
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/blogs/potion-notions/how-to-tell-if-you-have-run-out-of-invisibility-potion",
+        "raw_liquid": "{{ article.content | strip_html | truncatewords: 15 }}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      },
+      {
+        "name": "Specify a custom ellipsis",
+        "description": "You can provide a second parameter to specify a custom ellipsis. If you don't want an ellipsis, then you can supply an empty string.\n",
+        "syntax": "string | truncatewords: number, string",
+        "path": "/blogs/potion-notions/how-to-tell-if-you-have-run-out-of-invisibility-potion",
+        "raw_liquid": "{{ article.content | strip_html | truncatewords: 15, '--' }}\n\n{{ article.content | strip_html | truncatewords: 15, '' }}",
+        "parameter": true,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ],
+    "summary": "Truncates a string down to a given number of words.",
+    "syntax": "string | truncatewords: number",
+    "name": "truncatewords"
+  },
+  {
+    "category": "array",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "",
+    "parameters": [],
+    "return_type": [
+      {
+        "type": "array",
+        "name": "",
+        "description": "",
+        "array_value": "untyped"
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/",
+        "raw_liquid": "{% assign potion_array = 'invisibility, health, love, health, invisibility' | split: ', ' %}\n\n{{ potion_array | uniq | join: ', ' }}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ],
+    "summary": "Removes any duplicate items in an array.",
+    "syntax": "array | uniq",
+    "name": "uniq"
+  },
+  {
+    "category": "string",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "",
+    "parameters": [],
+    "return_type": [
+      {
+        "type": "string",
+        "name": "",
+        "description": "",
+        "array_value": ""
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/products/health-potion",
+        "raw_liquid": "{{ product.title | upcase }}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ],
+    "summary": "Converts a string to all uppercase characters.",
+    "syntax": "string | upcase",
+    "name": "upcase"
+  },
+  {
+    "category": "string",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "",
+    "parameters": [],
+    "return_type": [
+      {
+        "type": "string",
+        "name": "",
+        "description": "",
+        "array_value": ""
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/",
+        "raw_liquid": "{{ 'test%40test.com' | url_decode }}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ],
+    "summary": "Decodes any [percent-encoded](https://developer.mozilla.org/en-US/docs/Glossary/percent-encoding) characters\nin a string.",
+    "syntax": "string | url_decode",
+    "name": "url_decode"
+  },
+  {
+    "category": "string",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "&gt; Note:\n&gt; Spaces are converted to a `+` character, instead of a percent-encoded character.",
+    "parameters": [],
+    "return_type": [
+      {
+        "type": "string",
+        "name": "",
+        "description": "",
+        "array_value": ""
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/",
+        "raw_liquid": "{{ 'test@test.com' | url_encode }}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ],
+    "summary": "Converts any URL-unsafe characters in a string to the\n[percent-encoded](https://developer.mozilla.org/en-US/docs/Glossary/percent-encoding) equivalent.",
+    "syntax": "string | url_encode",
+    "name": "url_encode"
+  }
+]
+{% endraw %}
+{% endparse_json %}
+{% return standard_filters %}

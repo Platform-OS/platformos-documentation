@@ -1,0 +1,62 @@
+{% capture filters %}
+[
+  {%- for item in data.filters -%}
+    {% liquid
+      assign first_param_type = item.params[0].types[0] | downcase
+      case first_param_type
+      when 'hash'
+        assign first_param_type = 'variable'
+      endcase
+
+      if item.deprecated.size > 0
+        assign deprecated = true
+      else
+        assign deprecated = false
+      endif
+
+      assign default_description = 'returns ' | append: item.return_type[0].description
+    %}
+    {
+      "category": "string",
+      "deprecated": {{ deprecated | json }},
+      "deprecation_reason": "{{item.deprecated | join: ', '}}",
+      "description": "",
+      "summary": "{{item.decription | join: ', ' | default: default_description}}",
+      "syntax": "{{ first_param_type }} | {{item.name}}",
+      "name": "{{item.name}}",
+      "parameters": [
+      ],
+      "return_type": [
+        {% for return_type in item.returns %}
+          {
+            "type": "{{ return_type.types | join: ', ' | downcase }}",
+            "name": "",
+            "description": "{{return_type.description | replace: '"', '\"' | replace: "
+", "\n" }}",
+            "array_value": ""
+          }{% unless forloop.last %},{% endunless %}
+        {% endfor %}
+      ],
+      "examples": [
+        {% for example in item.examples %}
+          {
+            "name": "",
+            "description": "",
+            "syntax": "",
+            "path": "",
+            "raw_liquid": {{ example | replace: '"', '\"' | json }},
+            "parameter": false,
+            "display_type": "text",
+            "show_data_tab": true
+          }{% unless forloop.last %},{% endunless %}
+        {% endfor %}
+      ]
+    }{% unless forloop.last %},{% endunless %}
+  {% endfor %}
+]
+{% endcapture %}
+{% liquid
+  assign filters = filters | parse_json: raw_text: true
+
+  return filters
+%}
