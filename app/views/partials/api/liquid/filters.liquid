@@ -1,0 +1,11 @@
+{% liquid
+  function filters = 'api/liquid/platformos_filters', data: data
+  function standard_filters = 'api/liquid/standard_filters'
+  log filters[0], type: 'filters[0]'
+  log standard_filters[0], type: 'standard_filters[0]'
+%}
+
+{{ filters | concat: standard_filters | array_sort_by: 'name' }}
+{% comment %}
+{{ filters | hash_merge: standard_filters | html_safe }}
+{% endcomment %}
