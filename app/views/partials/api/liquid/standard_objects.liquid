@@ -1,0 +1,210 @@
+{% parse_json standard_objects %}
+{% raw %}
+[
+  {
+    "access": {
+      "global": false,
+      "parents": [
+        {
+          "object": "forloop",
+          "property": "parentloop"
+        }
+      ],
+      "template": []
+    },
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "",
+    "properties": [
+      {
+        "deprecated": false,
+        "deprecation_reason": "",
+        "description": "",
+        "examples": [],
+        "return_type": [
+          {
+            "type": "number",
+            "name": "",
+            "description": "",
+            "array_value": ""
+          }
+        ],
+        "summary": "The total number of iterations in the loop.",
+        "name": "length"
+      },
+      {
+        "deprecated": false,
+        "deprecation_reason": "",
+        "description": "If the current `for` loop isn't nested inside another `for` loop, then `nil` is returned.",
+        "examples": [
+          {
+            "name": "Use the `parentloop` property",
+            "description": "",
+            "syntax": "",
+            "path": "/",
+            "raw_liquid": "{% for i in (1..3) -%}\n  {% for j in (1..3) -%}\n    {{ forloop.parentloop.index }} - {{ forloop.index }}\n  {%- endfor %}\n{%- endfor %}",
+            "parameter": false,
+            "display_type": "text",
+            "show_data_tab": true
+          }
+        ],
+        "return_type": [
+          {
+            "type": "forloop",
+            "name": "",
+            "description": "",
+            "array_value": ""
+          }
+        ],
+        "summary": "The parent `forloop` object.",
+        "name": "parentloop"
+      },
+      {
+        "deprecated": false,
+        "deprecation_reason": "",
+        "description": "",
+        "examples": [],
+        "return_type": [
+          {
+            "type": "number",
+            "name": "",
+            "description": "",
+            "array_value": ""
+          }
+        ],
+        "summary": "The 1-based index of the current iteration.",
+        "name": "index"
+      },
+      {
+        "deprecated": false,
+        "deprecation_reason": "",
+        "description": "",
+        "examples": [],
+        "return_type": [
+          {
+            "type": "number",
+            "name": "",
+            "description": "",
+            "array_value": ""
+          }
+        ],
+        "summary": "The 0-based index of the current iteration.",
+        "name": "index0"
+      },
+      {
+        "deprecated": false,
+        "deprecation_reason": "",
+        "description": "",
+        "examples": [],
+        "return_type": [
+          {
+            "type": "number",
+            "name": "",
+            "description": "",
+            "array_value": ""
+          }
+        ],
+        "summary": "The 1-based index of the current iteration, in reverse order.",
+        "name": "rindex"
+      },
+      {
+        "deprecated": false,
+        "deprecation_reason": "",
+        "description": "",
+        "examples": [],
+        "return_type": [
+          {
+            "type": "number",
+            "name": "",
+            "description": "",
+            "array_value": ""
+          }
+        ],
+        "summary": "The 0-based index of the current iteration, in reverse order.",
+        "name": "rindex0"
+      },
+      {
+        "deprecated": false,
+        "deprecation_reason": "",
+        "description": "",
+        "examples": [],
+        "return_type": [
+          {
+            "type": "boolean",
+            "name": "",
+            "description": "",
+            "array_value": ""
+          }
+        ],
+        "summary": "Returns `true` if the current iteration is the first. Returns `false` if not.",
+        "name": "first"
+      },
+      {
+        "deprecated": false,
+        "deprecation_reason": "",
+        "description": "",
+        "examples": [],
+        "return_type": [
+          {
+            "type": "boolean",
+            "name": "",
+            "description": "",
+            "array_value": ""
+          }
+        ],
+        "summary": "Returns `true` if the current iteration is the last. Returns `false` if not.",
+        "name": "last"
+      }
+    ],
+    "summary": "Information about a parent [`for` loop](/docs/api/liquid/tags/for).",
+    "name": "forloop",
+    "examples": [
+      {
+        "name": "Use the `forloop` object",
+        "description": "",
+        "syntax": "",
+        "path": "/",
+        "raw_liquid": "{% for page in pages -%}\n  {%- if forloop.length &gt; 0 -%}\n    {{ page.title }}{% unless forloop.last %}, {% endunless -%}\n  {%- endif -%}\n{% endfor %}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ],
+    "json_data": {
+      "path": "",
+      "handle": "",
+      "data_from_file": "{\"first\":true,\"index\":1,\"index0\":0,\"last\":false,\"length\":4,\"rindex\":3}"
+    },
+    "return_type": []
+  },
+  {
+    "access": {
+      "global": true,
+      "parents": [],
+      "template": []
+    },
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "Include the `content_for_layout` object in your [layout files](/themes/architecture/layouts) between the `&lt;body&gt;` and\n`&lt;/body&gt;` HTML tags.\n\n&gt; Note:\n&gt; The `content_for_layout` object is required in `theme.liquid`.",
+    "properties": [],
+    "summary": "Dynamically returns content based on the current [template](/themes/architecture/templates).",
+    "name": "content_for_layout",
+    "examples": [],
+    "json_data": {
+      "path": "",
+      "handle": "",
+      "data_from_file": ""
+    },
+    "return_type": [
+      {
+        "type": "string",
+        "name": "",
+        "description": "",
+        "array_value": ""
+      }
+    ]
+  }
+]
+{% endraw %}
+{% endparse_json %}
+{% return standard_objects %}
