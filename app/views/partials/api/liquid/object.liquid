@@ -1,0 +1,56 @@
+{% liquid
+  if item.parent
+    assign parent_handle = item.parent | append: '.'
+  endif
+%}
+{% parse_json data %}
+  {
+    "access": {
+      "global": {{ item.global | json }},
+      "parents": [
+        {% if data.parent %}
+          {
+            "object": {{data.parent | json}},
+            "property": {{item.name | json}}
+          }
+        {% endif %}
+      ],
+      "template": []
+    },
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "todo description",
+    "properties": [
+      {% for property in item.properties %}
+      {
+        "deprecated": false,
+        "deprecation_reason": "",
+        "description": "",
+        "examples": [
+
+        ],
+        "return_type": [
+          {
+            "type": "{{property.type}}",
+            "name": "",
+            "description": "",
+            "array_value": ""
+          }
+        ],
+        "summary": "todo property summary",
+        "name": "{{property.name}}"
+      }{% unless forloop.last %},{% endunless %}
+      {% endfor %}
+    ],
+    "summary": "todo summary",
+    "name": "{{item.name}}",
+    "examples": [],
+    "json_data": {
+      "path": "",
+      "handle": "{{parent_handle}}{{item.name}}",
+      "data_from_file": ""
+    },
+    "return_type": []
+  }
+{% endparse_json %}
+{% return data %}

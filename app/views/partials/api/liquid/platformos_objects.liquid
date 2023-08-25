@@ -1,0 +1,13 @@
+{% parse_json data %}
+{% render 'api/liquid/objects_json' %}
+{% endparse_json %}
+{% liquid
+  assign objects = '[]' | parse_json
+  for item in data
+    function object = 'api/liquid/object', item: item
+
+    assign objects = objects | array_add: object
+  endfor
+
+  return objects
+%}
