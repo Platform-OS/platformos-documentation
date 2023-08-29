@@ -321,115 +321,6 @@
     ]
   },
   {
-    "category": "iteration",
-    "deprecated": false,
-    "deprecation_reason": "",
-    "description": "You can do a maximum of 50 iterations with a `for` loop. If you need to iterate over more than 50 items, then use the\n[`paginate` tag](/docs/api/liquid/tags/paginate) to split the items over multiple pages.\n\n&gt; Tip:\n&gt; Every `for` loop has an associated [`forloop` object](/docs/api/liquid/objects/forloop) with information about the loop.",
-    "parameters": [
-      {
-        "description": "The number of iterations to perform.",
-        "name": "limit",
-        "required": false,
-        "types": [
-          "number"
-        ]
-      },
-      {
-        "description": "The 1-based index to start iterating at.",
-        "name": "offset",
-        "required": false,
-        "types": [
-          "number"
-        ]
-      },
-      {
-        "description": "A custom numeric range to iterate over.",
-        "name": "range",
-        "required": false,
-        "types": [
-          "untyped"
-        ]
-      },
-      {
-        "description": "Iterate in reverse order.",
-        "name": "reversed",
-        "required": false,
-        "types": [
-          "untyped"
-        ]
-      }
-    ],
-    "summary": "Renders an expression for every item in an array.",
-    "name": "for",
-    "syntax": "{% for variable in array %}\n  expression\n{% endfor %}",
-    "syntax_keywords": [
-      {
-        "keyword": "variable",
-        "description": "The current item in the array."
-      },
-      {
-        "keyword": "array",
-        "description": "The array to iterate over."
-      },
-      {
-        "keyword": "expression",
-        "description": "The expression to render for each iteration."
-      }
-    ],
-    "examples": [
-      {
-        "name": "",
-        "description": "",
-        "syntax": "",
-        "path": "/collections/sale-potions",
-        "raw_liquid": "{% for product in collection.products -%}\n  {{ product.title }}\n{%- endfor %}",
-        "parameter": false,
-        "display_type": "text",
-        "show_data_tab": true
-      },
-      {
-        "name": "limit",
-        "description": "You can limit the number of iterations using the `limit` parameter.",
-        "syntax": "{% for variable in array limit: number %}\n  expression\n{% endfor %}\n",
-        "path": "/collections/sale-potions",
-        "raw_liquid": "{% for product in collection.products limit: 2 -%}\n  {{ product.title }}\n{%- endfor %}",
-        "parameter": true,
-        "display_type": "text",
-        "show_data_tab": true
-      },
-      {
-        "name": "offset",
-        "description": "You can specify a 1-based index to start iterating at using the `offset` parameter.",
-        "syntax": "{% for variable in array offset: number %}\n  expression\n{% endfor %}\n",
-        "path": "/collections/sale-potions",
-        "raw_liquid": "{% for product in collection.products offset: 2 -%}\n  {{ product.title }}\n{%- endfor %}",
-        "parameter": true,
-        "display_type": "text",
-        "show_data_tab": true
-      },
-      {
-        "name": "range",
-        "description": "Instead of iterating over specific items in an array, you can specify a numeric range to iterate over.\n\n&gt; Note:\n&gt; You can define the range using both literal and variable values.\n",
-        "syntax": "{% for variable in (number..number) %}\n  expression\n{% endfor %}\n",
-        "path": "/collections/all",
-        "raw_liquid": "{% for i in (1..3) -%}\n  {{ i }}\n{%- endfor %}\n\n{%- assign lower_limit = 2 -%}\n{%- assign upper_limit = 4 -%}\n\n{% for i in (lower_limit..upper_limit) -%}\n  {{ i }}\n{%- endfor %}",
-        "parameter": true,
-        "display_type": "text",
-        "show_data_tab": true
-      },
-      {
-        "name": "reversed",
-        "description": "You can iterate in reverse order using the `reversed` parameter.",
-        "syntax": "{% for variable in array reversed %}\n  expression\n{% endfor %}\n",
-        "path": "/collections/sale-potions",
-        "raw_liquid": "{% for product in collection.products reversed -%}\n  {{ product.title }}\n{%- endfor %}",
-        "parameter": true,
-        "display_type": "text",
-        "show_data_tab": true
-      }
-    ]
-  },
-  {
     "category": "conditional",
     "deprecated": false,
     "deprecation_reason": "",
@@ -474,7 +365,7 @@
     ]
   },
   {
-    "category": "theme",
+    "category": "app",
     "deprecated": true,
     "deprecation_reason": "Deprecated because the way that variables are handled reduces performance and makes code harder to both read and maintain.\n\nThe `include` tag has been replaced by [`render`](/docs/api/liquid/tags/render).",
     "description": "Inside the snippet, you can access and alter variables that are [created](/docs/api/liquid/tags/variable-tags) outside of the\nsnippet.",
@@ -534,7 +425,7 @@
     ],
     "summary": "Outputs any Liquid code as text instead of rendering it.",
     "name": "raw",
-    "syntax": "{% raw %}\n  expression\n{% endraw %}",
+    "syntax": "{% raw %}\n  expression\n{\% endraw %}",
     "syntax_keywords": [
       {
         "keyword": "expression",
@@ -547,7 +438,7 @@
         "description": "",
         "syntax": "",
         "path": "/",
-        "raw_liquid": "{% raw %}\n{{ 2 | plus: 2 }} equals 4.\n{% endraw %}",
+        "raw_liquid": "{% raw %}\n{{ 2 | plus: 2 }} equals 4.\n{\% endraw %}",
         "parameter": false,
         "display_type": "text",
         "show_data_tab": true
@@ -555,7 +446,7 @@
     ]
   },
   {
-    "category": "theme",
+    "category": "app",
     "deprecated": false,
     "deprecation_reason": "",
     "description": "Inside snippets and app blocks, you can't directly access variables that are [created](/docs/api/liquid/tags/variable-tags) outside\nof the snippet or app block. However, you can [specify variables as parameters](/docs/api/liquid/tags/render#render-passing-variables-to-a-snippet)\nto pass outside variables to snippets.\n\nWhile you can't directly access created variables, you can access global objects, as well as any objects that are\ndirectly accessible outside the snippet or app block. For example, a snippet or app block inside the [product template](/themes/architecture/templates/product)\ncan access the [`product` object](/docs/api/liquid/objects/product), and a snippet or app block inside a [section](/themes/architecture/sections)\ncan access the [`section` object](/docs/api/liquid/objects/section).\n\nOutside a snippet or app block, you can't access variables created inside the snippet or app block.\n\n&gt; Note:\n&gt; When you render a snippet using the `render` tag, you can't use the [`include` tag](/docs/api/liquid/tags/include)\n&gt; inside the snippet.",

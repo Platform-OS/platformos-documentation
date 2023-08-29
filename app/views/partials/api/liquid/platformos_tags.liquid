@@ -15,14 +15,14 @@
           "description": {{ param.description | json }},
             "name": {{ param.name | json }},
             "required": {{ param.required | default: false | json }},
-            "types": {{ param.types }}
+            "types": ["untyped"]
           }{% unless forloop.last %},{% endunless %}
         {% endfor %}
       ],
       "return_type": [
         {% for return_type in item.returns %}
           {
-            "type": "{{ return_type.types | join: ', ' | downcase }}",
+            "types": ["untyped"],
             "name": "",
             "description": "{{return_type.description | replace: '"', '\"' | replace: "
 ", "\n" }}",
