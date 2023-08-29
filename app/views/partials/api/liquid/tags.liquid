@@ -1,0 +1,6 @@
+{% liquid
+  function tags = 'api/liquid/platformos_tags', data: data
+  function standard_tags = 'api/liquid/standard_tags'
+%}
+
+{{ tags | concat: standard_tags | array_sort_by: 'name' }}

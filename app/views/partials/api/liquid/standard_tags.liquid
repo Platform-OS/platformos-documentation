@@ -1,0 +1,855 @@
+{% parse_json standard_tags %}
+{% raw %}
+[
+  {
+    "category": "variable",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "You can create variables of any [basic type](/docs/api/liquid/basics#types), [object](/docs/api/liquid/objects), or object property.",
+    "parameters": [
+
+    ],
+    "summary": "Creates a new variable.",
+    "name": "assign",
+    "syntax": "{% assign variable_name = value %}",
+    "syntax_keywords": [
+      {
+        "keyword": "variable_name",
+        "description": "The name of the variable being created."
+      },
+      {
+        "keyword": "value",
+        "description": "The value you want to assign to the variable."
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/products/health-potion",
+        "raw_liquid": "{%- assign product_title = product.title | upcase -%}\n\n{{ product_title }}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ]
+  },
+  {
+    "category": "iteration",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "",
+    "parameters": [
+
+    ],
+    "summary": "Stops a [`for` loop](/docs/api/liquid/tags/for) from iterating.",
+    "name": "break",
+    "syntax": "{% break %}",
+    "syntax_keywords": [
+
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/",
+        "raw_liquid": "{% for i in (1..5) -%}\n  {%- if i == 4 -%}\n    {% break %}\n  {%- else -%}\n    {{ i }}\n  {%- endif -%}\n{%- endfor %}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ]
+  },
+  {
+    "category": "variable",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "You can create complex strings with Liquid logic and variables.",
+    "parameters": [
+
+    ],
+    "summary": "Creates a new variable with a string value.",
+    "name": "capture",
+    "syntax": "{% capture variable %}\n  value\n{% endcapture %}",
+    "syntax_keywords": [
+      {
+        "keyword": "variable",
+        "description": "The name of the variable being created."
+      },
+      {
+        "keyword": "value",
+        "description": "The value you want to assign to the variable."
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/products/health-potion",
+        "raw_liquid": "{%- assign up_title = product.title | upcase -%}\n{%- assign down_title = product.title | downcase -%}\n{%- assign show_up_title = true -%}\n\n{%- capture title -%}\n  {% if show_up_title -%}\n    Upcase title: {{ up_title }}\n  {%- else -%}\n    Downcase title: {{ down_title }}\n  {%- endif %}\n{%- endcapture %}\n\n{{ title }}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ]
+  },
+  {
+    "category": "conditional",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "",
+    "parameters": [
+
+    ],
+    "summary": "Renders a specific expression depending on the value of a specific variable.",
+    "name": "case",
+    "syntax": "{% case variable %}\n  {% when first_value %}\n    first_expression\n  {% when second_value %}\n    second_expression\n  {% else %}\n    third_expression\n{% endcase %}",
+    "syntax_keywords": [
+      {
+        "keyword": "variable",
+        "description": "The name of the variable you want to base your case statement on."
+      },
+      {
+        "keyword": "first_value",
+        "description": "A specific value to check for."
+      },
+      {
+        "keyword": "second_value",
+        "description": "A specific value to check for."
+      },
+      {
+        "keyword": "first_expression",
+        "description": "An expression to be rendered when the variable's value matches `first_value`."
+      },
+      {
+        "keyword": "second_expression",
+        "description": "An expression to be rendered when the variable's value matches `second_value`."
+      },
+      {
+        "keyword": "third_expression",
+        "description": "An expression to be rendered when the variable's value has no match."
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/products/health-potion",
+        "raw_liquid": "{% case product.type %}\n  {% when 'Health' %}\n    This is a health potion.\n  {% when 'Love' %}\n    This is a love potion.\n  {% else %}\n    This is a potion.\n{% endcase %}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      },
+      {
+        "name": "Multiple values",
+        "description": "A `when` tag can accept multiple values. When multiple values are provided, the expression is returned when the variable matches any of the values inside of the tag.\nProvide the values as a comma-separated list, or separate them using an `or` operator.\n",
+        "syntax": "{% case variable %}\n  {% when first_value or second_value or third_value %}\n    first_expression\n  {% when fourth_value, fifth_value, sixth_value %}\n    second_expression\n  {% else %}\n    third_expression\n{% endcase %}\n",
+        "path": "/products/health-potion",
+        "raw_liquid": "{% case product.tags %}\n  {% when 'Love' or 'Luck' %}\n    This is a love or luck potion.\n  {% when 'Strength','Health' %}\n    This is a strength or health potion.\n  {% else %}\n    This is a potion.\n{% endcase %}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ]
+  },
+  {
+    "category": "syntax",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "Any text inside `comment` tags won't be output, and any Liquid code will be parsed, but not executed.",
+    "parameters": [
+
+    ],
+    "summary": "Prevents an expression from being rendered or output.",
+    "name": "comment",
+    "syntax": "{% comment %}\n  content\n{% endcomment %}",
+    "syntax_keywords": [
+      {
+        "keyword": "content",
+        "description": "The content of the comment."
+      }
+    ],
+    "examples": [
+      {
+        "name": "Inline comments",
+        "description": "Inline comments prevent an expression inside of a tag `{% %}` from being rendered or output.\n\nYou can use inline comment tags to annotate your code, or to temporarily prevent logic in your code from executing.\n\nYou can create multi-line inline comments. However, each line in the tag must begin with a `#`, or a syntax error will occur.\n",
+        "syntax": "{% # content %}",
+        "path": "/",
+        "raw_liquid": "{% # this is a comment %}\n\n{% # for i in (1..3) -%}\n  {{ i }}\n{% # endfor %}\n\n{%\n  ###############################\n  # This is a comment\n  # across multiple lines\n  ###############################\n%}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      },
+      {
+        "name": "Inline comments inside `liquid` tags",
+        "description": "You can use inline comment tags inside [`liquid` tags](/docs/api/liquid/tags/liquid). The tag must be used for each line that you want to comment.\n",
+        "syntax": "",
+        "path": "/",
+        "raw_liquid": "{% liquid\n  # this is a comment\n  assign topic = 'Learning about comments!'\n  echo topic\n%}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ]
+  },
+  {
+    "category": "iteration",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "",
+    "parameters": [
+
+    ],
+    "summary": "Causes a [`for` loop](/docs/api/liquid/tags/for) to skip to the next iteration.",
+    "name": "continue",
+    "syntax": "{% continue %}",
+    "syntax_keywords": [
+
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/",
+        "raw_liquid": "{% for i in (1..5) -%}\n  {%- if i == 4 -%}\n    {% continue %}\n  {%- else -%}\n    {{ i }}\n  {%- endif -%}\n{%- endfor %}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ]
+  },
+  {
+    "category": "iteration",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "The `cycle` tag must be used inside a `for` loop.\n\n&gt; Tip:\n&gt; Use the `cycle` tag to output text in a predictable pattern. For example, to apply odd/even classes to rows in a table.",
+    "parameters": [
+
+    ],
+    "summary": "Loops through a group of strings and outputs them one at a time for each iteration of a [`for` loop](/docs/api/liquid/tags/for).",
+    "name": "cycle",
+    "syntax": "{% cycle string, string, ... %}",
+    "syntax_keywords": [
+
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/",
+        "raw_liquid": "{% for i in (1..4) -%}\n  {% cycle 'one', 'two', 'three' %}\n{%- endfor %}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      },
+      {
+        "name": "Create unique cycle groups",
+        "description": "If you include multiple `cycle` tags with the same parameters, in the same template, then each set of tags is treated as the same group. This means that it's possible for a `cycle` tag to output any of the provided strings, instead of always starting at the first string.\nTo account for this, you can specify a group name for each `cycle` tag.\n",
+        "syntax": "{% cycle string: string, string, ... %}",
+        "path": "/",
+        "raw_liquid": "&lt;!-- Iteration 1 --&gt;\n{% for i in (1..4) -%}\n  {% cycle 'one', 'two', 'three' %}\n{%- endfor %}\n\n&lt;!-- Iteration 2 --&gt;\n{% for i in (1..4) -%}\n  {% cycle 'one', 'two', 'three' %}\n{%- endfor %}\n\n&lt;!-- Iteration 3 --&gt;\n{% for i in (1..4) -%}\n  {% cycle 'group_1': 'one', 'two', 'three' %}\n{%- endfor %}\n\n&lt;!-- Iteration 4 --&gt;\n{% for i in (1..4) -%}\n  {% cycle 'group_2': 'one', 'two', 'three' %}\n{%- endfor %}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ]
+  },
+  {
+    "category": "variable",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "Variables that are declared with `decrement` are unique to the [layout](/themes/architecture/layouts), [template](/themes/architecture/templates),\nor [section](/themes/architecture/sections) file that they're created in. However, the variable is shared across\n[snippets](/themes/architecture#snippets) included in the file.\n\nSimilarly, variables that are created with `decrement` are independent from those created with [`assign`](/docs/api/liquid/tags/assign)\nand [`capture`](/docs/api/liquid/tags/capture). However, `decrement` and [`increment`](/docs/api/liquid/tags/increment) share\nvariables.",
+    "parameters": [
+
+    ],
+    "summary": "Creates a new variable, with a default value of -1, that's decreased by 1 with each subsequent call.",
+    "name": "decrement",
+    "syntax": "{% decrement variable_name %}",
+    "syntax_keywords": [
+      {
+        "keyword": "variable_name",
+        "description": "The name of the variable being decremented."
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/",
+        "raw_liquid": "{% decrement variable %}\n{% decrement variable %}\n{% decrement variable %}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ]
+  },
+  {
+    "category": "syntax",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "Using the `echo` tag is the same as wrapping an expression in curly brackets (`{{` and `}}`). However, unlike the curly\nbracket method, you can use the `echo` tag inside [`liquid` tags](/docs/api/liquid/tags/liquid).\n\n&gt; Tip:\n&gt; You can use [filters](/docs/api/liquid/filters) on expressions inside `echo` tags.",
+    "parameters": [
+
+    ],
+    "summary": "Outputs an expression.",
+    "name": "echo",
+    "syntax": "{% liquid\n  echo expression\n%}",
+    "syntax_keywords": [
+      {
+        "keyword": "expression",
+        "description": "The expression to be output."
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/products/health-potion",
+        "raw_liquid": "{% echo product.title %}\n\n{% liquid\n  echo product.price | money\n%}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ]
+  },
+  {
+    "category": "iteration",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "You can do a maximum of 50 iterations with a `for` loop. If you need to iterate over more than 50 items, then use the\n[`paginate` tag](/docs/api/liquid/tags/paginate) to split the items over multiple pages.\n\n&gt; Tip:\n&gt; Every `for` loop has an associated [`forloop` object](/docs/api/liquid/objects/forloop) with information about the loop.",
+    "parameters": [
+      {
+        "description": "The number of iterations to perform.",
+        "name": "limit",
+        "required": false,
+        "types": [
+          "number"
+        ]
+      },
+      {
+        "description": "The 1-based index to start iterating at.",
+        "name": "offset",
+        "required": false,
+        "types": [
+          "number"
+        ]
+      },
+      {
+        "description": "A custom numeric range to iterate over.",
+        "name": "range",
+        "required": false,
+        "types": [
+          "untyped"
+        ]
+      },
+      {
+        "description": "Iterate in reverse order.",
+        "name": "reversed",
+        "required": false,
+        "types": [
+          "untyped"
+        ]
+      }
+    ],
+    "summary": "Renders an expression for every item in an array.",
+    "name": "for",
+    "syntax": "{% for variable in array %}\n  expression\n{% endfor %}",
+    "syntax_keywords": [
+      {
+        "keyword": "variable",
+        "description": "The current item in the array."
+      },
+      {
+        "keyword": "array",
+        "description": "The array to iterate over."
+      },
+      {
+        "keyword": "expression",
+        "description": "The expression to render for each iteration."
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/collections/sale-potions",
+        "raw_liquid": "{% for product in collection.products -%}\n  {{ product.title }}\n{%- endfor %}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      },
+      {
+        "name": "limit",
+        "description": "You can limit the number of iterations using the `limit` parameter.",
+        "syntax": "{% for variable in array limit: number %}\n  expression\n{% endfor %}\n",
+        "path": "/collections/sale-potions",
+        "raw_liquid": "{% for product in collection.products limit: 2 -%}\n  {{ product.title }}\n{%- endfor %}",
+        "parameter": true,
+        "display_type": "text",
+        "show_data_tab": true
+      },
+      {
+        "name": "offset",
+        "description": "You can specify a 1-based index to start iterating at using the `offset` parameter.",
+        "syntax": "{% for variable in array offset: number %}\n  expression\n{% endfor %}\n",
+        "path": "/collections/sale-potions",
+        "raw_liquid": "{% for product in collection.products offset: 2 -%}\n  {{ product.title }}\n{%- endfor %}",
+        "parameter": true,
+        "display_type": "text",
+        "show_data_tab": true
+      },
+      {
+        "name": "range",
+        "description": "Instead of iterating over specific items in an array, you can specify a numeric range to iterate over.\n\n&gt; Note:\n&gt; You can define the range using both literal and variable values.\n",
+        "syntax": "{% for variable in (number..number) %}\n  expression\n{% endfor %}\n",
+        "path": "/collections/all",
+        "raw_liquid": "{% for i in (1..3) -%}\n  {{ i }}\n{%- endfor %}\n\n{%- assign lower_limit = 2 -%}\n{%- assign upper_limit = 4 -%}\n\n{% for i in (lower_limit..upper_limit) -%}\n  {{ i }}\n{%- endfor %}",
+        "parameter": true,
+        "display_type": "text",
+        "show_data_tab": true
+      },
+      {
+        "name": "reversed",
+        "description": "You can iterate in reverse order using the `reversed` parameter.",
+        "syntax": "{% for variable in array reversed %}\n  expression\n{% endfor %}\n",
+        "path": "/collections/sale-potions",
+        "raw_liquid": "{% for product in collection.products reversed -%}\n  {{ product.title }}\n{%- endfor %}",
+        "parameter": true,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ]
+  },
+  {
+    "category": "conditional",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "",
+    "parameters": [
+
+    ],
+    "summary": "Renders an expression if a specific condition is `true`.",
+    "name": "if",
+    "syntax": "{% if condition %}\n  expression\n{% endif %}",
+    "syntax_keywords": [
+      {
+        "keyword": "condition",
+        "description": "The condition to evaluate."
+      },
+      {
+        "keyword": "expression",
+        "description": "The expression to render if the condition is met."
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/products/glacier-ice",
+        "raw_liquid": "{% if product.compare_at_price &gt; product.price %}\n  This product is on sale!\n{% endif %}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      },
+      {
+        "name": "elsif",
+        "description": "You can use the `elsif` tag to check for multiple conditions.",
+        "syntax": "",
+        "path": "/products/health-potion",
+        "raw_liquid": "{% if product.type == 'Love' %}\n  This is a love potion!\n{% elsif product.type == 'Health' %}\n  This is a health potion!\n{% endif %}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ]
+  },
+  {
+    "category": "theme",
+    "deprecated": true,
+    "deprecation_reason": "Deprecated because the way that variables are handled reduces performance and makes code harder to both read and maintain.\n\nThe `include` tag has been replaced by [`render`](/docs/api/liquid/tags/render).",
+    "description": "Inside the snippet, you can access and alter variables that are [created](/docs/api/liquid/tags/variable-tags) outside of the\nsnippet.",
+    "parameters": [
+
+    ],
+    "summary": "Renders a [snippet](/themes/architecture#snippets).",
+    "name": "include",
+    "syntax": "{% include 'filename' %}",
+    "syntax_keywords": [
+      {
+        "keyword": "filename",
+        "description": "The name of the snippet to render, without the `.liquid` extension."
+      }
+    ],
+    "examples": [
+
+    ]
+  },
+  {
+    "category": "variable",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "Variables that are declared with `increment` are unique to the [layout](/themes/architecture/layouts), [template](/themes/architecture/templates),\nor [section](/themes/architecture/sections) file that they're created in. However, the variable is shared across\n[snippets](/themes/architecture#snippets) included in the file.\n\nSimilarly, variables that are created with `increment` are independent from those created with [`assign`](/docs/api/liquid/tags/assign)\nand [`capture`](/docs/api/liquid/tags/capture). However, `increment` and [`decrement`](/docs/api/liquid/tags/decrement) share\nvariables.",
+    "parameters": [
+
+    ],
+    "summary": "Creates a new variable, with a default value of 0, that's increased by 1 with each subsequent call.",
+    "name": "increment",
+    "syntax": "{% increment variable_name %}",
+    "syntax_keywords": [
+      {
+        "keyword": "variable_name",
+        "description": "The name of the variable being incremented."
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/",
+        "raw_liquid": "{% increment variable %}\n{% increment variable %}\n{% increment variable %}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ]
+  },
+  {
+    "category": "syntax",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "",
+    "parameters": [
+
+    ],
+    "summary": "Outputs any Liquid code as text instead of rendering it.",
+    "name": "raw",
+    "syntax": "{% raw %}\n  expression\n{% endraw %}",
+    "syntax_keywords": [
+      {
+        "keyword": "expression",
+        "description": "The expression to be output without being rendered."
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/",
+        "raw_liquid": "{% raw %}\n{{ 2 | plus: 2 }} equals 4.\n{% endraw %}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ]
+  },
+  {
+    "category": "theme",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "Inside snippets and app blocks, you can't directly access variables that are [created](/docs/api/liquid/tags/variable-tags) outside\nof the snippet or app block. However, you can [specify variables as parameters](/docs/api/liquid/tags/render#render-passing-variables-to-a-snippet)\nto pass outside variables to snippets.\n\nWhile you can't directly access created variables, you can access global objects, as well as any objects that are\ndirectly accessible outside the snippet or app block. For example, a snippet or app block inside the [product template](/themes/architecture/templates/product)\ncan access the [`product` object](/docs/api/liquid/objects/product), and a snippet or app block inside a [section](/themes/architecture/sections)\ncan access the [`section` object](/docs/api/liquid/objects/section).\n\nOutside a snippet or app block, you can't access variables created inside the snippet or app block.\n\n&gt; Note:\n&gt; When you render a snippet using the `render` tag, you can't use the [`include` tag](/docs/api/liquid/tags/include)\n&gt; inside the snippet.",
+    "parameters": [
+
+    ],
+    "summary": "Renders a [snippet](/themes/architecture#snippets) or [app block](/themes/architecture/sections/section-schema#render-app-blocks).",
+    "name": "render",
+    "syntax": "{% render 'filename' %}",
+    "syntax_keywords": [
+      {
+        "keyword": "filename",
+        "description": "The name of the snippet to render, without the `.liquid` extension."
+      }
+    ],
+    "examples": [
+      {
+        "name": "for",
+        "description": "You can render a snippet for every item in an array using the `for` parameter. You can also supply an optional `as` parameter to be able to reference the current item in the iteration inside the snippet.\nAdditionally, you can access a [`forloop` object](/docs/api/liquid/objects/forloop) for the loop inside the snippet.\n",
+        "syntax": "{% render 'filename' for array as item %}",
+        "path": "/",
+        "raw_liquid": "",
+        "parameter": true,
+        "display_type": "text",
+        "show_data_tab": true
+      },
+      {
+        "name": "Passing variables to a snippet",
+        "description": "Variables that have been [created](/docs/api/liquid/tags/variable-tags) outside of a snippet can be passed to a snippet as parameters on the `render` tag.\n\n&gt; Note:\n&gt; Any changes that are made to a passed variable apply only within the snippet.\n",
+        "syntax": "{% render 'filename', variable: value %}",
+        "path": "/",
+        "raw_liquid": "",
+        "parameter": true,
+        "display_type": "text",
+        "show_data_tab": true
+      },
+      {
+        "name": "with",
+        "description": "You can pass a single object to a snippet using the `with` parameter. You can also supply an optional `as` parameter to specify a custom name to reference the object inside the snippet.\n",
+        "syntax": "{% render 'filename' with object as name %}",
+        "path": "/",
+        "raw_liquid": "",
+        "parameter": true,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ]
+  },
+  {
+    "category": "iteration",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "The `tablerow` tag must be wrapped in HTML `&lt;table&gt;` and `&lt;/table&gt;` tags.\n\n&gt; Tip:\n&gt; Every `tablerow` loop has an associated [`tablerowloop` object](/docs/api/liquid/objects/tablerowloop) with information about the loop.",
+    "parameters": [
+      {
+        "description": "The number of columns that the table should have.",
+        "name": "cols",
+        "required": false,
+        "types": [
+          "number"
+        ]
+      },
+      {
+        "description": "The number of iterations to perform.",
+        "name": "limit",
+        "required": false,
+        "types": [
+          "number"
+        ]
+      },
+      {
+        "description": "The 1-based index to start iterating at.",
+        "name": "offset",
+        "required": false,
+        "types": [
+          "number"
+        ]
+      },
+      {
+        "description": "A custom numeric range to iterate over.",
+        "name": "range",
+        "required": false,
+        "types": [
+          "untyped"
+        ]
+      }
+    ],
+    "summary": "Generates HTML table rows for every item in an array.",
+    "name": "tablerow",
+    "syntax": "{% tablerow variable in array %}\n  expression\n{% endtablerow %}",
+    "syntax_keywords": [
+      {
+        "keyword": "variable",
+        "description": "The current item in the array."
+      },
+      {
+        "keyword": "array",
+        "description": "The array to iterate over."
+      },
+      {
+        "keyword": "expression",
+        "description": "The expression to render."
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/collections/sale-potions",
+        "raw_liquid": "&lt;table&gt;\n  {% tablerow product in collection.products %}\n    {{ product.title }}\n  {% endtablerow %}\n&lt;/table&gt;",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      },
+      {
+        "name": "cols",
+        "description": "You can define how many columns the table should have using the `cols` parameter.",
+        "syntax": "{% tablerow variable in array cols: number %}\n  expression\n{% endtablerow %}\n",
+        "path": "/collections/sale-potions",
+        "raw_liquid": "&lt;table&gt;\n  {% tablerow product in collection.products cols: 2 %}\n    {{ product.title }}\n  {% endtablerow %}\n&lt;/table&gt;",
+        "parameter": true,
+        "display_type": "text",
+        "show_data_tab": true
+      },
+      {
+        "name": "limit",
+        "description": "You can limit the number of iterations using the `limit` parameter.",
+        "syntax": "{% tablerow variable in array limit: number %}\n  expression\n{% endtablerow %}\n",
+        "path": "/collections/sale-potions",
+        "raw_liquid": "&lt;table&gt;\n  {% tablerow product in collection.products limit: 2 %}\n    {{ product.title }}\n  {% endtablerow %}\n&lt;/table&gt;",
+        "parameter": true,
+        "display_type": "text",
+        "show_data_tab": true
+      },
+      {
+        "name": "offset",
+        "description": "You can specify a 1-based index to start iterating at using the `offset` parameter.",
+        "syntax": "{% tablerow variable in array offset: number %}\n  expression\n{% endtablerow %}\n",
+        "path": "/collections/sale-potions",
+        "raw_liquid": "&lt;table&gt;\n  {% tablerow product in collection.products offset: 2 %}\n    {{ product.title }}\n  {% endtablerow %}\n&lt;/table&gt;",
+        "parameter": true,
+        "display_type": "text",
+        "show_data_tab": true
+      },
+      {
+        "name": "range",
+        "description": "Instead of iterating over specific items in an array, you can specify a numeric range to iterate over.\n\n&gt; Note:\n&gt; You can define the range using both literal and variable values.\n",
+        "syntax": "{% tablerow variable in (number..number) %}\n  expression\n{% endtablerow %}\n",
+        "path": "/",
+        "raw_liquid": "&lt;table&gt;\n  {% tablerow i in (1..3) %}\n    {{ i }}\n  {% endtablerow %}\n&lt;/table&gt;\n\n{%- assign lower_limit = 2 -%}\n{%- assign upper_limit = 4 -%}\n\n&lt;table&gt;\n  {% tablerow i in (lower_limit..upper_limit) %}\n    {{ i }}\n  {% endtablerow %}\n&lt;/table&gt;",
+        "parameter": true,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ]
+  },
+  {
+    "category": "conditional",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "&gt; Tip:\n&gt; Similar to the [`if` tag](/docs/api/liquid/tags/if), you can use `elsif` to add more conditions to an `unless` tag.",
+    "parameters": [
+
+    ],
+    "summary": "Renders an expression unless a specific condition is `true`.",
+    "name": "unless",
+    "syntax": "{% unless condition %}\n  expression\n{% endunless %}",
+    "syntax_keywords": [
+      {
+        "keyword": "condition",
+        "description": "The condition to evaluate."
+      },
+      {
+        "keyword": "expression",
+        "description": "The expression to render unless the condition is met."
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/products/health-potion",
+        "raw_liquid": "{% unless product.has_only_default_variant %}\n  // Variant selection functionality\n{% endunless %}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ]
+  },
+  {
+    "category": "conditional",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "You can use the `else` tag with the following tags:\n\n- [`case`](/docs/api/liquid/tags/case)\n- [`if`](/docs/api/liquid/tags/if)\n- [`unless`](/docs/api/liquid/tags/unless)",
+    "parameters": [
+
+    ],
+    "summary": "Allows you to specify a default expression to execute when no other condition is met.",
+    "name": "else",
+    "syntax": "{% else %}\n  expression",
+    "syntax_keywords": [
+      {
+        "keyword": "expression",
+        "description": "The expression to render if no other condition is met."
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/products/health-potion",
+        "raw_liquid": "{% if product.available %}\n  This product is available!\n{% else %}\n  This product is sold out!\n{% endif %}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ]
+  },
+  {
+    "category": "iteration",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "",
+    "parameters": [
+
+    ],
+    "summary": "Allows you to specify a default expression to execute when a [`for` loop](/docs/api/liquid/tags/for) has zero length.",
+    "name": "else",
+    "syntax": "{% for variable in array %}\n  first_expression\n{% else %}\n  second_expression\n{% endfor %}",
+    "syntax_keywords": [
+      {
+        "keyword": "variable",
+        "description": "The current item in the array."
+      },
+      {
+        "keyword": "array",
+        "description": "The array to iterate over."
+      },
+      {
+        "keyword": "first_expression",
+        "description": "The expression to render for each iteration."
+      },
+      {
+        "keyword": "second_expression",
+        "description": "The expression to render if the loop has zero length."
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/collections/empty",
+        "raw_liquid": "{% for product in collection.products %}\n  {{ product.title }}&lt;br&gt;\n{% else %}\n  There are no products in this collection.\n{% endfor %}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ]
+  },
+  {
+    "category": "syntax",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "Because the tags don't have delimeters, each tag needs to be on its own line.\n\n&gt; Tip:\n&gt; Use the [`echo` tag](/docs/api/liquid/tags/echo) to output an expression inside `liquid` tags.",
+    "parameters": [
+
+    ],
+    "summary": "Allows you to have a block of Liquid without delimeters on each tag.",
+    "name": "liquid",
+    "syntax": "{% liquid\n  expression\n%}",
+    "syntax_keywords": [
+      {
+        "keyword": "expression",
+        "description": "The expression to be rendered inside the `liquid` tag."
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/products/health-potion",
+        "raw_liquid": "{% liquid\n  # Show a message that's customized to the product type\n\n  assign product_type = product.type | downcase\n  assign message = ''\n\n  case product_type\n    when 'health'\n      assign message = 'This is a health potion!'\n    when 'love'\n      assign message = 'This is a love potion!'\n    else\n      assign message = 'This is a potion!'\n  endcase\n\n  echo message\n%}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ]
+  }
+]
+{% endraw %}
+{% endparse_json %}
+{% return standard_tags %}

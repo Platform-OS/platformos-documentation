@@ -1,5 +1,5 @@
 {% cache 'lsp-filters-json' %}
-{%- capture url -%}https://deidcfp1yn7c2.cloudfront.net/platform_docs/{{ context.version }}/filters.json{%- endcapture -%}
-{% assign data = url | download_file | parse_json: raw_text: true  %}
-{% render 'api/liquid/filters', data: data %}
+  {%- capture url -%}https://deidcfp1yn7c2.cloudfront.net/platform_docs/{{ context.version }}/filters.json{%- endcapture -%}
+  {% assign data = url | download_file | parse_json: raw_text: true %}
+  {% render 'api/liquid/filters', data: data %}
 {% endcache %}
