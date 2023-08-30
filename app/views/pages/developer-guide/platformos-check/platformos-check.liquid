@@ -1,0 +1,93 @@
+---
+converter: markdown
+metadata:
+  title: platformOS Check - Development Tool
+  description: Information about platformos-check, LSP plugin that helps you develop in any IDE
+---
+## platformOS Check configuration
+
+You can configure platformOS Check to override default check options, enable or disable specific checks, or point to your own custom checks. You can make these changes using a config file, disable checks using comments, or selectively run checks using command line flags. To learn more about platformos check command line flags, refer to platformOS Check commands.
+
+## Config file
+
+Add a `.platformos-check.yml` file to the root of your project to override check defaults.
+
+You can adjust the following settings:
+
+| Setting          | Description                                                                                                                |
+|------------------|----------------------------------------------------------------------------------------------------------------------------|
+| root             | If your app/modules aren't in the root directory, you can provide root path for finding the platformOS app files.          |
+| ignore           | Exclude directories from platformOS Check. For example, useful if you use private modules and do not have access to the files and don't want to get warnings about missing partials, graphql etc.                                                                                              |
+| require          | If you want to use a custom check, add the path to each custom check RB file.                                              |
+| check settings   | For each check, set enabled to true or false, set the check severity, set specific ignore files and paths for the check, and configure any other check options. If you created a custom check, then you need to enable it using this method.  You can view the default values of check options in the checks reference.|
+
+```yaml
+# The directory where theme folders are located
+root: dist
+
+# Paths to custom checks
+require:
+  - ./path/to/my_custom_check.rb
+
+# Disable a check
+TemplateLength:
+  enabled: false
+  severity: suggestion
+  ignore:
+  - modules/third-party-private-module/*
+  # Configure options for a check
+  max_length: 300
+
+# Enable a custom check
+MyCustomCheck:
+  enabled: true
+  severity: style
+```
+
+## Check severity
+
+The check severity indicates the relative importance of a check to the functionality and optimization of your app. Severity levels include error, suggestion, and style. You can change the severity of a check in your config file.
+
+If you're running platformOS check as a part of your CI process, the severity levels of the failed checks can determine the exit code that you receive. By default, platformOS Check fails, or returns an exit code of 1, when one or more issues with severity error are detected. You can configure the severity that causes a run of platformOS check to fail using the --fail-level flag.
+
+## Disable checks using Liquid comments
+
+You can disable all checks or specific checks using comments. You can disable checks for a specific section of your app code, or for an entire file.
+
+Disable all checks for a section of your file:
+
+```liquid
+{% raw %}
+{% # platformos-check-disable %}
+{% assign x = 1 %}
+{% # platformos-check-enable %}
+{% endraw %}
+```
+
+Disable a specific check by including it in the comment:
+
+```liquid
+{% raw %}
+{% # platformos-check-disable UnusedAssign %}
+{% assign x = 1 %}
+{% # platformos-check-enable UnusedAssign %}
+{% endraw %}
+```
+Disable multiple checks by including them as a comma-separated list:
+
+```liquid
+{% raw %}
+{% # platformos-check-disable UnusedAssign,SpaceInsideBraces %}
+{%assign x = 1%}
+{% # platformos-check-enable UnusedAssign,SpaceInsideBraces %}
+{% endraw %}
+```
+Disable checks for the entire document by placing the comment on the first line:
+
+```liquid
+{% raw %}
+{% # platformos-check-disable SpaceInsideBraces %}
+{%assign x = 1%}
+{% endraw %}
+```
+
