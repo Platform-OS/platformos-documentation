@@ -7,7 +7,7 @@
       "deprecated": {{ item.deprecated | default: false | json }},
       "deprecation_reason": "{{item.deprecated | join: ', '}}",
       "description": {{ item.description | json }},
-      "syntax": {{ item.examples.first | replace: '"', '\"' | json }},
+      "syntax": {{ item.examples.first | json }},
       "name": "{{item.name}}",
       "parameters": [
         {% for param in item.params %}
@@ -24,8 +24,7 @@
           {
             "types": ["untyped"],
             "name": "",
-            "description": "{{return_type.description | replace: '"', '\"' | replace: "
-", "\n" }}",
+            "description": {{return_type.description | json }},
             "array_value": ""
           }{% unless forloop.last %},{% endunless %}
         {% endfor %}
@@ -37,7 +36,7 @@
             "description": "",
             "syntax": "",
             "path": "",
-            "raw_liquid": {{ example | replace: '"', '\"' | json }},
+            "raw_liquid": {{ example | json }},
             "parameter": false,
             "display_type": "text",
             "show_data_tab": true
