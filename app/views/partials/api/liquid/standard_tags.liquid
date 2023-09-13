@@ -264,7 +264,7 @@
     "category": "variable",
     "deprecated": false,
     "deprecation_reason": "",
-    "description": "Variables that are declared with `decrement` are unique to the [layout](/themes/architecture/layouts), [template](/themes/architecture/templates),\nor [section](/themes/architecture/sections) file that they're created in. However, the variable is shared across\n[snippets](/themes/architecture#snippets) included in the file.\n\nSimilarly, variables that are created with `decrement` are independent from those created with [`assign`](/docs/api/liquid/tags/assign)\nand [`capture`](/docs/api/liquid/tags/capture). However, `decrement` and [`increment`](/docs/api/liquid/tags/increment) share\nvariables.",
+    "description": "Variables that are declared with `decrement` are unique to the [partial](/developer-guide/platformos-workflow/codebase#views-pages-layouts-and-partials), [template](/themes/architecture/templates),\nor [section](/themes/architecture/sections) file that they're created in. However, the variable is shared across\n[partial](/developer-guide/platformos-workflow/codebase#views-pages-layouts-and-partials) included in the file.\n\nSimilarly, variables that are created with `decrement` are independent from those created with [`assign`](/docs/api/liquid/tags/assign)\nand [`capture`](/docs/api/liquid/tags/capture). However, `decrement` and [`increment`](/docs/api/liquid/tags/increment) share\nvariables.",
     "parameters": [
 
     ],
@@ -477,17 +477,17 @@
     "category": "theme",
     "deprecated": true,
     "deprecation_reason": "Deprecated because the way that variables are handled reduces performance and makes code harder to both read and maintain.\n\nThe `include` tag has been replaced by [`render`](/docs/api/liquid/tags/render).",
-    "description": "Inside the snippet, you can access and alter variables that are [created](/docs/api/liquid/tags/variable-tags) outside of the\nsnippet.",
+    "description": "Inside the partial, you can access and alter variables that are [created](/docs/api/liquid/tags/variable-tags) outside of the\npartial.",
     "parameters": [
 
     ],
-    "summary": "Renders a [snippet](/themes/architecture#snippets).",
+    "summary": "Renders a [partial](/developer-guide/platformos-workflow/codebase#views-pages-layouts-and-partials).",
     "name": "include",
     "syntax": "{% include 'filename' %}",
     "syntax_keywords": [
       {
         "keyword": "filename",
-        "description": "The name of the snippet to render, without the `.liquid` extension."
+        "description": "The name of the partial to render, without the `.liquid` extension."
       }
     ],
     "examples": [
@@ -498,7 +498,7 @@
     "category": "variable",
     "deprecated": false,
     "deprecation_reason": "",
-    "description": "Variables that are declared with `increment` are unique to the [layout](/themes/architecture/layouts), [template](/themes/architecture/templates),\nor [section](/themes/architecture/sections) file that they're created in. However, the variable is shared across\n[snippets](/themes/architecture#snippets) included in the file.\n\nSimilarly, variables that are created with `increment` are independent from those created with [`assign`](/docs/api/liquid/tags/assign)\nand [`capture`](/docs/api/liquid/tags/capture). However, `increment` and [`decrement`](/docs/api/liquid/tags/decrement) share\nvariables.",
+    "description": "Variables that are declared with `increment` are unique to the [partial](/developer-guide/platformos-workflow/codebase#views-pages-layouts-and-partials), [template](/themes/architecture/templates),\nor [section](/themes/architecture/sections) file that they're created in. However, the variable is shared across\n[partial](/developer-guide/platformos-workflow/codebase#views-pages-layouts-and-partials) included in the file.\n\nSimilarly, variables that are created with `increment` are independent from those created with [`assign`](/docs/api/liquid/tags/assign)\nand [`capture`](/docs/api/liquid/tags/capture). However, `increment` and [`decrement`](/docs/api/liquid/tags/decrement) share\nvariables.",
     "parameters": [
 
     ],
@@ -558,46 +558,46 @@
     "category": "theme",
     "deprecated": false,
     "deprecation_reason": "",
-    "description": "Inside snippets and app blocks, you can't directly access variables that are [created](/docs/api/liquid/tags/variable-tags) outside\nof the snippet or app block. However, you can [specify variables as parameters](/docs/api/liquid/tags/render#render-passing-variables-to-a-snippet)\nto pass outside variables to snippets.\n\nWhile you can't directly access created variables, you can access global objects, as well as any objects that are\ndirectly accessible outside the snippet or app block. For example, a snippet or app block inside the [product template](/themes/architecture/templates/product)\ncan access the [`product` object](/docs/api/liquid/objects/product), and a snippet or app block inside a [section](/themes/architecture/sections)\ncan access the [`section` object](/docs/api/liquid/objects/section).\n\nOutside a snippet or app block, you can't access variables created inside the snippet or app block.\n\n&gt; Note:\n&gt; When you render a snippet using the `render` tag, you can't use the [`include` tag](/docs/api/liquid/tags/include)\n&gt; inside the snippet.",
+    "description": "Inside partial, you can't directly access variables that are [created](/docs/api/liquid/tags/variable-tags) outside\nof the partial. However, you can specify variables as parameters\nto pass outside variables to partials.\n\nWhile you can't directly access created variables, you can access global objects like `context`.\n\nOutside a partial, you can't access variables created inside it.\n\n&gt; Note:\n&gt; When you render a partial using the `render` tag, you can't use the [`include` tag](/docs/api/liquid/tags/include)\n&gt; inside the partial.",
     "parameters": [
 
     ],
-    "summary": "Renders a [snippet](/themes/architecture#snippets) or [app block](/themes/architecture/sections/section-schema#render-app-blocks).",
+    "summary": "Renders a [partial](/developer-guide/platformos-workflow/codebase#views-pages-layouts-and-partials).",
     "name": "render",
     "syntax": "{% render 'filename' %}",
     "syntax_keywords": [
       {
         "keyword": "filename",
-        "description": "The name of the snippet to render, without the `.liquid` extension."
+        "description": "The name of the partial to render, without the `.liquid` extension and `views/partials` or `lib` prefix."
       }
     ],
     "examples": [
       {
         "name": "for",
-        "description": "You can render a snippet for every item in an array using the `for` parameter. You can also supply an optional `as` parameter to be able to reference the current item in the iteration inside the snippet.\nAdditionally, you can access a [`forloop` object](/docs/api/liquid/objects/forloop) for the loop inside the snippet.\n",
+        "description": "You can render a partial for every item in an array using the `for` parameter. You can also supply an optional `as` parameter to be able to reference the current item in the iteration inside the partial.\nAdditionally, you can access a [`forloop` object](/docs/api/liquid/objects/forloop) for the loop inside the partial.\n",
         "syntax": "{% render 'filename' for array as item %}",
         "path": "/",
-        "raw_liquid": "",
+        "raw_liquid": "{% render 'filename' for array as item %}",
         "parameter": true,
         "display_type": "text",
         "show_data_tab": true
       },
       {
-        "name": "Passing variables to a snippet",
-        "description": "Variables that have been [created](/docs/api/liquid/tags/variable-tags) outside of a snippet can be passed to a snippet as parameters on the `render` tag.\n\n&gt; Note:\n&gt; Any changes that are made to a passed variable apply only within the snippet.\n",
+        "name": "Passing variables to a partial",
+        "description": "Variables that have been [created](/docs/api/liquid/tags/variable-tags) outside of a partial can be passed to a partial as parameters on the `render` tag.\n\n&gt; Note:\n&gt; Any changes that are made to a passed variable apply only within the partial, unless it is an array or hash.\n",
         "syntax": "{% render 'filename', variable: value %}",
         "path": "/",
-        "raw_liquid": "",
+        "raw_liquid": "{% render 'filename', variable: value %}",
         "parameter": true,
         "display_type": "text",
         "show_data_tab": true
       },
       {
         "name": "with",
-        "description": "You can pass a single object to a snippet using the `with` parameter. You can also supply an optional `as` parameter to specify a custom name to reference the object inside the snippet.\n",
+        "description": "You can pass a single object to a partial using the `with` parameter. You can also supply an optional `as` parameter to specify a custom name to reference the object inside the partial.\n",
         "syntax": "{% render 'filename' with object as name %}",
         "path": "/",
-        "raw_liquid": "",
+        "raw_liquid": "{% render 'filename' with object as name %}",
         "parameter": true,
         "display_type": "text",
         "show_data_tab": true
@@ -741,105 +741,6 @@
         "syntax": "",
         "path": "/products/health-potion",
         "raw_liquid": "{% unless product.has_only_default_variant %}\n  // Variant selection functionality\n{% endunless %}",
-        "parameter": false,
-        "display_type": "text",
-        "show_data_tab": true
-      }
-    ]
-  },
-  {
-    "category": "iteration",
-    "deprecated": false,
-    "deprecation_reason": "",
-    "description": "Because [`for` loops](/docs/api/liquid/tags/for) are limited to 50 iterations per page, you need to use the `paginate` tag to\niterate over an array that has more than 50 items. The following arrays can be paginated:\n\n- [`all_products`](/docs/api/liquid/objects/all_products)\n- [`article.comments`](/docs/api/liquid/objects/article#article-comments)\n- [`blog.articles`](/docs/api/liquid/objects/blog#blog-articles)\n- [`collections`](/docs/api/liquid/objects/collections)\n- [`collection.products`](/docs/api/liquid/objects/collection#collection-products)\n- [`customer.addresses`](/docs/api/liquid/objects/customer#customer-addresses)\n- [`customer.orders`](/docs/api/liquid/objects/customer#customer-orders)\n- [`pages`](/docs/api/liquid/objects/pages)\n- [`search.results`](/docs/api/liquid/objects/search#search-results)\n- [`collection_list` settings](/themes/architecture/settings/input-settings#collection_list)\n- [`product_list` settings](/themes/architecture/settings/input-settings#product_list)\n\nWithin the `paginate` tag, you have access to the [`paginate` object](/docs/api/liquid/objects/paginate). You can use this\nobject, or the [`default_pagination` filter](/docs/api/liquid/filters/default_pagination), to build page navigation.",
-    "parameters": [
-      {
-        "description": "The number of pages to display in the pagination.",
-        "name": "window_size",
-        "required": false,
-        "types": [
-          "string"
-        ]
-      }
-    ],
-    "summary": "Splits an array's items across multiple pages.",
-    "name": "paginate",
-    "syntax": "{% paginate array by page_size %}\n  {% for item in array %}\n    forloop_content\n  {% endfor %}\n{% endpaginate %}",
-    "syntax_keywords": [
-      {
-        "keyword": "array",
-        "description": "The array to be looped over."
-      },
-      {
-        "keyword": "page_size",
-        "description": "The number of array items to include per page, between 1 and 50."
-      },
-      {
-        "keyword": "item",
-        "description": "An item in the array being looped."
-      },
-      {
-        "keyword": "forloop_content",
-        "description": "Content for each loop iteration."
-      }
-    ],
-    "examples": [
-      {
-        "name": "",
-        "description": "",
-        "syntax": "",
-        "path": "/collections/all",
-        "raw_liquid": "{% paginate collection.products by 5 %}\n  {% for product in collection.products -%}\n    {{ product.title }}\n  {%- endfor %}\n\n  {{- paginate | default_pagination }}\n{% endpaginate %}",
-        "parameter": false,
-        "display_type": "text",
-        "show_data_tab": true
-      },
-      {
-        "name": "Paginating setting arrays",
-        "description": "To allow the pagination of `product_list` and `collection_list` settings to operate independently from other paginated lists on a page, these lists use a pagination query parameter with a unique key. The key is automatically assigned by the `paginate` tag, and you don't need to reference the key in your code. However, you can access the key using [`paginate.page_param`](/docs/api/liquid/objects/paginate#paginate-page_param).\n\n&gt; Tip:\n&gt; To paginate two arrays independently without refreshing the entire page, you can use the [Section Rendering API](/api/section-rendering).\n",
-        "syntax": "",
-        "path": "/",
-        "raw_liquid": "",
-        "parameter": false,
-        "display_type": "text",
-        "show_data_tab": true
-      },
-      {
-        "name": "window_size",
-        "description": "Set the window size of the pagination. The window size is the number of pages that should be visible in the pagination navigation.\n",
-        "syntax": "{% paginate collection.products by 3, window_size: 1 %}",
-        "path": "/collections/all",
-        "raw_liquid": "{% paginate collection.products by 3, window_size: 1 %}\n  {% for product in collection.products -%}\n    {{ product.title }}\n  {%- endfor %}\n\n  {{- paginate | default_pagination }}\n{% endpaginate %}",
-        "parameter": true,
-        "display_type": "text",
-        "show_data_tab": true
-      }
-    ]
-  },
-  {
-    "category": "html",
-    "deprecated": false,
-    "deprecation_reason": "",
-    "description": "&gt; Note:\n&gt; If you reference [color settings](/themes/architecture/settings/input-settings#color) inside `style` tags, then\n&gt; the associated CSS rules will update as the setting is changed in the theme editor, without a page refresh.",
-    "parameters": [
-
-    ],
-    "summary": "Generates an HTML `&lt;style&gt;` tag with an attribute of `data-shopify`.",
-    "name": "style",
-    "syntax": "{% style %}\n  CSS_rules\n{% endstyle %}",
-    "syntax_keywords": [
-      {
-        "keyword": "CSS_rules",
-        "description": "The desired CSS rules for the `&lt;style&gt;` tag."
-      }
-    ],
-    "examples": [
-      {
-        "name": "",
-        "description": "",
-        "syntax": "",
-        "path": "/",
-        "raw_liquid": "{% style %}\n  .h1 {\n    color: {{ settings.colors_accent_1 }};\n  }\n{% endstyle %}",
         "parameter": false,
         "display_type": "text",
         "show_data_tab": true
