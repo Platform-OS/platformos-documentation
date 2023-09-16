@@ -35,6 +35,21 @@ Metadata is available through Liquid as `context.page.metadata`:
 <strong>{{ page.metadata.tags | join: "," }}</strong>
 {% endraw %}
 ```
+## Using Liquid in metadata
+
+Metadata for any object accepts Liquid and evaluates it, for example, for each page or layout render. It’s lazy evaluation that happens only when you use it.
+
+For example, you can set a default title in the page metadata by assigning variables in a partial and then capturing the variables:
+
+```liquid
+{% raw %}
+slug: my-page
+metadata:
+  title: >
+    {% incude 'my-partial' %}
+    {{ ... use variables from my-partial ... }}
+{% endraw %}
+```
 
 ## Searching for a page using its metadata
 
