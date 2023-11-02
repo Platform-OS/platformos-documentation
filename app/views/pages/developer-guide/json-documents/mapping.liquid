@@ -1,0 +1,52 @@
+---
+converter: markdown
+metadata:
+  title: Persisting JSON Documents
+  description: Persisting your JSON documents
+---
+
+## Mapping
+
+Mapping is the process of defining how a document, and the fields it contains, are stored and indexed.
+
+Each document is a collection of fields, which each have their own data type. When mapping your data, you create a mapping definition, which contains a list of fields that are pertinent to the document. A mapping definition also includes metadata fields, like the _source field, which customize how a document’s associated metadata is handled.
+
+In platformOS, you can define document type via `search_indxes` in `app/config.yml` file. Example mapping definition:
+
+```yaml
+search_indexes:
+- docs:
+    properties:
+      uuid:
+        type: keyword
+      title:
+        type: text
+        fields:
+          raw:
+            type: keyword
+      content:
+        type: text
+      published_at:
+        type: date
+      created_at:
+        type: date
+      price:
+        type: integer
+      category:
+        type: keyword
+      author:
+        type: object
+        properties:
+          uuid:
+            type: string
+          name:
+            type: text
+            analyzer: english
+            fields:
+              raw:
+                type: keyword
+```
+
+Please note that despite `search_indexes` is an array, currently we support only one document type. This limitation will be removed in the future.
+
+The mapping you specify in platformOS is compatible with the raw ES Mapping, hence we recommend navigating to [ElasticSearch Mapping Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/5.5/mapping-types.html), which describes it in detail and in the most accurate way.
