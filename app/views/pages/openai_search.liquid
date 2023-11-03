@@ -1,0 +1,55 @@
+---
+metadata:
+  title: OpenAI Search
+  description: Proof of concept
+---
+{% if context.constants['modules/openai/OPENAI_SECRET_TOKEN'] == blank %}
+  OpenAI is not configured in this environment.
+{% else %}
+  {% liquid
+    if context.params.query != blank and context.params.query.size < 1000
+
+      assign c = '{ "errors": {}, "valid": true }' | parse_json
+      function c = 'modules/core/lib/validations/hcaptcha', c: c, hcaptcha_params: context.params
+
+      if c.valid
+        assign user_input = '[]' | parse_json | add_to_array: context.params.query
+        function response = 'modules/openai/commands/openai/fetch_embeddings', object: user_input
+
+        if response.data.size > 0
+          assign embedding = response.data.first.embedding
+
+          function related_embeddings = 'modules/openai/queries/embeddings/search', related_to: embedding, limit: 5
+          assign search_results = related_embeddings.results
+        else
+          print "Could not fetch embeddings: " | append: response
+        endif
+      else
+        print "Validation error: " | append: c.errors
+      endif
+    endif
+  %}
+
+  {% content_for 'no_search_bar' %}true{% endcontent_for %}
+
+  <form>
+    <input type="text" value="{{ context.params.query }}" name="query"/>
+    <fieldset>
+      <script src="https://hcaptcha.com/1/api.js" async defer></script>
+      <div class='h-captcha' data-sitekey="{{ context.hcaptcha_site_key }}"></div>
+    </fieldset>
+    <button class="btn btn-primary">
+      Search
+    </button>
+  </form>
+
+  {% if search_results %}
+    <h2>Most related pages</h2>
+    <ul>
+      {% for embedding in search_results %}
+        {% if embedding.metadata.slug == '/' %}{% assign slug = embedding.metadata.slug %}{% else %}{% assign slug = '/' | append: embedding.metadata.slug %}{% endif %}
+        <li><a href="{{ slug }}">{{ embedding.metadata.page_metadata.title }}</a> <p>{{ embedding.metadata.page_metadata.description }}</p></li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endif %}
