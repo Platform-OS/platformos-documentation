@@ -1,4 +1,6 @@
 {% liquid
-  assign authors =  authors_raw | to_hash | default: "[]" | reverse | map: "author"
+  assign default_authors = '[]' | parse_json
+  assign authors =  authors_raw | to_hash | default: default_authors | reverse
+  assign authors = authors | map: "author"
   return authors
 %}
