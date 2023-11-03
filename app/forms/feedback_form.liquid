@@ -27,7 +27,10 @@ email_notifications:
 flash_notice: Thank you for your feedback.
 ---
 {% form html-data-feedback: 'form', html-class: 'py-16 container' %}
+  {% try %}
   {% spam_protection "recaptcha_v3", action: "feedback" %}
+  {% catch err %}
+  {% endtry %}
 
   <input type="hidden" name="redirect_to" value="{{ context.location.pathname }}">
 
