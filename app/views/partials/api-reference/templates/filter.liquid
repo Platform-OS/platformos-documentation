@@ -1,0 +1,81 @@
+{%- assign aliases = item.aliases -%}
+{%- assign description = item.description -%}
+{%- assign returns = item.returns | default: item.return_type -%}
+{%- assign params = item.params | default: item.parameters -%}
+{%- assign examples = item.examples -%}
+
+{% if item.name != blank %}
+  <h2 id="{{ item.name | slugify }}">
+    {{ item.name }}
+    {%- if aliases.size > 0 -%}
+      <small> (aliases:
+        {% for a in aliases -%}
+          <a href="#{{- a -}}">{{- a -}}</a>
+        {%- endfor -%})
+      </small>
+    {%- endif -%}
+  </h2>
+{% endif %}
+
+{% if description.size > 0 %}
+  <p>{{ description | join: ', ' }}</p>
+{% endif %}
+
+{% if params.size > 0 %}
+  <h4>Params</h4>
+  <ul>
+    {% for p in params %}
+      <li>
+        {{ p.name }}
+
+        ({%- for t in p.types -%}
+            {{- t  -}}
+          {%- endfor -%})
+        {% if p.description.size > 1 %} - {{ p.description }}{% endif %}
+        {% if p.default and p.options == blank  %} - default: {{ p.default }}{% endif %}
+        {% if p.options.size > 0 %}
+          <ul>
+            {% for o in p.options %}
+              <li>
+                {{ o.name }}
+                ({%- for t in o.types -%}
+                    {{- t  -}}
+                  {%- endfor -%})
+                {% if o.description.size > 1 %} - {{ o.description }}{% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
+{% if returns.size > 0 %}
+  <h4 class="break-word">Returns</h4>
+  <p>
+    {% for r in returns %}
+      <strong>
+        {% for t in r.types %}
+          {{ t }}{% unless forloop.last %},{% endunless %}
+        {% else %}
+          {% if r.type != blank %}{{ r.type }}{% endif %}
+        {% endfor %}
+      </strong>
+
+      {% if r.description.size > 1 %}
+      - {{ r.description }}
+      {% endif %}
+    {% endfor %}
+  </p>
+{% endif %}
+
+{% if examples.size > 0 %}
+  <h4>Examples</h4>
+  {% for e in examples %}
+    <pre><code class="language-liquid">
+      {{ e.raw_liquid | default: e }}
+    </code></pre>
+  {% endfor %}
+{% endif %}
+
