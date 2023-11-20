@@ -1,0 +1,274 @@
+---
+metadata:
+  title: Partner Portal DNS API Documenation
+  description: This documentation will help you manage your instance domains programmatically using Partner Portal API.
+  feedback: false
+  toc: false
+converter: markdown
+---
+
+<p>{{ page.metadata.description }}</p>
+
+
+## release notes
+
+### 2023-11-20
+- www redirection is optional from now on. See [enable_www_redirect](#enable_www_redirect)
+
+### 2019-12-11
+- added [how-it-works](#how-it-works)
+- added `/api/domains/request_log` [endpoint](#fetch-log-for-a-specific-request)
+- added missing [data](#example-of-the-response) to `/api/domain/status` [redirection and use_as_default settings]
+- added [description](#create-domain-response) for create-domain response
+- fixed issue with slow `/api/domain/status` endpoint
+  `_changelog` property has been removed from the response and will be provided
+  as a separate endpoint
+
+## roadmap TBD
+
+- DNS records instant validation
+- display information about default domain on top level also
+- allow email verification
+
+## about variables in code snippets
+
+| variable | description  |
+|----------|--------------|
+| :TOKEN    | PP-JWT-TOKEN |
+| [[UUID]]     | PRODUCTION INSTANCE UUID |
+| :PP_URL   | https://partners.platformos.com/api |
+
+## how it works
+
+sending POST request to `/api/domains` will create a set of domains accordingly
+to selected option [setup_type]
+
+so far we support two options [domain-full and domain-external] and both:
+- will create two domain records - a root domain and a www subdomain.
+- the www will be set as a default domain for the instance.
+- also a redirection from the root domain to the www will be configured automatically.
+
+## GET /api/domains?instance_uuid=[[UUID]]
+get all domains for instance
+
+    Authorization: :TOKEN
+
+## GET /api/domains/status?instance_uuid=[[UUID]]&name=[[DOMAIN_NAME]]
+get a [[DOMAIN_NAME]] domain data
+
+    Authorization: :TOKEN
+
+### Response
+
+```json
+{
+  "status": "ready",
+  "attributes": {
+    "instance_uuid": "4fedfa5c-89ea-4a04-9699-a7b98b8d2e8f",
+    "domain_name": "loremup.com",
+    "setup_type": "domain-full",
+    "data_center": "production-sydney",
+    "config": {
+      "extra_dns_records": [
+        {
+          "name": "extra",
+          "type": "CNAME",
+          "records": [
+            "loremup.com"
+          ],
+          "ttl": 3600
+        },
+        {
+          "name": "api",
+          "type": "CNAME",
+          "records": [
+            "loremup.com"
+          ],
+          "ttl": 3600
+        },
+        {
+          "name": "docs",
+          "type": "CNAME",
+          "records": [
+            "loremup.com"
+          ],
+          "ttl": 7200
+        }
+      ],
+      "_domains": [
+        {
+          "name": "loremup.com",
+          "use_as_default": false,
+          "redirect_to": "https://www.loremup.com",
+          "redirect_code": 302
+        },
+        {
+          "name": "www.loremup.com",
+          "use_as_default": true,
+          "redirect_to": null,
+          "redirect_code": null
+        }
+      ]
+    }
+  },
+  "details": {
+    "dns_zone_name_servers": [
+      "ns-1289.awsdns-33.org",
+      "ns-1972.awsdns-54.co.uk",
+      "ns-479.awsdns-59.com",
+      "ns-757.awsdns-30.net"
+    ],
+    "extra_dns_records": [
+      {
+        "fqdn": "extra.loremup.com",
+        "name": "extra",
+        "type": "CNAME",
+        "id": "Z3M57CSZ10GHPD_extra_CNAME",
+        "ttl": 3600,
+        "records": [
+          "loremup.com"
+        ]
+      },
+      {
+        "fqdn": "api.loremup.com",
+        "name": "api",
+        "type": "CNAME",
+        "id": "Z3M57CSZ10GHPD_api_CNAME",
+        "ttl": 3600,
+        "records": [
+          "loremup.com"
+        ]
+      },
+      {
+        "fqdn": "docs.loremup.com",
+        "name": "docs",
+        "type": "CNAME",
+        "id": "Z3M57CSZ10GHPD_docs_CNAME",
+        "ttl": 7200,
+        "records": [
+          "loremup.com"
+        ]
+      }
+    ],
+    "_lb_dns_name": "production-sydney-lb-02-1017910072.ap-southeast-2.elb.amazonaws.com"
+  }
+
+```
+
+#### domain statuses by setup_type:
+
+##### domain-external
+
+| status                         | response key | action requested |
+|--------------------------------|--------------|--|
+| ownership_verification_pending | `details.dns_verification_records`| the key contains CNAME records to be added to 3rd party DNS Zone
+| ready                          | `detail.private_lb_cname`| the key contains ALIAS to be used as a target for your domain - to set in 3rd part DNS Zone
+
+##### domain-full
+
+| status                         | response key | action requested |
+|--------------------------------|--------------|--|
+|reparking_domain| `details.dns_zone_name_servers`| re-configure your domain Name Servers to
+| ready          | |  None. Domain is set. |
+
+
+## POST /api/domains
+
+there is only single endpoint for either creating or updating domain and works like upsert: if domain exists then will be updated otherwise will be created
+
+### create a domain hosted on platformOS
+
+    Authorization: :TOKEN
+    Content-Type: application/json
+    {
+      "instance_uuid": "[[UUID]]",
+      "name": "loremup.com",
+      "setup_type": "domain-full",
+      "enable_www_redirect": true
+      "use_as_default": true,
+      "extra_dns_records": [
+        { "name": "api", "type": "CNAME", "records": ["loremup.com"], "ttl": 3600 },
+        { "name": "docs", "type": "CNAME", "records": ["loremup.com"], "ttl": 7200 }
+      ]
+    }
+
+### request payload parameters:
+#### setup_type
+[STRING, required, allowed values: domain-full OR domain-external]
+
+- domain-full
+  Domain Zone.
+  Choose this option if you want to create a DNS Zone and manage the DNS through the Partner Portal. You can fully configure your domain, add any necessary DNS records, add MX records for mail boxes, etc all here.
+
+- domain-external
+  External DNS management.
+  Choose this option if you want to manage the DNS through a 3rd party solution. After confirming right to your domain, you will be provided a Load Balancer DNS Name [FQDN] to which you will need to point your domain, within your 3rd party solution.<br>NOTE: your DNS solution must provide for the acceptance of Fully Qualified Domain Names!
+
+#### enable_www_redirect
+[BOOLEAN]
+
+if `true` the www redirection will be set up.
+(As a result of requesting `[[domain]]` you will be redirected to `www.[[domain]]`)
+Additionally `www.[[domain]]` CNAME record will be automatically added to the `extra_dns_records`.
+
+#### extra_dns_records [OBJECT]
+
+array of DNS records to be created in the DNS ZONE
+
+- name
+  Record name without root domain
+- type
+  A TXT ALIAS CNAME MX PTR SRV SPF NS
+- ttl
+  TTL
+- records
+  array of values
+
+### create external-type domain
+
+    POST /api/domains
+    Authorization: :TOKEN
+    Content-Type: application/json
+
+    {
+      "instance_uuid": "[[UUID]]",
+      "name": "loremup.com",
+      "setup_type": "domain-external",
+      "enable_www_redirect": true
+    }
+
+### response
+
+a domain creation is an asynchronous process so a direct response does not contain
+information about if request was either successful or failed
+
+however the create-domain response contains `request_uuid` which can be used as
+parameter in `/api/domains/request_log`
+
+    {
+      "data": {
+        "request_uuid": "4fc76ae6-fccf-4713-b5fc-30344f7a0128"
+      },
+      "message": "We are processing your request."
+    }
+
+where user can find more information
+
+
+## GET /api/domains/request_log?instance_uuid=[[UUID]]&name=[[domain]]&request_uuid=[[REQUEST_UUID]]
+fetch log for a specific request
+
+    Authorization: :TOKEN
+    Content-Type: application/json
+
+    {
+      "data": {
+        "status": "done",
+        "message": [
+          "Apply complete! Resources: 4 added, 1 changed, 16 destroyed."
+        ],
+        "requested_at": "2019-12-11 17:04:21 +0000",
+        "request_uuid": "59583fff-793f-44a1-9e75-f08e3aaca013",
+        "instance_uuid__domain": "4fedfa5c-89ea-4a04-9699-a7b98b8d2e8f___loremup.com",
+        "request_params": null
+      }
