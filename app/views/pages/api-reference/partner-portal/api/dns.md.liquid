@@ -9,14 +9,12 @@ converter: markdown
 
 <p>{{ page.metadata.description }}</p>
 
-
 ## release notes
 
 ### 2023-11-20
 - www redirection is optional from now on. See [enable_www_redirect](#enable_www_redirect)
 
 ### 2019-12-11
-- added [how-it-works](#how-it-works)
 - added `/api/domains/request_log` [endpoint](#fetch-log-for-a-specific-request)
 - added missing [data](#example-of-the-response) to `/api/domain/status` [redirection and use_as_default settings]
 - added [description](#create-domain-response) for create-domain response
@@ -37,16 +35,6 @@ converter: markdown
 | :TOKEN    | PP-JWT-TOKEN |
 | [[UUID]]     | PRODUCTION INSTANCE UUID |
 | :PP_URL   | https://partners.platformos.com/api |
-
-## how it works
-
-sending POST request to `/api/domains` will create a set of domains accordingly
-to selected option [setup_type]
-
-so far we support two options [domain-full and domain-external] and both:
-- will create two domain records - a root domain and a www subdomain.
-- the www will be set as a default domain for the instance.
-- also a redirection from the root domain to the www will be configured automatically.
 
 ## GET /api/domains?instance_uuid=[[UUID]]
 get all domains for instance
