@@ -32,19 +32,18 @@ converter: markdown
 
 | variable | description  |
 |----------|--------------|
-| :TOKEN    | PP-JWT-TOKEN |
+| [[TOKEN]]    | PP-JWT-TOKEN |
 | [[UUID]]     | PRODUCTION INSTANCE UUID |
-| :PP_URL   | https://partners.platformos.com/api |
 
 ## GET /api/domains?instance_uuid=[[UUID]]
 get all domains for instance
 
-    Authorization: :TOKEN
+    Authorization: [[TOKEN]]
 
 ## GET /api/domains/status?instance_uuid=[[UUID]]&name=[[DOMAIN_NAME]]
 get a [[DOMAIN_NAME]] domain data
 
-    Authorization: :TOKEN
+    Authorization: [[TOKEN]]
 
 ### Response
 
@@ -166,7 +165,7 @@ there is only single endpoint for either creating or updating domain and works l
 
 ### create a domain hosted on platformOS
 
-    Authorization: :TOKEN
+    Authorization: [[TOKEN]]
     Content-Type: application/json
     {
       "instance_uuid": "[[UUID]]",
@@ -215,7 +214,7 @@ array of DNS records to be created in the DNS ZONE
 ### create external-type domain
 
     POST /api/domains
-    Authorization: :TOKEN
+    Authorization: [[TOKEN]]
     Content-Type: application/json
 
     {
@@ -246,7 +245,7 @@ where user can find more information
 ## GET /api/domains/request_log?instance_uuid=[[UUID]]&name=[[domain]]&request_uuid=[[REQUEST_UUID]]
 fetch log for a specific request
 
-    Authorization: :TOKEN
+    Authorization: [[TOKEN]]
     Content-Type: application/json
 
     {
