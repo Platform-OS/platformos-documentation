@@ -1,0 +1,18 @@
+query search_for_openai($not_slugs: [String!], $limit: Int = 2000) {
+  pages: admin_pages(
+    per_page: $limit
+    filter: {
+      slug: {
+        not_value_in: $not_slugs
+      }
+    }
+  ) {
+    results {
+      slug
+      content
+      html_content
+      metadata
+    }
+  }
+}
+

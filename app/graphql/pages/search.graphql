@@ -1,0 +1,16 @@
+query search($slugs: [String!], $per_page: Int = 20, $page: Int = 1) {
+  admin_pages(
+    per_page: $per_page
+    page: $page
+    filter: { slug: { value_in: $slugs } }
+  ) {
+    total_entries
+    total_pages
+    results {
+      id
+      slug
+      # content
+      metadata
+    }
+  }
+}
