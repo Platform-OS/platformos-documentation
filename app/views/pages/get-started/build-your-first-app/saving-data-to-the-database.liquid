@@ -61,16 +61,16 @@ How can you make sure that the table you’ve just created is really there in th
 For this purpose, we have created a tool that allows you to browse through the tables and edit the records. Run this command to start the tool:
 
 ```bash
-pos-cli gui serve staging
+pos-cli gui serve <environment>
 ```
 
 This starts an application to help you administer your instance. When the application is running you can go to [http://localhost:3333](http://localhost:3333) in your browser.
 
-There is a selection of tools you can use. The one that will allow you to look at the database is the one in the first box. Click on the _Go to Records_ link to open a list of tables that you created using YAML files.
+There is a selection of tools you can use. The one that will allow you to look at the database is the one in the first box. Click on the _Database_ link to open a list of tables that you created using YAML files.
 
 If everything went right, you should see the newly created `item` table on the list.
 
-<img loading="lazy" src="{{ 'images/get-started/todo/gui_records.jpg' | asset_url }}" alt="Graphic interface for browsing the database on platformOS">
+<img loading="lazy" src="{{ 'images/get-started/todo/gui_records.jpg' | asset_url }}" alt="Graphic interface for browsing the database on platformOS" class="border">
 
 
 ## Save the data in the database
@@ -199,7 +199,7 @@ When you want to write more Liquid than a single line, put the code between {% r
 ```
 {% endraw %}
 
-This is a place where you execute your GraphQL query. You run the query located in /app/graphql/item/create.graphql, but you don’t need to pass the whole path, as the platform knows where to look for the queries. You defined a variable called $title in your graphql, so you need to pass it to the query, but you don’t want it to be empty, that’s why you assign a value context.params.title to it. All query params passed to the page will be always available in the context.params variable.
+This is a place where you execute your GraphQL query. You run the query located in `/app/graphql/item/create.graphql`, but you don’t need to pass the whole path, as the platform knows where to look for the queries. You defined a variable called $title in your graphql, so you need to pass it to the query, but you don’t want it to be empty, that’s why you assign a value context.params.title to it. All query params passed to the page will be always available in the context.params variable.
 
 {% raw %}
 ```liquid
@@ -213,7 +213,7 @@ Your GraphQL query will return the id and the title of the record you’ve just 
 if result.record.id
 ```
 
-If the query worked, you might want to redirect the user from your /item/create page to the index page using Liquid’s redirect_to tag.
+If the query worked, you might want to redirect the user from your `/item/create` page to the index page using Liquid’s `redirect_to` tag.
 
 ```liquid
 redirect_to '/'
