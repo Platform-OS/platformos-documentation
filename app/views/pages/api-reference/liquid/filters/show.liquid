@@ -1,0 +1,21 @@
+---
+slug: 'api-reference/liquid/filters/:filter'
+metadata:
+  title: "{{ context.params.filter | downcase | strip }}"
+  skip_contribute_button: true
+  toc: true
+---
+{% assign filter = context.params.filter | downcase | strip %}
+
+{% capture all_filters %}
+  {% cache 'lsp-filters-json' %}
+    {%- capture url -%}https://deidcfp1yn7c2.cloudfront.net/platform_docs/{{ context.version }}/filters.json{%- endcapture -%}
+    {% assign data = url | download_file | parse_json: raw_text: true %}
+    {% render 'api/liquid/filters', data: data %}
+  {% endcache %}
+{% endcapture %}
+
+{% assign filter_documentation = all_filters | parse_json: raw_text: true | detect: name: filter %}
+{% hash_assign filter_documentation['name'] = null %}
+{% render 'api-reference/templates/filter', item: filter_documentation %}
+

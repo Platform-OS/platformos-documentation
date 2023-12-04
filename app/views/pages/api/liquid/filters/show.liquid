@@ -1,0 +1,21 @@
+---
+metadata:
+  title: Liquid - platformOS Liquid Filters
+  description: platformOS Liquid Filters
+  skip_contribute_button: true
+  toc: true
+---
+
+<h4>Liquid filters in platformOS</h4>
+
+In platformOS you can use all <a href="/api-reference/liquid/filters">standard Liquid filters</a>.
+
+Besides standard Liquid filters, you can also use platformOS-specific Liquid filters we added.
+
+{% assign key = "filters-" | append: context.version %}
+
+{% cache key %}
+{%- capture url -%}https://deidcfp1yn7c2.cloudfront.net/platform_docs/{{ context.version }}/filters.json{%- endcapture -%}
+{% assign data = url | download_file | parse_json: raw_text: true  %}
+{% include 'api-reference/templates/platformos-filters', data: data %}
+{% endcache %}

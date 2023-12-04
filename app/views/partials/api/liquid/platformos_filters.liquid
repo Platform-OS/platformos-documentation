@@ -18,29 +18,29 @@
     %}
     {
       "category": "string",
-      "deprecated": {{ deprecated | json }},
-      "deprecation_reason": "{{ item.deprecated | join: ', ' }}",
-      "description": "",
-      "summary": "{{ item.decription | join: ', ' | default: default_description }}",
-      "syntax": "{{ first_param_type }} | {{ item.name }}",
-      "name": "{{ item.name }}",
-      "aliases": {{ item.aliases | json }},
+      "deprecated": {% print deprecated | json %},
+      "deprecation_reason": "{% print item.deprecated | join: ', ' %}",
+      "description": {% print item.description | json %},
+      "summary": "{% print item.decription | join: ', ' | default: default_description %}",
+      "syntax": "{% print first_param_type %} | {% print item.name %}",
+      "name": "{% print item.name %}",
+      "aliases": {% print item.aliases | json %},
       "parameters": [
         {% for param in item.params %}
           {
-            "description": {{ param.description | json }},
-            "name": {{ param.name | json }},
+            "description": {% print param.description | json %},
+            "name": {% print param.name | json %},
             "required": false,
-            "types": {{ param.types | json }}
+            "types": {% print param.types | json %}
           }{% unless forloop.last %},{% endunless %}
         {% endfor %}
       ],
       "return_type": [
         {% for return_type in item.returns %}
           {
-            "type": "{{ return_type.types | join: ', ' | downcase }}",
+            "type": "{% print return_type.types | join: ', ' | downcase %}",
             "name": "",
-            "description": {{ return_type.description | json }},
+            "description": {% print return_type.description | json %},
             "array_value": ""
           }{% unless forloop.last %},{% endunless %}
         {% endfor %}
@@ -52,7 +52,7 @@
             "description": "",
             "syntax": "",
             "path": "",
-            "raw_liquid": {{ example | json }},
+            "raw_liquid": {% print example | json %},
             "parameter": false,
             "display_type": "text",
             "show_data_tab": true
