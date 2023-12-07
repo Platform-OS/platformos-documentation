@@ -73,7 +73,7 @@ app
 
 Lib directory is meant to help you organize your code by allowing you to place partials not only in `views/partials/`, but also in `lib/`. Both `render` and [function](/api-reference/liquid/platformos-tags#function) tags invoke partial, however semantically they are different. The first one usually is used for presentation layer and include for example HTML, wheras the second one is meant to invoke business logic and return a valule. To not have to mix files for presentation with business logic, we've created a dedicated directory `lib`.
 
-{% include "alert/warning", content: "Please note that it is possible to create a conflict, when using both `views/partials` and `lib` - for example, if you have both `app/views/partials/my_file.liquid` and `app/lib/my_file.liquid` , the system will not know which file you meant to invoke via `render 'my_file'` or `function res = 'my_file'`." %}
+{% render "alert/warning", content: "Please note that it is possible to create a conflict, when using both `views/partials` and `lib` - for example, if you have both `app/views/partials/my_file.liquid` and `app/lib/my_file.liquid` , the system will not know which file you meant to invoke via `render 'my_file'` or `function res = 'my_file'`." %}
 
 Example directory structure of `lib` with sample files:
 
