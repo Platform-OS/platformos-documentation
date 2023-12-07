@@ -18,6 +18,7 @@ In order to correctly communicate with the platformOS engine and API, your codeb
 | .pos                    |             | Configuration file that specifies available endpoints. Usually, you want to have at least two endpoints &ndash; staging and production.                                                                                                                                                                                                   | [Development Workflow](/developer-guide/platformos-workflow/development-workflow)  |
 | assets                  | asset       | Directory for static assets, like fonts, images, stylesheets, and scripts.                                                                                                                                                                                    | [Assets](#assets)                                                       |
 | authorization_policies  | Liquid      | Directory for .liquid files that contains Authorization Policy configuration files. Authorization Policies define rules that control whether a user has access to a form or page.                                                                                                                                                 | [Authorization Policies](#authorization-policies)           |
+| migrations              | Liquid      | Directory for migration files.                                                                                                                                                 | [Migrations](#migrations)           |
 | schema      | YAML        | Directory for .yml files that define Tables. Tables define custom objects, including their fields and associations and allow you to create persistence containers for your custom forms.                                                                                                                  | [Records](#records)                   |
 | emails     | Liquid      | Directory for .liquid files that define Email notifications. | [Notifications](/developer-guide/notifications/notifications)                               |
 | api_calls     | Liquid      | Directory for .liquid files that define API calls notifications. | [Notifications](/developer-guide/notifications/notifications)                               |
@@ -26,10 +27,11 @@ In order to correctly communicate with the platformOS engine and API, your codeb
 | views/pages             | Liquid      | Directory for files that define pages, the most essential building blocks of a platformOS site.                                                                                   | [Views](#views-pages-layouts-and-partials)                                                          |
 | views/layouts           | Liquid      | Directory for layouts. Layouts are wrappers around your page content. They ensure consistent outer content for similarly designed pages.                                                                                                                                                                                          | [Views](#views-pages-layouts-and-partials)                                                      |
 | views/partials          | Liquid      | Directory for partials  &ndash;  reusable snippets of Liquid code usually used to render HTML.                                                                                                                                                                                                                                    | [Views](#views-pages-layouts-and-partials)                                                                                        |
+| lib             | Liquid      | Directory for liquid files that implement business logic, and usually are meant to be invoked via [function](/api-reference/liquid/platformos-tags#function) tag                                                                                   | [Lib](#lib)                                                          |
 | translations            | YAML        | Directory for .yml files of Translations for multilingual sites, also used to define date format, or flash messages. Each file is a map of translations which can be used in your pages via Liquid.                                                                                                                               | [Translations](#translations)                                     |
 | user_profile_types      | YAML        | Directory for .yml files that define User Profiles. Each instance includes one user role, called ‘default’, so each instance needs to include the default.yml file inside this directory.                                                                                                                                         | [Users](#users)                                                         |
 | user.yml      | YAML        | A yml file containing properties for all users  | [Users](#users)                                                         |
-| config.yml      | YAML        | A yml file containing configuration flags for backwards incompatible changes  | [Config](#config)                                                         |
+| config.yml      | YAML        | A yml file containing configuration flags for backwards incompatible changes  | [Config](/developer-guide/platformos-workflow/codebase/config)                                                         |
 
 ## Files in your codebase
 
@@ -43,7 +45,7 @@ platformOS allows Liquid pages to be used to create many different types of endp
 
 **Layouts** are Liquid views that store code that would normally repeat on a lot of pages and is surrounding page content (e.g. header, footer). Without layouts, pages would share a lot of duplicated code, and changing anything would become a very time consuming and error prone process. You can create as many layouts as you need, and decide which page uses which layout.
 
-**Partials** (partial templates) allow you to easily organize and reuse your code by extracting pieces of code to their own files. They help you improve code readability and follow the principle of DRY (Don’t Repeat Yourself). You can parameterize partials and use them in various places, e.g. layouts, pages, Authorization Policies, Forms.
+**Partials** (partial templates) allow you to easily organize and reuse your code by extracting pieces of code to their own files. They help you improve code readability and follow the principle of DRY (Don’t Repeat Yourself). You can parameterize partials and use them in various places, e.g. layouts, pages.
 
 Example directory structure of `views` with sample files:
 
@@ -66,6 +68,35 @@ app
 ```
 
 {% include "alert/tutorial", content: "Follow our step-by-step tutorials to learn more about <a href='/developer-guide/pages/pages'>pages</a> and <a href='/developer-guide/pages/layouts'>layouts</a>." %}
+
+### Lib
+
+Lib directory is meant to help you organize your code by allowing you to place partials not only in `views/partials/`, but also in `lib/`. Both `render` and [function](/api-reference/liquid/platformos-tags#function) tags invoke partial, however semantically they are different. The first one usually is used for presentation layer and include for example HTML, wheras the second one is meant to invoke business logic and return a valule. To not have to mix files for presentation with business logic, we've created a dedicated directory `lib`.
+
+{% render "alert/warning", content: "Please note that it is possible to create a conflict, when using both `views/partials` and `lib` - for example, if you have both `app/views/partials/my_file.liquid` and `app/lib/my_file.liquid` , the system will not know which file you meant to invoke via `render 'my_file'` or `function res = 'my_file'`." %}
+
+Example directory structure of `lib` with sample files:
+
+
+```shell
+app
+└── lib
+    └── commands
+        ├── order
+        │   ├── create
+        │   │   ├── build.liquid
+        │   │   ├── check.liquid
+        │   │   └── execute.liquid
+        │   └── cancel
+        │       ├── build.liquid
+        │       ├── check.liquid
+        │       └── execute.liquid
+        └── item
+            └── create
+                ├── build.liquid
+                ├── check.liquid
+                └── execute.liquid
+```
 
 ### Assets
 
@@ -91,7 +122,24 @@ app
 
 {% include "alert/tutorial", content: "Follow our step-by-step tutorials to learn more about <a href='/developer-guide/assets/assets'>assets</a>." %}
 
-### Forms
+### Migrations
+
+**Migrations** are liquid files, that are guaranteed to be invoked only once per environment during `deploy`. The file name must follow the pattern `<timestamp>_<name>.liquid`. The timestamp is used for uniqueness and also to know in which order migrations should be executed (which might be important).
+
+To generate a migration with the current timestamp, you can use the following command: `pos-cli migrations generate <env> <name>`
+
+Migrations are useful if you are making changes to schema in a project with existing data and need to slightly modify them, for example initiate the value.
+
+Example directory structure of `migrations` with sample files:
+
+```shell
+app
+└── migrations
+    ├── 20200811133711_set_superadmins.liquid
+    └── 20210114080833_set_defaults_for_country.liquid
+```
+
+### [DEPRECATED] Forms
 
 Just like in every web application, HTML forms are essential in platformOS. Because using plain HTML forms can get difficult to maintain with complex data structures, we provide multiple tools that make working with forms much easier.
 
@@ -199,20 +247,6 @@ app
 ```
 
 {% include "alert/tutorial", content: "Follow our step-by-step tutorials to learn more about <a href='/developer-guide/translations/translations'>translations</a>." %}
-
-### <a name="config"></a> Configuration file `config.yml`
-
-**config.yml** is used to control the behavior of the application developed. It is a file located in [app/config.yml](/developer-guide/platformos-workflow/codebase/config)
-
-| flag          | default value   | Explanation |
-|---------------|-----------------|-------------|
-|do_not_add_return_to_to_authorization_policies|false|By default, if the authorization policy fails and is set up to redirect, it automatically appends the return_to parameter. By setting the flag to true, the return_to parameter will not be appended|
-|escape_output_instead_of_sanitize|false|By default, any variable is sanitized before the output and treated as html and corrected, which is unideal as it can change the expected output. By setting this flag to true, the output will be escaped, not sanitized. We highly recommend setting this flag to true. |
-|liquid_raise_mode|false|By default, Liquid errors are displayed in line and the whole code is executed. By setting this flag, whenever there's any Liquid error - like parsing json fails, or GraphQL query receives invalid arguments, etc, a 500 page is raised instead and the rest of the code is not executed. This is generally the desired and expected behavior and we recommend setting this flag to true.|
-|skip_elasticsearch|false|If you do not use the `keyword` argument in `records`/`users` queries or `customizations`/`people` queries, you can increase performance by avoiding indexing data in the ELasticSearch by setting this flag to true.|
-|require_table_for_record_delete_mutation|false|The argument `table` for the `record_delete` mutation is optional by default, which can lead to security issues if the type of the record is not explicitly checked before executing the mutation. By setting the flag to true, you effectively make the `table` attribute required to avoid such vulnerability.|
-|safe_translate|false|By default, the `translate` filter (`t` is an alias for it) marks the output as html_safe. This can lead to XSS vulnerability, if you provide user input as a variable, which can contain JavaScript. In such scenario, you should explicitly use another filter, `translate_escape` (or `t_escape`). By setting this flag to true, the system will automatically use the equivalent of `t_escape` if you provide any variable to the translation key, making your application safer by default. We highly recommend setting this flag to `true`.|
-|slug_exact_match|false|By default, a page with slug `abc` will match not only  `example.com/abc`, but also URLs like `example.com/abc/1`, `example.com/abc/1/x` and to control this behavior, you should use max_deep_level. By setting this flag to true, only `example.com/abc` will be matched. Additionally, you will be able to use named parameters in the URLss, like /abc/:id. We highly recommend setting this flag to true.|
 
 ### Modules
 
