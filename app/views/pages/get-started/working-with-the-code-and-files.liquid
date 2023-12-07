@@ -45,7 +45,7 @@ Your instance URL is available in the Partner Portal on the [Instances list](htt
 To store your instance URL in the configuration, run a `pos-cli env add` command with your personal data in the parameters:
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
-pos-cli env add &lt;environment&gt; --email &lt;your email&gt; --url &lt;your instance url&gt;
+pos-cli env add &lt;environment&gt; --url &lt;your instance url&gt;
 </code></pre>
 
 {% include 'alert/note', content: 'Run all commands discussed in this tutorial in the project root directory.' %}
@@ -55,10 +55,10 @@ You need to give your instance a name in the `<environment>` parameter. Since yo
 Let’s assume the first created instance will be for development, thus you can name it `dev`. So, the example pos-cli command would look like this:
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
-pos-cli env add dev --email myemail@example.com —-url https://my-instance.staging.oregon.platform-os.com
+pos-cli env add dev —-url https://my-instance.staging.oregon.platform-os.com
 </code></pre>
 
-After running this command, you’ll get asked for your Partner Portal password to authenticate. Providing the correct password will be confirmed by pos-cli:
+After running this command, your default browser will open, asking you to log in to Partner Portal and authorize the app. Successful authorization will be confirmed by pos-cli:
 
 ```bash
 Environment <your instance url> as dev has been added successfully.
