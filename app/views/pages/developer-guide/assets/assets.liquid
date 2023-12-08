@@ -42,7 +42,7 @@ The `updated` parameter will not be added to files that do not exist, because th
 
 ## Accessing assets
 
-You can access assets using three different ways (that we know of): 
+You can access assets using three different ways (that we know of):
 
 * relative path on the CDN - used usually in CSS files to access fonts, images
 
@@ -107,7 +107,7 @@ Asset path filter access: `{{ 'modules/[my_module]/js/app.js' | asset_path }}`
 
 ## Removing assets
 
-At the moment, there is no way to just remove assets/files from S3. If for example, you only want one header image out of 6 to be present on the server, you should name the file the same while working on it — this way it will be overridden.
+Unlikely everything else - pages, partials, layouts - assets are NOT automatically deleted during deploy. In order to remove the physical file from S3, the only way to do it is to use `admin_asset_delete` mutation. Please note that it is not possible to revert this operation.
 
 ## Related topics
 
