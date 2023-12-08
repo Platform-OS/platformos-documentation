@@ -66,3 +66,4 @@ When a user enters the site, and the `enabled` flag is set to `true`, they are p
 
 The `/_maintenance` endpoint is a built-in platformOS endpoint, which verifies that `context.params.password` is equal to the value of the constant defined in `password_constant`, in this scenario context.constants['MAINTENANCE_PASSWORD']. If there is a match, platformOS stores the information in the `session` and the user will not be prompted again to provide the password.
 
+{% render 'alert/note', content: 'The maintenance page will be displayed only for valid pages and only for GET requests. It means that custom error pages and POST/PATCH/PUT/DELETE will continue to work.' %}
