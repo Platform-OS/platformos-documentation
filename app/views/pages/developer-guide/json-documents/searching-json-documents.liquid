@@ -1,0 +1,98 @@
+---
+converter: markdown
+metadata:
+  title: Searching JSON Documents
+  description: Searching JSON documents
+---
+
+## Searching JSON Documents
+
+As usual, the most important place to start is creating the right GraphQL query. Here is a practical example of how it could look like in a real project. Copy-paste the following content into `app/graphql/json_documents/search.graphql`:
+
+```graphql
+query items(
+  $limit: Int=10,
+  $keyword: String,
+  $categories: [String!]
+  $match_type: QueryMatchTypeEnum=FUZZY
+  $sort: [IndexSearchSortInput!] = []
+) {
+  documents_rc(
+    per_page: $limit
+    search_index: "docs"
+
+    sort: $sort
+
+    query: {
+      keyword: $keyword
+      match_type: $match_type
+      properties: [
+        { name: "title" priority: 10 }
+        { name: "content" priority: 5 }
+        { name: "author.name" priority: 1 }
+      ]
+    }
+
+    filter: [
+      { name: "category" value_in: $categories }
+    ]
+  ){
+    total_pages
+    total_entries
+
+    results {
+      properties
+    }
+  }
+}
+```
+
+The most important field is the `search_index`, which defines which JSON Document type you would like to query - it corresponds to the defined mapping in `search_indexes`.
+
+## Step 2: Create GraphQL mutation to insert JSON Document
+
+The easiest way to insert a JSON Document into ElasticSearch (which is used behind the scenes) is to create a generic GraphQL mutation, which would accept two arguments - the payload to be insert (the actual document) and the id (which will be useful later if you would like to update or delete the document).
+
+To achieve this, create a graphql file `app/graphql/json_documents/insert.graphql`:
+
+```graphql
+mutation insert($payload: HashObject!, $id: ID!){
+  documents_insert_rc(
+    search_index: "docs"
+    id: $id,
+    document: $payload
+  )
+}
+```
+
+
+## Step 3: Invoke GraphQL mutation from Liquid
+
+To use newly created GraphQL File, you can use the following liquid:
+
+```liquid
+{% raw %}
+  {% liquid
+    assign doc = '{}' | parse_json
+    hash_assign doc['uuid'] = 1
+    hash_assign doc['title'] = 'My title'
+    hash_assign doc['content'] = 'My content'
+    hash_assign doc['published_at'] = 'now' | to_time
+    hash_assign doc['created_at'] = 'now' | to_time
+    hash_assign doc['price'] = 100
+    hash_assign doc['category'] = 'Arts'
+
+    assign author = '{}' | parse_json
+    hash_assign author['uuid'] = '' | uuid
+    hash_assign author['name'] = 'John Doe'
+    hash_assign doc['author'] = author
+
+    graphql g = 'json_documents/insert', payload: doc, id: doc.uuid
+  %}
+{% endraw %}
+```
+
+## Working example
+
+We've built an example simple application, which demonstrates some of the JSON Documents capabilities. You can access [JSON Documents Example Application Source Code](https://github.com/Platform-OS/platformos-demo-search-index/) and deploy it to your own instance, or play around with it on the instance we've already prepared - [https://delta.staging.oregon.platform-os.com](https://delta.staging.oregon.platform-os.com)
+

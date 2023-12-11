@@ -1,0 +1,113 @@
+---
+converter: markdown
+metadata:
+  title: Persisting JSON Documents
+  description: Persisting your JSON documents
+---
+
+## Step 1: Requirements
+
+I want to store my "docs" in platformOS, which is defined by the following mapping. Creating a mapping itself is not required, however it allows you to optimize results of your queries. For the time being, you can define mappings of your documents in `app/config.yml` file:
+
+```yaml
+search_indexes:
+- docs:
+    properties:
+      uuid:
+        type: keyword
+      title:
+        type: text
+        fields:
+          raw:
+            type: keyword
+      content:
+        type: text
+      published_at:
+        type: date
+      created_at:
+        type: date
+      price:
+        type: integer
+      category:
+        type: keyword
+      author:
+        type: object
+        properties:
+          uuid:
+            type: string
+          name:
+            type: text
+            analyzer: english
+            fields:
+              raw:
+                type: keyword
+```
+
+To understand better how to create mappings that meet your needs, please see dedicated [Mapping](/developer-guide/json-documents/mapping) explanation.
+
+## Step 2: Create GraphQL mutation to insert JSON Document
+
+The easiest way to insert a JSON Document into ElasticSearch (which is used behind the scenes) is to create a generic GraphQL mutation, which would accept two arguments - the payload to be insert (the actual document) and the id (which will be useful later if you would like to update the record).
+
+To achieve this, create a graphql file `app/graphql/json_documents/insert.graphql`:
+
+```graphql
+mutation insert($payload: HashObject!, $id: ID!){
+  documents_insert_rc(
+    search_index: "docs"
+    id: $id,
+    document: $payload
+  )
+}
+```
+
+
+## Step 3: Invoke GraphQL mutation from Liquid
+
+To use newly created GraphQL File, you can use the following liquid:
+
+```liquid
+{% raw %}
+  {% liquid
+    assign doc = '{}' | parse_json
+    hash_assign doc['uuid'] = 1
+    hash_assign doc['title'] = 'My title'
+    hash_assign doc['content'] = 'My content'
+    hash_assign doc['published_at'] = 'now' | to_time
+    hash_assign doc['created_at'] = 'now' | to_time
+    hash_assign doc['price'] = 100
+    hash_assign doc['category'] = 'Arts'
+
+    assign author = '{}' | parse_json
+    hash_assign author['uuid'] = '' | uuid
+    hash_assign author['name'] = 'John Doe'
+    hash_assign doc['author'] = author
+
+    graphql g = 'json_documents/insert', payload: doc, id: doc.uuid
+  %}
+{% endraw %}
+```
+
+## Updating JSON Document
+
+In order to update the document, you can re-use the existing GraphQL. If the id you provide to the GraphQL Mutation exists, the document will be replaced.
+
+## Deleting JSON Document
+
+In order to delete the Document, you need to know it's id. You can use the following GraphQL Mutation, placing it for example in `app/graphql/json_documents/delete.graphql`:
+
+```graphql
+mutation clean($id: ID!) {
+  documents_delete_rc(search_index: "docs", id: $id)
+}
+```
+
+To invoke it via liquid, you can use the following snippet:
+
+```liquid
+{% raw %}
+  {% liquid
+    graphql g = 'json_documents/delete', id: 1
+  %}
+{% endraw %}
+```
