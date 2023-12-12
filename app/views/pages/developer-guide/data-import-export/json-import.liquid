@@ -263,3 +263,30 @@ To import files with `pos-cli`, prepare a JSON file with paths to existing files
 
 During the import, `pos-cli` will upload the files to our storage and match them with corresponding records.
 
+## Record relations
+
+With `properties`, you can create your columns for storing the data. In the properties, you can also store the `id` of an existing object. Then you can fetch the data with `related_record(join_on_property: String!)` or the `related_user(join_on_property: String!)` field in GraphQL.
+
+In order to export/import data with relations preserved, you need to define them in Table files using the `belongs_to` attribute.
+
+##### app/schema/house.yml
+
+```yaml
+name: house
+properties:
+- name: address
+  type: string
+```
+
+##### app/schema/cars.yml
+```yaml
+name: cars
+properties:
+- name: color
+  type: string
+- name: house_id
+  type: integer
+  belongs_to: house
+```
+
+This works only with JSON import/export and hence is deprecated.
