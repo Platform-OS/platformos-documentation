@@ -1,44 +1,28 @@
 ---
 converter: markdown
 metadata:
-  title: Data Import
+  title: Data Import using CSV format
   description: Detailed description of data import with examples.
 ---
 
-This topic describes **data import** including fast data imports using CSV files.
-
-Data to be imported needs to be in JSON format, it is an array of [user data](/api-reference/graphql/userimport.html) and array of [records data](/api-reference/graphql/customizationimport.html):
-
-```json
-{
-  "users": [...],
-  "records": [...]
-}
-```
-
-You can generate data from an existing Instance with the `pos-cli data export` command ([read more about this here](/developer-guide/data-import-export/export#cli-export)). It will generate the `data.json` file. You can also import data from other sources (e.g. old stack, other systems) once you generate the proper JSON file. It is fairly easy to convert, for example, a CSV file into a JSON file.
+This topic describes **fast data imports** using CSV files.
 
 ## General information
 
 - Before import, your Tables need to be deployed.
-
-- When importing data, the `id` fields will be changed. Relations will be kept. If you have your own relations defined in properties, you need to first describe them in Table files - [read more about this here](/developer-guide/data-import-export/record-relations).
-
-- If you test your imports and need to clean Instance data, use the `pos-cli data clean` command. Note, that this command will work only on staging Instances.
-
-- When you run import twice, it will try to match previously imported data without removing existing changes. Example:
-  1. You have a record `shirt` with properties: `color`, `size`
-  2. First import adds new `shirt` with JSON: `{ "id": 1, "properties": { "color": "red" }}`
-  3. User sets attributes of `shirt`, now `shirt` has the following properties: `{ "color": "green", "size": "large" }`
-  4. Second import with the same file changes `shirt` object to: `{ "color": "red", "size": "large" }`
-
-- Import will only do basic validations, such as the existence of properties and type validation. It doesn't check any of the validations defined on forms.
+- CSV files only support comma separated values, if in doubt, it might be a good idea to use a linter like [CSVlint](https://github.com/Clever/csvlint) to check the file.
+- A well formatted file has a header with names of columns available for the given type, and one or more rows of data.
+- If you test your imports and need to clean Instance data, use the `pos-cli data clean <env>` command. Note, that this command will work only on staging Instances.
+- Import will save data as is, without any validation. It means, that if for example there exists a record with id 1 and it belongs to Table "Post", and your zip file includes records.csv with a row that defines `id`=1 as a "Comment", you will move this record to different Table.
+- The `id` field is not required - if omitted, the record will be inserted (see examples at the end of the article)
+- Import will only create or update records, nothing will be deleted
+- The `id` field is used as a unique key and determines whether record will be created or updated (overwritten)
 
 ## Data Import with the CLI
 
 With pos-cli data, you can export/import Instance data (information entered by the users).
 
-platformOS CLI provides the `pos-cli data import` command for uploading and importing data from a JSON file or ZIP archive with CSV files. It accepts one option:
+platformOS CLI provides the `pos-cli data import` command for uploading and importing data from a JSON file (deprecated) or ZIP archive, which should include CSV files. It accepts one option:
 
 - --path (short: -p): A path to a JSON or ZIP files to be imported
 
@@ -47,194 +31,33 @@ Under the hood, the CLI uses the GraphQL import API that's described in the next
 - Uploading file from disk
 - Leveraging the CLI's authentication mechanism (i.e. you don't need to manually send your authentication token)
 
-### Input format
+### Zip format
 
-The required data format is a JSON file with users and records keys that have an array of maps. Each of those collections needs to be in the same format as a corresponding GraphQL mutation. Under the hood import is just a set of mutations: [`import_users()`](/api-reference/graphql/rootmutation.html), [`import_records()`](/api-reference/graphql/rootmutation.html). When importing data using the CLI, the file should contain data in a format that matches the following structure:
+The required structure of a zip file is as follows:
 
-```json
-{
-  "users": [<UserImport],
-  "records": [<CustomizationImport>],
-}
+```shell
+data.zip
+├── records.csv
+├── users.csv
+└── activity_steams.csv
 ```
 
-### Example
+For larger amount of data, you can split it across multiple files:
 
-Example data import file `data.json`
-
-```json
-{
-  "users": [
-    {
-      "id": 1000,
-      "email": "tom@example.com",
-      "first_name": "Tom",
-      "slug": "tom"
-    },
-    {
-      "id": 1001,
-      "email": "mike@example.com",
-      "first_name": "mike",
-      "slug": "mike",
-      "created_at": "2010-10-10 10:00:00",
-      "profiles": [
-        {
-          "type_name": "student",
-          "id": 2001,
-          "properties": {
-            "age": 21
-          },
-          "attachments": [
-            {
-              "name": "document",
-              "url": "files/document.pdf"
-            }
-          ],
-          "images": [
-            {
-              "name": "avatar",
-              "url": "files/avatar.png"
-            }
-          ]
-        }
-      ]
-    }
-  ],
-  "records": [
-    {
-      "id": 1,
-      "user_id": 1000,
-      "type_name": "house",
-      "customizable_id": 1000,
-      "customizable_type": "User",
-      "properties": {
-        "color": "red"
-      }
-    },
-    {
-      "id": 2,
-      "user_id": 1001,
-      "type_name": "house",
-      "customizable_id": 1001,
-      "customizable_type": "User",
-      "properties": {
-        "color": "green",
-        "buyer_id": 1000,
-        "beach_house_id": 1
-      },
-      "addresses": [
-        {
-          "name": "foo_address",
-          "address": "Warsaw",
-          "postcode": "01-001"
-        }
-      ]
-    },
-    {
-      "id": 3,
-      "user_id": 1001,
-      "type_name": "house",
-      "properties": {
-        "buyer_id": 1000,
-        "beach_house_id": 2
-      },
-      "attachments": [
-        {
-          "name": "driver_licence",
-          "url": "files/licence.pdf"
-        }
-      ],
-      "images": [
-        {
-          "name": "headshot",
-          "url": "files/headshot.png"
-        }
-      ]
-    }
-  ]
-}
+```shell
+data.zip
+├── records.0.csv
+├── records.1.csv
+├── records.2.csv
+├── users.csv
+└── activity_steams.csv
 ```
 
-To import the data from a file, run the following command in the terminal:
+To import data.zip, the following command can be used:
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
-pos-cli data import --path=data.json staging-instance
+pos-cli data import --path=data.zip <env> --zip
 </code></pre>
-
-## Data Import with GraphQL mutations
-
-It is possible to import data using GraphQL mutations. This gives you more flexibility, and even allows you to create your own import tool as a website feature. Please remember to handle authentication properly.
-
-There are two main mutations for importing [`import_users()`](/api-reference/graphql/rootmutation.html) and [`import_records()`](/api-reference/graphql/rootmutation.html). You can create a page that will import sent data.
-
-##### app/graphql/import_data.graphql
-
-```graphql
-mutation import_data(
-    $users: [UserImport!]!,
-    $records: [CustomizationImport!]!
-  ) {
-  import_users(users: $users) { ids }
-  import_records(records: $records) { ids }
-}
-```
-
-##### app/views/pages/import_data.json.liquid
-
-{% raw %}
-```liquid
----
-method: post
----
-{% graphql res = "import_data",
-  users: context.params.users,
-  records: context.params.records
-%}
-
-{{ g }}
-```
-{% endraw %}
-
-<pre class="command-line" data-output="2-6" data-user="user" data-host="host"><code class="language-bash">
-curl -d @transformed.json \
-  -H "Content-Type: application/json" \
-  -X POST https://example.com/import_data.json
-</code></pre>
-
-## Data Import with raw import API
-
-Our CLI uses the HTTP API to import a data file. You can use it in your own tool.
-Please note, that you need to provide your authentication token in the HTTP Authorization header of the request.
-
-<pre class="command-line" data-output="2-6" data-user="user" data-host="host"><code class="language-bash">
-curl -F "import[data]=@data.json" \
-  -H "Authorization: Token token=[YOUR API TOKEN]" \
-  -X POST https://example.com/api/app/imports
-</code></pre>
-
-{% include 'alert/note', content: 'You can find your API Token in [Partner Portal](https://partners.platformos.com/me) under "Access Key".' %}
-
-## Data import using CSV files
-
-It is possible to import data using CSV files — this is the most straightforward and performant way of data import.
-
-<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
-pos-cli data import --zip --path=archive.zip staging-instance
-</code></pre>
-
-### CSV data format
-
-Inside the ZIP archive there should be CSV files with data to be imported. For example:
-
-```bash
-records.csv
-users.csv
-user_profiles.csv
-```
-
-- Before import, your Tables need to be deployed.
-- CSV files only support comma separated values, if in doubt, it might be a good idea to use a linter like [CSVlint](https://github.com/Clever/csvlint) to check the file.
-- A well formatted file has a header with names of columns available for the given type, and one or more rows of data.
 
 ### Example file for Records
 
@@ -245,7 +68,18 @@ id,user_id,created_at,updated_at,properties,model_schema
 3,,2020-03-13 11:27:26.236759,2020-03-17 05:39:34.765109,"{""name"": ""Fix a tpyo"", ""done"": ""false""}",todo
 ```
 
-This file will import Records matching the Table for: "todo". If you notice, there's a typo in the object with id=3, to fix it you can edit the file like this:
+This file will import Records matching the Table for: "todo", which definition `app/schema/todo.yml` could look like:
+
+```yaml
+name: todo
+properties:
+- name: name
+  type: string
+- name: done
+  type: boolean
+```
+
+If you notice, there's a typo in the object with id=3, to fix it you can edit the file like this:
 
 ```csv
 id,user_id,created_at,updated_at,properties,model_schema
@@ -255,6 +89,7 @@ id,user_id,created_at,updated_at,properties,model_schema
 ```
 
 And now importing will just update the data of matching rows. Even if you add new rows, only they will be added, existing rows will not be deleted.
+
 Additionally, not all columns are required, so for example this will work as well:
 
 ```csv
@@ -272,9 +107,61 @@ id,email,encrypted_password,created_at,updated_at,name,authentication_token,slug
 
 It is important to note that `encrypted_password` will only work if you are importing data previously exported from our system through other means. So setting passwords this way will not work: they will be saved but the system will not accept them when checking through application code. It would be unsafe to set passwords this way so it's better to use a random value here and require users to change their passwords after migration.
 
-### Example file for UserProfiles
+### Example file for [DEPRECATED] UserProfiles
 
 ```csv
 id,user_id,proile_type,created_at,updated_at,properties,instance_profile_type_name
 1,2,"buyer",2020-03-11 05:44:13.302432,2020-03-11 05:44:13.302432,"{""name"": ""Our Services""}","modules/menu/buyer"
 ```
+
+## Importing images/files using CLI
+
+In order to import images/files to platformOS, you need to have them on your disk. For example, if you have an existing file `seed/images.zip`:
+
+```shell
+seed
+└── images.zip
+    └── sample_item_photo
+        ├── photo1.jpg
+        └── photo2.jpg
+```
+
+You can use the following command to upload those two sample photos:
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+pos-cli uploads push <env> --path=seed/images.zip
+</code></pre>
+
+Typically, you would want to use data import as well to be able to use uploaded images/files.
+
+Let's say you have a Table called photo defined in `app/schema/photo.yml`:
+
+```
+name: photo
+properties:
+  - name: object_uuid
+  - name: photo_type
+  - name: photo
+    type: upload
+    options:
+      versions:
+        - name: sm
+          output:
+            format: jpeg
+            quality: 70
+          resize:
+            width: 200
+            height: 200
+            fit: inside
+            without_enlargement: true
+```
+
+You could then upload the following records.csv in order to be able to use imported images:
+
+
+```csv
+id,created_at,updated_at,properties,model_schema,deleted_at
+4115,2021-11-03 12:32:01,2021-11-03 12:32:01,"{""photo"": {""path"": ""sample_item_photo/photo1.jpg"", ""versions"": {""sm"": ""sample_item_photo/photo1.jpg""}, ""extension"": "".jpg"", ""file_name"": ""photo1.jpg""}, ""photo_type"": ""photo"", ""object_uuid"": ""05fb03b9-1b9f-40e6-bc92-182773fb6662""}",photo,
+4116,2021-11-03 12:32:01,2021-11-03 12:32:01,"{""photo"": {""path"": ""sample_item_photo/photo2.jpg"", ""versions"": {""sm"": ""sample_item_photo/photo2.jpg""}, ""extension"": "".jpg"", ""file_name"": ""photo2.jpg""}, ""photo_type"": ""photo"", ""object_uuid"": ""05fb03b9-1b9f-40e6-bc92-182773fb6663""}",photo,
+```
+
