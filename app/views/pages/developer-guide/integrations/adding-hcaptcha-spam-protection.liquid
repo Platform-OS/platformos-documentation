@@ -6,82 +6,17 @@ metadata:
 ---
 This guide will help you add spam protection to your forms using [hCaptcha](https://www.hcaptcha.com/). It includes:
 
-* a tutorial for creating an Authorization Policy and adding it to your form
+* a tutorial for creating an Authorization Policy and adding it to your page
 * [an example of adding a regular form in a page](/developer-guide/integrations/adding-hcaptcha-spam-protection#example-1-regular-form-in-a-page-without-form-configuration) (without form configuration) with the hcaptcha tags inside
 * [an example of protecting the page](/developer-guide/integrations/adding-hcaptcha-spam-protection#example-2-protect-page-with-the-slug-main-content) with the slug `/main-content`
-* [an example of implementing hCaptcha using YML and GraphQL mutations](/developer-guide/integrations/adding-hcaptcha-spam-protection#example-3-implementing-hcaptcha-using-yml-and-graphql-mutations)
+* [an example of using an invisble hCaptcha](/developer-guide/integrations/adding-hcaptcha-spam-protection#example-3-using-an-invisible-hcaptcha)
+* [an example of using custom html attributes](/developer-guide/integrations/adding-hcaptcha-spam-protection#example-4-using-hcaptcha-custom-html-attributes)
 
 ## Requirements
 
-To follow this topic, you should be familiar with forms, form configuration options, and Authorization Policies, including how to add an Authorization Policy and associate it with a form.   
-* [Forms](/developer-guide/forms/forms)
-* [Form Configuration Options](/developer-guide/forms/form-configuration) 
+To follow this topic, you should be familiar with Authorization Policies, including how to add an Authorization Policy and associate it with a page.
 * [Authorization Policy](/developer-guide/authorization-policy/authorization-policy)
 * [Adding an Authorization Policy](/developer-guide/authorization-policy/adding-authorization-policy)
-* [Associating an Authorization Policy with a Form](/developer-guide/authorization-policy/associating-authorization-policy-form)
-
-## Steps
-
-<div data-autosteps></div>
-
-### Step 1: Create Authorization Policy for the hCaptcha
-
-To add hCaptcha to a form, first create an Authorization Policy. 
-
-##### app/authorization_policies/is_hcaptcha_authorized.liquid
-
-```liquid
-{% raw %}
----
-name: is_hcaptcha_authorized
-redirect_to: /sign-in-hcaptcha
-flash_alert: Invalid captcha authorization.
----
-{{ context.params | hcaptcha }}
-{% endraw %}
-```
-
-### Step 2: Add form configuration header to your form in the configuration body
-
-Add the Authorization Policy it to your form. 
-
-##### app/forms/sign_in_with_hcaptcha.liquid
-
-```liquid
-{% raw %}
----
-name: sign_in_with_hcaptcha
-resource: Session
-authorization_policies:
-  - modules/sign_in_hcaptcha/is_hcaptcha_authorized
-fields:
-  email:
-  password:
----
-{% form html-class: 'w-50' %}
-  <div class="form-group">
-    <label for="form_email">Email</label>
-    <input class="form-control" name="{{ form.fields.email.name }}" value="{{ form.fields.email.value}}" id="form_email" type="email">
-  </div>
-
-  <div class="form-group">
-    <label for="form_password">Password</label>
-    <input class="form-control" name="{{ form.fields.password.name }}" id="form_password" type="password">
-    {% if form.errors.password %}
-      <p>{{ form.errors.password }}</p>
-    {% endif %}
-  </div>
-
-  <div class="form-group">
-    {{ form.errors.base }}
-  </div>
-
-  {% spam_protection "hcaptcha" %}
-
-  <button class="btn btn-primary">Log In</button>
-{% endform %}
-{% endraw %}
-```
 
 ## Example 1: Regular form in a page (without form configuration)
 This example shows how to add a regular form in a page (without form configuration) with the hcaptcha tags inside. This form posts to a page which has an authorization policy with the same content as in the example above. 
@@ -208,108 +143,26 @@ layout_name: 1col
 {% endraw %}
 ```
 
-## Example 3: Implementing hCaptcha using YML and GraphQL mutations
-
-hCaptcha can also be used to protect a form implemented using the form configuration feature. In the example below, `hcaptcha` is added under `spam_protection` for the form configuration. The form is included from the `captcha_form` page. When successfully submitted, it will create a model of type `model_with_title` and will redirect to the `/success_page`.
-
-#### app/schema/model_with_title.yml
-
-```yaml
----
-name: model_with_title
-custom_attributes:
-- name: title
-  type: string
----
-```
-
-#### app/forms/form_with_captcha.liquid
-
-```liquid
-{% raw %}
----
-name: form_with_captcha
-resource: model_with_title
-resource_owner: "anyone"
-configuration:
-spam_protection:
-  hcaptcha:
-fields:
-  properties:
-    title:
-return_to: /success_page
----
-
-{% form html-novalidate: true, html-class: 'model-form' %}
-
-<input name="{{ form.fields.properties.title.name }}" value="{{ form.fields.properties.title.value }}" type="text" />
-
-{% spam_protection 'hcaptcha' %}
-
-<input type="submit" name="submit" value="Submit" />
-
-{% endform %}
-{% endraw %}
-```
-
-#### app/views/pages/captcha_form.liquid
-
-```liquid
-{% raw %}
----
-slug: captcha_form
-layout_name: 1col
----
-
-<h1>Test captcha form.</h1>
-
-{% include_form 'form_with_captcha' %}
-{% endraw %}
-```
-
-#### app/views/pages/success_page.liquid
-
-```liquid
-{% raw %}
----
-slug: success_page
----
-
-Success!
-{% endraw %}
-```
-
-## Example 4: Using an invisible hCaptcha
+## Example 3: Using an invisible hCaptcha
 
 hCaptcha can be configured to run in the "invisible" mode. Invisible mode means no checkbox is used, and the challenge will be displayed when the user attempts to submit the form.
 To use the invisible mode, you must add `invisible: true` to the spam_protection tag as below.
 
-#### app/forms/form_with_captcha.liquid
+#### app/view/pages/form_with_captcha.liquid
 
 ```liquid
 {% raw %}
 ---
-name: form_with_captcha
-resource: model_with_title
-resource_owner: "anyone"
-configuration:
-spam_protection:
-  hcaptcha:
-fields:
-  properties:
-    title:
-return_to: /success_page
+slug: form_with_captcha
 ---
 
-{% form html-novalidate: true, html-class: 'model-form' %}
+<form method="post" action="/protected-page">
+  <input name="title" value="" type="text" />
 
-<input name="{{ form.fields.properties.title.name }}" value="{{ form.fields.properties.title.value }}" type="text" />
+  {% spam_protection 'hcaptcha', invisible: true %}
 
-{% spam_protection 'hcaptcha', invisible: true %}
-
-<input type="submit" class="hcaptcha-submit-button" name="submit" text="Submit" />
-
-{% endform %}
+  <input type="submit" class="hcaptcha-submit-button" name="submit" text="Submit" />
+</form>
 {% endraw %}
 ```
 
@@ -331,6 +184,31 @@ document.addEventListener('DOMContentLoaded', function() {
 ```
 
 The above code will use an element with the class `my-customized-image` as the trigger for form submission with hCaptcha verification.
+
+## Example 4: Using hCaptcha custom HTML attributes
+
+You can use custom HTML attributes with the spam_protection tag to access additional hCaptcha functionality. Find an example below:
+
+#### app/views/pages/page_with_captcha.liquid
+
+```liquid
+{% raw %}
+---
+slug: page_with_captcha
+---
+
+<form action="/submit_hcaptcha_endpoint" method="post" class="model-form" novalidate="novalidate">
+  <input name="title" value="Title" type="text" />
+
+  {% assign html_attrs = '{}' | parse_json %}
+  {% hash_assign html_attrs['data-size'] = 'compact' %}
+  {% hash_assign html_attrs['data-callback'] = 'someCallback' %}
+  {% spam_protection 'hcaptcha', html_attributes: html_attrs %}
+
+  <input type="submit" name="submit" value="Submit" />
+</form>
+{% endraw %}
+```
 
 ## Live example and source code
 To play with the live example visit the [sign-in-hcaptcha](https://examples.platform-os.com/sign-in-hcaptcha) page.
