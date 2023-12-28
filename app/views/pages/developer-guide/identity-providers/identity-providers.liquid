@@ -6,6 +6,9 @@ metadata:
 ---
 
 This guide will help you understand generic steps of configuring third party identity providers like Facebook login, Auth0 etc.
+
+{% include 'alert/deprecated', content: 'Using hardcoded OAuth integrations is deprecated, as it does limit your flexibilty to implement business rules. Our recommendation is to use Liquid and GraphQL implement the OAuth per your the requirements. To expedite and unify the process, OAuth module will be available soon.' %}
+
 The integration allows you to:
 
 * Connect a User from an external service with a User in your Instance via email
@@ -14,13 +17,13 @@ The integration allows you to:
 
 This is **how identity providers work**:
 
-1. If the user tries to use an identity provider with abc@example.com and such a user does not exist an account is created. 
-2. If the user tries to use an identity provider with abc@example.com and such a user exists but is not connected to the identity provider this is what happens: 
-   * If the user is logged in as abc@example.com, connecting the accounts is allowed, next time the user will be able to log in using the identity provider. 
-   * If the user is not logged in, an error message is displayed saying such an account exists and is not connected to the identity provider. 
-   * If the user is logged in to a different account, they are notified that they are logged in to a different account and need to log out. 
-3. If the user tries to use the identity provider with abc@example.com and such a user is connected to the identity provider then they are allowed to log in. 
-   * If the user is not logged in, they are allowed to log in. 
+1. If the user tries to use an identity provider with abc@example.com and such a user does not exist an account is created.
+2. If the user tries to use an identity provider with abc@example.com and such a user exists but is not connected to the identity provider this is what happens:
+   * If the user is logged in as abc@example.com, connecting the accounts is allowed, next time the user will be able to log in using the identity provider.
+   * If the user is not logged in, an error message is displayed saying such an account exists and is not connected to the identity provider.
+   * If the user is logged in to a different account, they are notified that they are logged in to a different account and need to log out.
+3. If the user tries to use the identity provider with abc@example.com and such a user is connected to the identity provider then they are allowed to log in.
+   * If the user is not logged in, they are allowed to log in.
    * If the user is logged in with a different email, an error message is displayed saying they need to log out.
 
 ## Requirements

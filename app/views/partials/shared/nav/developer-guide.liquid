@@ -229,6 +229,7 @@
       {% include "shared/nav/link", href: "/developer-guide/notifications/adding-attachments-email-notification", text: "Adding Attachments to an Email Notification" %}
       {% include "shared/nav/link", href: "/developer-guide/notifications/creating-sms-notification", text: "Creating an SMS Notification" %}
       {% include "shared/nav/link", href: "/developer-guide/notifications/creating-api-call-notification", text: "Creating an API Call Notification" %}
+      {% include "shared/nav/link", href: "/developer-guide/notifications/sending-binary-file-using-api-call-notification", text: "Sending a Binary File Using an API Call Notification" %}
       {% include "shared/nav/link", href: "/developer-guide/notifications/parsing-api-response", text: "Parsing an API Response" %}
     </ul>
   {% endif %}
@@ -313,14 +314,6 @@
 <li class="pt-6 mt-6 mb-2 text-base border-t topic-group border-pos-divider">
   <h3 class="text-base uppercase">Third-party systems</h3>
 </li>
-<li class="{% if cp contains 'apis' %}active{% endif %}">
-  <a href="/developer-guide/apis/creating-items-from-external-api-call">APIs</a>
-  <ul class="submenu">
-    {% include "shared/nav/link", href: "/developer-guide/apis/creating-items-from-external-api-call", text: "Creating Items from an External API Call" %}
-    {% include "shared/nav/link", href: "/developer-guide/apis/persisting-part-of-third-party-api-response", text: "Persisting Part of a Third-Party API Response" %}
-    {% include "shared/nav/link", href: "/developer-guide/apis/sending-binary-file-using-api-call-notification", text: "Sending a Binary File Using an API Call Notification" %}
-  </ul>
-</li>
 
 <li class="{% if cp contains 'integrations' %}active{% endif %}">
   <a href="/developer-guide/integrations/integrations">Integrations</a>
@@ -339,18 +332,6 @@
       {% include "shared/nav/link", href: "/developer-guide/integrations/adding-recaptcha-spam-protection", text: "Adding reCAPTCHA V2 Spam Protection" %}
       {% include "shared/nav/link", href: "/developer-guide/integrations/adding-recaptcha-v3-spam-protection", text: "Adding reCAPTCHA V3 Spam Protection" %}
       {% include "shared/nav/link", href: "/developer-guide/integrations/adding-hcaptcha-spam-protection", text: "Adding hCaptcha Spam Protection" %}
-    </ul>
-  {% endif %}
-</li>
-
-<li class="{% if cp contains 'identity-providers' %}active{% endif %}">
-  <a href="/developer-guide/identity-providers/identity-providers">Identity Providers (OAuth)</a>
-  {% if cp contains 'identity-providers' %}
-    <ul class="submenu">
-      {% include "shared/nav/link", href: "/developer-guide/identity-providers/identity-providers", text: "Identity Providers" %}
-      {% include "shared/nav/link", href: "/developer-guide/identity-providers/auth0", text: "Auth0 Integration" %}
-      {% include "shared/nav/link", href: "/developer-guide/identity-providers/google-oauth", text: "Google OAuth Integration" %}
-      {% include "shared/nav/link", href: "/developer-guide/identity-providers/facebook", text: "Facebook Integration" %}
     </ul>
   {% endif %}
 </li>
@@ -475,6 +456,24 @@
       {% include "shared/nav/link", href: "/developer-guide/search/selecting-fields-available-search", text: "Selecting Fields Available for Search" %}
       {% include "shared/nav/link", href: "/developer-guide/search/keyword-match-type", text: "Keyword Match Type" %}
       {% include "shared/nav/link", href: "/developer-guide/search/filtering-sorting", text: "Filtering and Sorting" %}
+    </ul>
+  {% endif %}
+</li>
+<li class="{% if cp contains 'apis' %}active{% endif %}">
+  <a href="/developer-guide/apis/creating-items-from-external-api-call">Accessing Forms via API</a>
+  <ul class="submenu">
+    {% include "shared/nav/link", href: "/developer-guide/apis/creating-items-from-external-api-call", text: "Creating Items from an External API Call" %}
+    {% include "shared/nav/link", href: "/developer-guide/apis/persisting-part-of-third-party-api-response", text: "Persisting Part of a Third-Party API Response" %}
+  </ul>
+</li>
+<li class="{% if cp contains 'identity-providers' %}active{% endif %}">
+  <a href="/developer-guide/identity-providers/identity-providers">Identity Providers (OAuth)</a>
+  {% if cp contains 'identity-providers' %}
+    <ul class="submenu">
+      {% include "shared/nav/link", href: "/developer-guide/identity-providers/identity-providers", text: "Identity Providers" %}
+      {% include "shared/nav/link", href: "/developer-guide/identity-providers/auth0", text: "Auth0 Integration" %}
+      {% include "shared/nav/link", href: "/developer-guide/identity-providers/google-oauth", text: "Google OAuth Integration" %}
+      {% include "shared/nav/link", href: "/developer-guide/identity-providers/facebook", text: "Facebook Integration" %}
     </ul>
   {% endif %}
 </li>
