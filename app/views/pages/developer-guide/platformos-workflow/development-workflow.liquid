@@ -40,6 +40,60 @@ What you’ll need:
 
 * [pos-cli](https://documentation.platformos.com/get-started/installation-and-configuration/#install-pos-cli)
 
+### 4. Setup IDE - platformos-check
+
+The [platformos-check](https://github.com/Platform-OS/platformos-check) is is a tool that helps you follow platformOS recommendations & best practices by analyzing the Liquid inside your app.
+
+What you’ll need:
+
+* If you use VSCode - [platformOS Liquid Extension](https://marketplace.visualstudio.com/items?itemName=platformOS.platformos-check-vscode)
+  * Windows - the extension will work out of the box, as all the dependencies - [Ruby](https://www.ruby-lang.org/en/) and [platformOS Check](https://github.com/Platform-OS/platformos-check) are included via included executable file
+  * Other system - must [manually install Ruby and platformOS Check](https://github.com/Platform-OS/platformos-check?tab=readme-ov-file#installation)
+* If you use vim, emacs or anything else
+  * [manually install Ruby and platformOS Check](https://github.com/Platform-OS/platformos-check?tab=readme-ov-file#installation)
+  * platformOS check comes with an LSP Server, follow instructions of how to use LSP servers in your editor, for example. For example for vim you can use [coc.vim](https://github.com/neoclide/coc.nvim) and configure it:
+    ```yaml
+      {
+        "languageserver": {
+          "platformos-check": {
+            "command": "platformos-check-language-server",
+            "filetypes": ["liquid", "graphql", "yaml", "yml"],
+            "rootPatterns": [".platformos-check.yml", ".pos"],
+            "settings": {
+              "platformosCheck": {
+                "checkOnSave": true,
+                "checkEnter": true,
+                "onlySingleFileChecks": true,
+                "checkOnChange": true,
+                "checkOnOpen": true
+              }
+            }
+          }
+        }
+      }
+    ```
+
+Please note that `platformos-check` is automatically available as a CLI tool, which is capable to auto-correct some of the offenses, use in CI and configure to meet your needs, including writing your own checks. Learn more about [platformOS check Configuration](https://documentation.platformos.com/developer-guide/platformos-check/platformos-check)
+
+### 5. Setup IDE - GraphQL
+
+There are many existing extensions that offer GraphQL autocomplete and other features, for example [GraphQL extension for VSCode](https://marketplace.visualstudio.com/items?itemName=orsenkucher.vscode-graphql).
+
+What typically you’ll need:
+
+* up to date platformOS [schema.graphql](https://deidcfp1yn7c2.cloudfront.net/platform_docs/d1d4bd8823298e9960442d489b5937ca0a78107a/schema.graphql) file placed in your project root.
+* `.graphqlrc.yml` configuration file, for example
+
+```graphql
+schema: 'schema.graphql'
+extensions:
+  languageService:
+    cacheSchemaFileForLookup: true
+documents: ['**/*.{graphql}']
+```
+
+The above configuration most likely will work, however please check the detailed instructions of the GraphQL extension of your choice to leverage its full potential.
+
 ## Development
 
 ### Development Instances
