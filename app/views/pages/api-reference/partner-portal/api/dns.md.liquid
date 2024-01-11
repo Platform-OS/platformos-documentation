@@ -11,12 +11,17 @@ converter: markdown
 
 ## release notes
 
+### 2023-01-11
+- SPF record has been removed from available types in Partner Portal
+- added information about [www redirection](#domain-status-response) to `/api/domain/status`.
+  key `www_redirect.enabled: <BOOLEAN>`
+
 ### 2023-11-20
 - www redirection is optional from now on. See [enable_www_redirect](#enable_www_redirect)
 
 ### 2019-12-11
 - added `/api/domains/request_log` [endpoint](#fetch-log-for-a-specific-request)
-- added missing [data](#example-of-the-response) to `/api/domain/status` [redirection and use_as_default settings]
+- added missing [data](#domain-status-response) to `/api/domain/status` [redirection and use_as_default settings]
 - added [description](#create-domain-response) for create-domain response
 - fixed issue with slow `/api/domain/status` endpoint
   `_changelog` property has been removed from the response and will be provided
@@ -45,7 +50,7 @@ get a [[DOMAIN_NAME]] domain data
 
     Authorization: [[TOKEN]]
 
-### Response
+### Domain Status Response
 
 ```json
 {
@@ -137,7 +142,10 @@ get a [[DOMAIN_NAME]] domain data
         ]
       }
     ],
-    "_lb_dns_name": "production-sydney-lb-02-1017910072.ap-southeast-2.elb.amazonaws.com"
+    "_lb_dns_name": "production-sydney-lb-02-1017910072.ap-southeast-2.elb.amazonaws.com",
+    "www_redirect": {
+        "enabled": true
+    }
   }
 
 ```
