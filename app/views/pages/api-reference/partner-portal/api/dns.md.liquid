@@ -11,6 +11,11 @@ converter: markdown
 
 ## release notes
 
+### 2024-01-18
+- API Versioning
+  Although we have changed the management of www records, the API has remained backward compatible. For example, the www CNAME record is hidden in replies by default.
+  To access www records, please include the version=2 parameter in requests.
+
 ### 2024-01-11
 - SPF record has been removed from available types in Partner Portal
 - added information about [www redirection](#domain-status-response) to `/api/domain/status`.
@@ -39,13 +44,14 @@ converter: markdown
 |----------|--------------|
 | [[TOKEN]]    | PP-JWT-TOKEN |
 | [[UUID]]     | PRODUCTION INSTANCE UUID |
+| [[VERSION]]  | API Version, empty or 2 to get all records |
 
-## GET /api/domains?instance_uuid=[[UUID]]
+## GET /api/domains?instance_uuid=[[UUID]]&version=[[VERSION]]
 get all domains for instance
 
     Authorization: [[TOKEN]]
 
-## GET /api/domains/status?instance_uuid=[[UUID]]&name=[[DOMAIN_NAME]]
+## GET /api/domains/status?instance_uuid=[[UUID]]&name=[[DOMAIN_NAME]]&version=[[VERSION]]
 get a [[DOMAIN_NAME]] domain data
 
     Authorization: [[TOKEN]]
