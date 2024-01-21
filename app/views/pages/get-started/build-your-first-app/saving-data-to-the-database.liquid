@@ -22,11 +22,11 @@ You would also need a **unique ID** for every record you store, but platformOS c
 | 2  | Clean up in the kitchen            |
 | 3  | Build my first app on platformOS   |
 
-To build a database table on platformOS, you will have to *create a file* that will tell the platform what _properties_ (or _columns_ if you are used to think about the database as a table) you need and what type of data you would like to store in them. Those files need to be placed in a dedicated directory: `/app/schema/`.
+To build a database table on platformOS, you will have to *create a file* that will tell the platform what _properties_ (or _columns_ if you are used to think about the database as a table) you need and what type of data you would like to store in them. Those files need to be placed in a dedicated directory: `app/schema/`.
 
 To describe the table structure, use the data-serialization language called YAML. For a basic table like yours, create a file named `item.yml`:
 
-#### /app/schema/item.yml
+#### app/schema/item.yml
 
 ```yaml
 name: item
@@ -75,13 +75,13 @@ If everything went right, you should see the newly created `item` table on the l
 
 ## Save the data in the database
 
-To actually save some data in the database, you need to start by creating a GraphQL mutation in the `/app/graphql/` directory.
+To actually save some data in the database, you need to start by creating a GraphQL mutation in the `app/graphql/` directory.
 
 In this example, you only have a single table in your application, so you could put the file directly in that folder, but when your application will grow, you might want to consider a more standarized way of organizing the queries.
 
-So, to accommodate for future growth, save the file in `/app/graphql/item/create.graphql`:
+So, to accommodate for future growth, save the file in `app/graphql/item/create.graphql`:
 
-#### /app/graphql/item/create.graphql
+#### app/graphql/item/create.graphql
 
 ```graphql
 mutation item_create(
@@ -158,9 +158,9 @@ To save the data that the user provided in the application you need three things
 
 If you are following this tutorial, you already have a form on your index page, you just wrote the GraphQL query, so the only thing left would be to build a page that will take the data from the `<form>` and pass it to the query.
 
-To do this, create a new page: `/app/views/pages/item/create.liquid`:
+To do this, create a new page: `app/views/pages/item/create.liquid`:
 
-#### /app/views/pages/item/create.liquid
+#### app/views/pages/item/create.liquid
 
 {% raw %}
 ```liquid
@@ -199,7 +199,7 @@ When you want to write more Liquid than a single line, put the code between {% r
 ```
 {% endraw %}
 
-This is a place where you execute your GraphQL query. You run the query located in `/app/graphql/item/create.graphql`, but you don’t need to pass the whole path, as the platform knows where to look for the queries. You defined a variable called $title in your graphql, so you need to pass it to the query, but you don’t want it to be empty, that’s why you assign a value context.params.title to it. All query params passed to the page will be always available in the context.params variable.
+This is a place where you execute your GraphQL query. You run the query located in `app/graphql/item/create.graphql`, but you don’t need to pass the whole path, as the platform knows where to look for the queries. You defined a variable called $title in your graphql, so you need to pass it to the query, but you don’t want it to be empty, that’s why you assign a value context.params.title to it. All query params passed to the page will be always available in the context.params variable.
 
 {% raw %}
 ```liquid
@@ -230,9 +230,9 @@ endif
 
 If you have never seen Liquid before, don’t worry, the syntax will become familiar after a little bit of using it.
 
-The last thing left for you to do before testing would be to add the URL to your newly created page in the `<form>` so that when the user submits the form, it will redirect to the page that controlls the process of saving the data. Let’s get back to `/app/view/pages/index.liquid` and update the code:
+The last thing left for you to do before testing would be to add the URL to your newly created page in the `<form>` so that when the user submits the form, it will redirect to the page that controlls the process of saving the data. Let’s get back to `app/view/pages/index.liquid` and update the code:
 
-#### /app/view/pages/index.liquid
+#### app/view/pages/index.liquid
 
 ```html
 <form action="/item/create" method="post">
