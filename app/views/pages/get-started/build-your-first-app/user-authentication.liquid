@@ -83,7 +83,7 @@ The last thing left to do is to create a Page to render a registration form to t
 
 #### app/view/pages/sign-up.liquid
 
-```html
+```liquid
 <form action="/user/create" method="post">
   <input type="hidden" name="authenticity_token" value="{% raw %}{{ context.authenticity_token }}{% endraw %}">
   <label>Email: <input type="email" name="email"></label>
@@ -124,7 +124,7 @@ mutation {
 }
 ```
 
-Now you can create an endpoint, which will invoke this GraphQL. Create a new Page `app/views/pages/log-out.liquid`
+Now you can create an endpoint, which will invoke this GraphQL. Because logging out is equivalent of destroying the session, we'll create a new Page named `app/views/pages/session/delete.liquid`
 
 {% raw %}
 ```liquid
@@ -145,7 +145,7 @@ Typically, the Log Out button is rendered in the Layout. For the purpose of the 
 {% raw %}
 {% if context.current_user %}
   <div>You are currently log in as {{ context.current_user.email }}
-    <form action='/log-out' method="post">
+    <form action='/session/delete' method="post">
       <input type="hidden" name="authenticity_token" value="{{ context.authenticity_token }}">
       <input type="hidden" name="_method" value="delete">
       <button type="submit">Log Out</button>
@@ -157,5 +157,68 @@ Typically, the Log Out button is rendered in the Layout. For the purpose of the 
 
 ## Signing in the User
 
-In order to security sign in the User, we need to verify credentials first.
+In order to securely sign in the User, we need to verify credentials first. There is a dedicated GraphQL field, which tells us, if provided argument is a valid user's password. To use it, create a new file `app/graphql/user/verify_password.graphql`
 
+#### app/graphql/user/verify_password.graphql
+
+```graphql
+query verify($email: String!, $password: String!){
+  users(
+    filter: { email: { value: $email} }, per_page: 1
+  ){
+    results{
+      id
+      email
+      authenticate{
+        password(password: $password)
+      }
+    }
+  }
+}
+```
+
+We are leveraging GraphQL query `users` - by specifying `filter` argument, instead of fetching all users from the database, we will get only those, who meet filtering conditions - in this scenario, we want to get only users with specific email. Because platformOS guarantees that there can be only one user with a given email, we can set `per_page` argument to 1.
+
+{% include 'alert/tip', content: 'Emails in platformOS are not case sensitive, so for the purpose of the uniquness check, email@example.com and Email@Example.COM are the same.' %}
+
+We will need a POST endpoint, which will upon successful password verification will log User in, which is equivalent of creating a session. Let's create a new Page `app/views/pages/session/create.liquid`
+
+#### app/views/pages/session/create.liquid
+
+{% raw %}
+```liquid
+---
+method: post
+---
+{% liquid
+  graphql result = 'user/verify_password', email: context.params.email, password: context.params.password
+  if result.users.results.first.authenticate.password
+    sign_in user_id: result.users.results.first.id
+    redirect_to '/todo'
+  else
+    echo "Incorrect email or password"
+  endif
+%}
+```
+{% endraw %}
+
+The endpoint will forward user's input to the GraphQL mutation. Because `users` query returns an array, we need to use `first` property of the array, to get the first element of the array.
+
+{% include 'alert/tip', content: 'Liquid does not throw Null Pointer Exception, so if someone provides the email which does not exist in the database, `result.users.first` will evaluate to `null`, which is <a href="/api-reference/liquid/types#truthiness-summary-table">is falsy</a>, and invoking any property on a `null` will also return `null` - so `result.users.first.authenticate` will be `null` and `result.users.first.authenticate.password` will be `null` as well. In the end, the <a href="/api-reference/liquid/flow-control">if condition</a> will evaluate to `false`, and the user will see "Incorrect email or password" message.' %}
+
+The last step is to render the log in Form. Let's create a new Page `app/views/pages/sign-in.liquid`
+
+#### app/views/pages/sign-in.liquid
+
+{% raw %}
+```liquid
+<form action="/session/create" method="post">
+  <input type="hidden" name="authenticity_token" value="{{ context.authenticity_token }}">
+  <label>Email: <input type="email" name="email"></label>
+  <label>Password: <input type="password" name="password"></label>
+  <button type="submit">Sign In</button>
+</form>
+```
+{% endraw %}
+
+Now we should be able to test the authentication flow by signing up at /sign-up page, then log out using the Log Out button rendered in the layout and log in again using /sign-in Page.
