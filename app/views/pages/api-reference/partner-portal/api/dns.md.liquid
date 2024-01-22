@@ -11,6 +11,10 @@ converter: markdown
 
 ## release notes
 
+### 2024-01-22
+- updated domain status response [exaple](#domain-status-response) and [fields description](#response-fields-description)
+- BUGFIX: last_operation_status did not show last entry
+
 ### 2024-01-18
 - API Versioning
   Although we have changed the management of www records, the API has remained backward compatible. For example, the www CNAME record is hidden in replies by default.
@@ -60,112 +64,166 @@ get a [[DOMAIN_NAME]] domain data
 
 ```json
 {
-  "status": "ready",
-  "attributes": {
-    "instance_uuid": "4fedfa5c-89ea-4a04-9699-a7b98b8d2e8f",
-    "domain_name": "loremup.com",
-    "setup_type": "domain-full",
-    "data_center": "production-sydney",
-    "config": {
-      "extra_dns_records": [
-        {
-          "name": "extra",
-          "type": "CNAME",
-          "records": [
-            "loremup.com"
-          ],
-          "ttl": 3600
-        },
-        {
-          "name": "api",
-          "type": "CNAME",
-          "records": [
-            "loremup.com"
-          ],
-          "ttl": 3600
-        },
-        {
-          "name": "docs",
-          "type": "CNAME",
-          "records": [
-            "loremup.com"
-          ],
-          "ttl": 7200
-        }
-      ],
-      "_domains": [
-        {
-          "name": "loremup.com",
-          "use_as_default": false,
-          "redirect_to": "https://www.loremup.com",
-          "redirect_code": 302
-        },
-        {
-          "name": "www.loremup.com",
-          "use_as_default": true,
-          "redirect_to": null,
-          "redirect_code": null
-        }
-      ]
-    }
-  },
-  "details": {
-    "dns_zone_name_servers": [
-      "ns-1289.awsdns-33.org",
-      "ns-1972.awsdns-54.co.uk",
-      "ns-479.awsdns-59.com",
-      "ns-757.awsdns-30.net"
-    ],
-    "extra_dns_records": [
-      {
-        "fqdn": "extra.loremup.com",
-        "name": "extra",
-        "type": "CNAME",
-        "id": "Z3M57CSZ10GHPD_extra_CNAME",
-        "ttl": 3600,
-        "records": [
-          "loremup.com"
-        ]
-      },
-      {
-        "fqdn": "api.loremup.com",
-        "name": "api",
-        "type": "CNAME",
-        "id": "Z3M57CSZ10GHPD_api_CNAME",
-        "ttl": 3600,
-        "records": [
-          "loremup.com"
-        ]
-      },
-      {
-        "fqdn": "docs.loremup.com",
-        "name": "docs",
-        "type": "CNAME",
-        "id": "Z3M57CSZ10GHPD_docs_CNAME",
-        "ttl": 7200,
-        "records": [
-          "loremup.com"
-        ]
-      }
-    ],
-    "_lb_dns_name": "production-sydney-lb-02-1017910072.ap-southeast-2.elb.amazonaws.com",
+    "has_pending": true,
+    "last_operation_status": {
+        "command": "apply",
+        "instance_uuid___domain": "4fedfa5c-89ea-4a04-9699-a7b98b8d2e8f___loremup.com",
+        "message": [
+            "Error: [ERR]: Error building changeset: InvalidChangeBatch: [Invalid Resource Record: 'FATAL problem: DomainLabelTooLong (Domain label is too long) encountered with 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'', Unparseable CNAME encountered]"
+        ],
+        "request_params": "{\"extra_dns_records\"=>[{\"id\"=>\"XXXXXXXXXXXXX6_api_CNAME\", \"ttl\"=>3600, \"name\"=>\"api\", \"type\"=>\"CNAME\", \"records\"=>[\"loremup.com\"]}, {\"id\"=>\"XXXXXXXXXXXXX6_www2_CNAME\", \"ttl\"=>3600, \"name\"=>\"www2\", \"type\"=>\"CNAME\", \"records\"=>[\"loremup.com\"]}, {\"id\"=>\"XXXXXXXXXXXXX6_docs_CNAME\", \"ttl\"=>7200, \"name\"=>\"docs\", \"type\"=>\"CNAME\", \"records\"=>[\"loremup.com\"]}, {\"id\"=>\"XXXXXXXXXXXXXX__TXT\", \"ttl\"=>300, \"name\"=>\"\", \"type\"=>\"TXT\", \"records\"=>[\"loremup.com\", \"extraquoted\"]}, {\"id\"=>\"XXXXXXXXXXXXX6_txt_TXT\", \"ttl\"=>300, \"name\"=>\"txt\", \"type\"=>\"TXT\", \"records\"=>[\"loremup.com\", \"extraquoted\"]}, {\"id\"=>\"XXXXXXXXXXXXX6_www_CNAME\", \"ttl\"=>3600, \"name\"=>\"www\", \"type\"=>\"CNAME\", \"records\"=>[\"loremup.com\"]}, {\"ttl\"=>\"3600\", \"name\"=>\"txt2\", \"type\"=>\"CNAME\", \"records\"=>[\"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"]}]}",
+        "request_uuid": "fdf6aa6a-4f6c-48b6-b97c-a6b3cc8d89f9",
+        "requested_at": "2024-01-22 15:44:01 +0000",
+        "status": "error"
+    },
+    "locked": false,
+    "status": "ready",
     "www_redirect": {
         "enabled": true
+    },
+
+    "attributes": {
+        "config": {
+            "_domains": [
+                {
+                    "name": "loremup.com",
+                    "redirect_code": 302,
+                    "redirect_to": "https://www.loremup.com",
+                    "use_as_default": false
+                },
+                {
+                    "name": "www.loremup.com",
+                    "redirect_code": null,
+                    "redirect_to": null,
+                    "use_as_default": true
+                }
+            ],
+            "extra_dns_records": [
+                {
+                    "id": "XXXXXXXXXXXXX6_api_CNAME",
+                    "name": "api",
+                    "records": [
+                        "loremup.com"
+                    ],
+                    "ttl": 3600,
+                    "type": "CNAME"
+                },
+                {
+                    "id": "XXXXXXXXXXXXX6_docs_CNAME",
+                    "name": "docs",
+                    "records": [
+                        "loremup.com"
+                    ],
+                    "ttl": 7200,
+                    "type": "CNAME"
+                },
+                {
+                    "id": "XXXXXXXXXXXXX6_txt_TXT",
+                    "name": "txt",
+                    "records": [
+                        "loremup.com",
+                        "extraquoted"
+                    ],
+                    "ttl": 300,
+                    "type": "TXT"
+                },
+                {
+                    "name": "txt2",
+                    "records": [
+                        "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                    ],
+                    "ttl": "3600",
+                    "type": "CNAME"
+                }
+            ]
+        },
+        "data_center": "production-sydney",
+        "domain_name": "loremup.com",
+        "instance_uuid": "4fedfa5c-89ea-4a04-9699-a7b98b8d2e8f",
+        "setup_type": "domain-full"
+    },
+    "details": {
+        "_lb_dns_name": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.ap-southeast-2.elb.amazonaws.com",
+        "dns_zone_name_servers": [
+            "xxxxxxxxxxxxxxxx0.org",
+            "xxxxxxxxxxxxxxxx1.co.uk",
+            "xxxxxxxxxxxxxxxx.com",
+            "xxxxxxxxxxxxxxxx.net"
+        ],
+        "extra_dns_records": [
+            {
+                "fqdn": "txt.loremup.com",
+                "id": "XXXXXXXXXXXXX6_txt_TXT",
+                "name": "txt",
+                "records": [
+                    "extraquoted",
+                    "loremup.com"
+                ],
+                "ttl": 300,
+                "type": "TXT"
+            },
+            {
+                "fqdn": "api.loremup.com",
+                "id": "XXXXXXXXXXXXX6_api_CNAME",
+                "name": "api",
+                "records": [
+                    "loremup.com"
+                ],
+                "ttl": 3600,
+                "type": "CNAME"
+            },
+            {
+                "fqdn": "docs.loremup.com",
+                "id": "XXXXXXXXXXXXX6_docs_CNAME",
+                "name": "docs",
+                "records": [
+                    "loremup.com"
+                ],
+                "ttl": 7200,
+                "type": "CNAME"
+            },
+            {
+                "fqdn": null,
+                "id": null,
+                "name": "txt2",
+                "records": [
+                    "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                ],
+                "ttl": 3600,
+                "type": "CNAME"
+            }
+        ],
+        "status": "ready"
     }
   }
-
 ```
 
-#### domain statuses by setup_type:
+### Response fields description
 
-##### domain-external
+| field name | description |
+|-------------|-------------|
+| attributes | configuration requested to be applied |
+| details | current state is pOS DNS system |
+| status | status of domain: see breakdown below |
+| www_redirect.enabled | true if the domain redirects to www subdomain. |
+| has_pending <boolean> | A general flag indicating whether any of the additional DNS records are pending. A DNS record is pending if its body does not contain an ID or the ID is null |
+| **last_operation_status** ||
+| last_operation_status.message | error message if any |
+| last_operation_status.request_params | body of request |
+| last_operation_status.request_uuid | uuid of last request |
+| last_operation_status.requested_at | datetime of request |
+| last_operation_status.status | status of operation: error or ready |
+
+### Domain statuses by setup_type:
+
+#### domain-external
 
 | status                         | response key | action requested |
 |--------------------------------|--------------|--|
 | ownership_verification_pending | `details.dns_verification_records`| the key contains CNAME records to be added to 3rd party DNS Zone
 | ready                          | `detail.private_lb_cname`| the key contains ALIAS to be used as a target for your domain - to set in 3rd part DNS Zone
 
-##### domain-full
+#### domain-full
 
 | status                         | response key | action requested |
 |--------------------------------|--------------|--|
