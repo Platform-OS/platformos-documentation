@@ -1,0 +1,224 @@
+---
+metadata:
+  title: User Authentication
+  description: Follow these step-by-step tutorials to build a simple To Do List application on platformOS.
+converter: markdown
+---
+
+User authentication is a fundamental aspect of web development that involves the process of verifying and confirming the identity of users accessing a web application or system. It is a crucial component for securing sensitive information and ensuring that only authorized individuals can perform certain actions or access specific resources.
+
+The primary goal of user authentication is to validate the identity of a user by requiring them to provide credentials, typically a combination of a username and password. In this chapter we will discuss a typical Session-Based Authentication flow, however in platformOS you can also implement Token-Based Authentication, integrate through OAuth etc.
+
+## Registration
+
+In the previous chapter, before we could store the Item in the database, we had to define the table in app/schema. However when it comes to Users, we already have a built-in table, so there is no need to do it. We will just have to use different mutations - instead of using `record_create`, we'll use `user_create`.
+
+Let's start by creating a GraphQL mutation `app/graphql/user/create.graphql`.
+
+### Creating a User using GraphQL
+
+#### app/graphql/user/create.graphql
+
+```graphql
+mutation create_user($email: String!, $password: String!) {
+  user_create(
+    user: {
+      email: $email
+      password: $password
+    }
+  ){
+    id
+  }
+}
+
+```
+
+As you can see, this mutation takes different arguments than `record_create`. You can refer to [GraphQL API reference for user_create](/api-reference/graphql/data/mutations/user-create)
+
+### Sign up
+
+The next step would be to create a Page, which will provide user's input to the`user_create` GraphQL mutation and execute it.
+
+To do this, create a new page: `app/views/pages/user/create.liquid`:
+
+#### app/views/pages/user/create.liquid
+
+{% raw %}
+```liquid
+---
+method: post
+---
+
+{% liquid
+	graphql result = 'user/create', email: context.params.email, password: context.params.password
+
+	if result.user_create.id
+        sign_in user_id: result.user_create.id
+		redirect_to '/todo'
+	else
+		echo 'Something went wrong'
+		echo result.errors
+	endif
+%}
+```
+{% endraw %}
+
+Similarly to the [Saving Data to the Database](/get-started/build-your-first-app/saving-data-to-the-database#save-the-data-in-the-database) chapter, we execute the  GraphQL mutation with User parameters. Behind the scenes, platformOS will check, if the provided email is unique, and only then create a User in the database. Moreover, platformOS will take care of the security by using `bcrypt` password-hashing function before saving the user password in the database.
+
+{% include 'alert/tip', content: 'If you want, you can enforce some rules to ensure that passwords chosen by your users meet security guidelines, like for example minimum length, containing at least one digit, special character etc. In practice, we would recommended using <a href="https://github.com/Platform-OS/pos-module-core">platformOS Core Module</a>, as amongs other features, it provides architecture for writing re-usable code via Commands pattern, and it includes common code ready to be used, like validators.' %}
+
+If the email provided by the user will be correct, the GraphQL mutation will return the id and the newly registered User. To offer the User proper UX, we will automatically sign in the user to the system by providing the id as an argument to the [platformOS sign_in tag](https://documentation.platformos.com/api-reference/liquid/platformos-tags#sign-in):
+
+```liquid
+sign_in user_id: result.user_create.id
+```
+{% include 'alert/tip', content: 'By default, the session will be valid for 1 year. You can control when the session will expire by specifying `timeout_in_minutes` argument when invoking `sign_in` tag' %}
+
+{% include 'alert/tip', content: 'Behind the scenes, the `sign_in` tag will drop the current user session and create a new session to avoid [Session Fixation vulnerability](https://owasp.org/www-community/attacks/Session_fixation). The new sesion id will be stored in `_pos_session` cookie.' %}
+
+If the email provided by the user will be incorrect, a 500 error will be thrown - platformOS expects that the input validation will be done on Liquid level, and if GraphQL receives invalid input, it will thrown an error, which the developer will be able to see via `pos-cli logs` or `pos-cli gui serve` -> http://localhost:3333/logs. The error log should be self descriptive, and will look like this: `"Liquid error: [{\"message\":\"GraphQL Error: Email is not a valid email address\",\"locations\":[{\"line\":2,\"column\":3}],\"path\":[\"user_create\"],\"extensions\":{\"messages\":{\"email\":\"is not a valid email address\"},\"codes\":{\"email\":[{\"error\":\"email\"}]}},\"query\":\"create_user\"}]\n url: <your url>/user/create\n page: user/create"`
+
+
+The last thing left to do is to create a Page to render a registration form to the User, allowing them to provide their email and password. Let’s create a file `app/view/pages/sign-up.liquid` with the following code:
+
+#### app/view/pages/sign-up.liquid
+
+```liquid
+<form action="/user/create" method="post">
+  <input type="hidden" name="authenticity_token" value="{% raw %}{{ context.authenticity_token }}{% endraw %}">
+  <label>Email: <input type="email" name="email"></label>
+  <label>Password: <input type="password" name="password"></label>
+  <button type="submit">Sign Up</button>
+</form>
+```
+
+{% include 'alert/tip', content: 'platformOS automatically takes care of <a href="Cross Site Request Forgery (CSRF)">Cross Site Request Forgery (CSRF)</a> attacks by invalidating sessions upon receiving a POST request without authenticity token. If you experience automatic user log out after making a POST request (including XHR requests!), most likely it means you have forgot to send `authenticity_token` either via a hidden input, as in the example above, or as a Header' %}
+
+
+### Testing the flow
+
+To test the whole flow, get to the /sign-up page in your application, provide a valid email and any password, and click the _Sign up_ button.
+
+You will be able to see a new User record using the `pos-cli gui serve` by going to http://localhost:3333/users.
+
+## Accessing Current User
+
+In platformOS the simplest way to access authenticated user's `email` or `id` is via `context.current_user`. Let's say you would like to display current user's email - typical way of doing it is to include it in the layout. For this purpose edit `app/views/layouts/application.liquid` and add at the beginning of the `<body>` the following code:
+
+#### app/views/layouts/application.liquid
+```liquid
+{% raw %}{% if context.current_user %}<div>You are currently log in as {{ context.current_user.email }}</div>{% endif %}{% endraw %}
+```
+
+For the more complex use cases, for example accessing user's JWT or OTP for 2FA, you will have to use [current_user GraphQL query](/api-reference/graphql/data/queries/current-user), however this is outside of the scope of this tutorial. You can find advanced User tutorials in the [User section of the Developer Guide](/developer-guide/users/users)
+
+## Manual Log Out
+
+Logging User out is equivalent of destroying current session, which can be achieved via GraphQL mutation. Create a file `app/views/graphql/session/delete.graphql`
+
+#### app/graphql/session/delete.graphql
+
+```graphql
+mutation {
+  user_session_destroy
+}
+```
+
+Now you can create an endpoint, which will invoke this GraphQL. Because logging out is equivalent of destroying the session, we'll create a new Page named `app/views/pages/session/delete.liquid`
+
+{% raw %}
+```liquid
+---
+method: delete
+---
+{% liquid
+  graphql result = 'session/delete'
+  redirect_to '/todo'
+%}
+```
+{% endraw %}
+
+Typically, the Log Out button is rendered in the Layout. For the purpose of the tutorial, we can add the Log Out button next to the information about the currently logged in User in the application layout:
+
+#### app/views/layouts/application.liquid
+```liquid
+{% raw %}
+{% if context.current_user %}
+  <div>You are currently log in as {{ context.current_user.email }}
+    <form action='/session/delete' method="post">
+      <input type="hidden" name="authenticity_token" value="{{ context.authenticity_token }}">
+      <input type="hidden" name="_method" value="delete">
+      <button type="submit">Log Out</button>
+    </form>
+  </div>
+{% endif %}
+{% endraw %}
+```
+
+## Signing in the User
+
+In order to securely sign in the User, we need to verify credentials first. There is a dedicated GraphQL field, which tells us, if provided argument is a valid user's password. To use it, create a new file `app/graphql/user/verify_password.graphql`
+
+#### app/graphql/user/verify_password.graphql
+
+```graphql
+query verify($email: String!, $password: String!){
+  users(
+    filter: { email: { value: $email} }, per_page: 1
+  ){
+    results{
+      id
+      email
+      authenticate{
+        password(password: $password)
+      }
+    }
+  }
+}
+```
+
+We are leveraging GraphQL query `users` - by specifying `filter` argument, instead of fetching all users from the database, we will get only those, who meet filtering conditions - in this scenario, we want to get only users with specific email. Because platformOS guarantees that there can be only one user with a given email, we can set `per_page` argument to 1.
+
+{% include 'alert/tip', content: 'Emails in platformOS are not case sensitive, so for the purpose of the uniquness check, email@example.com and Email@Example.COM are the same.' %}
+
+We will need a POST endpoint, which will upon successful password verification will log User in, which is equivalent of creating a session. Let's create a new Page `app/views/pages/session/create.liquid`
+
+#### app/views/pages/session/create.liquid
+
+{% raw %}
+```liquid
+---
+method: post
+---
+{% liquid
+  graphql result = 'user/verify_password', email: context.params.email, password: context.params.password
+  if result.users.results.first.authenticate.password
+    sign_in user_id: result.users.results.first.id
+    redirect_to '/todo'
+  else
+    echo "Incorrect email or password"
+  endif
+%}
+```
+{% endraw %}
+
+The endpoint will forward user's input to the GraphQL mutation. Because `users` query returns an array, we need to use `first` property of the array, to get the first element of the array.
+
+{% include 'alert/tip', content: 'Liquid does not throw Null Pointer Exception, so if someone provides the email which does not exist in the database, `result.users.first` will evaluate to `null`, which is <a href="/api-reference/liquid/types#truthiness-summary-table">is falsy</a>, and invoking any property on a `null` will also return `null` - so `result.users.first.authenticate` will be `null` and `result.users.first.authenticate.password` will be `null` as well. In the end, the <a href="/api-reference/liquid/flow-control">if condition</a> will evaluate to `false`, and the user will see "Incorrect email or password" message.' %}
+
+The last step is to render the log in Form. Let's create a new Page `app/views/pages/sign-in.liquid`
+
+#### app/views/pages/sign-in.liquid
+
+{% raw %}
+```liquid
+<form action="/session/create" method="post">
+  <input type="hidden" name="authenticity_token" value="{{ context.authenticity_token }}">
+  <label>Email: <input type="email" name="email"></label>
+  <label>Password: <input type="password" name="password"></label>
+  <button type="submit">Sign In</button>
+</form>
+```
+{% endraw %}
+
+Now we should be able to test the authentication flow by signing up at /sign-up page, then log out using the Log Out button rendered in the layout and log in again using /sign-in Page.

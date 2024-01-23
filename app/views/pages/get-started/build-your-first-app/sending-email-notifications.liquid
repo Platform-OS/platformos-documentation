@@ -39,7 +39,7 @@ platformOS treats emails similarly to standard HTML pages. You can create a sepa
 
 Assuming, for the purpose of this tutorial, that you would like an independent HTML structure for all of your emails, you can create a new layout in the `app/views/layout/` folder, in a file called `mailer.liquid`. The name can be anything you want.
 
-#### /app/views/layout/mailer.liquid
+#### app/views/layout/mailer.liquid
 
 {% raw %}
 ```liquid
@@ -73,7 +73,7 @@ If you ever styled an email, you know how many limitations the CSS for emails ha
 
 For your _To Do_ app, add an email notification when you add a new item on the list. The content of email messages should be kept in the `app/emails/` folder. To follow the pattern you established in this tutorial you’re going to create the file as `app/emails/item/created.liquid`:
 
-#### /app/emails/item/created.liquid
+#### app/emails/item/created.liquid
 
 {% raw %}
 ```liquid
@@ -102,7 +102,7 @@ The last line is just the content of the email you’re going to send. Since you
 To actually send an email through the platform you need to trigger it via GraphQL. To make it as simple as you can, create a new file under `app/graphql/item/email/created.graphql` that will handle sending the email after you create a new item in the database:
 
 
-#### /app/graphql/item/email/created.graphql
+#### app/graphql/item/email/created.graphql
 
 ```graphql
 mutation email_item_created(
@@ -145,7 +145,7 @@ If you are following this tutorial and building the _To Do_ app, then you probab
 
 Since you have a separate page that handles this (`app\views\pages\item\create.liquid`), you can just plug into the right place and trigger the GraphQL mutation after the new item was successfully saved in the database:
 
-#### /app/views/pages/item/create.liquid
+#### app/views/pages/item/create.liquid
 
 {% raw %}
 ```liquid
@@ -185,7 +185,7 @@ In the `app/emails/item/created.liquid` you’ve hardcoded the `to:` address, bu
 
 It is totally possible to use a variable in the configuration section of a page. As an example, in `app/emails/item/created.liquid` you could use `{% raw %}{{ data.recipient }}{% endraw %}`:
 
-#### /app/emails/item/created.liquid
+#### app/emails/item/created.liquid
 
 {% raw %}
 ```yaml
@@ -202,7 +202,7 @@ Notice that the Liquid variable is surrounded with quotation marks.
 
 This would also mean that you need to pass the `recipient` variable to your GraphQL mutation. Since you are passing the whole `context.params` as described above, you could use a hidden form element in the `<form>`:
 
-#### /app/views/pages/index.liquid
+#### app/views/pages/index.liquid
 
 ```html
 <!-- form for adding new item -->

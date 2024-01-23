@@ -10,9 +10,9 @@ You can display the data on your page by building a query that gets the data fro
 
 ## Getting the data from the database
 
-Start with building a query that will pull the data from the `item` table. Any filename will be good of course, but we found that for the sake of extending the query in the future you might consider saving the query in `/app/graphql/item/search.graphql`:
+Start with building a query that will pull the data from the `item` table. Any filename will be good of course, but we found that for the sake of extending the query in the future you might consider saving the query in `app/graphql/item/search.graphql`:
 
-#### /app/graphql/item/search.graphql
+#### app/graphql/item/search.graphql
 
 ```graphql
 query item_search {
@@ -73,7 +73,7 @@ Assuming you have a page that you want to present the data on, and the query tha
 ```
 {% endraw %}
 
-You don’t have to use the full path to the GraphQL query as the platform knows where to look for those. That simple line will run the query (placed in `/app/graphql/item/search.graphql`) and assign the results to the variable `items`.
+You don’t have to use the full path to the GraphQL query as the platform knows where to look for those. That simple line will run the query (placed in `app/graphql/item/search.graphql`) and assign the results to the variable `items`.
 
 The results are in the form of a _hash_. If you are comming from the JavaScript or PHP world you might name those _objects_.
 
@@ -91,7 +91,7 @@ The results are in the form of a _hash_. If you are comming from the JavaScript 
 
 When you have the array of items, use the for loop to iterate on it and render them on the page using Liquid:
 
-#### /app/views/pages/index.liquid
+#### app/views/pages/index.liquid
 
 {% raw %}
 ```liquid
@@ -112,7 +112,7 @@ This code will repeat whatever is between the {% raw %}`{% for %}`{% endraw %} a
 
 There is one more thing you could do: display some information when there are no items to show on the page. As you have requested the number of  `total_entries` in your GraphQL query, an `if` statement using it would be enough:
 
-#### /app/views/pages/index.liquid
+#### app/views/pages/index.liquid
 
 {% raw %}
 ```liquid
@@ -122,9 +122,9 @@ There is one more thing you could do: display some information when there are no
 ```
 {% endraw %}
 
-So, the final code of `/app/views/pages/index.liquid` would look like this:
+So, the final code of `app/views/pages/index.liquid` would look like this:
 
-#### /app/views/pages/index.liquid
+#### app/views/pages/index.liquid
 
 {% raw %}
 ```liquid
