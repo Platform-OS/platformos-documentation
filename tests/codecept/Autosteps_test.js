@@ -6,7 +6,7 @@ const stepsContainer = '[data-autosteps]';
 const stepsLinks = 'ul.content__autosteps a';
 
 Scenario('Are generated and linked', async ({ I }) => {
-  I.amOnPage('/developer-guide/users/authenticating-user-with-jwt-token');
+  I.amOnPage('/use-cases/authenticating-user-with-jwt');
 
   let header = locate('a').inside(stepsContainer).first();
 
