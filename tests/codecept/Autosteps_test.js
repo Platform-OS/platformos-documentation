@@ -6,7 +6,7 @@ const stepsContainer = '[data-autosteps]';
 const stepsLinks = 'ul.content__autosteps a';
 
 Scenario('Are generated and linked', async ({ I }) => {
-  I.amOnPage('/developer-guide/users/authenticating-user-with-jwt-token');
+  I.amOnPage('/use-cases/authenticating-user-with-jwt');
 
   let header = locate('a').inside(stepsContainer).first();
 
@@ -24,8 +24,8 @@ Scenario('Are generated and linked', async ({ I }) => {
 })
 
 Scenario('Steps have correct texts', async ({ I }) => {
-  I.see('Step 1: Fetch JWT token for a user', stepsLinks);
-  I.see('Step 2: Create a page with a policy that checks the JWT token', stepsLinks);
+  I.see('Step 1: Fetch JSON Web Token (JWT) for a user', stepsLinks);
+  I.see('Step 2: Create a page with a policy that checks the JSON Web Token (JWT)', stepsLinks);
   I.see('Step 3: Send signed request', stepsLinks);
 });
 

@@ -1,27 +1,27 @@
 ---
 converter: markdown
 metadata:
-  title: Authenticating a User with a JWT token
-  description: This guide will help you authenticate JSON requests with a JWT token.
+  title: Authenticating a User with a JSON Web Token (JWT)
+  description: This guide will help you authenticate JSON requests with a JSON Web Token (JWT).
 ---
 
-This guide will help you authenticate JSON requests with a JWT token.
+This guide will help you authenticate JSON requests with a JSON Web Token (JWT).
 
 ## Requirements
 
 To follow the steps in this tutorial, you should be familiar with the concept of pages, users, and Authorization Policies.
 
+* [User Authentication](/developer-guide/get-started/build-your-first-app/user-authentication)
 * [Pages](/developer-guide/pages/pages)
-* [Users](/developer-guide/users/users)
 * [Authorization Policy](/developer-guide/authorization-policy/authorization-policy)
 
 ## Steps
 
-Authenticating a user with a JWT token is a three-step process:
+Authenticating a user with a JSON Web Token (JWT) is a three-step process:
 
 <div data-autosteps></div>
 
-### Step 1: Fetch JWT token for a user
+### Step 1: Fetch JSON Web Token (JWT) for a user
 
 It can be done after user login, the token should usually be stored in the browser memory.
 
@@ -36,9 +36,9 @@ It can be done after user login, the token should usually be stored in the brows
 ```
 {% include 'alert/note', content: 'Every time you fetch the `jwt_token`, the old token becomes inactive.' %}
 
-### Step 2: Create a page with a policy that checks the JWT token
+### Step 2: Create a page with a policy that checks the JSON Web Token (JWT)
 
-The Authorization Policy fetches the JWT token from the request header and sets the current user using this token.
+The Authorization Policy fetches the JSON Web Token (JWT) from the request header and sets the current user using this token.
 
 ##### app/graphql/jwt_login
 ```graphql
