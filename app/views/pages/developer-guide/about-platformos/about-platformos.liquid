@@ -5,35 +5,30 @@ metadata:
   description: An overview of the main features and technologies of platformOS.
 ---
 
-platformOS is a **model-based application development platform**. Aimed at frontend developers and site builders, it provides for a flexible and limitless API-first development approach while automating the whole DevOps infrastructure.
+platformOS is a **managed application development platform**. Aimed at developers, it provides for a flexible and limitless API-first development approach while automating the whole DevOps infrastructure.
 
 platformOS is a **platform as a service** (PaaS) that enables you to create and host anything from small websites to large enterprise applications and even entire SaaS products.
 
 platformOS is:
 
-* **Decoupled**: Use frontend code to build custom workflows, B2B, and P2P solutions that interact with any 3rd party API.
-* **Scalable**: Build on load balanced Cloud infrastructure running world-wide with data centers across the globe.
-* **Cloud-agnostic**: Hosted by the biggest players on the *Cloud as a Service* market: Amazon Web Services, Google Cloud. More to come.
-* **Serverless**: Where appropriate, we leverage serverless technologies to instantaneously scale parts of our system for spikes of load.
-* **Secure**: Use our Secure Data Centers with added layers of security, and cater to country-specific security or legal requirements.
-* **Fast**: Use Liquid templating and GraphQL data calls on a platform tuned for performance, regardless of your application's size.
-* **Flexible**: Build progressive web apps, internet of things integrations, or APIs for mobile apps. You can integrate external services via webhooks, REST APIs to complement your build with already existing systems.
-* **Extensible**: Integrate your sites with virtually any 3rd party system that provides API access, or build your own APIs in platformOS.
-* **SEO-friendly**: Build with <a href="https://www.elastic.co/" target="_blank" rel="noopener external">ElasticSearch</a> to maximize the benefits of full text search using our custom model.
+* **Decoupled**: You can create custom workflows, B2B, and P2P solutions using a modular architecture that interacts with any 3rd-party API.
+* **Scalable**: Each infrastructure component is equipped with a built-in capability to scale either vertically or horizontally, accommodating increasing workloads.
+* **Cloud-agnostic**: We can run platformOS for you on major Cloud-as-a-Service providers like Amazon Web Services, Google Cloud, and Oracle Cloud.
+Highly Available: We minimize downtime and ensure uninterrupted access to services and resources through redundancy, load balancing, fault tolerance, automatic failovers, and auto-scaling.
+* **Secure**: Utilize our Secure Data Centers with additional layers of security, catering to country-specific security or legal requirements.
+* **Fast**: The liquid and built-in GraphQL Schema allow us to automatically optimize your application for performance, irrespective of its size. You can employ advanced caching mechanisms without worrying about underlying infrastructure and cache-invalidation complexities. Our web workers and background workers are running 24/7 - you do not need to wait to spin up a container to execute your function.
+* **Flexible**: Build progressive web apps, integrate Internet of Things, or create APIs for mobile apps. Integrate external services via webhooks and REST APIs to complement your build with existing systems.
+* **Extensible**: Integrate your sites with virtually any 3rd-party system providing API access, or build your own APIs in platformOS.
+* **SEO-friendly**: We provide you with the ability to control your URL structure, meta tags, response headers, HTML structure, and tools to write SEO-friendly applications.
+* **All-in-one Development Platform**: We've already solved numerous challenges for you, ready to be used. Need a powerful full-text keyword search with scoring, typo tolerance, and geolocation? Want to build Activity Feeds to highlight new content on the website? Looking to leverage cutting-edge technology like OpenAI Embeddings? Our infrastructure includes built-in ElasticSearch, Redis, Postgis, PGVector, and we have ready-to-use GraphQL queries and mutations for you to leverage.
 
 ## Technologies
 
-Besides standard web technologies like HTML, CSS, JavaScript (including JSON and AJAX), platformOS uses a couple of languages that you need to be familiar with to build a site on our platform.
+On the client side, you own the build process of your static assets and have full access to the HTML, which means you can use any client side technology you like and are familiar with - for example React, Angular, Vue.JS. On the server side, platformOS uses a couple of languages that you need to become familiar with to build a site on our platform.
 
 ### YAML
 
-A human-friendly data serialization standard used in platformOS for setting properties in configuration files. To learn more, visit the [Official YAML Documentation](http://www.yaml.org/start.html).
-
-### Liquid
-
-Liquid or Liquid markup is an open-source template language used in platformOS to build dynamic pages, and to provide dynamic configuration (e.g. based on currently logged in user). Use Liquid to provide authorization policy for forms and pages, or to specify notifications (email, SMS, API call).
-
-{% include 'alert/tutorial', content: 'To learn more about Liquid and how to use it in platformOS, check out our [Complete Guide to Liquid Markup in platformOS](/api-reference/liquid/introduction) that includes an introduction for beginners, types, tags, filters, whitespace control, and detailed descriptions of platformOS-specific filters and tags — all of them demonstrated with examples.' %}
+A human-friendly, easy to use and read data serialization standard used in platformOS for setting properties in configuration files. To learn more, visit the [Original Website yaml.org](https://yaml.org/) or [yaml.info to learn YAML](https://www.yaml.info/).
 
 ### GraphQL
 
@@ -47,10 +42,16 @@ To help you quickly develop GraphQl queries, we provide a [GraphiQL](https://git
 
 <img loading="lazy" src="{{ 'images/get-started/graphiql.png' | asset_url }}" alt="Screenshot of the GraphiQL editor" />
 
+### Liquid
+
+Liquid or Liquid markup is an open-source template language used in platformOS to implement server side business rules, invoke GraphQL queries and mutations, triggering external API Calls, scheduling Background Jobs, sending Emails or SMSes and more.
+
+{% include 'alert/tutorial', content: 'To learn more about Liquid and how to use it in platformOS, check out our [Complete Guide to Liquid Markup in platformOS](/api-reference/liquid/introduction) that includes an introduction for beginners, types, tags, filters, whitespace control, and detailed descriptions of platformOS-specific filters and tags — all of them demonstrated with examples.' %}
+
 {% include 'alert/tip', content: 'We did some user research with developers who were new to platformOS but have now built their first couple of projects. These are their tips that will get you up to speed in platformOS quicker and easier:
 
 * Focus on GraphQL before anything else, it is the key to platformOS. You will be able to craft complex queries in GraphQL and also send back only the data that you need. Later, discover fragment queries, a favorite feature of seasoned platformOS developers.
 * Once you are familiar with the basics of platformOS (development workflow, pages, layouts, assets), invest some time in understanding [Records](/developer-guide/records/records-tables). You can relate Records to GraphQL and build custom endpoints.
 * Learn about our recommended [Development Workflow](/developer-guide/platformos-workflow/development-workflow).
-* There are no limitations inherent in traditional CMS’s in platformOS. This is a creative platform designed to provide basic tools, not restrictions.
- ' %}
+* There are no limitations inherent in traditional CMS’s in platformOS. This is a creative platform designed to provide basic tools, not restrictions.' %}
+
