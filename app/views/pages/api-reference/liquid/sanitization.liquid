@@ -6,7 +6,7 @@ metadata:
 ---
 
 When you display data, from user input or from external sources, it is important to sanitize output before displaying it on a website to avoid [XSS](https://en.wikipedia.org/wiki/Cross-site_scripting) attacks.
-In Liquid on platformOS, we escape every variable output when you use {% raw %}`{{  }}` and `{%  %}`{% endraw %} markups.
+In Liquid on platformOS, we escape every variable output when you use {% raw %}`{{  }}` and `{% echo %}` tag.{% endraw %} markups.
 
 ### Input
 ```liquid
@@ -21,38 +21,46 @@ In Liquid on platformOS, we escape every variable output when you use {% raw %}`
 ```liquid
 {% assign user_name = '<a href="http://platformos.com">Click Me</a><h1>x</h1>' %}
 
-<h2>{{ user_name | raw_escape_string }}</h2>
+<h2>{{ user_name }}</h2>
 ````
 
 In this case, HTML tags are not processed by the browser, so the link is not a clickable link.
 
 ## Disable variable sanitization
 
-In situations when you want to display content as it is, you can use [html_safe](/api-reference/liquid/platformos-filters#html_safe) to specify that this variable can be printed without sanitization.
+In situations when you want to display content as it is, you can use:
 
-This is especially important when you try to construct a JSON output.
+### [html_safe](/api-reference/liquid/platformos-filters#html_safe) filter to mark variable as safe and bypass sanitization.
 
 ### Input
 ```liquid
 {% raw %}
-{% assign color = 'red' %}
 {% assign link = '<a href="/car">cars</a>' %}
-{
-  "color": {{ color }},
-  "link": {{ link | html_safe }}
-}
+{{ link | html_safe }}
 {% endraw %}
 ```
 
-### Output
+The above code will generate a clickable link.
+
+### [print](/api-reference/liquid/platformos-filters#html_safe) tag to skip sanitizing.
+
+The previous method marks the whole variable as safe to be printed, but it might not be the case - for example, you might want to store in a variable safe and unsafe part at the same time. In this scenario, the `print` tag will work as expected:
+
+### Input
 ```liquid
-{% assign color = 'red' %}
-{% assign link = '<a href="/car">cars</a>' %}
-{
-  "color": {{ color }},
-  "link": {{ link }}
-}
+{% raw %}
+{% liquid
+  assign invokable_script = "<script>alert('I will be executed')</script>"
+  assign malicious_script = "<script>alert('I should be escaped')</script>"
+%}
+{% capture result %}
+  {{ malicious_script }}{{ invokable_script | html_safe }}
+{% endcapture %}
+{% print result %}
+{% endraw %}
 ```
+
+The "I will be executed" alert will appear on page load, but "I should be escaped" will not be evaluated and will be rendered inline.
 
 ## Escape variables before passing them to external systems
 
