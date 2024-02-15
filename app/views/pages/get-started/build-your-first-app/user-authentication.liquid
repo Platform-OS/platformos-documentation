@@ -79,9 +79,9 @@ sign_in user_id: result.user_create.id
 If the email provided by the user will be incorrect, a 500 error will be thrown - platformOS expects that the input validation will be done on Liquid level, and if GraphQL receives invalid input, it will thrown an error, which the developer will be able to see via `pos-cli logs` or `pos-cli gui serve` -> http://localhost:3333/logs. The error log should be self descriptive, and will look like this: `"Liquid error: [{\"message\":\"GraphQL Error: Email is not a valid email address\",\"locations\":[{\"line\":2,\"column\":3}],\"path\":[\"user_create\"],\"extensions\":{\"messages\":{\"email\":\"is not a valid email address\"},\"codes\":{\"email\":[{\"error\":\"email\"}]}},\"query\":\"create_user\"}]\n url: <your url>/user/create\n page: user/create"`
 
 
-The last thing left to do is to create a Page to render a registration form to the User, allowing them to provide their email and password. Let’s create a file `app/view/pages/sign-up.liquid` with the following code:
+The last thing left to do is to create a Page to render a registration form to the User, allowing them to provide their email and password. Let’s create a file `app/views/pages/sign-up.liquid` with the following code:
 
-#### app/view/pages/sign-up.liquid
+#### app/views/pages/sign-up.liquid
 
 ```liquid
 <form action="/user/create" method="post">
