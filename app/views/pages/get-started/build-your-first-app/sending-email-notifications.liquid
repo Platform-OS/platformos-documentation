@@ -17,7 +17,7 @@ As a first step, you need to **enable sending emails** on the _staging_ instance
 
 To set the test email, log in to the [Partner Portal](https://partners.platformos.com/) and choose the instance from the [Instances](https://partners.platformos.com/instances) list.
 
-Click on the _Update Configuration_ button, then click on _Switching to edit mode_. Edit the desired values.
+Click on the _Update Configuration_ button, then click on _Switching to edit mode_. Provide your credentials if asked (email address and password), then edit the desired values.
 
 Look for a section of the configuration called `attributes` and change the value of the `test_email`. It needs to be set to the test email address to which all the emails for the instance will be sent to:
 
@@ -37,9 +37,9 @@ Remember to save the updates by clicking the _Update Instance configuration_ but
 
 platformOS treats emails similarly to standard HTML pages. You can create a separate layout for the emails and use Liquid to pass any data to it. Start by creating the layout.
 
-Assuming, for the purpose of this tutorial, that you would like an independent HTML structure for all of your emails, you can create a new layout in the `app/views/layout/` folder, in a file called `mailer.liquid`. The name can be anything you want.
+Assuming, for the purpose of this tutorial, that you would like an independent HTML structure for all of your emails, you can create a new layout in the `app/views/layouts/` folder, in a file called `mailer.liquid`. The name can be anything you want.
 
-#### app/views/layout/mailer.liquid
+#### app/views/layouts/mailer.liquid
 
 {% raw %}
 ```liquid
@@ -92,7 +92,7 @@ The topmost part of the code, between the dashed lines (`---`) is the page confi
 
 For the email page, you need to configure the recipient email address (`to:`), the sender (`from:`), and the `subject` of the message.
 
-You’ve created a new layout file specifically for this occasion, so line 5 tells the platform to use the file stored in `app/views/layout/mailer.liquid` as a scaffolding for the email content.
+You’ve created a new layout file specifically for this occasion, so line 5 tells the platform to use the file stored in `app/views/layouts/mailer.liquid` as a scaffolding for the email content.
 
 The last line is just the content of the email you’re going to send. Since you would like to pass the title of the item added to the list, you output the content of `data.title`. The `data` will be the name of the variable you are going to use in the GraphQL _mutation_ that will trigger sending the email.
 
@@ -158,7 +158,7 @@ method: post
 	graphql result = 'item/create', title: context.params.title
 
 	if result.record.id
-+		graphql email = 'item/email/created', data: context.params
+		graphql email = 'item/email/created', data: context.params
 		redirect_to '/'
 	else
 		echo 'Something went wrong'
