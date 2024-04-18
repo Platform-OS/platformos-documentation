@@ -1,0 +1,32 @@
+---
+converter: markdown
+metadata:
+  title:  ElasticSearch upgrade, other improvements and fixes
+  description: April 17, 2024
+  skip_contribute_button: true
+  last_edit: false
+slug: release-notes/17-APR-24
+---
+
+#### {{ page.metadata.description }}
+
+<h4 class="release-note release-note__fixed">FIXED</h4>
+
+* Do not use drip for time zone object
+* Replace /n with space for html_to_text
+* GraphQL: fix order_by value in records
+
+<h4 class="release-note release-note__new">NEW</h4>
+
+* Added scrub filter
+* ElasticSearch upgrade - introducing a feature flag, which will seamlessly switch from ES5 to ES7 behind the scenes
+
+<h4 class="release-note release-note__improved">IMPROVED</h4>
+
+* Allow slashes in property names
+* Add ability to sync translations
+* Add instance level feature flag to sync assets
+* Extend html_to_text filter
+* Ability to control which objects created via GraphQL admin_* mutations should not be updated/deleted during pos-cli deploy/sync
+* Improve background jobs autoscaler based on the longest waiting time of a job
+* HTML format exact match setting
