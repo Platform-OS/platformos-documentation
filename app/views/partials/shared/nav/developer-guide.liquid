@@ -163,6 +163,15 @@
   {% endif %}
 </li>
 
+<li class="{% if cp contains 'embeddings' %}active{% endif %}">
+  <a href="/developer-guide/embeddings/embeddings">AI - Embeddings</a>
+  {% if cp contains 'embeddings' %}
+    <ul class="submenu">
+      {% include "shared/nav/link", href: "/developer-guide/embeddings/embeddings", text: "Embeddings" %}
+    </ul>
+  {% endif %}
+</li>
+
 <li class="{% if cp contains 'activity-feeds' %}active{% endif %}">
   <a href="/developer-guide/activity-feeds/activity-feeds">Activity Feeds</a>
   <ul class="submenu">
