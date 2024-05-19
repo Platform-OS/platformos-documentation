@@ -13,7 +13,6 @@ This guide will help you understand the process of building a contact form backe
 * [YAML](https://en.wikipedia.org/wiki/YAML)
 * [GraphQL](https://graphql.org/learn/)
 * [Enable sync option with pos-cli to apply changes on your site](https://github.com/mdyd-dev/pos-cli#syncing-changes)
-* [Modules](/developer-guide/modules)
 
 ## Steps
 
@@ -23,7 +22,7 @@ Building a Contact Form with Records is a nine-step process:
 
 ### Step 1: Define Contact &ndash; Table
 
-To define a new Table, use YAML files placed in the `schema` directory. In the key-value format, you can define a name for your Record, and an array of Properties for the Record object. To build a Contact Form, you'll need email, name, and description attributes on the Record that you can call a `contact`.
+To define a new Table, create a YAML file in the `schema` directory. By default, the name of your table will be the same as your file name, hence create a file `app/schema/contact.yml`. To build a Contact Form, you'll need an email of a person who submits the request (to be able to reply to them) along with their name, and the description of a problem. All of those [Properties](/developer-guide/properties/properties) should be strings, hence the table should look as follows:
 
 ##### app/schema/contact.yml
 
@@ -38,47 +37,56 @@ properties:
   type: string
 ```
 
-The basic Configuration of the Record consists of a name and the list of Properties. In the example above, you have defined three attributes of type `string`.
-
 For more information on Properties please visit the [Properties Documentation](/developer-guide/properties/properties/).
 
-### Step 2: Define Contact Form &ndash; Form Object
+### Step 2: Define GraphQL to persist record in `contact` table
 
-Now that you have the definition of a `Contact` in place, you can create a Form that will configure the server to accept requests with data in the desired format. Data passed through the form will be stored in the database as a Contact object.
+Now that you have the definition of a `Contact` table in place, you can create a GraphQL mutation that will persist the record in the database. To do it, you would need to use [record_create GraphQL mutation](/api-reference/graphql/data/mutations/record-create). Create `app/graphql/contacts/create.graphql` file with the following content:
 
-##### app/forms/contact_form.liquid
+##### app/graphql/contacts/create.graphql
 
-```yaml
----
-name: contact_form
-resource: modules/contacts/contact
-resource_owner: anyone
-fields:
-  properties:
-    name:
-      validation:
-        presence: true
-    email:
-      validation:
-        presence: true
-        email: true
-    description:
-      validation:
-        presence: true
----
+```graphql
+mutation contact_create($name: String!, $email: String!, $description: String!) { # we define arguments as mandatory by adding "!" after the type
+  record_create(
+    record: {
+      table: "contact"
+      properties: [
+        # we use "value" because the property type is a string, if it was for example an int you would use value_int etc.
+        { name: "name", value: $name }
+        { name: "email", value: $email }
+        { name: "description", value: $description }
+      ]
+    }
+  ) {
+    id
+    # we use "property" because the property type is a string, if it was for example an int, you would use property_int
+    name: property(name: "name")
+    email: property(name: "email")
+    description: property(name: "description")
+    # for each new record we automatically store created_at so you don't have to remember about it
+    created_at
+  }
+}
 ```
 
-The above definition allows name, email, and description attributes and defines validation for each attribute.
+You can [develop and run GraphQl queries and mutations using pos-cli gui serve](/developer-guide/pos-cli/developing-graphql-queries-using-pos-cli-gui):
+
+<img loading="lazy" src="{{ 'images/developer-guide/records/building-contact-form-with-records/create-contact.png' | asset_url }}" alt="Screenshot of Create Contact GraphQL" />
+
+Upon successful invocation, you will be able to see the newly created record in [Database Management UI](/developer-guide/pos-cli/manage-database-using-pos-cli-gui.liquid):
+
+<img loading="lazy" src="{{ 'images/developer-guide/records/building-contact-form-with-records/contact-table.png' | asset_url }}" alt="Screenshot of records inside Contact table" />
+
 
 ### Step 3: Fetch saved data with GraphQL
 
-Now that you have created the `Contact` Table in the previous step, you can proceed to fetch this data with GraphQL. To define get_contacts query, create file `get_contacts.graphql` file in `graphql` directory.
+Now that you have created the `Contact` Table in the previous step, you can proceed to fetch this data with GraphQL. To define contacts/find query, create file `app/graphql/contacts/find.graphql`:
 
 ```graphql
-query get_contacts($id: ID) {
+query contacts_find($id: ID) {
   records(
     filter: {
-      table: { value: "modules/contacts/contact" },
+      table: { value: "contact" },
       id: { value: $id }
     },
     per_page: 100
@@ -99,34 +107,21 @@ To check if the above query works properly you can head to the next section to l
 ### Step 4: Render Records within page
 
 Display contacts as a list with the possibility to get to the contact details view.
-As a first step, you need a page that will respond to given paths:
+As a first step, you need two pages that will respond to given paths:
 
 * `GET /contacts` for list view
-* `GET /contacts/[ID]` for detail view
+* `GET /contacts/:id` for detail view
 
-Page slug for the above URL map will simply be `contacts` as the ID passed in the URL is dynamically assigned to the `context.params.slug2` variable. For more information, visit the [Pages](/developer-guide/pages/pages) documentation.
+The first endpoint will be defined by `app/views/pages/contacts/index.liquid`
 
-##### app/views/pages/contacts.liquid
-
+##### app/views/pages/contacts/index.liquid
 ```liquid
 {% raw %}
 {% liquid
-  assign id = context.params.slug2
-  graphql g = "modules/contacts/get_contacts", id: id
+  graphql g = "contacts/find"
+  assign contacts = g.records.results
 %}
 
-{%- if id == blank -%}
-  {% include 'modules/contacts/contacts/list', contacts: g.records.results %}
-{%- else -%}
-  {% include 'modules/contacts/contacts/show', contact: g.records.results.first %}
-{%- endif -%}
-{% endraw %}
-```
-
-##### app/views/partials/contacts/list.liquid
-
-```liquid
-{% raw %}
 <h1>List View</h1>
 <table>
   <tr>
@@ -145,10 +140,21 @@ Page slug for the above URL map will simply be `contacts` as the ID passed in th
 {% endraw %}
 ```
 
-##### app/views/partials/contacts/show.liquid
+And the detail view will be defined by `app/views/pages/contacts/show.liquid`
 
+##### app/views/pages/contacts/show.liquid
+```yml
+---
+slug: contacts/:id
+---
+```
 ```liquid
 {% raw %}
+{% liquid
+  graphql g = "contacts/find", id: context.params.id
+  assign contact = g.records.results.first
+%}
+
 <h1>Detail view</h1>
 <p>{{ contact.name }}</p>
 <p>{{ contact.email }}</p>
@@ -156,154 +162,73 @@ Page slug for the above URL map will simply be `contacts` as the ID passed in th
 {% endraw %}
 ```
 
+For more information, visit the [Pages](/developer-guide/pages/pages) documentation. In a real life, you will also want to ensure that only administrator has access to contact requests and you will want to [implement authentication and authorization](/get-started/build-your-first-app/user-authentication). Moreover, you usually want to separate business logic from presentation layer. For real life scenario, we recommend not having any HTML directly in the page and use [Liquid Partials](/developer-guide/pages/reusing-code-across-multiple-pages) for presentation purposes. We recommend to treat Page as controller, which at the end calls one partial to present the view.
+
 ### Step 5: Build Contact Form with HTML
 
-In Step 2: Define Contact Form-Data Creation, you have created a form file called `contact_form`, that configures the form object. This was a minimal example to allow sending requests to our API endpoint, and create Record objects. Now you can extend this file with HTML, that renders the form to our users. The HTML part of the file comes after the configuration part, i.e. after the closing `---` tag.
+In Step 2: Define GraphQL to persist record in `contact` table , you have created a GraphQL file called `contacts/create` (which corresponds to the relative path of the file in `graphql` directory). In this step we will build a form, which allows the user to submit their contact request information . Add a new page `app/views/pages/contacts/new.liquid`
 
-```yaml
----
-name: contact_form
-resource: modules/contacts/contact
-resource_owner: anyone
-redirect_to: /contacts
-fields:
-  properties:
-    name:
-      validation:
-        presence: true
-    email:
-      validation:
-        presence: true
-        email: true
-    description:
-      validation:
-        presence: true
----
-```
 ```liquid
 {% raw %}
-{% form %}
+<form action="/contacts" method="post">
+  <input type="hidden" name="authenticity_token" value="{{ context.authenticity_token }}" />
   <label for="name">Name</label>
-  <input name="{{ form.fields.properties.name.name }}" value="{{ form.fields.properties.name.value }}" id="name" type="text">
-  {% if form.errors['properties.name'] %}
-    <p>{{ form.errors['properties.name'] }}</p>
-  {% endif %}
+  <input name="contact[name]" id="name" type="text">
 
   <label for="email">Email</label>
-  <input name="{{ form.fields.properties.email.name }}" value="{{ form.fields.properties.email.value }}" id="email" type="email">
-  {% if form.errors['properties.email'] %}
-    <p>{{ form.errors['properties.email'] }}</p>
-  {% endif %}
+  <input name="contact[email]" id="email" type="email">
 
   <label for="description">Description</label>
-  <textarea name="{{ form.fields.properties.description.name }}" id="description">{{ form.fields.properties.description.value }}</textarea>
-  {% if form.errors['properties.description'] %}
-    <p>{{ form.errors['properties.description'] }}</p>
-  {% endif %}
+  <textarea name="contact[description]" id="description"></textarea>
 
   <button>Submit</button>
-{% endform %}
+</form>
 {% endraw %}
 ```
 
-The `redirect_to` configuration option defines where to redirect the user after successful form submission. The predefined `form` tag allows you to create context for submitted data.
+{% include 'alert/note', content: 'Authenticity token is used to prevent CSRF. We include it in the example because while working on platformOS developers tend to forget about it and as soon as they add authentication, their session is invalidated after submitting the form. You can read more about it in chapter about [User Authentication](/get-started/build-your-first-app/user-authentication).' %}
 
-For more information of advanced form configuration please visit [Form Documentation](/developer-guide/forms/form-configuration).
+### Step 6: Invoking GraphQL server-side
 
-To display the form on the previously created `contacts` page you have to include it with:
+In the previous step we have implemented a form, which uppon submission triggers POST request to /contacts endpoint. Form values will be accessible via `context.params`. Because we have namespaced all input names, the values submitted by the user will be available via `context.params.contact` (i.e. context.params.contact.name will return value the User has entered). First, we have to create a Page, which will be invoked for the form submission:
 
-##### app/views/pages/contacts.liquid
-
-```liquid
-{% raw %}
-{% include_form 'modules/contacts/contact_form' %}
-{% endraw %}
-```
-
-As a result, you should be able to create Record objects, called Contact with simple form submission, and list them after fetching with GraphQL.
-
-### Step 6: Delete contact
-
-In order to remove record from the database, create `delete_contact_form`:
-
-{% raw %}
-```liquid
+##### app/views/pages/contacts/create.liquid
+```yml
 ---
-name: delete_contact_form
-resource: modules/contacts/contact
-resource_owner: anyone
-redirect_to: /contacts
-fields: {}
+slug: contacts
+method: post
 ---
-
-{% form method: "delete" %}
-  <button type="submit">Delete</button>
-{% endform %}
 ```
-{% endraw %}
-To display delete button on the list of contacts, include the form as follows:
-{% raw %}
-```liquid
-<td>
-  {% include_form "modules/contacts/delete_contact_form", id: contact.id %}
-</td>
-```
-{% endraw %}
-
-
-### Step 7: Edit Contact
-
-As you already have the form to create contacts, you can reuse it for the purpose of record update. In order to prefill the form with proper data, add `id` to `include_form` tag.
-
-##### app/views/pages/contacts/edit.liquid
-
-{% raw %}
-```liquid
-{% include_form "modules/contacts/contact_edit_form", id: context.params.slug3 %}
-```
-{% endraw %}
-
-### Step 8: Add Email Notification
-
-To send an Email Notification to the email that was sent with form submission, create an Email Notification file that will define email configuration and message template.
-
-The file should be located in the `emails` directory, name it `contact_notification.liquid`:
-
-##### app/emails/contact_notification.liquid
-
 ```liquid
 {% raw %}
----
-name: contact_notification
-from: 'Example Site <info@example.com>'
-subject: Contact
-to: '{{ form.properties.email }}'
----
-<h2>Hi {{ form.properties.name }}</h2>
-<p>Thank you for your request, we will contact you shortly!</p>
+{% liquid
+  graphql g = "contacts/create", name: context.params.contact.name, email: context.params.contact.email, description: context.params.contact.description
+  assign url = "/contacts/" | append: g.record_create.id
+  redirect_to url
+%}
 {% endraw %}
 ```
 
-All request parameters are now accessible in `form.record` object, so you can compose any email you want. Next step is linking `contact_notification` in the `contact_form` by adding to form configuration inside `forms/contact_form.liquid` file.
+After submitting the form from Step 5, the browser will trigger a request to POST /contacts. platformOS via [graphql Liquid Tag](/api-reference/liquid/platformos-tags#graphql) will invoke the `contacts/create` GraphQL mutation with the parameter mapping that was defined (graphql Email argument will have a value equal to `context.params.contact.email` etc.). After invoking GraphQL, we'll redirect the user to `/contacts/<id>`, where id will be the value of the newly created record.
 
-```yaml
-email_notifications:
-- contact_notification
-```
+{% include 'alert/note', content: 'Providing manual mapping for each argument in GraphQl can be cumbersone, this is why there is a magic `args` argument defined. You can achieve the same result by using `graphql g = "contacts/create", args: context.params.contact`.' %}
 
-### Step 9: Secure the form
+To verify that everything works as expected, go to /contacts/new in your instance, fill the form and hit submit. You should be redirect to the `show` Page defined in Step 4 and you should be able to see the information you have submitted in the form. You should also see the new entry in /contacts page.
 
-At this point, you might want to restrict access to the forms and views you have created. You can do that using [Authorization Policies](/developer-guide/authorization-policy/adding-authorization-policy).
+{% include 'alert/note', content: 'In a real life, you usually want to perform validation of the user data, for example to prevent submitting a contact request without providing an email. We recommend to use our [pos-module-core](https://github.com/Platform-OS/pos-module-core), which implements a lot of most common validators, and also provide guidelines in terms of the code architecture' %}
 
-## Live example and source code
 
-To play with a live example (in much fuller form and with additional information) go to the [contact example](https://examples.platform-os.com/contacts) page.
+### Step 7: Delete a record
 
-[Source code](https://github.com/mdyd-dev/platformos-examples/tree/master/modules/contacts) can be found on GitHub.
+In order to remove record from the database, you should use [record_delete GraphQL mutation](/api-reference/graphql/data/mutations/record-delete)
+
+### Step 8: Update a record
+
+In order to update a record, you should use [record_update GraphQL mutation](/api-reference/graphql/data/mutations/record-update). Only the properties you explicitly define in the GraphQL mutation will be updated. The properties you do not define as arguments will stay untouched.
 
 ## Next steps
 
-Congratulations! You have learned how to build forms with Record. You can now explore our reference documentation for Properties and Tables:
+Congratulations! You have learned how to build forms and persist user input using Records. You can now explore our reference documentation for Properties and Tables:
 
 * [Properties](/developer-guide/properties/properties)
 * [Records and Tables](/developer-guide/records/records-record-schemas)
