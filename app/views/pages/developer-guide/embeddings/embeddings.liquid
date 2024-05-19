@@ -1,0 +1,29 @@
+---
+converter: markdown
+metadata:
+  title: Embeddings
+  description: Leverage AI in your application
+---
+## What is an Embedding?
+
+In the realms of Artificial Intelligence (AI), Machine Learning (ML), and Natural Language Processing (NLP), an embedding is a representation of data, often high-dimensional and complex, into a lower-dimensional vector space, making it easier to analyze and process.
+
+This transformation captures the essential relationships and structures in the original data. For example, in natural language processing (NLP), word embeddings like Word2Vec or GloVe convert words into numerical vectors that reflect semantic similarities, allowing algorithms to understand and manipulate language more effectively.
+
+platformOS supports embeddings via [pgvector](https://github.com/pgvector/pgvector).
+
+## Embeddings use cases
+
+The best use cases for embeddings include recommendation systems (e.g., suggesting products based on user preferences), search engines (enhancing the relevance of search results), and NLP tasks such as sentiment analysis, translation, and text summarization.
+
+## How can I work with embeddings in platformOS?
+
+Embeddings are generated through machine learning models that learn to map data into a continuous vector space. One of the leading companies that do this really well is OpenAI. We have created an [OpenAI module](https://github.com/Platform-OS/pos-module-openai), which allows you to easily call the [OpenAI Embeddings API](https://platform.openai.com/docs/api-reference/embeddings/create). Depending on the chosen model, their API will return an embedding (vector) of a certain length and values. You can then persist such obtained embeddings using the `embedding_create_rc` GraphQL mutation, search for relevant embeddings using the `embeddings_rc` GraphQL query, etc.
+
+{% render 'alert/note', content: 'You do not have to use OpenAI for creating embeddings - you can use any provider you would like. By default, we expect embeddings to be a vector of length 1536 (which is compatible with, for example, text-embedding-ada-002 model). However if you require embedding of different length, you can contact us and we can adjust the settings in your dedicated stack as required.' %}
+
+## Do you have any examples of using Embeddings in platformOS?
+
+As a showcase, we have developed [a search based on embeddings](https://documentation.staging.oregon.platform-os.com/openai_search). You can check [the code for the search page](https://github.com/mdyd-dev/platformos-documentation/blob/master/app/views/pages/openai_search.liquid) and [the code for the embeddings generation](https://github.com/mdyd-dev/platformos-documentation/blob/master/app/lib/commands/openai/pages_to_embeddings.liquid).
+
+We leverage the same technique in [DocsKit](https://docskit.platformos.com).
