@@ -1,0 +1,53 @@
+---
+layout_name: application
+converter: markdown
+metadata:
+  title: Manage database using the pos-cli GUI
+  description: This guide will introduce you to the our database management UI, which is a part of the pos-cli tool.
+---
+
+This guide introduces our database management tool, which is part of [`pos-cli`](/developer-guide/pos-cli/pos-cli).
+
+The `pos-cli gui serve` command is an efficient way to preview your current database state. It also allows you to modify data easily via the UI. However, it is not recommended for use in a production environment. For modifying production data, consider writing a [migration](/developer-guide/platformos-workflow/codebase#migrations) for a small amount of data or a one-time script that you can invoke in a staging environment first.
+
+## Requirements
+
+To follow the steps in this tutorial, ensure you have `pos-cli` installed and your environment configured.
+
+* [Get Started Guide](/get-started): helps you get access to our platform, set up a site and install `pos-cli`.
+* [Technologies](/developer-guide/about-platformos/about-platformos#technologies)
+
+## Starting the GUI
+
+To start Database UI locally, run the `pos-cli gui serve [environment]` command.
+
+For example:
+
+<pre class="command-line" data-output="2-4" data-user="user" data-host="host"><code class="language-bash">
+$ pos-cli gui serve staging
+[18:05:01] Connected to https://documentation.platformos.com/
+[18:05:01] Admin: http://localhost:3333
+[18:05:01] ---
+[18:05:01] GraphiQL IDE: http://localhost:3333/gui/graphql
+[18:05:01] Liquid evaluator: http://localhost:3333/gui/liquid
+</code></pre>
+
+{% include "alert/note", content: "Replace `staging` with the environment name you want to develop on. To list all available environments use `pos-cli env list`" %}
+
+Do not close your terminal, do not end the command - `pos-cli gui serve` has to be running in the background for GUI to work correctly.
+
+To start using it go to the link with graphql in it: `http://localhost:3333/database`
+
+## UI and features overview
+
+Here is an example of how the UI looks like for our [e-Commerce Marketplace Solution](/developer-guide/pos-marketplace-template/marketplace-template)
+
+<img loading="lazy" src="{{ 'images/get-started/database-ui.png' | asset_url }}" alt="Screenshot of Database UI" />
+
+The ui allows you to:
+* List all of the existing tables
+* Browse data in each of the table with filtering and sorting support (behind the scenes the UI just builds [records GraphQL query](/api-reference/graphql/data/queries/records) query with the proper arguments)
+* Edit existing record
+* Delete existing record
+* Create a new record
+* Browse [soft-deleted records](/developer-guide/records/data-backup-removal#automatic-delayed-permanent-removal) and undelete them
