@@ -1,0 +1,93 @@
+---
+converter: markdown
+metadata:
+  title: Limitations
+  description:
+---
+At platformOS, we aim to give you everything you need to build and run any web application smoothly. Whether you’re working on a Single-Page Application (SPA), a backend API for a mobile app, or a complex marketplace, our platform is designed to support you. We work hard behind the scenes to ensure your applications stay robust and responsive, even as your traffic grows and you accumulate more data.
+
+However, as your application scales and data increases, it's important to be aware of potential performance impacts. Sometimes, processes that work well for a certain amount of data might slow down as the data grows. The system still functions, however, it is a signal that you might need to optimize to keep things running smoothly. This section will help you understand these points and guide you in optimizing your platformOS applications to maintain performance. By being aware of the underlying technology and potential bottlenecks, you can ensure your applications run efficiently as they grow. Those limitations are meant to be a guideline for multi-tenant stacks. Private stacks can be configured per the specifications and requirements.
+
+This page outlines the <strong>maximum limits</strong> and recommended usage, which may be further restricted by your usage plan. To fully utilize the capabilities of platformOS, an upgrade to a higher paid plan might be necessary. If you experience any performance issues or limitations, platformOS offers assistance through a Senior platformOS Developer Review or by providing a Dedicated Server Stacks Environment tailored to your needs - [Contact Us](/developer-guide/support-ticketing)
+
+
+## platformOS resources
+
+### Assets and Uploads
+
+Depending on the provider, like S3 in multi-tenant stacks, the maximum file size for assets and user upload is 2GB.
+
+[Assets](/developer-guide/platformos-workflow/directory-structure#assets) are best used for static content such as CSS, JavaScript, and layout images, etc. This is why a few thousand assets are expected. The system can handle much larger numbers, though you'll need to be mindful of performance as your asset count grows above the suggested threshold.
+
+[Uploads](/developer-guide/properties/uploads) should be used for dynamic content - for example, to store product images, blog post images, documents, etc. You can have tens of millions of them and expect no issues.
+
+Typically, issues arise when assets are used instead of user uploads.
+
+### Form, Authorization Policies, Notifications, Layouts
+
+We expect you to have up to a thousand configuration files for [Form](/developer-guide/forms/forms), [Authoriation Policies](/developer-guide/platformos-workflow/directory-structure#authorization-policies), [Notifications](developer-guide/notifications/notifications). The system can handle much larger numbers, though you'll need to be mindful of performance as your configuration file count grows above the suggested threshold.
+
+### Background Jobs
+
+When creating [Background Job](/best-practices/backend-performance/background-jobs), you can [specify a priority](/best-practices/backend-performance/background-jobs#priorities), which will affect max execution time and how quick the job will be processed (high priority need to finish faster, but will have priority over low priority jobs)
+
+We expect you to schedule up to a few thousand jobs to be invoked at some point in the future.
+
+You should be mindful that all of the job arguments are stored in Redis when scheduling a job, and then have to be retrieved and deserialized to run the job. The general guideline is to keep the payload lower than `100KB`. Redis has a hard limit of 512MB. To maintain efficient and reliable job processing, it's best to keep payloads as small as possible and pass only essential data in your Background jobs. If you need to handle large data sets, consider storing the data in a database or file storage and passing a reference (such as an ID or file URL) to the Background Job instead.
+
+{% include 'alert/note', content: '[Migrations](/developer-guide/platformos-workflow/directory-structure#migrations) are invoked as a background job and we recommend it finishes within a few minutes. If you need more than that, we recommend executing the code as a one-time script in a low priority background job.' %}
+
+### Schema (Tables and Properties)
+
+We expect you to have up to hundreds of tables and up to hundreds of properties in total, although we are running sites with tens of thousands of properties.
+
+### Records
+
+To persist records, we rely on PostgreSQL. When a site starts slowing down, this is often the first bottleneck. For tables with up to a few thousand records, you can expect near-instant responses regardless of the queries you run. However, as your data grows to hundreds of thousands or millions of records, you'll need to be more mindful of how you write your GraphQL queries.
+
+As your site scales, we monitor your queries to ensure that built-in and default indexes are used effectively. Even with millions of records, we work to keep everything running smoothly.
+
+Our initial response to any performance degradation involves using our application performance monitoring tools to identify problematic queries. We then add dedicated database indexes or perform backend optimizations as needed.
+
+In some cases, the best solution is to rewrite the query. When this happens, we provide detailed information about which endpoint and which GraphQL query is causing issues. Common issues include the use of `or` in GraphQL queries, or operators like `ends_with` (translated to `LIKE '%..'`.), and `contains` (translated to `LIKE '%...%'`) which do not work well with PostgreSQL indexes.
+
+As for the limits, the size of values in one Record cannot exceed 255MB. There is virtually no hard limit of the size of your database in total.
+
+### GraphQL
+
+We currently do not put any restrictions in terms of the GraphQL complexity. We rely on you to be aware of the implications of using expensive operators and building complex queries. We are planning on improving [platformos-check](https://github.com/Platform-OS/platformos-check) (which is used by [platformOS Visual Studio extension](https://marketplace.visualstudio.com/items?itemName=platformOS.platformos-check-vscode)) with GraphQL static analysis and warnings about potential performance problems with the larger dataset.
+
+We expect you to have up to thousands of different GraphQL queries.
+
+### Pages
+
+Our system was designed to leverage [named parameters](/developer-guide/pages/pages#named-parameters), and we expect you to have up to a thousand Pages. This might be problematic for hosting results of Static Site Generators, which might produce significantly more pages than this. We do host such sites as well, including [DocsKit](https://docskit.platformos.com/), which behind the scenes was built using Gatsby. We are currently not optimized for such a use case, however, it is in our [Roadmap](/roadmap).
+
+The most important limitation when it comes to Page is the execution time - we will throw 504 Timeout error after 9 seconds (configurable in a private stack). Typically issue hitting this limitation is not leveraging [Background Jobs](/best-practices/backend-performance/background-jobs) for potentially time-consuming and non-critical operations, like sending emails and API calls to a third-party system, etc.
+
+To protect us from Denial-of-Service (DoS) attacks, our Web Application Firewall will block any IP that submits more than 300 requests within 5 5-minute period for about 10 minutes.
+
+### Partials
+
+We expect you to have up to tens of thousands of partials.
+
+### Translations
+
+We expect you to have a few thousand translations per language and tens of languages.
+
+## pos-cli deploy
+
+There is no hard limit in terms of how many files can be deployed to platformOS.
+ You can upload gigabytes of assets (although in such cases, there is a high chance that you should be using Uploads instead of Assets).
+There is a default soft limit of 90MB for the release.zip, which pos-cli generates with all of the configuration files - pages, partials, forms, translations, etc. (everything except assets).
+
+## instance copy / data import / data export
+
+Instance copy is a feature in Partner Portal that allows you to quickly move data and uploads from one instance to another, effectively creating almost a perfect copy (only background jobs are not migrated). We expect instance copy to work correctly for up to a couple of hundreds of thousands of records and gigabytes of uploads - the more records and data, the longer it will take.
+
+Instance copy relies behind the scenes on data export and data import features, which have the same expectations.
+However, there is a hard limit of 90MB file size of the deployment for configuration files (everything except of Assets).
+
+## Troubleshooting
+
+If your solution is experiencing performance degradation or limitations and you are unsure of the cause, you can [request a review by our senior team or discuss options for a private stack](/developer-guide/support-ticketing) with us.
