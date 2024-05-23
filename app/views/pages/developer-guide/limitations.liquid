@@ -6,7 +6,7 @@ metadata:
 ---
 At platformOS, we aim to give you everything you need to build and run any web application smoothly. Whether you’re working on a Single-Page Application (SPA), a backend API for a mobile app, or a complex marketplace, our platform is designed to support you. We work hard behind the scenes to ensure your applications stay robust and responsive, even as your traffic grows and you accumulate more data.
 
-However, as your application scales and data increases, it's important to be aware of potential performance impacts. Sometimes, processes that work well for a certain amount of data might slow down as the data grows. The system still functions, however, it is a signal that you might need to optimize to keep things running smoothly. This section will help you understand these points and guide you in optimizing your platformOS applications to maintain performance. By being aware of the underlying technology and potential bottlenecks, you can ensure your applications run efficiently as they grow. Those limitations are meant to be a guideline for multi-tenant stacks. Private stacks can be configured per the specifications and requirements.
+However, as your application scales and data increases, it is important to be aware of potential performance impacts. Sometimes, processes that work well for a certain amount of data might slow down as the data grows. The system still functions, however, it is a signal that you might need to optimize to keep things running smoothly. This section will help you understand these points and guide you in optimizing your platformOS applications to maintain performance. By being aware of the underlying technology and potential bottlenecks, you can ensure your applications run efficiently as they grow. Those limitations are meant to be a guideline for multi-tenant stacks. Private stacks can be configured per the specifications and requirements.
 
 This page outlines the <strong>maximum limits</strong> and recommended usage, which may be further restricted by your usage plan. To fully utilize the capabilities of platformOS, an upgrade to a higher paid plan might be necessary. If you experience any performance issues or limitations, platformOS offers assistance through a Senior platformOS Developer Review or by providing a Dedicated Server Stacks Environment tailored to your needs - [Contact Us](/developer-guide/support-ticketing)
 
@@ -23,19 +23,25 @@ Depending on the provider, like S3 in multi-tenant stacks, the maximum file size
 
 Typically, issues arise when assets are used instead of user uploads.
 
-### Form, Authorization Policies, Notifications, Layouts
-
-We expect you to have up to a thousand configuration files for [Form](/developer-guide/forms/forms), [Authoriation Policies](/developer-guide/platformos-workflow/directory-structure#authorization-policies), [Notifications](developer-guide/notifications/notifications). The system can handle much larger numbers, though you'll need to be mindful of performance as your configuration file count grows above the suggested threshold.
-
 ### Background Jobs
 
 When creating [Background Job](/best-practices/backend-performance/background-jobs), you can [specify a priority](/best-practices/backend-performance/background-jobs#priorities), which will affect max execution time and how quick the job will be processed (high priority need to finish faster, but will have priority over low priority jobs)
 
 We expect you to schedule up to a few thousand jobs to be invoked at some point in the future.
 
-You should be mindful that all of the job arguments are stored in Redis when scheduling a job, and then have to be retrieved and deserialized to run the job. The general guideline is to keep the payload lower than `100KB`. Redis has a hard limit of 512MB. To maintain efficient and reliable job processing, it's best to keep payloads as small as possible and pass only essential data in your Background jobs. If you need to handle large data sets, consider storing the data in a database or file storage and passing a reference (such as an ID or file URL) to the Background Job instead.
+You should be mindful that all of the job arguments are stored in Redis when scheduling a job, and then have to be retrieved and deserialized to run the job. The general guideline is to keep the payload lower than `100KB`. Redis has a hard limit of 512MB. To maintain efficient and reliable job processing, it is best to keep payloads as small as possible and pass only essential data in your Background jobs. If you need to handle large data sets, consider storing the data in a database or file storage and passing a reference (such as an ID or file URL) to the Background Job instead.
 
 {% include 'alert/note', content: '[Migrations](/developer-guide/platformos-workflow/directory-structure#migrations) are invoked as a background job and we recommend it finishes within a few minutes. If you need more than that, we recommend executing the code as a one-time script in a low priority background job.' %}
+
+### Form, Authorization Policies, Notifications, Layouts
+
+We expect you to have up to a thousand configuration files for [Form](/developer-guide/forms/forms), [Authoriation Policies](/developer-guide/platformos-workflow/directory-structure#authorization-policies), [Notifications](developer-guide/notifications/notifications). The system can handle much larger numbers, though you'll need to be mindful of performance as your configuration file count grows above the suggested threshold.
+
+### Api Call Notiications
+
+The default timeout for Api Call trigger from a web request context (synchronous) is 5 seconds. For a web request you should not increase it above 8 seconds, because the Page timeouts after 9 (customizable in Private Stack), so it has to be lower than this.
+The default timeout for Api Call trigger from a background job context (asynchronous) is 8 seconds. The soft limit (customizable in Private Stack) is 180 seconds.
+
 
 ### Schema (Tables and Properties)
 
@@ -87,6 +93,19 @@ Instance copy is a feature in Partner Portal that allows you to quickly move dat
 
 Instance copy relies behind the scenes on data export and data import features, which have the same expectations.
 However, there is a hard limit of 90MB file size of the deployment for configuration files (everything except of Assets).
+
+## Session
+
+You can store values per session using [session](/api-reference/liquid/platformos-tags#session) tag. You should be mindful that sessions are stored in Redis. To maintain efficiency, it is best to keep payloads as small as possible and store only essential data in sessions. If you need to handle large data sets, consider storing the data in a database or file storage and passing a reference (such as an ID or file URL). One of the most common example in a context of eCommerce is to store in the session the id of current user shopping cart as a `cart_id`, instead of an object with names of the products, prices etc.
+
+We do not enforce max length of the session, however we recommend you to set [session expiration](/get-started/build-your-first-app/user-authentication#sign-up) to as low as reasonable for your business rules.
+
+## Request Throughput
+
+Ensuring optimal request throughput is crucial for maintaining the performance and responsiveness of your applications. As your traffic grows, horizontal scaling (adding more servers) and vertical scaling (enhancing server capacity) are effective strategies to manage increased load. Our platform provides the flexibility to do both, and our DevOps team ensures your applications can handle growth efficiently within your usage plan.
+
+Additionally, we proactively manage the infrastructure and overprovision to accommodate large traffic spikes during events like Black Friday. If you run big advertising campaigns that will result in sudden increases in user activity, we ask that you give us a heads-up. This allows us to overprovision resources to ensure your applications remain responsive and performant during these periods of high demand. Otherwise, the service might experience temporary performance degradation, as auto-scaling techniques take time to be triggered and warm up.
+
 
 ## Troubleshooting
 
