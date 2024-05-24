@@ -96,7 +96,7 @@ However, there is a hard limit of 90MB file size of the deployment for configura
 
 ## Session
 
-You can store values per session using [session](/api-reference/liquid/platformos-tags#session) tag. You should be mindful that sessions are stored in Redis. To maintain efficiency, it is best to keep payloads as small as possible and store only essential data in sessions. If you need to handle large data sets, consider storing the data in a database or file storage and passing a reference (such as an ID or file URL). One of the most common example in a context of eCommerce is to store in the session the id of current user shopping cart as a `cart_id`, instead of an object with names of the products, prices etc.
+You can store values per session using [session](/api-reference/liquid/platformos-tags#session) tag. It's important to note that sessions are stored in Redis. To optimize efficiency, it's advisable to keep payloads as small as possible and store only essential data in sessions. If you need to handle large datasets, consider storing the data in a database or file storage and passing a reference (such as an ID or file URL). A common example in the context of eCommerce is storing the ID of the current user's shopping cart as `cart_id` in the session, rather than storing an object with names of the products, prices, etc.
 
 We do not enforce max length of the session, however we recommend you to set [session expiration](/get-started/build-your-first-app/user-authentication#sign-up) to as low as reasonable for your business rules.
 
