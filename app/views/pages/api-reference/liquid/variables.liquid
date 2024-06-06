@@ -50,10 +50,18 @@ Welcome to the site!
 Welcome to the site!
 ```
 
+{% include 'alert/note', content: 'platformOS has also available [hash_assign tag](/api-reference/liquid/platformos-tags#hash-assign), which is based on assign tag, however it allows you to work with [your own objects](/api-reference/liquid/platformos-objects#your-own-objects)' %}
+
 ## capture
 
 Captures the string inside of the opening and closing tags and assigns it to a variable.
 Variables that you create using `capture` are stored as strings, so it works exactly like the `assign` tag, but allows you to assign complex, multiline data using other variables and liquid tags.
+
+## parse_json
+
+It is platformOS specific tag, which allows you to [create your own objects](/api-reference/liquid/platformos-objects#your-own-objects). It works similarly to [capture](/api-reference/liquid/variables#capture).
+
+The inner content of this tag has to evaluate to a valid JSON, otherwise an exception is thrown (which will be automatically logged, using the sam mechanism as [log tag](/api-reference/liquid/platformos-tags#log)). When working with parse_json and user input, you usually want to leverage `json filter` to ensure that special characters like `"` will not break the parsing
 
 #### Input
 
@@ -62,9 +70,12 @@ Variables that you create using `capture` are stored as strings, so it works exa
 {% assign favorite_food = 'pizza' %}
 {% assign age = 35 %}
 
-{% capture about_me %}
-I am {{ age }} and my favorite food is {{ favorite_food }}.
-{% endcapture %}
+{% parse_json about_me %}
+  {
+    "favorite_food": {{ favorite_food | json }},
+    "age": {{ age }}
+  }
+{% endparse_json %}
 
 {{ about_me }}
 {% endraw %}
@@ -73,8 +84,13 @@ I am {{ age }} and my favorite food is {{ favorite_food }}.
 #### Output
 
 ```liquid
-I am 35 and my favorite food is pizza.
+  {
+    "favorite_food": "pizza",
+    "age": 35
+  }
 ```
+
+{% include 'alert/tip', content: 'The most common error when working with a parse_json tag is missing a comma (or having a trailing comma at the end of the json). ' %}
 
 ## increment
 

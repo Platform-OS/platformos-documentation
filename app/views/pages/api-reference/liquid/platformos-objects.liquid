@@ -7,7 +7,7 @@ metadata:
 
 ## context
 
-**Context** is a global object accessible in every [Liquid](/api-reference/liquid/introduction) file of the project including [pages, partials and layoyts](/developer-guide/platformos-workflow/directory-structure#views-pages-layouts-and-partials), [Email, SMS and API Call Notifications](/developer-guide/notifications/notifications/developer-guide/notifications/notifications) etc. It is the only pre-defined object that you would use when working with platformOS. This is because you are able to create [your own objects](#create-your-own-objects) described below.
+**Context** is a global [object](/api-reference/liquid/types#hash-object) accessible in every [Liquid](/api-reference/liquid/introduction) file of the project including [pages, partials and layoyts](/developer-guide/platformos-workflow/directory-structure#views-pages-layouts-and-partials), [Email, SMS and API Call Notifications](/developer-guide/notifications/notifications/developer-guide/notifications/notifications) etc. It is the only pre-defined [object](/api-reference/liquid/types#hash-object) that you would use when working with platformOS. This is because you are able to create your own [Objects](/api-reference/liquid/types#hash-object).
 
 ### context.authenticity_token
 {% raw %}
@@ -18,10 +18,10 @@ metadata:
 `context.constants` gives you access to sensitive data like API credentials and tokens. To protect you from leaking them, you need to explicitly call `{% raw %}{{ context.constants }}`{% endraw %}, as they are hidden from `{% raw %}{{ context }}{% endraw %}`. You can set constants using GraphQL mutation [constant_set](/api-reference/graphql/rootmutation.html) or via [pos-cli gui](/developer-guide/pos-cli/developing-graphql-queries-using-pos-cli-gui#starting-the-gui).
 
 ### context.cookies
-`context.cookies` returns an object with all cookies of the site.
+`context.cookies` returns an [object](/api-reference/liquid/types#hash-object) with all cookies of the site.
 
 ### context.current_user
-`context.current_user` returns basic data of currently logged in user. Available attributes are: `first_name`, `last_name`, `email`, `id` and `slug`. It will return `null` instead of object if user is not logged in.
+`context.current_user` returns basic data of currently logged in user. Available attributes are: `first_name`, `last_name`, `email`, `id` and `slug`. It will return `null` instead of an object if user is not logged in.
 
 ### context.device
 `context.device` returns a hash with useful information based on UserAgent. Most notably, `context.device.device_type` returns one of the following: desktop, smartphone, tablet, console, portable media player, tv, car browser, camera.
@@ -30,7 +30,7 @@ metadata:
 `context.environment` returns a string: `staging` or `production`. A common use case is to hide some functionalities on production without blocking the release.
 
 ### context.flash
-`context.flash` returns object with possible keys: alert, notice. Value for each key is a message string. [Flash messages](/developer-guide/forms/flash-messages) are set on form submissions.
+`context.flash` returns [object](/api-reference/liquid/types#hash-object) with possible keys: alert, notice. Value for each key is a message string. [Flash messages](/developer-guide/forms/flash-messages) are set on form submissions.
 
 ### context.headers
 `context.headers` contains allowed [HTTP headers](https://en.wikipedia.org/wiki/List_of_HTTP_header_fields) with the data from the current HTTP request.
@@ -178,7 +178,7 @@ but a user can also invalidate the session by manually removing the session_id a
 For user sessions of logged in users, visit also [timeout_in_minutes](/developer-guide/partner-portal/instances/updating-instance-configuration).
 
 ### context.useragent
-`context.useragent` returns an object with user agent data.
+`context.useragent` returns an [object](/api-reference/liquid/types#hash-object) with user agent data.
 
 **Example 1: Displaying useragent**
 
@@ -194,7 +194,8 @@ Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebkKit/537.36
 ```
 
 ### context.visitor
-`context.visitor` returns an object describing browser user. For now there is only one available attribute `ip`.
+
+`context.visitor` returns an [object](/api-reference/liquid/types#hash-object) describing browser user. For now there is only one available attribute `ip`.
 
 ## Exposing a local variable within the context object
 
@@ -210,34 +211,3 @@ It is possible to promote a local variable so it is available in the `context.ex
 {{ context.exports.baz.foo }}
 ```
 {% endraw %}
-
-## Your own objects
-
-### create object
-
-In platformOS you can create your own objects using [parse_json filter](/api-reference/liquid/platformos-filters#parse-json):
-
-{% raw %}
-```liquid
-  {% assign my_object = '{ "hello": "world" }' | parse_json %}
-```
-{% endraw %}
-
-or [parse_json tag](/api-reference/liquid/platformos-tags#parse-json) tag:
-
-{% raw %}
-```liquid
-  {% parse_json my_object
-    { "hello": "world" }
-  {% end_parsejson %}
-```
-{% endraw %}
-
-### extend object
-
-  You can extend objects with various filters and tags.
-  The most commonly used one is [hash_assign tag](/api-reference/liquid/platformos-tags#hash-assign), which stores a value at the given object path.
-
-  Another useful way to extend object is by merging two objects, which can be accomplished with [hash_merge filter](/api-reference/liquid/platformos-filters#hash-merge)
-
-  If you need to perform certain operation on object, most likely there is already implemented [platformOS filter](/api-reference/liquid/platformos-filters) for that with `hash_` prefix.
