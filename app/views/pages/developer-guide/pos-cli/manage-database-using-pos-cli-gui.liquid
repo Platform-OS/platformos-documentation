@@ -2,7 +2,7 @@
 layout_name: application
 converter: markdown
 metadata:
-  title: Manage database using the pos-cli GUI
+  title: Manage the database using the pos-cli GUI
   description: This guide will introduce you to the our database management UI, which is a part of the pos-cli tool.
 ---
 
@@ -19,7 +19,7 @@ To follow the steps in this tutorial, ensure you have `pos-cli` installed and yo
 
 ## Starting the GUI
 
-To start Database UI locally, run the `pos-cli gui serve [environment]` command.
+To start the Database UI locally, run the `pos-cli gui serve [environment]` command.
 
 For example:
 
@@ -32,21 +32,21 @@ $ pos-cli gui serve staging
 [18:05:01] Liquid evaluator: http://localhost:3333/gui/liquid
 </code></pre>
 
-{% include "alert/note", content: "Replace `staging` with the environment name you want to develop on. To list all available environments use `pos-cli env list`" %}
+{% include "alert/note", content: "Replace `staging` with the environment name you want to develop on. To list all available environments, use `pos-cli env list`" %}
 
-Do not close your terminal, do not end the command - `pos-cli gui serve` has to be running in the background for GUI to work correctly.
+Do not close your terminal and do not end the command, as `pos-cli gui serve` has to be running in the background for the GUI to work correctly.
 
-To start using it go to the link with graphql in it: `http://localhost:3333/database`
+To start using the GUI, navigate to `http://localhost:3333/database`with GraphQL in it.
 
-## UI and features overview
+## UI and Features Overview
 
-Here is an example of how the UI looks like for our [e-Commerce Marketplace Solution](/developer-guide/pos-marketplace-template/marketplace-template)
+Here is an example of how the UI looks for our [e-Commerce Marketplace Solution](/developer-guide/pos-marketplace-template/marketplace-template):
 
 <img loading="lazy" src="{{ 'images/get-started/database-ui.png' | asset_url }}" alt="Screenshot of Database UI" />
 
-The ui allows you to:
-* List all of the existing tables
-* Browse data in each of the table with filtering and sorting support (behind the scenes the UI just builds [records GraphQL query](/api-reference/graphql/data/queries/records) query with the proper arguments)
+The UI allows you to:
+* List all existing tables
+* Browse data in each table with filtering and sorting support (the UI builds [records GraphQL queries](/api-reference/graphql/data/queries/records) with the proper arguments behind the scenes)
 * Edit existing record
 * Delete existing record
 * Create a new record
