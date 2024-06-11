@@ -68,6 +68,59 @@ The current user is {{ user.name }}
 The current user is
 ```
 
+## Hash (Object)
+
+Hash represents an object as a key value dictionary, allowing a value to be another Hash. The most used object is [context - a built-in global object](/api-reference/liquid/platformos-objects#context)
+
+### Initializing a new object
+
+To initialize an object, the most common way is to either use [parse_json filter](/api-reference/liquid/platformos-filters#parse-json):
+
+{% raw %}
+```liquid
+  {% assign my_object = '{ "hello": "world" }' | parse_json %}
+```
+{% endraw %}
+
+or [parse_json tag](/api-reference/liquid/platformos-tags#parse-json) tag:
+
+{% raw %}
+```liquid
+  {% parse_json my_object
+    { "hello": "world" }
+  {% end_parsejson %}
+```
+{% endraw %}
+
+### Accessing object attributes
+
+To access a value of an object, you can use dot notation or if you would like to use variables instead of hardcoded key, you could use [] notation.
+
+#### Input
+
+```liquid
+{% raw %}
+{{ my_object.hello }}
+{%- assign var = 'hello' -%}
+{{ my_object[val] }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+world
+world
+```
+
+### Working with an object
+
+  You can extend objects with various filters and tags. The most commonly used one is [hash_assign tag](/api-reference/liquid/platformos-tags#hash-assign), which stores a value at the given object path.
+
+  Another useful way to extend an object is by merging two objects, which can be accomplished with [hash_merge filter](/api-reference/liquid/platformos-filters#hash-merge)
+
+  If you need to perform certain operation on object, most likely there is already implemented [platformOS filter](/api-reference/liquid/platformos-filters) for that with `hash_` prefix.
+
 ## Array
 
 Arrays hold lists of variables of any type.
