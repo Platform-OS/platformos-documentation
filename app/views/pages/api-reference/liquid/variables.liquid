@@ -61,7 +61,8 @@ Variables that you create using `capture` are stored as strings, so it works exa
 
 It is platformOS specific tag, which allows you to [create your own objects](/api-reference/liquid/platformos-objects#your-own-objects). It works similarly to [capture](/api-reference/liquid/variables#capture).
 
-The inner content of this tag has to evaluate to a valid JSON, otherwise an exception is thrown (which will be automatically logged, using the sam mechanism as [log tag](/api-reference/liquid/platformos-tags#log)). When working with parse_json and user input, you usually want to leverage `json filter` to ensure that special characters like `"` will not break the parsing
+The content within this tag must result in valid JSON. Otherwise, an exception is thrown, which is logged automatically using the same mechanism as the [log tag](/api-reference/liquid/platformos-tags#log). 
+When working with `parse_json` and user input, it's advisable to use the `json filter` to prevent special characters like `"` from disrupting the parsing process.
 
 #### Input
 
