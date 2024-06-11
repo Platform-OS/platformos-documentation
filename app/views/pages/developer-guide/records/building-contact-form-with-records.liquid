@@ -22,7 +22,7 @@ Building a Contact Form with Records is a nine-step process:
 
 ### Step 1: Define Contact &ndash; Table
 
-To define a new Table, create a YAML file in the `schema` directory. By default, the name of your table will be the same as your file name, hence create a file `app/schema/contact.yml`. To build a Contact Form, you'll need an email of a person who submits the request (to be able to reply to them) along with their name, and the description of a problem. All of those [Properties](/developer-guide/properties/properties) should be strings, hence the table should look as follows:
+To define a new Table, create a YAML file in the `schema` directory. The name of your table will default to the name of your file. Therefore, create a file named `app/schema/contact.yml`. To build a Contact Form, you'll need an email of a person who submits the request (to be able to reply to them) along with their name, and the description of a problem. All of these [Properties](/developer-guide/properties/properties) should be strings. The table definition should look as follows:
 
 ##### app/schema/contact.yml
 
@@ -39,9 +39,9 @@ properties:
 
 For more information on Properties please visit the [Properties Documentation](/developer-guide/properties/properties/).
 
-### Step 2: Define GraphQL to persist record in `contact` table
+### Step 2: Define GraphQL Mutation to Persist Records in `Contact` Table
 
-Now that you have the definition of a `Contact` table in place, you can create a GraphQL mutation that will persist the record in the database. To do it, you would need to use [record_create GraphQL mutation](/api-reference/graphql/data/mutations/record-create). Create `app/graphql/contacts/create.graphql` file with the following content:
+With the `Contact` table defined, the next step is to create a GraphQL mutation to persist records in the database. To do it, use [record_create GraphQL mutation](/api-reference/graphql/data/mutations/record-create). Create a file named`app/graphql/contacts/create.graphql` with the following content:
 
 ##### app/graphql/contacts/create.graphql
 
@@ -69,18 +69,18 @@ mutation contact_create($name: String!, $email: String!, $description: String!) 
 }
 ```
 
-You can [develop and run GraphQl queries and mutations using pos-cli gui serve](/developer-guide/pos-cli/developing-graphql-queries-using-pos-cli-gui):
+You can [develop and run GraphQL queries and mutations using pos-cli gui serve](/developer-guide/pos-cli/developing-graphql-queries-using-pos-cli-gui):
 
 <img loading="lazy" src="{{ 'images/developer-guide/records/building-contact-form-with-records/create-contact.png' | asset_url }}" alt="Screenshot of Create Contact GraphQL" />
 
-Upon successful invocation, you will be able to see the newly created record in [Database Management UI](/developer-guide/pos-cli/manage-database-using-pos-cli-gui.liquid):
+Upon successful invocation, you will be able to see the newly created record in the [Database Management UI](/developer-guide/pos-cli/manage-database-using-pos-cli-gui.liquid):
 
 <img loading="lazy" src="{{ 'images/developer-guide/records/building-contact-form-with-records/contact-table.png' | asset_url }}" alt="Screenshot of records inside Contact table" />
 
 
-### Step 3: Fetch saved data with GraphQL
+### Step 3: Fetch Saved Data with GraphQL
 
-Now that you have created the `Contact` Table in the previous step, you can proceed to fetch this data with GraphQL. To define contacts/find query, create file `app/graphql/contacts/find.graphql`:
+Now that you have created the `Contact` Table, the next step is to fetch the data using GraphQL. To define the `contacts/find` query, create a file named  `app/graphql/contacts/find.graphql`:
 
 ```graphql
 query contacts_find($id: ID) {
@@ -104,7 +104,7 @@ query contacts_find($id: ID) {
 To check if the above query works properly you can head to the next section to learn how to embed query results with page view or use [pos-cli gui](/developer-guide/pos-cli/developing-graphql-queries-using-pos-cli-gui)
 
 
-### Step 4: Render Records within page
+### Step 4: Render Records Within a Page
 
 Display contacts as a list with the possibility to get to the contact details view.
 As a first step, you need two pages that will respond to given paths:
@@ -112,7 +112,9 @@ As a first step, you need two pages that will respond to given paths:
 * `GET /contacts` for list view
 * `GET /contacts/:id` for detail view
 
-The first endpoint will be defined by `app/views/pages/contacts/index.liquid`
+**List View**
+Define the first endpoint in `app/views/pages/contacts/index.liquid`:
+
 
 ##### app/views/pages/contacts/index.liquid
 ```liquid
@@ -140,7 +142,10 @@ The first endpoint will be defined by `app/views/pages/contacts/index.liquid`
 {% endraw %}
 ```
 
-And the detail view will be defined by `app/views/pages/contacts/show.liquid`
+This code runs a GraphQL query to fetch all contacts and displays them in a table. Each row includes a link to the detailed view of the contact.
+
+**Detail View**
+Define the detail view in `app/views/pages/contacts/show.liquid`:
 
 ##### app/views/pages/contacts/show.liquid
 ```yml
@@ -162,11 +167,13 @@ slug: contacts/:id
 {% endraw %}
 ```
 
-For more information, visit the [Pages](/developer-guide/pages/pages) documentation. In a real life, you will also want to ensure that only administrator has access to contact requests and you will want to [implement authentication and authorization](/get-started/build-your-first-app/user-authentication). Moreover, you usually want to separate business logic from presentation layer. For real life scenario, we recommend not having any HTML directly in the page and use [Liquid Partials](/developer-guide/pages/reusing-code-across-multiple-pages) for presentation purposes. We recommend to treat Page as controller, which at the end calls one partial to present the view.
+This code runs a GraphQL query to fetch the contact details based on the `id` from the URL. The details are then displayed in a simple layout.
+
+For more information, visit the [Pages](/developer-guide/pages/pages) documentation. In a real-world application, you should ensure that only administrators have access to contact requests, and you should [implement authentication and authorization](/get-started/build-your-first-app/user-authentication). Additionally, you usually want to separate business logic from the presentation layer. We recommend not including HTML directly in the page and using [Liquid Partials](/developer-guide/pages/reusing-code-across-multiple-pages) for presentation purposes. We recommend to treat the Page as a controller, that calls a partial to present the view.
 
 ### Step 5: Build Contact Form with HTML
 
-In Step 2: Define GraphQL to persist record in `contact` table , you have created a GraphQL file called `contacts/create` (which corresponds to the relative path of the file in `graphql` directory). In this step we will build a form, which allows the user to submit their contact request information . Add a new page `app/views/pages/contacts/new.liquid`
+In Step 2, we created a GraphQL file named `contacts/create`, which corresponds to the relative path of the file in `graphql` directory. Now, we'll build an HTML form to allow users to submit their contact request information. Create a new page in `app/views/pages/contacts/new.liquid` with the following content:
 
 ```liquid
 {% raw %}
@@ -186,11 +193,17 @@ In Step 2: Define GraphQL to persist record in `contact` table , you have create
 {% endraw %}
 ```
 
-{% include 'alert/note', content: 'Authenticity token is used to prevent CSRF. We include it in the example because while working on platformOS developers tend to forget about it and as soon as they add authentication, their session is invalidated after submitting the form. You can read more about it in chapter about [User Authentication](/get-started/build-your-first-app/user-authentication).' %}
+Each form field is marked as `required` to ensure that users provide the necessary information before submitting the form.
 
-### Step 6: Invoking GraphQL server-side
+This piece of code ensures that the contact form is both functional and secure, integrating with the previously defined GraphQL mutation to handle the submission and persistence of contact data.
 
-In the previous step we have implemented a form, which uppon submission triggers POST request to /contacts endpoint. Form values will be accessible via `context.params`. Because we have namespaced all input names, the values submitted by the user will be available via `context.params.contact` (i.e. context.params.contact.name will return value the User has entered). First, we have to create a Page, which will be invoked for the form submission:
+{% include 'alert/note', content: "Authenticity token is used to prevent Cross-Site Request Forgery (CSRF) attacks. It's included to ensure that form submissions are coming from authenticated users. If you don't include it, users might face session invalidation issues after submitting the form. You can learn more about it in chapter about [User Authentication](/get-started/build-your-first-app/user-authentication)." %}
+
+### Step 6: Invoking GraphQL Server-Side
+
+In the previous step, we created a form that, upon submission, triggers a POST request to the  `/contacts` endpoint. The form values will be accessible via [context.params](/api-reference/liquid/platformos-objects#context-params). Since we namespaced all input names, the values submitted by the user will be available through `context.params.contact`. For example, `context.params.contact.name` will return the value entered by the user.
+
+First, we need to create a page  that will be invoked for the form submission:
 
 ##### app/views/pages/contacts/create.liquid
 ```yml
@@ -209,11 +222,13 @@ method: post
 {% endraw %}
 ```
 
-After submitting the form from Step 5, the browser will trigger a request to POST /contacts. platformOS via [graphql Liquid Tag](/api-reference/liquid/platformos-tags#graphql) will invoke the `contacts/create` GraphQL mutation with the parameter mapping that was defined (graphql Email argument will have a value equal to `context.params.contact.email` etc.). After invoking GraphQL, we'll redirect the user to `/contacts/<id>`, where id will be the value of the newly created record.
+After submitting the form from Step 5, the browser will send a POST request to `/contacts`. platformOS, via the [GraphQL Liquid Tag](/api-reference/liquid/platformos-tags#graphql), will invoke the `contacts/create` GraphQL mutation using the parameter mapping that was defined (e.g., the GraphQL `email` argument will have a value equal to `context.params.contact.email`).
 
-{% include 'alert/note', content: 'Providing manual mapping for each argument in GraphQl can be cumbersone, this is why there is a magic `args` argument defined. You can achieve the same result by using `graphql g = "contacts/create", args: context.params.contact`.' %}
+Once the GraphQL mutation is invoked, the user will be redirected to `/contacts/<id>`, where `id` is the value of the newly created record.
 
-To verify that everything works as expected, go to /contacts/new in your instance, fill the form and hit submit. You should be redirect to the `show` Page defined in Step 4 and you should be able to see the information you have submitted in the form. You should also see the new entry in /contacts page.
+{% include 'alert/note', content: "Providing manual mapping for each argument in GraphQL can be cumbersome. That's why there's a convenient `args` argument available. You can achieve the same result by using `graphql g = "contacts/create", args: context.params.contact`." %}
+
+To confirm that everything works as intended, navigate to `/contacts/new` in your instance, complete the form, and submit it. You should be redirected to the `show` Page defined in Step 4, where you can review the information you submitted in the form. Furthermore, the new entry should be visible on the `/contacts` page.
 
 {% include 'alert/note', content: 'In practical scenarios, it's important to validate user data, for example to prevent submitting a contact request without providing an email. We recommend using our [pos-module-core](https://github.com/Platform-OS/pos-module-core), which  implements a comprehensive set of common validators. Additionally, it provides guidelines for code architecture.' %}
 
