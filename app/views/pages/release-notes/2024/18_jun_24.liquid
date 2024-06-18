@@ -1,0 +1,39 @@
+---
+converter: markdown
+metadata:
+  title:  Admin_asset_update_all mutation, fixes and improvements
+  description: June 18, 2024
+  skip_contribute_button: true
+  last_edit: false
+slug: release-notes/18-JUN-24
+---
+
+#### {{ page.metadata.description }}
+
+<h4 class="release-note release-note__new">NEW</h4>
+
+* New instance feature flag `validations_for_graph_queries` which adds more validations for GraphQL queries
+* New `admin_asset_update_all` mutation which allows updating `manually_managed` for assets
+
+<h4 class="release-note release-note__improved">IMPROVED</h4>
+
+* Add sorting for `admin_background_jobs` GraphQL query
+* Improve deploy/sync performance for large schemas
+* Improve performance of filtering by `related_records`
+* Make remove newlines optional in `html_to_text`
+* Make `is_json_valid` less strict to avoid doing multiple checks
+* Skip `manually_managed` when building asset hash
+* More descriptive error when trying to download a module which has not been installed yet
+* Allow overrides for markdown
+* Filter and sort by `virtual_deleted_at` for `admin_assets` queries
+* Allow nil for array compact
+
+
+<h4 class="release-note release-note__fixed">FIXED</h4>
+
+* Allow only one instance dump per time for given instance
+* Fix legacy page router (`exact_match` set to false) for complex scenarios
+* Improve documentation formatting for legacy router
+* Remove misleading warning of ElasticSearch mapping issue
+* Fix filtering by `source_name` for non-RUNNING sidekiq jobs
+* Make `current_user` GraphQL query accessible in a context of WebSockets
