@@ -17,6 +17,7 @@ slug: release-notes/10-JUL-24
 * New `app/config.yml` option - `default_layout` (currently it's `application`) - allows to specify default layout for all pages, accepts liquid
 * New `app/config.yml` option - `reject_null_geojson_coordinates` - raises validation error for null GeoJSON coordinates
 * Attribute `_index_update` added to `records_update_all` mutations to be able to keep `customizations` in sync
+* api_call_send has a new attribute - `internal`, which allows to invoke API calls to itself or another instance (which is on the same stack), without being counted as an actual API call (the implementation is closer to `render`/`function` tag)
 
 <h4 class="release-note release-note__improved">IMPROVED</h4>
 
