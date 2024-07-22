@@ -94,9 +94,7 @@ Add the following to your `app/views/pages/contacts/create.liquid` file:
 {% endraw %}
 
 {% raw %}
-The `{% if contact.errors.email != blank %}` block checks if there are any errors related to the email field.
-
-Since the errors are stored in an array, we use the `join` filter . The `&lt;p>{{ contact.errors.email | join: ', ' }}&lt;/p>` line displays these errors as a comma-separated list.
+The `{% if contact.errors.email != blank %}` block checks if there are any errors related to the email field. Since the errors are stored in an array, we use the `join` filter. The `<p>{{ contact.errors.email | join: ', ' }}</p>` line displays these errors as a comma-separated list.
 {% endraw %}
 
 Similarly, for the message body field:

@@ -10,9 +10,13 @@ converter: markdown
  
 Now, if you fill in the form and there are no errors in the logs, you can see that nothing is rendered. This is expected as we haven't instructed the system to display anything yet.
 
-**Note:**
 
-In platformOS, you can display data using double curly brackets {% raw %}{{ }}{% endraw %} for output, or dedicated tags like {% raw %}{% print %}{% endraw %}` and `{% raw %}{% echo %}{% endraw %}`.
+In platformOS, you can display data using double curly brackets `{% raw %}{{ }}{% endraw %}` for output, or dedicated tags like `{% raw %}{% print %}{% endraw %}` and `{% raw %}{% echo %}{% endraw %}`.
+  
+- **Double Curly Brackets `{% raw %}{{ }}{% endraw %}`**: Used for rendering variables directly in your templates.
+- **`{% print %}`**: Outputs content to the template and is often used for debugging. Read our documentation about [print](https://documentation.platformos.com/api-reference/liquid/platformos-tags#print).
+- **`{% echo %}`**: Similar to `print`, but with subtle differences in context handling. Read our documentation about [echo](https://documentation.platformos.com/api-reference/liquid/theme#echo).
+  
 
 ## Invoke the Check Command
 
@@ -46,7 +50,7 @@ Typically, when working with commands, you might overwrite the `object`. For now
 ```
 {% endraw %}
 
-The LSP tells you that `commands/contacts/create/check` is blank, so let’s create the check command as the next step.
+The Language Server Protocol (LSP) tells you that `commands/contacts/create/check` is blank, so let’s create the check command as the next step.
 
 ## Create the Check Command
 

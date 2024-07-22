@@ -171,7 +171,7 @@ If the `contact_after_validation` object is valid, the execute command is invoke
 
 Then the final result after execution is returned.
 
-If you try it, now the invalidation won’t work – it just won't work partially. For the happy path, when the user submits the input correctly, everything will be fine. However, when the user provides invalid input, we'll still try to `return contact_after_execute`, even though we've never reached this point because `contact_after_validation.valid` is `false` in this scenario. This means we'll return `null`, losing information about validation error messages and the original user input.
+If you try it, the invalidation won't work correctly. For valid inputs, when the user submits the form, everything will function as expected. However, for invalid inputs, the system will still attempt to `return contact_after_execute` even though it hasn't reached that point because `contact_after_validation.valid` is `false` in this scenario. This means we'll end up returning `null`, which results in losing information about validation error messages and the original user input.
 
 A way to fix it would be by returning the correct variable if `valid` is false: 
 

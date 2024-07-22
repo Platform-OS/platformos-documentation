@@ -33,7 +33,7 @@ Hello {{ context.params }}
 
 This file sets up a POST endpoint and will display the parameters submitted with the form.
 
-We are going to explain what {% raw %}``{{ context.params }}``{% endraw %} is soon, in the [Understanding context.params](/get-started/contact-us-tutorial/understanding-context-params#understanding-raw-context-params-endraw) chapter.
+We are going to explain what {% raw %}`{{ context.params }}`{% endraw %} is soon, in the [Understanding context.params](/get-started/contact-us-tutorial/understanding-context-params#understanding-raw-context-params-endraw) chapter.
 
 ## Test the endpoint
 
@@ -56,13 +56,13 @@ This is where we need to talk about {% raw %}`{{ context }}`{% endraw %}, which 
 
 ## Understanding {% raw %}{{ context }}{% endraw %}
 
-{% raw %}{{ context }}{% endraw %}  is a global [object](api-reference/liquid/types#hash-object) accessible in every [Liquid](/api-reference/liquid/introduction) file of the project. This includes [pages, partials and layouts](/developer-guide/platformos-workflow/directory-structure#views-pages-layouts-and-partials), as well as [Email, SMS, and API Call Notifications](/developer-guide/notifications/notifications/developer-guide/notifications/notifications). It is the only predefined [object](/api-reference/liquid/types#hash-object) that you will use when working with platformOS. This is because you are able to create your own [Objects](/api-reference/liquid/types#hash-object).
+{% raw %}`{{ context }}`{% endraw %} is a global [object](api-reference/liquid/types#hash-object) accessible in every [Liquid](/api-reference/liquid/introduction) file of the project. This includes [pages, partials and layouts](/developer-guide/platformos-workflow/directory-structure#views-pages-layouts-and-partials), as well as [Email, SMS, and API Call Notifications](/developer-guide/notifications/notifications/developer-guide/notifications/notifications). It is the only predefined [object](/api-reference/liquid/types#hash-object) that you will use when working with platformOS.
 
 {% include 'alert/note', content: 'Read more about context in the [Liquid - platformOS Objects](/api-reference/liquid/platformos-objects#context) documentation.' %}
 
 ## Understanding {% raw %}{{ context.params }}{% endraw %}
 
-One of the properties of the global {% raw %}{{ context }}{% endraw %} object is `params`, which captures all parameters sent to the endpoint. This includes form data, query parameters, and other request details. In our example, {% raw %}{{ context.params }}{% endraw %} helps us see exactly what data is being sent to the `/contacts/create` endpoint.
+One of the properties of the global {% raw %}`{{ context }}`{% endraw %} object is `params`, which captures all parameters sent to the endpoint. This includes form data, query parameters, and other request details. In our example, {% raw %}`{{ context.params }}`{% endraw %} helps us see exactly what data is being sent to the `/contacts/create` endpoint.
 
 When working with form submissions and URL parameters in platformOS, `context.params` is a key concept to understand. It allows you to access the parameters that users submit, and these parameters can be extracted and used within your Liquid templates to dynamically handle user input. Let's dive into how you can use context.params.
 
@@ -70,7 +70,9 @@ When working with form submissions and URL parameters in platformOS, `context.pa
 
 ## Adding parameters to your template
 
-The following sections are not part of the main task; they are provided for demonstration purposes. However, we recommend following along and using the code snippets to gain a better understanding of this concept. If you understand how context.params work already, skip this chapter and continue from [Using context.params](/get-started/contact-us-tutorial/understanding-context-params#using-context-params-in-the-create-liquid-file).
+Understanding how to work with parameters in platformOS is crucial for building dynamic and responsive web applications. Parameters allow you to pass data between different parts of your application, enabling more complex interactions and behaviors.
+
+This subchapter demonstrates how to access and use parameters in a Liquid template. While the concepts of parameters might be basic web development knowledge, there are platformOS-specific details and we recommend following along and using the code snippets to gain a better understanding of this concept. If you understand how `context.params` work already, skip this chapter and continue from [Using context.params](/get-started/contact-us-tutorial/understanding-context-params#using-context-params-in-the-create-liquid-file).
 
 First, let's see how parameters can be accessed in a Liquid template. In the previous step, we added 
 
@@ -233,7 +235,7 @@ My parameters: ["1","2"]
 {% # TODO: check size %}
 <img loading="lazy" class="w-full" src="{{ 'images/get-started/contact-us-tutorial/parameters_arr.png' | asset_url }}" alt="Displaying array parameters">
 
-When you access `{% raw %}{{ context.params.arr }}{% endraw %}`, platformOS retrieves the array associated with the `arr` key. In this case, the array contains the values `1` and `2`.
+When you access {% raw %}`{{ context.params.arr }}`{% endraw %}, platformOS retrieves the array associated with the `arr` key. In this case, the array contains the values `1` and `2`.
 
 
 ## Clean up your code 
@@ -335,7 +337,7 @@ These nested names create a structured JSON object within `context.params` under
 
 ## Test the form
 
-Now that we've added `{% raw %}{{ context.params.contact }}{% endraw %}` to our template, let's test the form by submitting it with test data.
+Now that we've added {% raw %}`{{ context.params.contact }}`{% endraw %}` to our template, let's test the form by submitting it with test data.
 
 {% # TODO: check size %}
 <img loading="lazy" class="w-full" src="{{ 'images/get-started/contact-us-tutorial/contactus_test_context_param_contect.gif' | asset_url }}" alt="Testing the form with context parameters">
@@ -346,6 +348,6 @@ If the user enters test@test.com for the email and Test message for the body, th
 Hello {"email":"test@test.com","body":"Test message"}
 ```
 
-{% include 'alert/tip', content: 'Using `context.params.contact`, you can efficiently process the user contact information, making it easier to implement further business logic and validation.' %}
+{% include 'alert/tip', content: 'Using `context.params.contact` allows you to group related parameters under a single namespace. This way, you can access specific fields with a clearer and more organized syntax, such as `context.params.contact.email` and `context.params.contact.name`, instead of `context.params.contact_email` and `context.params.contact_name`. This improves code readability and maintainability.' %}
 
 {% render 'alert/next', content: 'Understanding and Using Context', url: '/get-started/contact-us-tutorial/understanding-context-params' %}

@@ -50,6 +50,19 @@ Your folder structure should look like this:
                   └── check.liquid
   </code></pre>
 
+This folder structure is designed to keep your project organized, easy to maintain, and scalable.
+  
+1. **`lib` Directory**: This directory holds all your custom libraries and business logic. By placing your commands here, you keep the core logic separate from the views, making the codebase cleaner and easier to manage.
+  
+2. **`commands` Directory**: Commands are specific actions or operations that can be invoked. Having a dedicated `commands` directory helps in grouping all such operations together, making them easy to find and modify.
+  
+3. **`contacts` Directory**: This directory is specifically for commands related to the `contacts` functionality. Grouping related commands in their own directories prevents clutter and makes it easier to locate the relevant files.
+  
+4. **`create.liquid` File**: This file acts as an entry point for the create operation. It coordinates the different steps involved in creating a contact, such as building the contact object, validating it, and executing the creation.
+  
+5. **Nested `create` Directory**: Inside the `contacts` directory, the `create` subdirectory contains the specific steps (build, check, etc.) involved in the create operation. This separation of steps into individual files keeps each file simpler and easier to test.
+  
+By structuring your project this way, each piece of functionality is contained in its own module, promoting reuse and reducing the risk of conflicts. This approach also makes it easier for multiple developers to work on the project simultaneously without interfering with each other.
 
 ### Using the `function` tag 
 
@@ -78,7 +91,7 @@ method: post
 
 In our example, `contact` is the variable that will store the result of the function.
 
-To use it, you need to make sure that the partial returns data using the `return` tag. If you're using an editor that supports LSP, you can explore examples and get more details about the function tag there.
+To use it, you need to make sure that the partial returns data using the `return` tag. If you're using an editor that supports Language Server Protocol (LSP), you can explore examples and get more details about the function tag there.
 
 {% # TODO: check size %}
 <img loading="lazy" class="w-full" src="{{ 'images/get-started/contact-us-tutorial/function_lsp_help.png' | asset_url }}" alt="LSP support for function tag">
@@ -98,7 +111,7 @@ You can see that LSP complains about invalid syntax for the `function` tag, and 
 ```
 {% endraw %}
 
-To use a `function` tag, you need to specify the path to the partial file that contains the code you want to execute. The next step is to provide this path. You can use LSP to autocomplete the path, so you don’t need to type it manually. In our example, the path leads to the `app/lib/commands/contacts/create`.liquid` file:
+To use a `function` tag, you need to specify the path to the partial file that contains the code you want to execute. The next step is to provide this path. You can use LSP to autocomplete the path, so you don’t need to type it manually. In our example, the path leads to the `app/lib/commands/contacts/create.liquid` file:
 
 #### app/views/pages/contacts/create.liquid
 
@@ -113,6 +126,8 @@ method: post
 {% endraw %}
 
 Inside the `app/views/pages/contacts/create.liquid` file, we have Liquid code that uses the `function` tag. This tag evaluates the code from `app/lib/commands/contacts/create.liquid`. This is how you invoke the function.
+
+You don't need to specify the 'lib' directory when using the `function` tag because it automatically knows where to look for the specified file. This simplifies the code and reduces the need for redundant path specifications.
 
 ## Provide arguments to the function
 
@@ -137,15 +152,31 @@ Here, we pass `context.params.contact` as the `object` argument. This object con
 
 You might notice that LSP complains that the `contact` variable is never used and we have an unused `object` argument. This is true for now, and we will address it in later steps.
 
-## Using the Build Command
+## Understanding Business Logic and Commands
+
+The build/check/execute pattern in platformOS is a structured approach to [handle business logic within commands](https://github.com/Platform-OS/pos-module-core?tab=readme-ov-file#commands--business-logic). This method ensures your code is organized, maintainable, and reusable.
+
+- The **build stage** prepares the input for the command. It normalizes and processes the data received from the user, ensuring it is in the correct format.
+
+- The **check stage** validates the input data. It confirms that all required fields are present, checks for uniqueness, and ensures the data meets specific criteria. If validation fails, it provides detailed error messages.
+
+- The **execute stage** performs the main action of the command, such as saving data to the database. This step only occurs if the validation is successful.
+
+By splitting these stages into separate files, you promote clean, modular, and testable code. This approach also makes it easier for multiple developers to work on the project simultaneously.
+
+We recommend placing your commands in `lib/commands` directory.
+
+The naming conventions that we use are `<resource>/<action>`, for example, `contacts/create.liquid`.
+
+Commands are designed to be easily executed as background jobs [heavy commands - external API call, expensive operations computations, reports]. Each command might produce an [Event](https://github.com/Platform-OS/pos-module-core?tab=readme-ov-file#events).
+
+## Set up a Build Command
 
 As the next step, we want to use a build command in the `app/lib/commands/contacts/create/build.liquid` file.
 
 The build command is an essential part of the data processing workflow. It allows you to normalize and prepare data before it is stored or used further in your application. By defining a build command, you can manipulate incoming data, perform validations, and ensure the data meets your application's requirements. This is especially useful for tasks like cleaning up user input, setting default values, and enforcing data consistency.
 
 Build commands are defined in Liquid templates and typically involve transforming and returning JSON objects. This process ensures that your data is well-structured and ready for subsequent operations or storage.
-
-## Set up a Build Command
 
 To set up a build command, you don’t need to write the code from scratch. Let’s use the dummy build command from the [core module documentation](https://github.com/Platform-OS/pos-module-core?tab=readme-ov-file#build).
 
@@ -201,8 +232,6 @@ The `parse_json contact` tag parses the JSON object (email and body) into a vari
 Inside the JSON object, we transform `object.email` to lowercase and ensure it is properly formatted as JSON.
 
 Every function needs to `return` an object. In this case, the function takes user parameters, processes them (downcasing the email), and returns an object with the email and body properties.
-
-For the body, we don’t need to do anything.
 
 ## Invoking the function
 

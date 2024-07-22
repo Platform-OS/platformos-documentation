@@ -5,9 +5,17 @@ metadata:
 converter: markdown
 ---
 
-In the next step, we'll create an event to send a simple static email confirmation to the user once their contact request has been received. 
+In the next step, we need to ensure that once a user submits their contact information, they receive a simple static email confirmation acknowledging that their contact request has been received. This is where **Events** come into play.
 
-Events in platformOS allow you to record that something has happened in the system. Think of them as notes that document these occurrences. Events are stored using GraphQL mutations and can include various arguments detailing the specifics of what happened.
+## About Events
+
+**Events** in platformOS allow you to record that something has happened in the system. Think of them as logs that capture these actions. When an event occurs, other parts of the application might need to react to it. These events are stored using GraphQL mutations and can include various arguments detailing the specifics of what happened.
+
+### Practical Uses of Events
+
+- **Form Submissions**: When a user submits a contact form, an event can log this action and trigger follow-up actions such as sending a confirmation email or updating a CRM system.
+- **Data Processing Completion**: Once a background job processes data, an event can signal completion, notifying other systems or updating the user interface to reflect the new data.
+- **Real-Time Updates**: Events can send real-time notifications to users, such as alerts for new messages, status updates, or system alerts.
 
 {% include 'alert/note', content: 'For further details, refer to the core module’s documentation about [Events](https://github.com/Platform-OS/pos-module-core?tab=readme-ov-file#events).' %}
 
@@ -64,7 +72,7 @@ With the contact ID, you can
 
 Modify the code to the following:
 
-#### app/lib/events//contact_created.liquid
+#### app/lib/events/contact_created.liquid
 
 {% raw %}
 ```liquid
@@ -168,7 +176,7 @@ Paste the copied code into your `app/lib/commands/contacts/create.liquid` file. 
 
 ## Understanding the publish function
 
-The `publish` function in platformOS serves to create and store events, allowing you to track and respond to significant actions in your application.
+The `publish` function in the [platformOS core module](https://github.com/Platform-OS/pos-module-core) serves to create and store events, allowing you to track and respond to significant actions in your application.
 
 It operates in the background, ensuring it doesn't block the main execution flow. This means that while your application continues to run, the event is logged in parallel.
 
