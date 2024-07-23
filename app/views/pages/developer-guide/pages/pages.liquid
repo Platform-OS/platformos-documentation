@@ -17,6 +17,8 @@ You are able to use named parameters in the slug. For example, a slug `projects/
 
 For optional parameters, use `(/:optional)` syntax. For example, `/search(/:country)(/:city)` will resolve all three types of URLs: `/search` (`context.params.country` and `context.params.city` will be nulls), `/search/Poland` (`context.params.country` will be `Poland`) and `/search/Poland/Warsaw` (`context.params.country` will be `Poland` and `context.params.city` will be `Warsaw`).
 
+You can match any remaining part of the slug with wildcard `*` - for example, a slug `search/*category` will resolve all URLs that start with search and the remaining part will be available via `context.params.category` - for example, for `/search/my/nested/category` the value of `context.params.category` will be `my/nested/category`. It will however not resolve `/search` without any parameter. To make the category optional in this example, wrap the wildcard in the brackets - `search(/*category)`.
+
 For backwards compatibility, named parameters will be also available at corresponding `slug` name.
 
 ## Page configuration
@@ -88,7 +90,7 @@ subdomain: subdomain1
 <h1>Page with domain</h1>
 ```
 
-The page will match the current request and will be displayed only if the specified subdomain matches the subdomain of the request. You can specify any number of subdomain parts and the system will attempt to match the subdomains of the request from left to right. 
+The page will match the current request and will be displayed only if the specified subdomain matches the subdomain of the request. You can specify any number of subdomain parts and the system will attempt to match the subdomains of the request from left to right.
 
 This means `subdomain: subdomain1.example2.example3` will match a request coming in for the domain `subdomain1.example2.example3.site.com`. `subdomain: site` will match a request coming in for the domain `site.com`.
 
