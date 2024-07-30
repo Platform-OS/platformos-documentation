@@ -92,7 +92,7 @@ The last thing left to do is to create a Page to render a registration form to t
 </form>
 ```
 
-{% include 'alert/tip', content: 'platformOS automatically takes care of <a href="Cross Site Request Forgery (CSRF)">Cross Site Request Forgery (CSRF)</a> attacks by invalidating sessions upon receiving a POST request without authenticity token. If you experience automatic user log out after making a POST request (including XHR requests!), most likely it means you have forgotten to send `authenticity_token` either via a hidden input, as in the example above, or as a Header' %}
+{% include 'alert/tip', content: 'platformOS automatically takes care of <a href="https://owasp.org/www-community/attacks/csrf">Cross Site Request Forgery (CSRF)</a> attacks by invalidating sessions upon receiving a POST request without authenticity token. If you experience automatic user log out after making a POST request (including XHR requests!), most likely it means you have forgotten to send `context.authenticity_token` as a hidden input with `authenticity_token` name, as in the example above, or in the `X-CSRF-Token` Header' %}
 
 
 ### Testing the flow
