@@ -2,7 +2,7 @@
 converter: markdown
 metadata:
   title: Modules
-  description: Modules allow code reuse and sharing, while protecting the IP of creators.
+  description: Modules allow code reuse and sharing while protecting the IP of creators.
   toc: true
 ---
 
@@ -26,11 +26,11 @@ modules
 
 `public` and `private` directories have the same structure as the standard `app` folder, but if developers try to download or preview files after the module has been deployed to an Instance, they will only be able to access the files from the `public` folder.
 
-In general, when referencing files that are part of a module, platformOS uses a prefix which does not include any `public` or `private` folders (for example: `modules/admin/app.css` instead of `modules/admin/private/app.css`). This means that creators should not create files with the same name in both folders, as one will overwrite the other. This behavior gives creators flexibility: if they want to change the scope of the file, they can move it between the private and public folders without changing the code.
+In general, when referencing files that are part of a module, platformOS uses a prefix that does not include any `public` or `private` folders (for example: `modules/admin/app.css` instead of `modules/admin/private/app.css`). This means that creators should not create files with the same name in both folders, as one will overwrite the other. This behavior gives creators flexibility: if they want to change the scope of the file, they can move it between the private and public folders without changing the code.
 
 You can create an Instance and deploy the code as you would usually do, and you still can have the `app` folder on the top level (this code will not be part of the module but you can use it while developing).
 
-This mechanism allows creators to share their module code, make it configurable (by code in the `public` folder), but still protect the IP in the `private` folder.
+This mechanism allows creators to share their module code, and make it configurable (by code in the `public` folder), but still protect the IP in the `private` folder.
 
 ### Example: Module directories
 
@@ -55,10 +55,10 @@ To avoid conflicts between the code of a module and regular code (or between mod
 
 The general rule of accessing files in modules is to prefix paths with `modules/MODULE_NAME`. Keep in mind that skipping resource type applies just like it does without modules. This means that when you access a `partial`, you type a path to it as if you were in the partials directory.
 
-When you use app: `app/views/partials/users/settings/name.liquid`
+When you use the app: `app/views/partials/users/settings/name.liquid`
 Is accessed by path: `users/settings/name.liquid`
 
-When you use module: `modules/admin/public/views/partials/users/settings/name.liquid`
+When you use the module: `modules/admin/public/views/partials/users/settings/name.liquid`
 Is accessed by path: `modules/admin/users/settings/name.liquid`
 
 The only difference is the prefix.
@@ -67,7 +67,7 @@ The only difference is the prefix.
 
 ### Assets
 
-You can access assets placed at `assets` directory in a module using [asset_url](/api-reference/liquid/platformos-filters#asset_url) filter.
+You can access assets placed in the `assets` directory in a module using the [asset_url](/api-reference/liquid/platformos-filters#asset_url) filter.
 
 Paths for those files are prefixed with `modules/MODULE_NAME`
 
@@ -143,7 +143,7 @@ true
 {% endraw %}
 ```
 
-Within page/form it is referenced with a prefix:
+Within the page/form, it is referenced with a prefix:
 
 ```yaml
 authorization_policies:
@@ -152,7 +152,7 @@ authorization_policies:
 
 ##### graphql Query
 
-Query looks like any other query:
+The query looks like any other query:
 
 ##### modules/admin/public/graphql/get_blog_instance.graphql
 
