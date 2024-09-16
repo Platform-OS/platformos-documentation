@@ -40,15 +40,15 @@ What you’ll need:
 
 * [pos-cli](https://documentation.platformos.com/get-started/installation-and-configuration/#install-pos-cli)
 
-### 4. Setup IDE - platformos-check
+### 4. Setup IDE - for platformos-check
 
-The [platformos-check](https://github.com/Platform-OS/platformos-check) is is a tool that helps you follow platformOS recommendations & best practices by analyzing the Liquid inside your app.
+The [platformos-check](https://github.com/Platform-OS/platformos-check) is a tool that helps you follow platformOS recommendations & best practices by analyzing the Liquid inside your app.
 
 What you’ll need:
 
 * If you use VSCode - [platformOS Liquid Extension](https://marketplace.visualstudio.com/items?itemName=platformOS.platformos-check-vscode)
   * Windows - the extension will work out of the box, as all the dependencies - [Ruby](https://www.ruby-lang.org/en/) and [platformOS Check](https://github.com/Platform-OS/platformos-check) are included via included executable file
-  * Other system - must [manually install Ruby and platformOS Check](https://github.com/Platform-OS/platformos-check?tab=readme-ov-file#installation)
+  * Other systems - must [manually install Ruby and platformOS Check](https://github.com/Platform-OS/platformos-check?tab=readme-ov-file#installation)
 * If you use Vim, Emacs or anything else
   * [manually install Ruby and platformOS Check](https://github.com/Platform-OS/platformos-check?tab=readme-ov-file#installation)
   * platformOS check is implemented using [Language Server Protocol](https://microsoft.github.io/language-server-protocol/overviews/lsp/overview/), follow instructions of how to use LSP servers in your editor. For example, for Vim you can use [coc.vim](https://github.com/neoclide/coc.nvim) and configure it:
@@ -75,24 +75,30 @@ What you’ll need:
 
 Please note that `platformos-check` is automatically available as a CLI tool, which is capable to auto-correct some of the offenses, use in CI and configure to meet your needs, including writing your own checks. Learn more about [platformOS check Configuration](https://documentation.platformos.com/developer-guide/platformos-check/platformos-check)
 
-### 5. Setup IDE - GraphQL
+### 5. Setup IDE - for GraphQL
 
-There are many existing extensions that offer GraphQL autocomplete and other features, for example [GraphQL extension for VSCode](https://marketplace.visualstudio.com/items?itemName=orsenkucher.vscode-graphql).
+To work efficiently with GraphQL in platformOS, it's recommended to use an IDE that supports **GraphQL autocomplete**, syntax highlighting, and other features. One popular choice is the [GraphQL extension for VSCode](https://marketplace.visualstudio.com/items?itemName=orsenkucher.vscode-graphql).
 
-What typically you’ll need:
+**What you’ll typically need**:
 
-* up to date platformOS [schema.graphql](https://deidcfp1yn7c2.cloudfront.net/platform_docs/d1d4bd8823298e9960442d489b5937ca0a78107a/schema.graphql) file placed in your project root.
-* `.graphqlrc.yml` configuration file, for example
+1. **platformOS Schema**:  
+   You’ll need to download and place the **platformOS `schema.graphql`** file in your project’s root directory. This file contains all the GraphQL types, queries, and mutations available in platformOS, allowing your IDE to provide accurate autocompletion and validation.  
+   - [Download the platformOS schema.graphql](https://deidcfp1yn7c2.cloudfront.net/platform_docs/d1d4bd8823298e9960442d489b5937ca0a78107a/schema.graphql)
 
-```graphql
-schema: 'schema.graphql'
-extensions:
-  languageService:
-    cacheSchemaFileForLookup: true
-documents: ['**/*.{graphql}']
-```
+2. **GraphQL Configuration File**:  
+   In your project, create a `.graphqlrc.yml` configuration file. This file tells your IDE where to find the schema and how to handle GraphQL documents.
 
-The above configuration most likely will work, however please check the detailed instructions of the GraphQL extension of your choice to leverage its full potential.
+   Here's an example configuration that works with most GraphQL extensions:
+
+   ```yaml
+   schema: 'schema.graphql'
+   extensions:
+     languageService:
+       cacheSchemaFileForLookup: true
+   documents: ['**/*.{graphql}']
+   ```
+
+{% include 'alert/note', content: 'While the above configuration should work for most cases, always check the specific instructions for the **GraphQL extension** you are using. Each extension may have additional features or configurations you can leverage for better performance and ease of use. We also recommend regularly updating your `schema.graphql` file to ensure you have the latest features and queries available in platformOS.' %}
 
 ## Development
 
@@ -112,13 +118,13 @@ Based on the project’s size, scope, or requirements, stages from the above wor
 
 You develop your site (write code) in your **codebase in your local environment**. By syncing to your developer Instance you check your changes in real time. The `pos-cli sync` command enables sync mode: it keeps track of changes on your local environment, and sends files that have been changed to the server. It only sends files that have changed after sync was started. It feels like working on localhost. It is recommended to use sync only for staging environments, as pushing changes immediately to production can be dangerous.
 
-Once you have a release candidate, you can deploy it to your **staging site**. You can use the staging site for testing, review, QA or UAT.
+Once you have a release candidate, you can deploy it to your **staging site**. You can use the staging site for testing, review, QA, or UAT.
 
 If everything works as expected on staging, you can deploy your changes to your **production site**, your live site accessible to visitors.
 
-{% include 'alert/note', content: 'We recommend using a **version control system**. Internally, we use [GitHub](https://github.com/) to host and collaborate on our [git](https://git-scm.com/about) repositories. You can choose other version control systems, or decide to go without any: all that is required is your codebase and an Instance you can sync/deploy to.' %}
+{% include 'alert/note', content: 'We recommend using a **version control system**. Internally, we use [GitHub](https://github.com/) to host and collaborate on our [Git](https://git-scm.com/about) repositories. You can choose other version control systems, or decide to go without any: all that is required is your codebase and an Instance you can sync/deploy to.' %}
 
-It is recommended that all developers have their own development instance, similarly to how they have their local versions. You keep source code in git. Only production ready code goes into the master branch and you deploy the code from master to production.
+It is recommended that all developers have their own development instance, similarly to how they have their local versions. You keep source code in Git. Only production ready code goes into the master branch and you deploy the code from master to production.
 
 This is a diagram of our recommended development workflow:
 
