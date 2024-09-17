@@ -1,0 +1,65 @@
+---
+converter: markdown
+metadata:
+  title: Developing a new Module
+  description: This guide will help you develop a new module.
+---
+
+This guide will help you develop and publish a new module.
+
+## Developing a standalone Module
+
+### General guidelines
+
+We recommend treating each module as a standalone application. Thanks to the [Module Directory Structure](https://documentation.staging.oregon.platform-os.com/developer-guide/modules/modules#directory-structure), you can deploy your module to a [platformOS Instance](/developer-guide/glossary#instance).
+
+In this repository, we recommend creating an example application which uses your module, in the `app` directory. This directory will not be part of a module, however it can serve multiple purposes - writing e2e tests for the module, adding some sample code to make it easier for developers to integrate your module, etc.
+
+For consistency reasons, we recommend using best practices, conventions and architecture patterns introduced in [Core Module](/developer-guide/modules/platformos-modules/core).
+
+{% render "alert/warning", content: "Remember to add `.pos` to `.gitignore` to avoid token leak!" %}
+
+### Defining a module using template-values.json
+
+What distinguish a regular platformOS application from a module is a `template-values.json` file. You can place it either in the project root directory, or in the `modules/<your module name>`. We recommend choosing the first option.
+
+Example `template-values.json` file looks like this:
+
+```json
+{
+  "name": "Pos Module Core",
+  "machine_name": "core",
+  "type": "module",
+  "version": "1.5.3",
+  "dependencies": {}
+}
+
+```
+
+| key   | description  |
+|---|---|
+| name  | it's a name that will be displayed in the [Partner Portal Module Marketplace](https://partners.platformos.com/marketplace/pos_modules)
+| machine_name  | this should correspond to the namespace that you will use for your module; if you choose `foo` as a machine name, we expect to find files in `modules/foo` directory, and the content of this directory will be released as a module archive. Partner Portal will ensure that your chosen machine_name is globally unique, to avoid module conflicts. |
+| version  | specificed the current version, used by `pos-cli modules push` to release a new module version  |
+| dependencies  | you can define dependencies here, in a similar way how they are defined in [app/pos-module.json](/developer-guide/modules/installing-a-module#pos-modules-json-and-app-pos-modules-lock-json), for example if you would like to add core module as a dependency in version &ge; 1.0.0 and &lt; 2.0.0 you would use `"dependencies": { "core": "^1.0.0" }` |
+
+{% capture warning %}
+Because the `machine_name` has to be globally unique, and you will use it to reference all of your files, we recommend you reserve the intended `machine_name` by [Creating a Module in Partner Portal Module Marketplace](/developer-guide/partner-portal/modules/sharing-module#step-2-upload-module-to-the-module-marketplace).
+{% endcapture %}
+  {% render "alert/warning", content: warning %}
+
+## Creating a new module in Partner Portal
+
+Currently, it is not possible to create a new module using pos-cli - you can only push a new release to an existing module. This is why, when you create a new module, you have to go to Partner Portal Module Marketplace and [creating a new Module using the Partner Portal's UI](/developer-guide/partner-portal/modules/sharing-module#step-2-upload-module-to-the-module-marketplace).
+
+## Relasing a new module version
+
+Once you create a new module version in the [Partner Portal Module Marketplace](https://partners.platformos.com/marketplace/pos_modules), you will be able to easily release a new module version. To do it, bump the version in [template-values.json](/developer-guide/modules/developing-a-new-module#defining-a-module-using-template-values-json) based on semantic version (most importantly - increment the major version if you are making backwards incompatible change). After the change, you will be able to push the new version:
+
+```
+pos-cli modules push --email <your partner portal email>
+```
+
+We will ask for your password to authenticate. If successful, the content of the `modules/<machine name>` will be zipped (and stored in `tmp` directory if you would like to review it). It will include all of the directories, so you will be able to also include source code for your frontend assets for example, or [generators](https://github.com/Platform-OS/pos-cli?tab=readme-ov-file#generators) to make it easier to use your module.
+
+All Partner Portal users, who have at least one instance that uses your module, will be notified by email about a new release.

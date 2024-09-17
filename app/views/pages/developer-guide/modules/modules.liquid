@@ -1,16 +1,22 @@
 ---
 converter: markdown
 metadata:
-  title: Modules
+  title: Modules Introduction
   description: Modules allow code reuse and sharing while protecting the IP of creators.
   toc: true
 ---
 
-**Modules** allow code reuse and sharing, while protecting the IP of creators.
+**Modules** allow code reuse and sharing, while optionally protecting the IP of creators by using `private` folder. They can also be used as a namespace, to group various files (graphql, pages, partials etc.) related to a bigger functionality of a project, all in one directory.
+
+## Partner Portal as a Module Registry
+
+Modules can be uploaded to [Modules Marketplace in Partner Portal](https://partners.platformos.com/marketplace/pos_modules) to make the process of installing, downloading and updating them easier. Any module uploaded to Partner Portal will be possible to be installed via `pos-cli modules install` command, and you will be able to download the source code (to browse source code and to leverage [platformos-check](/developer-guide/platformos-check/platformos-check) built-in navigation).
 
 ## Directory structure
 
-In your codebase, the `modules` directory needs to be at the same level as the `app` directory.
+In your codebase, the convention is that `modules` that are external to the application needs to be at the same level as the `app` directory. Application that uses such a module should never modify any of the files. See [Overwritting a module file](#overwritting-a-module-file) to learn about modifying a module file.
+
+Modules that are internal to the application, i.e. they serve as a namespace, should be put inside `app` directory. We'll focus on the external modules, meaning we'll assume that they are installed via `pos-cli modules install` command, and we'll use `app` only for [Overwritting a module file](#overwritting-a-module-file).
 
 Module code can be split into 2 directories to protect IP (Intellectual Property). To create a module, split module code into `public` and `private` folders, and place all that code into the `modules/MODULE_NAME` directory.
 
@@ -26,7 +32,7 @@ modules
 
 `public` and `private` directories have the same structure as the standard `app` folder, but if developers try to download or preview files after the module has been deployed to an Instance, they will only be able to access the files from the `public` folder.
 
-In general, when referencing files that are part of a module, platformOS uses a prefix that does not include any `public` or `private` folders (for example: `modules/admin/app.css` instead of `modules/admin/private/app.css`). This means that creators should not create files with the same name in both folders, as one will overwrite the other. This behavior gives creators flexibility: if they want to change the scope of the file, they can move it between the private and public folders without changing the code.
+In general, when referencing files that are part of a module, platformOS uses a prefix that does not include any `public` or `private` folders (for example: `modules/admin/app.css` instead of `modules/admin/private/app.css`). This means that developers should not create files with the same name in both public and private folders, as one will overwrite the other. This behavior gives creators flexibility: if they want to change the scope of the file, they can move it between the private and public folders without changing the code.
 
 You can create an Instance and deploy the code as you would usually do, and you still can have the `app` folder on the top level (this code will not be part of the module but you can use it while developing).
 
@@ -37,16 +43,43 @@ This mechanism allows creators to share their module code, and make it configura
 An example of module code split into two directories, inside the `modules` directory:
 
 ```shell
-admincms
-├── private
-│   └── graphql
-│       ├── get_records.graphql
-│       └── get_pages.graphql
-└── public
-    └── views
-        └── pages
-            └── admin.liquid
+app
+└── views
+   └── pages
+       ├── index.liquid
+modules
+└── admincms
+     ├── private
+     │   └── graphql
+     │       ├── foo.graphql
+     │       └── bar.graphql
+     └── public
+         └── views
+              └── pages
+                  └── foo.liquid
 ```
+
+## Overwritting a module file
+
+Although not desired, for real life scenarios, it is sometimes necessary to overwrite a module file. If you would like to overwrite a module file, for example `modules/foo/public/views/pages/bar.liquid`, you can do it by creating a new file with the exact same path and placing it inside the `app` directory:
+
+```shell
+app
+└── modules
+    └── foo
+         └── public
+             └── views
+                  └── pages
+                      └── bar.liquid
+modules
+└── foo
+     └── public
+         └── views
+              └── pages
+                  └── bar.liquid
+```
+
+On sync/deploy, platformOS will overwrite the file server side, however in your repository you will still have access to both of the files. When upgrading the modules, you will be able to check which files for which you have created an overwrite have changed and compare those.
 
 ## Namespacing rules
 
@@ -56,10 +89,10 @@ To avoid conflicts between the code of a module and regular code (or between mod
 The general rule of accessing files in modules is to prefix paths with `modules/MODULE_NAME`. Keep in mind that skipping resource type applies just like it does without modules. This means that when you access a `partial`, you type a path to it as if you were in the partials directory.
 
 When you use the app: `app/views/partials/users/settings/name.liquid`
-Is accessed by path: `users/settings/name.liquid`
+It is accessed by path: `users/settings/name.liquid`
 
 When you use the module: `modules/admin/public/views/partials/users/settings/name.liquid`
-Is accessed by path: `modules/admin/users/settings/name.liquid`
+It is accessed by path: `modules/admin/users/settings/name.liquid`
 
 The only difference is the prefix.
 
@@ -190,10 +223,8 @@ But when used in the module code they should be prefixed:
 {% endraw %}
 ```
 
-
-
 ## Related topics
 
 * [Creating a Module](/developer-guide/modules/creating-module)
 * [Sharing a Module](/developer-guide/modules/sharing-module)
-* [Installing a Module](/developer-guide/modules/installing-module)
+* [Installing a Module](/developer-guide/partner-portal/modules/installing-module)
