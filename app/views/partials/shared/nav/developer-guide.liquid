@@ -246,7 +246,7 @@
 </li>
 <li class="{% if cp contains '/developer-guide/modules' %}active{% endif %}">
   <a href="/developer-guide/modules/modules">Modules</a>
-  {% if cp contains 'modules' %}
+  {% if cp contains '/developer-guide/modules' %}
     <ul class="submenu">
       {% include "shared/nav/link", href: "/developer-guide/modules/modules", text: "Modules Introduction" %}
       {% include "shared/nav/link", href: "/developer-guide/modules/installing-a-module", text: "Installing a module" %}
@@ -256,12 +256,18 @@
   {% endif %}
 </li>
 
-<li class="{% if cp contains '/modules/pos-modules' %}active{% endif %}">
+<li class="{% if cp contains '/modules/platformos-modules' %}active{% endif %}">
   <a href="/developer-guide/modules/platformos-modules">platformOS Modules</a>
-  <ul class="submenu">
-    {% include "shared/nav/link", href: "/developer-guide/modules/pos-modules/core", text: "Core Module" %}
-    {% include "shared/nav/link", href: "/developer-guide/modules/pos-modules/user", text: "User Module" %}
-  </ul>
+  {% if cp contains '/developer-guide/platformos-modules' %}
+    <ul class="submenu">
+      {% include "shared/nav/link", href: "/developer-guide/modules/platformos-modules/core", text: "Core Module" %}
+      {% include "shared/nav/link", href: "/developer-guide/modules/platformos-modules/user", text: "User Module" %}
+      {% include "shared/nav/link", href: "/developer-guide/modules/platformos-modules/tests", text: "Tests Module" %}
+      {% include "shared/nav/link", href: "/developer-guide/modules/platformos-modules/openai", text: "OpenAI Module" %}
+      {% include "shared/nav/link", href: "/developer-guide/modules/platformos-modules/data-export-api", text: "Data Export API Module" %}
+      {% include "shared/nav/link", href: "/developer-guide/modules/platformos-modules/components", text: "Components Module" %}
+    </ul>
+  {% endif %}
 </li>
 
 <li class="pt-6 mt-6 mb-2 text-base border-t topic-group border-pos-divider">
