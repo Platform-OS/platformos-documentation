@@ -33,12 +33,12 @@ In both deploy and sync mode, adding templates to module code works the same way
 
 ## Markup
 
-Everything between `<%=` and `=%>` is interpreted as a key to be found in the template configuration file. There is no logic supported, the only available filter is `&`, which unescapes the value provided by the user (by default they are all escaped).
+Everything between `<%=` and `=%>` is interpreted as a key that is looked up in the template configuration file. No logic is supported within the markup. The only available filter is `&`, which unescapes the value provided by the user (by default, all values are escaped).
 
 
 ## Example
 
-If you have a page with this code:
+If you have a page with the following code:
 
 ```yaml
 ---
@@ -49,7 +49,7 @@ layout: modules/contact_form/main
 <h1><%= title =%></h1>
 ```
 
-And a toplevel `template-values.json` with:
+And a top-level `template-values.json` file containing:
 
 ```json
 {
@@ -58,7 +58,7 @@ And a toplevel `template-values.json` with:
 }
 ```
 
-During deploy or sync it will get filled in and sent to the server as:
+During deploy or sync, it will get filled in and sent to the server as:
 
 ```yaml
 ---
