@@ -119,5 +119,5 @@ create app/views/partials/theme/simple/field_error.liquid
 
 We have created a repository to help you easily integrate with GitHub Actions and create a CI/CD pipeline: [ci-repository-reserve-instance-url](https://github.com/Platform-OS/ci-repository-reserve-instance-url).
 
-It provides code that allows you to create a "master instance", and configure it to have access to a pool of instances, on which you will be able to run tests for each open Pull Request. In your CI/CD pipeline, the master instance will be queried to ask for an URL and token to an available instance, will mark it as reserved, and will allow your pipeline to release it as soon as it is no longer needed. The safety-check to automatically release the instance after X minutes is built-in.
+This repository provides code that allows you to create a "master instance" and configure it to have access to a pool of instances. You can then run tests for each open pull request on these instances. In your CI/CD pipeline, the master instance will be queried to ask for an URL and token to an available instance. It will mark the instance as reserved, and your pipeline will be able to release it as soon as it is no longer needed. A built-in safety check automatically releases the instance after a set number of minutes.
 
