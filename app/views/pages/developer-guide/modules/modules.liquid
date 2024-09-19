@@ -8,6 +8,8 @@ metadata:
 
 **Modules** allow code reuse and sharing, while optionally protecting the IP of creators by using `private` folder. They can also be used as a namespace, to group various files (graphql, pages, partials etc.) related to a bigger functionality of a project, all in one directory.
 
+{% include 'alert/note', content: 'By default module files are not deleted during pos-cli deploy/sync to avoid breaking your application in a scenario when module contains private files to which you might not have access. You can change it by adding module name that you want to synchronize with your codebase to `modules_that_allow_delete_on_deploy` in [app/config.yml](/developer-guide/platformos-workflow/directory-structure/config). This behaviour is meant to be improved in the near future.' %}
+
 ## Partner Portal as a Module Registry
 
 Modules can be uploaded to [Modules Marketplace in Partner Portal](https://partners.platformos.com/marketplace/pos_modules) to make the process of installing, downloading and updating them easier. Any module uploaded to Partner Portal will be possible to be installed via `pos-cli modules install` command, and you will be able to download the source code (to browse source code and to leverage [platformos-check](/developer-guide/platformos-check/platformos-check) built-in navigation).
