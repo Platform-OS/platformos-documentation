@@ -6,21 +6,21 @@ metadata:
   toc: true
 ---
 
-**Modules** allow code reuse and sharing, while optionally protecting the IP of creators by using `private` folder. They can also be used as a namespace, to group various files (graphql, pages, partials etc.) related to a bigger functionality of a project, all in one directory.
+**Modules** allow code reuse and sharing, while optionally protecting the Intellectual Property (IP) of creators by using the `private` folder. They can also serve as a namespace to group various files (GraphQL, pages, partials, etc.) related to a larger functionality of a project, all within one directory.
 
 {% include 'alert/note', content: 'By default, module files are not deleted during `pos-cli deploy` or `sync` to avoid breaking your application in cases where a module contains private files to which you might not have access. You can change this by adding the module name you want to synchronize with your codebase to `modules_that_allow_delete_on_deploy` in [app/config.yml](/developer-guide/platformos-workflow/directory-structure/config). This behavior is expected to be improved in the near future.' %}
 
 ## Partner Portal as a Module Registry
 
-Modules can be uploaded to [Modules Marketplace in Partner Portal](https://partners.platformos.com/marketplace/pos_modules) to make the process of installing, downloading and updating them easier. Any module uploaded to Partner Portal will be possible to be installed via `pos-cli modules install` command, and you will be able to download the source code (to browse source code and to leverage [platformos-check](/developer-guide/platformos-check/platformos-check) built-in navigation).
+Modules can be uploaded to the [Modules Marketplace in Partner Portal](https://partners.platformos.com/marketplace/pos_modules) to make the process of installing, downloading, and updating them easier. Any module uploaded to Partner Portal can be installed via the `pos-cli modules install` command, and you will be able to download the source code (both to browse the source code and to leverage [platformos-check](/developer-guide/platformos-check/platformos-check) built-in navigation).
 
 ## Directory structure
 
-In your codebase, the convention is that `modules` that are external to the application needs to be at the same level as the `app` directory. Application that uses such a module should never modify any of the files. See [Overwritting a module file](#overwritting-a-module-file) to learn about modifying a module file.
+In your codebase, the convention is that `modules` that are external to the application needs to be at the same level as the `app` directory. Applications tusing such a module should never modify any of the module's files. See [Overwritting a module file](#overwritting-a-module-file) to learn about modifying a module file.
 
-Modules that are internal to the application, i.e. they serve as a namespace, should be put inside `app` directory. We'll focus on the external modules, meaning we'll assume that they are installed via `pos-cli modules install` command, and we'll use `app` only for [Overwritting a module file](#overwritting-a-module-file).
+Modules that are internal to the application, i.e., those that serve as a namespace, should be placed inside the `app` directory. We'll focus on external modules, meaning we'll assume that they are installed via the `pos-cli modules install` command, and we'll use `app` only for [Overwriting a module file](#overwriting-a-module-file).
 
-Module code can be split into 2 directories to protect IP (Intellectual Property). To create a module, split module code into `public` and `private` folders, and place all that code into the `modules/MODULE_NAME` directory.
+Module code can be split into two directories to protect IP (Intellectual Property). To create a module, divide the module code into `public` and `private` folders, and place all that code inside the `modules/MODULE_NAME` directory.
 
 ```shell
 app
@@ -36,7 +36,7 @@ modules
 
 In general, when referencing files that are part of a module, platformOS uses a prefix that does not include any `public` or `private` folders (for example: `modules/admin/app.css` instead of `modules/admin/private/app.css`). This means that developers should not create files with the same name in both public and private folders, as one will overwrite the other. This behavior gives creators flexibility: if they want to change the scope of the file, they can move it between the private and public folders without changing the code.
 
-You can create an Instance and deploy the code as you would usually do, and you still can have the `app` folder on the top level (this code will not be part of the module but you can use it while developing).
+You can create an Instance and deploy the code as you would usually do, and you can still have the `app` folder at the top level (this code will not be part of the module but can be used during development).
 
 This mechanism allows creators to share their module code, and make it configurable (by code in the `public` folder), but still protect the IP in the `private` folder.
 
@@ -61,9 +61,9 @@ modules
                   └── foo.liquid
 ```
 
-## Overwritting a module file
+## Overwriting a module file
 
-Although not desired, for real life scenarios, it is sometimes necessary to overwrite a module file. If you would like to overwrite a module file, for example `modules/foo/public/views/pages/bar.liquid`, you can do it by creating a new file with the exact same path and placing it inside the `app` directory:
+Although not ideal, in real-life scenarios, it is sometimes necessary to overwrite a module file. If you need to overwrite a module file, for example, `modules/foo/public/views/pages/bar.liquid`, you can do so by creating a new file with the exact same path and placing it inside the `app` directory:
 
 ```shell
 app
@@ -81,14 +81,14 @@ modules
                   └── bar.liquid
 ```
 
-On sync/deploy, platformOS will overwrite the file server side, however in your repository you will still have access to both of the files. When upgrading the modules, you will be able to check which files for which you have created an overwrite have changed and compare those.
+On sync/deploy, platformOS will overwrite the file on the server side. However, in your repository, you will still have access to both files. When upgrading modules, you will be able to check which files you have overwritten and compare any changes.
 
 ## Namespacing rules
 
 Configuration files placed in a module are treated a bit differently than regular files.
 To avoid conflicts between the code of a module and regular code (or between modules) a namespacing strategy is used.
 
-The general rule of accessing files in modules is to prefix paths with `modules/MODULE_NAME`. Keep in mind that skipping resource type applies just like it does without modules. This means that when you access a `partial`, you type a path to it as if you were in the partials directory.
+The general rule for accessing files in modules is to prefix paths with `modules/MODULE_NAME`. Keep in mind that skipping the resource type applies just as it does without modules. This means that when you access a `partial`, you reference it as if you were in the `partials` directory.
 
 When you use the app: `app/views/partials/users/settings/name.liquid`
 It is accessed by path: `users/settings/name.liquid`

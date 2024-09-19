@@ -5,11 +5,11 @@ metadata:
   description: This page lists official platformOS plugins
 ---
 
-## Why we have built DevKit - our modular mini-framework for platformOS?
+## Why we have built DevKit - our modular mini-framework for platformOS
 
 Modular design is an approach to decompose complex systems into smaller, reusable building blocks to lower the complexity of the application.
 
-It also makes it possible to create reusable, loosely coupled software components to improve code maintainability, software stability, and time to market.
+It also enables the creation of reusable, loosely coupled software components, improving code maintainability, software stability, and time to market.
 
 Most software solutions (content management systems, ecommerce solutions, CRM software) have three different layers:
 
@@ -17,44 +17,44 @@ Most software solutions (content management systems, ecommerce solutions, CRM so
 - **Contrib/Vendor**: Community templates, modules, and plugins
 - **Custom**: Project-specific logic and view layer maintained by the project developer
 
-This makes it possible to start building your projects on a reliable, well-tested stable core, and extend the basic functionalities with third party plugins and your own custom code.
+This structure makes it possible to start building your projects on a reliable, well-tested, stable core and extend the basic functionalities with third-party plugins and your own custom code.
 
 **Working with platformOS is a bit different.**
 
-platformOS gives you absolute control over your codebase: the app folder of your project is your territory, you as a developer have total freedom to implement any feature the way it works best for you.
+platformOS gives you absolute control over your codebase: the `app` folder of your project is your territory. As a developer, you have complete freedom to implement any feature in the way that works best for you.
 
 This freedom is one of the core principles of the platform. As your application grows in complexity, if you have not thought about your application architecture and code design, it will become harder and harder to main it and keep developing.
 
-We wanted to give you a standardized framework and ecosystem that provides ready-made, extensible building blocks to improve developer experience and speed to market. We would lime to recommend architecture patterns, conventions and implementations that we have develop through all of the years working on our own platform.
+We wanted to provide a standardized framework and ecosystem that offers ready-made, extensible building blocks to improve the developer experience and speed to market. We also aim to recommend architecture patterns, conventions, and implementations that we have developed over the years while working on our platform.
 
 ## Our modules
 
 ### DevKit modules, which together can work as a mini-framework
 
-This page lists official platformOS plugins, developed by platformOS software developers.
+This page lists official platformOS plugins developed by platformOS software developers.
 
-* [core](https://github.com/Platform-OS/pos-module-core) - the core module is the dependency of all other modules, it includes architecture patterns, defines conventions, and provides implementation for most common functionality requirements, like validation
-* [user](https://github.com/Platform-OS/pos-module-user) - the user module is a starting building block for adding authentication &amp; authorization to your application. It includes registration, signing in, reset password, RBAC implementation.
-* [payments](https://github.com/Platform-OS/pos-module-payments) - the pos-modules-payments (do not confuse it with the legacy payments module) provides abstraction layer for payments, and allows to add concrete payment gateways implementation for the actual processing, like for example [Stripe through pos-modules-payments-stripe](https://github.com/Platform-OS/pos-module-payments-stripe)
-* [tests](https://github.com/Platform-OS/pos-module-tests) - the tests module is a simple testing framework written in liquid to make it easier to write unit-ish tests
+* [core](https://github.com/Platform-OS/pos-module-core) — The core module is the dependency for all other modules. It includes architecture patterns, defines conventions, and provides implementations for the most common functionality requirements, such as validation.
+* [user](https://github.com/Platform-OS/pos-module-user) — The user module is the starting building block for adding authentication and authorization to your application. It includes registration, signing in, password reset, and Role-based access control (RBAC) implementation.
+* [payments](https://github.com/Platform-OS/pos-module-payments) — The pos-modules-payments (not to be confused with the legacy payments module!) provides an abstraction layer for payments, allowing the addition of concrete payment gateway implementations for actual processing, such as [Stripe through pos-modules-payments-stripe](https://github.com/Platform-OS/pos-module-payments-stripe).
+* [tests](https://github.com/Platform-OS/pos-module-tests) — The tests module is a simple testing framework written in Liquid to make it easier to write unit-ish tests.
 * [components](https://github.com/Platform-OS/pos-module-components) - the Data Export API module provides API endpoints to allow third party data agencies to consume data from your application and load them into their system
 
-### Features modules, built using DevKit framework
+### Feature modules built using the DevKit framework
 
-* [openai](https://github.com/Platform-OS/pos-module-openai) - the OpenAI module includes commands to be a bridge between [OpenAI Embeddings API](https://platform.openai.com/docs/guides/embeddings) (API key required) and [platformOS Embeddings](/developer-guide/embeddings/embeddings)
-* [data-export-api](https://github.com/Platform-OS/pos-module-data-export-api) - the Data Export API module provides API endpoints to allow third party data agencies to consume data from your application and load them into their system
+* [openai](https://github.com/Platform-OS/pos-module-openai) — The OpenAI module includes commands that serve as a bridge between the [OpenAI Embeddings API](https://platform.openai.com/docs/guides/embeddings) (API key required) and [platformOS Embeddings](/developer-guide/embeddings/embeddings).
+* [data-export-api](https://github.com/Platform-OS/pos-module-data-export-api) — The Data Export API module provides API endpoints to allow third-party data agencies to consume data from your application and load it into their systems.
 
 ## How to use DevKit
 
-The heart of the framework is the [the pos-module-core](https://github.com/Platform-OS/pos-module-core). It is documented in the GitHub repository. Besides various utililty functions and low-level implementations like validations, it sets some rules and architecture patterns that will make your application easier to maintain and develop, and will make onboarding new developers faster. Those rules are:
+The heart of the framework is the [the pos-module-core](https://github.com/Platform-OS/pos-module-core). It is documented in the GitHub repository.  In addition to various utility functions and low-level implementations such as validations, it sets some rules and architecture patterns that make your application easier to maintain and develop, and make onboarding new developers faster. These rules are:
 
-* Never put any HTML inside a [Page](/developer-guide/pages/pages) - do not mix business rules with a presentation layer; treat your pages as Controllers - it should receive user input (through `context.params`), fetch all necessary data, and provide those data to the presenttion layer defined in `app/views/partials`.
-* Never invoke GraphQL from `app/views/partials` - again, to not mix business rules with a presentation layer. If you need data to be rendered in a partial, you should fetch them in the Page, and provide it to the view as an argument
-* Encapsulate your business rules in [Commands](https://github.com/Platform-OS/pos-module-core?tab=readme-ov-file#command-workflow) - This makes it easier to write unit-ish tests and to re-use code across your application
+* Never put any HTML inside a [Page](/developer-guide/pages/pages) — Do not mix business rules with the presentation layer. Treat your pages as controllers; they should receive user input (through `context.params`), fetch all necessary data, and provide that data to the presentation layer defined in`app/views/partials`.
+* Never invoke GraphQL from `app/views/partials` — Again, do not mix business rules with the presentation layer. If you need data to be rendered in a partial, you should fetch it in the Page and provide it to the view as an argument.
+* Encapsulate your business rules in [Commands](https://github.com/Platform-OS/pos-module-core?tab=readme-ov-file#command-workflow) — This makes it easier to write unit-ish tests and to reuse code across your application.
 * Encapsulate your GraphQL queries in [Query](https://github.com/Platform-OS/pos-module-core?tab=readme-ov-file#queries--accessing-data) object - This makes it easier to re-use the query and allows you to encapsulate additional data processing if needed, provide extra validation for the query parameters, set defaults etc.
 * Use [Events](https://github.com/Platform-OS/pos-module-core?tab=readme-ov-file#events) to broadcast that something has happened in the system to take additional action asynchronously — Following this pattern will make your code easier to maintain and understand, as well as provide necessary debug information in case the system does not behave as expected.
 * Follow [Resourceful route naming convention](resourceful-route-naming-convention) to organize your [Pages](/developer-guide/pages/pages)
-* Use [Status implementation](https://github.com/Platform-OS/pos-module-core?tab=readme-ov-file#status-handling) to keep track of resource's state - whenever you need to change your resource status, for example if you have a resource `Article` and would like to have states like `draft` and `published` to decide if it should be publicly available, you can use this pattern to implement this. Usually you will want to use it in combination with Events (to notify system that the state has been changed, like `article_published`, `order_cancelled`)
+* Use [Status implementation](https://github.com/Platform-OS/pos-module-core?tab=readme-ov-file#status-handling) to keep track of resource's state Whenever you need to change a resource's status (for example, if you have a resource `Article` and would like to have states like `draft` and `published` to decide whether it should be publicly available), you can use this pattern to implement it. Usually, you will want to use it in combination with Events (to notify the system that the state has been changed, such as `article_published`, `order_cancelled`).
 * Use [pos-module-users](https://github.com/Platform-OS/pos-module-user) module for authentication and authorization — It provides not only a great starting point for registration, sign-in, and password reset features that most applications require nowadays, but also an RBAC implementation that you can extend to your needs.
 * Use [pos-module-tests](https://github.com/Platform-OS/pos-module-tests) to add unit-ish tests to all your commands, minimizing regression bugs caused by modifying business logic.
 
