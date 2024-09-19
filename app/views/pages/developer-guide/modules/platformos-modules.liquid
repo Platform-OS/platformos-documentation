@@ -51,10 +51,67 @@ The heart of the framework is the [the pos-module-core](https://github.com/Platf
 * Never put any HTML inside a [Page](/developer-guide/pages/pages) - do not mix business rules with a presentation layer; treat your pages as Controllers - it should receive user input (through `context.params`), fetch all necessary data, and provide those data to the presenttion layer defined in `app/views/partials`.
 * Never invoke GraphQL from `app/views/partials` - again, to not mix business rules with a presentation layer. If you need data to be rendered in a partial, you should fetch them in the Page, and provide it to the view as an argument
 * Encapsulate your business rules in [Commands](https://github.com/Platform-OS/pos-module-core?tab=readme-ov-file#command-workflow) - This makes it easier to write unit-ish tests and to re-use code across your application
+* Encapsulate your GraphQL queries in [Query](https://github.com/Platform-OS/pos-module-core?tab=readme-ov-file#queries--accessing-data) object - This makes it easier to re-use the query and allows you to encapsulate additional data processing if needed, provide extra validation for the query parameters, set defaults etc.
 * Use [Events](https://github.com/Platform-OS/pos-module-core?tab=readme-ov-file#events) to broadcast that something has happened in the system in order to take additional action asynchronously - following this pattern will make your code easier to maintain and understand, as well as will provide necessary debug information in case the system would not behave as expected
+* Follow [Resourceful route naming convention](resourceful-route-naming-convention) to organize your [Pages](/developer-guide/pages/pages)
 * Use [Status implementation](https://github.com/Platform-OS/pos-module-core?tab=readme-ov-file#status-handling) to keep track of resource's state - whenever you need to change your resource status, for example if you have a resource `Article` and would like to have states like `draft` and `published` to decide if it should be publicly available, you can use this pattern to implement this. Usually you will want to use it in combination with Events (to notify system that the state has been changed, like `article_published`, `order_cancelled`)
 * Use [pos-module-users](https://github.com/Platform-OS/pos-module-user) module for Authentication &amp; Authorization - it provides not only a great starting point for registration, sign in, reset password features that nowadays most application requires, but it also provides RBAC implementation that you can extend to your needs
 * Use [pos-module-tests](https://github.com/Platform-OS/pos-module-tests) to add unit-ish tests to all of your commands, to minimize regression bugs caused by modifying business logic
+
+## Resourceful route naming convention
+
+Constistency is one of the key factor when it comes to reducing learning curve and improving maintainbability of your application. We would like to propose following the resourceful route naming convention for your endpoints, even though there is no explicit concept of a `resource` in routing definition.
+
+The convention can be best explained using an example. Let's assume we would like to create a web application that allows to create articles. Hence, the `article` will be our resource - to persist them, we will need to define a table for it in `app/schema/article.yml`. There are 7 typical actions that are required to define a full CRUD (Create Read Update Delete) experience. Resourceful route leverages HTTP method (GET / POST / PUT / DELETE) and the following url conventions to implement those actions:
+
+| HTTP method   | slug  | page file path |  description
+|---|---||---|
+| GET  | /articles | app/views/pages/articles/index.liquid | display a list of articles (ideally by invoking a query object defined in `app/lib/queries/articles/search.liquid`)|
+| GET  | /articles/new | app/views/pages/articles/new.liquid | display a HTML form to create a new article |
+| POST  | /articles | app/views/pages/articles/create.liquid | persist article in the database (ideall by invoking a command defined in `app/lib/commands/articles/create.liquid`) |
+| GET  | /articles/:id | app/views/pages/articles/show.liquid | display an article which id is provided in the url (ideally by invoking a query object defined in `app/lib/queries/articles/find.liquid`) |
+| GET  | /articles/:id/edit | app/views/pages/articles/edit.liquid | displays a HTML form for editing article with a given id (ideally fetching input for the form will be obtained by re-using `app/lib/queries/articles/find.liquid`) |
+| PATCH/PUT  | /articles/:id | app/views/pages/articles/update.liquid | update a specific article which id was provided (ideally by invoking a command defined in `app/lib/commands/articles/update.liquid`) |
+| DELETE  | /articles/:id | app/views/pages/articles/delete.liquid | delete a specific article which id was provided (ideally by invoking a command defined in `app/lib/commands/articles/delete.liquid`) |
+
+To quickly generate the whole CRUD for a new resource, you can use [core module's CRUD generator](https://github.com/Platform-OS/pos-module-core?tab=readme-ov-file#generating-commands) that leverages [pos-cli generate](https://github.com/Platform-OS/pos-cli?tab=readme-ov-file#generate). For example, assuming you have download the core module via `pos-cli modules download core` in your project root directory, you should be able to generate CRUD for articles using the following command:
+
+`pos-cli generate run modules/core/generators/crud article title:string body:string published_at:datetime --include-views`
+
+which will generate all of the following files, that follow the convention described above:
+
+```
+create app/translations/en/articles.yml
+create app/schema/article.yml
+create app/graphql/articles/create.graphql
+create app/graphql/articles/delete.graphql
+create app/graphql/articles/search.graphql
+create app/graphql/articles/update.graphql
+create app/lib/queries/articles/find.liquid
+create app/lib/queries/articles/search.liquid
+create app/lib/commands/articles/create.liquid
+create app/lib/commands/articles/delete.liquid
+create app/lib/commands/articles/update.liquid
+create app/lib/commands/articles/create/build.liquid
+create app/lib/commands/articles/create/check.liquid
+create app/lib/commands/articles/delete/check.liquid
+create app/lib/commands/articles/update/build.liquid
+create app/lib/commands/articles/update/check.liquid
+create app/views/pages/articles/create.liquid
+create app/views/pages/articles/delete.liquid
+create app/views/pages/articles/edit.liquid
+create app/views/pages/articles/index.liquid
+create app/views/pages/articles/new.liquid
+create app/views/pages/articles/show.liquid
+create app/views/pages/articles/update.liquid
+create app/views/partials/theme/simple/articles/edit.liquid
+create app/views/partials/theme/simple/articles/empty_state.liquid
+create app/views/partials/theme/simple/articles/form.liquid
+create app/views/partials/theme/simple/articles/index.liquid
+create app/views/partials/theme/simple/articles/new.liquid
+create app/views/partials/theme/simple/articles/show.liquid
+create app/views/partials/theme/simple/field_error.liquid
+```
 
 ## CI/CD on platformOS
 
