@@ -4,7 +4,7 @@ metadata:
   title: Creating a Module
   description:
 ---
-{% include 'alert/note', content: 'You can release a new module version using [pos-cli modules push](/developer-guide/modules/developing-a-new-module)' %}
+{% include 'alert/note', content: 'You can release a new module version using [pos-cli modules push](/developer-guide/modules/developing-a-new-module).' %}
 
 This guide will help you learn how to create a module by walking you through the steps of creating a simple module.
 
@@ -24,7 +24,7 @@ Creating a module is a three-step process:
 
 ### Step 1: Create directories
 
-Create two directories inside the `modules` directory called `admincms`, then create the `public` and `private` folders inside it. Place the `graphql` directory inside `private`, and the `views/pages` directories inside public.
+Create two directories inside the `modules` directory called `admincms`. Then, create the `public` and `private` folders inside it. Place the `graphql` directory inside `private`, and the `views/pages` directories inside `public`.
 
 This is the structural overview of the module you'll create:
 
@@ -42,7 +42,7 @@ admincms
 
 ### Step 2: Create GraphQL queries
 
-Create a GraphQL query that pulls a list of Records.
+Create a GraphQL query that pulls a list of Records:
 
 ##### modules/admincms/private/graphql/get_records.graphql
 
@@ -60,7 +60,7 @@ query get_records {
 }
 ```
 
-Create another GraphQL query that pulls a list of pages
+Create another GraphQL query that pulls a list of Pages:
 
 ##### modules/admincms/private/graphql/get_pages.graphql
 
@@ -76,6 +76,7 @@ query get_pages {
 ```
 
 ### Step 3: Create page
+In this step, we will create a page that uses the previously defined GraphQL queries to display records and pages from the module:
 
 ##### modules/admincms/public/views/pages/admin.liquid
 
@@ -133,7 +134,7 @@ slug: admincms
 {% endraw %}
 ```
 
-You are using the queries as usual but the name is prefixed with the module name.
+You are using the queries as usual, but the name is prefixed with the module name.
 
 ```liquid
 {% raw %}
@@ -141,9 +142,7 @@ You are using the queries as usual but the name is prefixed with the module name
 {% endraw %}
 ```
 
-The only difference between this code and code of a regular Instance is that this module code is split
-into public and private folders, and if you'd pull the code when it's installed on an Instance,
-you would get a structure like this:
+The only difference between this code and the code of a regular Instance is that the module code is split into public and private folders. If you pulled the code when it’s installed on an Instance, you would get a structure like this:
 
 ```shell
 your_project
@@ -161,10 +160,10 @@ your_project
 
 ## Live example and source code
 
-To explore it in action go to [live example](https://examples.platform-os.com/admincms).
+To see it in action, visit the [live example](https://examples.platform-os.com/admincms).
 [Source files](https://github.com/mdyd-dev/platformos-examples/tree/master/modules/admincms) are also publicly accessible.
 
 ## Next steps
-Congratulations! You have created a module. Now you can learn about sharing your module on the platformOS Module Marketplace.
+Congratulations! You have created a module. Now you can learn how to share your module on the platformOS Module Marketplace.
 
 * [Sharing a Module](/developer-guide/modules/sharing-module)

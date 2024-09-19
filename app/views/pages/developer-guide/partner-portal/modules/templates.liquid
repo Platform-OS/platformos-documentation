@@ -5,11 +5,11 @@ metadata:
   description: Detailed description of module templates with example.
 ---
 
-With **module templates**, you can configure modules before deploying them to an environment. For example, you can specify the slug for a page (where the page will be available after the module is installed) upon installing the module.
+With **module templates**, you can configure modules before deploying them to an environment. For example, you can specify the slug for a page (where the page will be available after the module is installed) during the module installation process.
 
 ## Configuration
 
-Values for variables have to be provided in the `template-values.json` file placed at the toplevel of the module:
+Values for variables must be provided in the `template-values.json` file placed at the top level of the module:
 
 ```shell
 modules
@@ -27,9 +27,9 @@ modules
 
 ## Adding templates to module code
 
-Templates work both in deploy mode (with the `pos-cli deploy` command) and in sync mode (with the `pos-cli sync` command). When the `template-values.json` file is present, the pos-cli finds it and applies the values in it to the templates. It then sends the output to the server with the resulting file filled in based on the templates.
+Templates work both in deploy mode (using the `pos-cli deploy` command) and in sync mode (using the `pos-cli sync` command). When the `template-values.json` file is present, pos-cli finds it and applies the values in it to the templates. Then, it sends the output to the server with the resulting file filled in based on the templates.
 
-In both deploy and sync mode, adding templates to module code works the same way. If you have sync mode running and you change the `template-values.json` file and then change one of the files using the template, they get processed and the latest version gets uploaded.
+The process for adding templates to module code is the same for both deploy and sync modes. If you're running sync mode and make changes to the `template-values.json` file, and then change one of the files using the template, those changes are automatically processed, and the latest version is uploaded to the server.
 
 ## Markup
 
