@@ -50,7 +50,7 @@ Create a GraphQL query that pulls a list of Records.
 query get_records {
   records(
     per_page: 10
-    sort: [{ name: "id", order: "desc" }]
+    sort: [{id: { order: DESC }}]
   ) {
     results {
       table
@@ -146,7 +146,7 @@ into public and private folders, and if you'd pull the code when it's installed 
 you would get a structure like this:
 
 ```shell
-.
+your_project
 ├── app
 │   └── views
 |   └── graphql
