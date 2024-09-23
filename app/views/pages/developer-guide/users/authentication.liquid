@@ -1,0 +1,214 @@
+---
+converter: markdown
+metadata:
+  title: Authentication
+  description: Implement authentication strategies for your application
+---
+
+Basically any useful web application requires authentication (and authorization) to protect the privacy of the users. In this article we would like to describe most common strategies to authenticate the user.
+
+## Authentication strategies using GraphQL
+
+You can authenticate a User using by leveraging the [users](/api-reference/graphql/data/queries/users) GraphQL query:
+
+```graphql
+query ($email: String!) {
+  users(filter: { email: { value: $email } }, per_page: 1) {
+    results {
+      id
+      email
+      authenticate {
+        // your strategy
+      }
+    }
+  }
+}
+```
+
+The query filters the users by email (which is unique, so there will be either 0 or 1 result), and then it uses the [authenticate](/api-reference/graphql/common/objects/authenticate) GraphQL field, which accepts various strategies for authentication. We are describing them now
+
+### password
+
+The most common one is password - it is a field that accepts one argument - user's password. Behind the scenes it will be hashed using bcrypt2 password hashing function and compared to the value that is stored in the database. It will return `true` if there is a match and `false` otherwise. Example query for using `password` field:
+
+```graphql
+query ($email: String!, $password: String!) {
+  users(filter: { email: { value: $email } }, per_page: 1) {
+    results {
+      id
+      email
+      authenticate {
+        password(password: $password)
+      }
+    }
+  }
+}
+```
+
+The password can be set in both `user_create` and `user_update` GraphQL mutations.
+
+### temporary_token
+
+Temporary token can be used to authenticate the user without the necessity of providing a password. One of the common example is in the reset password functionality, when you generate a temporary token and send it to the user's email. The `temporary_token` accepts one argument - token, which can be generated also using `users` GraphQL query via a [temporary_token](/api-reference/graphql/common/objects/user) field - it accepts `expires_in` argument, that you can use to limit the lifespan of a token.
+
+To generate the temporary token which expires after 48 hours, use the following GraphQL query:
+
+```graphql
+query ($email: String!, $expires_in: Float = 48) {
+  users(filter: { email: { value: $email } }, per_page: 1) {
+    results {
+      id
+      email
+      temporary_token(expires_in: $expires_in)
+    }
+  }
+}
+```
+
+To verify if the token is valid:
+
+```
+query ($email: String!, $token: String!){
+  users(filter: { email: { value: $email }}, per_page: 1) {
+    results {
+      id
+      email
+      authenticate {
+        temporary_token(token: $token)
+      }
+    }
+  }
+}
+```
+
+If the temporary_token is still valid and matches user's email, `results.authenticate.temporary_token` will be `true`, otherwise it will be `false`.
+
+### JWT
+
+Alternatively, you can implement authentication with JWT. To obtain the JWT for the first time, you should use one of the authentication strategies described above and if successful, return using `jwt_token` (yes, JSON Web Token Token :) ). For example, if you want to use password as your authentication strategy to obtain JWT, you can achieve it with the following query:
+
+```
+query ($email: String!, $password: String!) {
+  users(filter: { email: { value: $email } }, per_page: 1) {
+    results {
+      id
+      authenticate {
+        password(password: $password)
+      }
+      jwt_token(algorithm: HS256)
+    }
+  }
+}
+```
+
+You can then authenticate user using JWT strategy by using `jwt` field:
+
+```
+query ($email: String!, $jwt: String!) {
+  users(filter: { email: { value: $email } }, per_page: 1) {
+    results {
+      id
+      authenticate {
+        jwt(token: $jwt)
+      }
+    }
+  }
+}
+```
+
+However, the main purpose of using JWT would be to decode it and obtain user data associated with it. You can do it using `jwt_decode_and_set_session` mutation:
+
+```mutation jwt_login($token: String!) {
+  jwt_decode_and_set_session(jwt_token: $token) {
+    email
+    first_name
+    last_name
+    jwt_token
+    id
+  }
+  }
+  ```
+
+Altohugh JWT is meant to be used instead of a session based authentication, it is called this as a utility function to make `current_user` working seamlessly.
+
+If you need more control over JWT, instead of using built-in GraphQL, you can use [jwt_encode](/api-reference/liquid/platformos-filters#jwt-encode) [jwt_decode](/api-reference/liquid/platformos-filters#jwt-decode) Liquid Filters
+
+Please refer to [JWT Tutorial](/use-cases/authenticating-user-with-jwt) to see example usage of JWT in platformOS.
+
+### otp_code - 2FA
+
+Adding 2FA to platformOS application is easy thanks to the built in One Time Password (OTP). Adding 2FA consists of two steps.
+
+First, you have to display autogenerated OTP secret to the user, who wants to enable 2FA, so they can configure their OTP client like Authy, Google Authenticator etc:
+
+```graphql
+query ($email: String!, $expires_in: Float = 48) {
+  users(filter: { email: { value: $email }}, per_page: 1) {
+    results {
+      id
+      email
+      otp {
+        secret_as_svg_qr_code(issuer: "Example Co.")
+        secret
+        current_code
+      }
+    }
+  }
+}
+```
+
+The query returns `secret_as_svg_qr_code` (check arguments for this field if you would like to customize it) so you can display a QR code on the website that User can scan to easily configure their OTP client. Some users might not want to scan a QR code, that's why we provide a raw `secret`, that they can type manually in their OTP client. Lastly, the `current_code` contains the actual OTP that needs to be verified. This is how you can ensure that the user has configured their OTP client correctly.
+
+In order to verify if the code is valid, you can use `otp_code` field that takes two arguments - `code`, which is the actual code entered by the user, and `drift`.
+
+```graphql
+query auth($email: String!){
+  users(per_page: 20,
+    filter: { email: {
+      value: $email
+    }}
+  ) {
+    results {
+      email
+      id
+      authenticate {
+        otp_code(code: $token, drift: 30)
+      }
+    }
+  }
+}
+```
+
+Note that for example you can combine the password verification together with OTP verification:
+
+```graphql
+query ($email: String!, $password: String!) {
+  users(filter: { email: { value: $email } }, per_page: 1) {
+    results {
+      email
+      id
+      authenticate {
+        password(password: $password)
+        otp_code(code: $token, drift: 30)
+      }
+    }
+  }
+}
+```
+
+## Signing user in
+
+After successful authentication, there are two most common paths you want to take - create a session for the authenticated user or obtain user's JWT.
+
+### Session based authentication
+
+In order to generate a session that is connected to the authenticated user, you will want to use [sign_in Liquid Tag](/api-reference/liquid/platformos-tags#sign-in). It takes two arguments - the user_id that has been authenticated based on the strategy described above, and optional `timeout_in_minutes` which specifies when the session will expire and user will be asked to authenticate again.
+
+After invoking the `sign_in` tag, you will be able to access current user's data using either GraphQL's [current_user](/api-reference/graphql/data/queries/current-user) GraphQL query or in Liquid using [context.current_user](/api-reference/liquid/platformos-objects#context-current_user), usually in combination with an explicit `users` GraphQL Query.
+
+## Identity Providers
+
+We recommend to integrate with identity provider by explicitly triggering Api Calls. We hope that more and more community maintained integrations will be provided out of the box as part of the [pos-module-user](https://github.com/Platform-OS/pos-module-user). In the meantime however, you can still use our [Built-in integration with identity providers](/developer-guide/identity-providers/identity-providers). Please note that it does limit your flexibility, however for the typical use cases should be sufficient.
+
+{% include 'alert/note', content: 'To learn about the basic usage to implement authentication, please follow [Getting Started with User Authentication](/get-started/build-your-first-app/user-authentication) article.
+There is also a [pos-module-user](https://github.com/Platform-OS/pos-module-user) which allows you to easily add authentication and authorization to your application.' %}

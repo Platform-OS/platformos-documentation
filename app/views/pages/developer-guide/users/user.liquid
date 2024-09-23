@@ -1,0 +1,35 @@
+---
+converter: markdown
+metadata:
+  title: User
+  description: Easily control authentication and authorization in your platformOS Application
+---
+
+## User
+
+User is a built-in object that's used for any authentication and authorization related logic.
+
+All user data is stored in the Relational Database, same as [Records](/developer-guide/records/records-tables), however it has its own set of GraphQL queries, GraphQL mutations and Liquid tags and objects that are specific to authentication and authorization.
+
+{% include 'alert/note', content: 'To learn about the basic usage to implement authentication, please follow [Getting Started with User Authentication](/get-started/build-your-first-app/user-authentication) article.
+There is also a [pos-module-user](https://github.com/Platform-OS/pos-module-user) which allows you to easily add authentication and authorization to your application.' %}
+
+### Built-in User fields
+
+There are three main fields that you will find useful when working with User's authentication:
+
+** email ** - case insensitive, unique field that is used as a main user identifier
+** password ** - a virtual field (its value is never stored in the database), allows you to set the user password - behind the scenes it is hashed using bcrypt2 password hashing function
+** encrypted_password ** - the result of the bcrypt2 password hashing function
+
+### Adding [Properties](/developer-guide/properties/properties) to the User
+
+You can add [Properties](/developer-guide/properties/properties) to the User table by specifying them in `app/user.yml` the same way how you are would [configure properties in your tables](/developer-guide/properties/properties#defining-a-property). Example `app/user.yml` file, which adds to properties to the User - `role` and `last_signed_in_at`:
+
+```yaml
+properties:
+- name: role
+  type: string
+- name: last_sign_in_at
+  type: datetime
+```

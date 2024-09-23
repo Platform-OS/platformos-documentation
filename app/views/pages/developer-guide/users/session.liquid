@@ -1,0 +1,24 @@
+---
+converter: markdown
+metadata:
+  title: Session
+  description: Access User's session with GraphQL and Liquid.
+---
+
+## Session
+
+Session allows to maintain stateful information across multiple HTRP requests, which is crucial because HTTP is stateless by default.
+
+When a user first interacts with a platformOS application using a web browser, the session is created and stored in `_pos_session` cookie. On the server side, platformOS stores sessions in [Redis](https://redis.io/).
+
+### Security
+
+When the user logs in, the old session is dropped and a new one is generated as a counter-measure to various [Session Fixation attacks](https://owasp.org/www-community/attacks/Session_fixation).
+
+Moreover, to prevent [Cross-Site Request Forgery attacks](https://owasp.org/www-community/attacks/csrf), platformOS by default implements the [CSRF Token](/api-reference/liquid/platformos-objects#context-authenticity_token) and invalidates the session if a POST/PUT/PATCH/DELETE request is made without valid CSRF token.
+
+## Storing metadata in the session (server side)
+
+In order to store any metadata in the session (a typical example would be for example an id of a shopping cart of a not logged in user), you can use [session liquid tag](/api-reference/liquid/platformos-tags#session).
+
+{% render 'alert/note', content: 'For more information about session management refer to the [Authentication](/developer-guide/users/authentication).' %}
