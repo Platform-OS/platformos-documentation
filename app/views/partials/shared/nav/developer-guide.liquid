@@ -244,43 +244,30 @@
 <li class="pt-6 mt-6 mb-2 text-base border-t topic-group border-pos-divider">
   <h3 class="text-base uppercase">Modules</h3>
 </li>
-<li class="{% if cp contains 'modules' %}active{% endif %}">
+<li class="{% if cp contains '/developer-guide/modules' %}active{% endif %}">
   <a href="/developer-guide/modules/modules">Modules</a>
-  {% if cp contains 'modules' %}
+  {% if cp contains '/developer-guide/modules' %}
     <ul class="submenu">
-      {% include "shared/nav/link", href: "/developer-guide/modules/modules", text: "Modules" %}
-      {% include "shared/nav/link", href: "/developer-guide/modules/creating-module", text: "Creating a Module" %}
-      {% include "shared/nav/link", href: "/developer-guide/modules/sharing-module", text: "Sharing a Module" %}
-      {% include "shared/nav/link", href: "/developer-guide/modules/installing-module", text: "Installing a Module" %}
+      {% include "shared/nav/link", href: "/developer-guide/modules/modules", text: "Modules Introduction" %}
+      {% include "shared/nav/link", href: "/developer-guide/modules/installing-a-module", text: "Installing a module" %}
+      {% include "shared/nav/link", href: "/developer-guide/modules/developing-a-new-module", text: "Developing a new module" %}
       {% include "shared/nav/link", href: "/developer-guide/modules/templates", text: "Module Templates" %}
-      {% include "shared/nav/link", href: "/developer-guide/modules/configuring-module-template", text: "Configuring a Module Template" %}
     </ul>
   {% endif %}
 </li>
 
-<li class="{% if cp contains 'payments' %}active{% endif %}">
-  <a href="/developer-guide/payments/integrating-stripe">pOS Payments</a>
-  <ul class="submenu">
-    {% include "shared/nav/link", href: "/developer-guide/payments/integrating-stripe", text: "Integrating Stripe" %}
-    {% include "shared/nav/link", href: "/developer-guide/payments/stripe-identity-verification", text: "Stripe Identity Verification" %}
-    {% include "shared/nav/link", href: "/developer-guide/payments/processing-payments-graphql-mutations", text: "Processing Payments with GraphQL Mutations" %}
-  </ul>
-</li>
-
-<li class="{% if cp contains 'blog' %}active{% endif %}">
-  <a href="/developer-guide/blog/installing-blog-module">pOS Blog</a>
-  <ul class="submenu">
-    {% include "shared/nav/link", href: "/developer-guide/blog/installing-blog-module", text: "Installing the Blog Module" %}
-    {% include "shared/nav/link", href: "/developer-guide/blog/creating-blog-post", text: "Creating a Blog Post" %}
-    {% include "shared/nav/link", href: "/developer-guide/blog/blog-settings-posts", text: "Blog Settings and Posts" %}
-  </ul>
-</li>
-
-<li class="{% if cp contains 'sendgrid-email-marketing' %}active{% endif %}">
-  <a href="/developer-guide/sendgrid-email-marketing/installing-sendgrid-email-marketing">pOS Sendgrid Email Marketing</a>
-  <ul class="submenu">
-    {% include "shared/nav/link", href: "/developer-guide/sendgrid-email-marketing/installing-sendgrid-email-marketing", text: "Installing the Sendgrid Email Marketing Module" %}
-  </ul>
+<li class="{% if cp contains '/modules/platformos-modules' %}active{% endif %}">
+  <a href="/developer-guide/modules/platformos-modules">DevKit - platformOS modules</a>
+  {% if cp contains '/developer-guide/platformos-modules' %}
+    <ul class="submenu">
+      {% include "shared/nav/link", href: "/developer-guide/modules/platformos-modules/core", text: "Core Module" %}
+      {% include "shared/nav/link", href: "/developer-guide/modules/platformos-modules/user", text: "User Module" %}
+      {% include "shared/nav/link", href: "/developer-guide/modules/platformos-modules/tests", text: "Tests Module" %}
+      {% include "shared/nav/link", href: "/developer-guide/modules/platformos-modules/openai", text: "OpenAI Module" %}
+      {% include "shared/nav/link", href: "/developer-guide/modules/platformos-modules/data-export-api", text: "Data Export API Module" %}
+      {% include "shared/nav/link", href: "/developer-guide/modules/platformos-modules/components", text: "Components Module" %}
+    </ul>
+  {% endif %}
 </li>
 
 <li class="pt-6 mt-6 mb-2 text-base border-t topic-group border-pos-divider">
@@ -370,6 +357,19 @@
     {% include "shared/nav/link", href: "/developer-guide/partner-portal/billing-plans/creating-billing-plan", text: "Creating a Billing Plan" %}
     {% include "shared/nav/link", href: "/developer-guide/partner-portal/billing-plans/assigning-billing-plan-instance", text: "Assigning a Billing Plan to an Instance" %}
   </ul>
+
+</li>
+
+<li class="{% if cp contains 'partner-portal/modules' %}active{% endif %}">
+  <a href="/developer-guide/partner-portal/modules/installing-module">Modules</a>
+  {% if cp contains 'modules' %}
+    <ul class="submenu">
+      {% include "shared/nav/link", href: "/developer-guide/partner-portal/modules/installing-module", text: "Installing a Module" %}
+      {% include "shared/nav/link", href: "/developer-guide/partner-portal/modules/creating-module", text: "Creating a Module" %}
+      {% include "shared/nav/link", href: "/developer-guide/partner-portal/modules/sharing-module", text: "Sharing a Module" %}
+      {% include "shared/nav/link", href: "/developer-guide/partner-portal/modules/configuring-module-template", text: "Configuring a Module Template" %}
+    </ul>
+  {% endif %}
 </li>
 
 <li class="pt-6 mt-6 mb-2 text-base border-t topic-group border-pos-divider">
@@ -486,4 +486,29 @@
       {% include "shared/nav/link", href: "/developer-guide/identity-providers/facebook", text: "Facebook Integration" %}
     </ul>
   {% endif %}
+</li>
+
+<li class="{% if cp contains 'payments' %}active{% endif %}">
+  <a href="/developer-guide/payments/integrating-stripe">pOS Payments</a>
+  <ul class="submenu">
+    {% include "shared/nav/link", href: "/developer-guide/payments/integrating-stripe", text: "Integrating Stripe" %}
+    {% include "shared/nav/link", href: "/developer-guide/payments/stripe-identity-verification", text: "Stripe Identity Verification" %}
+    {% include "shared/nav/link", href: "/developer-guide/payments/processing-payments-graphql-mutations", text: "Processing Payments with GraphQL Mutations" %}
+  </ul>
+</li>
+
+<li class="{% if cp contains 'blog' %}active{% endif %}">
+  <a href="/developer-guide/blog/installing-blog-module">pOS Blog</a>
+  <ul class="submenu">
+    {% include "shared/nav/link", href: "/developer-guide/blog/installing-blog-module", text: "Installing the Blog Module" %}
+    {% include "shared/nav/link", href: "/developer-guide/blog/creating-blog-post", text: "Creating a Blog Post" %}
+    {% include "shared/nav/link", href: "/developer-guide/blog/blog-settings-posts", text: "Blog Settings and Posts" %}
+  </ul>
+</li>
+
+<li class="{% if cp contains 'sendgrid-email-marketing' %}active{% endif %}">
+  <a href="/developer-guide/sendgrid-email-marketing/installing-sendgrid-email-marketing">pOS Sendgrid Email Marketing</a>
+  <ul class="submenu">
+    {% include "shared/nav/link", href: "/developer-guide/sendgrid-email-marketing/installing-sendgrid-email-marketing", text: "Installing the Sendgrid Email Marketing Module" %}
+  </ul>
 </li>
