@@ -7,9 +7,9 @@ converter: markdown
 
 User authentication is a fundamental aspect of web development that involves the process of verifying and confirming the identity of users accessing a web application or system. It is a crucial component for securing sensitive information and ensuring that only authorized individuals can perform certain actions or access specific resources.
 
-In platformOS there is a built-in [User](/developer-guide/users/user) object which is connected to [session](/developer-guide/users/session). In this tutorial we will show how to use User (and session behind the scenes) by verifying a combination of an email and password that user provides during the registration.
+In platformOS, there is a built-in [User](/developer-guide/users/user) object which is connected to [session](/developer-guide/users/session). In this tutorial, we will show how to use the User object (and the session behind the scenes) by verifying the combination of an email and password that the user provides during registration.
 
-You can read about other options like accessing [user's JWT](/developer-guide/users/authentication#jwt), [generating temporary_token](/developer-guide/users/authentication#temporary_token) or [OTP for 2FA](/developer-guide/users/authentication#otp_code-2fa) in the [User section of the Developer Guide](/developer-guide/users/authentication)
+You can read about other options, such as accessing the [user's JWT](/developer-guide/users/authentication#jwt), [generating a temporary_token](/developer-guide/users/authentication#temporary_token), or using [OTP for 2FA](/developer-guide/users/authentication#otp_code-2fa), in the [User section of the Developer Guide](/developer-guide/users/authentication).
 
 ## Registration
 
@@ -105,7 +105,7 @@ You will be able to see a new User record using the `pos-cli gui serve` by going
 
 ## Accessing Current User
 
-In platformOS the simplest way to access authenticated user's `email` or `id` is via [context.current_user](/api-reference/liquid/platformos-objects#context-current_user). Let's say you would like to display current user's email - typical use case is to include it in the layout. For this purpose edit `app/views/layouts/application.liquid` and add at the beginning of the `<body>` the following code:
+In platformOS, the simplest way to access an authenticated user's `email` or `id` is using [context.current_user](/api-reference/liquid/platformos-objects#context-current_user). For example, if you want to display the current user's email, a typical use case would be to include it in the layout. To do this, edit `app/views/layouts/application.liquid` and add the following code at the beginning of the `<body>` tag:
 
 #### app/views/layouts/application.liquid
 ```liquid

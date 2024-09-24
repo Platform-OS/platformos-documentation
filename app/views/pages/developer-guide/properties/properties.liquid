@@ -5,7 +5,7 @@ metadata:
   description: Properties are used to build custom forms and gather input from the user.
 ---
 
-**Properties** are used to define columns for [Table](/developer-guide/records/records-tables#what-is-a-table) and User
+**Properties** are used to define columns for [Table](/developer-guide/records/records-tables#what-is-a-table) and User.
 
 ## Defining a Property
 
@@ -27,7 +27,7 @@ The above configuration adds three properties: "name" of type _string_, "enabled
 
 ### Defining a property for User
 
-The same way you define properties for each of the [Table](/developer-guide/records/records-tables#what-is-a-table), you can also define properties for User. Typical use case might be to add authentication and authorization related properties, for example `role` property, which would store user's role, or `last_sign_in_at` datetime property. You can specify user's properties in `app/user.yml` file:
+The same way you define properties for each [Table](/developer-guide/records/records-tables#what-is-a-table), you can also define properties for User. A typical use case might be adding authentication and authorization related properties, such as a `role` property to store the user's role, or a `last_sign_in_at` datetime property. You can specify the user's properties in the `app/user.yml` file:
 
 ```yaml
 properties:
@@ -57,7 +57,7 @@ The table below lists available data types for Property configuration, that are 
 
 ## Fetching a Property with GraphQL casted to the given type
 
-There is "family" of `property` GraphQL fields (GraphQL PropertiesInterface)[/api-reference/graphql/propertiesinterface.html], that allow you to specify the type of return data. To avoid type related issues (comparing string with integer etc.), you should make sure that your GraphQL queries/mutations return data in the same type that you have defined them in `yml` files. For example, if you have defined a table `employees` with three properties - `name` of type `string`, `age` of type `int` and `enabled` of type `boolean`, your GraphQL query would look as follows:
+There is "family" of `property` GraphQL fields [GraphQL PropertiesInterface](/api-reference/graphql/propertiesinterface.html) that allow you to specify the  type of returned data. o avoid type-related issues (such as comparing a string with an integer), you should ensure that your GraphQL queries/mutations return data in the same type as defined in your `yml` files. For example, if you have defined a table `employees` with three properties - `name` of type `string`, `age` of type `int`, and `enabled` of type `boolean`, your GraphQL query would look as follows:
 
 ```graphql
 query get_records {
@@ -78,7 +78,7 @@ query get_records {
 
 ## Filtering Properties with GraphQL
 
-You can filter GraphQL results based on object properties values. All options are defined in [GraphQL PropertyFilterInput](/api-reference/graphql/propertyfilterinput.html). There is a family of `value` GraphQL arguments that correspond to the property type - for example `value_int`, `value_boolean` etc. Some examples of GraphQL queries:
+You can filter GraphQL results based on the values of object properties. All available options are defined in [GraphQL PropertyFilterInput](/api-reference/graphql/propertyfilterinput.html). There is a family of `value` GraphQL arguments that correspond to the property type — for example, `value_int`, `value_boolean`, etc. Below are some examples of GraphQL queries:
 
 ### value - matches the value of given property.
 
@@ -257,28 +257,28 @@ query get_all_with_name {
 
 ## Managing properties in production
 
-Applications kept evolving. No one creates the perfect schema before going live with the application. You will find yourself in a need to add new properties, change existing ones, and remove the old ones. If you find yourself in this situation, this article should answer the questions you might have.
+Applications evolve over time. No one creates the perfect schema before going live with the application. You may find yourself needing to add new properties, change existing ones, or remove outdated ones. If you are in this situation, this article should answer any questions you might have.
 
-### Adding a new property to an existing table with data
+### Adding a new property to an existing Table with data
 
-There are no limitations regarding adding more properties for your existing application - just add a property definition in the yml file and sync/deploy the file.
+There are no limitations when it comes to adding more properties to your existing application — simply add the property definition in the `yml` file and sync/deploy the file.
 
-### Deleting an existing property from an existing table with data
+### Deleting an existing property from an existing Table with data
 
-If you delete a property from the table or user.yml definition, it will not be accessible anymore. However, the data itself will not be lost - if you re-add it later, the data will still be there. This is to protect you from accidental removal of a property. In order to remove property with a data, you should first explicitly overwrite the property with `null`, and then proceed with removing a property.
+If you delete a property from the table or `user.yml` definition, it will no longer be accessible. However, the data itself will not be lost—if you re-add the property later, the data will still be there. This is to protect you from accidental removal of a property. To permanently remove a property along with its data, you must first explicitly overwrite the property with `null`, and then proceed with removing the property.
 
-### Changing property name from an existing table with data
+### Changing a property name in an existing Table with data
 
-In platformOS there is no concept of renaming the property. To achieve the end result you desire, you have to create a new property with the name you want, then copy data from the old property to the new one using for example [CSV Data Import](/developer-guide/data-import-export/import), and then you can safely remove old property.
+In platformOS, there is no concept of renaming a property. To achieve the desired result, you need to create a new property with the name you want, copy the data from the old property to the new one (using, for example, [CSV Data Import](/developer-guide/data-import-export/import), and then safely remove the old property.
 
-### Changing property type in an existing table with data
+### Changing a property type in an existing Table with data
 
-When you change the type of a property, we do the conversation type for you. We first check, if the data conversion is possible - here is a JSON representation of the matrix that we allow:
+When you change the type of a property, we handle the type conversion for you. We first check if data conversion is possible. Here is a JSON representation of the allowed conversions:
 
 - integer:  string, float, array
 - float:  string, array
 - string: integer, float, boolean, array
 - boolean:  string, array
 
-If you try to change to incompatible type, error will be raised. We use built-in PostgreSQL functions to do the casting - if for any reason one of the records can't be converted, an error will be raised and transaction will be rollbacked with an error message. You can then fix manually the record that has failed (the easiest way will be to use our [GUI for DB management](/developer-guide/pos-cli/manage-database-using-pos-cli-gui)) and then re-try.
+If you attempt to change to an incompatible type, an error will be raised. We use built-in PostgreSQL functions to perform the casting — if any record cannot be converted, an error will occur, and the transaction will be rolled back with an error message. You can then manually fix the problematic record (the easiest way is to use our [GUI for DB management](/developer-guide/pos-cli/manage-database-using-pos-cli-gui)) and re-try the conversion.
 
