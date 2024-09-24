@@ -4,12 +4,11 @@ metadata:
   title: Authentication
   description: Implement authentication strategies for your application
 ---
-
-Basically any useful web application requires authentication (and authorization) to protect the privacy of the users. In this article we would like to describe most common strategies to authenticate the user.
+In order to create a useful web application most likely sooner than later a developer has to add authentication and authorization, to protect the privacy of their users. In this article we would like to describe the most common strategies to authenticate an user.
 
 ## Authentication strategies using GraphQL
 
-You can authenticate a User using by leveraging the [users](/api-reference/graphql/data/queries/users) GraphQL query:
+There are multiple ways how you can authenticatre a User in platformOS. All of them will leverage the same `authenticate` field which is implemented by the [users](/api-reference/graphql/data/queries/users) GraphQL query:
 
 ```graphql
 query ($email: String!) {
@@ -45,7 +44,27 @@ query ($email: String!, $password: String!) {
 }
 ```
 
-The password can be set in both `user_create` and `user_update` GraphQL mutations.
+The password can be set during registration, which can be implemented using `user_create` mutation, for example:
+
+```graphql
+mutation {
+  user_create(user: { email: "user@example.com" password: "secret" }) {
+    id
+  }
+}
+```
+
+and can also be later updated using `user_update` mutation, for example:
+
+```graphql
+mutation ($id: $ID!){
+  user_update(id: $id, user: { password: "secret2" }){
+    id
+  }
+}
+```
+
+Please refer to the [User Authentication](/get-started/build-your-first-app/user-authentication#registration) tutorial to see a step-by-step guide.
 
 ### temporary_token
 
@@ -200,11 +219,23 @@ query ($email: String!, $password: String!) {
 
 After successful authentication, there are two most common paths you want to take - create a session for the authenticated user or obtain user's JWT.
 
-### Session based authentication
-
 In order to generate a session that is connected to the authenticated user, you will want to use [sign_in Liquid Tag](/api-reference/liquid/platformos-tags#sign-in). It takes two arguments - the user_id that has been authenticated based on the strategy described above, and optional `timeout_in_minutes` which specifies when the session will expire and user will be asked to authenticate again.
 
+### Accessing current user
+
 After invoking the `sign_in` tag, you will be able to access current user's data using either GraphQL's [current_user](/api-reference/graphql/data/queries/current-user) GraphQL query or in Liquid using [context.current_user](/api-reference/liquid/platformos-objects#context-current_user), usually in combination with an explicit `users` GraphQL Query.
+
+## Signing user out
+
+### Manual Log Out
+
+Allowing the user to log out is a crucial security requirement of any web application that offers signing user in. You can implement this functionality by invoking [user_session_destroy](/api-reference/graphql/deprecated/mutations/user-session-destroy) mutation:
+
+```graphql
+mutation {
+  user_session_destroy
+}
+```
 
 ## Identity Providers
 

@@ -7,7 +7,9 @@ converter: markdown
 
 User authentication is a fundamental aspect of web development that involves the process of verifying and confirming the identity of users accessing a web application or system. It is a crucial component for securing sensitive information and ensuring that only authorized individuals can perform certain actions or access specific resources.
 
-The primary goal of user authentication is to validate the identity of a user by requiring them to provide credentials, typically a combination of a username and password. In this chapter we will discuss a typical Session-Based Authentication flow, however in platformOS you can also implement Token-Based Authentication, integrate through OAuth etc.
+In platformOS there is a built-in [User](/developer-guide/users/user) object which is connected to [session](/developer-guide/users/session). In this tutorial we will show how to use User (and session behind the scenes) by verifying a combination of an email and password that user provides during the registration.
+
+You can read about other options like accessing [user's JWT](/developer-guide/users/authentication#jwt), [generating temporary_token](/developer-guide/users/authentication#temporary_token) or [OTP for 2FA](/developer-guide/users/authentication#otp_code-2fa) in the [User section of the Developer Guide](/developer-guide/users/authentication)
 
 ## Registration
 
@@ -103,14 +105,12 @@ You will be able to see a new User record using the `pos-cli gui serve` by going
 
 ## Accessing Current User
 
-In platformOS the simplest way to access authenticated user's `email` or `id` is via `context.current_user`. Let's say you would like to display current user's email - typical way of doing it is to include it in the layout. For this purpose edit `app/views/layouts/application.liquid` and add at the beginning of the `<body>` the following code:
+In platformOS the simplest way to access authenticated user's `email` or `id` is via [context.current_user](/api-reference/liquid/platformos-objects#context-current_user). Let's say you would like to display current user's email - typical use case is to include it in the layout. For this purpose edit `app/views/layouts/application.liquid` and add at the beginning of the `<body>` the following code:
 
 #### app/views/layouts/application.liquid
 ```liquid
 {% raw %}{% if context.current_user %}<div>You are currently log in as {{ context.current_user.email }}</div>{% endif %}{% endraw %}
 ```
-
-For the more complex use cases, for example accessing [user's JWT](/use-cases/authenticating-user-with-jwt#step-1-fetch-jwt-token-for-a-user) or OTP for 2FA, you will have to use [current_user GraphQL query](/api-reference/graphql/data/queries/current-user), however this is outside of the scope of this tutorial. You can find advanced User tutorials in the [User section of the Developer Guide](/use-cases/users)
 
 ## Manual Log Out
 
