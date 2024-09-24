@@ -122,24 +122,34 @@
   <h3 class="text-base uppercase">Schema</h3>
 </li>
 
-<li class="{% if cp contains 'properties' %}active{% endif %}">
-  <a href="/developer-guide/properties/properties">Properties</a>
-  {% if cp contains 'properties' %}
+<li class="{% if cp contains '/developer-guide/user' %}active{% endif %}">
+  <a href="/developer-guide/users/user">User</a>
+  {% if cp contains '/developer-guide/user' %}
     <ul class="submenu">
-      {% include "shared/nav/link", href: "/developer-guide/properties/properties", text: "Properties" %}
-      {% include "shared/nav/link", href: "/developer-guide/properties/arrays", text: "Arrays" %}
-      {% include "shared/nav/link", href: "/developer-guide/properties/uploads", text: "Uploads" %}
-      {% include "shared/nav/link", href: "/developer-guide/properties/custom-attachments", text: "[DEPRECATED] Custom Attachments" %}
-      {% include "shared/nav/link", href: "/developer-guide/properties/custom-images", text: "[DEPRECATED] Custom Images" %}
+      {% include "shared/nav/link", href: "/developer-guide/users/user", text: "User" %}
+      {% include "shared/nav/link", href: "/developer-guide/users/session", text: "Session" %}
+      {% include "shared/nav/link", href: "/developer-guide/users/authentication", text: "Authentication" %}
     </ul>
   {% endif %}
 </li>
 
-<li class="{% if cp contains 'records' %}active{% endif %}">
+<li class="{% if cp contains 'records' or cp contains 'properties' %}active{% endif %}">
   <a href="/developer-guide/records/records-tables">Records</a>
-  {% if cp contains 'records' %}
+  {% if cp contains 'records' or cp contains 'properties' %}
     <ul class="submenu">
       {% include "shared/nav/link", href: "/developer-guide/records/records-tables", text: "Records and Tables" %}
+      <li class="{% if cp contains 'properties' %}active{% endif %}">
+        <a href="/developer-guide/properties/properties">Properties</a>
+        {% if cp contains 'properties' %}
+          <ul class="submenu">
+            {% include "shared/nav/link", href: "/developer-guide/properties/properties", text: "Properties" %}
+            {% include "shared/nav/link", href: "/developer-guide/properties/arrays", text: "Arrays" %}
+            {% include "shared/nav/link", href: "/developer-guide/properties/uploads", text: "Uploads" %}
+            {% include "shared/nav/link", href: "/developer-guide/properties/custom-attachments", text: "[DEPRECATED] Custom Attachments" %}
+            {% include "shared/nav/link", href: "/developer-guide/properties/custom-images", text: "[DEPRECATED] Custom Images" %}
+          </ul>
+        {% endif %}
+      </li>
       {% include "shared/nav/link", href: "/developer-guide/records/data-backup-removal", text: "Data Backup and Removal" %}
       {% include "shared/nav/link", href: "/developer-guide/records/building-contact-form-with-records", text: "Building a Contact Form with Records" %}
       {% include "shared/nav/link", href: "/developer-guide/records/crud-records-using-ajax", text: "Managing Records using AJAX (CRUD operations)" %}
@@ -151,6 +161,7 @@
     </ul>
   {% endif %}
 </li>
+
 
 <li class="{% if cp contains 'json-documents' %}active{% endif %}">
   <a href="/developer-guide/json-documents/json-documents">JSON Documents</a>
