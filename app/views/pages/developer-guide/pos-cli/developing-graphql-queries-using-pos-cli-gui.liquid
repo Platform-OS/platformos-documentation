@@ -6,26 +6,26 @@ metadata:
   description: This guide will introduce you to the GraphiQL IDE for GraphQL that is a part of the pos-cli tool.
 ---
 
-This guide will introduce you to the GraphiQL IDE (Integrated Development Environment) for GraphQL that is a part of the [`pos-cli`](/developer-guide/pos-cli/pos-cli) tool.
+In this guide, we'll show you how to use the GraphiQL IDE (Integrated Development Environment) for GraphQL that is a part of the [`pos-cli`](/developer-guide/pos-cli/pos-cli) tool.
 
-Using the `pos-cli gui serve` command is the best way to develop your GraphQL queries. It communicates with the platformOS environment by running GraphQL queries against it. This allows you to see a live preview of the data from your application.
+The `pos-cli gui serve` command makes it easy to develop your GraphQL queries. It communicates with the platformOS environment by running GraphQL queries against it. This allows you to see a live preview of the data from your application.
 
 It communicates with the database directly, eliminating errors caused by data passing through other layers or features of the system.
 
-When debugging an error, you have direct control over the query and receive instant feedback after making changes. This allows you to simplify queries by removing unnecessary elements and adjusting the passed arguments.
+When you're debugging an error, you have direct control over the query and receive instant feedback after making changes. This allows you to simplify queries by removing unnecessary elements and adjusting the passed arguments.
 
 ## Requirements
 
-To follow the steps in this tutorial, ensure that `pos-cli` is installed and your environment is configured.
+Before you begin, make sure you have the `pos-cli` installed and your environment is properly configured.
 
 * [Get Started Guide](/get-started): Helps you gain access to our platform, set up a site, and install pos-cli.
-* [Technologies](/developer-guide/about-platformos/about-platformos#technologies): Overview of the technologies used in platformOS.
+* [Technologies](/developer-guide/about-platformos/about-platformos#technologies): See an overview of the technologies used in platformOS.
 
 ## Starting the GUI
 
 To start GraphiQL locally, run the `pos-cli gui serve [environment]` command.
 
-For example:
+Here's an example:
 
 <pre class="command-line" data-output="2-4" data-user="user" data-host="host"><code class="language-bash">
 $ pos-cli gui serve staging
@@ -36,13 +36,13 @@ $ pos-cli gui serve staging
 [18:05:01] Liquid evaluator: http://localhost:3333/gui/liquid
 </code></pre>
 
-{% include "alert/note", content: "Replace `staging` with the environment name you want to develop on. To list all available environments, use `pos-cli env list`" %}
+{% include "alert/note", content: "Replace `staging` with the environment you're working on. To view all available environments, use `pos-cli env list`." %}
 
 Do not close your terminal or end the command — `pos-cli gui serve` must be running in the background for GraphiQL to work correctly.
 
-To start using it, go to the link with "graphql" in it: `http://localhost:3333/gui/graphql`.
+To start using GraphiQL, open the URL with "graphql" in it: `http://localhost:3333/gui/graphql`.
 
-You will be greeted with the [GraphiQL editor](https://github.com/graphql/graphiql).
+You'll see the [GraphiQL editor](https://github.com/graphql/graphiql), where you can begin writing your queries.
 
 Here’s how it looks with an example mutation already written, including query variables, documentation, and the explorer open:
 
@@ -50,13 +50,15 @@ Here’s how it looks with an example mutation already written, including query 
 
 ## UI and features overview
 
+### Environment URL
+
 The URL of the environment that GraphiQL is connected to is displayed when opened. This helps you avoid running queries on the wrong environment (for example, accidentally deleting data from production instead of development).
 
-In our documentation, it shows: `platformOS - https://documentation.platformos.com/`.
+In the documentation example, you'll see: `platformOS - https://documentation.platformos.com/`.
 
 ### Main editor window
 
-The main editor window is where you type queries and mutations to run against the environment. It functions similarly to a code editor, featuring line numbers, code folding, and even [keyboard shortcuts](https://defkey.com/codemirror-shortcuts) familiar from other editors. Although not all shortcuts are listed in the official documentation, here are a few useful ones:
+The main editor window is where you type queries and mutations to run against the environment. It’s similar to a typical code editor, with features like line numbers, code folding, and useful [keyboard shortcuts](https://defkey.com/codemirror-shortcuts). Although not all shortcuts are listed in the official documentation, here are a few useful ones:
 
 - **CTRL+X** (CMD+X on Mac) – Cut the line when nothing is selected
 - **CTRL+J** (CMD+J on Mac) – Join the current line with the next line (removes line break)
@@ -66,9 +68,11 @@ The main editor window is where you type queries and mutations to run against th
 
 <img loading="lazy" src="{{ 'images/graphiql/main-window.png' | asset_url }}" alt="GraphiQL main editor window" />
 
+### Running a Query
+
 When you are ready to run a query, you can either press the "Play button" or use the keyboard shortcut **CTRL+ENTER** (CMD+ENTER on Mac). The results will be displayed on the right side of the window (grayed out).
 
-You can write multiple queries in the editor. When this is the case, pressing the "Play button" will display a dropdown where you can select which query to run.
+If you have multiple queries in the editor, pressing the Play button will bring up a dropdown, allowing you to choose which query to run.
 
 <img loading="lazy" src="{{ 'images/graphiql/multiple-queries.png' | asset_url }}" alt="Multiple queries" />
 
@@ -82,7 +86,7 @@ If you're unsure what you can use at any given moment, press **CTRL+SPACE** to s
 
 ### Default values
 
-When your query or mutation accepts arguments, you can set default values for them. These default values will be used when specific arguments are not passed to the query.
+If your query or mutation accepts arguments, you can set default values. These defaults will be used if no argument is passed when the query is run.
 
 Example of using default argument values:
 
@@ -105,7 +109,7 @@ query get_records($name: String = "feedback") {
 
 ### Query variables
 
-If you're developing a query that accepts arguments, you can pass them in the bottom section of the editor by clicking on "Query variables" to open it. This is the best way to pass required arguments without changing the original query.
+If you're developing a query that accepts arguments, you can pass them in the bottom section of the editor by clicking on "Query variables" to open it. It's the easiest way to pass required arguments without changing the query.
 
 <img loading="lazy" src="{{ 'images/graphiql/variables.png' | asset_url }}" alt="Query variables" />
 
@@ -113,11 +117,9 @@ GraphQL queries accept JSON format, meaning the variables must be an object, and
 
 ### Explorer
 
-Click on the "Explorer" button above the main editor window to open the explorer.
+The **Explorer** helps you build queries interactively. Open it by clicking on the "Explorer" button above the main editor window.
 
-The explorer is an interactive query builder that can speed up query creation. It has two main sections: queries and mutations.
-
-You can use checkboxes next to properties to build your query. Set values (or choose if it is an enum type) next to the property name. The query will automatically update in the main editor window.
+It has two main sections: queries and mutations. You can use checkboxes next to properties to build your query. Set values (or choose if it is an enum type) next to the property name. The query will automatically update in the main editor window.
 
 <img loading="lazy" src="{{ 'images/graphiql/explorer.png' | asset_url }}" alt="Explorer in GraphiQL" />
 
@@ -129,16 +131,16 @@ When you use this feature, it will create a new query in the main editor without
 
 ### Docs
 
-On the right side, you can explore built-in interactive documentation. This documentation is generated from the GraphQL schema and provides a list of all available endpoints for both queries and mutations:
+On the right side of the screen, you’ll find built-in documentation generated from the GraphQL schema. It lists all available queries and mutations.ns:
 
 <img loading="lazy" src="{{ 'images/graphiql/docs.png' | asset_url }}" alt="Documentation" />
 
-- Green values indicate default values for a given argument.
-- Values with a `!` denote required arguments.
+- **Green values**: Default values for a given argument.
+- **Values with `!`**: These are required arguments.
 
 ### History
 
-By clicking on the "History" button, you can access queries that you've previously run across all environments.
+You can access past queries by clicking the "History" button. This shows you queries you’ve run across all environments.
 
 Example of the history view:
 
