@@ -54,7 +54,7 @@ Let’s adjust it to the functionality of our Contact Us form, and add a log for
       "data": {}
     }
   {% endparse_json %}
-  {% function _ = 'modules/core/lib/commands/email/send', object: object %}
+  {% function _ = 'modules/core/commands/email/send', object: object %}
 ```
 {% endraw %}
 
@@ -102,7 +102,7 @@ This points to the specific partial template that contains the content of the em
 
 ## Create partials directory for the email template
 
-Now, we need to make sure this path exist which contains the email template: 
+Now, we need to make sure this path exist which contains the email template:
 
 Create the following directories:
 
@@ -184,7 +184,7 @@ The added log statements allow you to inspect the `contact` and `event_object` v
 It’s time for our final test! After submitting the form with valid data, navigate to [http://localhost:3333/logs](http://localhost:3333/logs) to review the logs. If everything is set up correctly, you should encounter a log entry similar to the following:
 
 ```html
-05/06/2024 18:22:51	info	
+05/06/2024 18:22:51	info
 Email has been sent 	log
 ```
 
@@ -194,7 +194,7 @@ Email has been sent 	log
 However, the following message indicates that the email delivery was skipped due to the lack of a configured test email:
 
 ```html
-05/06/2024 18:22:51	MailDeliverySkipped	
+05/06/2024 18:22:51	MailDeliverySkipped
 Email to ["mytest@email.com"] with subject "Your request has been submitted" has not been sent - please configure test_email. You can read more at https://documentation.platformos.com/developer-guide/partner-portal/instances/configuring-test-email
 ```
 
@@ -204,7 +204,7 @@ For further details, refer to the [Configuring a Test Email](/developer-guide/pa
 
 ## Clean up
 
-As the very last step of our task, let's tidy things up by removing unnecessary logs. 
+As the very last step of our task, let's tidy things up by removing unnecessary logs.
 
 In the `app/views/pages/contacts/create.liquid` file, locate and remove any logging statements you find:
 
@@ -230,6 +230,6 @@ method: post
 
 Congratulations on finishing the _Contact Us_ form task!
 
-Congratulations on completing the _Contact Us_ form tutorial! You have learned how to use platformOS to build a functional contact form, covering various concepts such as Commands/business logic, Validators, Events, data display, and logging. 
+Congratulations on completing the _Contact Us_ form tutorial! You have learned how to use platformOS to build a functional contact form, covering various concepts such as Commands/business logic, Validators, Events, data display, and logging.
 
 {% include 'alert/tip', content: 'You can find the complete code for this tutorial in the <a href="https://github.com/Platform-OS/tutorials-contact-us">tutorials-contact-us repository</a> on GitHub.' %}

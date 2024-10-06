@@ -10,7 +10,7 @@ metadata:
     if context.params.query != blank and context.params.query.size < 1000
 
       assign c = '{ "errors": {}, "valid": true }' | parse_json
-      function c = 'modules/core/lib/validations/hcaptcha', c: c, hcaptcha_params: context.params
+      function c = 'modules/core/validations/hcaptcha', c: c, hcaptcha_params: context.params
 
       if c.valid
         assign user_input = '[]' | parse_json | add_to_array: context.params.query
