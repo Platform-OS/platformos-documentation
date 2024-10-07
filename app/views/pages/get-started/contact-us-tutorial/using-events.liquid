@@ -41,6 +41,8 @@ You don’t need to write the event from scratch, you’ll find an [example even
 
 Open your `contact_created.liquid` file and paste the following code into it:
 
+#### app/lib/events/contact_created.liquid
+
 {% raw %}
 ```liquid
 ---
@@ -156,10 +158,6 @@ Copy the following code snippet from the core module documentation for [publishi
 
 Paste the copied code into your `app/lib/commands/contacts/create.liquid` file. This file already has the commands for building, checking, and executing the contact creation process. Integrate the publishing step as shown below:
 
-To ensure the email notification is sent correctly, we need to update the event object to include the necessary information, such as the contact's ID and email. This will allow the email template to access these details directly.
-
-Update the `app/lib/commands/contacts/create.liquid` file as follows:
-
 #### app/lib/commands/contacts/create.liquid
 
 {% raw %}
@@ -178,7 +176,10 @@ Update the `app/lib/commands/contacts/create.liquid` file as follows:
   return object
 %}
 ```
+
 {% endraw %}
+
+To ensure the email notification is sent correctly, we need to update the event object to include the necessary information, such as the contact's ID and email. This will allow the email template to access these details directly.
 
 To minimize the data included in the event object, we created a new, simplified object that only contains the necessary fields. This ensures efficiency and clarity:
 
@@ -304,6 +305,7 @@ method: post
     redirect_to '/contacts/thanks'
   else
     render 'contacts/form', contact: contact
+  endif
 %}
 ```
 {% endraw %}
