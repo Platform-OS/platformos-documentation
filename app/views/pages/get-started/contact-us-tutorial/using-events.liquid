@@ -41,6 +41,8 @@ You don’t need to write the event from scratch, you’ll find an [example even
 
 Open your `contact_created.liquid` file and paste the following code into it:
 
+#### app/lib/events/contact_created.liquid
+
 {% raw %}
 ```liquid
 ---
@@ -161,18 +163,53 @@ Paste the copied code into your `app/lib/commands/contacts/create.liquid` file. 
 {% raw %}
 ```liquid
 {% liquid
- function object = 'commands/contacts/create/build', object: object
- function object = 'commands/contacts/create/check', object: object
+  function object = 'commands/contacts/create/build', object: object
+  function object = 'commands/contacts/create/check', object: object
 
- if object.valid
-   function object = 'commands/contacts/create/execute', object: object
-   function _ = 'modules/core/commands/events/publish', type: 'contact_created', object: object
- endif
+  if object.valid
+    function object = 'commands/contacts/create/execute', object: object
+    assign event_object = '{}' | parse_json | hash_merge: id: object.id
+    hash_assign event_object["email"] = object.email
+    function _ = 'modules/core/commands/events/publish', type: 'contact_created', object: event_object, delay: null, max_attempts: null
+  endif
 
- return object
+  return object
 %}
 ```
+
 {% endraw %}
+
+To ensure the email notification is sent correctly, we need to update the event object to include the necessary information, such as the contact's ID and email. This will allow the email template to access these details directly.
+
+To minimize the data included in the event object, we created a new, simplified object that only contains the necessary fields. This ensures efficiency and clarity:
+
+{% raw %}
+```liquid
+ {% assign event_object = '{}' | parse_json | hash_merge: id: contact.id %}
+```
+{% endraw %}
+
+First, we start with an empty object (an empty hash `{}`). Then, we merge this empty object with another object that contains the `id` of the contact. This ensures that our event object only includes the contact's ID and nothing else.
+
+With this solution, we are avoiding the inclusion of unnecessary and potentially lengthy data such as the full contact body. However, by simplifying our event object, we no longer have direct access to some properties like the contact's `body` and `email`. While the event retains some built-in fields, it lacks the extra information we need.
+
+To address this, we will add the contact's email to the event object:
+
+{% raw %}
+```liquid
+{% hash_assign event_object["email"] = contact.email %}
+```
+{% endraw %}
+
+Adding the email directly to the event object means we don't have to go back to the database to get it later. This saves us from having to do an extra database query to find the email using the contact ID. It makes things simpler because now the email is right there in the event, ready to be used whenever we need it.
+
+{% raw %}
+```liquid
+{% function _ = 'modules/core/commands/events/publish', type: 'contact_created', object: event_object %}
+```
+{% endraw %}
+
+We used the updated event object to publish the event.
 
 ## Understanding the publish function
 
@@ -262,13 +299,14 @@ Update the `create.liquid` file located at `app/views/pages/contacts/create.liqu
 ---
 method: post
 ---
-{% function contact = 'commands/contacts/create', object: context.params.contact %}
-{% if contact.valid %}
-  {% function _ = 'modules/core/commands/events/publish', type: 'contact_created', object: event_object %}
-  {% redirect_to '/contacts/thanks' %}
-{% else %}
-  {% render 'contacts/form', contact: contact %}
-{% endif %}
+{% liquid
+  function contact = 'commands/contacts/create', object: context.params.contact
+  if contact.valid
+    redirect_to '/contacts/thanks'
+  else
+    render 'contacts/form', contact: contact
+  endif
+%}
 ```
 {% endraw %}
 
@@ -299,61 +337,6 @@ app/lib/consumers/contact_created/notify_submitter.liquid
 This file will be executed asynchronously whenever the `contact_created` event is triggered. This approach ensures that the user does not have to wait for the email to be sent before receiving a confirmation message.
 
 {% include 'alert/note', content: '<p>Any Liquid file inside the directory that corresponds to the name of the event will be executed asynchronously whenever the event is triggered. This is a best practice for actions like sending emails because it allows the user to receive immediate feedback without waiting for all background tasks to complete.</p><p>By organizing your event handling this way, you ensure that actions are executed efficiently and maintainably, enhancing both user experience and system reliability.</p><p>Refer to the <a href="https://github.com/Platform-OS/pos-module-core?tab=readme-ov-file#handling-events">Handling Events</a> section of the core module documentation for more details.</p>' %}
-
-## Update Event Object
-
-To ensure the email notification is sent correctly, we need to update the event object to include the necessary information, such as the contact's ID and email. This will allow the email template to access these details directly.
-
-Update the `create.liquid` file as follows:
-
-#### app/views/pages/contacts/create.liquid
-
-{% raw %}
-```liquid
----
-method: post
----
-{% function contact = 'commands/contacts/create', object: context.params.contact %}
-{% if contact.valid %}
-  {% assign event_object = '{}' | parse_json | hash_merge: id: contact.id %}
-  {% hash_assign event_object["email"] = contact.email %}
-  {% function _ = 'modules/core/commands/events/publish', type: 'contact_created', object: event_object %}
-  {% redirect_to '/contacts/thanks' %}
-{% else %}
-  {% render 'contacts/form', contact: contact %}
-{% endif %}
-```
-{% endraw %}
-
-To minimize the data included in the event object, we created a new, simplified object that only contains the necessary fields. This ensures efficiency and clarity:
-
-{% raw %}
-```liquid
- {% assign event_object = '{}' | parse_json | hash_merge: id: contact.id %}
-```
-{% endraw %}
-
-First, we start with an empty object (an empty hash `{}`). Then, we merge this empty object with another object that contains the `id` of the contact. This ensures that our event object only includes the contact's ID and nothing else.
-
-With this solution, we are avoiding the inclusion of unnecessary and potentially lengthy data such as the full contact body. However, by simplifying our event object, we no longer have direct access to some properties like the contact's `body` and `email`. While the event retains some built-in fields, it lacks the extra information we need.
-
-To address this, we will add the contact's email to the event object:
-
-{% raw %}
-```liquid
-{% hash_assign event_object["email"] = contact.email %}
-```
-{% endraw %}
-
-Adding the email directly to the event object means we don't have to go back to the database to get it later. This saves us from having to do an extra database query to find the email using the contact ID. It makes things simpler because now the email is right there in the event, ready to be used whenever we need it.
-
-{% raw %}
-```liquid
-{% function _ = 'modules/core/commands/events/publish', type: 'contact_created', object: event_object %}
-```
-{% endraw %}
-
-We used the updated event object to publish the event.
 
 ## Test the Event Consumer
 

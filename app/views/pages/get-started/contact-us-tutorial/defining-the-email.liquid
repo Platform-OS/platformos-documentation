@@ -151,17 +151,15 @@ Add logging statements to the `create.liquid` file to help with debugging:
 ---
 method: post
 ---
-{% function contact = 'commands/contacts/create', object: context.params.contact %}
-{% if contact.valid %}
-  {% log contact, type: 'contact after valid' %}
-  {% assign event_object = '{}' | parse_json | hash_merge: id: contact.id %}
-  {% hash_assign event_object["email"] = contact.email %}
-  {% log event_object, type: 'event object' %}
-  {% function _ = 'modules/core/commands/events/publish', type: 'contact_created', object: event_object %}
-  {% redirect_to '/contacts/thanks' %}
-{% else %}
-  {% render 'contacts/form', contact: contact %}
-{% endif %}
+{% liquid
+  function contact = 'commands/contacts/create', object: context.params.contact
+  if contact.valid
+    log contact, type: 'contact after valid'
+    redirect_to '/contacts/thanks'
+  else
+    render 'contacts/form', contact: contact
+  endif
+%}
 ```
 {% endraw %}
 
@@ -212,24 +210,20 @@ In the `app/views/pages/contacts/create.liquid` file, locate and remove any logg
 
 {% raw %}
 ```liquid
-app/views/pages/contacts/create.liquid
 ---
 method: post
 ---
-{% function contact = 'commands/contacts/create', object: context.params.contact %}
-{% if contact.valid %}
-  {% assign event_object = '{}' | parse_json | hash_merge: id: contact.id %}
-  {% hash_assign event_object["email"] = contact.email %}
-  {% function _ = 'modules/core/commands/events/publish', type: 'contact_created', object: event_object %}
-  {% redirect_to '/contacts/thanks' %}
-{% else %}
-  {% render 'contacts/form', contact: contact %}
-{% endif %}
+{% liquid
+  function contact = 'commands/contacts/create', object: context.params.contact
+  if contact.valid
+    redirect_to '/contacts/thanks'
+  else
+    render 'contacts/form', contact: contact
+  endif
+%}
 ```
 {% endraw %}
 
-Congratulations on finishing the _Contact Us_ form task!
-
-Congratulations on completing the _Contact Us_ form tutorial! You have learned how to use platformOS to build a functional contact form, covering various concepts such as Commands/business logic, Validators, Events, data display, and logging.
+Congratulations on completing the _Contact Us_ form tutorial! You have learned how to use platformOS to build a functional contact form, covering various concepts such as Commands/Business logic, Validators, Events, data display, and logging.
 
 {% include 'alert/tip', content: 'You can find the complete code for this tutorial in the <a href="https://github.com/Platform-OS/tutorials-contact-us">tutorials-contact-us repository</a> on GitHub.' %}
