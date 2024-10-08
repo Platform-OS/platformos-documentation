@@ -64,9 +64,9 @@ Constistency is one of the key factor when it comes to reducing learning curve a
 
 The convention can be best explained using an example. Let's assume we would like to create a web application that allows to create articles. Hence, the `article` will be our resource - to persist them, we will need to define a table for it in `app/schema/article.yml`. There are 7 typical actions that are required to define a full CRUD (Create Read Update Delete) experience. Resourceful route leverages HTTP method (GET / POST / PUT / DELETE) and the following url conventions to implement those actions:
 
-| HTTP method   | slug  | page file path |  description
-|---|---||---|
-| GET  | /articles | app/views/pages/articles/index.liquid | display a list of articles (ideally by invoking a query object defined in `app/lib/queries/articles/search.liquid`)|
+| HTTP method   | slug  | page file path |  description |
+|---|---|---|---|
+| GET  | /articles | app/views/pages/articles/index.liquid | display a list of articles (ideally by invoking a query object defined in `app/lib/queries/articles/search.liquid`) |
 | GET  | /articles/new | app/views/pages/articles/new.liquid | display a HTML form to create a new article |
 | POST  | /articles | app/views/pages/articles/create.liquid | persist article in the database (ideall by invoking a command defined in `app/lib/commands/articles/create.liquid`) |
 | GET  | /articles/:id | app/views/pages/articles/show.liquid | display an article which id is provided in the url (ideally by invoking a query object defined in `app/lib/queries/articles/find.liquid`) |
