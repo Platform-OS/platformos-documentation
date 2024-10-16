@@ -5,14 +5,14 @@ metadata:
 converter: markdown
 ---
 
-To implement the _Contact Us_ form, we'll create a homepage with two input fields: `email` and `body`, where users can enter their contact information. 
+To implement the _Contact Us_ form, we'll create a homepage with two input fields: `email` and `body`, where users can enter their contact information.
 
 {% include 'alert/tip', content: 'Creating a homepage is a bit special compared to creating a regular [page](/developer-guide/pages/pages). For detailed documentation, refer to the [Homepage](/developer-guide/pages/pages#homepage) documentation.' %}
 
 
 ## Requirements
 
-* Followed all steps of the [Quick Setup Guide](/get-started/contact-us-tutorial/#quick-setup-guide) for building 
+* Followed all steps of the [Quick Setup Guide](/get-started/contact-us-tutorial/#quick-setup-guide) for building
 * HTML knowledge
 
 ## Create a directory for pages
@@ -57,7 +57,7 @@ You might notice that we used `index.html.liquid` for our homepage file instead 
 
 ## Using Path to the File as Default Route
 
-The recommended approach for defining routes is to use the file path as the default route. This method uses the name of the file as the path, which enhances user experience and maintainability. 
+The recommended approach for defining routes is to use the file path as the default route. This method uses the name of the file as the path, which enhances user experience and maintainability.
 
 For example, the slug of the file `app/views/pages/index.html.liquid` will automatically default to `/`, making it clear and easy to find that this file represents the homepage.
 
@@ -68,14 +68,14 @@ For example, the slug of the file `app/views/pages/index.html.liquid` will autom
 
 ### Exceptions and Advanced Usage
 
-In some cases, such as creating RESTful URLs, you may need to use slugs. For example, to follow RESTful conventions for a `/contacts/create` page, you would use a slug `contacts`. 
+In some cases, such as creating RESTful URLs, you may need to use slugs. For example, to follow RESTful conventions for a `/contacts/create` page, you would use a slug `contacts`.
 
-For more detailed information on using RESTful URLs, [refer to this guide](https://apiguide.readthedocs.io/en/latest/build_and_publish/use_RESTful_urls.html). 
+For more detailed information on using RESTful URLs, [refer to this guide](https://apiguide.readthedocs.io/en/latest/build_and_publish/use_RESTful_urls.html).
 
 By default, use the file path for clarity and simplicity, but know that slugs are available for more complex routing needs.
 
 {% include 'alert/tip', content: '
-  The homepage slug is `/`, which will work for 
+  The homepage slug is `/`, which will work for
   <ul>
     <li><a href="https://example.com">https://example.com</a></li>
     <li><a href="https://example.com/">https://example.com/</a></li>
@@ -86,7 +86,7 @@ By default, use the file path for clarity and simplicity, but know that slugs ar
 
 ## Deploy and check
 
-Save your file. Since you have already enabled the [code syncing feature](/get-started/contact-us-tutorial/#step-9-enable-code-syncing) (`pos-cli sync staging`), any changes saved to the file will automatically sync with the instance.
+Save your file. Since you have already enabled the [code syncing feature](/get-started/contact-us-tutorial/#step-9-enable-code-syncing) (`pos-cli gui serve staging --sync` or `pos-cli sync staging`), any changes saved to the file will automatically sync with the instance.
 
 Now, visit your homepage URL (https://your-instance.staging.oregon.platform-os.com/) to see the _Contact Us_ form:
 

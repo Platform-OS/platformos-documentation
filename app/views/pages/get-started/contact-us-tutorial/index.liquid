@@ -7,7 +7,7 @@ converter: markdown
 
 ## Introduction
 
-In this tutorial, we'll take a step up from the simplicity of the [To-Do list app](/get-started/build-your-first-app/) and create a _Contact Us_ form using the [platformOS core module](https://github.com/Platform-OS/pos-module-core). If you've already built your first application on platformOS, this project will help you enhance your skills and tackle a more complex challenge.
+In this tutorial, we'll take a step up from the simplicity of the [To-Do list app](/get-started/build-your-first-app/) and create a _Contact Us_ form using the [DevKit mini-framework](https://documentation.platformos.com/developer-guide/modules/platformos-modules). If you've already built your first application on platformOS, this project will help you enhance your skills and tackle a more complex challenge. You will learn our best practices and naming conventions that our platformOS Senior Software Engineers recommend to use in every project developed on platformOS.
 
 We'll build on the knowledge you gained from implementing the To-Do list app, introducing new concepts and techniques. By the end, you’ll understand how to build more sophisticated applications.
 
@@ -15,20 +15,20 @@ We'll build on the knowledge you gained from implementing the To-Do list app, in
 
 Before we start, let's outline the core functionalities of our Contact Us form:
 
-* **Display Form on Homepage**: Show a form on the homepage with two fields: "email" and "body".
+* **Display Form on Homepage**: Show a form on [the homepage](https://documentation.platformos.com/developer-guide/pages/pages#homepage) with two fields: "email" and "body".
 * **Form Submission Handling**: When the form is submitted, it should trigger a POST request to the /contacts/create page.
-* **Input Validation**: Implement the following Business Rules using the Command approach described in the [core module's README](https://github.com/Platform-OS/pos-module-core):
+* **Input Validation**: Implement the following Business Rules using the [Command](https://github.com/Platform-OS/pos-module-core?tab=readme-ov-file#commands--business-logic) approach using [Validator](https://github.com/Platform-OS/pos-module-core?tab=readme-ov-file#validators) provided by [the core module](https://github.com/Platform-OS/pos-module-core):
     * Ensure that the email provided by the user looks like a valid email address.
     * Ensure that the body is at least 10 characters long and has no more than 200 characters.
 
 **If input is valid:**
 
-* Store the contact information in the database.
-* Use Events (as described in the [core module's README](https://github.com/Platform-OS/pos-module-core)) to send a confirmation email to the address provided by the user with a simple static confirmation that their request was received.
+* Store the contact information in the database using [Records](https://documentation.platformos.com/developer-guide/records/records-tables).
+* Use [Events](https://github.com/Platform-OS/pos-module-core?tab=readme-ov-file#events) provided by the [core module](https://github.com/Platform-OS/pos-module-core)) to send a confirmation email to the address provided by the user with a simple static confirmation that their request was received.
 * Redirect the user to `/contact/thanks` and display a simple "Thank you" message.
-    
+
 **If input is invalid:**
-    
+
 * Redisplay the form.
 * Show relevant error messages.
 * Pre-fill the form with the submitted data.
@@ -41,7 +41,7 @@ Before you start implementing the _Contact Us_ form, follow these steps to get t
 
 ### Step 1: Sign up and log in to the Partner Portal
 
-Sign up and log in to the [Partner Portal](https://partners.platformos.com/). 
+Sign up and log in to the [Partner Portal](https://partners.platformos.com/).
 
 If you have already gone through [/try](https://www.platformos.com/try) or built a [To Do app](/get-started) as part of the get started process, you should already have a Partner Portal account.
 
@@ -146,29 +146,18 @@ pos-cli deploy staging
 
 For further details, refer to the [Upload your code to an instance](/get-started/working-with-the-code-and-files/#upload-your-code-to-an-instance) guide.
 
-### Step 9: Enable code syncing
+### Step 9: Start the pos-cli GUI and enable code syncing
 
-<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
-pos-cli sync staging
-</code></pre>
-
-For further details, refer to the [Upload code changes automatically when you save the file](/get-started/working-with-the-code-and-files/#upload-code-changes-automatically-when-you-save-the-file) guide.
-
-### Step 10: Start the pos-cli GUI
 
 Use platformOS’s database management tool, which is part of pos-cli. Start the pos-cli GUI and sync your environment with a single command:
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
-pos-cli gui serve staging
+pos-cli gui serve staging --sync
 </code></pre>
 
-Here is the proofread version of the provided content:
+For further details, refer to the [Starting the GUI](/developer-guide/pos-cli/manage-database-using-pos-cli-gui.liquid#starting-the-gui) guide. and [Upload code changes automatically when you save the file](/get-started/working-with-the-code-and-files/#upload-code-changes-automatically-when-you-save-the-file) guide.
 
-{% include 'alert/note', content: 'The `--sync` parameter will automatically sync your environment, so there is no need to run a separate sync command beforehand. You can either use `pos-cli sync staging` and `pos-cli gui serve staging` in separate terminal windows, or run `pos-cli gui serve staging --sync`.' %}
-
-For further details, refer to the [Starting the GUI](/developer-guide/pos-cli/manage-database-using-pos-cli-gui.liquid#starting-the-gui) guide.
-
-### Step 11: Install the platformOS VSCode Extension
+### Step 10: Install the platformOS VSCode Extension
 
 We highly recommend installing the [platformOS VSCode Extension](https://github.com/Platform-OS/platformos-check-vscode) for an easier development experience. On Windows, it works out of the box. For OSX/Linux, you'll need to manually install Ruby and [platformos-check](https://github.com/Platform-OS/platformos-check).
 
