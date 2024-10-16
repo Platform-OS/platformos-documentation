@@ -12,10 +12,10 @@ The `pos-cli gui serve` command is an efficient way to preview your current data
 
 ## Requirements
 
-To follow the steps in this tutorial, ensure you have `pos-cli` installed and your environment configured.
+Before you begin, make sure you have the `pos-cli` installed and your environment is properly configured.
 
-* [Get Started Guide](/get-started): helps you get access to our platform, set up a site and install `pos-cli`.
-* [Technologies](/developer-guide/about-platformos/about-platformos#technologies)
+* [Get Started Guide](/get-started): Helps you gain access to our platform, set up a site, and install pos-cli.
+* [Technologies](/developer-guide/about-platformos/about-platformos#technologies): See an overview of the technologies used in platformOS.
 
 ## Starting the GUI
 
@@ -32,11 +32,13 @@ $ pos-cli gui serve staging
 [18:05:01] Liquid evaluator: http://localhost:3333/gui/liquid
 </code></pre>
 
-{% include "alert/note", content: "Replace `staging` with the environment name you want to develop on. To list all available environments, use `pos-cli env list`" %}
+{% include "alert/note", content: "Replace `staging` with the environment you're working on. To view all available environments, use `pos-cli env list`." %}
 
-Do not close your terminal and do not end the command, as `pos-cli gui serve` has to be running in the background for the GUI to work correctly.
+Do not close your terminal or end the command — `pos-cli gui serve` must be running in the background for the GUI to work correctly.
 
-To start using the GUI, navigate to `http://localhost:3333/database`with GraphQL in it.
+To start using the Database UI, open the URL with "database" in it: `http://localhost:3333/database`.
+
+<img loading="lazy" src="{{ 'images/get-started/database-gui.png' | asset_url }}" alt="Screenshot of Database tile on the GUI" />
 
 ## UI and Features Overview
 
@@ -50,4 +52,21 @@ The UI allows you to:
 * Edit existing record
 * Delete existing record
 * Create a new record
-* Browse [soft-deleted records](/developer-guide/records/data-backup-removal#automatic-delayed-permanent-removal) and undelete them
+* Browse [soft-deleted records](/developer-guide/records/data-backup-removal#automatic-delayed-permanent-removal) and restore them
+
+### Restoring Deleted Records using the Database UI
+
+In the **Database UI**, you can switch between the current database view and deleted records using the icons provided:
+- **Current Records**: Represented by the **leaf icon**.
+- **Deleted Records**: Represented by the **recycle bin icon**.
+
+<img loading="lazy" src="{{ 'images/get-started/show-deleted-records.png' | asset_url }}" alt="Screenshot of Database UI showing the Show deleted records icon" />
+
+To restore a deleted record:
+1. Click the **recycle bin icon** to show soft-deleted records.
+2. Locate the record you wish to restore.
+3. From the dropdown next to the record, select "Restore record".
+
+<img loading="lazy" src="{{ 'images/get-started/restore-record.png' | asset_url }}" alt="Screenshot of Database UI showing the Restore record option" />
+
+After restoring, the record will be available again in the current database view.
