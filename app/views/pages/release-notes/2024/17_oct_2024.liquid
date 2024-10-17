@@ -1,0 +1,30 @@
+---
+converter: markdown
+metadata:
+  title: ApiCall/Email/SMS sending without Liquid, performance improvement for array_overlaps
+  description: October 17, 2024
+  skip_contribute_button: true
+  last_edit: false
+slug: release-notes/17-OCT-24
+---
+
+#### {{ page.metadata.description }}
+
+<h4 class="release-note release-note__new">NEW</h4>
+
+* `email_send` GraphQL mutation accepts new argument - `email` - which allows to send email without Liquid, effectively removing necessity of using `app/emails` directory
+* `api_call_send` GraphQL mutation accepts new argument - `api_call` - which allows to send Api Call without Liquid, effectively removing necessity of using `app/api_calls` directory
+* `sms_send` GraphQL mutation accepts new argument - `sms` - which allows to send SMS without Liquid, effectively removing necessity of using `app/smses` directory
+
+<h4 class="release-note release-note__improved">IMPROVED</h4>
+
+* performance improvement for `array_overlaps` filter
+
+<h4 class="release-note release-note__fixed">FIXED</h4>
+
+* Fix for updating user profiles when deleted profile of the same type exists
+
+<!-- <h4 class="release-note release-note__fixed">MAINTENANCE</h4>
+
+* Upgraded internal frameworks and dependencies to the newest versions
+ -->
