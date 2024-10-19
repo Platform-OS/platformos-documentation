@@ -85,6 +85,7 @@ Let’s add a `function` tag to your `app/views/pages/contacts/create.liquid` fi
 ---
 method: post
 ---
+
 {% function contact %}
 ```
 {% endraw %}
@@ -96,7 +97,7 @@ To use it, you need to make sure that the partial returns data using the `return
 {% # TODO: check size %}
 <img loading="lazy" class="w-full" src="{{ 'images/get-started/contact-us-tutorial/function_lsp_help.png' | asset_url }}" alt="LSP support for function tag">
 
-If you previously added `Hello {% raw %}{{ context.params.contact }}{% endraw %}` for demonstration purposes, you can now remove it from the app/views/pages/contacts/create.liquid file. It was just a placeholder to illustrate passing data.
+If you previously added `Hello {% raw %}{{ context.params.contact }}{% endraw %}` for demonstration purposes, you can now remove it from the `app/views/pages/contacts/create.liquid` file. It was just a placeholder to illustrate passing data.
 
 ## Specify the path to the partial 
 
@@ -115,7 +116,7 @@ To use a `function` tag, you need to specify the path to the partial file that c
 
 #### app/views/pages/contacts/create.liquid
 
-`{% raw %}
+{% raw %}
 ```liquid
 ---
 method: post
