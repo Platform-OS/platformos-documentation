@@ -7,44 +7,17 @@ converter: markdown
 
 When the user submits valid input through the _Contact Us_ form, we need to perform a few actions:
 
-* Store the contact data in the database.
-* Send a confirmation email to the user (a simple static confirmation that their request was received.)
-* Redirect the user to /contacts/thanks and display a simple “Thank you” message.
+1. Store the contact data in the database.
+2. Send a confirmation email to the user (a simple static confirmation that their request was received.)
+3. Redirect the user to `/contacts/thanks` and display a simple “Thank you” message.
 
-## Storing the contact details in the database
+## Store the Contact Details in the Database
 
-To store contact requests in the database, we need to create a new table. First, we will define the schema for this table.
+To store contact requests in the database, we are using the `contact.yml` table created in the [Setting Up a Schema](/get-started/contact-us-tutorial/setting-up-a-schema) step.
 
-## Create a table
+With the schema in place, the necessary actions were integrated into the application. The goal was to validate the contact form and persist the valid data in the database. To achieve this, we created a GraphQL mutation in the `app/graphql/contacts/create.graphql` file during the [Saving Data in the Database](/get-started/contact-us-tutorial/saving-data-to-the-database) step to persist the contact data. This mutation is now used to store the contact data in the database!
 
-Navigate to your project root and create a new directory named `schema`.
-
-<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
-mkdir app/schema
-</code></pre>
-
-Inside the `schema` directory, create a `contact.yml` file:
-
-#### app/schema/contact.yml
-
-```yml
-properties:
-- name: email
-- name: body
-```
-
-By default, properties in this YAML file are treated as strings, so you don't need to specify the data types explicitly. This schema definition is enough to create the table.
-
-## Test if the table exists in the database
-
-After defining the schema, you can verify the table creation by accessing the database interface. Open your browser and navigate to [http://localhost:3333/database](http://localhost:3333/database). You should see the new table with email and body columns, both of which are strings:
-
-{% # TODO: check size %}
-<img loading="lazy" class="w-full" src="{{ 'images/get-started/contact-us-tutorial/database_contact.png' | asset_url }}" alt="Database interface showing the newly created table with email and body columns">
-
-## Create the Execute command
-
-Now that we have our schema in place, let's integrate these actions into our application by updating the necessary files and configurations. Our goal is to validate the contact form and persist the valid data in the database. To achieve this, we will create a Liquid file that executes a GraphQL mutation.
+## Create `execute.liquid` file
 
 First, create the `execute.liquid` file in the following directory:
 
@@ -203,83 +176,6 @@ Instead of these solutions, let’s rename everything to `object`:
 ```
 {% endraw %}
 
-## Create GraphQL Mutation
-
-The final step is to create a GraphQL mutation to persist the contact data in the database. This involves creating the necessary directories and files to store the GraphQL mutation.
-
-## Create the directory structure
-
-Navigate to your project root and create the necessary folders for storing GraphQL files:
-
-<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
-mkdir -p app/graphql/contacts
-</code></pre>
-
-## Create the GraphQL mutation file
-
-Inside the `app/graphql/contacts` directory, create a file named create.graphql
-
-<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
-app/graphql/contacts/create.graphql
-</code></pre>
-
-## Define the mutation
-
-Open `app/graphql/contacts/create.graphql` and add the following mutation code:
-
-#### app/graphql/contacts/create.graphql
-
-```graphql
-mutation contact_create($email: String!, $body: String!) {
-  record_create(
-    record: {
-      table: "contact"
-      properties: [
-        { name: "email", value: $email }
-        { name: "body", value: $body }
-      ]
-    }
-  ) {
-    id
-    email: property(name: "email")
-    body: property(name: "body")
-    created_at
-  }
-}
-```
-
-Let’s break it down to see what happens:
-
-```graphql
-mutation contact_create($email: String!, $body: String!) {
-```
-
-This line defines the mutation `contact_create` and specifies that it requires two parameters: `email` and `body`, both of which are strings and must be provided (`!` indicates non-nullable).
-
-```graphql
-record_create(
-  record: {
-    table: "contact"
-    properties: [
-      { name: "email", value: $email }
-      { name: "body", value: $body }
-    ]
-  }
-) {
-```
-
-This block specifies the `record_create` mutation, which creates a new record in the `contact` table. The `properties` array defines the fields to be populated with the values of `$email` and `$body`.
-
-```graphql
-id
-email: property(name: "email")
-body: property(name: "body")
-created_at
-```
-
-These lines define the fields that will be returned after the record is created. This includes the `id`, `email`, `body`, and `created_at` timestamp.
-
-
 ## Special arguments: args
 
 In the context of platformOS, the `args` parameter serves as a special argument that can be either a hash or a string of arguments passed to the GraphQL query.
@@ -310,40 +206,5 @@ Without using `args`, you would need to specify each argument individually like 
 While for a small number of arguments, this may not seem particularly beneficial, it becomes more advantageous when dealing with a larger number of arguments, such as 10 or 20.
 
 To learn more about how `args` function, refer to the [examples provided](/api-reference/liquid/platformos-tags#graphql) in the Liquid Tags chapter of the documentation.
-
-## Testing the mutation using GraphiQL
-
-The GraphiQL interface allows you to simulate and verify your GraphQL mutation before fully integrating it into your application. Let’s test the mutation we created!
-
-Navigate to the GraphiQL interface at [http://localhost:3333/gui/graphql/](http://localhost:3333/gui/graphql/). Paste the mutation code you have at `app/graphql/contacts/create.graphql` to verify its functionality.
-
-Below the editor, find the section to add query variables. Paste the following JSON code into the variables section for the test:
-
-```graphql
-{
-  "email": "testemail@email.com",
-  "body": "Hello! This is my message"
-}
-```
-
-Click the execute button and check the response to ensure that the mutation executed successfully. You should see a response containing the ID, email, body, and created_at fields, indicating that the record has been created in the database. The response should look something like this:
-
-```graphql
-{
-  "data": {
-    "record_create": {
-      "id": "9",
-      "email": "testemail@email.com",
-      "body": "Hello! This is my message",
-      "created_at": "2024-06-04T14:04:24.224Z"
-    }
-  }
-}
-```
-
-To ensure the data has been correctly stored in your platformOS database, navigate to your database interface at [http://localhost:3333/database](http://localhost:3333/database). Search for the newly created contact record to confirm its presence and validate that the email and body fields have been correctly stored.
-
-{% # TODO: check size %}
-<img loading="lazy" class="w-full" src="{{ 'images/get-started/contact-us-tutorial/test_graphql_mutation.gif' | asset_url }}" alt="Testing GraphQL mutation in action">
 
 {% render 'alert/next', content: 'Redirecting and Displaying a Thank you Message', url: '/get-started/contact-us-tutorial/redirecting-thank-you' %}
