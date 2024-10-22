@@ -5,12 +5,47 @@ metadata:
 converter: markdown
 ---
 
-As the next step, we will implement business rules to ensure the form submission meets specific criteria, using the Command approach described in the [core module's documentation](https://github.com/Platform-OS/pos-module-core?tab=readme-ov-file#commands--business-logic). 
-
-Specifically, we want to:
+As the next step, we want to:
 
 * Validate that the email provided by the user looks like a valid email.
 * Ensure that the body is at least 10 characters long and has no more than 200 characters.
+
+To achive this, we will implement **Business Rules** for our Contact Us form using **Commands**.
+
+{% include 'alert/tutorial', content: 'Refer to the [core module documentation](https://github.com/Platform-OS/pos-module-core?tab=readme-ov-file#commands--business-logic) to learn more about Commands.' %}
+
+
+## Understanding Commands and Business Logic
+
+In platformOS, **Commands** are a powerful way to implement business logic in your applications. They allow you to encapsulate specific actions or operations into reusable components that can be easily invoked throughout your project. Think of commands as predefined functions that handle various tasks, such as processing data, performing validations, or interacting with your database.
+
+Using commands promotes clean, modular, and testable code. By organizing your logic into distinct commands, you can easily maintain and reuse them across different parts of your application. Additionally, this structure simplifies collaboration among multiple developers, as each person can work on their own commands without interfering with others.
+
+{% include 'alert/tip', content: 'Commands follow a clear structure known as the **build/check/execute** pattern, which helps to keep your code organized and maintainable.' %}
+
+## The Build/Check/Execute Pattern
+
+The **build/check/execute** pattern in platformOS provides a clear and organized approach to managing business logic within commands. This structured methodology ensures that your code is not only effective but also easy to maintain.
+
+{% # TODO: check size %}
+<img loading="lazy" class="w-full" src="https://raw.githubusercontent.com/Platform-OS/pos-module-core/master/docs/commands.png" alt="Commands overview">
+
+By splitting these stages into separate files, you promote clean, modular, and testable code. This approach also makes it easier for multiple developers to work on the project simultaneously. 
+
+| **Stage**  | **Description** |
+|------------|------------------|
+| **Build**  | This first step is all about **preparing the input for the command**. It normalizes and processes the data received from users, ensuring it’s formatted correctly for the next steps. Think of it as getting everything ready before you dive into the core functionality! |
+| **Check**  | At this stage, the command **validates the input data**. This involves checking that all necessary fields are present, filled out, and meet specific criteria—for example, ensuring the email is valid and that the message body is of the appropriate length. If something goes wrong, detailed error messages are provided to help the user understand what needs fixing. |
+| **Execute**| The execute phase is where all the **important actions take place**, such as saving data to the database or initiating other processes. Think of it as the final piece of the puzzle that brings everything together. This step is essential because it **invokes the GraphQL query**, allowing the data to be stored effectively. This phase builds on all prior validations, ensuring everything functions smoothly. If any validation checks fail—like if a required email address is missing—it indicates a problem in the check phase, potentially preventing successful execution and leading to errors such as a 500 error, signaling a glitch in the code. To avoid such pitfalls, the execute command should always succeed when validations are implemented correctly, highlighting the importance of conducting thorough checks before moving on to execution. By doing so, you ensure your application runs as intended and provides a seamless experience for users. |
+
+## Best Practices for Using Commands
+
+We recommend placing your commands in the `lib/commands` directory, following the naming conventions of `<resource>/<action>`, for example, `contacts/create.liquid`. This organization keeps your project structured and easy to navigate.
+
+Commands are designed to be easily executed as background jobs for heavy operations, such as external API calls, expensive computations, or generating reports. Additionally, each command might produce an [Event](https://github.com/Platform-OS/pos-module-core?tab=readme-ov-file#events), allowing for further integration with your application's workflow.
+
+In this tutorial, we will **implement business rules for our Contact Us form using commands**. Specifically, we will focus on **validating user inputs** to ensure they meet certain criteria before processing them. This ensures a smooth and reliable experience for users interacting with your application.
+
 
 ## Create the folder structure
 
@@ -64,7 +99,7 @@ This folder structure is designed to keep your project organized, easy to mainta
   
 By structuring your project this way, each piece of functionality is contained in its own module, promoting reuse and reducing the risk of conflicts. This approach also makes it easier for multiple developers to work on the project simultaneously without interfering with each other.
 
-### Using the `function` tag 
+## Using the `function` tag 
 
 To create a functional _Contact Us_ form in platformOS, you’ll use the `function` tag. The `function` tag works similarly to functions in traditional programming languages. It allows you to call a partial and store the returned result in a variable, which is essential for processing form data like user contacts.
 
@@ -152,24 +187,6 @@ Here, we pass `context.params.contact` as the `object` argument. This object con
 <img loading="lazy" class="w-full" src="{{ 'images/get-started/contact-us-tutorial/lsp_contact_never_used.png' | asset_url }}" alt="LSP feedback indicating unused 'contact' variable">
 
 You might notice that LSP complains that the `contact` variable is never used and we have an unused `object` argument. This is true for now, and we will address it in later steps.
-
-## Understanding Business Logic and Commands
-
-The build/check/execute pattern in platformOS is a structured approach to [handle business logic within commands](https://github.com/Platform-OS/pos-module-core?tab=readme-ov-file#commands--business-logic). This method ensures your code is organized, maintainable, and reusable.
-
-- The **build stage** prepares the input for the command. It normalizes and processes the data received from the user, ensuring it is in the correct format.
-
-- The **check stage** validates the input data. It confirms that all required fields are present, checks for uniqueness, and ensures the data meets specific criteria. If validation fails, it provides detailed error messages.
-
-- The **execute stage** performs the main action of the command, such as saving data to the database. This step only occurs if the validation is successful.
-
-By splitting these stages into separate files, you promote clean, modular, and testable code. This approach also makes it easier for multiple developers to work on the project simultaneously.
-
-We recommend placing your commands in `lib/commands` directory.
-
-The naming conventions that we use are `<resource>/<action>`, for example, `contacts/create.liquid`.
-
-Commands are designed to be easily executed as background jobs [heavy commands - external API call, expensive operations computations, reports]. Each command might produce an [Event](https://github.com/Platform-OS/pos-module-core?tab=readme-ov-file#events).
 
 ## Set up a Build Command
 
