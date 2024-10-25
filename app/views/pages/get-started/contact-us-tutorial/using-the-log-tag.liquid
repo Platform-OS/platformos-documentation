@@ -5,9 +5,13 @@ metadata:
 converter: markdown
 ---
 
+When building applications on platformOS, effective logging and error handling are important for quickly spotting and fixing issues. Being able to see what your application is doing and catching errors as they occur can save you both time and frustration.
+
 {% include 'alert/tutorial', content: 'Before continuing with the Contact Us form, please read about [Error Handling and Troubleshooting](/get-started/error-handling) in the Getting Started section!' %}
 
-The [log](/api-reference/liquid/platformos-tags#log) tag is a basic and effective way to debug your platformOS application. Here's how to use it in your `app/lib/commands/contacts/create.liquid` file:
+In this part of the tutorial, we’ll dive into using the [log](/api-reference/liquid/platformos-tags#log) tag, a simple yet powerful tool for debugging your platformOS application. By adding logging to your workflow, you’ll get valuable insights into how your application is performing and be able to diagnose problems more easily.
+
+Here’s how to implement logging in your `app/lib/commands/contacts/create.liquid` file:
 
 #### app/lib/commands/contacts/create.liquid
 
@@ -20,9 +24,12 @@ The [log](/api-reference/liquid/platformos-tags#log) tag is a basic and effectiv
 ```
 {% endraw %}
 
-`contact`: this is the variable containing the processed object. It includes the `email` and `body` parameters, with `email` being downcased.
+**Explanation:**
 
-`type: 'result of invoking build'`: this provides a label for the log entry, making it easier to identify in the logs.
+| Variable | Description                                                                                  |
+|----------|----------------------------------------------------------------------------------------------|
+| `contact` | This is the variable containing the processed object. It includes the `email` and `body` parameters, with `email` being downcased. |
+| `type: 'result of invoking build'` | This provides a label for the log entry, making it easier to identify in the logs. |
 
 ## Accessing logs
 
