@@ -5,12 +5,46 @@ metadata:
 converter: markdown
 ---
 
-As the next step, we will implement business rules to ensure the form submission meets specific criteria, using the Command approach described in the [core module's documentation](https://github.com/Platform-OS/pos-module-core?tab=readme-ov-file#commands--business-logic). 
-
-Specifically, we want to:
+As the next step, we want to:
 
 * Validate that the email provided by the user looks like a valid email.
 * Ensure that the body is at least 10 characters long and has no more than 200 characters.
+
+To achive this, we will implement **Business Rules** for our Contact Us form using **Commands**.
+
+{% include 'alert/tutorial', content: 'Refer to the [core module documentation](https://github.com/Platform-OS/pos-module-core?tab=readme-ov-file#commands--business-logic) to learn more about Commands.' %}
+
+
+## Understanding Commands and Business Logic
+
+In platformOS, we recommend structuring your code using **Commands** pattern to implement business logic in your applications. They allow you to encapsulate specific actions or operations into reusable components that can be easily invoked throughout your project. Think of commands as predefined functions that handle various tasks, such as processing data, performing validations, or interacting with your database.
+
+Using commands promotes clean, reusable, and testable code. By organizing your logic into distinct commands, you can easily maintain and reuse them across different parts of your application. This structure simplifies collaboration among multiple developers, as there is a shared convention and it is easier to discover existing capabilities of the system, without re-implanting the same functionality multiple times.
+
+{% include 'alert/tip', content: 'Commands follow a clear structure known as the **build/check/execute** pattern, which helps to keep your code organized and maintainable.' %}
+
+## The Build/Check/Execute Pattern
+
+The **build/check/execute** pattern in platformOS provides a clear and organized approach to managing business logic within commands. This structured methodology ensures that your code is not only effective but also easy to maintain.
+
+{% # TODO: check size %}
+<img loading="lazy" class="w-full" src="https://raw.githubusercontent.com/Platform-OS/pos-module-core/master/docs/commands.png" alt="Commands overview">
+
+By splitting these stages into separate files, you promote clean, modular, and testable code. This approach also makes it easier for multiple developers to work on the project simultaneously. 
+
+| **Stage**  | **Description** |
+|------------|------------------|
+| **Build**  | This first step is all about **preparing the input for the command**. It normalizes and processes the data received from users, ensuring it’s formatted correctly for the next steps. Think of it as getting everything ready before you dive into the core functionality! |
+| **Check**  | At this stage, the command **validates the input data**. This involves checking that all necessary fields are present, filled out, and meet specific criteria—for example, ensuring the email is valid and that the message body is of the appropriate length. If something goes wrong, detailed error messages are provided to help the user understand what needs fixing. |
+| **Execute**| The execute phase is where all the **important actions take place**, such as saving data to the database or initiating other processes. Think of it as the final piece of the puzzle that brings everything together. This step is essential because it **invokes the GraphQL query**, allowing the data to be stored effectively. This phase builds on all prior validations, ensuring everything functions smoothly. If any validation checks fail—like if a required email address is missing—it indicates a problem in the check phase, potentially preventing successful execution and leading to errors such as a 500 error, signaling a glitch in the code. To avoid such pitfalls, the execute command should always succeed when validations are implemented correctly, highlighting the importance of conducting thorough checks before moving on to execution. By doing so, you ensure your application runs as intended and provides a seamless experience for users. |
+
+## Best Practices for Using Commands
+
+We recommend placing your commands in the `lib/commands` directory, following the [naming conventions](/developer-guide/modules/platformos-modules#resourceful-route-naming-convention) of `<resource>/<action>`, for example, `contacts/create.liquid`. This organization keeps your project structured and easy to navigate.
+
+Commands are designed to be easily executed as background jobs for heavy operations, such as external API calls, expensive computations, or generating reports. Additionally, each command might produce an [Event](https://github.com/Platform-OS/pos-module-core?tab=readme-ov-file#events), allowing for further integration with your application's workflow.
+
+Now, we will **implement business rules for our Contact Us form using commands**. Specifically, we will focus on **validating user inputs** to ensure they meet certain criteria before processing them. This ensures a smooth and reliable experience for users interacting with your application.
 
 ## Create the folder structure
 
@@ -64,9 +98,12 @@ This folder structure is designed to keep your project organized, easy to mainta
   
 By structuring your project this way, each piece of functionality is contained in its own module, promoting reuse and reducing the risk of conflicts. This approach also makes it easier for multiple developers to work on the project simultaneously without interfering with each other.
 
-### Using the `function` tag 
+## Using the `function` tag 
 
-To create a functional _Contact Us_ form in platformOS, you’ll use the `function` tag. The `function` tag works similarly to functions in traditional programming languages. It allows you to call a partial and store the returned result in a variable, which is essential for processing form data like user contacts.
+To create a functional _Contact Us_ form in platformOS, you’ll use the [`function`](/api-reference/liquid/platformos-tags#function) tag. The `function` tag works similarly to functions in traditional programming languages. It allows you to call a partial and store the returned result in a variable, which is essential for processing form data like user contacts.
+
+{% include 'alert/tutorial', content: 'Learn more about the [`function` tag and its usage](/api-reference/liquid/platformos-tags#function) in our documentation.' %}
+
 
 First, you'll need to use the `function` tag and specify a variable name to store the result. Here’s the basic syntax:
 
@@ -153,217 +190,4 @@ Here, we pass `context.params.contact` as the `object` argument. This object con
 
 You might notice that LSP complains that the `contact` variable is never used and we have an unused `object` argument. This is true for now, and we will address it in later steps.
 
-## Understanding Business Logic and Commands
-
-The build/check/execute pattern in platformOS is a structured approach to [handle business logic within commands](https://github.com/Platform-OS/pos-module-core?tab=readme-ov-file#commands--business-logic). This method ensures your code is organized, maintainable, and reusable.
-
-- The **build stage** prepares the input for the command. It normalizes and processes the data received from the user, ensuring it is in the correct format.
-
-- The **check stage** validates the input data. It confirms that all required fields are present, checks for uniqueness, and ensures the data meets specific criteria. If validation fails, it provides detailed error messages.
-
-- The **execute stage** performs the main action of the command, such as saving data to the database. This step only occurs if the validation is successful.
-
-By splitting these stages into separate files, you promote clean, modular, and testable code. This approach also makes it easier for multiple developers to work on the project simultaneously.
-
-We recommend placing your commands in `lib/commands` directory.
-
-The naming conventions that we use are `<resource>/<action>`, for example, `contacts/create.liquid`.
-
-Commands are designed to be easily executed as background jobs [heavy commands - external API call, expensive operations computations, reports]. Each command might produce an [Event](https://github.com/Platform-OS/pos-module-core?tab=readme-ov-file#events).
-
-## Set up a Build Command
-
-As the next step, we want to use a build command in the `app/lib/commands/contacts/create/build.liquid` file.
-
-The build command is an essential part of the data processing workflow. It allows you to normalize and prepare data before it is stored or used further in your application. By defining a build command, you can manipulate incoming data, perform validations, and ensure the data meets your application's requirements. This is especially useful for tasks like cleaning up user input, setting default values, and enforcing data consistency.
-
-Build commands are defined in Liquid templates and typically involve transforming and returning JSON objects. This process ensures that your data is well-structured and ready for subsequent operations or storage.
-
-To set up a build command, you don’t need to write the code from scratch. Let’s use the dummy build command from the [core module documentation](https://github.com/Platform-OS/pos-module-core?tab=readme-ov-file#build).
-
-Here's the dummy build command from the core module documentation:
-
-{% raw %}
-```liquid
-{% parse_json data %}
-  {
-    "title": {{ object.title | downcase | json }},
-    "uuid": {{ object.uuid | json }},
-    "c__score": 0
-  }
-{% endparse_json %}
-
-{% liquid
-  if data['uuid'] == blank
-    hash_assign data["uuid"] = '' | uuid | json
-  endif
-
-  return data
-%}
-```
-{% endraw %}
-
-Copy this code into your `app/lib/commands/contacts/create/build.liquid` file.
-
-## Customize the Build Command
-
-Now, we will modify the build command to suit our needs. In the build phase, you normalize the parameters, ensuring you only take what's relevant and perform any necessary transformations. The goal is to clean up and prepare the contact data (email and body) before further processing.
-
-For example, you want to ensure that the email is always in lowercase:
-
-#### app/lib/commands/contacts/create/build.liquid
-
-{% raw %}
-```liquid
-{% parse_json contact %}
-  {
-    "email": {{ object.email | downcase | json }},
-    "body": {{ object.body | json }}
-  }
-{% endparse_json %}
-
-{% liquid
-  return contact
-%}
-```
-{% endraw %}
-
-The `parse_json contact` tag parses the JSON object (email and body) into a variable named `contact`.
-
-Inside the JSON object, we transform `object.email` to lowercase and ensure it is properly formatted as JSON.
-
-Every function needs to `return` an object. In this case, the function takes user parameters, processes them (downcasing the email), and returns an object with the email and body properties.
-
-## Invoking the function
-
-To process the contact data using the build command, we need to invoke the function inside the `/app/lib/commands/contacts/create.liquid` file:
-
-Here's the code snippet for invoking the function:
-
-#### app/lib/commands/contacts/create.liquid
-
-{% raw %}
-```liquid
-{% function contact = 'commands/contacts/create/build', object: object %}
-```
-{% endraw %}
-
-This line of code will call the build command, passing the `object` containing the `email` and `body` parameters to it. The build command will then process these parameters and return a normalized `contact` object.
-
-We used the `function` tag to specify the path to the build command partial. Remember, you can use LSP to autocomplete paths, so you don’t need to type them manually. In our example, the path leads to the `app/lib/commands/contacts/create/build.liquid` file.
-
-You also need to pass the `object` that you defined earlier in your `/app/views/pages/contacts/create.liquid` file, which is `object`.
-
-You might notice that LSP complains that the `contact` variable is never used. This is true for now, and we will address it in later steps.
-
-### Using the `log` tag for debugging
-
-The `log` tag is a basic and effective way to debug your platformOS application. Here's how to use it in your `app/lib/commands/contacts/create.liquid` file:
-
-#### app/lib/commands/contacts/create.liquid
-
-{% raw %}
-```liquid
-{% function contact = 'commands/contacts/create/build', object: object %}
-{% log contact, type: 'result of invoking build' %}
-
-{% return contact %}
-```
-{% endraw %}
-
-`contact`: this is the variable containing the processed object. It includes the `email` and `body` parameters, with `email` being downcased.
-
-`type: 'result of invoking build'`: this provides a label for the log entry, making it easier to identify in the logs.
-
-## Accessing logs
-
-To view your logs, you need to use the pos-cli GUI.
-
-To start the GUI, in your command line, run:
-
-<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
-pos-cli gui serve --sync staging
-</code></pre>
-
-{% include 'alert/note', content: 'Replace `staging` with the environment name you want to develop on. To list all available environments use `pos-cli env list`. Refer to the [platformOS documentation](/developer-guide/pos-cli/manage-database-using-pos-cli-gui.liquid#starting-the-gui) for detailed instructions on starting the GUI.' %}
-
-**Note**
-Replace `staging` with the environment name you want to develop on. To list all available environments use `pos-cli env list`.
-Refer to the [platformOS documentation](/developer-guide/pos-cli/manage-database-using-pos-cli-gui.liquid#starting-the-gui) for detailed instructions on starting the GUI.
-
-After starting the GUI, you will see output similar to:
-
-<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
-  [07:23:19] Connected to https://contactus.staging.oregon.platform-os.com/
-  [07:23:19] Admin: http://localhost:3333
-  [07:23:19] ---
-  [07:23:19] GraphiQL IDE: http://localhost:3333/gui/graphql
-  [07:23:19] Liquid evaluator: http://localhost:3333/gui/liquid
-  [07:23:19] Instance Logs: http://localhost:3333/logs
-  [07:23:20] [Sync] Synchronizing changes to: https://contactus.staging.oregon.platform-os.com/
-  </code></pre>
-
-Open your browser and go to [http://localhost:3333/logs](http://localhost:3333/logs) to view the logs:
-
-{% # TODO: check size %}
-<img loading="lazy" class="w-full" src="{{ 'images/get-started/contact-us-tutorial/localhost_logs.png' | asset_url }}" alt="Viewing logs in the local server">
-
-Alternatively, you can use the CLI to render the logs by running the following command:
-
-<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
-pos-cli logs staging
-</code></pre>
-
-{% # TODO: check size %}
-<img loading="lazy" class="w-full" src="{{ 'images/get-started/contact-us-tutorial/logs_cli.png' | asset_url }}" alt="CLI command to view logs">
-
-## Example of introducing a syntax error
-
-Using the `log` tag effectively helps in diagnosing problems and ensuring your application runs smoothly.
-If you encounter a syntax error, such as an unnecessary comma, you can debug it by viewing the logs.
-For testing purposes, let's add an extra comma after `"body"` in the `app/lib/commands/contacts/create/build.liquid` file:
-
-#### app/lib/commands/contacts/create/build.liquid
-
-{% raw %}
-```liquid
-{% parse_json contact %}
-  {
-    "email": {{ object.email | downcase | json }},
-    "body": {{ object.body | json }},
-  }
-{% endparse_json %}
-
-{% liquid
-  return contact
-%}
-```
-{% endraw %}
-
-Now, with this unnecessary comma added, submit the form with test data.
-
-When you introduce an error like this and then access the logs at http://localhost:3333/logs, you will see a Liquid error indicating the issue. This helps you identify and correct syntax errors.
-
-{% # TODO: check size %}
-<img loading="lazy" class="w-full" src="{{ 'images/get-started/contact-us-tutorial/log_liquid_error.png' | asset_url }}" alt="Liquid error log example">
-
-Now, remove the extra comma and continue our task.
-
-#### app/lib/commands/contacts/create/build.liquid
-
-{% raw %}
-```liquid
-{% parse_json contact %}
-  {
-    "email": {{ object.email | downcase | json }},
-    "body": {{ object.body | json }}
-  }
-{% endparse_json %}
-
-{% liquid
-  return contact
-%}
-```
-{% endraw %}
-
-{% render 'alert/next', content: 'Displaying Data', url: '/get-started/contact-us-tutorial/displaying-data' %}
+{% render 'alert/next', content: 'Using the Build Command', url: '/get-started/contact-us-tutorial/using-the-build-command' %}

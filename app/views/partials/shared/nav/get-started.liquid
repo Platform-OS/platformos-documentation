@@ -24,6 +24,17 @@
   </ul>
 </li>
 
+<li class="{% if cp contains '/get-started/error-handling' %}active{% endif %}">
+  <a href="/get-started/error-handling">Error Handling and Troubleshooting</a>
+  <ul class="submenu">
+    {% include "shared/nav/link", href: "/get-started/error-handling#why-error-handling-is-important", text: "Why Error Handling is Important" %}
+    {% include "shared/nav/link", href: "/get-started/error-handling#accessing-logs", text: "Accessing Logs" %}
+    {% include "shared/nav/link", href: "/get-started/error-handling#common-errors", text: "Common Errors" %}
+    {% include "shared/nav/link", href: "/get-started/error-handling#debugging-with-logs", text: "Debugging with Logs" %}
+    {% include "shared/nav/link", href: "/get-started/error-handling#example-debugging-a-syntax-error-using-logs", text: "Example: Debugging a Syntax Error" %}
+  </ul>
+</li>
+
 <li class="mt-6 mb-2 text-base topic-group">
   <h3 class="text-base uppercase">Build your first app</h3>
 </li>
@@ -113,7 +124,6 @@
     {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/building-the-ui#using-path-to-the-file-as-default-route", text: "Using Path to the File as Default Route" %}
     {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/building-the-ui#deploy-and-check", text: "Deploy and check" %}
   </ul>
-
 </li>
 
 <li class="{% if cp contains '/contact-us-tutorial/setting-up-form-submission' %}active{% endif %}">
@@ -178,30 +188,45 @@
   </ul>
 </li>
 
-<li class="{% if cp contains '/contact-us-tutorial/implementing-business-rules' %}active{% endif %}">
+<li class="{% if cp contains '/get-started/contact-us-tutorial/implementing-business-rules' %}active{% endif %}">
   <a href="/get-started/contact-us-tutorial/implementing-business-rules">Implementing Business Rules Using Commands</a>
   <ul class="submenu">
-    {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/implementing-business-rules#create-the-folder-structure", text: "Create the folder structure" %}
-    {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/implementing-business-rules#using-the-function-tag", text: "Using the function tag" %}
-    {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/implementing-business-rules#specify-the-path-to-the-partial", text: "Specify the path to the partial" %}
-    {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/implementing-business-rules#provide-arguments-to-the-function", text: "Provide arguments to the function" %}
-    {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/implementing-business-rules#understanding-business-logic-and-commands", text: "Understanding Business Logic and Commands" %}
-    {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/implementing-business-rules#set-up-a-build-command", text: "Set up a Build Command" %}
-    {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/implementing-business-rules#customize-the-build-command", text: "Customize the Build Command" %}
-    {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/implementing-business-rules#invoking-the-function", text: "Invoking the function" %}
-    {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/implementing-business-rules#using-the-log-tag-for-debugging", text: "Using the log tag for debugging" %}
-    {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/implementing-business-rules#accessing-logs", text: "Accessing logs" %}
-    {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/implementing-business-rules#example-of-introducing-a-syntax-error", text: "Example of introducing a syntax error" %}
+    {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/implementing-business-rules#understanding-commands-and-business-logic", text: "Understanding Commands and Business Logic" %}
+    {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/implementing-business-rules#the-build-check-execute-pattern", text: "The Build/Check/Execute Pattern" %}
+    {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/implementing-business-rules#best-practices-for-using-commands", text: "Best Practices for Using Commands" %}
+    {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/implementing-business-rules#create-the-folder-structure", text: "Create the Folder Structure" %}
+    {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/implementing-business-rules#using-the-function-tag", text: "Using the Function Tag" %}
+    {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/implementing-business-rules#provide-arguments-to-the-function", text: "Provide Arguments to the Function" %}
   </ul>
 </li>
 
-<li class="{% if cp contains '/contact-us-tutorial/displaying-data' %}active{% endif %}">
-  <a href="/get-started/contact-us-tutorial/displaying-data">Displaying Data</a>
+<li class="{% if cp contains '/contact-us-tutorial/using-the-build-command' %}active{% endif %}">
+  <a href="/get-started/contact-us-tutorial/using-the-build-command">Using the Build Command</a>
   <ul class="submenu">
-    {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/displaying-data#invoke-the-check-command", text: "Invoke the Check Command" %}
-    {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/displaying-data#create-the-check-command", text: "Create the Check Command" %}
-    {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/displaying-data#conditional-logging", text: "Conditional Logging" %}
-    {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/displaying-data#debugging-with-logs", text: "Debugging with Logs" %}
+    {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/using-the-build-command#set-up-a-build-command", text: "Set Up a Build Command" %}
+    {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/using-the-build-command#customize-the-build-command", text: "Customize the Build Command" %}
+    {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/using-the-build-command#invoking-the-function", text: "Invoking the Function" %}
+  </ul>
+</li>
+
+<li class="{% if cp contains '/contact-us-tutorial/using-the-log-tag' %}active{% endif %}">
+  <a href="/get-started/contact-us-tutorial/using-the-log-tag">Using the log Tag for Debugging</a>
+  <ul class="submenu">
+    {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/using-the-log-tag", text: "Using the Log Tag for Debugging" %}
+    {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/using-the-log-tag#accessing-logs", text: "Accessing Logs" %}
+    {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/using-the-log-tag#example-of-introducing-a-syntax-error", text: "Example of Introducing a Syntax Error" %}
+    {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/using-the-log-tag#display-data", text: "Display Data" %}
+  </ul>
+</li>
+
+
+<li class="{% if cp contains '/contact-us-tutorial/using-the-check-command' %}active{% endif %}">
+  <a href="/get-started/contact-us-tutorial/using-the-check-command">Using the Check Command</a>
+  <ul class="submenu">
+    {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/using-the-check-command#invoke-the-check-command", text: "Invoke the Check Command" %}
+    {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/using-the-check-command#create-the-check-command", text: "Create the Check Command" %}
+    {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/using-the-check-command#conditional-logging", text: "Conditional Logging" %}
+    {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/using-the-check-command#debugging-with-logs", text: "Debugging with Logs" %}
   </ul>
 </li>
 

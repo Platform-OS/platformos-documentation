@@ -1,0 +1,93 @@
+---
+metadata:
+  title: Using the Build Command
+  description: Follow these step-by-step tutorials to build a Contact Us form on platformOS
+converter: markdown
+---
+
+As the next step, we want to use a build command in the `app/lib/commands/contacts/create/build.liquid` file.
+
+The build command is an essential part of the data processing workflow. It allows you to normalize and prepare data before it is stored or used further in your application. By defining a build command, you can manipulate incoming data, perform validations, and ensure the data meets your application's requirements. This is especially useful for tasks like cleaning up user input, setting default values, and enforcing data consistency.
+
+Build commands are defined in Liquid templates and typically involve transforming and returning JSON objects. This process ensures that your data is well-structured and ready for subsequent operations or storage.
+
+## Set up a Build Command
+
+To set up a build command, you don’t need to write the code from scratch. Let’s use the dummy build command from the [core module documentation](https://github.com/Platform-OS/pos-module-core?tab=readme-ov-file#build).
+
+Here's the dummy build command from the core module documentation:
+
+{% raw %}
+```liquid
+{% parse_json data %}
+  {
+    "title": {{ object.title | downcase | json }},
+    "uuid": {{ object.uuid | json }},
+    "c__score": 0
+  }
+{% endparse_json %}
+
+{% liquid
+  if data['uuid'] == blank
+    hash_assign data["uuid"] = '' | uuid | json
+  endif
+
+  return data
+%}
+```
+{% endraw %}
+
+Copy this code into your `app/lib/commands/contacts/create/build.liquid` file.
+
+## Customize the Build Command
+
+Now, we will modify the build command to suit our needs. In the build phase, you normalize the parameters, ensuring you only take what's relevant and perform any necessary transformations. The goal is to clean up and prepare the contact data (email and body) before further processing.
+
+For example, you want to ensure that the email is always in lowercase:
+
+#### app/lib/commands/contacts/create/build.liquid
+
+{% raw %}
+```liquid
+{% parse_json contact %}
+  {
+    "email": {{ object.email | downcase | json }},
+    "body": {{ object.body | json }}
+  }
+{% endparse_json %}
+
+{% liquid
+  return contact
+%}
+```
+{% endraw %}
+
+The `parse_json contact` tag parses the JSON object (email and body) into a variable named `contact`.
+
+Inside the JSON object, we transform `object.email` to lowercase and ensure it is properly formatted as JSON.
+
+Every function needs to `return` an object. In this case, the function takes user parameters, processes them (downcasing the email), and returns an object with the email and body properties.
+
+## Invoking the function
+
+To process the contact data using the build command, we need to invoke the function inside the `/app/lib/commands/contacts/create.liquid` file:
+
+Here's the code snippet for invoking the function:
+
+#### app/lib/commands/contacts/create.liquid
+
+{% raw %}
+```liquid
+{% function contact = 'commands/contacts/create/build', object: object %}
+```
+{% endraw %}
+
+This line of code will call the build command, passing the `object` containing the `email` and `body` parameters to it. The build command will then process these parameters and return a normalized `contact` object.
+
+We used the `function` tag to specify the path to the build command partial. Remember, you can use LSP to autocomplete paths, so you don’t need to type them manually. In our example, the path leads to the `app/lib/commands/contacts/create/build.liquid` file.
+
+You also need to pass the `object` that you defined earlier in your `/app/views/pages/contacts/create.liquid` file, which is `object`.
+
+You might notice that LSP complains that the `contact` variable is never used. This is true for now, and we will address it in later steps.
+
+{% render 'alert/next', content: 'Using the log Tag for Debugging', url: '/get-started/contact-us-tutorial/using-the-log-tag' %}
