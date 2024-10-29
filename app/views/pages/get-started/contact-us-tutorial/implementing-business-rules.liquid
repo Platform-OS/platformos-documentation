@@ -17,9 +17,9 @@ To achive this, we will implement **Business Rules** for our Contact Us form usi
 
 ## Understanding Commands and Business Logic
 
-In platformOS, **Commands** are a powerful way to implement business logic in your applications. They allow you to encapsulate specific actions or operations into reusable components that can be easily invoked throughout your project. Think of commands as predefined functions that handle various tasks, such as processing data, performing validations, or interacting with your database.
+In platformOS, we recommend structuring your code using **Commands** pattern to implement business logic in your applications. They allow you to encapsulate specific actions or operations into reusable components that can be easily invoked throughout your project. Think of commands as predefined functions that handle various tasks, such as processing data, performing validations, or interacting with your database.
 
-Using commands promotes clean, modular, and testable code. By organizing your logic into distinct commands, you can easily maintain and reuse them across different parts of your application. Additionally, this structure simplifies collaboration among multiple developers, as each person can work on their own commands without interfering with others.
+Using commands promotes clean, reusable, and testable code. By organizing your logic into distinct commands, you can easily maintain and reuse them across different parts of your application. This structure simplifies collaboration among multiple developers, as there is a shared convention and it is easier to discover existing capabilities of the system, without re-implanting the same functionality multiple times.
 
 {% include 'alert/tip', content: 'Commands follow a clear structure known as the **build/check/execute** pattern, which helps to keep your code organized and maintainable.' %}
 
@@ -40,7 +40,7 @@ By splitting these stages into separate files, you promote clean, modular, and t
 
 ## Best Practices for Using Commands
 
-We recommend placing your commands in the `lib/commands` directory, following the naming conventions of `<resource>/<action>`, for example, `contacts/create.liquid`. This organization keeps your project structured and easy to navigate.
+We recommend placing your commands in the `lib/commands` directory, following the [naming conventions](/developer-guide/modules/platformos-modules#resourceful-route-naming-convention) of `<resource>/<action>`, for example, `contacts/create.liquid`. This organization keeps your project structured and easy to navigate.
 
 Commands are designed to be easily executed as background jobs for heavy operations, such as external API calls, expensive computations, or generating reports. Additionally, each command might produce an [Event](https://github.com/Platform-OS/pos-module-core?tab=readme-ov-file#events), allowing for further integration with your application's workflow.
 
