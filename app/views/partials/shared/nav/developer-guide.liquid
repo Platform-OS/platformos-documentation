@@ -22,6 +22,7 @@
   <a href="/developer-guide/platformos-workflow/directory-structure">Directory Structure</a>
   <ul class="submenu">
     {% include "shared/nav/link", href: "/developer-guide/platformos-workflow/directory-structure", text: "Directory Structure" %}
+    {% include "shared/nav/link", href: "/developer-guide/platformos-workflow/directory-structure/graphql-liquid-directories", text: "Liquid vs GraphQL Directories" %}
     {% include "shared/nav/link", href: "/developer-guide/platformos-workflow/directory-structure/config", text: "config.yml" %}
   </ul>
 </li>
@@ -120,6 +121,16 @@
 
 <li class="pt-6 mt-6 mb-2 text-base border-t topic-group border-pos-divider">
   <h3 class="text-base uppercase">Schema</h3>
+</li>
+
+<li class="{% if cp contains '/developer-guide/graphql/graphql-get-started' %}active{% endif %}">
+  <a href="/developer-guide/graphql/graphql-get-started">GraphQL</a>
+  {% if cp contains 'graphql' %}
+    <ul class="submenu">
+      {% include "shared/nav/link", href: "/developer-guide/graphql/graphql-get-started", text: "GraphQL in platformOS" %}
+      {% include "shared/nav/link", href: "/developer-guide/graphql/using-graphql", text: "Using GraphQL without Liquid" %}
+    </ul>
+  {% endif %}
 </li>
 
 <li class="{% if cp contains '/developer-guide/user' %}active{% endif %}">
