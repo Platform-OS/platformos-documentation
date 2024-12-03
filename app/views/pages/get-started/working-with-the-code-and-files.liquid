@@ -5,7 +5,7 @@ metadata:
 converter: markdown
 ---
 
-One of the core concepts of platformOS is that you never work offline. You edit the files in your local filesystem with your favourite code editor, but you are constantly connected to your instance so that the platformOS engine can interpret and parse your codebase.
+One of the core concepts of platformOS is that you never work offline. You edit the files in your local filesystem with your favorite code editor, but you are constantly connected to your instance so that the platformOS engine can interpret and parse your codebase.
 
 You write code locally, but it is executed remotely.
 
@@ -14,33 +14,36 @@ You write code locally, but it is executed remotely.
 
 In order for platformOS to understand and properly interpret your code, it needs to be organized in a structured way - see [Directory Structure](/developer-guide/platformos-workflow/directory-structure).
 
-The simplest method for getting the proper folder structure is to use the `pos-cli init` command.
+The easiest way to get the correct folder structure is by using the `pos-cli init` command.
 
-Start with creating an empty folder – named in this example platformos-hello – for your project and then navigating to it from the command line:
+Start by creating an empty folder — named `platformos-hello` in this example — for your project, and then navigate to it from the command line:
+
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
 mkdir platformos-hello
 cd platformos-hello
 </code></pre>
 
-Now, to automatically create the proper directory structure inside that folder use:
+Now, to automatically create the proper directory structure inside that folder, use:
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
 pos-cli init
 </code></pre>
 
-The command should return a success message confirming that the directory structure was created.
+This command should return a success message confirming that the directory structure was created.
 
-This means that there are a bunch of new files and folders in your project’s root directory. We’ll explain what they are used for in the next steps of this tutorial, or - if you want to jump in to the technical details - check out the [platformOS Directory Structure](/developer-guide/platformos-workflow/directory-structure) section of our documentation.
+This means that there are a bunch of new files and folders in your project’s root directory. We’ll explain what they are used for in the next steps of this tutorial, or you can check out the [platformOS Directory Structure](/developer-guide/platformos-workflow/directory-structure) section of our documentation for technical details.
 
 What you need to know for now is that this command creates an example HTML page with a welcome message.
 
 
 ## Authenticate your environment
 
-For pos-cli to know which instance is related to any particular codebase, you need to make a connection between those. Basically, you need to tell the pos-cli that your code needs to be visible under some URL.
+For `pos-cli` to know which instance is related to your codebase, you need to connect them. Basically, you tell `pos-cli` that your code needs to be visible under a specific URL.
 
-Your instance URL is available in the Partner Portal on the [Instances list](https://partners.platformos.com/instances).
+Your instance URL is available in the Partner Portal under the [Instances list](https://partners.platformos.com/instances).
+
+<img loading="lazy" class="w-full" src="{{ 'images/get-started/instance-url.png' | asset_url }}" alt="The instance URL highlighted under the Instances List">
 
 To store your instance URL in the configuration, run a `pos-cli env add` command with your personal data in the parameters:
 
@@ -50,15 +53,19 @@ pos-cli env add &lt;environment&gt; --url &lt;your instance url&gt;
 
 {% include 'alert/note', content: 'Run all commands discussed in this tutorial in the project root directory.' %}
 
-You need to give your instance a name in the `<environment>` parameter. Since you can connect multiple instances to a single codebase, quite often you'll want to have different environments for development and production.
+You need to give your instance a name in the `<environment>` parameter. Since you can connect multiple instances to a single codebase, it’s common to have different environments for development and production.
 
-Let’s assume the first created instance will be for development, thus you can name it `dev`. So, the example pos-cli command would look like this:
+Let’s assume the first instance is for development, so you can name it `dev`. An example `pos-cli` command would look like this:
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
 pos-cli env add dev —-url https://my-instance.staging.oregon.platform-os.com
 </code></pre>
 
-After running this command, your default browser will open, asking you to log in to Partner Portal and authorize the app. Successful authorization will be confirmed by pos-cli:
+After running this command, your default browser will open, asking you to log in to Partner Portal and authorize the app.
+
+<img loading="lazy" class="w-full" src="{{ 'images/get-started/authorize.png' | asset_url }}" alt="Screenshof of the authorization message on the Partner Portal">
+
+Successful authorization will be confirmed by pos-cli:
 
 ```bash
 Environment <your instance url> as dev has been added successfully.
@@ -67,59 +74,59 @@ Environment <your instance url> as dev has been added successfully.
 
 ## Upload your code to an instance
 
-When you have an instance, and the pos-cli is configured to connect with it, you can send your code to be available under the instance URL.
+When you have an instance, and `pos-cli` is configured to connect with it, you can deploy your code to make it available under the instance URL.
 
-This process – called deployment – is a straight-forward operation where you need to use the following command in the root of your project folder:
+This process — called deployment — is straightforward. Use the following command in your project’s root directory:
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
 pos-cli deploy &lt;environment&gt;
 </code></pre>
 
-So, if you named the alias to your instance <code>dev</code>, the command would look like this:
+If you named the alias for your instance `dev`, the command would look like this:
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
 pos-cli deploy dev
 </code></pre>
 
-A progress indicator is shown with the deployment status and once it finishes, a message is displayed:
+A progress indicator will show the deployment status. Once it finishes, a message will be displayed:
 
 ```bash
 Deploy succeeded after X seconds
 ```
 
-After this, enter the URL of your instance in the browser and it will display the example page that you’ve just deployed.
+After this, enter the URL of your instance in a browser, and it will display the example page you’ve just deployed.
 
 
 ### Testing the deployment process
 
-To test out the whole deployment process, make some changes in the code.
+To test the entire deployment process, make some changes in the code.
 
-If you’re following this guide, you should be able to find a file named `app/views/pages/indexliquid` in your codebase. Open it up in your code editor of choice and change any line. For example, locate a line with the welcome message:
-
-```html
-Welcome to your Demo instance!
-```
-
-Try changing it into something more personal like:
+If you’re following this guide, you should find a file named `app/views/pages/index.liquid` in your codebase. Open it in your code editor and change any line. For example, locate the line with the welcome message:
 
 ```html
-This is my first platformOS instance!
+<h1>Welcome to your instance!</h1>
 ```
 
-Save the file and  send the codebase to the instance by running the deploy command in the command line again:
+Change it to something more personal, like:
+
+```html
+<h1>This is my first platformOS instance!</h1>
+```
+
+Save the file and send the codebase to the instance by running the deploy command in the command line again:
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
 pos-cli deploy dev
 </code></pre>
 
-After visiting your instance URL or refreshing the previously opened page, you should see the new message there.
+After refreshing your instance URL in the browser, you should see the new message.
 
 
 ## Upload code changes automatically when you save the file
 
-On a daily basis, you want the instance to immediately reflect the changes you made in the code with minimum effort on your side.
+On a daily basis, you’ll want your instance to immediately reflect any changes made in the code with minimal effort. 
 
-We call this process **syncing** and it’s handled by a pos-cli command ran from the root project’s directory:
+This process, called **syncing**, is handled by a `pos-cli` command run from the root of your project’s directory:
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
 pos-cli sync &lt;environment&gt;
@@ -127,50 +134,48 @@ pos-cli sync &lt;environment&gt;
 
 When executing this command you will learn that it does not end by itself. This is a command that you want to run and leave open while you make code changes.
 
-What `pos-cli sync` is doing is basically observing your codebase, so when you save changes in a file – it automatically uploads it to your instance. It only uploads the file that changed so it’s quick and efficient.
+The `pos-cli sync` command observes your files and automatically uploads any changes to your instance. It only uploads the changed files, making the process fast and efficient.
 
 
 ### Syncing in action
 
-For this example, try another change in the code, but before you do it, start the sync using the following command:
+To see syncing in action, make another change in the code. Before doing so, start the sync process:
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
 pos-cli sync dev
 </code></pre>
 
-A confirmation message saying that the synchronization has been started should appear, so find another place in the code to test how this works. Please find the `Hello world` title in `index.liquid` of the demo page and change it to something else, like `Hello beautiful world`.
+A confirmation message should appear, indicating that the synchronization has started. Now, find the `Hello world` title in the `app/views/layouts/application.liquid` file, and change it to something like `Hello beautiful world`. Save the file.
 
-After the change, just save the file.
+In the command line, a confirmation message will appear showing that the page was synced. Refresh the browser to confirm that the new text is displayed.
 
-In the command line you should see a confirmation message saying that the edited page was synced. Refreshing the page in the browser should confirm that everything worked and the new text content is displayed.
-
-Syncing handles not only code changes, but also all the other assets. Images, JavaScript files, or even GraphQL queries – any change in your project directories will be automatically reflected on your instance. This also includes file renaming and deletion.
+Syncing also works for static assets, such as images, JavaScript files, and GraphQL queries. Any change in your project will be reflected automatically, including file renaming and deletion.
 
 
 ## Basic overview of the directory structure
 
-The `pos-cli init` command will create all of the required folders used by platformOS. The very basic directories you need to be aware of are those used to store files, web pages, and handling data.
+The `pos-cli init` command will create all of the required folders for platformOS. The essential directories you need to know are for storing files, web pages, and handling data.
 
-We have a whole separate article [describing each directory's](/developer-guide/platformos-workflow/directory-structure) function in detail if you want to jump directly into the technical aspect. The ones mentioned below are enough to start.
+For a detailed explanation of each directory, see our article on [Directory Structure](/developer-guide/platformos-workflow/directory-structure). Below are the key directories you need to start:
 
 ### Assets
 
-Every **static**, publicly available **asset** is stored in the app/assets folder. Images, JavaScript, fonts, CSS files, or any downloadable documents should go here. You can organize the files any way you want, but you might want to consider the following structure to separate various asset types:
+Every **static** publicly available **asset** is stored in the `app/assets` folder. Images, JavaScript, fonts, CSS files, or downloadable documents should go here. You can organize your files any way you like, but we recommend the following structure:
 
-- app/assets/images for images
-- app/assets/scripts for JavaScript files
-- app/assets/styles for the page CSS
-- app/assets/fonts for the font files
+- `app/assets/images` for images
+- `app/assets/scripts` for JavaScript files
+- `app/assets/styles` for CSS files
+- `app/assets/fonts` for font files
 
 ### Page
 
-Every **page** that you want to create should be placed in app/views/pages. You can use pure HTML and extend it with Liquid.
+Every **page** you want to create should be placed in `app/views/pages`. You can use pure HTML and extend it with Liquid.
 
 ### Data handling
 
-The place for **schema** (the structure of your database written in YAML) is `app/schema`. We are going to walk through creating them in the next sections of this tutorial.
+Place your **schema** (database structure in YAML) in the `app/schema` directory. We are going to walk through creating them in the next sections of this tutorial.
 
-**GraphQL** queries and mutations are used to get the data from the database or save data in it. All of those queries go to `app/graphql`.
+**GraphQL** queries and mutations are used to get the data from the database or save data in it. All of those queries should go in the `app/graphql` directory.
 
 
 {% render 'alert/next', content: 'Build your first app', url: '/get-started/build-your-first-app/' %}
