@@ -1,0 +1,32 @@
+---
+converter: markdown
+metadata:
+  title: CI Introduction
+  description: TODO
+---
+
+This guide will walk you through the process of setting up a **Continuous Integration (CI) pipeline using GitHub Actions for your PlatformOS project**. The goal is to help you automate the testing of your code, ensuring that tests are run consistently and automatically on every push to the `main` branch, when pull requests are made to `main`, or manually when triggered. By the end of this guide, you’ll not only have a fully functioning CI pipeline, but you will also learn how to configure it for your needs.
+
+The CI pipeline will be a crucial part of your development process. It helps catch bugs early, maintain high-quality code, and streamline your workflow by automating repetitive tasks like running tests.
+
+
+### What You’ll Need
+
+Before you begin, ensure that you have the following prerequisites:
+
+- **A GitHub Repository**: You need a GitHub repository with a `main` branch where the CI pipeline will run tests.
+- **Partner Portal Account**: Access to the platformOS [Partner Portal](https://partners.platformos.com/) is required to manage instances and configure settings.
+- **pos-cli installed**: The PlatformOS Command Line Interface (CLI) tool is needed to interact with your instances and the environment. Make sure it's installed and ready to use.
+- **PlatformOS Developer IDE Configured**: Ensure that your development environment is set up with the PlatformOS IDE for smooth interaction with your PlatformOS project.
+
+### What You’ll Do
+
+This guide is divided into four main chapters, each focusing on a key part of setting up your CI pipeline:
+
+1. [**Set up a Release Pool**](/developer-guide/ci-cd/set-up-release-pool): You will start by setting up the release pool, which ensures you have a set of dedicated, pre-configured instances to run your tests. This will help avoid conflicts between tests and improve resource management.
+2. **Configure GitHub Secrets**: You’ll then configure the necessary secrets in your GitHub repository. These secrets are required for the CI pipeline to interact securely with the PlatformOS environment and other services.
+3. **Configure the Workflow File**: Finally, you will configure the GitHub Actions workflow. The workflow file defines how and when tests will run, as well as the specific actions that need to be taken at each step.
+
+Each chapter builds on the last, so by the end of this guide, you'll have a complete CI pipeline in place for your project.
+
+{% render 'alert/next', content: 'Set up a Release Pool', url: '/developer-guide/ci-cd/set-up-release-pool/' %}
