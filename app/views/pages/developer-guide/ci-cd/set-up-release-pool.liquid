@@ -1,0 +1,100 @@
+---
+converter: markdown
+metadata:
+  title: Setting Up a Release Pool
+  description: Follow the steps of this tutorial to set a Release pool for CI/CD.
+---
+
+**Setting up a release pool is a prerequisite of setting up a CI pipeline used with platformOS.**
+
+A release pool is a set of ready-to-use instances in a continuous integration (CI) environment, managed dynamically to avoid conflicts and ensure efficient resource allocation.
+
+The release pool consists of a predefined number of instances (e.g., `ci-instance-01`, `ci-instance-02`, `ci-instance-0N`). These instances are kept in a ready state, available for use as needed. When a developer initiates a test, usually through a pull request, an instance from the release pool is assigned to that test. This ensures a dedicated environment for end-to-end tests without interference from other ongoing tests. Once testing is complete, the instance is returned to the pool for future use.
+
+The management of the pool is handled by a main or manager instance (e.g., `main-instance-pooling`). This instance monitors availability, allocates resources, and tracks which instances are in use.
+
+## Steps to set up a Release Pool
+
+### 1. Clone the ci-instance-pooling repository
+
+To start, clone the [**ci-instance-pooling**](https://github.com/Platform-OS/ci-instance-pooling) repository to your local machine. This will provide you with the tools necessary to manage the CI instances.
+
+```bash
+git clone https://github.com/Platform-OS/ci-instance-pooling
+```
+
+### 2. Create the Main Instance 
+
+The main instance is the core of your release pool. It manages the availability and allocation of the other instances.
+
+- Go to the [**Partner Portal**](https://partners.platformos.com/), navigate to the **Instances** section, and click **New Instance**.
+- Name the instance (e.g., `ci-main-instance`), set the environment to **Staging**, and mark it as **Unbillable**.
+- For better organization, you can add tags (for example: _pool_), and it's recommended to use the same tag for all instances in the pool.
+
+<img loading="lazy" src="{{ 'images/developer-guide/ci-cd/click_new_instance.png' | asset_url }}" alt="Screenshot of Partner Portal Instances section with the 'New Instance' button highlighted" />
+
+### 3. Set up and connect the Main Instance
+
+Once your main instance is created, it's time to connect it to the ci-pooling repository you cloned. In your terminal, navigate to the `ci-instance-pooling` directory and run the following command to link your environment:
+
+```bash
+cd ci-instance-pooling
+pos-cli env add --url https://YOUR-INSTANCE.staging.oregon.platform-os.com <env-for-ci-pool>
+```
+
+### 4. Authorize the Main Instance
+
+To authenticate the main instance, simply click **Authorize** in the browser when prompted in the Partner Portal.
+
+<img loading="lazy" src="{{ 'images/developer-guide/ci-cd/main-authorize.png' | asset_url }}" alt="Screenshot Authorizing the instance in the browser" />
+
+### 5. Deploy the Main Instance
+
+Now that your instance is set up, deploy it using this command:
+
+```bash
+pos-cli deploy <env-for-ci-pool>
+```
+
+### 6. Create additional Test Instances
+
+With the main instance up and running, you can now create additional test instances. Use a clear naming convention like `test-ci-instance-01`, `test-ci-instance-02`, etc. Set each instance to **Staging** and mark it as **Unbillable**.
+
+<img loading="lazy" src="{{ 'images/developer-guide/ci-cd/all-instances.png' | asset_url }}" alt="Screenshot all created instances in the Partner Portal" />
+
+### 7. Set Up and Authorize Test Instances
+
+Once the test instances are created, you'll need to set up their environments and authorize them (just as you did with the main instance) using the following command:
+
+```bash
+pos-cli env add --url https://test-ci-instance-01.staging.oregon.platform-os.com test-ci-instance-01
+```
+
+Repeat this process for each test instance. These actions will generate `pos-cli` tokens for each instance, which will be **stored in the `.pos` file in your project directory**, which you will use in the next step when you add them to the database.
+
+<img loading="lazy" src="{{ 'images/developer-guide/ci-cd/pos_file_token.png' | asset_url }}" alt="Screenshot of Visual studio code, the .pos file is opened and the tokens are visible for all instances" />
+
+### 8. Add your Instances to the Database
+
+To add your instances to your release pool, start the **pos-cli GUI** by executing the following command:
+
+```bash
+pos-cli gui serve <env-for-ci-pool>
+```
+
+Next, navigate to [http://localhost:3333](http://localhost:3333) in your browser.
+
+To ensure your instances are recognized and tracked, you'll need to add them to the database:
+
+- Go to the **Database** section and select the **'instance'** table from the left navigation menu.
+- Click the `+` button to add a new record for each instance.
+
+<img loading="lazy" src="{{ 'images/developer-guide/ci-cd/instance_table_add.png' | asset_url }}" alt="Screenshot of the Database GUI in the browser, showing the “Add new” button" />
+
+For each record, provide the following data:
+  - **Available**: Set to `true`.
+  - **Domain**: Use the domain URL of the instance from the Partner Portal (for example: `test-ci-instance-01.staging.oregon.platform-os.com` without `https://`!)
+  - **pos_cli_token**: Copy the token from the `.pos` file in your project root and paste it here.
+
+<img loading="lazy" src="{{ 'images/developer-guide/ci-cd/create_record_instance.png' | asset_url }}" alt="screenshot of the database GUI in the browser, filling out the necessary field: available, domain, pos_cli_token" />
+
