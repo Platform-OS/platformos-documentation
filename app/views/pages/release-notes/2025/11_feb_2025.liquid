@@ -1,0 +1,29 @@
+---
+converter: markdown
+metadata:
+  title:  Instance Clone cross stacks, GraphQL and Liquid enhancements
+  description: Feb 11, 2025
+  skip_contribute_button: true
+  last_edit: false
+slug: release-notes/11-FEB-25
+---
+
+#### {{ page.metadata.description }}
+
+<h4 class="release-note release-note__new">NEW</h4>
+
+* Add `hard_delete` argument to `admin_asset_delete_all` mutation which if true will delete assets from the storage provider (for example S3 or R2)
+
+<h4 class="release-note release-note__improved">IMPROVED</h4>
+
+* Deploy background job will be triggered in a separate process to ensure proper cleanup
+* Improve error handling for Instance Clone feature by making them more descriptive
+
+<h4 class="release-note release-note__fixed">FIXED</h4>
+
+* Fix edge case with UserProfile GraphQL query
+* Re-add deprecated support for Google Oauth2 provider
+* Fix accessing `context.globals` in a background job
+* Fix copying assets metadata for the Instance Clone across stacks
+* Fix re-calculating built-in user name when one of the name component is updated (first name/last name) via UserForm
+
