@@ -13,7 +13,10 @@ platformOS offers an easy way of sending emails that could be used, for example,
 
 ## Enabling emails on the staging instance
 
-As a first step, you need to **enable sending emails** on the _staging_ instance. This step is not required on production instances, but the free _staging_ is restricted to sending emails only to addresses preconfigured for testing. The emails sent from those instances will always be redirected to the test addresses.
+{% include 'alert/note', content: 'On <em>staging instances</em>, email delivery is restricted to prevent accidental emails from being sent to real users. Emails can only be sent to the <strong>test email address</strong> configured in the Partner Portal. Any email sent from staging will <strong>only be delivered</strong> to the <strong>test email</strong> set in the instance configuration.' %}
+
+
+Before sending emails from a free **staging instance**, you need to configure a **test email address**. This step is **not required on production instances**, but staging environments only allow sending emails to preset addresses for testing. The emails sent from those instances will always be redirected to the test addresses.
 
 To set the test email, log in to the [Partner Portal](https://partners.platformos.com/) and choose the instance from the [Instances](https://partners.platformos.com/instances) list.
 
@@ -32,6 +35,29 @@ Look for a section of the configuration called `attributes` and change the value
 
 Remember to save the updates by clicking the _Update Instance configuration_ button.
 
+### How staging modifies email recipients
+
+When testing emails on a **staging instance**, the system makes a few adjustments to ensure emails don’t accidentally reach real users. Instead, all emails are sent to the **test email address** set in the instance configuration.  
+
+For example, if you send an email with these details:
+
+```yaml
+to: "user@example.com"
+cc: "manager@example.com"
+bcc: "admin@example.com"
+subject: "New item on the To Do list"
+```
+
+On **staging**, the email is modified like this:
+
+```yaml
+to: "test@example.com"
+cc: nil
+bcc: nil
+subject: "(to: user@example.com, cc: manager@example.com, bcc: admin@example.com) - New item on the To Do list"
+```
+
+This means, the email is sent only to the **test email address**. The original `to`, `cc`, and `bcc` values are removed, and the original recipients are moved into the **subject line** for debugging.
 
 ## Creating a layout for the emails
 
@@ -94,8 +120,7 @@ For the email page, you need to configure the recipient email address (`to:`), t
 
 You’ve created a new layout file specifically for this occasion, so line 5 tells the platform to use the file stored in `app/views/layouts/mailer.liquid` as a scaffolding for the email content.
 
-The last line is just the content of the email you’re going to send. Since you would like to pass the title of the item added to the list, you output the content of `data.title`. The `data` will be the name of the variable you are going to use in the GraphQL _mutation_ that will trigger sending the email.
-
+The last line is just the content of the email you’re going to send. Since you would like to pass the title of the item added to the list, you output the content of `data.title`. The `data` will be the name of the variable you are going to use in the GraphQL _mutation_ that will trigger sending the email.  
 
 ## Using GraphQL to send an email
 
