@@ -34,7 +34,7 @@ mutation contact_create($email: String!, $body: String!) {
       body: property(name: "body")
       created_at
     }
-}  
+}
 ```
 
 ### Explanation of the GraphQL Mutation
@@ -72,7 +72,7 @@ These lines define the fields that will be returned after the record is created.
 
 ### Provide Data as Variables
 
-Now, use the GraphQL Explorer, and click on _Variables_ at the bottom of the page to expand it. 
+Now, use the GraphQL Explorer, and click on _Variables_ at the bottom of the page to expand it.
 
 {% # TODO: check size %}
 <img loading="lazy" class="w-full" src="{{ 'images/get-started/contact-us-tutorial/graphiql-variables.png' | asset_url }}" alt="Variables section in the GraphQL Explorer highlighted">
@@ -177,9 +177,11 @@ You can then invoke this query in your Liquid templates using the following synt
 
 {% raw %}
 ```liquid
-{% graphql result = 'contact_create' %}
+{% graphql result = 'contacts/create' %}
 ```
 {% endraw %}
+
+The argument is the file path relative to the `app/graphql/` directory, without the `.graphql` extension.
 
 ### Inline GraphQL Queries
 
