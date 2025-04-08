@@ -23,7 +23,7 @@ To start, clone the [**ci-instance-pooling**](https://github.com/Platform-OS/ci-
 git clone https://github.com/Platform-OS/ci-instance-pooling
 ```
 
-### 2. Create the Main Instance 
+### 2. Create the Main Instance
 
 The main instance is the core of your release pool. It manages the availability and allocation of the other instances.
 
@@ -64,7 +64,9 @@ With the main instance up and running, you can create additional test instances.
 
 ### 7. Set Up and Authorize Test Instances
 
-Once the test instances are created, you'll need to set up their environments and authorize them (just as you did with the main instance) using the following command:
+Once the test instances are created, you'll need to set up their environments and authorize them (just as you did with the main instance).
+Make sure not to overwrite the main instance using its name for the <env> parameter in the command. Use the specific instance name instead.
+Execute the following command:
 
 ```bash
 pos-cli env add --url https://test-ci-instance-01.staging.oregon.platform-os.com test-ci-instance-01
