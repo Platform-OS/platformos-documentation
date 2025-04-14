@@ -23,7 +23,7 @@ When working with form submissions and URL parameters in platformOS, `context.pa
 
 The following sections are not part of the main task; they are provided for demonstration purposes. However, we recommend following along and using the code snippets to gain a better understanding of this concept. If you understand how context.params work already, skip this chapter and continue from [Using context.params in the create.liquid file](/get-started/contact-us-tutorial/understanding-context-params#using-context-params-in-the-create-liquid-file).
 
-First, let's see how parameters can be accessed in a Liquid template. In the previous step, we added 
+First, let's see how parameters can be accessed in a Liquid template. In the previous step, we added
 
 {% raw %}
 ```liquid
@@ -187,9 +187,15 @@ My parameters: ["1","2"]
 When you access `{% raw %}{{ context.params.arr }}{% endraw %}`, platformOS retrieves the array associated with the `arr` key. In this case, the array contains the values `1` and `2`.
 
 
-## Clean up your code 
+## Clean up your code
 
-As this exercise was for demonstration purposes, remove `My parameters: {{ context.params }}` from your `index.html.liquid file`. Ensure the file looks like this:
+As this exercise was for demonstration purposes, remove:
+{% raw %}
+```liquid
+My parameters: {{ context.params }}
+```
+{% endraw %}
+from your `index.html.liquid file`. Ensure the file looks like this:
 
 #### app/views/pages/index.html.liquid
 
@@ -296,7 +302,7 @@ If the user enters test@test.com for the email and Test message for the body, th
 ```html
 Hello {"email":"test@test.com","body":"Test message"}
 ```
-
+{% include 'alert/tip', content: 'Using `context.params.contact` allows you to group related parameters under a single namespace. This way, you can access specific fields with a clearer and more organized syntax, such as `context.params.contact.email` and `context.params.contact.name`, instead of `context.params.contact_email` and `context.params.contact_name`. This improves code readability and maintainability.' %}
 {% include 'alert/tip', content: 'Using `context.params.contact`, you can efficiently process the user contact information, making it easier to implement further business logic and validation.' %}
 
 {% render 'alert/next', content: 'Implementing Business Rules Using Commands', url: '/get-started/contact-us-tutorial/implementing-business-rules' %}
