@@ -95,6 +95,7 @@ Similarly, the GraphQL mutation finds the contact data structure because table: 
 You don't need a separate model mapping file.
 
 ### Automatic Variable Mapping
+
 PlatformOS automatically takes incoming data (like from form submissions) and makes it available as variables within your code.
 When the form in `index.html.liquid` is submitted, the fields named **contact[email]** and **contact[body]** are sent. In `create.liquid`, this data automatically becomes available in the `{% raw %}{{ context.params }}{% endraw %}` object.
 This allows you to easily access **context.params.contact.email** and **context.params.contact.body** to pass them to the GraphQL mutation `create.graphql` which expects **$email** and **$body** variables.
