@@ -177,7 +177,7 @@ This file contains the logic to create a new contact record in the database.
 The location `graphql/contacts/create.graphql` logically groups this operation under "contacts" and the action "create". While not strictly enforced by routing like the `views/pages` files, it's the standard convention to easily find the relevant mutation.
 The mutation itself explicitly references the **contact** table and its data structure defined in `contact.yml`.
 It expects variables (`$email`, `$body`) and maps them to properties (`name: "email"`, `name: "body"`), which correspond to the properties defined in `contact.yml`.
-The form field names **contact[email]** and **contact[body]** in `index.html.liquid` use a convention (model_name[property_name]).
+The form field names **contact[email]** and **contact[body]** in `index.html.liquid` use a convention (`model_name[property_name]`).
 When submitted they are automatically mapped to the variables expected by GraphQL mutation.
 
 
