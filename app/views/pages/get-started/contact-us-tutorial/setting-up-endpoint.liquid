@@ -150,7 +150,7 @@ The URL path `/contacts/create` maps directly to the file path `app/views/pages/
 
 PlatformOS checks `create.liquid` to see if it's configured to handle POST requests.
 The frontmatter ```--- method: post ---``` explicitly tells that this file is the handler for POST requests to its corresponding URL `/contacts/create`.
-The method: post in the frontmatter matches the ```method="post"``` from the HTML form. If the method didn't match (e.g., the form sent a GET request), this file wouldn't be executed for that request.
+The `method: post` in the frontmatter matches the `method="post"` from the HTML form. If the method didn't match (e.g., the form sent a GET request), this file wouldn't be executed for that request.
 When a POST request is made, the form fields are automatically passed into the `{% raw %}{{ context.params }}{% endraw %}` global object.
 Then, the GraphQL mutation defined in `graphql/contacts/create.graphql` is explicitly triggered using variables extracted from this object.
 {% raw %}
