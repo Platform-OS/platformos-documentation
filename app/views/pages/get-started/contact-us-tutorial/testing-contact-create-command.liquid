@@ -1,0 +1,510 @@
+---
+metadata:
+  title: Testing validation logic in contacts/create command
+  description: Follow these step-by-step tutorials to build a Contact Us form on platformOS
+converter: markdown
+---
+
+{% # TODO %}
+At this point it would be good idea to add some automatic testing to our `contacts/create` command validation mechanism, so we do not need to check it manually over and over again.
+
+## Introduction to platformOS Tests Module
+The platformOS Tests Module provides a way to write and run unit tests using Liquid.
+It is designed for testing commands, validations, and even email-sending behavior in a modular and repeatable way.
+
+### Key Features
+
+- Run unit tests written in Liquid.
+- Validate data structures, function results, and error messages.
+- Simulate function calls and check results with built-in assertions.
+- Group multiple tests into a single file.
+
+### Working with tests module
+
+All test files must be placed under `app/lib/tests/`.
+
+File names must end with `_test.liquid`.
+
+### Test Structure
+
+Each test:
+- Prepares **input data** if needed.
+- Calls a **Liquid function or command**.
+- Makes **assertions** using `modules/tests/assertions/*`.
+
+### Available Assertions
+
+| Assertion               | Purpose                                      | Example Usage |
+|-------------------------|----------------------------------------------|---------------|
+| **equal**               | Checks if `given` equals `expected`          | ` function contract = 'modules/tests/assertions/equal', contract: contract, field_name: 'email', given: user.email, expected: 'test@example.com' ` |
+| **presence**            | Ensures field is not blank                   | ` function contract = 'modules/tests/assertions/presence', contract: contract, object: user, field_name: 'name' ` |
+| **blank**               | Ensures field is blank                       | ` function contract = 'modules/tests/assertions/blank', contract: contract, object: data, field_name: 'optional_field' ` |
+| **true**                | Checks if value is truthy                    | ` function contract = 'modules/tests/assertions/true', contract: contract, field_name: 'is_active', value: true ` |
+| **not_true**            | Checks if value is falsy                     | ` function contract = 'modules/tests/assertions/not_true', contract: contract, field_name: 'is_deleted', value: false ` |
+| **valid_object**        | Validates `object.valid == true`             | ` function contract = 'modules/tests/assertions/valid_object', contract: contract, object: form, field_name: 'form_submission' ` |
+| **invalid_object**      | Ensures `object.valid != true`               | ` function contract = 'modules/tests/assertions/invalid_object', contract: contract, object: invalid_form, field_name: 'form' ` |
+| **not_valid_object**    | Alias for `invalid_object`                   | ` function contract = 'modules/tests/assertions/not_valid_object', contract: contract, object: invalid_data, field_name: 'data' ` |
+| **object_contains_object** | Checks if object contains key-value pairs | ` function contract = 'modules/tests/assertions/object_contains_object', contract: contract, given: profile, object_contains: '{"role": "admin"}' ` |
+| **not_presence**        | Ensures field is blank                       | ` function contract = 'modules/tests/assertions/not_presence', contract: contract, object: data, field_name: 'legacy_field' ` |
+
+All assertions receive and return a contract object that collects errors and tracks the number of checks performed. If a condition is not met, an error is registered in the contract.
+
+## Testing
+
+We will check the behavior of `commands/contacts/create` to ensure the command properly validates user input for a contact form.
+Our tests will covers both valid and invalid inputs using different assertion types.
+
+### Installing tests module
+
+Let's start by installing the test module on our instance. Ensure that you are in the project root, then:
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+pos-cli modules install tests
+</code></pre>
+
+Now, visit project page URL `/_tests` to see the test runner GUI:
+
+{% # TODO: check size %}
+<img loading="lazy" class="w-full" src="{{ 'images/get-started/contact-us-tutorial/contactus_pos_tests_module_ui.png' | asset_url }}" alt="PlatformOS tests module GUI with example test">
+
+Although the example test doesn't contain any assertions and always passes, you can run it to see how the test runner acts.
+
+### Create a directory for tests
+
+Lets create a directory for tests within the app directory:
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+mkdir -p app/lib/tests
+</code></pre>
+
+### Adding test file - happy path scenario
+
+Create a `contact_create_happy_path_test.liquid` file in `app/lib/tests/` and add the following code:
+
+**app/lib/tests/contact_create_happy_path_test.liquid**
+
+{% raw %}
+```liquid
+{% comment %}
+  Test: Valid input - should be considered valid
+{% endcomment %}
+
+{% liquid
+  assign data = '{ "email": "USER@example.com", "body": "This is a valid message body." }' | parse_json
+  function contact = 'commands/contacts/create', object: data
+
+  # 1. Contact should be valid
+  function contract = 'modules/tests/assertions/valid_object', contract: contract, object: contact, field_name: 'contact'
+
+  # 2. Email should be downcased
+  assign expected_email = 'user@example.com'
+  assign given_email = contact.email
+  function contract = 'modules/tests/assertions/equal', contract: contract, expected: expected_email, given: given_email, field_name: 'contact.email'
+
+  # 3. Body should match
+  assign expected_body = 'This is a valid message body.'
+  assign given_body = contact.body
+  function contract = 'modules/tests/assertions/equal', contract: contract, expected: expected_body, given: given_body, field_name: 'contact.body'
+
+  # 4: Assert the contact.valid is true
+  function contract = 'modules/tests/assertions/true', contract: contract, object: contact, field_name: 'valid'
+
+  # 5: Errors should be blank
+  function contract = 'modules/tests/assertions/blank', contract: contract, object: contact, field_name: 'errors'
+%}
+
+# 5: Debug print
+<p>Contact object: {{ contact }}</p>
+```
+{% endraw %}
+
+Let's break down the test:
+
+#### 1. Setup Test Input
+```liquid
+assign data = '{ "email": "USER@example.com", "body": "This is a valid message body." }' | parse_json
+```
+This line builds a test object (a mock user submission) with:
+
+- A valid email but in uppercase
+
+- A body with enough length to pass validation
+
+This mimics what would be submitted from the contact form in `views/pages/index.html.liquid`
+
+#### 2. Call Main Command `commands/contacts/create`
+
+```liquid
+function contact = 'commands/contacts/create', object: data
+```
+This line runs the entire contact creation flow, which chains:
+
+`build.liquid`: Downcases email and passes through body
+
+`check.liquid`: Validates email format, body length
+
+Returns a contact object like:
+
+```liquid
+{
+  "email": "user@example.com",
+  "body": "This is a valid message body.",
+  "valid": true,
+  "errors": {}
+}
+```
+
+#### 3. Validity Assertion
+
+```liquid
+# 1. Contact should be valid
+  function contract = 'modules/tests/assertions/valid_object', contract: contract, object: contact, field_name: 'contact'
+```
+Asserts that the final contact object contains "valid": true. This is the high-level success check.
+
+#### 4. Check Downcased Email
+
+```liquid
+# 2. Downcased Email Assertion
+  assign expected_email = 'user@example.com'
+  assign given_email = contact.email
+  function contract = 'modules/tests/assertions/equal', contract: contract, expected: expected_email, given: given_email, field_name: 'contact.email'
+```
+This verifies that transformation in `build.liquid` succeeded and `USER@example.com` was downcased to `user@example.com`
+
+#### 5. Body Match Assertion
+
+```liquid
+# 3. Body should match
+  assign expected_body = 'This is a valid message body.'
+  assign given_body = contact.body
+  function contract = 'modules/tests/assertions/equal', contract: contract, expected: expected_body, given: given_body, field_name: 'contact.body'
+```
+Verifies that the body text is passed through untouched.
+
+#### 4. Explicit `valid` is `true`
+
+```liquid
+# 4: Assert the contact.valid is true
+  function contract = 'modules/tests/assertions/true', contract: contract, object: contact, field_name: 'valid'
+```
+While `valid_object` assertion already verifies this, this adds an explicit boolean check — useful for tutorial purposes to show a different assertion provided in tests module.
+It demonstrates how you can isolate and verify specific properties.
+
+#### 5. Errors Should Be Empty
+
+```liquid
+# Step 4: Errors should be blank
+  function contract = 'modules/tests/assertions/blank', contract: contract, object: contact, field_name: 'errors'
+```
+Checks that the errors hash is empty and validation didn’t raise any field-level issues.
+This complements the `valid: true` check to confirm no internal warnings were generated by `check.liquid`.
+
+#### 6. Final Output: Debug Print
+
+{% raw %}
+```liquid
+<p>Contact object: {{ contact }}</p>
+```
+{% raw %}
+
+This is not part of the test but helps visually debug the contact object after processing — especially useful during test development.
+Now, visit project page URL `/_tests` and run `tests/contact_create_happy_path_test`.
+The test result screen shows debug output we configured (which can be removed in the final version), along with a summary of passed and failed assertions and the execution time.
+
+{% # TODO: check size %}
+<img loading="lazy" class="w-full" src="{{ 'images/get-started/contact-us-tutorial/contactus_pos_tests_module_ui_run_happy_path_tests.png' | asset_url }}" alt="PlatformOS tests module GUI with happy path test">
+
+Before moving further, take a moment to play around with our tests — for example, change the test data or switch assertions — to get familiar with the tests module and better understand how it processes different scenarios.
+
+{% render 'alert/note', content:'Data Persistence: These are unit tests – they do not write to the database. The `commands/contacts/create` command only performs formatting and validation. It does not save data via GraphQL mutation (record_create) unless the execute.liquid file is called explicitly, which these tests intentionally avoid to keep tests isolated and fast.'%}
+
+### Adding negative path scenarios
+
+Now, we would like to add some negative scenarios to our test suite to check whether our command correctly handles various possible cases of invalid input.
+
+### Adding test file - negative path
+
+Create a `contact_create_negative_path_test.liquid` file in `app/lib/tests/` and add the following code:
+
+**app/lib/tests/contact_create_negative_path_test.liquid**
+
+{% raw %}
+```liquid
+{% comment %}
+  Test: Invalid email - should be invalid
+{% endcomment %}
+{% liquid
+  assign data = '{ "email": "invalid-email", "body": "This is a valid message body." }' | parse_json
+  function contact = 'commands/contacts/create', object: data
+
+  function contract = 'modules/tests/assertions/not_valid_object', contract: contract, object: contact, field_name: 'contact'
+  function contract = 'modules/tests/assertions/presence', contract: contract, object: contact.errors, field_name: 'email'
+%}
+
+{% comment %}
+  Test: Too short body - should be invalid
+{% endcomment %}
+{% liquid
+  assign data = '{ "email": "user@example.com", "body": "Short" }' | parse_json
+  function contact = 'commands/contacts/create', object: data
+
+  function contract = 'modules/tests/assertions/not_valid_object', contract: contract, object: contact, field_name: 'contact'
+  function contract = 'modules/tests/assertions/presence', contract: contract, object: contact.errors, field_name: 'body'
+%}
+
+{% comment %}
+  Test: Too long body - should be invalid
+{% endcomment %}
+{% liquid
+  assign long_body = ''
+  for i in (1..201)
+    assign long_body = long_body | append: 'x'
+  endfor
+
+  assign data = '{ "email": "user@example.com", "body": "' | append: long_body | append: '" }' | parse_json
+  function contact = 'commands/contacts/create', object: data
+
+  function contract = 'modules/tests/assertions/not_valid_object', contract: contract, object: contact, field_name: 'contact'
+  function contract = 'modules/tests/assertions/presence', contract: contract, object: contact.errors, field_name: 'body'
+%}
+
+{% comment %}
+  Test: Blank email and body - should be invalid
+{% endcomment %}
+{% liquid
+  assign data = '{ "email": "", "body": "" }' | parse_json
+  function contact = 'commands/contacts/create', object: data
+
+  function contract = 'modules/tests/assertions/not_valid_object', contract: contract, object: contact, field_name: 'contact'
+  function contract = 'modules/tests/assertions/presence', contract: contract, object: contact.errors, field_name: 'email'
+  function contract = 'modules/tests/assertions/presence', contract: contract, object: contact.errors, field_name: 'body'
+%}
+
+{% comment %}
+  Test: Body is missing (null) – should fail validation
+{% endcomment %}
+{% liquid
+  assign data = '{ "email": "user@example.com" }' | parse_json
+  function contact = 'commands/contacts/create', object: data
+
+  function contract = 'modules/tests/assertions/not_valid_object', contract: contract, object: contact, field_name: 'contact'
+  function contract = 'modules/tests/assertions/presence', contract: contract, object: contact.errors, field_name: 'body'
+%}
+
+{% comment %}
+  Test: Email missing from object – should fail validation
+{% endcomment %}
+{% liquid
+  assign data = '{ "body": "This is valid" }' | parse_json
+  function contact = 'commands/contacts/create', object: data
+
+  function contract = 'modules/tests/assertions/not_valid_object', contract: contract, object: contact, field_name: 'contact'
+  function contract = 'modules/tests/assertions/presence', contract: contract, object: contact.errors, field_name: 'email'
+%}
+
+{% comment %}
+  Test: Completely empty object – both fields invalid
+{% endcomment %}
+{% liquid
+  assign data = '{}' | parse_json
+  function contact = 'commands/contacts/create', object: data
+
+  function contract = 'modules/tests/assertions/not_valid_object', contract: contract, object: contact, field_name: 'contact'
+  function contract = 'modules/tests/assertions/presence', contract: contract, object: contact.errors, field_name: 'email'
+  function contract = 'modules/tests/assertions/presence', contract: contract, object: contact.errors, field_name: 'body'
+%}
+```
+{% endraw %}
+
+### Test Cases Overview
+
+#### 1. Invalid Email Test
+
+{% raw %}
+```liquid
+{% comment %}
+  Test: Invalid email - should be invalid
+{% endcomment %}
+{% liquid
+  assign data = '{ "email": "invalid-email", "body": "This is a valid message body." }' | parse_json
+  function contact = 'commands/contacts/create', object: data
+
+  function contract = 'modules/tests/assertions/not_valid_object', contract: contract, object: contact, field_name: 'contact'
+  function contract = 'modules/tests/assertions/presence', contract: contract, object: contact.errors, field_name: 'email'
+%}
+```
+{% endraw %}
+- Fails due to email format
+
+- Asserts valid: false
+
+- Ensures errors.email is present
+
+#### 2. Too Short Message Body
+
+{% raw %}
+```liquid
+{% comment %}
+  Test: Too short body - should be invalid
+{% endcomment %}
+{% liquid
+  assign data = '{ "email": "user@example.com", "body": "Short" }' | parse_json
+  function contact = 'commands/contacts/create', object: data
+
+  function contract = 'modules/tests/assertions/not_valid_object', contract: contract, object: contact, field_name: 'contact'
+  function contract = 'modules/tests/assertions/presence', contract: contract, object: contact.errors, field_name: 'body'
+%}
+```
+{% endraw %}
+
+- Fails validation due to message being under 10 characters
+
+- Checks for errors.body
+
+#### 3. Too Long Message Body
+
+{% raw %}
+```liquid
+{% comment %}
+  Test: Too long body - should be invalid
+{% endcomment %}
+{% liquid
+  assign long_body = ''
+  for i in (1..201)
+    assign long_body = long_body | append: 'x'
+  endfor
+
+  assign data = '{ "email": "user@example.com", "body": "' | append: long_body | append: '" }' | parse_json
+  function contact = 'commands/contacts/create', object: data
+
+  function contract = 'modules/tests/assertions/not_valid_object', contract: contract, object: contact, field_name: 'contact'
+  function contract = 'modules/tests/assertions/presence', contract: contract, object: contact.errors, field_name: 'body'
+%}
+```
+{% endraw %}
+
+- Fails because body exceeds 200 characters
+
+- Confirms error on body
+
+#### 4. Blank Email and Body
+
+{% raw %}
+```liquid
+{% comment %}
+  Test: Blank email and body - should be invalid
+{% endcomment %}
+{% liquid
+  assign data = '{ "email": "", "body": "" }' | parse_json
+  function contact = 'commands/contacts/create', object: data
+
+  function contract = 'modules/tests/assertions/not_valid_object', contract: contract, object: contact, field_name: 'contact'
+  function contract = 'modules/tests/assertions/presence', contract: contract, object: contact.errors, field_name: 'email'
+  function contract = 'modules/tests/assertions/presence', contract: contract, object: contact.errors, field_name: 'body'
+%}
+```
+{% endraw %}
+
+- Fails both email and body validations
+
+- Ensures errors.email and errors.body are populated
+
+We've tested `contacts/create command` against multiple invalid input scenarios. You can now run the negative path tests to verify that all validation rules are correctly enforced.
+
+### Handling Subtle Input Variations
+
+Now, please add one more scenario at the end of our negative path test file:
+
+**app/lib/tests/contact_create_negative_path_test.liquid**
+
+{% raw %}
+```liquid
+{% comment %}
+  Test: Email with upper case letters and leading/trailing spaces
+{% endcomment %}
+{% liquid
+  assign data = '{ "email": "  User@examplE.com  ", "body": "Nice body here" }' | parse_json
+  function contact = 'commands/contacts/create/build', object: data
+
+  if contact.email != 'user@example.com'
+    function contract = 'modules/tests/helpers/register_error', contract: contract, field_name: 'email', message: 'Email was not trimmed or downcased'
+  endif
+%}
+```
+{% endraw %}
+
+Then run our negative path tests again.
+
+{% # TODO: check size %}
+<img loading="lazy" class="w-full" src="{{ 'images/get-started/contact-us-tutorial/contactus_pos_tests_module_ui_run_negative_path_tests_fail.png' | asset_url }}" alt="PlatformOS tests module GUI with negative path tests - failure">
+
+Looks like the test we just added failed. If you were paying close attention, you might already know why.
+Based on our current implementation, `create/build.liquid` downcases the email, but it doesn’t trim it yet.
+The test, however, expects the email to be both converted to lowercase and trimmed of any extra spaces.
+Adding extra spaces is a common issue—especially when users copy and paste their email—so it might be a good idea to update `build.liquid` to handle trimming as well.
+
+{% render 'alert/note', content:'This test does not use assertion but extra logic and helper function to register and error, so the number of assertions in test report is still 16. This shows that flexible test logic can be written using Liquid’s native conditionals, helpful for edge cases or compound logic.'%}
+
+First, let's add debugging line at the very end of `contact_create_negative_path_test` and run tests again:
+
+ {% raw %}
+ ```liquid
+ <p>Contact object: {{ contact }}</p>
+ ```
+ {% endraw %}
+
+Notice that we can take a shortcut and catch the output of our failing test this way only because it is the last scenario.
+
+You should now see debug output like this:
+
+```liquid
+{"email":" user@example.com ","body":"Nice body here"}
+```
+
+As you can expect email was downcased but still has spaces around it so we need to implement trimm functionality to meet our new requirement.
+
+Alternate `build.liquid` code as follows:
+
+**app/lib/commands/contacts/create/build.liquid**
+
+{% raw %}
+```liquid
+{% parse_json contact %}
+  {
+    "email": {{ object.email | strip | downcase | json }},
+    "body": {{ object.body | json }}
+  }
+{% endparse_json %}
+
+{% liquid
+  return contact
+%}
+```
+{% endraw %}
+
+Now let's run the tests again. This time, the debug output should look like this:
+
+```liquid
+{"email":"user@example.com","body":"Nice body here"}
+```
+So the email is downcased and trimmed as well and all the tests passed.
+
+### Summary
+
+In this chapter, you learned how to write unit tests for the `contacts/create command` using the platformOS Tests Module, covering both valid and invalid input scenarios with a variety of assertions.
+
+Also the `Email is Downcased and Trimmed` test case demonstrated how to test and evolve application logic based on realistic user input patterns—in this case, ensuring an email address is properly normalized by trimming and downcasing it.
+
+It highlights how:
+
+- Automated tests can guide feature development and refactoring.
+
+- Small improvements can be enforced through testing.
+
+- Missing requirements can be detected via test failures.
+
+- Correctness is confirmed by rerunning the tests.
+
+- This reinforces a test-first (or test-guided) mindset.
+
+This step encapsulates a powerful development workflow: write a test → see it fail → fix the logic → see it pass—a cornerstone of Test-Driven Development (TDD).
