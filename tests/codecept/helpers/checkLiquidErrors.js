@@ -1,14 +1,10 @@
-const { I } = inject();
-
-module.exports = function() {
+module.exports = function () {
   return actor({
-
-    checkLiquidErrors: function() {
-      I.dontSee('Liquid Error');
-      I.dontSee('RenderFormTag Error');
-      I.dontSee('QueryGraphTag Error');
-      I.dontSee('translation missing');
+    checkLiquidErrors() {
+      this.dontSee('Liquid Error');
+      this.dontSee('RenderFormTag Error');
+      this.dontSee('QueryGraphTag Error');
+      this.dontSee('translation missing');
     }
-
   });
-}
+  };
