@@ -61,6 +61,13 @@ Let's start by installing the test module on our instance. Ensure that you are i
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
 pos-cli modules install tests
+pos-cli modules download tests
+</code></pre>
+
+Deploy to the instance if needed.
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+pos-cli deploy staging
 </code></pre>
 
 Now, visit project page URL `/_tests` to see the test runner GUI:
@@ -121,9 +128,11 @@ Create a `contact_create_happy_path_test.liquid` file in `app/lib/tests/` and ad
 Let's break down the test:
 
 #### 1. Setup Test Input
+
 ```liquid
 assign data = '{ "email": "USER@example.com", "body": "This is a valid message body." }' | parse_json
 ```
+
 This line builds a test object (a mock user submission) with:
 
 - A valid email but in uppercase
@@ -145,7 +154,7 @@ This line runs the entire contact creation flow, which chains:
 
 Returns a contact object like:
 
-```liquid
+```json
 {
   "email": "user@example.com",
   "body": "This is a valid message body.",
@@ -444,7 +453,7 @@ Based on our current implementation, `create/build.liquid` downcases the email, 
 The test, however, expects the email to be both converted to lowercase and trimmed of any extra spaces.
 Adding extra spaces is a common issue—especially when users copy and paste their email—so it might be a good idea to update `build.liquid` to handle trimming as well.
 
-{% render 'alert/note', content:'This test does not use assertion but extra logic and helper function to register and error, so the number of assertions in test report is still 16. This shows that flexible test logic can be written using Liquid’s native conditionals, helpful for edge cases or compound logic.'%}
+{% render 'alert/note', content:'This test does not use assertion but extra logic and helper function to register an error, so the number of assertions in test report is still 16. This shows that flexible test logic can be written using Liquid’s native conditionals, helpful for edge cases or compound logic.'%}
 
 First, let's add debugging line at the very end of `contact_create_negative_path_test` and run tests again:
 
@@ -458,7 +467,7 @@ Notice that we can take a shortcut and catch the output of our failing test this
 
 You should now see debug output like this:
 
-```liquid
+```json
 {"email":" user@example.com ","body":"Nice body here"}
 ```
 
@@ -483,9 +492,10 @@ Alternate `build.liquid` code as follows:
 ```
 {% endraw %}
 
+We appied `strip` next to `downcase`.
 Now let's run the tests again. This time, the debug output should look like this:
 
-```liquid
+```json
 {"email":"user@example.com","body":"Nice body here"}
 ```
 So the email is downcased and trimmed as well and all the tests passed.
