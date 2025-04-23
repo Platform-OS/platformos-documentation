@@ -455,7 +455,7 @@ Now run the negative path tests again.
 
 Looks like the test we just added failed. If you were paying close attention, you might already know why.
 Based on our current implementation, `create/build.liquid` downcases the email, but it doesn’t trim it yet.
-The test, however, expects the email to be both converted to lowercase and trimmed of any extra spaces.
+However, this test expects the email to be both downcased and trimmed of any extra spaces. Adding extra spaces is a common issue, so this reflects a real-world user behavior, when users are copying/pasting email addresses with extra spaces.
 Adding extra spaces is a common issue—especially when users copy and paste their email—so it might be a good idea to update `build.liquid` to handle trimming as well.
 
 {% render 'alert/note', content:'This test does not use assertion but extra logic and helper function to register an error, so the number of assertions in test report is still 16. This shows that flexible test logic can be written using Liquid’s native conditionals, helpful for edge cases or compound logic.'%}
