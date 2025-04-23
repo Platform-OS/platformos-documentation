@@ -22,7 +22,7 @@ It is designed for testing commands, validations, and even email-sending behavio
 
 ### Working with Tests Module
 
-All test files must be placed under `app/lib/tests/`.
+All test files must be placed under `lib/tests/`.
 
 File names must end with `_test.liquid`.
 
@@ -270,15 +270,21 @@ Create a file named `contact_create_negative_path_test.liquid` in `app/lib/tests
 %}
 
 {% comment %}
-  Test: Too long body - should be invalid
+  Test: Too long body – should be invalid
 {% endcomment %}
+
+{% parse_json data %}
+{
+  "email": "user@example.com",
+  "body": "{{ 201 | random_string }}"
+}
+{% endparse_json %}
+
 {% liquid
-  assign long_body = 201 | random_string
-  assign data = '{ "email": "user@example.com", "body": "' | append: long_body | append: '" }' | parse_json
   function contact = 'commands/contacts/create', object: data
 
   function contract = 'modules/tests/assertions/not_valid_object', contract: contract, object: contact, field_name: 'contact'
-  function contract = 'modules/tests/assertions/presence', contract: contract, object: contact.errors, field_name: 'body'
+  function contract = 'modules/tests/assertions/presence',          contract: contract, object: contact.errors, field_name: 'body'
 %}
 
 {% comment %}
@@ -379,15 +385,22 @@ Create a file named `contact_create_negative_path_test.liquid` in `app/lib/tests
 {% raw %}
 ```liquid
 {% comment %}
-  Test: Too long body - should be invalid
+  Test: Too long body – should be invalid
 {% endcomment %}
+
+{% parse_json data %}
+{
+  "email": "user@example.com",
+  "body": "{{ 201 | random_string }}"
+}
+{% endparse_json %}
+
 {% liquid
-  assign long_body = 201 | random_string
-  assign data = '{ "email": "user@example.com", "body": "' | append: long_body | append: '" }' | parse_json
+
   function contact = 'commands/contacts/create', object: data
 
   function contract = 'modules/tests/assertions/not_valid_object', contract: contract, object: contact, field_name: 'contact'
-  function contract = 'modules/tests/assertions/presence', contract: contract, object: contact.errors, field_name: 'body'
+  function contract = 'modules/tests/assertions/presence',          contract: contract, object: contact.errors, field_name: 'body'
 %}
 ```
 {% endraw %}
