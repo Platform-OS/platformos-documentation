@@ -48,7 +48,8 @@ Each test:
 | **object_contains_object** | Checks if object contains key-value pairs | ` function contract = 'modules/tests/assertions/object_contains_object', contract: contract, given: profile, object_contains: '{"role": "admin"}' ` |
 | **not_presence**        | Ensures field is blank                       | ` function contract = 'modules/tests/assertions/not_presence', contract: contract, object: data, field_name: 'legacy_field' ` |
 
-All assertions receive and return a contract object that collects errors and tracks the number of checks performed. If a condition is not met, an error is registered in the contract.
+All [assertions](https://github.com/Platform-OS/pos-module-tests/tree/main/modules/tests/public/lib/assertions) receive and return a contract object that collects errors and tracks the number of checks performed. If a condition is not met, an error is registered in the contract.
+
 
 ## Automatic testing
 
@@ -272,10 +273,7 @@ Create a file named `contact_create_negative_path_test.liquid` in `app/lib/tests
   Test: Too long body - should be invalid
 {% endcomment %}
 {% liquid
-  assign long_body = ''
-  for i in (1..201)
-    assign long_body = long_body | append: 'x'
-  endfor
+  assign long_body = 201 | random_string
 
   assign data = '{ "email": "user@example.com", "body": "' | append: long_body | append: '" }' | parse_json
   function contact = 'commands/contacts/create', object: data
@@ -385,10 +383,7 @@ Create a file named `contact_create_negative_path_test.liquid` in `app/lib/tests
   Test: Too long body - should be invalid
 {% endcomment %}
 {% liquid
-  assign long_body = ''
-  for i in (1..201)
-    assign long_body = long_body | append: 'x'
-  endfor
+  assign long_body = 201 | random_string
 
   assign data = '{ "email": "user@example.com", "body": "' | append: long_body | append: '" }' | parse_json
   function contact = 'commands/contacts/create', object: data
