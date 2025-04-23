@@ -234,7 +234,10 @@ Before moving on, take a moment to experiment with the test file — for example
 {% render 'alert/note', content:'Data Persistence: These are unit tests – they do not write to the database. The `commands/contacts/create` command only performs formatting and validation. It does not save data via GraphQL mutation (record_create) unless the execute.liquid file is called explicitly, which these tests intentionally avoid to keep tests isolated and fast.'%}
 
 
-### Adding test file - negative path
+### Add a test file - negative path scenarios
+
+Now, let’s add some negative test cases to our suite to verify that the 'contacts/create' command correctly handles various types of invalid input.
+
 
 Create a `contact_create_negative_path_test.liquid` file in `app/lib/tests/` and add the following code:
 
