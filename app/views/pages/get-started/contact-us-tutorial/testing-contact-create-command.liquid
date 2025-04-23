@@ -274,7 +274,6 @@ Create a file named `contact_create_negative_path_test.liquid` in `app/lib/tests
 {% endcomment %}
 {% liquid
   assign long_body = 201 | random_string
-
   assign data = '{ "email": "user@example.com", "body": "' | append: long_body | append: '" }' | parse_json
   function contact = 'commands/contacts/create', object: data
 
@@ -384,7 +383,6 @@ Create a file named `contact_create_negative_path_test.liquid` in `app/lib/tests
 {% endcomment %}
 {% liquid
   assign long_body = 201 | random_string
-
   assign data = '{ "email": "user@example.com", "body": "' | append: long_body | append: '" }' | parse_json
   function contact = 'commands/contacts/create', object: data
 
