@@ -35,21 +35,26 @@ Each test:
 
 ### Available Assertions
 
-| Assertion               | Purpose                                      | Example Usage |
-|-------------------------|----------------------------------------------|---------------|
-| **equal**               | Checks if `given` equals `expected`          | ` function contract = 'modules/tests/assertions/equal', contract: contract, field_name: 'email', given: user.email, expected: 'test@example.com' ` |
-| **presence**            | Ensures field is not blank                   | ` function contract = 'modules/tests/assertions/presence', contract: contract, object: user, field_name: 'name' ` |
-| **blank**               | Ensures field is blank                       | ` function contract = 'modules/tests/assertions/blank', contract: contract, object: data, field_name: 'optional_field' ` |
-| **true**                | Checks if value is truthy                    | ` function contract = 'modules/tests/assertions/true', contract: contract, field_name: 'is_active', value: true ` |
-| **not_true**            | Checks if value is falsy                     | ` function contract = 'modules/tests/assertions/not_true', contract: contract, field_name: 'is_deleted', value: false ` |
-| **valid_object**        | Validates `object.valid == true`             | ` function contract = 'modules/tests/assertions/valid_object', contract: contract, object: form, field_name: 'form_submission' ` |
-| **invalid_object**      | Ensures `object.valid != true`               | ` function contract = 'modules/tests/assertions/invalid_object', contract: contract, object: invalid_form, field_name: 'form' ` |
-| **not_valid_object**    | Alias for `invalid_object`                   | ` function contract = 'modules/tests/assertions/not_valid_object', contract: contract, object: invalid_data, field_name: 'data' ` |
-| **object_contains_object** | Checks if object contains key-value pairs | ` function contract = 'modules/tests/assertions/object_contains_object', contract: contract, given: profile, object_contains: '{"role": "admin"}' ` |
-| **not_presence**        | Ensures field is blank                       | ` function contract = 'modules/tests/assertions/not_presence', contract: contract, object: data, field_name: 'legacy_field' ` |
+| Assertion File            | Pass Condition (Expectation)                          | Failure Condition (Error Trigger)               | Example Usage |
+|---------------------------|------------------------------------------------------|------------------------------------------------|---------------|
+| [blank](https://github.com/Platform-OS/pos-module-tests/blob/main/modules/tests/public/lib/assertions/blank.liquid)            | `object[field_name]` is blank (`nil`, `""`, `[]`, etc.) | Field is **not** blank                        | `function contract = 'modules/tests/assertions/blank', contract: contract, object: data, field_name: 'optional_field'` |
+| [presence](https://github.com/Platform-OS/pos-module-tests/blob/main/modules/tests/public/lib/assertions/presence.liquid)         | `object[field_name]` has **any non-blank value**      | Field is blank                                 | `function contract = 'modules/tests/assertions/presence', contract: contract, object: user, field_name: 'name'` |
+| [not_presence](https://github.com/Platform-OS/pos-module-tests/blob/main/modules/tests/public/lib/assertions/not_presence.liquid)     | `object[field_name]` is blank                         | Field has a value                              | `function contract = 'modules/tests/assertions/not_presence', contract: contract, object: data, field_name: 'legacy_field'` |
+| [true](https://github.com/Platform-OS/pos-module-tests/blob/main/modules/tests/public/lib/assertions/true.liquid)             | Value (or `object[field_name]`) is **truthy**         | Value is `false`/blank                         | `function contract = 'modules/tests/assertions/true', contract: contract, field_name: 'is_active', value: true` |
+| [not_true](https://github.com/Platform-OS/pos-module-tests/blob/main/modules/tests/public/lib/assertions/not_true.liquid)         | Value is **falsey/blank**                             | Value is truthy                                | `function contract = 'modules/tests/assertions/not_true', contract: contract, field_name: 'is_deleted', value: false` |
+| [equal](https://github.com/Platform-OS/pos-module-tests/blob/main/modules/tests/public/lib/assertions/equal.liquid)            | `given == expected` (exact match)                     | `given ≠ expected`                             | `function contract = 'modules/tests/assertions/equal', contract: contract, field_name: 'email', given: user.email, expected: 'test@example.com'` |
+| [object_contains_object](https://github.com/Platform-OS/pos-module-tests/blob/main/modules/tests/public/lib/assertions/object_contains_object.liquid) | Every `key:value` in `object_contains` exists in `given` | Missing key or mismatched value               | `function contract = 'modules/tests/assertions/object_contains_object', contract: contract, given: profile, object_contains: '{"role": "admin"}'` |
+| [invalid_object](https://github.com/Platform-OS/pos-module-tests/blob/main/modules/tests/public/lib/assertions/invalid_object.liquid)   | `object.valid` is `false`                             | `object.valid` is `true`                       | `function contract = 'modules/tests/assertions/invalid_object', contract: contract, object: invalid_form, field_name: 'form'` |
+| [valid_object](https://github.com/Platform-OS/pos-module-tests/blob/main/modules/tests/public/lib/assertions/valid_object.liquid)     | `object.valid` is `true`                              | `object.valid` is `false`                      | `function contract = 'modules/tests/assertions/valid_object', contract: contract, object: form, field_name: 'form_submission'` |
+| [not_valid_object](https://github.com/Platform-OS/pos-module-tests/blob/main/modules/tests/public/lib/assertions/not_valid_object.liquid) | Same as `invalid_object` (expects invalidity)         | `object.valid` is `true`                       | `function contract = 'modules/tests/assertions/not_valid_object', contract: contract, object: invalid_data, field_name: 'data'` |
+
+### Key Notes:
+- **Truthy/falsey**: Follows Liquid’s logic (e.g., empty strings/arrays are falsey).
+- **Blank**: Explicitly checks for `nil`, `""`, `[]`, or empty hashes.
+- **`valid_object` vs `invalid_object`**: Tests the `valid` flag on objects (common in form/validation contexts).
+- **`object_contains_object`**: Partial match (subset check) for nested structures.
 
 All [assertions](https://github.com/Platform-OS/pos-module-tests/tree/main/modules/tests/public/lib/assertions) receive and return a contract object that collects errors and tracks the number of checks performed. If a condition is not met, an error is registered in the contract.
-
 
 ## Automatic testing
 
@@ -231,7 +236,22 @@ The test result screen will display:
 {% # TODO: check size %}
 <img loading="lazy" class="w-full" src="{{ 'images/get-started/contact-us-tutorial/contactus_pos_tests_module_ui_run_happy_path_tests.png' | asset_url }}" alt="PlatformOS tests module GUI with happy path test">
 
-Before moving on, take a moment to experiment with the test file — for example, change the test data or try different assertions. This will help you become more familiar with the Tests Module and how it handles different scenarios.
+Before moving on, take a moment to experiment with the test file — for example, try different assertions. This will help you become more familiar with the Tests Module and its logic.
+
+Use the opposite assertion `not_true` where `true` is expected to check if tests will actually fail:
+
+```
+# 4: Assert the contact.valid is true
+function contract = 'modules/tests/assertions/not_true', contract: contract, object: contact, field_name: 'valid'
+```
+
+Use different assertion and consider whether the test is effective:
+
+```
+# 4: Assert the contact.valid is true
+function contract = 'modules/tests/assertions/presence', contract: contract, object: contact, field_name: 'valid'
+```
+
 
 {% render 'alert/note', content:'Data Persistence: These are unit tests – they do not write to the database. The `commands/contacts/create` command only performs formatting and validation. It does not save data via GraphQL mutation (record_create) unless the execute.liquid file is called explicitly, which these tests intentionally avoid to keep tests isolated and fast.'%}
 
@@ -474,8 +494,6 @@ First, let's add a debugging line at the very end of `contact_create_negative_pa
  <p>Contact object: {{ contact }}</p>
  ```
  {% endraw %}
-
-Notice that we can take a shortcut and catch the output of our failing test this way only because it is the last scenario.
 
 You should now see debug output like this:
 
