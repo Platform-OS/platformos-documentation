@@ -77,7 +77,7 @@ As described above, create a new file called `about.liquid` in the `app/views/pa
 
 Now, when you go to `<your instance url>/about`, you should see the newly created page.
 
-Later on, you might find a need to create more complex URLs that are not entirely based on the file names, but on some query parameters for example. This is all totally possible and it’s described in the Routing section of this documentation.
+Later on, you might find a need to create more complex URLs that are not entirely based on the file names, but on some query parameters for example. This is all totally possible and it’s described in the [Routing section](/get-started/contact-us-tutorial/setting-up-endpoint#routing-and-page-views) of this documentation.
 
 
 ## A To Do App: Necessary Interface Elements
@@ -159,7 +159,7 @@ li {
 }
 ```
 
-You still need to **link the CSS file on your page**. The proper place for this would be the `app/views/layouts/application.html.liquid`:
+You still need to **link the CSS file on your page**. The proper place for this would be the `app/views/layouts/application.liquid`:
 
 #### app/views/layouts/application.liquid
 
@@ -174,7 +174,7 @@ You still need to **link the CSS file on your page**. The proper place for this 
 
 Now, take a look at another Liquid feature: **filters**. Their function is to modify whatever content you provide to them. To use filters, append the filter name after the pipe character (`|`). As you can see in the example above, you are using a filter called `asset_url`. It will take the string that you provide (in this case, the relative path to your CSS file in the `/assets` folder) and modify it to automatically build the URL to your CSS file.
 
-The `asset_url` filter is super useful when working with static files. On one hand, it automatically builds the absolute URL to the file on the platformOS CDN, on the other hand, it appends a query string generated each time the file changes. This is to make sure that your audience always gets the latest version of the file instead of some cached one.
+The `asset_url` filter is super useful when working with static files. On the one hand, it automatically builds the absolute URL to the file on the platformOS CDN, on the other hand, it appends a query string generated each time the file changes. This is to make sure that your audience always gets the latest version of the file instead of some cached one.
 
 #### Input:
 
