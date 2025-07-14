@@ -1,0 +1,71 @@
+---
+metadata:
+  title: What is platformOS?
+  description: Learn what platformOS is: a fully managed, multi-tenant development platform with powerful abstraction layers like Liquid, GraphQL, and YAML, designed to build customizable, secure, and extensible SaaS applications.
+converter: markdown
+---
+
+platformOS is a fully managed, multi-tenant-by-default development platform that gives teams full control over their data, schema, and application behavior, without needing to manage infrastructure themselves. This is all possible through a set of powerful **abstraction layers** using **Liquid**, **GraphQL**, and **YAML** configuration files. This abstraction layer simplifies development by providing access to a pre-configured infrastructure stack - to focus on building features, not managing servers.
+
+## Built for SaaS, Without the Typical Limitations
+
+Originally built to support the creation of next-generation SaaS products, platformOS was designed to solve a key problem: **traditional SaaS lacks flexibility.** Most SaaS platforms offer extensive built-in functionality and a user interface for configuring application behavior, but users quickly hit limits when they need a missing feature or a custom integration. Instead of relying on workarounds or waiting for their feature requests to be prioritized, platformOS gives developers access to the source code in a secure, sandboxed, isolated runtime environment called an **[Instance](/get-started/installation-and-configuration/#create-an-instance)**. This allows developers to build on top of preconfigured functionality and, when needed, go beyond it by modifying the codebase.
+
+## Best of Both Worlds
+
+In short, customers of applications built on platformOS get the best of both worlds: they benefit from the immediate value of a working product and managed infrastructure of SaaS, the built-in DevOps automation, and a user interface to configure various aspects of the system. However, when they outgrow the built-in features or need to add custom behavior or integrations, platformOS gives them the ability to extend the application by modifying the source code directly. 
+
+For example, platformOS powers a wide range of solutions - from **marketplaces** and **eCommerce solutions** to **community** **platforms**. For example, [Community Solution](https://www.platformos.com/community-solution) offers an affordable, advanced starting point that can scale in any direction.
+
+Similarly, our multi-award winning Docs-as-Code approach to documentation, [DocsKit](https://docskit.platformos.com/), is available to use.
+
+## Why Liquid, GraphQL, and YAML?
+
+### Liquid
+
+Let’s say you want to allow your users to customize the look and feel of your application. That’s perfectly safe with platformOS. Rather than using general-purpose programming languages (like Java, C#, Python, or Ruby), platformOS enables developers to implement business rules using Liquid: a [widely adopted](https://github.com/Shopify/liquid/wiki#who-uses-liquid) templating language developed by Shopify. 
+
+This level of flexibility and security wouldn't be possible using the above listed programming languages. If users were allowed to execute Java, C#, or Python, they could potentially run unsafe code with full access to the system - like handing them the keys to your entire server including data and services shared across other tenants.
+
+{% include 'alert/tutorial', content: 'Explore the official documentation on [Why you should use Liquid](https://github.com/Shopify/liquid?tab=readme-ov-file#why-you-should-use-liquid).' %}
+
+### GraphQL
+
+platformOS uses **GraphQL** for data access and mutations, and **YAML** for configuration and schema definitions. You’ll write GraphQL queries and mutations to interact with the built-in, managed infrastructure - which includes **PostgreSQL**, **Redis**, and **ElasticSearch**, with built-in support for **Vector Databases** to enable AI embeddings and semantic search.
+
+Check out the platformOS code examples for GraphQL terms in our GraphQL glossary, and find detailed descriptions of queries, mutations, objects, scalars, interfaces, enums, and input objects in our [GraphQL Documentation](/api-reference/graphql/glossary).
+
+To help you quickly develop GraphQL queries, we provide a [GraphiQL](https://github.com/graphql/graphiql) graphical user interface through the pos-cli. GraphiQL is a GraphQL editor with autocomplete and live docs that helps you structure GraphQL queries correctly.
+
+{% include 'alert/tutorial', content: 'To learn more about using GraphQL and the GraphiQL tool, explore [our documentation topics on using GraphQL in platformOS](/developer-guide/pos-cli/developing-graphql-queries-using-pos-cli-gui).' %}
+
+### YAML
+
+YAML is a human-friendly, easy-to-use and read data serialization standard used in platformOS for setting properties in configuration files and to define the database schema. To learn more, visit the [Original Website yaml.org](https://yaml.org/) or [yaml.info to learn YAML](https://www.yaml.info/).
+
+Thanks to these abstraction layers, each Instance operates as a secure, sandboxed environment, fully isolated from others. platformOS also supports **WebSockets** for real-time features and is **AI Agent Protocol-ready**, making it a future-proof foundation for applications that incorporate modern AI-driven workflows.
+
+## Open-Source Modules and Resources
+
+Building a complex application from scratch is a challenging task and a significant investment. That’s why we’ve created a set of **[open-sourced modules](https://documentation.platformos.com/developer-guide/integrations/integrations#modules)** that provide essential functionality - such as user authentication, RBAC authorization, OAuth integrations, 2FA, and payment processing - as well as general architectural patterns that help developers write maintainable code and implement unit tests.
+
+We’ve also open-sourced repositories to make it easy to set up **CI/CD pipelines** via GitHub Actions. These pipelines can run E2E tests (for example, using Playwright), execute unit tests provided by the *pos-module-tests* module, and invoke the **[platformos-check](https://github.com/Platform-OS/platformos-check)** linter to catch syntax errors, dead code, undefined variables, and style guide violations - helping teams maintain code quality.
+
+## Your platformOS Toolkit
+
+To understand how platformOS works, it's helpful to first get familiar with its core components and toolchain.
+
+As a developer, you’ll work on your applications locally using your preferred IDE, such as Visual Studio Code with the platformOS extension, and manage your source code with a version control system like Git. 
+
+A key part of the workflow is the `pos-cli` client, which syncs files from the local environment to the connected development Instance. It also allows you to launch a local GUI with access to application logs, a database management UI, background jobs UI, a GraphQL Explorer, and more.
+
+The code you write will be automatically uploaded to your Instance (a runtime environment accessible via HTTP) whenever you save the file, thanks to the pos-cli client running in the background. 
+
+Your app is built using **Liquid** (based on Shopify Liquid), **GraphQL** queries and mutations for interacting with the infrastructure components like Database, Cache, Search Engine, File Storage, WebSockets and more and **YAML configuration files** for defining database schema, routing, and more.
+
+To support your workflow, platformOS provides a suite of tools:
+- the **[Partner Portal](https://partners.platform-os.com/)** for Instance management
+- the **[platformos-check](https://github.com/Platform-OS/platformos-check)** linter,
+- **[pos-cli](https://www.npmjs.com/package/@platformos/pos-cli)** command line tool to deploy source code from your local computer and to provide various useful tools for developers, like for example an **admin GUI** for interacting with instance data, logs, background job and more. 
+
+To make development easier, you can also use our **[open-sourced modules](https://documentation.platformos.com/developer-guide/integrations/integrations#modules)**, repositories, our **[Liquid extension](https://marketplace.visualstudio.com/items?itemName=platformOS.platformos-check-vscode)** and follow our documented best practices on this documentation site.
