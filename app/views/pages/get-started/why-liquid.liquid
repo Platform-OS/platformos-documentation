@@ -1,0 +1,34 @@
+---
+metadata:
+  title: Why Liquid, GraphQL and YAML?
+  description: Learn why platformOS uses Liquid, GraphQL, and YAML as its core abstraction layers
+converter: markdown
+---
+
+<img loading="lazy" class="w-full" src="{{ 'images/get-started/what-is-pos/infrastructure.png' | asset_url }}" alt="platformOS infrastructure">
+
+### Liquid
+
+Let’s say you want to allow your users to customize the look and feel of your application. That’s perfectly safe with platformOS. Rather than using general-purpose programming languages (like Java, C#, Python, or Ruby), platformOS enables developers to implement business rules using Liquid: a [widely adopted](https://github.com/Shopify/liquid/wiki#who-uses-liquid) templating language developed by Shopify. 
+
+This level of flexibility and security wouldn't be possible using the above listed programming languages. If users were allowed to execute Java, C#, or Python, they could potentially run unsafe code with full access to the system - like handing them the keys to your entire server including data and services shared across other tenants.
+
+{% include 'alert/tutorial', content: 'Explore the official documentation on [Why you should use Liquid](https://github.com/Shopify/liquid?tab=readme-ov-file#why-you-should-use-liquid).' %}
+
+### GraphQL
+
+platformOS uses **GraphQL** for data access and mutations, and **YAML** for configuration and schema definitions. You’ll write GraphQL queries and mutations to interact with the built-in, managed infrastructure - which includes **PostgreSQL**, **Redis**, and **ElasticSearch**, with built-in support for **Vector Databases** to enable AI embeddings and semantic search.
+
+Check out the platformOS code examples for GraphQL terms in our GraphQL glossary, and find detailed descriptions of queries, mutations, objects, scalars, interfaces, enums, and input objects in our [GraphQL Documentation](/api-reference/graphql/glossary).
+
+To help you quickly develop GraphQL queries, we provide a [GraphiQL](https://github.com/graphql/graphiql) graphical user interface through the pos-cli. GraphiQL is a GraphQL editor with autocomplete and live docs that helps you structure GraphQL queries correctly.
+
+{% include 'alert/tutorial', content: 'To learn more about using GraphQL and the GraphiQL tool, explore [our documentation topics on using GraphQL in platformOS](/developer-guide/pos-cli/developing-graphql-queries-using-pos-cli-gui).' %}
+
+### YAML
+
+YAML is a human-friendly, easy-to-use and read data serialization standard used in platformOS for setting properties in configuration files and to define the database schema. To learn more, visit the [Original Website yaml.org](https://yaml.org/) or [yaml.info to learn YAML](https://www.yaml.info/).
+
+Thanks to these abstraction layers, each Instance operates as a secure, sandboxed environment, fully isolated from others. platformOS also supports **WebSockets** for real-time features and is **AI Agent Protocol-ready**, making it a future-proof foundation for applications that incorporate modern AI-driven workflows.
+
+{% render 'alert/next', content: 'Installation and Configuration', url: '/get-started/installation-and-configuration/' %}
