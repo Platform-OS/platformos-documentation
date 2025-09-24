@@ -96,7 +96,7 @@ Example:
 
 **Numbers**
 
-Spell out numbers one through nine. Use numerals for numbers 10 and greater. Ordinal numbers (third, 12th), follow the same rule. Spell out numbers at the beginning of a sentence. 
+Spell out numbers one through nine. Use numerals for numbers 10 and greater. Ordinal numbers (third, 12th), follow the same rule. Spell out numbers at the beginning of a sentence.
 
 **Lists**
 
@@ -144,18 +144,16 @@ Add your code snippet and close the block:
 </pre></code>
 
 **Liquid code samples**
-To add liquid markup examples, wrap the whole block in the `{{ "{% raw "}}%}` tag:
+To add liquid markup examples, wrap the whole block in the {% raw %}`{% raw %}`{% endraw %} tag.
 
 <pre><code class="language-liquid">
-```liquid
-{{ "{% raw "}} %}
 {% raw %}
-{% if value != blank %}
-  Show my {{ value }}
-{% endif %}
-{% endraw %}
-{{ "{% endraw "}}%}
+```liquid
+  {% if value != blank %}
+    Show my {{ value }}
+  {% endif %}
 ```
+{% endraw %}
 </pre></code>
 
 ### Tables
@@ -234,9 +232,9 @@ To insert an image, add it to the `app/assets/images` directory. Create a direct
 
 **Screencasts**
 
-Upload the video to Youtube and copy its video ID. For example, the video with the URL `https://www.youtube.com/watch?v=zm5Iw7jsyC4` has the ID `zm5Iw7jsyC4`.  
+Upload the video to Youtube and copy its video ID. For example, the video with the URL `https://www.youtube.com/watch?v=zm5Iw7jsyC4` has the ID `zm5Iw7jsyC4`.
 
-Insert a video into the documentation by adding the ID like this:  
+Insert a video into the documentation by adding the ID like this:
 
 ```liquid
 {% raw %}
