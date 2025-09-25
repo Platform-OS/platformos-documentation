@@ -7,21 +7,33 @@ converter: markdown
 
 Now that we have a working _Contact Us_ form, covered by automated tests, it is time to make it more visually appealing and user-friendly. For this, we’ll use the **Common Styling module**.
 
-{% # TODO: check size %}
-<img loading="lazy" class="w-full" src="{{ 'images/get-started/contact-us-tutorial/form_without_common_styling.png' | asset_url }}" alt="Plain Contact us form">
+<table style="border: none; width: 100%; text-align: center;">
+  <tr>
+    <td style="border: none; vertical-align: top; padding: 10px;">
+      <img loading="lazy" src="{{ 'images/get-started/contact-us-tutorial/form_without_common_styling.png' | asset_url }}" 
+           alt="Plain Contact Us form" 
+           style="max-width: 450px; border: 1px solid #ddd; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+      <p><em>Without Common Styling</em></p>
+    </td>
+    <td style="border: none; vertical-align: top; padding: 10px;">
+      <img loading="lazy" src="{{ 'images/get-started/contact-us-tutorial/contact-us-styled.png' | asset_url }}" 
+           alt="Styled Contact Us form using Common Styling" 
+           style="max-width: 450px; border: 1px solid #ddd; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+      <p><em>With Common Styling</em></p>
+    </td>
+  </tr>
+</table>
 
-{% # TODO: check size %}
-<img loading="lazy" class="w-full" src="{{ 'images/get-started/contact-us-tutorial/contact-us-styled.png' | asset_url }}" alt="Styled Contact Us form using Common Styling layout">
 
 ## Introduction to the Common Styling Module
 
-The [**Common Styling module**](https://github.com/Platform-OS/pos-module-common-styling) provides a library of ready-made design components — such as form layouts, buttons, headings, and error messages — that you can use across your project.
+The [**Common Styling module**](https://github.com/Platform-OS/pos-module-common-styling) provides a reusable design system for platformOS to make your projects look great out of the box and gives you simple tools to customize them.
 
 ### Why use it?
 
-- **Professional look out of the box**: Your pages will instantly look clean and consistent.  
-- **Consistency across your app**: The same design system applies everywhere, so your forms, buttons, and headings all match.  
-- **Easy customization**: You can override styles using simple CSS variables when you want a different look.  
+- The key reason is **consistency**: Common Styling is used in all of our [open source platformOS modules](/developer-guide/modules/platformos-modules#our-modules), such as `pos-module-chat`, `pos-module-user`, and others. If you use Common Styling in your project and configure it with your branding, all endpoints provided by these modules will immediately inherit it and look consistent with your own endpoints.
+- Your pages instantly look clean, modern, and user-friendly without extra effort.
+- Another benefit is easy customization. You can override styles using simple CSS variables to adapt the defaults to your project’s branding.
 
 Under the hood, the module comes with reusable **CSS** and **JavaScript**. You can use these styles directly in your project, or rely on them indirectly through other [platformOS modules](/developer-guide/modules/platformos-modules#our-modules). The goal is to provide a unified design system for modules, while allowing you to override or extend the defaults whenever your project requires it. Let's get started!
 
@@ -77,6 +89,7 @@ This is a special page that demonstrates all the components, layouts, and variab
 In your browser, add `/style-guide` to your instance URL to access the page.
 
 {% # TODO: check size %}
+
 <img loading="lazy" class="w-full" src="{{ 'images/get-started/contact-us-tutorial/visit-style-guide.png' | asset_url }}" alt="Screenshot of the platformOS style guide page showing available components and code examples">
 
 Each example shows both the **visual result** and the **code snippet** you can copy into your project.
@@ -89,14 +102,17 @@ These variables control colors, spacing, typography, and more. Later, you can ov
 
 ## Activating Common Styling
 
-Now that the Common Styling module is installed, we need to **activate it** so that its design system applies across our project. At the moment, our Contact Us app does not have a layout defined, so we’ll start by creating one.
+Now that the Common Styling module is installed, we need to **activate it** so that its design system applies across our project. At the moment, our Contact Us app does not have a [Layout](/developer-guide/pages/layouts) defined, so we’ll start by creating one.
 
 {% include 'alert/tip', content: 'When in doubt, you can always refer to <code>/style-guide</code> on your instance, or to the <a href="https://github.com/Platform-OS/pos-module-common-styling" target="_blank">documentation in the Common Styling repo</a>.' %}
 
 
 ### Why do we need a layout?
 
-A layout defines the overall structure of your pages. It usually contains the `<html>`, `<head>`, and `<body>` tags, along with shared elements such as stylesheets, scripts, and navigation bars. Think of the layout as the frame of your application: each page is displayed inside it. 
+[Layouts](/developer-guide/pages/layouts) save you from repeating the same HTML structure across multiple pages. Thanks to them, any change to the header, navigation, or footer requires updating only a single file — the Layout. This reduces duplication, eliminates inconsistencies, and prevents forgotten updates. Think of the Layout as the frame of your application: each page is displayed inside it.
+
+They are also useful for SEO and performance: Layouts ensure that consistent meta tags, structured data, and performance optimizations are applied across all pages automatically, without having to include them manually each time.
+
 Layouts are also the right place to load global styles and scripts. This makes them the perfect spot to include the Common Styling module so that its design system applies across your application.
 
 ## Example from the Common Styling repo
@@ -116,6 +132,8 @@ Create the `layouts` directory (if it doesn’t exist yet) and the layout file:
 mkdir -p app/views/layouts
 touch app/views/layouts/application.liquid
 </code></pre>
+
+{% render 'alert/tip', content: 'By default, all <a href="https://documentation.platformos.com/developer-guide/pages/pages" target="_blank">Pages</a> automatically use the <code>application</code> layout if it exists. You can change the default layout name via the <a href="/developer-guide/platformos-workflow/directory-structure/config" target="_blank">default_layout setting</a> in <code>app/config</code>.' %}
 
 Open `app/views/layouts/application.liquid` and paste the following code.  
 We’ve adapted it from the [minimal example layout](https://github.com/Platform-OS/pos-module-common-styling/blob/master/modules/common-styling/public/views/layouts/style-guide.liquid) in the Common Styling repo, changing the title and description to match our Contact Us form project:
@@ -261,8 +279,7 @@ To:
 Save your changes, make sure you are syncing, and reload your form in the browser:
 
 {% # TODO: check size %}
-<img loading="lazy" class="w-full" src="{{ 'images/get-started/contact-us-tutorial/common-styling-heading.png' | asset_url }}" alt="Contact Us form heading styled with pos-heading-2">
-
+<img loading="lazy" src="{{ 'images/get-started/contact-us-tutorial/common-styling-heading.png' | asset_url }}" alt="Contact Us form heading styled with pos-heading-2" style="max-width:450px;border:1px solid #ddd;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
 
 ## Styling the Form
 
@@ -488,10 +505,10 @@ After applying all these changes, here’s our finished form:
 ```
 {% endraw %}
 
-Now check your result in the app — you should see a styled form that already feels much closer to production quality.
+Now check your result in the app - you should see a styled form that already feels much closer to production quality.
 
 {% # TODO: check size %}
-<img loading="lazy" class="w-full" src="{{ 'images/get-started/contact-us-tutorial/common_styling_final.png' | asset_url }}" alt="Final styled Contact Us form with Common Styling applied">
+<img loading="lazy" src="{{ 'images/get-started/contact-us-tutorial/common_styling_final.png' | asset_url }}" alt="Final styled Contact Us form with Common Styling applied" style="max-width:600px;border:1px solid #ddd;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
 
 ### Summary
 
@@ -570,6 +587,9 @@ Save your changes and deploy (or sync) to your instance as usual.
 Then reload your **Contact Us** form in the browser.
 
 Your **Send** button should now appear in green, with a lighter shade when hovered.
+
+{% # TODO: check size %}
+<img loading="lazy" src="{{ 'images/get-started/contact-us-tutorial/form-final-green.png' | asset_url }}" alt="Final styled Contact Us form with custom CSS applied" style="max-width:600px;border:1px solid #ddd;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
 
 Congratulations on completing the _Contact Us_ form tutorial! You have learned how to use platformOS to build a functional contact form, covering various concepts such as Commands/Business logic, Validators, Events, data display, logging and testing.
 
