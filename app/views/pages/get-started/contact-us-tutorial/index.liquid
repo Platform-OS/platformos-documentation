@@ -33,7 +33,67 @@ Before we start, let's outline the core functionalities of our Contact Us form:
 * Show relevant error messages.
 * Pre-fill the form with the submitted data.
 
-{% include 'alert/tip', content: 'You can find the complete code for this tutorial in the <a href="https://github.com/Platform-OS/tutorials-contact-us">tutorials-contact-us repository</a> on GitHub.' %}
+{% include 'alert/tip', content: 'You can find the complete code for this tutorial in the <a href="https://github.com/Platform-OS/tutorials-contact-us">tutorials-contact-us repository</a> on GitHub. If you’d like to explore or compare the code as you go, read the next section about working with tutorial checkpoints.' %}
+
+## Working with Tutorial Checkpoints
+
+Similarly to the [To Do List app](/get-started/build-your-first-app/), we’ve created a public GitHub repository that contains the full source code for this tutorial.  
+
+However, because this tutorial is longer and covers more advanced topics, viewing only the *final* version might not be very helpful if you get stuck midway. To make it easier to follow along, we’ve introduced **checkpoints** using [Git tags](https://git-scm.com/book/ms/v2/Git-Basics-Tagging).
+
+Each checkpoint represents the exact state of the codebase at the **end** of a key chapter. This means you can:
+* Check out the code that matches the chapter you’re currently reading.
+* Compare your work against a working version.
+* Skip ahead or catch up without losing your progress.
+
+### How to use the checkpoints
+
+When you clone the [tutorials-contact-us](https://github.com/Platform-OS/tutorials-contact-us) repository, all existing tags are fetched automatically. If you want to make sure you have the latest ones, you can update them anytime with:
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+git fetch --tags
+</code></pre>
+
+To see all available checkpoints, list the tags with:
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+git tag -n
+</code></pre>
+
+Check out the checkpoint you need, for example:
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+git checkout tags/checkpoint-testing
+</code></pre>
+
+You’ll now see the project exactly as it appears at the end of the Testing chapter.
+If you want to make edits or experiment, create a branch from that state:
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+git switch -c my-experiments
+</code></pre>
+
+To return to the latest version:
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+git checkout main
+git pull
+</code></pre>
+
+### Available Checkpoints
+
+To see all available checkpoints, list the tags with:
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+git tag -n
+</code></pre>
+
+| Tag                         | Matches Chapter    | Description                              |
+| --------------------------- | ------------------ | ---------------------------------------- |
+| `checkpoint-defining-email` | [Defining the Email](/get-started/contact-us-tutorial/defining-the-email) | Adds the email-sending functionality     |
+| `checkpoint-testing`        | [Testing](/get-started/contact-us-tutorial/testing-contact-create-command)            | Introduces automated tests for the form  |
+| `checkpoint-common-styling` | [Styling the Form](/get-started/contact-us-tutorial/using-common-styling)   | Applies Common Styling for a polished UI |
+
 
 ## Quick Start Guide
 
