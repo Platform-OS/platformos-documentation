@@ -1,0 +1,134 @@
+
+Log in and Log out
+
+And if you log in, remember, you are logged in already, right? So, when you go to log in, it will be redirected back to the homepage. So, what we want now is to extend this link to display log in if you are not logged in user. And display log out if you are logged in user.
+
+ So, go to the documentation. This is actually something that Maciek added. https://github.com/Platform-OS/pos-module-user?tab=readme-ov-file#current-profile-in-layouts
+
+And go to your layout and paste it. For now, just paste it before navigation. Because it's a part of the navigation:
+
+{% raw %}
+```liquid
+{% liquid
+ if context.current_user 
+   assign current_profile = context.exports.current_profile
+   unless current_profile
+     function current_profile = 'modules/user/helpers/current_profile'
+   endunless
+ endif
+%}
+ ```
+{% endraw %}
+
+And now I'll go again to the documentation. Okay. And you can see actually the same snippet that you currently have. 
+
+{% raw %}
+```liquid
+{% liquid
+ if context.current_user 
+   assign current_profile = context.exports.current_profile
+   unless current_profile
+     function current_profile = 'modules/user/helpers/current_profile'
+   endunless
+ endif
+%}
+<nav>
+  <a href="/">Home</a>
+  <ul>
+
+       {% if current_profile %}
+        <li>Welcome, {{ current_profile.email }}</li>
+        {% function can_view_admin = 'modules/user/helpers/can_do', requester: current_profile, do: 'admin_pages.view' %}
+        {% if can_view_admin %}
+          <li><a href="/admin">Admin</a></li>
+        {% endif %}
+        <form method="post" action="/sessions">
+          <input type="hidden" name="authenticity_token" value="{{ context.authenticity_token }}">
+          <input type="hidden" name="_method" value="delete">
+          <button class="pos-button" type="submit">Logout</button>
+        </form>
+      {% else %}
+        <li><a href="/sessions/new">Login</a></li>
+      {% endif %}
+    
+  </ul>
+</nav>
+```
+{% endraw %}
+
+Like navigation, then opening a link. Almost the same. It's a bit different because the whole is not inside the unordered list. But what you can copy is just copy this LI item.
+
+You can paste it above. The reason why it's different because I want home link to the left side. And the URL will be on the right side. So, user related information will be on the right side and home will be always on the left. Okay. Save it.  And now reload the page. Perfect, right?
+
+So, now you have home, welcome, email, test. So, now you can click log out.
+
+And now we have it. And it works. Exactly. And now we can log in. Assuming you remember your password.
+
+<!DOCTYPE html>
+<html class="pos-app">
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="authenticity_token" name="csrf-param">
+    <meta content="{{ form_authenticity_token }}" name="csrf-token">
+      {% comment %} default platformOS provided styles {% endcomment %}
+      {% render 'modules/common-styling/init' %}
+      <link rel="stylesheet" href="{{ 'modules/user/style/pos-user-form.css' | asset_url }}">
+      {% comment %} custom styles specific for this app, some overwrite the defaults {% endcomment %}
+      <link rel="stylesheet" href="{{ 'style/app.css' | asset_url }}">
+
+      <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=yes">
+
+      <script>
+        /* namespace */
+        if(typeof window.pos !== 'object'){
+          window.pos = {};
+          window.pos.modules = {};
+          window.pos.translations = {};
+        }
+      </script>
+
+    <title>Example User Management Application | platformOS</title>
+
+    <link rel="stylesheet" href="{{ 'styles/app.css' | asset_url }}">
+  </head>
+
+  <body>
+{% liquid
+ if context.current_user 
+   assign current_profile = context.exports.current_profile
+   unless current_profile
+     function current_profile = 'modules/user/helpers/current_profile'
+   endunless
+ endif
+%}
+<nav>
+  <a href="/">Home</a>
+  <ul>
+
+       {% if current_profile %}
+        <li>Welcome, {{ current_profile.email }}</li>
+        {% function can_view_admin = 'modules/user/helpers/can_do', requester: current_profile, do: 'admin_pages.view' %}
+        {% if can_view_admin %}
+          <li><a href="/admin">Admin</a></li>
+        {% endif %}
+        <form method="post" action="/sessions">
+          <input type="hidden" name="authenticity_token" value="{{ context.authenticity_token }}">
+          <input type="hidden" name="_method" value="delete">
+          <button class="pos-button" type="submit">Logout</button>
+        </form>
+      {% else %}
+        <li><a href="/sessions/new">Login</a></li>
+      {% endif %}
+    
+  </ul>
+</nav>
+
+    {{ content_for_layout }}
+
+
+    <script src="{{ 'scripts/app.js' | asset_url }}"></script>
+
+  </body>
+</html>

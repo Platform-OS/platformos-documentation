@@ -1,0 +1,99 @@
+---
+metadata:
+  title: Creating an Account
+  description: Learn how to create a user account using the built-in registration flow of the platformOS User Module.
+converter: markdown
+---
+
+Now that the User Module is installed, the homepage is set up, and you are aware of the available endpoints, you can create your first account on your instance. The module provides the complete registration flow out of the box, so you do not need to build any forms or mutations at this stage. In this chapter, you will register a new user, explore how platformOS stores user credentials, and verify the newly created account using the `pos-cli GUI`.
+
+## Step 1: Open the Registration Page
+
+The User Module automatically exposes a **sign-up form** at the following URL:
+
+```
+/users/new
+```
+<br>
+
+Navigate to: `https://YOUR-INSTANCE.staging.oregon.platform-os.com/users/new`
+
+You should see a registration page. If Common Styling is configured correctly, the form will already appear clean and fully styled.
+
+## Step 2: Create an Account
+
+Fill in the form with:
+
+* a **valid email format** (does not have to be a real inbox), and
+* a **password** you will remember for upcoming steps.
+
+<img loading="lazy" src="{{ 'images/get-started/user-management/create-account.png' | asset_url }}" alt="Creating an account using the User Module">
+
+Submit the form.
+
+If the registration is successful:
+
+* a new account is created,
+* you have been redirected to the home page and you are automatically logged in,
+* but you **do not see any confirmation yet** because the layout has no navigation or user state indicators.
+
+We will add login/logout awareness later in the tutorial.
+
+{% include 'alert/tip', content: 'If you receive validation errors, correct the issues and try again. The User Module includes built-in validations for email format and password requirements.' %}
+
+## Step 3: Verify the User using the GUI
+
+To confirm that your account was created, use the admin GUI provided by `pos-cli`.
+
+Start the GUI:
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+pos-cli gui serve staging
+</code></pre>
+
+This command starts a local admin interface at:
+
+```
+http://localhost:3333
+```
+
+Open it and select **Users** from the navigation. You should now see the user you just registered, along with the email address you provided.
+
+<img loading="lazy" src="{{ 'images/get-started/user-management/user-in-users.png' | asset_url }}" alt="Viewing the newly created user in the pos-cli GUI">
+
+## Step 4: Understand How User Credentials Are Stored
+
+platformOS does not store passwords in plain text. Instead, it uses **[Bcrypt](https://bcrypt-generator.com/)**, a one-way cryptographic hashing function. This ensures several security guarantees:
+
+* The original password **cannot** be recovered from the stored hash.
+* When a user logs in, the password they enter is **hashed again** using the same algorithm, and the hashes are compared.
+* If the hashes match, the user is authenticated — without the system ever knowing the real password.
+
+You can think of it like burning a piece of paper containing the password into ash. Once destroyed, the original password cannot be reconstructed.
+
+This hashing mechanism is built into the User Module. You do not need to configure anything manually.
+
+## Step 5: Users vs. Records in platformOS
+
+So far, you have worked mostly with **Records** (for example, in the Contact Us tutorial). A `record` is a flexible data object defined through your custom schema. A **User** is not a regular Record.
+
+### Why Users are separate from Records
+
+Users include several built-in fields and guarantees that Records do not provide:
+
+* **Email uniqueness**: The system ensures that no two users can register with the same email address.
+
+* **Secure password handling**: Passwords are never stored in plain text. Whatever value you submit in the `password` field is automatically hashed before being stored.
+
+This distinction is important. Users are not stored as regular Records because they include specialized fields, security considerations, and authentication behaviors.
+
+### Authentication features built into the User entity
+
+In addition to secure password storage, the User entity provides authentication features out of the box:
+
+* **Session-based authentication** using standard login/logout flows.
+* **Support for JWT (JSON Web Tokens)**, typically used by mobile or API-driven applications that require token-based authentication.
+
+{% include 'alert/tutorial', content: 'For a deeper understanding of how authentication works in platformOS, explore the <a href="/developer-guide/users/authentication" target="_blank">Authentication</a> guide. It covers password-based login, temporary tokens, JWT tokens, session management, and more.' %}
+
+{% # TODO: Next page %}

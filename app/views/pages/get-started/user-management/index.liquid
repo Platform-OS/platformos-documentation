@@ -1,0 +1,171 @@
+---
+metadata:
+  title: Build an User Management Application
+  description: Follow these step-by-step tutorials to build an example user management application using pOS User Module.
+converter: markdown
+---
+
+## Introduction & Quick Start Guide
+
+In this tutorial, you will learn how to build a simple user management application using the **[platformOS User Module](https://github.com/Platform-OS/pos-module-user)**. The goal is to understand how authentication works on platformOS, explore the built-in pages provided by the module, and prepare your project for future features such as roles, profile updates, and two-factor authentication.
+
+We will begin with a clean instance, install the User Module, apply Common Styling, and create a minimal homepage.  
+In the next chapters, we will extend this foundation step by step to add navigation, login/logout, and user-aware layouts.
+
+{% include 'alert/tip', content: 'You can browse the source code of the User Module in the <a href="https://github.com/Platform-OS/pos-module-user">pos-module-user repository</a> to see every page and helper it provides.' %}
+
+Before we explore the User Module in detail, follow the steps below to set up your environment and prepare a clean project.
+
+## Step 1: Create a new instance
+
+Sign in to the [Partner Portal](https://partners.platformos.com/) and create a new instance:
+
+**Example instance name:**
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">  
+user-module-test-00
+</code></pre>
+
+For more details, refer to the [Create an instance](/get-started/installation-and-configuration/#create-an-instance) guide.
+
+## Step 2: Create your project folder
+
+Create the directory for your project and initialize an empty platformOS project:
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+mkdir user-module-test-00
+cd user-module-test-00
+pos-cli init
+</code></pre>
+
+This folder will become your project root.
+
+## Step 3: Add and authenticate your environment
+
+Connect your local project to your new instance:
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+pos-cli env add --url https://user-module-test-00.staging.oregon.platform-os.com staging
+</code></pre>
+
+A browser window will open prompting you to authorize the connection. For further explanation, see [Authenticate your environment](/get-started/working-with-the-code-and-files/#authenticate-your-environment).
+
+## Step 4: Deploy the empty project
+
+Upload the base project to your instance:
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+pos-cli deploy staging
+</code></pre>
+
+## Step 5: Install the User Module
+
+Next, install and download the User Module:
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+pos-cli modules install user
+pos-cli modules download user
+</code></pre>
+
+Then deploy your project again:
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+pos-cli deploy staging
+</code></pre>
+
+At this point, your instance includes all necessary endpoints: login, registration, password reset, two-factor authentication, OAuth handlers, and more. You will connect these pages to your application later through navigation.
+
+### Step 6: Configure Common Styling
+
+The [Common Styling](https://github.com/Platform-OS/pos-module-common-styling) module is installed automatically as a dependency of the User Module. However, for its design system to take effect, you need to **activate and configure it** in your main layout.
+
+Common Styling provides the base CSS, form styling, and UI components used across all platformOS modules, including the pages that come with the User Module. By loading it in your layout, you ensure that the login, registration, and profile pages look consistent and match the styling of your own application.
+
+Open your application layout and replace its content with the following:
+
+#### app/views/layouts/application.liquid
+
+{% raw %}
+
+```liquid
+<!DOCTYPE html>
+<html class="pos-app">
+ <head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta content="authenticity_token" name="csrf-param">
+   <meta content="{{ form_authenticity_token }}" name="csrf-token">
+
+   {% comment %} Default platformOS styles {% endcomment %}
+   {% render 'modules/common-styling/init' %}
+   <link rel="stylesheet" href="{{ 'modules/user/style/pos-user-form.css' | asset_url }}">
+
+   {% comment %} Custom project styles {% endcomment %}
+   <link rel="stylesheet" href="{{ 'style/app.css' | asset_url }}">
+
+   <script>
+     if (typeof window.pos !== 'object') {
+       window.pos = {};
+       window.pos.modules = {};
+       window.pos.translations = {};
+     }
+   </script>
+
+   <title>User Management Application | platformOS</title>
+ </head>
+
+ <body>
+   {{ content_for_layout }}
+
+   <script src="{{ 'scripts/app.js' | asset_url }}"></script>
+ </body>
+</html>
+```
+
+{% endraw %}
+
+Save and deploy (or sync) the changes.
+
+{% include 'alert/tutorial', content: 'For advanced configuration and customization options, refer to the <a href="https://github.com/Platform-OS/pos-module-common-styling">Common Styling documentation</a>, or visit the built-in <code>/style-guide</code> page on your instance to explore all available components.' %}
+
+
+## Step 7: Create the Homepage
+
+Now that the environment is set up, update the homepage of your project. The file already exists, so open it and replace its content with the following:
+
+#### app/views/pages/index.liquid
+
+```html
+<h2 class="pos-heading-2">Example platformOS User Management Application</h2>
+
+<p>
+  This example application demonstrates the core authentication features provided
+  by the platformOS User Module. It includes the necessary pages and flows for
+  registering a new user, logging in and out, updating account information, and
+  exploring the default endpoints that come with the module.
+</p>
+```
+
+Deploy your changes and reload your instance to confirm the page loads correctly. If Common Styling is configured correctly, the heading and text should display using the default typography and spacing:
+
+<img loading="lazy" src="{{ 'images/get-started/user-management/home-page-first.png' | asset_url }}" alt="Homepage of the example platformOS User Management Application">
+
+
+## Step 8: Override Permissions
+
+The module is fully functional as-is, but most projects will customize it.
+
+Because module files should never be edited directly, create a local override in your own `app/` directory. The recommended first override is the **permissions configuration**, which defines RBAC roles and permissions for your application.
+
+Run: 
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+mkdir -p app/modules/user/public/lib/queries/role_permissions
+cp modules/user/public/lib/queries/role_permissions/permissions.liquid \
+   app/modules/user/public/lib/queries/role_permissions/permissions.liquid
+</code></pre>
+
+This creates a safe override that allows you to define your own roles and permissions without modifying module files directly.
+
+{% include 'alert/tutorial', content: 'For additional setup details and configuration options, refer to the <a href="https://github.com/Platform-OS/pos-module-user?tab=readme-ov-file#setup" target="_blank">User Module README</a> on GitHub.' %}
+
+{% # TODO: Next page %}
