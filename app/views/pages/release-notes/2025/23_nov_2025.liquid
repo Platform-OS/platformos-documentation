@@ -1,0 +1,27 @@
+
+---
+converter: markdown
+metadata:
+  title: Added transaction and rollback liquid tags, activity_streams part of pos-cli clone
+  description: Nov 23, 2025
+  skip_contribute_button: true
+  last_edit: false
+slug: release-notes/23-NOV-25
+---
+
+#### {{ page.metadata.description }}
+
+<h4 class="release-note release-note__new">NEW</h4>
+
+* add new `transaction` and `rollback` liquid tags to support explicit database transactions
+* `pos-cli clone` will also affect [Activity Streams](/developer-guide/activity-feeds/activity-feeds)
+
+<h4 class="release-note release-note__improved">IMPROVED</h4>
+
+* `admin_asset_delete_all` will also affect soft deleted assets
+* `context.globals` will not be explicitly serialized for each [BackgroundJob](/best-practices/backend-performance/background-jobs) (but will still be available) - it is just a low level implementation optimization to reduce job size, unnecessary noise and performance
+* `include` Liquid tag can be used within `render` tag
+
+<h4 class="release-note release-note__fixed">FIXED</h4>
+
+* Fixed issue preventing certain instance copies processes from completing successfully.
