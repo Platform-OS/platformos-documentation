@@ -116,6 +116,10 @@ Open your application layout and replace its content with the following:
  <body>
    {{ content_for_layout }}
 
+{% liquid
+  render 'modules/common-styling/toasts'
+%}   
+
    <script src="{{ 'scripts/app.js' | asset_url }}"></script>
  </body>
 </html>
@@ -148,24 +152,5 @@ Now that the environment is set up, update the homepage of your project. The fil
 Deploy your changes and reload your instance to confirm the page loads correctly. If Common Styling is configured correctly, the heading and text should display using the default typography and spacing:
 
 <img loading="lazy" src="{{ 'images/get-started/user-management/home-page-first.png' | asset_url }}" alt="Homepage of the example platformOS User Management Application">
-
-
-## Step 8: Override Permissions
-
-The module is fully functional as-is, but most projects will customize it.
-
-Because module files should never be edited directly, create a local override in your own `app/` directory. The recommended first override is the **permissions configuration**, which defines RBAC roles and permissions for your application.
-
-Run: 
-
-<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
-mkdir -p app/modules/user/public/lib/queries/role_permissions
-cp modules/user/public/lib/queries/role_permissions/permissions.liquid \
-   app/modules/user/public/lib/queries/role_permissions/permissions.liquid
-</code></pre>
-
-This creates a safe override that allows you to define your own roles and permissions without modifying module files directly.
-
-{% include 'alert/tutorial', content: 'For additional setup details and configuration options, refer to the <a href="https://github.com/Platform-OS/pos-module-user?tab=readme-ov-file#setup" target="_blank">User Module README</a> on GitHub.' %}
 
 {% # TODO: Next page %}
