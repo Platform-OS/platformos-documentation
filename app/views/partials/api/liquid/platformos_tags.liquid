@@ -3,11 +3,11 @@
   {%- for item in data.tags -%}
     {% if item.name == blank %}{% continue %}{% endif %}
     {
-    "category": "{{ item.category | default: 'platformOS' }}",
+      "category": "{{ item.category | default: 'platformOS' }}",
       "deprecated": {{ item.deprecated | default: false | json }},
       "deprecation_reason": "{{item.deprecated | join: ', '}}",
       "description": {{ item.description | json }},
-      "syntax": {{ item.examples.first | json }},
+      "syntax": {{ item.syntax | json }},
       "name": "{{item.name}}",
       "parameters": [
         {% for param in item.params %}
