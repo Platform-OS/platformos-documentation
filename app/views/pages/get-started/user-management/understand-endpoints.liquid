@@ -1,0 +1,86 @@
+---
+metadata:
+  title: Understanding User Module Endpoints
+  description: Learn about the endpoints that come with the platformOS User Module
+converter: markdown
+---
+
+Once you install the **User Module**, your instance immediately gains a complete set of authentication and account-management pages. There is no need to create these endpoints manually. They are generated automatically and become available under predictable URLs such as:
+
+```
+/sessions/new        → Log in form  
+/users/new           → Registration form  
+/passwords/reset     → Password reset request  
+```
+<br>
+
+To check it out, open your instance in the browser and visit `/sessions/new`. You will already see a fully working login form. The same applies to registration, and password reset. That is the power of the User Module.
+
+<img loading="lazy" src="{{ 'images/get-started/user-management/session-new.png' | asset_url }}" alt="Login form provided by the User Module at /sessions/new">
+
+These views are styled using **Common Styling**, which is installed automatically as a dependency of the User Module and you have already configured it.
+
+## What the User Module Includes
+
+Before continuing our user management application, it is necessary to understand what becomes available after installation. So open the following directory in your project:
+
+```
+modules/user/public/views/pages/
+```
+
+<br>
+
+As you explore the directory, you will notice subfolders such as `authentication_links`, `oauth`, `passwords`, `profiles`, `sessions`, and `users`. Each folder maps directly to a set of endpoints that platformOS automatically exposes.
+
+#### modules/user/public/views/pages/
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+modules/user/public/views/pages
+├── authentication_links
+│   └── create.liquid
+├── oauth
+│   ├── callback.liquid
+│   ├── start.liquid
+│   └── unassign.liquid
+├── passwords
+│   ├── create.liquid
+│   ├── new.liquid
+│   └── reset.liquid
+├── profiles
+│   └── 2fa
+│       ├── create.liquid
+│       ├── delete.liquid
+│       ├── disable.liquid
+│       └── new.liquid
+├── sessions
+│   ├── 2fa.liquid
+│   ├── create.liquid
+│   ├── destroy.liquid
+│   ├── impersonation
+│   │   ├── create.liquid
+│   │   └── destroy.liquid
+│   └── new.liquid
+└── users
+    ├── create.liquid
+    ├── email
+    │   ├── edit.liquid
+    │   └── update.liquid
+    └── new.liquid
+</code></pre>
+
+This directory contains all public-facing pages the module exposes. These include:
+
+* login and logout flows
+* registration flows
+* password reset and update flows
+* email update pages
+* profile management pages
+* two-factor authentication (TOTP) setup and verification
+* OAuth integration entry points
+* impersonation features for administrators
+
+{% include 'alert/tutorial', content: 'For additional descriptions of all built-in endpoints, refer to the <a href="https://github.com/Platform-OS/pos-module-user?tab=readme-ov-file#setup" target="_blank">User Module README</a> on GitHub.' %}
+
+Let's continue with trying out the provided registration flow and creating a user account.
+
+{% render 'alert/next', content: 'Creating an Account', url: '/get-started/user-management/create-account' %}

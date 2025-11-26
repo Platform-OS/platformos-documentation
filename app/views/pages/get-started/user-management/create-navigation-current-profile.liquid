@@ -1,0 +1,194 @@
+---
+metadata:
+   title: Creating Navigation and Loading the Current Profile
+   description: Learn how to add navigation links and dynamically show Login and Logout options using the User Module.
+converter: markdown
+---
+
+A short recap: after installing the User Module, your instance automatically includes a full set of authentication pages such as Register, Log In, and Reset Password. These pages already work, but they are not linked from your application yet. To make them accessible for the users, you need to add navigation elements to your layout and adjust them so that they respond to the user’s login state.
+
+In this chapter, we will:
+
+* Add basic navigation links
+* Detect whether a user is logged in
+* Display Login or Logout accordingly
+* Display a simple greeting for authenticated users
+* Learn how the `current_profile` helper works and provides user information
+
+By the end of this chapter, your application will feel functional and interactive, reacting to whether the user is authenticated.
+
+## Step 1: Add Basic Navigation Links
+
+Open your main layout at: `app/views/layouts/application.liquid`
+
+Add a simple navigation block just above `{% raw %}{{ content_for_layout }}{% endraw %}`:
+
+#### app/views/layouts/application.liquid
+
+{% raw %}
+
+```liquid
+<nav>
+  <ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="/sessions/new">Log in</a></li>
+  </ul>
+</nav>
+
+{{ content_for_layout }}
+```
+{% endraw %}
+
+This contains a Home and a Log in link. Save the your file and reload your instance. The navigation should appear at the top of the page:
+
+<img loading="lazy" src="{{ 'images/get-started/user-management/basic-navigation.png' | asset_url }}" alt="Basic navigation with Home and Login links">
+
+If you click *Log in*, nothing will change. Since you are already authenticated, the User Module redirects you back to the homepage. At this stage, the navigation is still static, so the links do not reflect the user’s actual state.
+
+In the next step, you will make the navigation dynamic so it displays the correct options for both guests and signed-in users.
+
+## Step 2: Loading the Current Profile in the Layout
+
+To conditionally show the correct navigation links, the layout needs access to the current user’s **profile**. The User Module provides a helper function designed specifically for this purpose. The following snippet comes from the **[Current Profile in Layouts](https://github.com/Platform-OS/pos-module-user?tab=readme-ov-file#current-profile-in-layouts)** section of the User Module documentation:
+
+{% raw %}
+
+```liquid
+{% liquid
+  if context.current_user
+    assign current_profile = context.exports.current_profile
+    unless current_profile
+      function current_profile = 'modules/user/helpers/current_profile'
+    endunless
+  endif
+%}
+```
+{% endraw %}
+
+Add this block above your navigation in `app/views/layouts/application.liquid`.
+
+### What this code does
+
+1. It checks whether `context.current_user` exists
+2. If it does, it loads the full user profile using the `current-profile` helper
+3. Makes it available as `current_profile` in your layout
+
+With this helper, you can show different navigation items depending on whether the user is authenticated.
+
+## Step 3: Using the `current_profile` helper
+
+Now that the authenticated user’s profile is available in the layout, you can update the navigation so that it responds to the login state.
+
+In this step, you will replace your existing `<nav>` block with a version that:
+
+* Shows a **Login** link when no user is logged in
+* Displays a **Welcome message with the user's email** and a **Logout** button when the user is authenticated
+
+### Update your navigation block
+
+Replace your earlier`<nav>` block with the following version, which displays different options for authenticated and unauthenticated users:
+
+#### app/views/layouts/application.liquid
+
+{% raw %}
+```liquid
+<nav>
+  <a href="/">Home</a>
+  <ul>
+    {% if current_profile %}
+      <li>Welcome, {{ current_profile.email }}</li>
+      <form method="post" action="/sessions">
+        <input type="hidden" name="authenticity_token" value="{{ context.authenticity_token }}">
+        <input type="hidden" name="_method" value="delete">
+        <button class="pos-button" type="submit">Logout</button>
+      </form>
+
+    {% else %}
+      <li><a href="/sessions/new">Login</a></li>
+    {% endif %}
+  </ul>
+</nav>
+```
+{% endraw %}
+
+### Full `application.liquid` Example
+
+Your entire layout file should now look similar to the following:
+
+#### app/views/layouts/application.liquid
+
+{% raw %}
+```liquid
+<!DOCTYPE html>
+<html class="pos-app">
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="authenticity_token" name="csrf-param">
+    <meta content="{{ form_authenticity_token }}" name="csrf-token">
+      {% comment %} default platformOS provided styles {% endcomment %}
+      {% render 'modules/common-styling/init' %}
+      <link rel="stylesheet" href="{{ 'modules/user/style/pos-user-form.css' | asset_url }}">
+      {% comment %} custom styles specific for this app, some overwrite the defaults {% endcomment %}
+      <link rel="stylesheet" href="{{ 'style/app.css' | asset_url }}">
+
+      <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=yes">
+
+      <script>
+        /* namespace */
+        if(typeof window.pos !== 'object'){
+          window.pos = {};
+          window.pos.modules = {};
+          window.pos.translations = {};
+        }
+      </script>
+
+    <title>Example User Management Application | platformOS</title>
+
+    <link rel="stylesheet" href="{{ 'styles/app.css' | asset_url }}">
+  </head>
+
+  <body>
+{% liquid
+ if context.current_user 
+   assign current_profile = context.exports.current_profile
+   unless current_profile
+     function current_profile = 'modules/user/helpers/current_profile'
+   endunless
+ endif
+%}
+<nav>
+  <a href="/">Home</a>
+  <ul>
+
+       {% if current_profile %}
+        <li>Welcome, {{ current_profile.email }}</li>
+        <form method="post" action="/sessions">
+          <input type="hidden" name="authenticity_token" value="{{ context.authenticity_token }}">
+          <input type="hidden" name="_method" value="delete">
+          <button class="pos-button" type="submit">Logout</button>
+        </form>
+      {% else %}
+        <li><a href="/sessions/new">Login</a></li>
+      {% endif %}
+    
+  </ul>
+</nav>
+
+    {{ content_for_layout }}
+
+{% liquid
+  render 'modules/common-styling/toasts'
+%}  
+
+    <script src="{{ 'scripts/app.js' | asset_url }}"></script>
+
+  </body>
+</html>
+ ```
+{% endraw %}
+
+Let's continue with testing the log in and log out flow.
+
+{% render 'alert/next', content: 'Testing the Login and Logout Flow', url: '/get-started/user-management/test-log-in-log-out' %}

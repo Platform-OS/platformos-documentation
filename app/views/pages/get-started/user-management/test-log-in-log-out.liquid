@@ -1,0 +1,119 @@
+---
+metadata:
+  title: Testing the Login and Logout Flow
+  description: Verify that your authentication setup works correctly by walking through the login and logout flow in your example application.
+converter: markdown
+---
+
+With the updated layout in place, your navigation now adapts automatically based on whether the user is authenticated. As you are currently logged in, you should see the Logout button.
+
+## Logged-in state
+
+When a user is signed in, the navigation displays:
+
+* A welcome message that includes their email address
+* A **Logout** button
+
+<img loading="lazy" src="{{ 'images/get-started/user-management/home-welcome-logout.png' | asset_url }}" alt="Navigation showing a welcome message and logout button">
+
+Selecting **Logout** immediately ends the session and updates the navigation.
+
+## Logged-out state
+
+After logging out, or when visiting the site as a guest, the navigation shows:
+
+* A **Login** link
+
+<img loading="lazy" src="{{ 'images/get-started/user-management/home-login.png' | asset_url }}" alt="Navigation showing Home and Login button">
+
+## Try it out
+
+1. While logged in, click **Log out** to end your session. The navigation should instantly switch to the logged-out version.
+
+2. Click on the *Log in* link to visit `/sessions/new`.
+
+3. Sign in again using the email and password you created earlier. The personalized “Welcome, email@example.com” message should reappear.
+
+This confirms that your login and logout flow works correctly and that your application can now dynamically respond to the user’s authentication state.
+
+## Understanding `context.current_user`
+
+In the previous steps, you created a dynamic navigation that reacts to whether the user is logged in. This worked because the User Module exposes information about the authenticated user through helpers such as `current_profile`. Now we take a closer look at what happens behind the scenes when a user signs in.
+
+This is a **conceptual overview** to help you understand the login flow on platformOS.
+
+## How platformOS knows who is logged in
+
+The key concept is: when a user is authenticated, platformOS stores their session information in `context.current_user`.
+
+You can verify this directly. Add the following line to your layout above the `<nav>` block:
+
+{% raw %}
+```liquid
+{{ context.current_user }}
+```
+{% endraw %}
+
+Reload your page. When logged in, you will see a JSON-like structure printed; when logged out, it will be blank.
+
+<img loading="lazy" src="{{ 'images/get-started/user-management/printed-out.png' | asset_url }}" alt="Printed context.current_user output">
+
+This value is populated during the login process. Now remove this line to clean up your code.
+
+## Where `context.current_user` Comes From
+
+The logic responsible for creating a user session can be found in the User Module at: `modules/user/public/views/pages/sessions/create.liquid`.
+
+This page receives the POST request from the login form (`/sessions/new`) and contains the following key line:
+
+```liquid
+sign_in user_id: user.id
+```
+
+This Liquid tag is what actually logs the user in.
+
+## What the `sign_in` tag does
+
+* Creates a new authenticated session
+* Associates it with the user’s ID
+* Stores the session identifier in a secure cookie
+* Makes `context.current_user` available on all pages
+
+In short: it receives a `user_id` and optionally a timeout, and then handles the session creation behind the scenes.
+
+## The Full Login Flow (Simplified)
+
+Here is what happens when a user submits the login form:
+
+1. The user enters their **email** and **password**.
+2. The system retrieves the user from the database using the email.
+3. The submitted password is hashed and compared with the stored hashed password.
+4. If the credentials are valid:
+   * If two-factor authentication is **enabled**, the user is redirected to the verification page.
+   * Otherwise, the `sign_in` tag is executed.
+5. `sign_in`:
+   * Generates a new session
+   * Saves it in a cookie
+   * Populates `context.current_user` on subsequent requests
+6. Your layout checks `current_profile` and updates the navigation automatically.
+
+From this point forward, every request from the browser includes a session cookie, and platformOS uses that to determine which user is currently authenticated.
+
+## Why Your Navigation Updates Automatically
+
+Once the user is signed in:
+
+* `context.current_user` becomes available
+* The `current_profile` helper loads the user’s email and profile data
+* Your navigation checks whether `current_profile` exists
+* If it does:
+
+  * The **Logout** button is shown
+  * The welcome message appears
+* If it does not:
+
+  * The **Login** link is shown
+
+So this logic is driven entirely by the presence (or absence) of `context.current_user`.
+
+{% # TODO: Next page: log-in-log-out %}
