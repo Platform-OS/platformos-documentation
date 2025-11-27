@@ -1,5 +1,6 @@
-{% cache 'lsp-tags-json' %}
-{%- capture url -%}https://deidcfp1yn7c2.cloudfront.net/platform_docs/{{ context.version }}/tags.json{%- endcapture -%}
-{% assign data = url | download_file | parse_json: raw_text: true  %}
-{% render 'api/liquid/tags', data: data %}
+{% assign cache_key = context.version | append: '-lsp-tags-json' %}
+{% cache cache_key %}
+  {%- capture url -%}https://deidcfp1yn7c2.cloudfront.net/platform_docs/{{ context.version }}/tags.json{%- endcapture -%}
+  {% assign data = url | download_file | parse_json: raw_text: true  %}
+  {% render 'api/liquid/tags', data: data %}
 {% endcache %}
