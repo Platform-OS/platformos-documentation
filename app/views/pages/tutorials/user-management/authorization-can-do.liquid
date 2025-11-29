@@ -1,105 +1,15 @@
 ---
 metadata:
-  title: Roles and Permissions
+  title: Authorization commands: can_do
   description: TODO
 converter: markdown
 ---
 
-## Configure roles and permissions
-
-The module is fully functional as-is, but most projects will customize it.
-
-Because module files should never be edited directly, first let's create a local override in your own `app/` directory. The recommended first override is the **permissions configuration**, which defines RBAC roles and permissions for your application.
-
-Run: 
-
-<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
-mkdir -p app/modules/user/public/lib/queries/role_permissions
-cp modules/user/public/lib/queries/role_permissions/permissions.liquid \
-   app/modules/user/public/lib/queries/role_permissions/permissions.liquid
-</code></pre>
-
-This creates a safe override that allows you to define your own roles and permissions without modifying module files directly.
-
-{% include 'alert/tutorial', content: 'For additional setup details and configuration options, refer to the <a href="https://github.com/Platform-OS/pos-module-user?tab=readme-ov-file#setup" target="_blank">User Module README</a> on GitHub.' %}
-
-So it's an override. So this file is defined by the module, but you want to modify it.
-
-Instead of modifying the module file, which is not a good idea, because if you update the module, then you would remove, you know, all of your changes, right? That's why you want a separate file that is based and will be used instead of a module file, right? And here is a simple JSON.
-
-## Roles
-
-It's useful to also have anonymous user as a role because for things like session creation, so logging in, you don't want to authenticate that role to have permission to do it, right? Because they already authenticate or reset password patch, right? It shouldn't be accessible by a logged in user. So that's why we have this anonymous role to grant permission to pages that should be only available for a person who is not logged in. 
-
-And now, then you have authenticated role and this is any logged in user. So maybe, you know, you might have pages like dashboard, for example, where we display in the context of e-commerce, we display all of your orders, for example, right? Or shopping cart, something like that. And in order to view those pages, you need to be logged in. So you can already use, you know, this built-in role and don't have to create your own roles for every single feature. This is like the most common scenario.
-
-And finally, super admin. Super admin has access to everything, right? 
-That's the idea. But we will not be using super admin. We'll be adding our own role.
-
-So what you've done previously, which you might not remember, is that you copied the permission file. It was the first step in the setup. And this file is inside the app, modules, user public lib and permissions.
-
-So it's an override. So this file is defined by the module, but you want to modify it.
-
-Instead of modifying the module file, which is not a good idea, because if you update the module, then you would remove, you know, all of your changes, right? That's why you want a separate file that is based and will be used instead of a module file, right? And here is a simple JSON.
-
-#### app/modules/user/public/lib/queries/role_permissions/permissions.liquid
-
-{% raw %}
-```liquid
-{% parse_json data %}
-{
- {% if context.constants.USER_DEFAULT_ROLE != blank %}
- "{{ context.constants.USER_DEFAULT_ROLE }}": [],
- {% endif %}
- "anonymous": ["sessions.create", "users.register"],
- "authenticated": ["sessions.destroy","oauth.manage"],
- "admin": ["admin_pages.view", "admin.users.manage", "users.impersonate"],
- "member": ["profile.manage"],
- "superadmin": ["users.impersonate_superadmin"]
-}
-{% endparse_json %}
-
-
-{% return data %}
-```
-{% endraw %}
-
-Maybe it's not super simple because of this if statement and default role, but in general, it's a simple JSON where you list all permissions that each of the roles has. And you can create your own role. So here you can see that we have actually five roles.
-
-We have anonymous, we have authenticated, we have admin, and we have member, and then super admin. So we already have admin. If you wanted to add your role, let's say buyer or seller, for example, for e-commerce or, you know, I don't know, agency manager, something like that, you would just, yes, exactly.
-You would just create a new key, and then you would list all of the permissions that they would have.
-
-```json
- "anonymous": ["sessions.create", "users.register"],
- "authenticated": ["sessions.destroy","oauth.manage"],
- "admin": ["admin_pages.view", "admin.users.manage", "users.impersonate"],
- "member": ["profile.manage"],
- "superadmin": ["users.impersonate_superadmin"],
- "manager": [" "]
-}
-```
-
-So now you've added a new role, "manager".
-
-We can actually keep this manager, you know? Let's assume that this will be the role that we'll use. So what we want is to add permission for admin page, right?
-
-So we need to figure out a name for this permission, right? So the convention that we have, but it's not super unified and documented, but the first part of the permission is the resource you want to access, right? In this scenario, it would be admin. So we can call it admin and then dot, and after the dot comes what you want to be able to do with this admin, right? It can be view, it can be manage, it can be, I don't know, list, add, create, delete, for example. Like, it really is up to you to determine how granular the permission should be.
-Now, I don't really like to make really granular permissions because I assume that if you can create something, you can probably also edit it and delete it. It may not be the case for everything, but it's a good rule of thumb. So that's why you might often see things like manage.
-
-```json
- "manager": ["admin.view"]
-``` 
-
-Like, you have in admin, `admin.users.manage`, right? It means that you can ban users, block them, unblock them, you can edit them, you can change their passwords, you know? You can do everything. So this is like internal manage. So let's say that in admin, we just have admin.manage because we are admin.view. Let's say just admin.view because we want to, for now, have access to the admin panel itself. Yeah, there are admin pages. This comes from Peter's module, I believe, back in the day. You can also use the same, but I want you to create your own permission and your own user rule so you see how everything is sticked together.
-So let's stick with admin.view, for example. Or if you have a better idea, you can use your own. Perfect.
-So you can save it. OK, great. And now, if you go to admin page, views/pages/admin in the code.
-
-OK, now we need to somehow tell PlatformOS that, OK, only user with this permission should be able to do it. Now, right? And you do it for the code. But 
+THIS IS A DRAFT 
 
 ## Authorization commands: `can_do`
 
 OK, so now you can go to the documentation of the module and scroll down a little bit. Here is the code that is adding manually or using code roles to a user.
-
 
 https://github.com/Platform-OS/pos-module-user?tab=readme-ov-file#authorization-commands 
 
