@@ -1,9 +1,19 @@
 ---
 metadata:
   title: Roles and Permissions
-  description: TODO
+  description: Learn how platformOS handles roles, permissions, and profile-based authorization, and prepare your project for custom access control.
 converter: markdown
 ---
+
+Up to this point, you have implemented **authentication** in your example application: users can register, sign in, and sign out. Your layout now adapts automatically based on whether someone is logged in.
+
+The next step is **authorization**. This determines *what an authenticated user is allowed to do*. Before we protect the `/admin` page created earlier, we need to understand how platformOS manages permissions.
+
+The User module uses a flexible Role-Based Access Control (RBAC) system. It is based on three core concepts:
+
+* **Profiles** (each user has one)
+* **Roles** (assigned to profiles)
+* **Permissions** (bundled inside roles)
 
 ## Authentication vs. Authorization
 
@@ -11,24 +21,17 @@ Although the terms are often used together, authentication and authorization sol
 
 ### Authentication: *Who are you?*
 
-Authentication verifies the identity of the visitor. Whenever a user logs in, platformOS creates a session and exposes the authenticated user through:
+Authentication verifies identity. When a user signs in, platformOS stores their identity in:
 
 {% raw %} `{{ context.current_user }}` {% endraw %}
 
-This object exists only when a valid session cookie is present. This is what we used so far when creating the dynamic navigation.
+This object exists only when a valid session cookie is present. You used it earlier to display dynamic navigation.
 
 ### Authorization: *What are you allowed to do?*
 
-Authorization determines whether the authenticated user is allowed to perform a specific action.
+Authorization determines whether the authenticated user has permission to perform an action.
 
-{% include 'alert/tutorial', content: 'For detailed guidance on RBAC, complete with copy-pasteable examples, refer to the <a href="https://github.com/Platform-OS/pos-module-user?tab=readme-ov-file#rbac-authorization" target="_blank">RBAC Authorization section</a> of the User Module README.' %}
-
-In platformOS, authorization is based on:
-
-* **Profiles**
-* **Roles** assigned to those profiles
-* **Permissions** attached to those roles
-
+This object exists only when a valid session cookie is present. You used it earlier to display dynamic navigation.
 The User Module provides helpers such as:
 
 {% raw %}
@@ -37,9 +40,11 @@ function can = 'modules/user/helpers/can_do', requester: current_profile, do: 'a
 ```
 {% endraw %}
 
-This returns `true` or `false` depending on whether the profile has at least one role containing the requested permission.
+This command returns `true` or `false` depending on whether the current profile has at least one role that includes the permission `admin.view`.
 
-You’ll use these helpers shortly when protecting the `/admin` page.
+You will soon use this helper to protect the `/admin` page.
+
+{% include 'alert/tutorial', content: 'For detailed guidance on RBAC, complete with copy-paste examples, refer to the <a href="https://github.com/Platform-OS/pos-module-user?tab=readme-ov-file#rbac-authorization" target="_blank">RBAC Authorization section</a> of the User Module README.' %}
 
 ## Built-In Roles (provided by the User Module)
 
@@ -52,11 +57,16 @@ When you install the User Module, several roles already exist:
 | **`admin`**         | Includes permissions related to administrative management.  |
 | **`superadmin`**    | Has full access to everything. This role is typically reserved for high-level operations and should not be modified.                                                                                                                           |
 
-We won’t rely on the built-in admin role here; instead, you’ll create your own role to understand how the system works. For example, let's call it `manager`.
+
+For learning purposes, you will **not** use the built-in `admin` role.
+Instead, you’ll create your own custom role so you can see how RBAC works end-to-end.
+
 
 ## Preparing Your Own Permissions Override
 
-Because module files should never be edited directly, first let's create a local override in your own `app/` directory. The recommended first override is the **permissions configuration**, which defines RBAC roles and permissions for your application.
+The User Module defines default permissions internally. Since module files must **never** be edited directly, your project needs an override.
+
+Create it by copying the permissions file into your `app/` directory:
 
 Run: 
 
@@ -68,18 +78,18 @@ cp modules/user/public/lib/queries/role_permissions/permissions.liquid \
 
 This creates a safe override that allows you to define your own roles and permissions without modifying module files directly.
 
-modules/user/.../permissions.liquid
-app/modules/user/.../permissions.liquid
+From this point forward, platformOS will automatically prioritizes your `app` version of the permission file:
 
-When platformOS sees both files: …it automatically prioritizes your app version.
+```
+app/modules/user/.../permissions.liquid   ← your version (active)
+modules/user/.../permissions.liquid       ← module version (ignored)
+```
 
 {% include 'alert/tutorial', content: 'For additional setup details and configuration options, refer to the <a href="https://github.com/Platform-OS/pos-module-user?tab=readme-ov-file#setup" target="_blank">User Module README</a> on GitHub.' %}
 
 ## Understanding the Permissions File
 
-You should always edit the copy inside your app/ folder, not the one inside modules/.
-
-Now open this permissions file. It contains a JSON structure listing the permissions associated with each role:
+Open the newly copied file. It contains a JSON structure describing each role and its permissions.
 
 #### app/modules/user/public/lib/queries/role_permissions/permissions.liquid
 
@@ -103,27 +113,57 @@ Now open this permissions file. It contains a JSON structure listing the permiss
 ```
 {% endraw %}
 
-We have anonymous, we have authenticated, we have admin, and we have member, and then super admin. So we already have admin. If you wanted to add your role, let's say buyer or seller, for example, for e-commerce or, you know, I don't know, agency manager, something like that, you would just, yes, exactly.
-You would just create a new key, and then you would list all of the permissions that they would have.
+Each key is a **role name**, and each value is an array of **permissions**. You can now extend this file with your own custom roles.
 
-You can now extend this file with your own custom roles and permissions. So let's do that.
+You can now extend this file with your own custom roles and permissions.
 
-## Creating a Manager Role
+## Creating a Custom Role
 
-So we need to figure out a name for this permission, right? So the convention that we have, but it's not super unified and documented, but the first part of the permission is the resource you want to access, right? In this scenario, it would be admin. So we can call it admin and then dot, and after the dot comes what you want to be able to do with this admin, right? It can be view, it can be manage, it can be, I don't know, list, add, create, delete, for example. Like, it really is up to you to determine how granular the permission should be.
-Now, I don't really like to make really granular permissions because I assume that if you can create something, you can probably also edit it and delete it. It may not be the case for everything, but it's a good rule of thumb. So that's why you might often see things like manage.
+Let’s add a new role to your project. In this tutorial, we will create a simple role named **`manager`**. This role will eventually grant access to your custom admin page.
+
+{% include 'alert/tip', content: 'Always edit the permissions file inside your <code>app/</code> directory. Never modify the version inside <code>modules/</code>, as module updates will overwrite those changes.' %}
+
+### Permission Naming Convention
+
+Permissions follow a naming convention:
+
+```
+resource.action
+```
+<br>
+
+The resource identifies the part of the application being controlled.
+The action describes what the role is allowed to do with that resource.
+
+For example:
+
+* `users.register`
+* `admin.manage`
+* `contacts.list`
+* `orders.delete`
+
+You are free to choose the level of granularity. A common and practical guideline is: if a user can create something, they usually need to edit and delete it as well. This is why broader permissions such as `*.manage` appear frequently, while overly fine-grained permissions are less common.
+
+For this tutorial, you only need a single permission: `admin.view`. This will allow the role to access the admin page you created earlier.
+
+Open your overridden permissions file and add a new role:
 
 ```json
- "manager": ["admin.view"]
-``` 
+"manager": ["admin.view"]
+```
 
-Like, you have in admin, `admin.users.manage`, right? It means that you can ban users, block them, unblock them, you can edit them, you can change their passwords, you know? You can do everything. So this is like internal manage. So let's say that in admin, we just have admin.manage because we are admin.view. Let's say just admin.view because we want to, for now, have access to the admin panel itself. Yeah, there are admin pages. This comes from Peter's module, I believe, back in the day. You can also use the same, but I want you to create your own permission and your own user rule so you see how everything is sticked together.
-So let's stick with admin.view, for example. Or if you have a better idea, you can use your own. Perfect.
-So you can save it. OK, great. And now, if you go to admin page, views/pages/admin in the code.
+Your updated file might look like this:
 
-OK, now we need to somehow tell PlatformOS that, OK, only user with this permission should be able to do it. Now, right? And you do it for the code. But 
+#### app/modules/user/public/lib/queries/role_permissions/permissions.liquid
 
-```json
+{% raw %}
+
+```liquid
+{% parse_json data %}
+{
+ {% if context.constants.USER_DEFAULT_ROLE != blank %}
+ "{{ context.constants.USER_DEFAULT_ROLE }}": [],
+ {% endif %}
  "anonymous": ["sessions.create", "users.register"],
  "authenticated": ["sessions.destroy","oauth.manage"],
  "admin": ["admin_pages.view", "admin.users.manage", "users.impersonate"],
@@ -131,4 +171,12 @@ OK, now we need to somehow tell PlatformOS that, OK, only user with this permiss
  "superadmin": ["users.impersonate_superadmin"],
  "manager": ["admin.view"]
 }
+{% endparse_json %}
+
+{% return data %}
 ```
+{% endraw %}
+
+This means anyone with the **manager** role is allowed to perform the `admin.view` action. In the next step, you’ll update the page so that only users whose role includes `admin.view` are allowed to open it.
+
+{% render 'alert/next', content: 'Authorization with the can_do helper', url: '/tutorials/user-management/authorization-can-do' %}

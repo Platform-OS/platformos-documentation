@@ -1,23 +1,43 @@
 ---
 metadata:
-  title: Authorization commands: can_do
-  description: TODO
+  title: Authorization with the can_do helper
+  description: Learn how to protect pages and actions using permissions and authorization helpers from the User Module.
 converter: markdown
 ---
 
-THIS IS A DRAFT 
+In the previous chapter, you created a custom role (`manager`) and assigned it a permission (`admin.view`). The next step is to enforce this permission in code. This is where the User Module’s authorization helpers come in.
 
-## Authorization commands: `can_do`
+## Authorization with the `can_do` helper
 
-OK, so now you can go to the documentation of the module and scroll down a little bit. Here is the code that is adding manually or using code roles to a user.
+The User module provides a small family of helpers for checking whether a profile has permission to perform an action. They allow you to:
 
-https://github.com/Platform-OS/pos-module-user?tab=readme-ov-file#authorization-commands 
+* return a simple true/false response (`can_do`)
+* render a 403 page when access is denied (`can_do_or_unauthorized`)
+* redirect users who lack permission (`can_do_or_redirect`)
 
-And the magic happens within this can_do command. So there is a family of methods. can_do will just return you true or false if the requester, which would be your user, has access to his role that has any role with a permission, right? Because one user might have multiple roles, right? So I can be admin. I can be authenticated. I can be seller. I can be agency owner, for example, right? It's OK from the system perspective. I can have many roles.
+{% include 'alert/tutorial', content: 'For full examples and API references, see the <a href="https://github.com/Platform-OS/pos-module-user?tab=readme-ov-file#authorization-commands" target="_blank">Authorization Commands</a> section in the User Module README.' %}
 
-So at least one of those roles needs to have a permission. And can_do helper is the one to go. Now, typically, you also want to take an action in case a user doesn't have permission. And this is where those more detailed commands come into picture. canDo or unauthorized, it will render for or free error if you don't have the permission. canDo will just return false, but do nothing, right? can_do or unauthorized will actually break the flow of the website. So it will stop executing the website. And it will just display, it will render the partial name that you provided as an argument.
-And if you scroll down a little bit, you have also can_do or redirect command, right? So this is when you enter the website to which you do not have permission, it will stop the execution and it will redirect to you somewhere else. So, for example, if you want to access dashboards and you're not logged in, it should redirect you somewhere else.
-We have a utility, meaning that you might want to do something different from UX perspective, depending if someone is logged in or not. And you will see the parameters if you scroll to the right, I guess in this can_do or unauthorized, if you scroll right, you will see it's scroll right, not down top, but to the right. Because you only display a portion of the code. Yes, it is redirect anonymous to login flag at the end. It's above, here. Right?
+## Understanding the `can_do` helper
+
+The simplest authorization helper is `can_do`. It checks whether a profile has at least one role that includes the required permission:
+
+{% raw %}
+```liquid
+function current_profile = 'modules/user/helpers/current_profile'
+function can = 'modules/user/helpers/can_do', requester: current_profile, do: 'admin_pages.view'
+```
+{% endraw %}
+
+This function returns:
+
+* `true` — if the profile has a role with the `admin_pages.view` permission
+* `false` — otherwise
+
+In many cases, though, you will want more than a simple boolean value. When a user is not allowed to access a page, you usually want to stop the request, show an error, or redirect them. This is where you need the more advanced helpers.
+
+## Using `can_do_or_unauthorized`
+
+When you need more than a simple boolean check, the User Module provides helpers that enforce authorization rules directly in the page. The first of these is `can_do_or_unauthorized`.
 
 {% raw %}
 ```liquid
@@ -28,21 +48,50 @@ include 'modules/user/helpers/can_do_or_unauthorized', requester: current_profil
 ```
 {% endraw %}
 
-So, what this does is that it will render a 403 error page if you are unauthorized, unless you are not logged in. If you are not logged in, it will redirect you to the login form. You will be able to log in then. It will redirect you back to this website you tried to access. And only then, if you still don't have access, only then it will render 403. So, it's a nice UX, right? Because sometimes the browser locks you off or something like that. So, it's just a nice UX to redirect. I'm not logged in users to the login form sometimes.
+What this helper does:
 
-Okay. So, let's copy. Let's do the unauthorized. (copied from github readme)
+* If the user has the permission → the page continues rendering
+* If the user does **not** have permission → the request stops, and a **403 Forbidden** response is returned
+
+This makes it ideal for protecting full pages such as:
+
+* `/admin`
+* `/dashboard`
+* management interfaces
+* any page that should never be partially rendered to unauthorized users
+
+## Using `can_do_or_redirect`
+
+Sometimes you want to redirect the user instead of returning a 403. In those cases, `can_do_or_redirect` is the appropriate choice.
 
 {% raw %}
 ```liquid
 function current_profile = 'modules/user/helpers/current_profile'
 # platformos-check-disable ConvertIncludeToRender, UnreachableCode
-include 'modules/user/helpers/can_do_or_unauthorized', requester: current_profile, do: 'users.register', redirect_anonymous_to_login: true
+include 'modules/user/helpers/can_do_or_redirect', requester: current_profile, do: 'users.register', return_url: '/sessions/new'
 # platformos-check-enable ConvertIncludeToRender, UnreachableCode
 ```
 {% endraw %}
 
+This helper:
 
-Copy it to app/views/pages/admin/index.liquid
+* Checks permissions exactly like `can_do_or_unauthorized`.
+* If the user is **not allowed**, they are redirected to the URL you specify in `return_url`.
+
+This is especially useful when you want a smoother UX. For example:
+
+* Redirect non-logged-in users to the login page.
+* Redirect logged-in users to an informational page or homepage.
+
+## Protecting the `/admin` page with `can_do_or_unauthorized`
+
+Your `/admin` page currently loads for any authenticated user. Now you will enforce the `admin.view` permission so that only users with this permission can see its contents.
+
+Open your admin page: `app/views/pages/admin/index.liquid`.
+
+Add the following snippet at the very top:
+
+#### app/views/pages/admin/index.liquid
 {% raw %}
 ```liquid
 {% liquid
@@ -51,71 +100,58 @@ function current_profile = 'modules/user/helpers/current_profile'
 include 'modules/user/helpers/can_do_or_unauthorized', requester: current_profile, do: 'users.register', redirect_anonymous_to_login: true
 # platformos-check-enable ConvertIncludeToRender, UnreachableCode
 %}
-Hello
 ```
 {% endraw %}
 
-And type here, hello. Okay
+Then add your page content below it:
 
+{% raw %}
+```liquid
+This is a page only admins should see.
+```
+{% endraw %}
 
-And okay. So, what this method does? It's, first of all, it takes the current profile, right?
+This version still checks for the `users.register` permission, which is only an example from the [module documentation](https://github.com/Platform-OS/pos-module-user?tab=readme-ov-file#authorization-commands). Now you need to change `users.register` to what you previously set for the manager role: `admin.view`. 
 
-So, this is the helper. And behind the scenes, it uses this context.current.user that we discussed, right? You can control+click
-
-[code opens in VScode, modules/user/public/lib/helpers/current_profile.liquid]
-
-See? Okay, and what it does? It loads the current user in line number two. And if you click this, current, you will finally see this magical context.currentuser.id, right?
-
-[modules/user/public/lib/queries/user/current.liquid]
-
-So, in the second, in the sixth line. So, it provides the argument to the load, right? And if the user exists, it returns it. Otherwise, it returns null. And please go to the current_profile.liquid for one more second. All right, so we get the current user. But then we also get the current profile.
-
-And this is a bit unintuitive, I think. And also something that probably our channel partners will be confused. Because for simplicity, right, for simplicity, a lot of people assume that, you know, user is a user, and that's it, right? But in more complex applications, this doesn't work. And also, you cannot, you know, distinguish or you cannot do anything for not logged in or anonymous user, for example, right? So, we have two main concepts that comes with the user module.
-
-First is user. And anything related to user is related to authentication or authentication, really, right? So, are you who you say you are?
-That's the question. And profile, profile already is responsible for authorization. Because profile has roles. User doesn't have roles, okay? We change it. It used to have, but we move it to the profile. And profile also has an entity, like, you know, first name, last name, or a business name. Profile can be organization profile. So, instead of first name, last name, it might have a company name, for example. But both might have an address, right? So, that's a profile. Profile is like an abstraction layer over something to which you authenticate it, let's say, or to some kind of entity, like.
-Yes, the profile holds the data, the permissions, which applies to the user.
-Yeah. And the magic part is that in line number four, you can see that if you are not logged in user, which means user.id == null, then we actually create anonymous profile, right? So, it has no user association, because user is null. But it has roles. And this role is anonymous. That's how we assign this automatically, this role.
-
-Yes, so the profile is created automatically when you register, right? So, when you sign up, we create two things. First of all, we create user with your email and password. But also, we create a profile. In this simple scenario, you had to enter first name and last name on top of email and password, right? In the signup form that you filled yesterday. So, this first name and last name, those are stored inside the profile. Email as well, for caching purposes. Because maybe just for optimizations, we don't need to ‑‑ we just want to duplicate the email and store it in profile as well. And we create those default roles for a profile as well. Right.
-
-And can I view somewhere these profiles? Or, I mean, there is a database tied to it? Or is there a UI for it?
-
-
-
-So, let's go to GUI serve. And to localhost. Okay. And go to database. And you can see the module's user profile, right?
-
-[SCREENSHOT TODO]
-Database-profiles.png
-
-And this is your profile, right? We have C names, which is just for caching, for filtering, and so on. We have email, duplicate as I mentioned, first name, last name, and so on. And roles, as you can see. Right.
-
-Okay. And actually, that's good that you mentioned. Now, okay. So, we've added the code. Let's ‑‑ we know how this loading current profile works, right? So, let's get back to our admin page in the code.
-
+#### app/views/pages/admin/index.liquid
 {% raw %}
 ```liquid
 {% liquid
 function current_profile = 'modules/user/helpers/current_profile'
 # platformos-check-disable ConvertIncludeToRender, UnreachableCode
-include 'modules/user/helpers/can_do_or_unauthorized', requester: current_profile, do: 'users.register', redirect_anonymous_to_login: true
+include 'modules/user/helpers/can_do_or_unauthorized', requester: current_profile, do: 'admin.view', redirect_anonymous_to_login: true
 # platformos-check-enable ConvertIncludeToRender, UnreachableCode
 %}
-Hello
+This is a page only admins should see.
 ```
 {% endraw %}
 
+The `/admin` page now grants access to any profile that has **any role** containing `admin.view`.
 
-And now you have this permission number in line number four, right? So, you include can do or unauthorized. This is the built‑in function from the user module. It will prevent you from viewing a page to which you don't have access. The requester is current profile. That's correct, that you fetch it in line number two. And then the do means the permission that you want to check. So, you check if user has permission to do, you know, this permission.
-So, now you need to change users.register with the permission that you want to check, to what you previously set for the manager role:
- "manager": ["admin.view"]
+## Why this works
 
-Please note that you absolutely do not care about the role here. You are not checking if user has certain role because you don't ‑‑ you can care less, right? What you care about is that if at least one of those roles has this permission. And the user might have multiple roles and multiple roles might have this permission, right? So, you're not checking roles. You're checking permissions associated with those roles.
+You are checking **permissions**, not role names. This is intentional and important.
 
-That's why I'm confused because I expected to declare that it's a manager. So, I want to give a manager role to this current user. And you don't. Because, you know, you might have multiple roles to have the same permission. So, imagine, you know, you have, like, a super admin that has access to this page, right? And then you have a regular admin. And maybe you have, like, you know, a technical writer who should have access to the admin panel and should be able to read things but shouldn't delete anything, for example, right? But, you know, there will be ‑‑ so, you don't want to list roles with something.
-You just want to change permission. Because later, maybe you will create a new role, right? And instead of changing million places, right, imagine you have 100 pages in admin, right? And every single page you check for roles. And then you want to add a new role. And this new role should have access to all those 100 pages. Now, you would need to go through every single page of those hundreds and add another role. This is exactly what we want to avoid with this logic, right? Instead, you go to one permission file.
-You add a new role. You add permission. And everything works magically. Because this role now has the permission. So, that's the reason why you check permissions. You don't check roles. 
+* Users may have many roles
+* Multiple roles may share the same permissions
+* New roles can be introduced at any time without modifying your pages
 
-You can actually click this'modules/user/helpers/can_do_or_unauthorized' to see how it's implemented. Okay.
+A profile may have many roles, and multiple roles may grant the same permission. The authorization helpers rely entirely on permissions, not on role names.
 
-And here, behind the scenes, it uses the can do. Guys. And then you have requester roles in line number 21. So, this checks if you are not logged in. And redirect anonymity to login is true. We'll just redirect people to sessions/new, as you can see. Because it all happens inside the can. So, we first check if the user has permission to do something.
-So, if you go to this can do, so click line number 19 to enter the implementation here. Okay. Here you can see that we expect requester, which is our current profile, to have roles, right? And this is the name of the column in the database. And we expect these roles to be an array. If it's not an array, we will log an error that something is wrong. So, at minimum, it should be empty array, right? And this is the default. Okay. And then we just check those permissions, right? So, for every single role, this is in line number 27, we have a loop, right? For every single role within this requester roles, we check the permission file, which returns JSON, right?
+This is what makes RBAC flexible: if you later introduce a new role that should also access the admin area, you only need to update your `permissions.liquid` override - not every page in your application.
+
+## Test the Permission
+
+Now that you have protected the `/admin` page, it's time to  verify that the permission check works as expected.
+
+1. Log in with the test user you created earlier. This user only has the default `authenticated` role, so it should not have access to the admin area.
+2. Visit `/admin`. You should not see the content of the page. The page should not render. Instead, access will be blocked.
+3. Open your browser's developer tools and switch to the **Network** tab. Reload `/admin` and look for the request in the list. You should see a **403** response.
+
+<img loading="lazy" src="{{ 'images/tutorials/user-management/admin-403-network.png' | asset_url }}" alt="403 Forbidden response shown in the browser Network tab">
+
+Seeing the 403 confirms that your authorization rule is correctly preventing access.
+
+Next, you will assign the `manager` role to your profile and test the page again to confirm that users with the `admin.view` permission can access it.
+
+{% render 'alert/next', content: 'Assigning Roles to Users', url: '/tutorials/user-management/assign-roles' %}
