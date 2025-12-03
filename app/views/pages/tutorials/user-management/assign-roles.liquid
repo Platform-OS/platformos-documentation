@@ -5,8 +5,6 @@ metadata:
 converter: markdown
 ---
 
-# Assigning roles to users
-
 In the previous chapters, you created a custom role (`manager`) and defined a permission (`admin.view`) that grants access to your protected `/admin` page. The next step is to assign this role to a user so you can test the full authorization flow.
 
 platformOS gives you two ways to assign roles:
@@ -30,15 +28,16 @@ If you prefer a simple, visual way to manage roles during development, use the A
 
 Start by launching the GUI:
 
-```bash
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
 pos-cli gui serve staging
-```
+</code></pre>
 
 Open `http://localhost:3333` in your browser.
 
 Once the GUI loads, select **Database**.
-Here you’ll find the **profiles** table, which stores one profile for every user on your instance. Each profile contains an array of roles, and these roles determine what the user is allowed to do.
-Scroll horizontally until you see the **roles** column.
+
+Here you’ll find the **profiles** table, which stores one profile for every user on your instance. Each profile contains an array of roles, and these roles determine what the user is allowed to do. Scroll horizontally until you see the **roles** column.
+
 Find the profile that belongs to the user you created earlier, then click the pencil icon at the beginning of the row to edit it.
 
 <img loading="lazy" src="{{ 'images/tutorials/user-management/edit-user-role.png' | asset_url }}" alt="Editing a profile in the Admin GUI">
@@ -50,232 +49,117 @@ In the editor, locate the `roles` field and add the role `"manager"`.
 Select **Edit record** to save your changes.
 
 Now return to your instance and navigate to the protected `/admin` page.
+
 Because your profile now includes the `manager` role - which contains the `admin.view` permission - the page loads successfully. If you check the **Network** tab in your browser’s developer tools, you should see a normal **200 OK** response.
 
 <img loading="lazy" src="{{ 'images/tutorials/user-management/admin-visible.png' | asset_url }}" alt="Admin page visible after assigning the manager role">
 
 This confirms that the role assignment works and your permission check is functioning as expected.
 
-----
+## Assigning Roles through Liquid commands
 
-Start `pos-cli gui serve staging`.
+The User Module provides a set of Liquid **commands** that modify the roles stored on a profile. These commands work directly with profile IDs and update the `roles` array in the database.
 
-Go to localhost http://localhost:3333
+### Finding a profile ID
 
-Select Database.
+Before you can modify roles, you need to know which profile you are updating.
 
-Select the **profiles** table. Each user has exactly one profile. If you scroll right, you can observe that there is a roles column, which is array.
+Open `http://localhost:3333`, go to **Database**, and select the **profiles** table.
 
-Locate the profile belonging to your new user. Click on the pencil icon at the beginning of the row. 
+Each row represents one profile, and the **id** column contains the value you will use in your Liquid commands.
 
-edit-user-role.png
+<img loading="lazy" src="{{ 'images/tutorials/user-management/profile-id.png' | asset_url }}" alt="Viewing profile ID in GUI Serve">
 
-Edit the `roles` field and add `"manager"` to the list.
+In this example, the profile ID is `5`.
 
-add-manager-role.png
+Before running any command, remember the key principle: **Roles belong to profiles, not users.** So you must always reference the **profile ID**, not the user ID.
 
-Click on "Edit record" to save it.
+### Role management commands
 
-Now go back to your instance and navigate to the protected `/admin` page.
+The User Module provides three commands for updating the list of roles on a profile:
 
-You should see the content of the page now, and if you visit the Network tab in the developer tools, it should be a 200 response.
-admin-visible.png
+| Command    | Purpose                                           |
+| ---------- | ------------------------------------------------- |
+| **append** | Adds a new role while keeping the existing ones   |
+| **remove** | Removes one specific role                         |
+| **set**    | Replaces the entire list of roles with a new list |
 
+Each command must be wrapped in Liquid tags when executed inside the **Liquid Evaluator**.
 
+{% include 'alert/tutorial', content: 'You can find the full reference in the User Module documentation under <a href="https://github.com/Platform-OS/pos-module-user?tab=readme-ov-file#rbac-authorization" target="_blank">RBAC – Authorization</a>. It includes copy-pastable examples for appending, removing, and setting roles.' %}
 
+### Removing roles
 
+Let’s start by removing the `manager` role you previously added.
 
----- DRAFT ----
-
-## Create another account
-
-[SCREENSHOT] check the Gdocs
-
-If you click RBAC, there's a section somewhere. https://github.com/Platform-OS/pos-module-user?tab=readme-ov-file#rbac-authorization
-
-If you scroll down a little bit. Okay. Here we have code, right? How to set the role. Maybe I will show you I think it would be good to document both ways. What you've done is that you assign yourself super admin by going to GUI serve, finding your profile and manually selecting it. So, what you want to another way how to do it is to copy line of code. Let's copy the first one. Function result with the app entry.
-
-function result = 'modules/user/commands/profiles/roles/append', id: 1, role: "admin"
-
-Just copy it. Go to GUI serve. That's to Liquid evaluator. And copy this line of code here. But you need to wrap it with the Liquid tag. 
-
-[SCREENSHOT] check the Gdocs
-
-Now, before you execute it, go new tab, go to GUI serve to the database. Okay. To profiles.
-
-[SCREENSHOT]
-
-This is profile ID. Now, when you create your first object in the database, user ID is one and profile ID is also one. But it doesn't mean it will always be the case. Actually, it will almost never be the case. What we want is the profile ID here, which is this. Not the user ID. Because roles is associated with the profile. And we have this column role super admin that you manually edited.
-
-Now, if you submit the code that we've just written in the previous tab. Yep. Execute it. It's already there. So, you reload the page. You are just not displaying anything.  
-
-[SCREENSHOT]
-
-That's why you can't see any result. If you go and reload the page. Okay.
-
-You clicked twice. Right? So, now you can see that you have admin roles. Probably the system should prevent from adding the same role if it already exists. But no. Don't remove it.
-
-Now, go to the documentation. And instead of append, use remove. So, just the last word.
-
-[COPY CODE FROM DOCUMENTATION]
-
-[SCREENSHOT]
-
-It's just the last word. You can just manually type it. Everything else is the same.
-
-It's just the last word instead of append in the path is remove. Okay. And sorry, before you click, have you clicked it? You can also display the results.  In liquid text. So, two curly braces  and then result. {{ result }} 
-
-And here's the result.
-
-[SCREENSHOT] check the Gdocs
-
-So, now when y ou reload the page. Sorry, not this page, but the database. You'll see that it's removed. You have three commands. You can append a role. Whatever roles you have, keep them. But append a new one. Remove. So, just remove one role to ensure that it's not there. 
-
-And then you have also set. In which you have to create the array of all the roles that the user should have. And whatever they have currently, everything is removed and replaced with the roles that you provide. 
-
-[SCREENSHOT] check the Gdocs
-
-Now you can save it. You can see that it's changed. Now you can reload the database. So, you can imagine that those commands are super useful if you want to build your own custom navigation or maybe you want to create your own custom roles. And this is how you assign those roles through the code. So, maybe in the background or when someone pays something like a subscription fee, they become a subscriber or, you know, I don't know, paid user, whatever. And they will have access to certain areas that non-paid users have. And then after 30 days, if they don't extend membership, we remove the role, for example. Right? So, they stop getting access. So, that's a possible use case.
-
-
-
-----
-
-
-
-[SCRENSHOT: admin-403-network.png]
-
-It means that you did right.
-Now let's assign a manager role to your user, and let's check if you can visit the page with the righ permission.
-
-
-
-3. **Assign the `manager` role** to your profile via GUI Serve under *Database → profiles*.
-4. Reload `/admin`.
-   The page now loads successfully.
-
-<img loading="lazy" src="{{ 'images/tutorials/user-management/database-profiles.png' | asset_url }}" alt="Viewing profiles and roles in GUI Serve">
-
-This confirms that your RBAC configuration and authorization check work correctly.
-
-
-## Users and Profiles:
-
-When you start working with authentication and authorization in platformOS, you encounter two concepts that look similar at first glance: **users** and **profiles**. You might expect a “user” to simply contain everything related to identity and permissions. In more complex applications, this approach breaks down, so the User Module separates these responsibilities into two distinct objects.
-
-Understanding this distinction is important because authorization in platformOS is driven entirely by **profiles**, not users.
-
-### What a *User* Represents
-
-A **user** answers one question: **“Who is this person?”**
-
-Users handle **authentication**. They store only what is required to verify identity:
-
-* Email
-* Password (stored securely as a bcrypt hash)
-* Basic session-related metadata
-
-User records never store permissions or roles. Their job is simply to authenticate the visitor and allow the system to establish a session.
-
-When a user logs in successfully, platformOS exposes them as:
+Start with copying this command from the documentation:
 
 {% raw %}
-
 ```liquid
-{{ context.current_user }}
+function result = 'modules/user/commands/profiles/roles/remove', id: 1, role: "admin"
 ```
-
 {% endraw %}
 
-If the value exists, the visitor has an authenticated session. If it is blank, they are anonymous.
+You will run it through the **Liquid Evaluator**.
 
----
+Open the Admin GUI, select the **Liquid Evaluator**, and paste the command into the editor.
 
-### What a *Profile* Represents
+<img loading="lazy" src="{{ 'images/tutorials/user-management/liquid-eval.png' | asset_url }}" alt="Liquid Evaluator interface in GUI Serve">
 
-A **profile** answers a different question: **“What is this person allowed to do?”**
-
-While the user object handles authentication, the **profile** handles authorization. A profile contains:
-
-* Display information (first name, last name, company name, etc.)
-* Cached fields like email
-* A list of roles
-* Any custom attributes your application may require
-
-Profiles belong to users, but every action related to permissions runs through the profile, not the user. This means:
-
-* **Users do not have roles**
-* **Profiles have roles**
-* **Roles contain permissions**
-
-This structure allows a single user to switch between different profiles (for example, personal vs. organizational) in more advanced applications.
-
-### Anonymous Profiles
-
-Even visitors who are *not logged in* still have a profile.
-
-When `context.current_user` is `null`, the User Module automatically creates an **anonymous profile** behind the scenes. This profile:
-
-* has no associated user record
-* contains a single role: `anonymous`
-* is used to check permissions for public pages
-
-This is why pages such as `/sessions/new` or `/users/new` can be restricted to anonymous users only.
-
----
-
-## Why Authorization Works on Permissions, Not Role Names
-
-When protecting the `/admin` page, you added the following permission for your new role:
-
-```json
-"manager": ["admin.view"]
-```
-
-Later, in your Liquid code, you checked for the permission:
+Before execution:
+* wrap it in Liquid tags
+* modify the **id** to match your profile (for example, `5`)
+* modify the **role** to `"manager"`
 
 {% raw %}
-
 ```liquid
-do: 'admin.view'
-```
-
+{% function result = 'modules/user/commands/profiles/roles/remove', id: 5, role: "manager" %}
+ ```
 {% endraw %}
 
-You did **not** check for the role name `manager`.
+Execute the command. 
 
-This is intentional.
+<img loading="lazy" src="{{ 'images/tutorials/user-management/code-remove-execute.png' | asset_url }}" alt="Executing Liquid command to update roles">
 
-A user may have multiple roles. Different roles may grant the same permission. Your application should not need to know *which* role granted the permission—only that the permission exists.
-
-If platformOS required checking for a role name, every new role added in the future would require updating every protected page. Instead, RBAC works like this:
-
-* A profile may have many roles
-* Each role may contain many permissions
-* A permission check succeeds if **any** role grants it
-
-This keeps your authorization system flexible and maintainable as your application grows.
+You will not see any success message, which is expected.
 
 
----- DRAFT ----
+Now return to **Database → profiles** and check the record again. The `manager` role should be gone.
 
-And this is a bit unintuitive, I think. And also something that probably our channel partners will be confused. Because for simplicity, right, for simplicity, a lot of people assume that, you know, user is a user, and that's it, right? But in more complex applications, this doesn't work. And also, you cannot, you know, distinguish or you cannot do anything for not logged in or anonymous user, for example, right? So, we have two main concepts that comes with the user module.
-
-First is user. And anything related to user is related to authentication or authentication, really, right? So, are you who you say you are?
-That's the question. And profile, profile already is responsible for authorization. Because profile has roles. User doesn't have roles, okay? We change it. It used to have, but we move it to the profile. And profile also has an entity, like, you know, first name, last name, or a business name. Profile can be organization profile. So, instead of first name, last name, it might have a company name, for example. But both might have an address, right? So, that's a profile. Profile is like an abstraction layer over something to which you authenticate it, let's say, or to some kind of entity, like.
-Yes, the profile holds the data, the permissions, which applies to the user.
-Yeah. And the magic part is that in line number four, you can see that if you are not logged in user, which means user.id == null, then we actually create anonymous profile, right? So, it has no user association, because user is null. But it has roles. And this role is anonymous. That's how we assign this automatically, this role.
-
-Yes, so the profile is created automatically when you register, right? So, when you sign up, we create two things. First of all, we create user with your email and password. But also, we create a profile. In this simple scenario, you had to enter first name and last name on top of email and password, right? In the signup form that you filled yesterday. So, this first name and last name, those are stored inside the profile. Email as well, for caching purposes. Because maybe just for optimizations, we don't need to ‑‑ we just want to duplicate the email and store it in profile as well. And we create those default roles for a profile as well. Right.
-
-And can I view somewhere these profiles? Or, I mean, there is a database tied to it? Or is there a UI for it?
+<img loading="lazy" src="{{ 'images/tutorials/user-management/role-removed-database.png' | asset_url }}" alt="Manager role removed from profile">
 
 
-So, let's go to GUI serve. And to localhost. Okay. And go to database. And you can see the module's user profile, right?
+### Adding a role with `append` and displaying output
 
-[SCREENSHOT TODO]
-Database-profiles.png
+The `append` command is useful when you want to add one more role while keeping whatever roles the profile already has.
 
-And this is your profile, right? We have C names, which is just for caching, for filtering, and so on. We have email, duplicate as I mentioned, first name, last name, and so on. And roles, as you can see. Right.
+Run the following in the Liquid Evaluator:
 
-Okay. And actually, that's good that you mentioned. Now, okay. So, we've added the code. Let's ‑‑ we know how this loading current profile works, right? So, let's get back to our admin page in the code.
+{% raw %}
+```liquid
+{% function result = 'modules/user/commands/profiles/roles/append', id: 5, role: "manager" %}
+{{ result }} 
+```
+{% endraw %}
+
+Make sure to include {% raw %} `{{ result }}` {% endraw %} at the end. This prints the command output so you can confirm that the update was applied.
+
+<img loading="lazy" src="{{ 'images/tutorials/user-management/append-show-result.png' | asset_url }}" alt="Showing the append command result in the Liquid Evaluator">
+
+After running the command, return to **Database → profiles**. The `"manager"` role should now appear in the `roles` array.
+
+## Summary 
+
+You have now successfully removed and re-added roles using the Admin GUI and Liquid commands. The latter approach is especially helpful when you want to manage roles programmatically rather than through the Admin GUI.
+
+You can use these role-management commands in many real-world scenarios, for example:
+
+* granting access when a user upgrades to a paid plan
+* assigning temporary permissions during onboarding
+* updating roles after a purchase or subscription renewal
+* removing access when a membership expires
+* automating role changes in background jobs or workflows
+
+Because roles are stored on the profile, and permissions are attached to those roles, your application can react instantly to these updates.
+
+{% render 'alert/next', content: 'Displaying the Admin link based on permissions', url: '/tutorials/user-management/display-admin-permission' %}
