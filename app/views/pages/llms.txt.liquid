@@ -1,0 +1,62 @@
+---
+metadata:
+  skip_llms: true
+---
+# platformOS Documentation
+
+> The official documentation portal for platformOS, covering API reference, tutorials, best practices and developer guides.
+
+This manifest provides a structured index of the most important publicly available documentation pages. Links generally point to Markdown versions of the docs when available, making it easier for LLMs and AI agents to fetch clean, parseable content. Use this list to navigate or build context for code generation, summarization, or question-answering tasks.
+
+{%- liquid
+ assign sections = '[]' | parse_json
+ graphql g = 'llms_pages'
+ for page in g.pages.results
+   if page.metadata.title == blank or page.metadata.description == blank
+     continue
+   endif
+   if page.metadata.title contains 'DEPRECATED' or page.metadata.description contains 'DEPRECATED' or page.slug contains 'deprecated'
+     continue
+   endif
+
+   assign url = 'https://' | append: context.location.host | append: '/' | append: page.slug | append: '.md'
+   assign slug_components = page.slug | split: '/'
+   if slug_components.size == 1
+     assign subsections = '[]' | parse_json
+     assign section_name = slug_components[0]
+     assign section = '{}' | parse_json | hash_merge: subsections: subsections, title: page.metadata.title, description: page.metadata.description, name: section_name, url: url
+     assign sections = sections | array_add: section
+
+     assign subsection_name = null
+   elsif slug_components[0] == section_name and slug_components.size == 2
+     assign subsubsections = '[]' | parse_json
+     assign subsection_name = slug_components[1]
+     assign subsection = '{}' | parse_json | hash_merge: subsubsections: subsubsections, title: page.metadata.title, description: page.metadata.description, name: subsection_name, url: url
+     hash_assign section['subsections'] = section['subsections'] | array_add: subsection
+   elsif slug_components[0] == section_name and slug_components[1] == subsection_name
+     assign subsubsection = '{}' | parse_json | hash_merge: title: page.metadata.title, description: page.metadata.description, url: url
+     hash_assign subsection['subsubsections'] = subsection['subsubsections'] | array_add: subsubsection
+   elsif slug_components[0] == section_name and subsection_name == null
+     assign subsubsection = '{}' | parse_json | hash_merge: title: page.metadata.title, description: page.metadata.description, url: url
+     hash_assign section['subsections'] = section['subsections'] | array_add: subsubsection
+   endif
+
+ endfor
+-%}
+
+{% for section in sections %}
+
+## {{ section.title }}
+
+> {{ section.description }}
+
+{% for subsection in section.subsections %}{% if subsection.subsubsections == blank or subsection.subsubsections == empty %}- [{{ subsection.title }}]({{ subsection.url }}): (markdown) {{ subsection.description }}
+{%- else -%}
+### {{ subsection.title }}
+
+> {{ subsection.description }}
+{% for subsubsection in subsection.subsubsections %}- [{{ subsubsection.title }}]({{ subsubsection.url }}): (markdown) {{ subsubsection.description }}
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endfor %}
