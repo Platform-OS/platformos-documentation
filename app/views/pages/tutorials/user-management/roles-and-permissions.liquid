@@ -52,10 +52,10 @@ When you install the User Module, several roles already exist:
 
 | **Role**            | **Description**                                                                                                                                                                                                                                |
 | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **`anonymous`**     | Assigned automatically when no user is logged in. Used to grant access to pages such as `/sessions/new` (login), `/users/new` (registration), and `/passwords/reset` (request reset link). These pages should not require a logged-in session. |
-| **`authenticated`** | Assigned to every logged-in user. Useful for pages like a dashboard, profile management, or anything that should only be visible after login.                                                                                                  |
-| **`admin`**         | Includes permissions related to administrative management.  |
-| **`superadmin`**    | Has full access to everything. This role is typically reserved for high-level operations and should not be modified.                                                                                                                           |
+| **`anonymous`**     | Assigned automatically when no user is logged in - every not-logged-in user will always have this role automatically added to their `roles` through `modules/user/current_profile` helper, and hence will be granted permissions assigned to this role. Mainly used to ensure that only non-logged-in users can access pages such as `/sessions/new` (login), `/users/new` (registration), and `/passwords/reset` (request reset link).
+| **`authenticated`** | Assigned automatically to every logged-in user - every logged-in user will always have this role automatically added to their `roles` through `modules/user/current_profile` helper, and hence will be granted permissions assigned to this role. Useful for pages like a dashboard, profile management, or anything that should only be visible after login.                                                                                                  |
+| **`admin`**         | Includes permissions related to administrative management. This role is not automatically added. |
+| **`superadmin`**    | Has full access to everything. This role is typically reserved for high-level operations and should not be modified. This role is not automatically added.                                                                                                                          |
 
 
 For learning purposes, you will **not** use the built-in `admin` role.
@@ -64,9 +64,9 @@ Instead, you’ll create your own custom role so you can see how RBAC works end-
 
 ## Preparing Your Own Permissions Override
 
-The User Module defines default permissions internally. Since module files must **never** be edited directly, your project needs an override.
+The User Module defines default permissions internally. Since module files must **never** be edited directly, you would need to [overwrite a module file](/developer-guide/modules/modules#overwriting-a-module-file).
 
-Create it by copying the permissions file into your `app/` directory:
+Create it by copying the permissions file from the module into your `app/` directory:
 
 Run: 
 
@@ -76,7 +76,7 @@ cp modules/user/public/lib/queries/role_permissions/permissions.liquid \
    app/modules/user/public/lib/queries/role_permissions/permissions.liquid
 </code></pre>
 
-This creates a safe override that allows you to define your own roles and permissions without modifying module files directly.
+This creates an overwrite that allows you to define your own roles and permissions without modifying module files directly. The most important thing when working with overwrites is that the path of the overwrite should be the same as the module file that we are overwriting, but in the `app/` directly instead of `modules`.
 
 From this point forward, platformOS will automatically prioritizes your `app` version of the permission file:
 
@@ -113,7 +113,7 @@ Open the newly copied file. It contains a JSON structure describing each role an
 ```
 {% endraw %}
 
-Each key is a **role name**, and each value is an array of **permissions**. You can now extend this file with your own custom roles.
+Each key is a **role name**, and each value is an array of **permissions**, which are just strings. You can now extend this file with your own custom roles.
 
 You can now extend this file with your own custom roles and permissions.
 
@@ -125,14 +125,14 @@ Let’s add a new role to your project. In this tutorial, we will create a simpl
 
 ### Permission Naming Convention
 
-Permissions follow a naming convention:
+We suggest that your permissions follow a naming convention:
 
 ```
 resource.action
 ```
 <br>
 
-The resource identifies the part of the application being controlled.
+The resource identifies the part of the application being controlled. It is the same `resource` that we recommend to use as a [naming convention for naming your endpoints](/developer-guide/modules/platformos-modules#resourceful-route-naming-convention)
 The action describes what the role is allowed to do with that resource.
 
 For example:

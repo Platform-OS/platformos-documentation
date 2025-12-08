@@ -11,7 +11,7 @@ In the previous chapter, you created a custom role (`manager`) and assigned it a
 
 The User module provides a small family of helpers for checking whether a profile has permission to perform an action. They allow you to:
 
-* return a simple true/false response (`can_do`)
+* return a simple true/false response (`can_do`) - useful for controlling whether something should be a part of the UI, for example, to not display a link or a button to a functionality to which a currently logged-in user has no access.
 * render a 403 page when access is denied (`can_do_or_unauthorized`)
 * redirect users who lack permission (`can_do_or_redirect`)
 
@@ -53,7 +53,7 @@ What this helper does:
 * If the user has the permission → the page continues rendering
 * If the user does **not** have permission → the request stops, and a **403 Forbidden** response is returned
 
-This makes it ideal for protecting full pages such as:
+This makes it ideal for protecting pages such as:
 
 * `/admin`
 * `/dashboard`
@@ -62,7 +62,7 @@ This makes it ideal for protecting full pages such as:
 
 ## Using `can_do_or_redirect`
 
-Sometimes you want to redirect the user instead of returning a 403. In those cases, `can_do_or_redirect` is the appropriate choice.
+Sometimes you want to redirect the user instead of returning a 403 - for example, if the user can gain access to the restricted page through buying a subscription or a membership. In those cases, `can_do_or_redirect` is the appropriate choice.
 
 {% raw %}
 ```liquid
@@ -81,7 +81,7 @@ This helper:
 This is especially useful when you want a smoother UX. For example:
 
 * Redirect non-logged-in users to the login page.
-* Redirect logged-in users to an informational page or homepage.
+* Redirect logged-in users to a buy subscription/membership page
 
 ## Protecting the `/admin` page with `can_do_or_unauthorized`
 

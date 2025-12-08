@@ -10,7 +10,7 @@ In the previous chapters, you created a custom role (`manager`) and defined a pe
 platformOS gives you two ways to assign roles:
 
 * through **GUI Serve**, using the built-in database editor  
-* through **Liquid commands**, using the User Module’s role management APIs
+* through **GraphQL**, using the User Module’s role management APIs
 
 Both approaches lead to the same result. This chapter walks you through each method.
 
@@ -36,9 +36,9 @@ Open `http://localhost:3333` in your browser.
 
 Once the GUI loads, select **Database**.
 
-Here you’ll find the **profiles** table, which stores one profile for every user on your instance. Each profile contains an array of roles, and these roles determine what the user is allowed to do. Scroll horizontally until you see the **roles** column.
+Here you’ll find the **modules/user/profiles** table, which stores one profile for every user on your instance. Each profile contains an array of roles, and these roles determine what the user is allowed to do. Scroll horizontally until you see the **roles** column.
 
-Find the profile that belongs to the user you created earlier, then click the pencil icon at the beginning of the row to edit it.
+Find the profile that belongs to the user you created earlier (`user_id` should match the ID of the `User` - you can check User emails and ids at locahost:3333/users), then click the pencil icon at the beginning of the row to edit it.
 
 <img loading="lazy" src="{{ 'images/tutorials/user-management/edit-user-role.png' | asset_url }}" alt="Editing a profile in the Admin GUI">
 
@@ -56,7 +56,7 @@ Because your profile now includes the `manager` role - which contains the `admin
 
 This confirms that the role assignment works and your permission check is functioning as expected.
 
-## Assigning Roles through Liquid commands
+## Assigning Roles through GraphQL invoked via Liquid commands
 
 The User Module provides a set of Liquid **commands** that modify the roles stored on a profile. These commands work directly with profile IDs and update the `roles` array in the database.
 
@@ -80,9 +80,9 @@ The User Module provides three commands for updating the list of roles on a prof
 
 | Command    | Purpose                                           |
 | ---------- | ------------------------------------------------- |
-| **append** | Adds a new role while keeping the existing ones   |
-| **remove** | Removes one specific role                         |
-| **set**    | Replaces the entire list of roles with a new list |
+| **modules/user/commands/profiles/roles/append** | Adds a new role while keeping the existing ones   |
+| **modules/user/commands/profiles/roles/remove** | Removes one specific role                         |
+| **modules/user/commands/profiles/roles/set**    | Replaces the entire list of roles with a new list |
 
 Each command must be wrapped in Liquid tags when executed inside the **Liquid Evaluator**.
 
@@ -110,10 +110,12 @@ Before execution:
 * wrap it in Liquid tags
 * modify the **id** to match your profile (for example, `5`)
 * modify the **role** to `"manager"`
+* print the result object using the {% raw %} `{{ }}` {% endraw %}
 
 {% raw %}
 ```liquid
 {% function result = 'modules/user/commands/profiles/roles/remove', id: 5, role: "manager" %}
+{{ result }}
  ```
 {% endraw %}
 
