@@ -30,6 +30,7 @@ metadata:
 |translation_keys_to_ignore                             |[]|Allows to list translation keys which will not be updated/delete on sync/deploy. It is most useful if you would like to change translations using UI and will not reflect it in your codebase. Translations will still be created if not defined.
 |validations_for_graph_queries                       |false|When the feature is enabled, platformOS performs additional consistency validations for specific GraphQL queries, with a primary focus on mutations. These validations are designed to verify that the developer's queries express a valid and well-defined intent. By enforcing these consistency checks, platformOS helps maintain data integrity and prevents unintended or ambiguous mutations from being executed. This feature serves as an additional layer of protection, ensuring that the queries submitted by developers are semantically correct and align with the intended behavior of the application.
 |websockets_require_csrf_token                                   |true|If disabled, the websocket connection will not check the CSRF token. By keeping this flag as `true`, connections to websocket will require CSRF token to be included in the parameters, increasing the security of your application.
+|high_performance_sql_filtering                                   |false|If enabled, filtering on custom properties will use more efficient SQL queries. Default is false to maintain backward compatibility, but enabling it can lead to significant performance improvements for applications that heavily utilize custom property filtering.
 
 
 Example `app/config.yml` file with recommended values:
@@ -48,6 +49,7 @@ slug_exact_match: true
 sync_assets: true
 sync_translations: true
 websockets_require_csrf_token: true
+high_performance_sql_filtering: true
 ---
 ```
 
