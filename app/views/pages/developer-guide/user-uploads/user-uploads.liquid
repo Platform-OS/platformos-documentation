@@ -59,7 +59,7 @@ properties:
 ```liquid
 {% graphql data %}
   mutation presign {
-    property_upload_presigned_url(table: "documents", property_name: "resume") {
+    property_upload_presigned_url(table: "documents", property_name: "resume", include_content_type: true) {
       upload_url
       upload_url_payload
     }
@@ -69,10 +69,19 @@ properties:
   {% for field in data.property_upload_presigned_url.upload_url_payload %}
     <input type="hidden" name="{{ field[0] }}" value='{{ field[1] }}'>
   {% endfor %}
+  <input type="hidden" name="Content-Type" value="application/pdf">
   <button type="submit">Upload</button>
 </form>
 ```
 {% endraw %}
+
+One additional thing that you would probably want to send with the payload is the `Content-Type` of the uploaded file which is show in the example above as a hardcoded value of `application/pdf`.
+
+Usually, you would like to update this information dynamically in the front-end after use chooses the file, so some custom JavaScript is required depending on your implementation.
+
+It is possible to skip the `Content-Type` but this will result in a default value of `application/octet-stream`.
+
+
 
 3. S3: Return URL to file
   After submitting such form, you will be redirected to an XML response (204 status code) with the URL to the file on the storage servers. Otherwise it will return status 4xx and the reason for the error in XML format.
@@ -118,6 +127,8 @@ query get_documents {
 
 If you want your users to be able to upload images and automatically generate multiple versions of it (for example a thumbnail) you can achieve it by using the `versions` option of property upload.
 Read more on how to [implement image upload with version processing using Direct S3 upload and Uppy](/developer-guide/user-uploads/uploading-files-directly-amazons3-using-uppy).
+
+Additionaly, when `versions` option is set, it is possible to skip setting the `Content-Version` metadata as mentioned above. The file Content-Type will be assumed to be an image and the image processing software will set it automatically.
 
 ## FAQ
 
