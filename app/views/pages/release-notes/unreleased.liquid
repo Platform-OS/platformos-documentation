@@ -11,7 +11,8 @@ metadata:
 
 <h4 class="release-note release-note__new">NEW</h4>
 
-* high_performance_sql_filtering new instance configuration flag; if enabled, filtering on custom properties will use more efficient SQL queries. Default is false to maintain backward compatibility, but enabling it can lead to significant performance improvements for applications that heavily utilize custom property filtering.
+* added a new flag to `app/config.yml` - `high_performance_sql_filtering`. If enabled, filtering on properties will use more efficient SQL queries behind the scenes. Default is false to maintain backward compatibility, but enabling it can lead to significant performance improvements for applications that heavily utilize property filtering. The optimization and backwards incompatibility is caused by removing extra casting to text, which in many scenarios is not necessary and prevents a default index on the column from being used.
+* added support for `.md` format - if a Page uses `markdown` converter, the content can now be accessible through /:slug.md endpoint instead of a `html` one. The `md` is the preferred format for AI agents that consume content from Pages, as it is easier to parse and process compared to HTML.
 <!--
 * Added option to sort by distance (at the top level) when using geo queries; the sort is optional and can be used alongside other sort criteria; also, the sort can be specified in ascending or descending order.
 -->
