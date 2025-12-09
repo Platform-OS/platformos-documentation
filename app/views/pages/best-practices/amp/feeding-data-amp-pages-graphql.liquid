@@ -44,13 +44,13 @@ layout: application
 [...]
 <amp-list src="api/products.json" layout="responsive">
   <template type="amp-mustache">
-    <a href="/product-details{{ "/{% raw" }} %}{% raw %}{{ slug }}{% endraw %}{{ "{% endraw" }} %}">
+    <a href="/product-details/{% raw %}{{ slug }}{% endraw %}">
       <div>
-        <amp-img src="{{ "{% raw" }} %}{% raw %}{{ image }}{% endraw %}{{ "{% endraw" }} %}" width="300" layout="responsive" noloading></amp-img>
-        <h2>{{ "{% raw" }} %}{% raw %}{{ name }}{% endraw %}{{ "{% endraw" }} %}</h2>
-        {{ "{% raw" }} %}{% raw %}{{ description }}{% endraw %}{{ "{% endraw" }} %}
+        <amp-img src="{% raw %}{{ image }}{% endraw %}" width="300" layout="responsive" noloading></amp-img>
+        <h2>{% raw %}{{ name }}{% endraw %}</h2>
+        {% raw %}{{ description }}{% endraw %}
       </div>
-      <div>{{ "${% raw" }} %}{% raw %}{{ price }}{% endraw %}{{ "{% endraw" }} %}</div>
+      <div>${% raw %}{{ price }}{% endraw %}</div>
     </a>
   </template>
 </amp-list>
@@ -68,7 +68,7 @@ Include the AMP dependencies in the layout file `app/views/layouts/application.l
 
 * The data source for `<amp-list>` is `products.json`.
 * `amp-mustache` enables the 'mustache' (double curly braces) templating syntax.
-* The `{{ "{% raw" }} %}` tag instructs the liquid preprocessor not to interpret the liquid tags and leaves them to AMP/mustache to process.
+* The {% raw %}`{% raw %}`{% endraw %} block tag instructs the liquid preprocessor not to interpret liquid code and leaves them to AMP/mustache to process.
 
 
 ### Step 2: Create JSON endpoint

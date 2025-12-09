@@ -65,22 +65,26 @@ properties:
     }
   }
 {% endgraphql %}
-<form action="{{ data.property_upload_presigned_url.upload_url }}">
+<form action="{{ data.property_upload_presigned_url.upload_url }}" enctype="multipart/form-data" method="post">
   {% for field in data.property_upload_presigned_url.upload_url_payload %}
     <input type="hidden" name="{{ field[0] }}" value='{{ field[1] }}'>
   {% endfor %}
+  <button type="submit">Upload</button>
 </form>
 ```
 {% endraw %}
 
 3. S3: Return URL to file
-  S3 will return status 204 and an XML response with the URL to the file on S3, if everything went well. Otherwise it will return status 4xx and the reason for the error in XML format.
+  After submitting such form, you will be redirected to an XML response (204 status code) with the URL to the file on the storage servers. Otherwise it will return status 4xx and the reason for the error in XML format.
 
-4. Browser: POST URL to application
-  Until now, platformOS doesn't know anything about the file that the user has been uploading. This step is meant to change that. Using any method you wish, you need to send the URL to the uploaded file to the application server. Because `file` is just an URL (string) property in a record, you update that property just like any other.
+  Please note that for optimal user experience, you would likely want to do this using an `fetch` request from JavaScript, so that the whole upload process stays invisible to the end user.
 
-5. Application: Save URL to the database
-  After getting the URL to a file from the browser, usually you want this URL to be saved in a record for future reference. You store it the same way as any other string - if the property type is `upload`, we will do all the magic behind the scenes:
+  Be mindful that until now, platformOS doesn't know anything about the file that the user has uploaded. It exists only on the storage servers.
+
+4. Application: Save URL to the database
+  After getting the uploaded file URL you would likely want to store it in the database for future reference.
+
+  You store it the same way as any other string:
 
 ```graphql
 mutation record_create($direct_url: String!) {
@@ -94,6 +98,7 @@ mutation record_create($direct_url: String!) {
   }
 }
 ```
+If, in the schema, you've set the property type to be `upload` then platformOS will update the field automatically after that. It will change the string you've provided to a JSON object containing additional information except the file URL. Additionally, for images, it can generate variants and URLs to those will also be automatically added to the record.
 
 When you need the URL to the file, as always, you need to use GraphQL and query for the record containing the property to get it using `property_upload`, for example:
 
@@ -101,7 +106,9 @@ When you need the URL to the file, as always, you need to use GraphQL and query 
 query get_documents {
   records(per_page: 20 filter: { table: { value: "documents" } }) {
     results {
-      my_upload: property_upload(name: "resume") { url }
+      my_upload: property_upload(name: "resume") {
+        url
+      }
     }
   }
 }

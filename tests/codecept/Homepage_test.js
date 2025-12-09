@@ -1,6 +1,6 @@
 Feature('Homepage');
 
-Scenario('There are no liquid errors', ({ I, checkLiquidErrors }) => {
+Scenario('There are no liquid errors', ({ I }) => {
   I.amOnPage('/');
   I.checkLiquidErrors();
 });

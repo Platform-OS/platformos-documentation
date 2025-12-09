@@ -2,6 +2,18 @@
   <a href="/get-started">Introduction</a>
 </li>
 
+<li class="{% if cp == '/get-started/platformos-overview' %}active{% endif %}">
+  <a href="/get-started/platformos-overview">What is platformOS?</a>
+</li>
+
+<li class="{% if cp == '/get-started/your-pos-toolkit' %}active{% endif %}">
+  <a href="/get-started/your-pos-toolkit">Your platformOS Toolkit</a>
+</li>
+
+<li class="{% if cp == '/get-started/why-liquid' %}active{% endif %}">
+  <a href="/get-started/why-liquid">Why Liquid, GraphQL and YAML?</a>
+</li>
+
 <li class="{% if cp contains '/get-started/installation-and-configuration' %}active{% endif %}">
   <a href="/get-started/installation-and-configuration/">Installation and Configuration</a>
 
@@ -112,7 +124,12 @@
 </li>
 
 <li class="{% if cp == '/get-started/contact-us-tutorial/' %}active{% endif %}">
-  <a href="/get-started/contact-us-tutorial/">Introduction</a>
+  <a href="/get-started/contact-us-tutorial/">Introduction & Quick Start Guide</a>
+  <ul class="submenu">
+    {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/#functionalities-a-contact-us-form-needs", text: "Functionalities a Contact Us form needs" %}
+    {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/#working-with-tutorial-checkpoints", text: "Working with Tutorial Checkpoints (Code Example)" %}
+    {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/#quick-start-guide", text: "Quick Start Guide" %}
+  </ul>
 </li>
 
 <li class="{% if cp contains '/contact-us-tutorial/building-the-ui' %}active{% endif %}">
@@ -324,5 +341,21 @@
     {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/testing-contact-create-command#introduction-to-platformos-tests-module", text: "Introduction to platformOS Tests Module" %}
     {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/testing-contact-create-command#automatic-testing", text: "Automatic testing" %}
     {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/testing-contact-create-command#summary", text: "Summary" %}
+  </ul>
+</li>
+
+<li class="{% if cp contains '/contact-us-tutorial/using-common-styling' %}active{% endif %}">
+  <a href="/get-started/contact-us-tutorial/using-common-styling">Styling the Form</a>
+  <ul class="submenu">
+    {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/using-common-styling#introduction-to-the-common-styling-module", text: "Introduction to the Common Styling Module" %}
+    {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/using-common-styling#installing-the-module", text: "Installing the Module" %}
+    {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/using-common-styling#explore-the-built-in-style-guide", text: "Explore the Built-in Style-Guide" %}
+    {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/using-common-styling#activating-common-styling", text: "Activating Common Styling" %}
+    {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/using-common-styling#creating-a-layout", text: "Creating a Layout" %}
+    {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/using-common-styling#starting-point-a-plain-form", text: "Starting Point: A Plain Form" %}
+    {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/using-common-styling#styling-the-heading", text: "Styling the Heading" %}
+    {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/using-common-styling#styling-the-form", text: "Styling the Form" %}
+    {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/using-common-styling#final-form-with-common-styling", text: "Final Form with Common Styling" %}
+    {% include "shared/nav/link", href: "/get-started/contact-us-tutorial/using-common-styling#customizing-the-look-with-css", text: "Customizing the Look with CSS" %}
   </ul>
 </li>

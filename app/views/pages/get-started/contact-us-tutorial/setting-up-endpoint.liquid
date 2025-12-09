@@ -8,6 +8,7 @@ converter: markdown
 {% # TODO %}
 
 In the previous step, we created the schema definition file `contact.yml` and the GraphQL mutation file `create.graphql`, and we confirmed that data can be successfully saved using the mutation. At this stage, your `app\` directory structure should look like this:
+
 ```text
 app
 ├── graphql
@@ -81,17 +82,20 @@ Hello {"authenticity_token":"rPROtKzFREOlK2WE89sNi0SOySB65jawjwWdxiEsKrDWK-kP6Sb
 In the response, you will see `authenticity_token` and `contact` objects, which include the email and body provided in the form.
 This response comes from {% raw %}`{{ context.params }}`{% endraw %} in our `create.liquid`.
 
-## Understanding files structure
-Lets stop here to explain how in PlatformOS, file names and their structure aren't random — they follow a convention-based approach to connect features automatically without extra configuration.
+## Understanding file structure
+
+Let's stop here to explain how in PlatformOS, file names and their structure aren't random — they follow a convention-based approach to connect features automatically without extra configuration.
 Here's a breakdown of why the file names must correspond:
 
 ### Convention Over Configuration
+
 Instead of writing lots of configuration files to connect parts of your app, PlatformOS assumes standard locations and names work together automatically.
 PlatformOS knows that a POST request to the URL `/contacts/create` should be handled by the file `app/views/pages/contacts/create.liquid` because the file path matches the URL and the file contains method: post in its frontmatter.
 Similarly, the GraphQL mutation finds the contact data structure because table: **contact** in `create.graphql` matches the filename `app/schema/contact.yml`.
 You don't need a separate model mapping file.
 
 ### Automatic Variable Mapping
+
 PlatformOS automatically takes incoming data (like from form submissions) and makes it available as variables within your code.
 When the form in `index.html.liquid` is submitted, the fields named **contact[email]** and **contact[body]** are sent. In `create.liquid`, this data automatically becomes available in the `{% raw %}{{ context.params }}{% endraw %}` object.
 This allows you to easily access **context.params.contact.email** and **context.params.contact.body** to pass them to the GraphQL mutation `create.graphql` which expects **$email** and **$body** variables.
@@ -102,6 +106,7 @@ The existence of `app/views/pages/contacts/create.liquid` automatically creates 
 There's no need for a separate routes file; the directory structure is the routing configuration.
 
 ### Directory Structure Overview
+
 Let's take a look at our current directory structure:
 ```text
 app
@@ -118,6 +123,7 @@ app
 ```
 
 ### How These Files Work Together
+
 * #### `index.html.liquid` – **Contact Form**
 
 This file renders the initial contact form.
@@ -127,7 +133,7 @@ This file renders the initial contact form.
 It defines `action="/contacts/create"` and `method="post"`.
 
 This tells the browser that when the form is submitted, it should send a POST request to the URL `/contacts/create`.
-It also defines two input fields for the email and message (body)
+It also defines two input fields for the email and message (body):
 ```liquid
 <input type="text" name="contact[email]" id="email">
 <textarea name="contact[body]"></textarea>
@@ -144,7 +150,7 @@ The URL path `/contacts/create` maps directly to the file path `app/views/pages/
 
 PlatformOS checks `create.liquid` to see if it's configured to handle POST requests.
 The frontmatter ```--- method: post ---``` explicitly tells that this file is the handler for POST requests to its corresponding URL `/contacts/create`.
-The method: post in the frontmatter matches the ```method="post"``` from the HTML form. If the method didn't match (e.g., the form sent a GET request), this file wouldn't be executed for that request.
+The `method: post` in the frontmatter matches the `method="post"` from the HTML form. If the method didn't match (e.g., the form sent a GET request), this file wouldn't be executed for that request.
 When a POST request is made, the form fields are automatically passed into the `{% raw %}{{ context.params }}{% endraw %}` global object.
 Then, the GraphQL mutation defined in `graphql/contacts/create.graphql` is explicitly triggered using variables extracted from this object.
 {% raw %}
@@ -170,12 +176,12 @@ This contact name is used elsewhere (specifically in the GraphQL mutation) to re
 This file contains the logic to create a new contact record in the database.
 The location `graphql/contacts/create.graphql` logically groups this operation under "contacts" and the action "create". While not strictly enforced by routing like the `views/pages` files, it's the standard convention to easily find the relevant mutation.
 The mutation itself explicitly references the **contact** table and its data structure defined in `contact.yml`.
-It expects variables ($email, $body) and maps them to properties (name: "email", name: "body"), which correspond to the properties defined in `contact.yml`.
-The form field names **contact[email]** and **contact[body]** in `index.html.liquid` use a convention (model_name[property_name]).
-When submitted they are automatically mapped to the variables expected by GraphQL mutation.
+It expects variables (`$email`, `$body`) and maps them to properties (`name: "email"`, `name: "body"`), which correspond to the properties defined in `contact.yml`.
+The form field names **contact[email]** and **contact[body]** in `index.html.liquid` use a convention (`model_name[property_name]`).
+When submitted, they are automatically mapped to the variables expected by the GraphQL mutation.
 
 
-### Summary:
+### Summary
 
 | Component            | File Name            | Why It Matters                               |
 |----------------------|----------------------|-----------------------------------------------|

@@ -1,0 +1,51 @@
+
+
+## Create another account
+
+[SCREENSHOT] check the Gdocs
+
+If you click RBAC, there's a section somewhere. https://github.com/Platform-OS/pos-module-user?tab=readme-ov-file#rbac-authorization
+
+If you scroll down a little bit. Okay. Here we have code, right? How to set the role. Maybe I will show you I think it would be good to document both ways. What you've done is that you assign yourself super admin by going to GUI serve, finding your profile and manually selecting it. So, what you want to another way how to do it is to copy line of code. Let's copy the first one. Function result with the app entry.
+
+function result = 'modules/user/commands/profiles/roles/append', id: 1, role: "admin"
+
+Just copy it. Go to GUI serve. That's to Liquid evaluator. And copy this line of code here. But you need to wrap it with the Liquid tag. 
+
+[SCREENSHOT] check the Gdocs
+
+Now, before you execute it, go new tab, go to GUI serve to the database. Okay. To profiles.
+
+[SCREENSHOT]
+
+This is profile ID. Now, when you create your first object in the database, user ID is one and profile ID is also one. But it doesn't mean it will always be the case. Actually, it will almost never be the case. What we want is the profile ID here, which is this. Not the user ID. Because roles is associated with the profile. And we have this column role super admin that you manually edited.
+
+Now, if you submit the code that we've just written in the previous tab. Yep. Execute it. It's already there. So, you reload the page. You are just not displaying anything.  
+
+[SCREENSHOT]
+
+That's why you can't see any result. If you go and reload the page. Okay.
+
+You clicked twice. Right? So, now you can see that you have admin roles. Probably the system should prevent from adding the same role if it already exists. But no. Don't remove it.
+
+Now, go to the documentation. And instead of append, use remove. So, just the last word.
+
+[COPY CODE FROM DOCUMENTATION]
+
+[SCREENSHOT]
+
+It's just the last word. You can just manually type it. Everything else is the same.
+
+It's just the last word instead of append in the path is remove. Okay. And sorry, before you click, have you clicked it? You can also display the results.  In liquid text. So, two curly braces  and then result. {{ result }} 
+
+And here's the result.
+
+[SCREENSHOT] check the Gdocs
+
+So, now when y ou reload the page. Sorry, not this page, but the database. You'll see that it's removed. You have three commands. You can append a role. Whatever roles you have, keep them. But append a new one. Remove. So, just remove one role to ensure that it's not there. 
+
+And then you have also set. In which you have to create the array of all the roles that the user should have. And whatever they have currently, everything is removed and replaced with the roles that you provide. 
+
+[SCREENSHOT] check the Gdocs
+
+Now you can save it. You can see that it's changed. Now you can reload the database. So, you can imagine that those commands are super useful if you want to build your own custom navigation or maybe you want to create your own custom roles. And this is how you assign those roles through the code. So, maybe in the background or when someone pays something like a subscription fee, they become a subscriber or, you know, I don't know, paid user, whatever. And they will have access to certain areas that non-paid users have. And then after 30 days, if they don't extend membership, we remove the role, for example. Right? So, they stop getting access. So, that's a possible use case.
