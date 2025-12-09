@@ -511,15 +511,15 @@ Modify the `build.liquid` code as follows:
 {% raw %}
 ```liquid
 {% parse_json contact %}
-  {
-    "email": {{ object.email | strip | downcase | json }},
-    "body": {{ object.body | json }}
-  }
-{% endparse_json %}
+    {
+      "email": {{ object.email | strip | downcase | json }},
+      "body": {{ object.body | json }}
+    }
+  {% endparse_json %}
 
-{% liquid
-  return contact
-%}
+  {% liquid
+    return contact
+  %}
 ```
 {% endraw %}
 
