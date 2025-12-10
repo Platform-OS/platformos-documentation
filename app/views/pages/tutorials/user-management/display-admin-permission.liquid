@@ -137,6 +137,86 @@ With this in place, the navigation should behave as you expect:
 * Logged-in users without permission see a simplified menu
 * Visitors who are not logged in never see administrative options
 
+Final application.liquid content:
+
+#### app/views/layouts/application.liquid
+
+{% raw %}
+
+```liquid
+<!DOCTYPE html>
+<html class="pos-app">
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="authenticity_token" name="csrf-param">
+    <meta content="{{ form_authenticity_token }}" name="csrf-token">
+      {% comment %} default platformOS provided styles {% endcomment %}
+      {% render 'modules/common-styling/init' %}
+      <link rel="stylesheet" href="{{ 'modules/user/style/pos-user-form.css' | asset_url }}">
+      {% comment %} custom styles specific for this app, some overwrite the defaults {% endcomment %}
+      <link rel="stylesheet" href="{{ 'style/app.css' | asset_url }}">
+
+      <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=yes">
+
+      <script>
+        /* namespace */
+        if(typeof window.pos !== 'object'){
+          window.pos = {};
+          window.pos.modules = {};
+          window.pos.translations = {};
+        }
+      </script>
+
+    <title>Example User Management Application | platformOS</title>
+
+    <link rel="stylesheet" href="{{ 'styles/app.css' | asset_url }}">
+  </head>
+
+  <body>
+{% liquid
+ if context.current_user 
+   assign current_profile = context.exports.current_profile
+   unless current_profile
+     function current_profile = 'modules/user/helpers/current_profile'
+   endunless
+   function can_view_admin = 'modules/user/helpers/can_do', requester: current_profile, do: 'admin.view'
+ endif
+%}
+<nav>
+  <a href="/">Home</a>
+  <ul>
+
+       {% if current_profile %}
+        <li>Welcome, {{ current_profile.email }}</li>
+        {% if can_view_admin %}
+          <li><a href="/admin">Admin</a></li>
+        {% endif %}
+        <form method="post" action="/sessions">
+          <input type="hidden" name="authenticity_token" value="{{ context.authenticity_token }}">
+          <input type="hidden" name="_method" value="delete">
+          <button class="pos-button" type="submit">Logout</button>
+        </form>
+      {% else %}
+        <li><a href="/sessions/new">Login</a></li>
+      {% endif %}
+    
+  </ul>
+</nav>
+
+    {{ content_for_layout }}
+
+{% liquid
+  render 'modules/common-styling/toasts'
+%}  
+
+    <script src="{{ 'scripts/app.js' | asset_url }}"></script>
+
+  </body>
+</html>
+```
+{% endraw %}
 
 ## Test the navigation
 

@@ -34,7 +34,6 @@ Create the directory for your project and initialize an empty platformOS project
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
 mkdir user-module-test-00
 cd user-module-test-00
-pos-cli init
 </code></pre>
 
 This folder will become your project root.
@@ -49,24 +48,22 @@ pos-cli env add --url https://user-module-test-00.staging.oregon.platform-os.com
 
 A browser window will open prompting you to authorize the connection. For further explanation, see [Authenticate your environment](/get-started/working-with-the-code-and-files/#authenticate-your-environment).
 
-## Step 4: Deploy the empty project
+## Step 4: Install the User Module
 
-Upload the base project to your instance:
-
-<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
-pos-cli deploy staging
-</code></pre>
-
-## Step 5: Install the User Module
-
-Next, install and download the User Module:
+To work with authentication and profiles, your application needs the User Module. Install and download it with:
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
 pos-cli modules install user
 pos-cli modules download user
 </code></pre>
 
-Then deploy your project again:
+As this is a fresh project folder, you may be prompted to create the standard `app/` directory structure. Confirm when asked, for example:
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+The directory /Users/alexpozsar/platformos/user-module-test-02/app does not exist. Do you want to create it? (y/n):y
+</code></pre>
+
+After the module is installed, deploy your project:
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
 pos-cli deploy staging
@@ -74,7 +71,33 @@ pos-cli deploy staging
 
 At this point, your instance includes all necessary endpoints: login, registration, password reset, two-factor authentication, OAuth handlers, and more. You will connect these pages to your application later through navigation.
 
-### Step 6: Configure Common Styling
+## Step 5: Create the necessary folders
+
+Before adding your own pages, set up the basic directory structure your application will use.
+In platformOS, page templates live inside the `app/views/pages` directory, so start by creating it:
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+mkdir -p app/views/pages
+mkdir -p app/views/layouts
+</code></pre>
+
+The `-p` flag allows you to create nested directories in one step.
+
+{% include 'alert/tip', content: 'Learn more about the recommended directory layout in the <a href="/developer-guide/platformos-workflow/directory-structure">Directory Structure</a> section of the Developer Guide.' %}
+
+You can have multiple files with the same path across modules and overrides. Clear structure helps you stay oriented and makes it easier to understand how your application is composed.
+
+### Create the layout file
+
+Next, create the default layout that all pages will use:
+
+```
+app/views/layouts/application.liquid
+```
+
+You will add navigation and UI elements here as you progress through the tutorial.
+
+## Step 6: Configure Common Styling
 
 The [Common Styling](https://github.com/Platform-OS/pos-module-common-styling) module is installed automatically as a dependency of the User Module. However, for its design system to take effect, you need to **activate and configure it** in your main layout.
 
@@ -134,7 +157,9 @@ Save and deploy (or sync) the changes.
 
 ## Step 7: Create the Homepage
 
-Now that the environment is set up, update the homepage of your project. The file already exists, so open it and replace its content with the following:
+Now that the environment is set up, create the homepage of your project: `app/views/pages/index.liquid`
+
+Add the following content:
 
 #### app/views/pages/index.liquid
 
@@ -149,7 +174,7 @@ Now that the environment is set up, update the homepage of your project. The fil
 </p>
 ```
 
-Deploy your changes and reload your instance to confirm the page loads correctly. If Common Styling is configured correctly, the heading and text should display using the default typography and spacing:
+Deploy/sync your changes and reload your instance to confirm the page loads correctly. If Common Styling is configured correctly, the heading and text should display using the default typography and spacing:
 
 <img loading="lazy" src="{{ 'images/tutorials/user-management/home-page-first.png' | asset_url }}" alt="Homepage of the example platformOS User Management Application">
 
