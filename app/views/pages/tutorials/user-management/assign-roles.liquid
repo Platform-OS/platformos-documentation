@@ -1,0 +1,167 @@
+---
+metadata:
+  title: Assigning Roles to Users
+  description: Learn how to grant roles to user profiles so they can access protected pages and perform authorized actions.
+converter: markdown
+---
+
+In the previous chapters, you created a custom role (`manager`) and defined a permission (`admin.view`) that grants access to your protected `/admin` page. The next step is to assign this role to a user so you can test the full authorization flow.
+
+platformOS gives you two ways to assign roles:
+
+* through **GUI Serve**, using the built-in database editor  
+* through **GraphQL**, using the User Module’s role management APIs
+
+Both approaches lead to the same result. This chapter walks you through each method.
+
+## Creating another account
+
+Create a new account using your `/users/new` registration form.
+
+<img loading="lazy" src="{{ 'images/tutorials/user-management/create-manager-user.png' | asset_url }}" alt="Creating a second account for testing permissions">
+
+Once the new user is registered, you can assign roles to their profile.
+
+## Assigning roles through the Admin GUI
+
+If you prefer a simple, visual way to manage roles during development, use the Admin GUI. This is often the easiest method when you want to test permissions quickly without writing any Liquid commands.
+
+Start by launching the GUI:
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+pos-cli gui serve staging
+</code></pre>
+
+Open `http://localhost:3333` in your browser.
+
+Once the GUI loads, select **Database**.
+
+Here you’ll find the **modules/user/profiles** table, which stores one profile for every user on your instance. Each profile contains an array of roles, and these roles determine what the user is allowed to do. Scroll horizontally until you see the **roles** column.
+
+Find the profile that belongs to the user you created earlier (`user_id` should match the ID of the `User` - you can check User emails and ids at localhost:3333/users), then click the pencil icon at the beginning of the row to edit it.
+
+<img loading="lazy" src="{{ 'images/tutorials/user-management/edit-user-role.png' | asset_url }}" alt="Editing a profile in the Admin GUI">
+
+In the editor, locate the `roles` field and add the role `"manager"`.
+
+<img loading="lazy" src="{{ 'images/tutorials/user-management/add-manager-role.png' | asset_url }}" alt="Adding the manager role to a profile">
+
+Select **Edit record** to save your changes.
+
+Now return to your instance and navigate to the protected `/admin` page.
+
+Because your profile now includes the `manager` role - which contains the `admin.view` permission - the page loads successfully. If you check the **Network** tab in your browser’s developer tools, you should see a normal **200 OK** response.
+
+<img loading="lazy" src="{{ 'images/tutorials/user-management/admin-visible.png' | asset_url }}" alt="Admin page visible after assigning the manager role">
+
+This confirms that the role assignment works and your permission check is functioning as expected.
+
+## Assigning Roles through GraphQL invoked via Liquid commands
+
+The User Module provides a set of Liquid **commands** that modify the roles stored on a profile. These commands work directly with profile IDs and update the `roles` array in the database.
+
+### Finding a profile ID
+
+Before you can modify roles, you need to know which profile you are updating.
+
+Open `http://localhost:3333`, go to **Database**, and select the **profiles** table.
+
+Each row represents one profile, and the **id** column contains the value you will use in your Liquid commands.
+
+<img loading="lazy" src="{{ 'images/tutorials/user-management/profile-id.png' | asset_url }}" alt="Viewing profile ID in GUI Serve">
+
+In this example, the profile ID is `5`.
+
+Before running any command, remember the key principle: **Roles belong to profiles, not users.** So you must always reference the **profile ID**, not the user ID.
+
+### Role management commands
+
+The User Module provides three commands for updating the list of roles on a profile:
+
+| Command    | Purpose                                           |
+| ---------- | ------------------------------------------------- |
+| **modules/user/commands/profiles/roles/append** | Adds a new role while keeping the existing ones   |
+| **modules/user/commands/profiles/roles/remove** | Removes one specific role                         |
+| **modules/user/commands/profiles/roles/set**    | Replaces the entire list of roles with a new list |
+
+Each command must be wrapped in Liquid tags when executed inside the **Liquid Evaluator**.
+
+{% include 'alert/tutorial', content: 'You can find the full reference in the User Module documentation under <a href="https://github.com/Platform-OS/pos-module-user?tab=readme-ov-file#rbac-authorization" target="_blank">RBAC – Authorization</a>. It includes copy-pastable examples for appending, removing, and setting roles.' %}
+
+### Removing roles
+
+Let’s start by removing the `manager` role you previously added.
+
+Start with copying this command from the documentation:
+
+{% raw %}
+```liquid
+function result = 'modules/user/commands/profiles/roles/remove', id: 1, role: "admin"
+```
+{% endraw %}
+
+You will run it through the **Liquid Evaluator**.
+
+Open the Admin GUI, select the **Liquid Evaluator**, and paste the command into the editor.
+
+<img loading="lazy" src="{{ 'images/tutorials/user-management/liquid-eval.png' | asset_url }}" alt="Liquid Evaluator interface in GUI Serve">
+
+Before execution:
+* wrap it in Liquid tags
+* modify the **id** to match your profile (for example, `5`)
+* modify the **role** to `"manager"`
+* print the result object using the {% raw %} `{{ }}` {% endraw %}
+
+{% raw %}
+```liquid
+{% function result = 'modules/user/commands/profiles/roles/remove', id: 5, role: "manager" %}
+{{ result }}
+ ```
+{% endraw %}
+
+Execute the command. 
+
+<img loading="lazy" src="{{ 'images/tutorials/user-management/code-remove-execute.png' | asset_url }}" alt="Executing Liquid command to update roles">
+
+You will not see any success message, which is expected.
+
+
+Now return to **Database → profiles** and check the record again. The `manager` role should be gone.
+
+<img loading="lazy" src="{{ 'images/tutorials/user-management/role-removed-database.png' | asset_url }}" alt="Manager role removed from profile">
+
+
+### Adding a role with `append` and displaying output
+
+The `append` command is useful when you want to add one more role while keeping whatever roles the profile already has.
+
+Run the following in the Liquid Evaluator:
+
+{% raw %}
+```liquid
+{% function result = 'modules/user/commands/profiles/roles/append', id: 5, role: "manager" %}
+{{ result }} 
+```
+{% endraw %}
+
+Make sure to include {% raw %} `{{ result }}` {% endraw %} at the end. This prints the command output so you can confirm that the update was applied.
+
+<img loading="lazy" src="{{ 'images/tutorials/user-management/append-show-result.png' | asset_url }}" alt="Showing the append command result in the Liquid Evaluator">
+
+After running the command, return to **Database → profiles**. The `"manager"` role should now appear in the `roles` array.
+
+## Summary 
+
+You have now successfully removed and re-added roles using the Admin GUI and Liquid commands. The latter approach is especially helpful when you want to manage roles programmatically rather than through the Admin GUI.
+
+You can use these role-management commands in many real-world scenarios, for example:
+
+* granting access when a user upgrades to a paid plan
+* assigning temporary permissions during onboarding
+* updating roles after a purchase or subscription renewal
+* removing access when a membership expires
+* automating role changes in background jobs or workflows
+
+Because roles are stored on the profile, and permissions are attached to those roles, your application can react instantly to these updates.
+
+{% render 'alert/next', content: 'Displaying the Admin link based on permissions', url: '/tutorials/user-management/display-admin-permission' %}

@@ -1,0 +1,157 @@
+---
+metadata:
+  title: Authorization with the can_do helper
+  description: Learn how to protect pages and actions using permissions and authorization helpers from the User Module.
+converter: markdown
+---
+
+In the previous chapter, you created a custom role (`manager`) and assigned it a permission (`admin.view`). The next step is to enforce this permission in code. This is where the User Module’s authorization helpers come in.
+
+## Authorization with the `can_do` helper
+
+The User module provides a small family of helpers for checking whether a profile has permission to perform an action. They allow you to:
+
+* return a simple true/false response (`can_do`) - useful for controlling whether something should be a part of the UI, for example, to not display a link or a button to a functionality to which a currently logged-in user has no access.
+* render a 403 page when access is denied (`can_do_or_unauthorized`)
+* redirect users who lack permission (`can_do_or_redirect`)
+
+{% include 'alert/tutorial', content: 'For full examples and API references, see the <a href="https://github.com/Platform-OS/pos-module-user?tab=readme-ov-file#authorization-commands" target="_blank">Authorization Commands</a> section in the User Module README.' %}
+
+## Understanding the `can_do` helper
+
+The simplest authorization helper is `can_do`. It checks whether a profile has at least one role that includes the required permission:
+
+{% raw %}
+```liquid
+function current_profile = 'modules/user/helpers/current_profile'
+function can = 'modules/user/helpers/can_do', requester: current_profile, do: 'admin_pages.view'
+```
+{% endraw %}
+
+This function returns:
+
+* `true` — if the profile has a role with the `admin_pages.view` permission
+* `false` — otherwise
+
+In many cases, though, you will want more than a simple boolean value. When a user is not allowed to access a page, you usually want to stop the request, show an error, or redirect them. This is where you need the more advanced helpers.
+
+## Using `can_do_or_unauthorized`
+
+When you need more than a simple boolean check, the User Module provides helpers that enforce authorization rules directly in the page. The first of these is `can_do_or_unauthorized`.
+
+{% raw %}
+```liquid
+function current_profile = 'modules/user/helpers/current_profile'
+# platformos-check-disable ConvertIncludeToRender, UnreachableCode
+include 'modules/user/helpers/can_do_or_unauthorized', requester: current_profile, do: 'users.register', redirect_anonymous_to_login: true
+# platformos-check-enable ConvertIncludeToRender, UnreachableCode
+```
+{% endraw %}
+
+What this helper does:
+
+* If the user has the permission → the page continues rendering
+* If the user does **not** have permission → the request stops, and a **403 Forbidden** response is returned
+
+This makes it ideal for protecting pages such as:
+
+* `/admin`
+* `/dashboard`
+* management interfaces
+* any page that should never be partially rendered to unauthorized users
+
+## Using `can_do_or_redirect`
+
+Sometimes you want to redirect the user instead of returning a 403 - for example, if the user can gain access to the restricted page through buying a subscription or a membership. In those cases, `can_do_or_redirect` is the appropriate choice.
+
+{% raw %}
+```liquid
+function current_profile = 'modules/user/helpers/current_profile'
+# platformos-check-disable ConvertIncludeToRender, UnreachableCode
+include 'modules/user/helpers/can_do_or_redirect', requester: current_profile, do: 'users.register', return_url: '/sessions/new'
+# platformos-check-enable ConvertIncludeToRender, UnreachableCode
+```
+{% endraw %}
+
+This helper:
+
+* Checks permissions exactly like `can_do_or_unauthorized`.
+* If the user is **not allowed**, they are redirected to the URL you specify in `return_url`.
+
+This is especially useful when you want a smoother UX. For example:
+
+* Redirect non-logged-in users to the login page.
+* Redirect logged-in users to a buy subscription/membership page
+
+## Protecting the `/admin` page with `can_do_or_unauthorized`
+
+Your `/admin` page currently loads for any authenticated user. Now you will enforce the `admin.view` permission so that only users with this permission can see its contents.
+
+Open your admin page: `app/views/pages/admin/index.liquid`.
+
+Add the following snippet at the very top:
+
+#### app/views/pages/admin/index.liquid
+{% raw %}
+```liquid
+{% liquid
+function current_profile = 'modules/user/helpers/current_profile'
+# platformos-check-disable ConvertIncludeToRender, UnreachableCode
+include 'modules/user/helpers/can_do_or_unauthorized', requester: current_profile, do: 'users.register', redirect_anonymous_to_login: true
+# platformos-check-enable ConvertIncludeToRender, UnreachableCode
+%}
+```
+{% endraw %}
+
+Then add your page content below it:
+
+{% raw %}
+```liquid
+This is a page only admins should see.
+```
+{% endraw %}
+
+This version still checks for the `users.register` permission, which is only an example from the [module documentation](https://github.com/Platform-OS/pos-module-user?tab=readme-ov-file#authorization-commands). Now you need to change `users.register` to what you previously set for the manager role: `admin.view`. 
+
+#### app/views/pages/admin/index.liquid
+{% raw %}
+```liquid
+{% liquid
+function current_profile = 'modules/user/helpers/current_profile'
+# platformos-check-disable ConvertIncludeToRender, UnreachableCode
+include 'modules/user/helpers/can_do_or_unauthorized', requester: current_profile, do: 'admin.view', redirect_anonymous_to_login: true
+# platformos-check-enable ConvertIncludeToRender, UnreachableCode
+%}
+This is a page only admins should see.
+```
+{% endraw %}
+
+The `/admin` page now grants access to any profile that has **any role** containing `admin.view`.
+
+## Why this works
+
+You are checking **permissions**, not role names. This is intentional and important.
+
+* Users may have many roles
+* Multiple roles may share the same permissions
+* New roles can be introduced at any time without modifying your pages
+
+A profile may have many roles, and multiple roles may grant the same permission. The authorization helpers rely entirely on permissions, not on role names.
+
+This is what makes RBAC flexible: if you later introduce a new role that should also access the admin area, you only need to update your `permissions.liquid` override - not every page in your application.
+
+## Test the Permission
+
+Now that you have protected the `/admin` page, it's time to  verify that the permission check works as expected.
+
+1. Log in with the test user you created earlier. This user only has the default `authenticated` role, so it should not have access to the admin area.
+2. Visit `/admin`. You should not see the content of the page. The page should not render. Instead, access will be blocked.
+3. Open your browser's developer tools and switch to the **Network** tab. Reload `/admin` and look for the request in the list. You should see a **403** response.
+
+<img loading="lazy" src="{{ 'images/tutorials/user-management/admin-403-network.png' | asset_url }}" alt="403 Forbidden response shown in the browser Network tab">
+
+Seeing the 403 confirms that your authorization rule is correctly preventing access.
+
+Next, you will assign the `manager` role to one of your user profile and test the page again to confirm that users with the `admin.view` permission can access it.
+
+{% render 'alert/next', content: 'Assigning Roles to Users', url: '/tutorials/user-management/assign-roles' %}

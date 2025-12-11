@@ -1,0 +1,242 @@
+---
+metadata:
+  title: Displaying the Admin link based on permissions
+  description: Learn how to hide or show the Admin navigation link based on authentication state and permissions.
+converter: markdown
+---
+
+Up to this point, you created an `/admin` page and protected it with the `admin.view` permission. The page itself is secure, but the navigation still shows the **Admin** link to *every* logged-in user. This is not ideal. A better user experience is to show that link only when the current user actually has permission to view the admin area.
+
+In this chapter, you will update your layout so that the Admin link appears only when:
+
+1. the user is logged in, and
+2. their profile has the `admin.view` permission
+
+This keeps the navigation intuitive and avoids confusing users who do not have access.
+
+## How the layout loads the current profile
+
+Before you can check permissions in your layout, you need access to the user’s **profile**. This is what we've already implemented using the snippet from the documentation:
+
+#### app/views/layouts/application.liquid
+
+{% raw %}
+```liquid
+{% liquid
+  if context.current_user
+    assign current_profile = context.exports.current_profile
+    unless current_profile
+      function current_profile = 'modules/user/helpers/current_profile'
+    endunless
+  endif
+%}
+```
+{% endraw %}
+
+This block ensures that:
+
+* if a user is logged in
+* and a page has already exported `current_profile`
+* then the layout can reuse it without fetching it again
+
+Otherwise, the layout loads the profile itself using the `current_profile` helper. This prevents duplicate queries and guarantees the layout always knows who it is rendering for.
+
+## Adding a permission check inside the layout
+
+Right now, the navigation prints the Admin link whenever a user is authenticated:
+
+#### app/views/layouts/application.liquid
+{% raw %}
+```liquid
+{% if current_profile %}
+  <li>Welcome, {{ current_profile.email }}</li>
+  <li><a href="/admin">Admin</a></li>
+  …
+{% endif %}
+```
+{% endraw %}
+
+You will change this so the Admin link appears only when the user:
+
+* is logged in, **and**
+* has the `admin.view` permission
+
+To do this, you will use the `can_do` helper, which returns either `true` or `false` depending on whether the permission check succeeds.
+
+##  Invoke `can_do` in the layout
+
+Next, you will call the `can_do` helper directly in the layout so it can decide whether to show the Admin link. Add the line from the [documentation](https://github.com/Platform-OS/pos-module-user?tab=readme-ov-file#can_do-command) (originally using `do: 'admin_pages.view'`) to the Liquid block that loads the profile. Place it just after the `endunless`.
+
+Then update the permission to match the one you defined earlier: `admin.view`:
+
+You should also name the variable something clearer, such as `can_view_admin`.
+
+#### app/views/layouts/application.liquid
+
+{% raw %}
+```liquid
+{% liquid
+  if context.current_user
+    assign current_profile = context.exports.current_profile
+    unless current_profile
+      function current_profile = 'modules/user/helpers/current_profile'
+    endunless
+    function can = 'modules/user/helpers/can_do', requester: current_profile, do: 'admin.view'
+  endif
+%}
+```
+{% endraw %}
+
+After this runs:
+
+* `can_view_admin` will be `true` when the user has the `admin.view` permission
+* `false` otherwise
+
+This gives you exactly what you need to conditionally display the Admin navigation link.
+
+## Wrap the Admin link in a permission check
+
+Now that the layout knows whether the current profile can view the admin area, the final step is to show the Admin link only when that permission is present. Liquid conditions make this straightforward: you simply wrap the navigation item in an `if` block that checks `can_view_admin`.
+
+This follows the same pattern you already used when showing different content to logged-in users. The layout first confirms that a profile exists, and then checks whether that profile is allowed to access the admin interface. Only when both conditions are true does the link appear.
+
+#### app/views/layouts/application.liquid
+
+{% raw %}
+
+```liquid
+<nav>
+  <a href="/">Home</a>
+  <ul>
+    {% if current_profile %}
+      <li>Welcome, {{ current_profile.email }}</li>
+
+      {% if can_view_admin %}
+        <li><a href="/admin">Admin</a></li>
+      {% endif %}
+
+      <form method="post" action="/sessions">
+        <input type="hidden" name="authenticity_token" value="{{ context.authenticity_token }}">
+        <input type="hidden" name="_method" value="delete">
+        <button class="pos-button" type="submit">Logout</button>
+      </form>
+
+    {% else %}
+      <li><a href="/sessions/new">Login</a></li>
+    {% endif %}
+  </ul>
+</nav>
+
+{{ content_for_layout }}
+```
+{% endraw %}
+
+With this in place, the navigation should behave as you expect:
+
+* Profiles with the `admin.view` permission (such as `manager`) see the Admin link
+* Logged-in users without permission see a simplified menu
+* Visitors who are not logged in never see administrative options
+
+Final application.liquid content:
+
+#### app/views/layouts/application.liquid
+
+{% raw %}
+
+```liquid
+<!DOCTYPE html>
+<html class="pos-app">
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="authenticity_token" name="csrf-param">
+    <meta content="{{ form_authenticity_token }}" name="csrf-token">
+      {% comment %} default platformOS provided styles {% endcomment %}
+      {% render 'modules/common-styling/init' %}
+      <link rel="stylesheet" href="{{ 'modules/user/style/pos-user-form.css' | asset_url }}">
+      {% comment %} custom styles specific for this app, some overwrite the defaults {% endcomment %}
+      <link rel="stylesheet" href="{{ 'style/app.css' | asset_url }}">
+
+      <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=yes">
+
+      <script>
+        /* namespace */
+        if(typeof window.pos !== 'object'){
+          window.pos = {};
+          window.pos.modules = {};
+          window.pos.translations = {};
+        }
+      </script>
+
+    <title>Example User Management Application | platformOS</title>
+
+    <link rel="stylesheet" href="{{ 'styles/app.css' | asset_url }}">
+  </head>
+
+  <body>
+{% liquid
+ if context.current_user 
+   assign current_profile = context.exports.current_profile
+   unless current_profile
+     function current_profile = 'modules/user/helpers/current_profile'
+   endunless
+   function can_view_admin = 'modules/user/helpers/can_do', requester: current_profile, do: 'admin.view'
+ endif
+%}
+<nav>
+  <a href="/">Home</a>
+  <ul>
+
+       {% if current_profile %}
+        <li>Welcome, {{ current_profile.email }}</li>
+        {% if can_view_admin %}
+          <li><a href="/admin">Admin</a></li>
+        {% endif %}
+        <form method="post" action="/sessions">
+          <input type="hidden" name="authenticity_token" value="{{ context.authenticity_token }}">
+          <input type="hidden" name="_method" value="delete">
+          <button class="pos-button" type="submit">Logout</button>
+        </form>
+      {% else %}
+        <li><a href="/sessions/new">Login</a></li>
+      {% endif %}
+    
+  </ul>
+</nav>
+
+    {{ content_for_layout }}
+
+{% liquid
+  render 'modules/common-styling/toasts'
+%}  
+
+    <script src="{{ 'scripts/app.js' | asset_url }}"></script>
+
+  </body>
+</html>
+```
+{% endraw %}
+
+## Test the navigation
+
+Once you have the permission check in place, verify that the navigation behaves as expected.
+
+1. Log in with a regular authenticated user. The Admin link **should not** appear. This confirms that the layout is no longer showing administrative options to users who cannot act on them.
+
+2. Log in with a user whose profile includes the `manager` role (and therefore the `admin.view` permission). The Admin link **should** appear in the menu.
+
+3. Click the link. You should be taken to the `/admin` page without any authorization errors.
+
+If all three steps work as described, your navigation is now correctly responding to permissions instead of simply checking whether someone is logged in.
+
+## Why this approach is important
+
+Your `/admin` page has been protected from the start, but adjusting the navigation completes the experience. A permission-aware menu brings several advantages:
+
+* Users only see actions that are truly available to them
+* The interface feels clearer and more intentional
+* You avoid showing links that lead to dead ends or 403 pages
+* The navigation now adapts to different roles and permission sets
+
+With this final piece, your RBAC flow is fully in place: authentication tells the system *who* the visitor is, and authorization shapes *what they can do* throughout the interface.

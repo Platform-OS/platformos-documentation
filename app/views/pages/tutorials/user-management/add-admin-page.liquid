@@ -1,0 +1,85 @@
+---
+metadata:
+  title: Adding an Admin Page
+  description: Create an admin page and prepare it for role-based access control using the platformOS User Module.
+converter: markdown
+---
+
+Up to this point, you have implemented user registration, login, logout, and dynamic navigation using the `current_profile` helper. Your application can now recognize who is signed in and display different UI elements based on whether a user is authenticated.
+
+The next step is to introduce authorization - controlling what a user is allowed to do once they are logged in.
+
+User Module provides a flexible Role-Based Access Control (RBAC) system. It separates two important concepts:
+
+* Authentication (Who are you?)
+* Authorization (What are you allowed to do?)
+
+## Why this matters
+
+As your application grows, you will likely introduce:
+
+* Administrative dashboards
+* User-only areas
+* Organization-specific access rules
+* Custom actions available only to certain roles
+
+A clear understanding of the User Module's authentication and authorization model makes sure that your application is secure, predictable, and easy to maintain.
+
+To demonstrate how RBAC works, you will create a new endpoint and restrict it so that only users with a specific role (for example, `admin` or `manager`) can access it.
+
+## Add Admin link
+
+To begin working with authorization, you will first add an Admin link to your navigation and create a simple page that the link points to. Later, you will protect this page so that only users with the correct permission can view it.
+
+Go to your `app/views/layouts/application.liquid` layout, and extend the navigation by adding an `/admin` link. Place it directly after the welcome message so it appears only for authenticated users:
+
+#### app/views/layouts/application.liquid
+{% raw %}
+```liquid
+<nav>
+  <a href="/">Home</a>
+  <ul>
+    {% if current_profile %}
+      <li>Welcome, {{ current_profile.email }}</li>
+      <li><a href="/admin">Admin</a></li>
+      <form method="post" action="/sessions">
+        <input type="hidden" name="authenticity_token" value="{{ context.authenticity_token }}">
+        <input type="hidden" name="_method" value="delete">
+        <button class="pos-button" type="submit">Logout</button>
+      </form>
+
+    {% else %}
+      <li><a href="/sessions/new">Login</a></li>
+    {% endif %}
+  </ul>
+</nav>
+{{ content_for_layout }}
+```
+{% endraw %}
+
+After saving and deploying (or syncing), reload your instance in the browser. If you are logged in, you will now see the Admin link appear in the navigation.
+
+<img loading="lazy" src="{{ 'images/tutorials/user-management/admin-menu-visible.png' | asset_url }}" alt="Admin link visible in navigation after login">
+
+Click the link.
+
+You should see a “Not found” page. This is expected because the `/admin` endpoint does not exist yet. Let’s create it now.
+
+## Create Admin endpoint
+
+Start by creating a new directory for admin pages and adding an index file: `app/views/pages/admin/index.liquid`.
+ 
+Add a simple placeholder message:
+
+#### app/views/pages/admin/index.liquid
+``` liquid
+This is a page only admins should see.
+```
+
+After deploying again, the page loads correctly - but any logged-in user can access it. At this stage, the page is not protected by any authorization rules.
+
+<img loading="lazy" src="{{ 'images/tutorials/user-management/admin-page-not-protected.png' | asset_url }}" alt="Admin page unprotected">
+
+This brings us to the next key concept: Role-Based Access Control (RBAC) in platformOS and how to ensure that only users with the correct permissions can view a specific page.
+
+{% render 'alert/next', content: 'Roles and permissions', url: '/tutorials/user-management/roles-and-permissions' %}
