@@ -1,0 +1,10 @@
+---
+layout: ''
+---
+{%- assign cache_key = context.version | append: '-lsp-graphql-schema' -%}
+{%- cache cache_key -%}
+  {%- capture url -%}https://deidcfp1yn7c2.cloudfront.net/platform_docs/{{ context.version }}/schema.graphql{%- endcapture -%}
+  {%- assign data = url | download_file | force_encoding: 'UTF-8' -%}
+  {{ data }}
+{%- endcache -%}
+
