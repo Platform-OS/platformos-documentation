@@ -17,7 +17,7 @@ In the next step, we need to ensure that once a user submits their contact infor
 - **Data Processing Completion**: Once a background job processes data, an event can signal completion, notifying other systems or updating the user interface to reflect the new data.
 - **Real-Time Updates**: Events can send real-time notifications to users, such as alerts for new messages, status updates, or system alerts.
 
-{% include 'alert/note', content: 'For further details, refer to the core module’s documentation about [Events](https://github.com/Platform-OS/pos-module-core?tab=readme-ov-file#events).' %}
+{% include 'alert/note', content: 'For further details, refer to the core module’s documentation about [Events](https://github.com/Platform-OS/pos-modules/tree/master/pos-module-core?tab=readme-ov-file#events).' %}
 
 ## Create the directory structure
 
@@ -37,7 +37,7 @@ app/lib/events/contact_created.liquid
 
 ## Define the Event
 
-You don’t need to write the event from scratch, you’ll find an [example event template](https://github.com/Platform-OS/pos-module-core?tab=readme-ov-file#events) in the core module documentation.
+You don’t need to write the event from scratch, you’ll find an [example event template](https://github.com/Platform-OS/pos-modules/tree/master/pos-module-core?tab=readme-ov-file#events) in the core module documentation.
 
 Open your `contact_created.liquid` file and paste the following code into it:
 
@@ -147,7 +147,7 @@ The function returns the validation result, including any errors and the `valid`
 
 After defining and validating the event, the next step is to publish it. Publishing an event means notifying the system that something significant has happened, like the submission of a contact form. This step helps in tracking actions and triggers any required follow-up processes, such as sending confirmation emails or updating statuses.
 
-Copy the following code snippet from the core module documentation for [publishing an event](https://github.com/Platform-OS/pos-module-core?tab=readme-ov-file#publishing-event):
+Copy the following code snippet from the core module documentation for [publishing an event](https://github.com/Platform-OS/pos-modules/tree/master/pos-module-core?tab=readme-ov-file#publishing-event):
 
 {% raw %}
 ```liquid
@@ -213,7 +213,7 @@ We used the updated event object to publish the event.
 
 ## Understanding the publish function
 
-The `publish` function in the [platformOS core module](https://github.com/Platform-OS/pos-module-core) serves to create and store events, allowing you to track and respond to significant actions in your application.
+The `publish` function in the [platformOS core module](https://github.com/Platform-OS/pos-modules/tree/master/pos-module-core) serves to create and store events, allowing you to track and respond to significant actions in your application.
 
 It operates in the background, ensuring it doesn't block the main execution flow. This means that while your application continues to run, the event is logged in parallel.
 
@@ -288,7 +288,7 @@ To get more details about an event, click on _show_. This will display the event
 
 Now our event is working, but invoking these actions immediately within the command can lead to issues. For example, you might want to create a contact without sending an email to the customer during tests.To solve this, we will move event handling out of the command and into the page itself.
 
-{% include 'alert/note', content: 'Refer to the [Handling Events](https://github.com/Platform-OS/pos-module-core?tab=readme-ov-file#handling-events) section of the core module documentation for more details.' %}
+{% include 'alert/note', content: 'Refer to the [Handling Events](https://github.com/Platform-OS/pos-modules/tree/master/pos-module-core?tab=readme-ov-file#handling-events) section of the core module documentation for more details.' %}
 
 Update the `create.liquid` file located at `app/views/pages/contacts/create.liquid` as follows:
 
@@ -336,7 +336,7 @@ app/lib/consumers/contact_created/notify_submitter.liquid
   
 This file will be executed asynchronously whenever the `contact_created` event is triggered. This approach ensures that the user does not have to wait for the email to be sent before receiving a confirmation message.
 
-{% include 'alert/note', content: '<p>Any Liquid file inside the directory that corresponds to the name of the event will be executed asynchronously whenever the event is triggered. This is a best practice for actions like sending emails because it allows the user to receive immediate feedback without waiting for all background tasks to complete.</p><p>By organizing your event handling this way, you ensure that actions are executed efficiently and maintainably, enhancing both user experience and system reliability.</p><p>Refer to the <a href="https://github.com/Platform-OS/pos-module-core?tab=readme-ov-file#handling-events">Handling Events</a> section of the core module documentation for more details.</p>' %}
+{% include 'alert/note', content: '<p>Any Liquid file inside the directory that corresponds to the name of the event will be executed asynchronously whenever the event is triggered. This is a best practice for actions like sending emails because it allows the user to receive immediate feedback without waiting for all background tasks to complete.</p><p>By organizing your event handling this way, you ensure that actions are executed efficiently and maintainably, enhancing both user experience and system reliability.</p><p>Refer to the <a href="https://github.com/Platform-OS/pos-modules/tree/master/pos-module-core?tab=readme-ov-file#handling-events">Handling Events</a> section of the core module documentation for more details.</p>' %}
 
 ## Test the Event Consumer
 

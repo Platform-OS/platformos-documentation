@@ -17,14 +17,14 @@ Before we start, let's outline the core functionalities of our Contact Us form:
 
 * **Display Form on Homepage**: Show a form on [the homepage](https://documentation.platformos.com/developer-guide/pages/pages#homepage) with two fields: "email" and "body".
 * **Form Submission Handling**: When the form is submitted, it should trigger a POST request to the /contacts/create page.
-* **Input Validation**: Implement the following Business Rules using the [Command](https://github.com/Platform-OS/pos-module-core?tab=readme-ov-file#commands--business-logic) approach using [Validator](https://github.com/Platform-OS/pos-module-core?tab=readme-ov-file#validators) provided by [the core module](https://github.com/Platform-OS/pos-module-core):
+* **Input Validation**: Implement the following Business Rules using the [Command](https://github.com/Platform-OS/pos-modules/tree/master/pos-module-core?tab=readme-ov-file#commands--business-logic) approach using [Validator](https://github.com/Platform-OS/pos-modules/tree/master/pos-module-core?tab=readme-ov-file#validators) provided by [the core module](https://github.com/Platform-OS/pos-modules/tree/master/pos-module-core):
     * Ensure that the email provided by the user looks like a valid email address.
     * Ensure that the body is at least 10 characters long and has no more than 200 characters.
 
 **If input is valid:**
 
 * Store the contact information in the database using [Records](https://documentation.platformos.com/developer-guide/records/records-tables).
-* Use [Events](https://github.com/Platform-OS/pos-module-core?tab=readme-ov-file#events) provided by the [core module](https://github.com/Platform-OS/pos-module-core)) to send a confirmation email to the address provided by the user with a simple static confirmation that their request was received.
+* Use [Events](https://github.com/Platform-OS/pos-modules/tree/master/pos-module-core?tab=readme-ov-file#events) provided by the [core module](https://github.com/Platform-OS/pos-modules/tree/master/pos-module-core)) to send a confirmation email to the address provided by the user with a simple static confirmation that their request was received.
 * Redirect the user to `/contact/thanks` and display a simple "Thank you" message.
 
 **If input is invalid:**
@@ -194,7 +194,7 @@ pos-cli modules install core
 pos-cli modules download core
 </code></pre>
 
-Read and follow the instructions in the installation section of the [platformOS core module documentation](https://github.com/Platform-OS/pos-module-core) for further details.
+Read and follow the instructions in the installation section of the [platformOS core module documentation](https://github.com/Platform-OS/pos-modules/tree/master/pos-module-core) for further details.
 
 #### Step 8: Upload your code to your instance
 
