@@ -17,5 +17,17 @@ metadata:
 * **Clearer error messages for `record_update` and `record_destroy`**: When a record with the provided ID cannot be found, the error message now clearly specifies which table was being searched. For example:
   * Before: `Couldn't find Customization with 'id'=123`
   * After: `Can't find Boats with id=123`
+* **`assign` tag now supports hash/array operations directly**: The `assign` tag has been extended with capabilities previously only available through `hash_assign` (which is now deprecated). You can now use a single, unified syntax for all variable assignments, including initializing hash and array:
+  * **Empty hash/array literals**: {% raw %}`{% assign foo = {} %}`, `{% assign bar = [] %}`{% endraw %} (no need to do {% raw %}`'{}' | parse_json`{% endraw %} anymore)
+  * **Bracket notation**: {% raw %}`{% assign foo["bar"] = "baz" %}`{% endraw %}
+  * **Dot notation**: {% raw %}`{% assign foo.bar = "baz" %}`{% endraw %}
+  * **Mixed notation** (combining dots and brackets): {% raw %}`{% assign foo.bar["baz"] = "qux" %}`{% endraw %}
+  * **Array append with `<<`**: {% raw %}`{% assign foo << 'bar' %}`{% endraw %} (no need to use `array_add` filter)
+  * **Nested operations**: Full support for deeply nested hash and array assignments, e.g., {% raw %}`{% assign foo["bar"]["baz"]["qux"] = [] %}{% assign foo["bar"]["baz"]["qux"] << "first" %}`{% endraw %}
+  * **Performance**: Key lookups are pre-computed at parse time for faster rendering
+* **`function` tag now supports the same hash/array syntax**: Bracket notation, dot notation, mixed notation, and array append with `<<` now work with `function` too:
+  * {% raw %}`{% function foo["bar"] = 'partials/compute', input: 'baz' %}`{% endraw %}
+  * {% raw %}`{% function foo.bar["baz"] = 'partials/get_name', id: 123 %}`{% endraw %}
+  * {% raw %}`{% function foo << 'partials/fetch_item', id: 1 %}`{% endraw %}
 
 <!-- <h4 class="release-note release-note__fixed">FIXED</h4> -->
