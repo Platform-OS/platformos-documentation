@@ -9,13 +9,66 @@ metadata:
 
 #### {{ page.metadata.description }}
 
-<!--<h4 class="release-note release-note__new">NEW</h4>-->
+<h4 class="release-note release-note__new">NEW</h4>
+
+* **String interpolation in double-quoted strings**: You can now use `{{ }}` syntax inside double-quoted strings for cleaner, more readable variable interpolation. This feature is **disabled by default on existing instances** to prevent backwards compatibility issues, but **enabled by default on new instances**. To enable on an existing instance, add to your `config.yml`: `string_interpolation: true`
+
+  **Example:**
+  ```liquid
+  {% raw %}
+  {% assign name = "Alice" %}
+  {% assign greeting = "Hello {{ name | upcase }}!" %}
+  {{ greeting }}
+  {% endraw %}
+  ```
+  **Output:** `Hello ALICE!`
+
+  **Features:**
+  * Works with variables, property access, array access, and filters
+  * Supports filter chains: {% raw %}`"{{ name | upcase | truncate: 10 }}"`{% endraw %}
+  * Multiple interpolations: {% raw %}`"{{ first }} {{ last }}"`{% endraw %}
+  * Works in all tags that accept string values (assign, function, background, export, log, etc.):
+    ```liquid
+    {% raw %}
+    {% assign var = "world" %}
+    {% log "hello {{ var }}" %}
+    {% assign greeting = "hello {{ var }}" %}
+    {% function res = "lib/func", arg: "hello {{ var }}" %}
+    {% endraw %}
+    ```
+
+  **Important notes:**
+  * Single-quoted strings never interpolate (use for literal `{{ }}` text)
+  * **Breaking change if enabled:** Existing templates with double-quoted strings containing literal {% raw %}`{{ }}`{% endraw %} text will now interpolate. Use single quotes for literal text: {% raw %}`'Use {{ variable }} syntax'`{% endraw %}
 
 <h4 class="release-note release-note__improved">IMPROVED</h4>
 
 * **Upgraded internal dependencies** for improved performance and security
+* **Upgraded GraphQL gem to the latest version** for security and performance
 * **Clearer error messages for `record_update` and `record_destroy`**: When a record with the provided ID cannot be found, the error message now clearly specifies which table was being searched. For example:
   * Before: `Couldn't find Customization with 'id'=123`
   * After: `Can't find Boats with id=123`
+* **`assign` tag now supports hash/array operations directly**: The `assign` tag has been extended with capabilities previously only available through `hash_assign` (which is now deprecated). You can now use a single, unified syntax for all variable assignments, including initializing hash and array:
+  * **Empty hash/array literals**: {% raw %}`{% assign foo = {} %}`, `{% assign bar = [] %}`{% endraw %} (no need to do {% raw %}`'{}' | parse_json`{% endraw %} anymore)
+  * **Inline hash/array literals with values**: You can now create hashes and arrays with initial values directly in the assign tag. Variables are evaluated, and can be used both as values and as keys:
+    ```liquid
+    {% raw %}
+    {% assign var = "hello" %}
+    {% assign hash = { "key": var, var: "value", arr: ["el1", var] } %}
+    {{ hash }}
+    {% endraw %}
+    ```
+    **Output:** `{ "key": "hello", "hello": "value", "arr": ["el1", "hello"] }`
+  * **Bracket notation**: {% raw %}`{% assign foo["bar"] = "baz" %}`{% endraw %}
+  * **Dot notation**: {% raw %}`{% assign foo.bar = "baz" %}`{% endraw %}
+  * **Mixed notation** (combining dots and brackets): {% raw %}`{% assign foo.bar["baz"] = "qux" %}`{% endraw %}
+  * **Array append with `<<`**: {% raw %}`{% assign foo << 'bar' %}`{% endraw %} (no need to use `array_add` filter)
+  * **Nested operations**: Full support for deeply nested hash and array assignments, e.g., {% raw %}`{% assign foo["bar"]["baz"]["qux"] = [] %}{% assign foo["bar"]["baz"]["qux"] << "first" %}`{% endraw %}
+  * **Performance**: Key lookups are pre-computed at parse time for faster rendering
+* **`function` tag now supports the same hash/array syntax**: Bracket notation, dot notation, mixed notation, and array append with `<<` now work with `function` too:
+  * {% raw %}`{% function foo["bar"] = 'partials/compute', input: 'baz' %}`{% endraw %}
+  * {% raw %}`{% function foo.bar["baz"] = 'partials/get_name', id: 123 %}`{% endraw %}
+  * {% raw %}`{% function foo << 'partials/fetch_item', id: 1 %}`{% endraw %}
+* **Module registration from `pos-module.json`**: Modules listed in `pos-module.json` are now registered as installed without downloading their source code on every deploy. Module files are expected to be included during deployment (e.g., committed to your repository or included in your deployment package).
 
 <!-- <h4 class="release-note release-note__fixed">FIXED</h4> -->
