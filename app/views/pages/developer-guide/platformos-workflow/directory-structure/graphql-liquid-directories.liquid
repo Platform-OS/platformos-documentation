@@ -1,0 +1,90 @@
+---
+converter: markdown
+metadata:
+  title: Liquid vs GraphQL Directories
+  description: Understanding the Directory Structure for Liquid and GraphQL
+---
+
+When working with platformOS, understanding which directories are used for **Liquid** and which are used for **GraphQL** is essential to keeping your project organized. Depending on whether you're using Liquid, GraphQL, or both, some directories will be more important than others. Let’s break it down:
+
+## Liquid-Only Directories
+If your project is primarily using **Liquid**, you’ll need these specific directories for handling your page layouts, templates, and logic:
+
+### `graphql/` directory
+**Surprise!** This directory is needed when using Liquid, even though it’s named after GraphQL. It stores the queries and mutations that Liquid uses to fetch or modify data. If you’re working exclusively with GraphQL, you won’t need this directory.
+
+### `views/` directory 
+This is where your Liquid templates live, including:
+   - **`views/pages`**: Your page templates go here.
+   - **`views/layouts`**: This directory handles the overall structure of your site (e.g., headers and footers).
+   - **`views/partials`**: Contains reusable components like forms or widgets.
+
+If you’re not using Liquid, these directories will remain empty.
+
+### `lib/` directory 
+Contains helper functions and logic files that are used by Liquid. Think of this directory as the brains behind your Liquid templates!
+If you’re working purely with GraphQL, you won’t need anything in `lib/`.
+
+### `authorization_policies/` directory  
+This directory is used to define who can access what—written entirely in Liquid.
+
+### `translations/`directory
+If your platform supports multiple languages, this directory stores all the translation files, written in Liquid.
+
+### `migrations/` directory   
+Migrations are used to modify the database structure and are written in Liquid, so you don’t need this directory for GraphQL-based projects.
+
+### `emails/`, `api_calls/`, and `smses/` directory 
+These directories contain **Liquid templates** that are currently required for sending emails, making API calls, or sending SMS messages. This is because, right now, the process relies on Liquid for the templates that define these messages.
+
+**For now, these are Liquid-only**: Even if you're using **GraphQL** for sending emails, API calls, or SMS messages, you still need to reference a **Liquid template** stored in the `emails/` directory. For example, when using the `email_send` mutation in GraphQL, a `template` must be specified, and that template corresponds to a file located in `app/email/template`, which is written in Liquid.
+
+Here’s an example of the current setup:
+
+```graphql
+mutation send_email {
+  email_send (
+    template: "welcome_email"
+  )
+}
+```
+
+### `config.yml` file  
+This file configures key aspects of your site and is needed only for Liquid-based setups.
+
+## **GraphQL-Only Directories**
+If you're focusing on using just **GraphQL** in your platformOS project, here’s what you need:
+
+### `assets/` directory
+This directory is used to store static files like images, CSS, JavaScript, etc. You can reference these assets through Liquid or GraphQL.
+**Used for both**: You can query for assets using GraphQL without needing Liquid.
+
+Example:
+
+```graphql
+     query get_assets {
+       admin_assets {
+         results {
+           name
+         }
+       }
+     }
+```
+### `user.yml` file  
+This is the **GraphQL schema** file for user data. It defines how user data is structured and how you can query or mutate user information.
+**Only for GraphQL**: You’ll need this file to manage users, but not for Liquid-based projects.
+
+### **Directory Overview Table**
+
+| **Directory/File**            | **Used for Liquid** | **Used for GraphQL** | **Notes**                                                  |
+|-------------------------------|---------------------|----------------------|------------------------------------------------------------|
+| `graphql/`                    | Yes                 | No                   | Needed for Liquid to handle GraphQL queries/mutations.      |
+| `views/`                      | Yes                 | No                   | Contains Liquid templates for pages, layouts, and partials. |
+| `lib/`                        | Yes                 | No                   | Stores helper functions used in Liquid templates.           |
+| `authorization_policies/`      | Yes                 | No                   | Defines access control using Liquid.                        |
+| `translations/`               | Yes                 | No                   | Handles translations for Liquid templates.                  |
+| `config.yml`                  | Yes                 | No                   | Configures Liquid project settings.                         |
+| `emails/`, `api_calls/`, `smses/` | Yes              | No (Future: Yes)     | Currently Liquid-based, but GraphQL support is planned.      |
+| `user.yml`                    | No                  | Yes                  | Defines the GraphQL schema for user data.                   |
+| `assets/`                     | Yes                 | Yes                  | Static assets can be used with both Liquid and GraphQL.      |
+| `migrations/`                 | Yes                 | No                   | Handles database migrations, written in Liquid.             |
