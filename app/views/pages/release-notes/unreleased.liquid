@@ -30,4 +30,16 @@ metadata:
 ```
 {% endraw %}
 
+* `assign` tag supports string interpolation inside hash values, for example:
+
+{% raw %}
+```liquid
+{% liquid
+  assign email = "ALICE@EXAMPLE.COM"
+  assign contact = { "email": "{{ email | downcase }}", "name": "{{ email | split: '@' | first }}" }
+  echo contact
+%}
+```
+{% endraw %}
+
 <!-- <h4 class="release-note release-note__fixed">FIXED</h4> -->
