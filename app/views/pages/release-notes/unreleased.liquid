@@ -11,6 +11,21 @@ metadata:
 
 <!-- <h4 class="release-note release-note__new">NEW</h4> -->
 
-<!-- <h4 class="release-note release-note__improved">IMPROVED</h4> -->
+<h4 class="release-note release-note__improved">IMPROVED</h4>
+
+* `assign` and `function` tags accept arguments in multiline, for example:
+
+```liquid
+{% liquid
+  assign outer_key = "user"
+  assign inner_key = "name"
+  assign hash = {
+    outer_key: {
+      inner_key: "Alice"
+    }
+  }
+  echo hash
+%}
+```
 
 <!-- <h4 class="release-note release-note__fixed">FIXED</h4> -->
