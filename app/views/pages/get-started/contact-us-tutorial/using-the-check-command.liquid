@@ -37,7 +37,7 @@ Typically, when working with commands, you might overwrite the `object`. For now
 ```
 {% endraw %}
 
-The Language Server Protocol (LSP) tells you that `commands/contacts/create/check` is blank, so let’s create the check command as the next step.
+The Language Server Protocol (LSP) tells you that `commands/contacts/create/check` is blank, so let's create the check command as the next step.
 
 ## Create the Check Command
 
@@ -57,7 +57,7 @@ Add the following from the core module documentation:
 {% raw %}
 ```liquid
 {% liquid
-  assign c = '{ "errors": {}, "valid": true }' | parse_json
+  assign c = { "errors": {}, "valid": true }
 
   function c = 'modules/core/validations/presence', c: c, object: object, field_name: 'title'
   function c = 'modules/core/validations/presence', c: c, object: object, field_name: 'uuid'
@@ -83,7 +83,7 @@ To adjust the check command for our _Contact Us_ form, let's simplify it as foll
 {% raw %}
 ```liquid
 {% liquid
-  assign c = '{ "errors": {}, "valid": true }' | parse_json
+  assign c = { "errors": {}, "valid": true }
 
   assign object = object | hash_merge: c
 
@@ -98,7 +98,7 @@ In the check command, we created a new object `c`, which is short for `contact`.
 
 {% raw %}
 ```liquid
-  assign c = '{ "errors": {}, "valid": true }' | parse_json
+  assign c = { "errors": {}, "valid": true }
 ```
 {% endraw %}
 
@@ -121,28 +121,8 @@ assign object = object | hash_merge: c
 
 This step combines the validation results with the original contact object. Now, the contact object includes both its original properties (`email` and `body`) and the validation results (`errors` and `valid`). This merged object allows us to track which fields failed validation and why in the logs.
 
-{% include 'alert/note', content: '`Parse_json` is a filter which transforms a string into a hash. Read the [Parse_json filter documentation](/api-reference/liquid/platformos-filters#parse-json)</code> for further details.' %}
-
 {% raw %}
-Filters are invoked via the "|" character. For example, `{{ 'hello' | upcase }}` invokes the `upcase` filter with "hello" as an argument. Tags, on the other hand, are invoked using `{% %}` characters.
-
-Keep in mind that the `parse_json` filter and tag are equivalent, and it's a matter of preference which one you use. If someone wants to associate the object `{ "hello": "world" }` with the variable "hello_json," they can achieve this with either the filter:
-{% endraw %}
-
-{% raw %}
-```liquid
-{% assign hello_json = '{ "hello": "world"}' | parse_json %}
-```
-{% endraw %}
-
-or using the tag:
-
-{% raw %}
-```liquid
-{% parse_json hello_json %}
-{ "hello": "world"}
-{% endparse_json %}
-```
+{% include 'alert/tip', content: 'You can create hash objects directly using `assign` with literal syntax: `{% assign hello_json = { "hello": "world" } %}`. See the [assign tag documentation](/api-reference/liquid/variables#assign) for more details on hash and array literals.' %}
 {% endraw %}
 
 ## Conditional logging

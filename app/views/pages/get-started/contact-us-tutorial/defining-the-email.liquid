@@ -20,18 +20,7 @@ First, copy the [code from the core module documentation for email sending](http
 
 {% raw %}
 ```liquid
-{% parse_json object %}
-  {
-    "to":      "grievous@example.com",
-    "from":    "kenobi@example.com",
-    "cc": [],
-    "bcc": [],
-    "subject": "Hello there!",
-    "layout": "path/to/my_layout",
-    "partial": "path/to/email_partial",
-    "data": { "user": " { "first_name:" "John" } }
-  }
-{% endparse_json %}
+{% assign object = { "to": "grievous@example.com", "from": "kenobi@example.com", "cc": [], "bcc": [], "subject": "Hello there!", "layout": "path/to/my_layout", "partial": "path/to/email_partial", "data": { "user": { "first_name": "John" } } } %}
 {% function _ = 'modules/core/commands/email/send', object: object %}
 ```
 {% endraw %}
@@ -43,17 +32,7 @@ Let’s adjust it to the functionality of our Contact Us form, and add a log for
 {% raw %}
 ```liquid
 {% log event, type: "this is an event from the notify submitted consumer!" %}
-{% parse_json object %}
-    {
-      "to":      "{{ event.email }}",
-      "from":    "noreply@platformos.com",
-      "cc": [],
-      "bcc": [],
-      "subject": "Your request has been submitted",
-      "partial": "emails/contacts/notify_submitter",
-      "data": {}
-    }
-  {% endparse_json %}
+{% assign object = { "to": event.email, "from": "noreply@platformos.com", "cc": [], "bcc": [], "subject": "Your request has been submitted", "partial": "emails/contacts/notify_submitter", "data": {} } %}
   {% function _ = 'modules/core/commands/email/send', object: object %}
 ```
 {% endraw %}

@@ -51,12 +51,12 @@ metadata:
     foo_id
 ---
 {% liquid
-  assign c = '{ "errors": {}, "valid": true }' | parse_json
+  assign c = { "errors": {}, "valid": true }
 
   function c = 'modules/core/validations/presence', c: c, object: event, field_name: 'foo_id'
 
   # You can also enhance event object
-  hash_assign event['bar'] = 'extra info'
+  assign event['bar'] = 'extra info'
 
   return c
 %}
@@ -84,7 +84,7 @@ metadata:
     id
 ---
 {% liquid
-  assign c = '{ "errors": {}, "valid": true }' | parse_json
+  assign c = { "errors": {}, "valid": true }
 
   function c = 'modules/core/validations/presence', c: c, object: event, field_name: 'id'
 
@@ -108,7 +108,7 @@ This block specifies that the event will include an `id` field, which represents
 {% raw %}
 ```liquid
 {% liquid
-  assign c = '{ "errors": {}, "valid": true }' | parse_json
+  assign c = { "errors": {}, "valid": true }
 
   function c = 'modules/core/validations/presence', c: c, object: event, field_name: 'id'
 
@@ -121,11 +121,11 @@ The Liquid code snippet validates the presence of the id field. Here's a step-by
 
 {% raw %}
 ```liquid
-assign c = '{ "errors": {}, "valid": true }' | parse_json
+assign c = { "errors": {}, "valid": true }
 ```
 {% endraw %}
 
-This line initializes a JSON object `c` with an empty `errors` hash and sets `valid` to `true`.
+This line initializes a hash object `c` with an empty `errors` hash and sets `valid` to `true`.
 
 {% raw %}
 ```liquid
@@ -168,8 +168,8 @@ Paste the copied code into your `app/lib/commands/contacts/create.liquid` file. 
 
   if object.valid
     function object = 'commands/contacts/create/execute', object: object
-    assign event_object = '{}' | parse_json | hash_merge: id: object.id
-    hash_assign event_object["email"] = object.email
+    assign event_object = { "id": object.id }
+    assign event_object["email"] = object.email
     function _ = 'modules/core/commands/events/publish', type: 'contact_created', object: event_object, delay: null, max_attempts: null
   endif
 
@@ -185,11 +185,11 @@ To minimize the data included in the event object, we created a new, simplified 
 
 {% raw %}
 ```liquid
- {% assign event_object = '{}' | parse_json | hash_merge: id: contact.id %}
+ {% assign event_object = { "id": contact.id } %}
 ```
 {% endraw %}
 
-First, we start with an empty object (an empty hash `{}`). Then, we merge this empty object with another object that contains the `id` of the contact. This ensures that our event object only includes the contact's ID and nothing else.
+We create a new hash object containing only the `id` of the contact. This ensures that our event object only includes the contact's ID and nothing else.
 
 With this solution, we are avoiding the inclusion of unnecessary and potentially lengthy data such as the full contact body. However, by simplifying our event object, we no longer have direct access to some properties like the contact's `body` and `email`. While the event retains some built-in fields, it lacks the extra information we need.
 
@@ -197,7 +197,7 @@ To address this, we will add the contact's email to the event object:
 
 {% raw %}
 ```liquid
-{% hash_assign event_object["email"] = contact.email %}
+{% assign event_object["email"] = contact.email %}
 ```
 {% endraw %}
 

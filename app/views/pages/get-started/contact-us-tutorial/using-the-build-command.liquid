@@ -19,17 +19,12 @@ Here's the dummy build command from the core module documentation:
 
 {% raw %}
 ```liquid
-{% parse_json data %}
-  {
-    "title": {{ object.title | downcase | json }},
-    "uuid": {{ object.uuid | json }},
-    "c__score": 0
-  }
-{% endparse_json %}
-
 {% liquid
+  assign title = object.title | downcase
+  assign data = { "title": title, "uuid": object.uuid, "c__score": 0 }
+
   if data['uuid'] == blank
-    hash_assign data["uuid"] = '' | uuid | json
+    assign data["uuid"] = '' | uuid | json
   endif
 
   return data
@@ -49,22 +44,16 @@ For example, you want to ensure that the email is always in lowercase:
 
 {% raw %}
 ```liquid
-{% parse_json contact %}
-  {
-    "email": {{ object.email | downcase | json }},
-    "body": {{ object.body | json }}
-  }
-{% endparse_json %}
-
 {% liquid
+  assign email = object.email | downcase
+  assign contact = { "email": email, "body": object.body }
+
   return contact
 %}
 ```
 {% endraw %}
 
-The `parse_json contact` tag parses the JSON object (email and body) into a variable named `contact`.
-
-Inside the JSON object, we transform `object.email` to lowercase and ensure it is properly formatted as JSON.
+We create a `contact` object using the `assign` tag with a hash literal. The email is pre-processed to lowercase before being included in the hash.
 
 Every function needs to `return` an object. In this case, the function takes user parameters, processes them (downcasing the email), and returns an object with the email and body properties.
 

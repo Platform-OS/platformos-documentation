@@ -99,12 +99,7 @@ However, we can also create an object with default values if needed. Example wit
 
 {% raw %}
 ```liquid
-{% parse_json contact %}
-{
-  "email": "email@example.com",
-  "body": "Write your message here"
-}
-{% endparse_json %}
+{% assign contact = { "email": "email@example.com", "body": "Write your message here" } %}
 {% render 'contacts/form', contact: contact %}
 ```
 {% endraw %}

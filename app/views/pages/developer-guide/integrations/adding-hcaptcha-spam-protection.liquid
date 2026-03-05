@@ -200,9 +200,7 @@ slug: page_with_captcha
 <form action="/submit_hcaptcha_endpoint" method="post" class="model-form" novalidate="novalidate">
   <input name="title" value="Title" type="text" />
 
-  {% assign html_attrs = '{}' | parse_json %}
-  {% hash_assign html_attrs['data-size'] = 'compact' %}
-  {% hash_assign html_attrs['data-callback'] = 'someCallback' %}
+  {% assign html_attrs = { "data-size": "compact", "data-callback": "someCallback" } %}
   {% spam_protection 'hcaptcha', html_attributes: html_attrs %}
 
   <input type="submit" name="submit" value="Submit" />

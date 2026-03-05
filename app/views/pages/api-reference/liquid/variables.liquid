@@ -50,7 +50,133 @@ Welcome to the site!
 Welcome to the site!
 ```
 
-{% include 'alert/note', content: 'platformOS has also available [hash_assign tag](/api-reference/liquid/platformos-tags#hash-assign), which is based on assign tag, however it allows you to work with [your own objects](/api-reference/liquid/platformos-objects#your-own-objects)' %}
+### Hash and array literals
+
+The `assign` tag supports creating hashes and arrays directly:
+
+#### Input
+
+```liquid
+{% raw %}
+{% assign my_hash = {} %}
+{% assign my_array = [] %}
+{% assign config = { "timeout": 300, "retries": 3 } %}
+{% assign colors = ["red", "green", "blue"] %}
+
+{{ config }}
+{{ colors }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{"timeout":300,"retries":3}
+["red","green","blue"]
+```
+
+You can also create complex nested structures with variables as values:
+
+#### Input
+
+```liquid
+{% raw %}
+{% assign name = "Alice" %}
+{% assign user = { "name": name, "tags": ["developer", "designer"], "active": true } %}
+{{ user }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{"name":"Alice","tags":["developer","designer"],"active":true}
+```
+
+### Hash key assignment
+
+You can set hash keys using bracket notation, dot notation, or a mix of both:
+
+#### Input
+
+```liquid
+{% raw %}
+{% assign hash = {} %}
+{% assign hash["greeting"] = "hello" %}
+{% assign hash.farewell = "goodbye" %}
+{{ hash }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{"greeting":"hello","farewell":"goodbye"}
+```
+
+Nested assignment is also supported:
+
+#### Input
+
+```liquid
+{% raw %}
+{% assign data = {} %}
+{% assign data.user = {} %}
+{% assign data.user.profile = {} %}
+{% assign data.user.profile.name = "John" %}
+{{ data }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{"user":{"profile":{"name":"John"}}}
+```
+
+### Array append with `<<`
+
+You can append elements to arrays using the `<<` operator:
+
+#### Input
+
+```liquid
+{% raw %}
+{% assign my_array = [] %}
+{% assign my_array << "first" %}
+{% assign my_array << "second" %}
+{% assign my_array << "third" %}
+{{ my_array }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+["first","second","third"]
+```
+
+This also works with nested arrays:
+
+#### Input
+
+```liquid
+{% raw %}
+{% assign data = {} %}
+{% assign data.items = [] %}
+{% assign data.items << "a" %}
+{% assign data.items << "b" %}
+{{ data }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+{"items":["a","b"]}
+```
+
+{% include 'alert/note', content: 'The `assign` tag replaces the deprecated [hash_assign tag](/api-reference/liquid/platformos-tags#hash-assign) for hash/array operations. You no longer need `hash_assign` or `parse_json` with empty `{}` strings to work with [your own objects](/api-reference/liquid/platformos-objects#your-own-objects).' %}
 
 ## capture
 
@@ -61,7 +187,9 @@ Variables that you create using `capture` are stored as strings, so it works exa
 
 It is platformOS specific tag, which allows you to [create your own objects](/api-reference/liquid/platformos-objects#your-own-objects). It works similarly to [capture](/api-reference/liquid/variables#capture).
 
-The content within this tag must result in valid JSON. Otherwise, an exception is thrown, which is logged automatically using the same mechanism as the [log tag](/api-reference/liquid/platformos-tags#log). 
+{% include 'alert/tip', content: 'Consider using `assign` with hash/array literals instead: `{% assign about_me = { "name": "Alice", "age": 35 } %}`. The `assign` tag supports variables as values, so `parse_json` is rarely needed. See the [assign tag](#assign) section for details.' %}
+
+The content within this tag must result in valid JSON. Otherwise, an exception is thrown, which is logged automatically using the same mechanism as the [log tag](/api-reference/liquid/platformos-tags#log).
 When working with `parse_json` and user input, it's advisable to use the `json filter` to prevent special characters like `"` from disrupting the parsing process.
 
 #### Input

@@ -39,7 +39,7 @@ Modify the code to validate the `body` field instead of `title` with the appropr
 {% raw %}
 ```liquid
 {% liquid
-    assign c = '{ "errors": {}, "valid": true }' | parse_json
+    assign c = { "errors": {}, "valid": true }
   
     function c = 'modules/core/validations/length', c: c, object: object, field_name: 'body', minimum: 10
     function c = 'modules/core/validations/length', c: c, object: object, field_name: 'body', maximum: 200
@@ -60,7 +60,7 @@ You might notice that the LSP is complaining that the `allow_blank` argument is 
 {% raw %}
 ```liquid
 {% liquid
-    assign c = '{ "errors": {}, "valid": true }' | parse_json
+    assign c = { "errors": {}, "valid": true }
     
     function c = 'modules/core/validations/length', c: c, object: object, field_name: 'body', minimum: 10, allow_blank: false
     function c = 'modules/core/validations/length', c: c, object: object, field_name: 'body', maximum: 200, allow_blank: false
@@ -102,7 +102,7 @@ Adjust the code and add it to your `check.liquid` file:
 {% raw %}
 ```liquid
 {% liquid
-    assign c = '{ "errors": {}, "valid": true }' | parse_json
+    assign c = { "errors": {}, "valid": true }
     
     function c = 'modules/core/validations/email', c: c, object: object, field_name: 'email'
     function c = 'modules/core/validations/length', c: c, object: object, field_name: 'body', minimum: 10, allow_blank: false
