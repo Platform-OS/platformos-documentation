@@ -79,20 +79,16 @@ For testing purposes, let's add an extra comma after `"body"` in the `app/lib/co
 
 {% raw %}
 ```liquid
-{% parse_json contact %}
-  {
-    "email": {{ object.email | downcase | json }},
-    "body": {{ object.body | json }},
-  }
-{% endparse_json %}
-
 {% liquid
+  assign email = object.email | downcase
+  assign contact = { "email": email, "body": object.body, }
+
   return contact
 %}
 ```
 {% endraw %}
 
-Now, with this unnecessary comma added, submit the form with test data.
+Now, with this unnecessary trailing comma added, submit the form with test data.
 
 When you introduce an error like this and then access the logs at http://localhost:3333/logs, you will see a Liquid error indicating the issue. This helps you identify and correct syntax errors.
 
@@ -105,14 +101,10 @@ Now, remove the extra comma and continue our task.
 
 {% raw %}
 ```liquid
-{% parse_json contact %}
-  {
-    "email": {{ object.email | downcase | json }},
-    "body": {{ object.body | json }}
-  }
-{% endparse_json %}
-
 {% liquid
+  assign email = object.email | downcase
+  assign contact = { "email": email, "body": object.body }
+
   return contact
 %}
 ```

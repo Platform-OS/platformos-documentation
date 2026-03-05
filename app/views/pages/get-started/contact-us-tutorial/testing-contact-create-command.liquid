@@ -108,7 +108,7 @@ To do that, create a `contact_create_happy_path_test.liquid` file in `app/lib/te
 {% endcomment %}
 
 {% liquid
-  assign data = '{ "email": "USER@example.com", "body": "This is a valid message body." }' | parse_json
+  assign data = { "email": "USER@example.com", "body": "This is a valid message body." }
   function contact = 'commands/contacts/create', object: data
 
   # 1. Contact should be valid
@@ -276,7 +276,7 @@ Create a file named `contact_create_negative_path_test.liquid` in `app/lib/tests
   Test: Invalid email - should be invalid
 {% endcomment %}
 {% liquid
-  assign data = '{ "email": "invalid-email", "body": "This is a valid message body." }' | parse_json
+  assign data = { "email": "invalid-email", "body": "This is a valid message body." }
   function contact = 'commands/contacts/create', object: data
 
   function contract = 'modules/tests/assertions/not_valid_object', contract: contract, object: contact, field_name: 'contact'
@@ -287,7 +287,7 @@ Create a file named `contact_create_negative_path_test.liquid` in `app/lib/tests
   Test: Too short body - should be invalid
 {% endcomment %}
 {% liquid
-  assign data = '{ "email": "user@example.com", "body": "Short" }' | parse_json
+  assign data = { "email": "user@example.com", "body": "Short" }
   function contact = 'commands/contacts/create', object: data
 
   function contract = 'modules/tests/assertions/not_valid_object', contract: contract, object: contact, field_name: 'contact'
@@ -298,14 +298,9 @@ Create a file named `contact_create_negative_path_test.liquid` in `app/lib/tests
   Test: Too long body – should be invalid
 {% endcomment %}
 
-{% parse_json data %}
-{
-  "email": "user@example.com",
-  "body": "{{ 201 | random_string }}"
-}
-{% endparse_json %}
-
 {% liquid
+  assign long_body = 201 | random_string
+  assign data = { "email": "user@example.com", "body": long_body }
   function contact = 'commands/contacts/create', object: data
 
   function contract = 'modules/tests/assertions/not_valid_object', contract: contract, object: contact, field_name: 'contact'
@@ -316,7 +311,7 @@ Create a file named `contact_create_negative_path_test.liquid` in `app/lib/tests
   Test: Blank email and body - should be invalid
 {% endcomment %}
 {% liquid
-  assign data = '{ "email": "", "body": "" }' | parse_json
+  assign data = { "email": "", "body": "" }
   function contact = 'commands/contacts/create', object: data
 
   function contract = 'modules/tests/assertions/not_valid_object', contract: contract, object: contact, field_name: 'contact'
@@ -328,7 +323,7 @@ Create a file named `contact_create_negative_path_test.liquid` in `app/lib/tests
   Test: Body is missing (null) – should fail validation
 {% endcomment %}
 {% liquid
-  assign data = '{ "email": "user@example.com" }' | parse_json
+  assign data = { "email": "user@example.com" }
   function contact = 'commands/contacts/create', object: data
 
   function contract = 'modules/tests/assertions/not_valid_object', contract: contract, object: contact, field_name: 'contact'
@@ -339,7 +334,7 @@ Create a file named `contact_create_negative_path_test.liquid` in `app/lib/tests
   Test: Email missing from object – should fail validation
 {% endcomment %}
 {% liquid
-  assign data = '{ "body": "This is valid" }' | parse_json
+  assign data = { "body": "This is valid" }
   function contact = 'commands/contacts/create', object: data
 
   function contract = 'modules/tests/assertions/not_valid_object', contract: contract, object: contact, field_name: 'contact'
@@ -350,7 +345,7 @@ Create a file named `contact_create_negative_path_test.liquid` in `app/lib/tests
   Test: Completely empty object – both fields invalid
 {% endcomment %}
 {% liquid
-  assign data = '{}' | parse_json
+  assign data = {}
   function contact = 'commands/contacts/create', object: data
 
   function contract = 'modules/tests/assertions/not_valid_object', contract: contract, object: contact, field_name: 'contact'
@@ -370,7 +365,7 @@ Create a file named `contact_create_negative_path_test.liquid` in `app/lib/tests
   Test: Invalid email - should be invalid
 {% endcomment %}
 {% liquid
-  assign data = '{ "email": "invalid-email", "body": "This is a valid message body." }' | parse_json
+  assign data = { "email": "invalid-email", "body": "This is a valid message body." }
   function contact = 'commands/contacts/create', object: data
 
   function contract = 'modules/tests/assertions/not_valid_object', contract: contract, object: contact, field_name: 'contact'
@@ -392,7 +387,7 @@ Create a file named `contact_create_negative_path_test.liquid` in `app/lib/tests
   Test: Too short body - should be invalid
 {% endcomment %}
 {% liquid
-  assign data = '{ "email": "user@example.com", "body": "Short" }' | parse_json
+  assign data = { "email": "user@example.com", "body": "Short" }
   function contact = 'commands/contacts/create', object: data
 
   function contract = 'modules/tests/assertions/not_valid_object', contract: contract, object: contact, field_name: 'contact'
@@ -413,14 +408,9 @@ Create a file named `contact_create_negative_path_test.liquid` in `app/lib/tests
   Test: Too long body – should be invalid
 {% endcomment %}
 
-{% parse_json data %}
-{
-  "email": "user@example.com",
-  "body": "{{ 201 | random_string }}"
-}
-{% endparse_json %}
-
 {% liquid
+  assign long_body = 201 | random_string
+  assign data = { "email": "user@example.com", "body": long_body }
 
   function contact = 'commands/contacts/create', object: data
 
@@ -441,7 +431,7 @@ Create a file named `contact_create_negative_path_test.liquid` in `app/lib/tests
   Test: Blank email and body - should be invalid
 {% endcomment %}
 {% liquid
-  assign data = '{ "email": "", "body": "" }' | parse_json
+  assign data = { "email": "", "body": "" }
   function contact = 'commands/contacts/create', object: data
 
   function contract = 'modules/tests/assertions/not_valid_object', contract: contract, object: contact, field_name: 'contact'
@@ -469,7 +459,7 @@ Now, please add one more scenario at the end of our negative path test file:
   Test: Email with upper case letters and leading/trailing spaces
 {% endcomment %}
 {% liquid
-  assign data = '{ "email": "  User@examplE.com  ", "body": "Nice body here" }' | parse_json
+  assign data = { "email": "  User@examplE.com  ", "body": "Nice body here" }
   function contact = 'commands/contacts/create/build', object: data
 
   if contact.email != 'user@example.com'
@@ -514,14 +504,10 @@ Modify the `build.liquid` code as follows:
 
 {% raw %}
 ```liquid
-{% parse_json contact %}
-  {
-    "email": {{ object.email | strip | downcase | json }},
-    "body": {{ object.body | json }}
-  }
-{% endparse_json %}
-
 {% liquid
+  assign email = object.email | strip | downcase
+  assign contact = { "email": email, "body": object.body }
+
   return contact
 %}
 ```

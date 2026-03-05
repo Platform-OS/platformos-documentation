@@ -17,7 +17,7 @@ metadata:
 
 {% assign filter_documentation = all_filters | parse_json: raw_text: true | detect: name: filter %}
 {% if filter_documentation %}
-  {% hash_assign filter_documentation['name'] = null %}
+  {% assign filter_documentation['name'] = null %}
   {% render 'api-reference/templates/filter', item: filter_documentation %}
 {% else %}
   {% echo "Unknown filter" %}

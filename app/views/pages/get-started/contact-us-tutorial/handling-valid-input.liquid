@@ -35,7 +35,7 @@ To populate it, you don’t have to write the execute command from scratch. Inst
   graphql r = 'dummy/create', args: object
 
   assign object = r.record_create
-  hash_assign object['valid'] = true
+  assign object['valid'] = true
 
   return object
 %}
@@ -52,7 +52,7 @@ Copy the code above from the core module documentation and paste it into your `e
   graphql r = 'contacts/create', args: object
 
   assign object = r.record_create
-  hash_assign object['valid'] = true
+  assign object['valid'] = true
 
   return object
 %}
@@ -79,7 +79,7 @@ This line assigns the result of the mutation to the `object` variable.
 
 {% raw %}
 ```liquid
-hash_assign object['valid'] = true
+assign object['valid'] = true
 ```
 {% endraw %}
 

@@ -69,19 +69,11 @@ To use newly created GraphQL File, you can use the following liquid:
 ```liquid
 {% raw %}
   {% liquid
-    assign doc = '{}' | parse_json
-    hash_assign doc['uuid'] = 1
-    hash_assign doc['title'] = 'My title'
-    hash_assign doc['content'] = 'My content'
-    hash_assign doc['published_at'] = 'now' | to_time
-    hash_assign doc['created_at'] = 'now' | to_time
-    hash_assign doc['price'] = 100
-    hash_assign doc['category'] = 'Arts'
-
-    assign author = '{}' | parse_json
-    hash_assign author['uuid'] = '' | uuid
-    hash_assign author['name'] = 'John Doe'
-    hash_assign doc['author'] = author
+    assign published_at = 'now' | to_time
+    assign created_at = 'now' | to_time
+    assign author_uuid = '' | uuid
+    assign author = { "uuid": author_uuid, "name": "John Doe" }
+    assign doc = { "uuid": 1, "title": "My title", "content": "My content", "published_at": published_at, "created_at": created_at, "price": 100, "category": "Arts", "author": author }
 
     graphql g = 'json_documents/insert', payload: doc, id: doc.uuid
   %}

@@ -9,7 +9,7 @@ metadata:
 This manifest provides a structured index of the most important publicly available documentation pages. Links generally point to Markdown versions of the docs when available, making it easier for LLMs and AI agents to fetch clean, parseable content. Use this list to navigate or build context for code generation, summarization, or question-answering tasks.
 
 {%- liquid
- assign sections = '[]' | parse_json
+ assign sections = []
  graphql g = 'llms_pages'
  for page in g.pages.results
    if page.metadata.title == blank or page.metadata.description == blank
@@ -22,23 +22,23 @@ This manifest provides a structured index of the most important publicly availab
    assign url = 'https://' | append: context.location.host | append: '/' | append: page.slug | append: '.md'
    assign slug_components = page.slug | split: '/'
    if slug_components.size == 1
-     assign subsections = '[]' | parse_json
+     assign subsections = []
      assign section_name = slug_components[0]
-     assign section = '{}' | parse_json | hash_merge: subsections: subsections, title: page.metadata.title, description: page.metadata.description, name: section_name, url: url
-     assign sections = sections | array_add: section
+     assign section = { "subsections": subsections, "title": page.metadata.title, "description": page.metadata.description, "name": section_name, "url": url }
+     assign sections << section
 
      assign subsection_name = null
    elsif slug_components[0] == section_name and slug_components.size == 2
-     assign subsubsections = '[]' | parse_json
+     assign subsubsections = []
      assign subsection_name = slug_components[1]
-     assign subsection = '{}' | parse_json | hash_merge: subsubsections: subsubsections, title: page.metadata.title, description: page.metadata.description, name: subsection_name, url: url
-     hash_assign section['subsections'] = section['subsections'] | array_add: subsection
+     assign subsection = { "subsubsections": subsubsections, "title": page.metadata.title, "description": page.metadata.description, "name": subsection_name, "url": url }
+     assign section['subsections'] << subsection
    elsif slug_components[0] == section_name and slug_components[1] == subsection_name
-     assign subsubsection = '{}' | parse_json | hash_merge: title: page.metadata.title, description: page.metadata.description, url: url
-     hash_assign subsection['subsubsections'] = subsection['subsubsections'] | array_add: subsubsection
+     assign subsubsection = { "title": page.metadata.title, "description": page.metadata.description, "url": url }
+     assign subsection['subsubsections'] << subsubsection
    elsif slug_components[0] == section_name and subsection_name == null
-     assign subsubsection = '{}' | parse_json | hash_merge: title: page.metadata.title, description: page.metadata.description, url: url
-     hash_assign section['subsections'] = section['subsections'] | array_add: subsubsection
+     assign subsubsection = { "title": page.metadata.title, "description": page.metadata.description, "url": url }
+     assign section['subsections'] << subsubsection
    endif
 
  endfor

@@ -8,13 +8,85 @@ metadata:
 
 ## String
 
-Declare a string by wrapping a variable’s value in single or double quotes:
+Declare a string by wrapping a variable's value in single or double quotes:
 
 ```liquid
 {% raw %}
 {% assign my_string = "Hello World!" %}
 {% endraw %}
 ```
+
+### String interpolation
+
+{% include 'alert/note', content: 'This feature requires the `string_interpolation: true` flag in `config.yml`. See [Single vs double quotes](#single-vs-double-quotes) for details.' %}
+
+Double-quoted strings support interpolation using the {% raw %}`{{ }}`{% endraw %} syntax. This lets you embed variables, property access, and filters directly inside strings:
+
+#### Input
+
+```liquid
+{% raw %}
+{% assign name = "Alice" %}
+{% assign greeting = "Hello {{ name }}!" %}
+{{ greeting }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+Hello Alice!
+```
+
+Interpolation supports filter chains, multiple expressions, and all variable access patterns:
+
+```liquid
+{% raw %}
+{% assign first = "Alice" %}
+{% assign last = "Smith" %}
+{% assign full_name = "{{ first }} {{ last | upcase }}" %}
+{{ full_name }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+Alice SMITH
+```
+
+String interpolation works in all tags that accept string values — `assign`, `function`, `log`, `background`, `export`, and others:
+
+```liquid
+{% raw %}
+{% assign var = "world" %}
+{% log "hello {{ var }}" %}
+{% function res = "lib/func", arg: "hello {{ var }}" %}
+{% endraw %}
+```
+
+### Single vs double quotes
+
+Single-quoted strings **never** interpolate. Use single quotes when you need literal {% raw %}`{{ }}`{% endraw %} text:
+
+```liquid
+{% raw %}
+{% assign name = "Alice" %}
+{% assign interpolated = "Hello {{ name }}" %}
+{% assign literal = 'Hello {{ name }}' %}
+{{ interpolated }}
+{{ literal }}
+{% endraw %}
+```
+
+#### Output
+
+```liquid
+Hello Alice
+Hello {{ name }}
+```
+
+{% include 'alert/note', content: 'String interpolation is enabled by default on new instances. On existing instances it must be enabled explicitly by adding `string_interpolation: true` to your `config.yml`, as it can potentially break your site — any double-quoted strings containing literal `{{ }}` text will start being interpolated.' %}
 
 ## Number
 
@@ -38,7 +110,7 @@ Booleans are either `true` or `false`. No quotations are necessary when declarin
 ```
 ## Nil
 
-Nil is a special empty value that is returned when Liquid code has no results. It is not a string with the characters “nil”.
+Nil is a special empty value that is returned when Liquid code has no results. It is not a string with the characters `nil`.
 
 Nil is treated as `false` in the conditions of if blocks and other Liquid tags that check the truthfulness of a statement.
 
@@ -74,21 +146,20 @@ Hash represents an object as a key value dictionary, allowing a value to be anot
 
 ### Initializing a new object
 
-To initialize an object, the most common way is to either use [parse_json filter](/api-reference/liquid/platformos-filters#parse-json):
+Use the `assign` tag with a hash literal:
 
 {% raw %}
 ```liquid
-  {% assign my_object = '{ "hello": "world" }' | parse_json %}
+  {% assign my_object = { "hello": "world" } %}
 ```
 {% endraw %}
 
-or [parse_json tag](/api-reference/liquid/platformos-tags#parse-json) tag:
+You can include nested hashes, arrays, and variables as values:
 
 {% raw %}
 ```liquid
-  {% parse_json my_object
-    { "hello": "world" }
-  {% end_parsejson %}
+  {% assign name = "Alice" %}
+  {% assign my_object = { "greeting": "hello", "user": name, "tags": ["admin", "editor"] } %}
 ```
 {% endraw %}
 
@@ -115,9 +186,17 @@ world
 
 ### Working with an object
 
-  You can extend objects with various filters and tags. The most commonly used one is [hash_assign tag](/api-reference/liquid/platformos-tags#hash-assign), which stores a value at the given object path.
+  You can extend objects using the `assign` tag with bracket or dot notation:
 
-  Another useful way to extend an object is by merging two objects, which can be accomplished with [hash_merge filter](/api-reference/liquid/platformos-filters#hash-merge)
+  ```liquid
+{% raw %}
+  {% assign my_object = {} %}
+  {% assign my_object["new_key"] = "value" %}
+  {% assign my_object.another_key = "another value" %}
+{% endraw %}
+  ```
+
+  Another useful way to extend an object is by merging two objects, which can be accomplished with [hash_merge filter](/api-reference/liquid/platformos-filters#hash-merge).
 
   If you need to perform certain operation on object, most likely there is already implemented [platformOS filter](/api-reference/liquid/platformos-filters) for that with `hash_` prefix.
 
@@ -133,8 +212,8 @@ To access all the items in an array, you can loop through each item in the array
 
 ```liquid
 {% raw %}
-{% comment %} if site.users = "Tobi", "Laura", "Tetsuro", "Adam" {% endcomment %}
-{% for user in site.users %}
+{% assign users = ["Tobi", "Laura", "Tetsuro", "Adam"] %}
+{% for user in users %}
   {{ user }}
 {% endfor %}
 {% endraw %}
@@ -154,7 +233,7 @@ You can use square bracket `[` `]` notation to access a specific item in an arra
 
 ```liquid
 {% raw %}
-{% comment %} if site.users = "Tobi", "Laura", "Tetsuro", "Adam" {% endcomment %}
+{% assign site = { "users": ["Tobi", "Laura", "Tetsuro", "Adam"] } %}
 {{ site.users[0] }}
 {{ site.users[1] }}
 {{ site.users[3] }}
@@ -171,14 +250,32 @@ Adam
 
 ### Initializing arrays
 
-You cannot initialize arrays using only Liquid.
+Use the `assign` tag with an array literal:
 
-You can, however, use the split filter to break a string into an array of substrings.
+```liquid
+{% raw %}
+{% assign arr = ["apple", "banana", "cherry"] %}
+{% assign empty_arr = [] %}
+{% endraw %}
+```
+
+You can also use the `split` filter to break a string into an array of substrings:
 
 ```liquid
 {% raw %}
 {% assign arr = '1,2,3,4,5' | split: ',' %}
 {{ arr }} => [1, 2, 3, 4, 5]
+{% endraw %}
+```
+
+To append elements, use the `<<` operator:
+
+```liquid
+{% raw %}
+{% assign arr = [] %}
+{% assign arr << "first" %}
+{% assign arr << "second" %}
+{{ arr }} => ["first", "second"]
 {% endraw %}
 ```
 
