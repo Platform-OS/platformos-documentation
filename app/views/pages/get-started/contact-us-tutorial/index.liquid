@@ -123,16 +123,13 @@ The instance needs to be activated.
 {% # TODO: check size %}
 <img loading="lazy" class="w-full" src="{{ 'images/get-started/contact-us-tutorial/new_instance_ready.png' | asset_url }}" alt="The new instance is ready">
 
-### Step 3: Check if you have platformOS check and pos-cli installed
+### Step 3: Check if you have pos-cli installed
 
-Check if you have platformOS check and pos-cli installed:
+Check if you have pos-cli installed (platformOS Check and the Language Server are bundled with it):
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
-platformos-check -v
 pos-cli -v
 </code></pre>
-
-{% include 'alert/note', content: 'If you are using VS Code on Windows, you do not need to install `platformos-check` separately as it is provided with the [platformOS VS Code extension](https://marketplace.visualstudio.com/items?itemName=platformOS.platformos-check-vscode). You can also use other editors if you prefer.' %}
 
 If you haven't installed pos-cli, you can do so globally using npm:
 
@@ -140,8 +137,9 @@ If you haven't installed pos-cli, you can do so globally using npm:
 npm install -g @platformos/pos-cli
 </code></pre>
 
+{% include 'alert/note', content: 'For the best development experience, install the [platformOS VS Code extension](https://marketplace.visualstudio.com/items?itemName=platformOS.platformos-check-vscode) which provides syntax highlighting, IntelliSense, and real-time linting. You can also use other editors — pos-cli includes an LSP server via `pos-cli lsp`.' %}
 
-For further details, refer to the [Installation and Configuration guide](/get-started/installation-and-configuration/), the [Install pos-cli guide](/get-started/installation-and-configuration/#install-pos-cli),  and the [platformos-check guide](https://github.com/Platform-OS/platformos-check).
+For further details, refer to the [Installation and Configuration guide](/get-started/installation-and-configuration/), the [Install pos-cli guide](/get-started/installation-and-configuration/#install-pos-cli), and the [platformOS Check guide](/developer-guide/platformos-check/platformos-check).
 
 
 ### Step 4: Create the project folder
@@ -219,7 +217,7 @@ For further details, refer to the [Starting the GUI](/developer-guide/pos-cli/ma
 
 ### Step 10: Install the platformOS VSCode Extension
 
-We highly recommend installing the [platformOS VSCode Extension](https://github.com/Platform-OS/platformos-check-vscode) for an easier development experience. On Windows, it works out of the box. For OSX/Linux, you'll need to manually install Ruby and [platformos-check](https://github.com/Platform-OS/platformos-check).
+We highly recommend installing the [platformOS VSCode Extension](https://marketplace.visualstudio.com/items?itemName=platformOS.platformos-check-vscode) for an easier development experience. It works on all platforms (Windows, macOS, Linux) and provides syntax highlighting, IntelliSense, and real-time linting for Liquid templates.
 
 With these steps completed, you are now ready to start building your _Contact Us_ form. Let's dive into the details of implementing the form, setting up validations, and handling form submissions in the next sections.
 

@@ -42,21 +42,21 @@ What you’ll need:
 
 ### 4. Setup IDE - for platformos-check
 
-The [platformos-check](https://github.com/Platform-OS/platformos-check) is a tool that helps you follow platformOS recommendations & best practices by analyzing the Liquid inside your app.
+The [platformos-check](https://github.com/Platform-OS/platformos-tools) is a Node.js-based tool that helps you follow platformOS recommendations & best practices by analyzing the Liquid inside your app. It is part of the [platformos-tools](https://github.com/Platform-OS/platformos-tools) monorepo.
 
 What you’ll need:
 
+* Install pos-cli via npm: `npm install -g @platformos/pos-cli` — platformOS Check and the Language Server are bundled with pos-cli
 * If you use VSCode - [platformOS Liquid Extension](https://marketplace.visualstudio.com/items?itemName=platformOS.platformos-check-vscode)
-  * Windows - the extension will work out of the box, as all the dependencies - [Ruby](https://www.ruby-lang.org/en/) and [platformOS Check](https://github.com/Platform-OS/platformos-check) are included via included executable file
-  * Other systems - must [manually install Ruby and platformOS Check](https://github.com/Platform-OS/platformos-check?tab=readme-ov-file#installation)
+  * The extension works on all platforms (Windows, macOS, Linux) — no additional dependencies required
 * If you use Vim, Emacs or anything else
-  * [manually install Ruby and platformOS Check](https://github.com/Platform-OS/platformos-check?tab=readme-ov-file#installation)
-  * platformOS check is implemented using [Language Server Protocol](https://microsoft.github.io/language-server-protocol/overviews/lsp/overview/), follow instructions of how to use LSP servers in your editor. For example, for Vim you can use [coc.vim](https://github.com/neoclide/coc.nvim) and configure it:
+  * platformOS check includes a [Language Server Protocol](https://microsoft.github.io/language-server-protocol/overviews/lsp/overview/) implementation via `pos-cli lsp`. Follow instructions of how to use LSP servers in your editor. For example, for Vim you can use [coc.vim](https://github.com/neoclide/coc.nvim) and configure it:
     ```yaml
       {
         "languageserver": {
           "platformos-check": {
-            "command": "platformos-check-language-server",
+            "command": "pos-cli",
+            "args": ["lsp"],
             "filetypes": ["liquid", "graphql", "yaml", "yml"],
             "rootPatterns": [".platformos-check.yml", ".pos"],
             "settings": {
@@ -73,7 +73,7 @@ What you’ll need:
       }
     ```
 
-Please note that `platformos-check` is automatically available as a CLI tool, which is capable to auto-correct some of the offenses, use in CI and configure to meet your needs, including writing your own checks. Learn more about [platformOS check Configuration](https://documentation.platformos.com/developer-guide/platformos-check/platformos-check)
+Please note that `pos-cli check run` is available as a CLI tool for linting, which is capable of auto-correcting some of the offenses, and can be used in CI. Use `pos-cli check init` to initialize a `.platformos-check.yml` configuration file. Learn more about [platformOS check Configuration](https://documentation.platformos.com/developer-guide/platformos-check/platformos-check)
 
 ### 5. Setup IDE - for GraphQL
 
