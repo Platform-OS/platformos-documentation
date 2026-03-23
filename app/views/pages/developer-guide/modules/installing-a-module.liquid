@@ -54,13 +54,9 @@ The `pos-modules.lock.json` is equivalent to `package-lock.json` and should not 
 
 ## Downloading module source code
 
-The `pos-cli modules install` command only adds an entry to the `pos-module` files. When you deploy your application, the lock file is included in the release. If there are any changes required (for example, if you've added a new module or changed the version of an existing module), we will download the source code of the module (including the `private` folder).
+The `pos-cli modules install` command automatically downloads the module source code and all of its dependencies into `modules/<module name>`. This means the source code is immediately available locally for browsing or to avoid [platformos-check](/developer-guide/platformos-check/platformos-check) errors/warnings about missing files. Please note that files from the `private` directory are not included.
 
-However, most of the time you will want to download the source code anyway — either to avoid [platformos-check](/developer-guide/platformos-check/platformos-check) errors/warnings about missing files, or to browse the source code. You can download the source code using the `pos-cli modules download` command. For example, to download the source code of the core module, use:
-
-`pos-cli modules download core`
-
-The zip archive with the source code will be automatically downloaded and unzipped in `modules/<module name>`. Please note that it will not include any files from the `private` directory though.)
+The platform only stores which modules and versions are installed — it does not download source code on your behalf. This means the downloaded module source code must be included in your release when you deploy.
 
 You should never modify any files in the `modules/<module name>` directory — see [Overwriting a module file](#overwritting-a-module-file) to learn the recommended approach for modifying a module file.
 
