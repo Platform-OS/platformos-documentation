@@ -1,0 +1,77 @@
+---
+converter: markdown
+metadata:
+  title: UnusedDocParam
+  description: Reports parameters declared in a doc tag that are not used within the partial.
+---
+
+## UnusedDocParam
+
+**Severity:** warning | **Type:** LiquidHtml
+
+This check ensures that parameters defined in a partial's `{% raw %}{% doc %}{% endraw %}` tag are actually used within the partial body. A declared but unused parameter is almost always a mistake — either the parameter name was misspelled in the template, or the `{% raw %}{% doc %}{% endraw %}` declaration needs to be removed.
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```liquid
+{% raw %}
+{% doc %}
+  @param {string} title - The card title
+  @param {string} subtitle - The card subtitle
+{% enddoc %}
+<div class="card">
+  <h2>{{ title }}</h2>
+  {% comment %}subtitle is declared but never used{% endcomment %}
+</div>
+{% endraw %}
+```
+
+### &#x2713; Correct Code Example (Use this instead):
+
+Either use the declared parameter:
+
+```liquid
+{% raw %}
+{% doc %}
+  @param {string} title - The card title
+  @param {string} subtitle - The card subtitle
+{% enddoc %}
+<div class="card">
+  <h2>{{ title }}</h2>
+  <p>{{ subtitle }}</p>
+</div>
+{% endraw %}
+```
+
+Or remove the unused declaration:
+
+```liquid
+{% raw %}
+{% doc %}
+  @param {string} title - The card title
+{% enddoc %}
+<div class="card">
+  <h2>{{ title }}</h2>
+</div>
+{% endraw %}
+```
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+UnusedDocParam:
+  enabled: true
+  severity: warning
+```
+
+## Disabling This Check
+
+This check is safe to disable if you use the `{% raw %}{% doc %}{% endraw %}` tag primarily for documentation purposes and intentionally declare parameters that serve as documentation only.
+
+## Resources
+
+- [LiquidDoc `doc` tag](https://documentation.platformos.com/developer-guide/platformos-check/platformos-check)

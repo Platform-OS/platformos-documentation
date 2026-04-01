@@ -1,0 +1,77 @@
+---
+converter: markdown
+metadata:
+  title: InvalidHashAssignTarget
+  description: Reports errors when hash_assign is used on a variable that is not an object type.
+---
+
+## InvalidHashAssignTarget
+
+**Severity:** error | **Type:** LiquidHtml
+
+This check reports errors when `{% raw %}{% hash_assign %}{% endraw %}` is used on a variable that has been inferred to be a primitive type (number, string, boolean) or an array. The `hash_assign` tag is only valid on object (hash) types.
+
+The check infers variable types from how they are assigned:
+
+- `{% raw %}{% assign x = 1 %}{% endraw %}` — `x` is a **number**
+- `{% raw %}{% assign x = "hello" %}{% endraw %}` — `x` is a **string**
+- `{% raw %}{% assign x = true %}{% endraw %}` — `x` is a **boolean**
+- `{% raw %}{% assign x = arr | split: "," %}{% endraw %}` — `x` is an **array**
+- `{% raw %}{% assign x = json | parse_json %}{% endraw %}` or `{% raw %}{% parse_json x %}{% endraw %}` — `x` is an **object**
+- `{% raw %}{% graphql x = 'query' %}{% endraw %}` — `x` is an **object**
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```liquid
+{% raw %}
+{% assign counter = 0 %}
+{% hash_assign counter['key'] = "value" %}
+{% endraw %}
+```
+
+`counter` is a number, so `hash_assign` cannot be used on it.
+
+```liquid
+{% raw %}
+{% assign items = "a,b,c" | split: "," %}
+{% hash_assign items['key'] = "value" %}
+{% endraw %}
+```
+
+`items` is an array, so `hash_assign` cannot be used on it.
+
+### &#x2713; Correct Code Example (Use this instead):
+
+```liquid
+{% raw %}
+{% assign data = '{}' | parse_json %}
+{% hash_assign data['key'] = "value" %}
+{% endraw %}
+```
+
+```liquid
+{% raw %}
+{% parse_json data %}{}{% endparse_json %}
+{% hash_assign data['key'] = "value" %}
+{% endraw %}
+```
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+InvalidHashAssignTarget:
+  enabled: true
+  severity: error
+```
+
+## Disabling This Check
+
+Disabling this check is not recommended.
+
+## Resources
+
+- [platformOS `hash_assign` tag](https://documentation.platformos.com/api-reference/liquid/tags#hash_assign)

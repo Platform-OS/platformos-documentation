@@ -1,0 +1,58 @@
+---
+converter: markdown
+metadata:
+  title: DeprecatedTag
+  description: Reports usage of deprecated Liquid tags and encourages migration to their replacements.
+---
+
+## DeprecatedTag
+
+**Severity:** warning | **Type:** LiquidHtml | **Aliases:** `DeprecatedTags`
+
+This check is aimed at eliminating the use of deprecated Liquid tags. When a deprecated tag is used, the check reports the offense with the deprecation reason (if available) to help you migrate to the recommended alternative.
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```liquid
+{% raw %}
+{% include 'my-partial' %}
+{% endraw %}
+```
+
+The `include` tag has been deprecated in favor of `render`.
+
+### &#x2713; Correct Code Example (Use this instead):
+
+```liquid
+{% raw %}
+{% render 'my-partial' %}
+{% endraw %}
+```
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+DeprecatedTag:
+  enabled: true
+  severity: warning
+```
+
+## Disabling This Check
+
+Use the `platformos-check-disable` comment to suppress specific instances when migrating legacy code:
+
+```liquid
+{% raw %}
+{% # platformos-check-disable DeprecatedTag %}
+{% include 'legacy-partial' %}
+{% # platformos-check-enable DeprecatedTag %}
+{% endraw %}
+```
+
+## Resources
+
+- [platformOS Liquid Tags Reference](https://documentation.platformos.com/api-reference/liquid/tags)

@@ -1,0 +1,70 @@
+---
+converter: markdown
+metadata:
+  title: UnclosedHTMLElement
+  description: Warns about unbalanced HTML tags in branching Liquid code.
+---
+
+## UnclosedHTMLElement
+
+**Severity:** warning | **Type:** LiquidHtml
+
+This check warns you of unbalanced HTML tags in branching code. This situation commonly arises when Liquid conditionals open an HTML element in one branch but not another, leaving the HTML structure invalid in certain code paths.
+
+Unbalanced HTML causes unpredictable rendering behavior across different browsers and can break CSS layout, JavaScript DOM queries, and screen readers.
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```liquid
+{% raw %}
+{% if show_wrapper %}
+  <div class="wrapper">
+{% endif %}
+  <p>Content</p>
+{% if show_wrapper %}
+  </div>
+{% endif %}
+{% endraw %}
+```
+
+When `show_wrapper` is false, the `<p>` is rendered without a wrapper. When `show_wrapper` is true, the `<div>` is opened and closed — but this pattern can confuse parsers and is fragile.
+
+### &#x2713; Correct Code Example (Use this instead):
+
+```liquid
+{% raw %}
+{% if show_wrapper %}
+  <div class="wrapper">
+    <p>Content</p>
+  </div>
+{% else %}
+  <p>Content</p>
+{% endif %}
+{% endraw %}
+```
+
+Or using a CSS class instead of conditional wrapping:
+
+```liquid
+{% raw %}
+<div class="wrapper{% unless show_wrapper %} wrapper--hidden{% endunless %}">
+  <p>Content</p>
+</div>
+{% endraw %}
+```
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+UnclosedHTMLElement:
+  enabled: true
+  severity: warning
+```
+
+## Disabling This Check
+
+This check can be disabled if you intentionally use split HTML tags across Liquid branches as part of a deliberate pattern. Use the `platformos-check-disable` comment to suppress specific instances.

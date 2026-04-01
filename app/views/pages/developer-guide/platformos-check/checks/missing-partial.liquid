@@ -1,0 +1,75 @@
+---
+converter: markdown
+metadata:
+  title: MissingPartial
+  description: Reports references to partial, function, or GraphQL files that do not exist.
+---
+
+## MissingPartial
+
+**Severity:** error | **Type:** LiquidHtml
+
+This check ensures that resources specified with the `{% raw %}{% render %}{% endraw %}` tag, `{% raw %}{% function %}{% endraw %}` tag, `{% raw %}{% graphql %}{% endraw %}` tag, and the deprecated `{% raw %}{% include %}{% endraw %}` tag actually exist in your project. It aims to prevent Liquid rendering errors caused by referencing non-existent files.
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```liquid
+{% raw %}
+{% render 'partial-that-does-not-exist' %}
+{% function result = 'lib/function-that-does-not-exist' %}
+{% graphql g = 'graphql/query-that-does-not-exist' %}
+{% endraw %}
+```
+
+### &#x2713; Correct Code Example (Use this instead):
+
+```liquid
+{% raw %}
+{% render 'shared/header' %}
+{% function result = 'lib/my_function' %}
+{% graphql g = 'records/search' %}
+{% endraw %}
+```
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+MissingPartial:
+  enabled: true
+  severity: error
+```
+
+### `ignore_missing`
+
+Specify a list of patterns for missing files to ignore. Unlike the global `ignore` option (which ignores offenses based on the file containing the tag), `ignore_missing` ignores offenses based on the target file being referenced.
+
+```yaml
+MissingPartial:
+  ignore_missing:
+    - icon-*
+    - modules/private-module/**
+```
+
+This configuration ignores offenses for `{% raw %}{% render 'icon-missing' %}{% endraw %}` across all app files.
+
+```yaml
+MissingPartial:
+  ignore:
+    - modules/private-module/index.liquid
+```
+
+This configuration ignores all `MissingPartial` offenses in `modules/private-module/index.liquid`, regardless of the target file.
+
+## Disabling This Check
+
+Use the `ignore_missing` option to suppress false positives for private modules or generated partials instead of disabling the check entirely.
+
+## Resources
+
+- [platformOS `render` tag](https://documentation.platformos.com/api-reference/liquid/tags#render)
+- [platformOS `function` tag](https://documentation.platformos.com/api-reference/liquid/tags#function)
+- [Reusing Code Across Multiple Pages](/developer-guide/pages/reusing-code-across-multiple-pages)

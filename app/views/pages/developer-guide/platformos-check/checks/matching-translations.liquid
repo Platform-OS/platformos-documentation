@@ -1,0 +1,71 @@
+---
+converter: markdown
+metadata:
+  title: MatchingTranslations
+  description: Ensures translation files for different languages have the same keys.
+---
+
+## MatchingTranslations
+
+**Severity:** error | **Type:** YAML
+
+This check ensures that translation files for different languages have the same keys, helping to avoid inconsistencies and making it easier to spot errors and maintain translation files.
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```yaml
+# app/translations/en/item.yml
+en:
+  app:
+    item:
+      title: "Item"
+      description: "Description"
+
+# app/translations/de/item.yml
+de:
+  app:
+    item:
+      description: "Beschreibung"
+```
+
+The `title` key is missing from the German translation file.
+
+### &#x2713; Correct Code Example (Use this instead):
+
+```yaml
+# app/translations/en/item.yml
+en:
+  app:
+    item:
+      title: "Item"
+      description: "Description"
+
+# app/translations/de/item.yml
+de:
+  app:
+    item:
+      title: "Artikel"
+      description: "Beschreibung"
+```
+
+Both translation files have the same keys.
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+MatchingTranslations:
+  enabled: true
+  severity: error
+```
+
+## Disabling This Check
+
+There should be no need to disable this check. For keys set via the UI that are not intended to be part of the codebase, use the appropriate configuration option in [app/config.yml](/developer-guide/platformos-workflow/codebase/config).
+
+## Resources
+
+- [platformOS Translations](/developer-guide/translations/translations)

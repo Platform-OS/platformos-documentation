@@ -1,0 +1,59 @@
+---
+converter: markdown
+metadata:
+  title: OrphanedPartial
+  description: Reports partials that are not referenced by any other file in the project.
+---
+
+## OrphanedPartial
+
+**Severity:** warning | **Type:** LiquidHtml
+
+This check exists to prevent orphaned partials in platformOS applications. A partial is considered orphaned when it is not referenced by any other file — no `{% raw %}{% render %}{% endraw %}`, `{% raw %}{% function %}{% endraw %}`, `{% raw %}{% include %}{% endraw %}`, or `{% raw %}{% graphql %}{% endraw %}` tag points to it.
+
+Orphaned partials are dead code: they increase maintenance burden, can cause confusion, and bloat the codebase. This check helps you identify and remove them.
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```
+app/views/partials/old-promotional-banner.liquid
+```
+
+This partial exists in the file system but is never referenced by any other template.
+
+### &#x2713; Correct Code Example (Use this instead):
+
+Either delete the orphaned partial, or add a reference to it from another template:
+
+```liquid
+{% raw %}
+{% render 'old-promotional-banner' %}
+{% endraw %}
+```
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+OrphanedPartial:
+  enabled: true
+  severity: warning
+```
+
+## Disabling This Check
+
+This check can be disabled for projects that have partials intentionally kept for future use. You can also use the `ignore` option to exclude specific paths:
+
+```yaml
+OrphanedPartial:
+  ignore:
+    - modules/legacy/**
+```
+
+## Resources
+
+- [Reusing Code Across Multiple Pages](/developer-guide/pages/reusing-code-across-multiple-pages)
+- [platformOS `render` tag](https://documentation.platformos.com/api-reference/liquid/tags#render)

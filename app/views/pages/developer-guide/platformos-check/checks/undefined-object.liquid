@@ -1,0 +1,73 @@
+---
+converter: markdown
+metadata:
+  title: UndefinedObject
+  description: Reports references to undefined Liquid variables.
+---
+
+## UndefinedObject
+
+**Severity:** warning | **Type:** LiquidHtml
+
+This check ensures that no undefined variables are used in your Liquid templates. It prevents errors caused by referencing variables that have not been assigned or passed as arguments, and also reports missing or unused attributes in `{% raw %}{% render %}{% endraw %}`, `{% raw %}{% function %}{% endraw %}`, and `{% raw %}{% background %}{% endraw %}` tags.
+
+The check is aware of:
+
+- Variables defined with `{% raw %}{% assign %}{% endraw %}`, `{% raw %}{% capture %}{% endraw %}`, `{% raw %}{% parse_json %}{% endraw %}`, `{% raw %}{% function %}{% endraw %}`, `{% raw %}{% graphql %}{% endraw %}`
+- Loop variables from `{% raw %}{% for %}{% endraw %}` and `{% raw %}{% tablerow %}{% endraw %}`
+- Global platformOS objects (e.g. `context`, `current_user`)
+- Arguments passed via `{% raw %}{% render %}{% endraw %}` and `{% raw %}{% function %}{% endraw %}` tags
+
+Variables starting with `_` (underscore) are treated as intentionally unused and do not trigger this check.
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```liquid
+{% raw %}
+{% if greeting == "Hello" %}
+  Hello
+{% endif %}
+{% endraw %}
+```
+
+`greeting` has never been defined.
+
+### &#x2713; Correct Code Example (Use this instead):
+
+```liquid
+{% raw %}
+{% assign greeting = "Hello" %}
+{% if greeting == "Hello" %}
+  Hello
+{% endif %}
+{% endraw %}
+```
+
+For optional parameters in partials, provide a default:
+
+```liquid
+{% raw %}
+{% assign my_arg = my_arg | default: nil %}
+{% endraw %}
+```
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+UndefinedObject:
+  enabled: true
+  severity: warning
+```
+
+## Disabling This Check
+
+Disabling this check is not recommended.
+
+## Resources
+
+- [platformOS Context Variable](/developer-guide/variables/context-variable#displaying-the-context-object)
+- [platformOS Object Reference](https://documentation.platformos.com/api-reference/liquid/objects)

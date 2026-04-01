@@ -1,0 +1,57 @@
+---
+converter: markdown
+metadata:
+  title: UniqueDocParamNames
+  description: Reports duplicate parameter names in a doc tag.
+---
+
+## UniqueDocParamNames
+
+**Severity:** error | **Type:** LiquidHtml
+
+This check ensures that all `@param` entries in a `{% raw %}{% doc %}{% endraw %}` tag have unique names. Duplicate parameter names in a `{% raw %}{% doc %}{% endraw %}` block are always a mistake — only one declaration would be effective, and the duplication causes confusion for readers and tooling.
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```liquid
+{% raw %}
+{% doc %}
+  @param {string} title - The card title
+  @param {string} title - Duplicate title param
+  @param {string} description - The card description
+{% enddoc %}
+{% endraw %}
+```
+
+`title` is declared twice.
+
+### &#x2713; Correct Code Example (Use this instead):
+
+```liquid
+{% raw %}
+{% doc %}
+  @param {string} title - The card title
+  @param {string} description - The card description
+{% enddoc %}
+{% endraw %}
+```
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+UniqueDocParamNames:
+  enabled: true
+  severity: error
+```
+
+## Disabling This Check
+
+Disabling this check is not recommended. Duplicate parameter names are always a mistake.
+
+## Resources
+
+- [LiquidDoc `doc` tag](https://documentation.platformos.com/developer-guide/platformos-check/platformos-check)

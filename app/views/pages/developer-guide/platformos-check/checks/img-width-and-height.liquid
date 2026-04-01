@@ -1,0 +1,69 @@
+---
+converter: markdown
+metadata:
+  title: ImgWidthAndHeight
+  description: Enforces width and height attributes on img tags to prevent cumulative layout shift.
+---
+
+## ImgWidthAndHeight
+
+**Severity:** error | **Type:** LiquidHtml
+
+This check aims to prevent [cumulative layout shift](https://web.dev/cls/) (CLS) in your platformOS application by enforcing the use of `width` and `height` attributes on `img` tags.
+
+When `width` and `height` attributes are missing on an `img` tag, the browser does not know the image's aspect ratio until it is fully loaded. Without this information, the browser treats the image as having a height of 0 until it loads.
+
+This leads to two problems:
+
+1. **Layout shift** — text and other content get pushed down the page as images load one after another.
+2. **Lazy loading fails** — when all images appear to have a height of 0px, the browser assumes they are all in the viewport and loads them immediately, defeating the purpose of lazy loading.
+
+**Note:** The `width` and `height` attributes should not include units (no `px`, `%`, etc.).
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```liquid
+{% raw %}
+<img alt="cat" src="cat.jpg">
+<img alt="cat" src="cat.jpg" width="100px" height="100px">
+<img alt="{{ image.alt }}" src="{{ image.src }}">
+{% endraw %}
+```
+
+### &#x2713; Correct Code Example (Use this instead):
+
+```liquid
+{% raw %}
+<img alt="cat" src="cat.jpg" width="100" height="200">
+<img
+  alt="{{ image.alt }}"
+  src="{{ image.src }}"
+  width="{{ image.width }}"
+  height="{{ image.height }}"
+>
+{% endraw %}
+```
+
+The CSS `width` of the `img` should also be set for the image to be responsive.
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+ImgWidthAndHeight:
+  enabled: true
+  severity: error
+```
+
+## Disabling This Check
+
+You can avoid content layout shift without `width` and `height` attributes by using the padding-top hack with an `overflow: hidden` container when the aspect ratio of the displayed image should be independent of the uploaded image. Otherwise, disabling this check is not recommended as it can negatively impact Core Web Vitals scores.
+
+## Resources
+
+- [Cumulative Layout Shift (CLS)](https://web.dev/cls/)
+- [Layout shift demo (CodePen)](https://codepen.io/charlespwd/pen/YzpxPEp?editors=1100)
+- [Lazy loading demo (CodePen)](https://codepen.io/charlespwd/pen/abZmqXJ?editors=0111)

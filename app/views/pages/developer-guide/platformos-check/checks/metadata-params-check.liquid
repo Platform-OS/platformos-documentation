@@ -1,0 +1,63 @@
+---
+converter: markdown
+metadata:
+  title: MetadataParamsCheck
+  description: Validates that parameters passed to render and function tags match what the partial expects.
+---
+
+## MetadataParamsCheck
+
+**Severity:** error | **Type:** LiquidHtml
+
+This check ensures that parameters referenced when calling `{% raw %}{% render %}{% endraw %}` or `{% raw %}{% function %}{% endraw %}` tags exist in the target partial. It works by inspecting the called partial and determining which variables it expects:
+
+- **If the partial has a `{% raw %}{% doc %}{% endraw %}` tag**, only the parameters declared in `@param` entries are considered valid. Required parameters (not marked `@param {type} [name]` with brackets) must be provided.
+- **If the partial has no `{% raw %}{% doc %}{% endraw %}` tag**, the check scans for undefined variables in the partial body and treats them as implicitly required parameters.
+
+This check is complementary to [MissingRenderPartialArguments](/developer-guide/platformos-check/checks/missing-render-partial-arguments) and [UnrecognizedRenderPartialArguments](/developer-guide/platformos-check/checks/unrecognized-render-partial-arguments), which rely on explicit `{% raw %}{% doc %}{% endraw %}` declarations.
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```liquid
+{% raw %}
+{% comment %}app/views/partials/greeting.liquid{% endcomment %}
+<h1>Hello, {{ name }}!</h1>
+{% endraw %}
+```
+
+```liquid
+{% raw %}
+{% comment %}Calling site — 'name' is required but not passed{% endcomment %}
+{% render 'greeting' %}
+{% endraw %}
+```
+
+### &#x2713; Correct Code Example (Use this instead):
+
+```liquid
+{% raw %}
+{% render 'greeting', name: current_user.name %}
+{% endraw %}
+```
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+MetadataParamsCheck:
+  enabled: true
+  severity: error
+```
+
+## Disabling This Check
+
+This check can be disabled for partials where dynamic variable passing is intentional and cannot be statically analyzed.
+
+## Resources
+
+- [platformOS `render` tag](https://documentation.platformos.com/api-reference/liquid/tags#render)
+- [platformOS `function` tag](https://documentation.platformos.com/api-reference/liquid/tags#function)
+- [LiquidDoc `doc` tag](https://documentation.platformos.com/developer-guide/platformos-check/platformos-check)

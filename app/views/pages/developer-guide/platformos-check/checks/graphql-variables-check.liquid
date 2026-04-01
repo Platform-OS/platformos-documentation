@@ -1,0 +1,64 @@
+---
+converter: markdown
+metadata:
+  title: GraphQLVariablesCheck
+  description: Validates that parameters passed to a GraphQL tag match the variables defined in the query or mutation.
+---
+
+## GraphQLVariablesCheck
+
+**Severity:** error | **Type:** LiquidHtml
+
+This check ensures that parameters passed in a `{% raw %}{% graphql %}{% endraw %}` tag match the variable definitions in the referenced `.graphql` file. It reports two types of problems:
+
+- **Unknown parameters** — an argument is passed that does not correspond to any variable in the query.
+- **Missing required parameters** — a non-null variable in the query (without a default value) is not provided at the call site.
+
+**Note:** If you pass the special `args` parameter (which splats a hash as all GraphQL variables), the check is skipped for that call because the variables cannot be determined statically.
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```graphql
+# app/graphql/records/search.graphql
+query search($table: String!) {
+  records(per_page: 20, filter: { table: { value: $table } }) {
+    results { id }
+  }
+}
+```
+
+```liquid
+{% raw %}
+{% comment %}Missing required 'table' argument, and passing unknown 'foo' argument{% endcomment %}
+{% graphql result = 'records/search', foo: "bar" %}
+{% endraw %}
+```
+
+### &#x2713; Correct Code Example (Use this instead):
+
+```liquid
+{% raw %}
+{% graphql result = 'records/search', table: "my_table" %}
+{% endraw %}
+```
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+GraphQLVariablesCheck:
+  enabled: true
+  severity: error
+```
+
+## Disabling This Check
+
+Disabling this check is not recommended.
+
+## Resources
+
+- [platformOS `graphql` tag](https://documentation.platformos.com/api-reference/liquid/tags#graphql)
+- [platformOS GraphQL API Reference](https://documentation.platformos.com/api-reference/graphql/g/query)

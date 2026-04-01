@@ -1,0 +1,68 @@
+---
+converter: markdown
+metadata:
+  title: MissingRenderPartialArguments
+  description: Reports missing required arguments when rendering a partial that declares its parameters with a doc tag.
+---
+
+## MissingRenderPartialArguments
+
+**Severity:** error | **Type:** LiquidHtml | **Aliases:** `MissingRenderPartialParams`
+
+This check ensures that all required `@param` arguments declared in a partial's `{% raw %}{% doc %}{% endraw %}` tag are provided at the call site. It helps you catch missing required arguments at development time rather than at runtime.
+
+A parameter is considered required when it is declared without square brackets around its name in the `{% raw %}{% doc %}{% endraw %}` tag (e.g. `@param {string} name` is required, `@param {string} [name]` is optional).
+
+This check only runs when the target partial has a `{% raw %}{% doc %}{% endraw %}` tag. For partials without a `{% raw %}{% doc %}{% endraw %}` tag, see [MetadataParamsCheck](/developer-guide/platformos-check/checks/metadata-params-check).
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```liquid
+{% raw %}
+{% comment %}app/views/partials/user/card.liquid{% endcomment %}
+{% doc %}
+  @param {string} name - The user's display name
+  @param {string} [avatar_url] - Optional avatar URL
+{% enddoc %}
+<div class="card">
+  <h2>{{ name }}</h2>
+</div>
+{% endraw %}
+```
+
+```liquid
+{% raw %}
+{% comment %}Calling site — required 'name' argument is missing{% endcomment %}
+{% render 'user/card', avatar_url: user.avatar %}
+{% endraw %}
+```
+
+### &#x2713; Correct Code Example (Use this instead):
+
+```liquid
+{% raw %}
+{% render 'user/card', name: user.name, avatar_url: user.avatar %}
+{% render 'user/card', name: user.name %}
+{% endraw %}
+```
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+MissingRenderPartialArguments:
+  enabled: true
+  severity: error
+```
+
+## Disabling This Check
+
+Disabling this check is not recommended. If a parameter is truly optional, mark it with square brackets in the `{% raw %}{% doc %}{% endraw %}` tag: `@param {string} [param_name]`.
+
+## Resources
+
+- [platformOS `render` tag](https://documentation.platformos.com/api-reference/liquid/tags#render)
+- [LiquidDoc `doc` tag](https://documentation.platformos.com/developer-guide/platformos-check/platformos-check)

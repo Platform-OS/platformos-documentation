@@ -1,0 +1,64 @@
+---
+converter: markdown
+metadata:
+  title: MissingAsset
+  description: Reports references to asset files that do not exist in your project.
+---
+
+## MissingAsset
+
+**Severity:** error | **Type:** LiquidHtml
+
+This check reports cases where an `asset_url` filter references a file that does not exist in the `app/assets/` directory. Missing asset references will produce broken links or 404 errors in production.
+
+The check only applies to static string asset names — it cannot verify dynamically constructed asset paths.
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```liquid
+{% raw %}
+<link rel="stylesheet" href="{{ 'nonexistent.css' | asset_url }}">
+<script src="{{ 'missing-bundle.js' | asset_url }}"></script>
+{% endraw %}
+```
+
+Neither `nonexistent.css` nor `missing-bundle.js` exists in `app/assets/`.
+
+### &#x2713; Correct Code Example (Use this instead):
+
+```liquid
+{% raw %}
+<link rel="stylesheet" href="{{ 'app.css' | asset_url }}">
+<script src="{{ 'app.js' | asset_url }}" defer></script>
+{% endraw %}
+```
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+MissingAsset:
+  enabled: true
+  severity: error
+```
+
+You can ignore specific missing assets using the `ignore` option:
+
+```yaml
+MissingAsset:
+  enabled: true
+  ignore:
+    - modules/legacy/**
+```
+
+## Disabling This Check
+
+Disabling this check is not recommended. If you reference assets from modules that are not available locally, use the `ignore` option instead.
+
+## Resources
+
+- [platformOS Assets](/developer-guide/assets/assets)
+- [Using Static Assets](/developer-guide/assets/using-static-assets-pages)

@@ -1,0 +1,53 @@
+---
+converter: markdown
+metadata:
+  title: UnknownFilter
+  description: Reports the use of Liquid filters that are not defined in the platformOS filter set.
+---
+
+## UnknownFilter
+
+**Severity:** error | **Type:** LiquidHtml
+
+This check prevents errors caused by using unknown filters in Liquid code. Referencing a filter that does not exist will cause a runtime error in your templates.
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```liquid
+{% raw %}
+{{ x | some_unknown_filter }}
+{{ product.name | humanize }}
+{% endraw %}
+```
+
+Neither `some_unknown_filter` nor `humanize` exist in the platformOS filter set.
+
+### &#x2713; Correct Code Example (Use this instead):
+
+```liquid
+{% raw %}
+{{ x | upcase }}
+{{ product.name | capitalize }}
+{% endraw %}
+```
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+UnknownFilter:
+  enabled: true
+  severity: error
+```
+
+## Disabling This Check
+
+Disabling this check is not recommended as it helps prevent runtime errors.
+
+## Resources
+
+- [Liquid Filters Reference](https://documentation.platformos.com/api-reference/liquid/filters)
+- [platformOS Filters Reference](https://documentation.platformos.com/api-reference/liquid/platformos-filters)

@@ -1,0 +1,32 @@
+---
+converter: markdown
+metadata:
+  title: JSONSyntaxError (Deprecated)
+  description: Deprecated check for JSON syntax validation. Use ValidJSON instead.
+---
+
+## JSONSyntaxError
+
+**Severity:** error | **Type:** JSON | **Status:** Deprecated
+
+This check has been deprecated and superseded by [ValidJSON](/developer-guide/platformos-check/checks/valid-json), which provides the same JSON syntax validation with additional schema validation support.
+
+If you have `JSONSyntaxError` in your `.platformos-check.yml` configuration, replace it with `ValidJSON`.
+
+## Migration
+
+Replace any references to `JSONSyntaxError` in your configuration:
+
+```yaml
+# Before
+JSONSyntaxError:
+  enabled: true
+
+# After
+ValidJSON:
+  enabled: true
+```
+
+## Resources
+
+- [ValidJSON check](/developer-guide/platformos-check/checks/valid-json)

@@ -1,0 +1,60 @@
+---
+converter: markdown
+metadata:
+  title: LiquidHTMLSyntaxError
+  description: Reports Liquid and HTML syntax errors in your templates.
+---
+
+## LiquidHTMLSyntaxError
+
+**Severity:** error | **Type:** LiquidHtml | **Aliases:** `SyntaxError`, `HtmlParsingError`
+
+This check informs you of Liquid and HTML syntax errors early, aiming to eliminate syntax errors in Liquid templates. It covers both Liquid syntax problems and HTML parsing errors in the same file.
+
+Common Liquid syntax errors detected:
+
+- Missing closing tags (e.g. `{% raw %}{% include 'x'{% endraw %}` without closing `%}`)
+- Malformed assignments (e.g. `{% raw %}{% assign foo = 1 }}{% endraw %}`)
+- Unknown tags
+- Invalid conditional syntax (e.g. using `|` instead of `.` for size checks)
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```liquid
+{% raw %}
+{% include 'muffin'
+{% assign foo = 1 }}
+{% unknown %}
+{% if collection | size > 0 %}
+{% endraw %}
+```
+
+### &#x2713; Correct Code Example (Use this instead):
+
+```liquid
+{% raw %}
+{% render 'muffin' %}
+{% assign foo = 1 %}
+{% if collection.size > 0 %}
+{% endraw %}
+```
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+LiquidHTMLSyntaxError:
+  enabled: true
+  severity: error
+```
+
+## Disabling This Check
+
+Disabling this check is not recommended. Syntax errors prevent your templates from rendering correctly.
+
+## Resources
+
+- [platformOS Liquid Reference](https://documentation.platformos.com/api-reference/liquid/introduction)

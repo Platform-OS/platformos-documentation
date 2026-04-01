@@ -1,0 +1,75 @@
+---
+converter: markdown
+metadata:
+  title: GraphQLCheck
+  description: Validates GraphQL query and mutation files against the platformOS schema.
+---
+
+## GraphQLCheck
+
+**Severity:** error | **Type:** GraphQL
+
+This check ensures that `.graphql` files in your project contain valid GraphQL that conforms to the platformOS schema. It catches two categories of problems:
+
+1. **Syntax errors** — malformed GraphQL that cannot be parsed at all.
+2. **Validation errors** — valid GraphQL syntax that does not match the schema (e.g. querying a field that does not exist).
+
+The check requires an up-to-date local copy of the platformOS GraphQL schema. Run `pos-cli check update-docs` to download the latest schema.
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```graphql
+query {
+  records(
+    per_page: 20
+    filter: {
+      nonexistent_field: { value: "test" }
+    }
+  ) {
+    results {
+      id
+    }
+  }
+}
+```
+
+Querying a field that does not exist in the schema.
+
+### &#x2713; Correct Code Example (Use this instead):
+
+```graphql
+query {
+  records(
+    per_page: 20
+    filter: {
+      table: { value: "my_table" }
+    }
+  ) {
+    results {
+      id
+      properties
+    }
+  }
+}
+```
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+GraphQLCheck:
+  enabled: true
+  severity: error
+```
+
+## Disabling This Check
+
+Disabling this check is not recommended. Run `pos-cli check update-docs` to refresh the schema if you are getting false positives after a platformOS update.
+
+## Resources
+
+- [platformOS GraphQL API Reference](https://documentation.platformos.com/api-reference/graphql/g/query)
+- [pos-cli check update-docs](/developer-guide/platformos-check/platformos-check#cli-usage)
