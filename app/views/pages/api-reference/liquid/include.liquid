@@ -1,16 +1,82 @@
 ---
 converter: markdown
 metadata:
-  title: 'Liquid - Tags: Include'
-  description: Liquid Tags - Include
+  title: 'Liquid - Tags: render / include'
+  description: 'Liquid Tags — render and include: rendering partials in platformOS'
   toc: true
 ---
 
-The `include` tag allows you to make your code more maintainable by including templates within other templates.
+## render
 
-The simplest example of `include` looks like this:
+The `render` tag renders a partial from `app/views/partials/`. The partial path must be a **hardcoded string literal** — you cannot use a variable for the path.
 
-##### app/views/pages/include.liquid
+```liquid
+{% raw %}
+{% render 'shared/header' %}
+{% render 'user/card', name: user.name, avatar: user.avatar %}
+{% endraw %}
+```
+
+### Passing parameters
+
+Pass any number of named key-value pairs:
+
+```liquid
+{% raw %}
+{% render 'product/card', title: product.title, price: product.price, featured: true %}
+{% endraw %}
+```
+
+Inside `product/card.liquid`, only the explicitly passed variables (`title`, `price`, `featured`) are available — `render` creates an **isolated scope**. Variables from the calling template are not accessible unless passed explicitly.
+
+### Isolated scope
+
+Unlike `include`, `render` operates in a fully isolated scope:
+
+- Variables from the calling template are **not** accessible inside the partial.
+- Variables defined inside the partial are **not** accessible in the calling template.
+- You must pass every value the partial needs as an argument.
+
+This makes partials self-contained and easier to reason about.
+
+### `break` behaviour
+
+A `{% raw %}{% break %}{% endraw %}` tag inside a rendered partial stops execution of **that partial only**. Execution of the calling template **resumes** after the `{% raw %}{% render %}{% endraw %}` call:
+
+```liquid
+{% raw %}
+{% render 'might-break' %}
+This line still executes even if 'might-break' uses {% break %}
+{% endraw %}
+```
+
+### `with` syntax
+
+Pass a single value using the `with` keyword. The value is available inside the partial under a variable named after the partial:
+
+```liquid
+{% raw %}
+{% render 'product/card' with product %}
+{% endraw %}
+```
+
+This makes `product` available as `card` inside the partial (the variable name matches the partial filename).
+
+---
+
+## include
+
+The `include` tag is the older way to render partials. New code should prefer `render` — `include` is considered deprecated.
+
+### Key differences from `render`
+
+| Feature | `render` | `include` |
+|---------|----------|-----------|
+| Partial path | Must be a hardcoded string literal | Can be a variable (`{% raw %}{% include var %}{% endraw %}`) |
+| Scope | Isolated — only explicitly passed params are accessible | Shared — all calling template variables are accessible |
+| `{% raw %}{% break %}{% endraw %}` | Stops the partial only; calling template continues | Stops the entire render flow |
+
+### Basic usage
 
 ```liquid
 {% raw %}
@@ -20,33 +86,16 @@ The simplest example of `include` looks like this:
 {% endraw %}
 ```
 
-##### app/views/partials/mypartial.liquid
+You can also include using a variable path:
 
 ```liquid
-This is first partial
+{% raw %}
+{% assign partial_name = 'shared/header' %}
+{% include partial_name %}
+{% endraw %}
 ```
 
-##### app/views/partials/mypartial2.liquid
-
-```liquid
-This is second partial
-```
-
-After expanding `include`, rendered content becomes:
-
-```liquid
-This is first partial
-<br/>
-This is second partial
-```
-
-You can include the same partial multiple times in multiple places for code reuse.
-
-## Passing parameters to a partial
-
-You can pass any number of parameters to a partial.
-
-##### app/views/pages/index.liquid
+### Passing parameters to a partial
 
 ```liquid
 {% raw %}
@@ -55,7 +104,7 @@ You can pass any number of parameters to a partial.
 {% endraw %}
 ```
 
-##### app/views/partials/car.liquid
+Inside `car.liquid`:
 
 ```liquid
 {% raw %}
@@ -65,31 +114,13 @@ You can pass any number of parameters to a partial.
 {% endraw %}
 ```
 
-{% include 'alert/tip', content: 'Make sure you put space between the parameter name and its value. `minYear:2000` will not work.' %}
+{% include 'alert/tip', content: 'Make sure you put a space between the parameter name and its value. `minYear:2000` will not work.' %}
 {% include 'alert/warning', content: 'You cannot name a parameter the same as the partial (in this case `car`).' %}
 
-## Local variable using `with`
+### Local variable using `with`
 
-Liquid has some issues when you try to use a variable that is named exactly the same as the partial.
-For example, if you have this `car.liquid` partial:
-```liquid
-{% raw %}
-<p>This is the value of the variable called "car": {{ car }}<p>
-{% endraw %}
-```
-You won't be able to set the `car` variable by passing it during the include:
-```liquid
-{% raw %}
-{% parse_json cars %}
-[{
-  "maker": "Honda",
-  "model": "CRX"
-}]
-{% endparse_json %}
-{% include 'car', car: cars[0] %}
-{% endraw %}
-```
-but you will be able to set this variable by using `with`:
+If a partial has the same name as a variable you want to pass, use `with`:
+
 ```liquid
 {% raw %}
 {% parse_json cars %}
@@ -102,21 +133,9 @@ but you will be able to set this variable by using `with`:
 {% endraw %}
 ```
 
-This will create the variable called `car` with hash inside of it.
+This creates a variable called `car` with the value of `cars[0]` inside the partial.
 
-```json
-{"maker"=>"Honda", "model"=>"CRX"}
-```
-
-The properties of hash are accessible using the `object["key"]` syntax, for example:
-
-```liquid
-{% raw %}
-{{ car["maker"] }} => Honda
-{% endraw %}
-```
-
-## Iterating over a collection using `for`
+### Iterating over a collection using `for`
 
 ```liquid
 {% raw %}
@@ -137,58 +156,13 @@ The properties of hash are accessible using the `object["key"]` syntax, for exam
 {% endraw %}
 ```
 
-This will iterate over the collection and render the partial for each item. Each iteration will have the `product` variable populated with the current item.
+This renders the partial for each item. Each iteration has the `product` variable populated with the current item.
 
-Having a partial that looks like this:
+### Private variables and exporting them
 
-##### app/views/partials/product.liquid
+When you define a variable in a partial, it is not visible in the page that included it (variables flow from top to bottom, not bottom to top).
 
-```liquid
-{% raw %}
-{{ product }}
-{% endraw %}
-```
-
-Will render (whitespace has been changed for readability):
-
-```liquid
-{"maker"=>"Honda", "model"=>"CRX"}
-{"maker"=>"Subaru", "model"=>"Forester"}
-{"maker"=>"Lexus", "model"=>"LFA"}
-```
-
-## Private variables and exporting them
-
-Our Liquid implementation is 99% compatible with the official one, but we couldn't ignore the issue that you can only use global variables in Liquid.
-
-In platformOS, when you define a variable in a partial, it is not visible by default in a page that is including that partial.
-
-It works from top to bottom though: If you define a variable on a page and then include it in a partial, it will be accessible in the partial.
-
-That means that given this partial:
-
-##### app/views/partials/variable.liquid
-
-```liquid
-{% raw %}
-{% assign my_car = "Honda" %}
-{% endraw %}
-```
-
-And this page using it:
-
-##### app/views/pages/include.liquid
-
-```liquid
-{% raw %}
-{% include 'variable' %}
-This is empty: {{ my_car }}
-{% endraw %}
-```
-
-Will not return `Honda` in the page. The `my_car` variable can be accessed only inside the `variable` partial.
-
-To use a variable that has been defined inside a partial, outside of it, you need to use the [export](/api-reference/liquid/platformos-tags#export) tag and [context.exports](/api-reference/liquid/platformos-objects#exposing-a-local-variable-within-the-context-object).
+To use a variable defined inside a partial from outside, use the [export](/api-reference/liquid/platformos-tags#export) tag and [context.exports](/api-reference/liquid/platformos-objects#exposing-a-local-variable-within-the-context-object).
 
 ##### app/views/partials/export.liquid
 
@@ -215,13 +189,9 @@ My car maker: {{ context.exports.my_car.honda.maker }}
 {% endraw %}
 ```
 
-This should render the stringified hash stored inside the variable in the first line, and nested key in the second:
+Output:
 
-```json
+```
 Car: {"honda"=>{"maker"=>"Honda", "model"=>"CRX", "year"=>"1991"}}
 My car maker: Honda
 ```
-
-### Live demo and source code
-
-You can find a live demo of this page among our [example pages](https://examples.platform-os.com/include), and source code at the [examples GitHub page](https://github.com/mdyd-dev/platformos-examples/tree/master/modules/include).
