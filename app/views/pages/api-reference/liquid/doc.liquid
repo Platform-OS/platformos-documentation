@@ -1,0 +1,254 @@
+---
+converter: markdown
+metadata:
+  title: 'Liquid - Tags: doc'
+  description: 'The doc tag lets you document partial parameters inline so that platformOS Check and editor tools can validate and autocomplete them.'
+  toc: true
+---
+
+## doc
+
+The `doc` tag lets you write structured inline documentation for partials. Content inside `{% raw %}{% doc %}...{% enddoc %}{% endraw %}` is **never rendered** — it is read only by platformOS Check and editor tooling (such as the [platformOS Check VS Code extension](https://marketplace.visualstudio.com/items?itemName=platformOS.platformos-check-vscode)).
+
+Place the `doc` block at the top of a partial file:
+
+```liquid
+{% raw %}
+{% doc %}
+  Renders a product card.
+
+  @param {string} title - The product title
+  @param {number} price - The product price
+  @param {boolean} [show_vendor] - Optional. Whether to display the vendor name
+{% enddoc %}
+<div class="card">
+  <h2>{{ title }}</h2>
+  <p>{{ price }}</p>
+</div>
+{% endraw %}
+```
+
+---
+
+## Why use `doc`?
+
+Without documentation, common mistakes go undetected:
+
+- Missing required parameters pass silently
+- Misspelled parameter names are not caught
+- No type checking is applied
+- Discovering available parameters requires reading the full partial
+
+The `doc` tag solves these problems by giving platformOS Check a formal description it can validate at development time.
+
+---
+
+## Syntax
+
+### Basic structure
+
+```liquid
+{% raw %}
+{% doc %}
+  Optional description of the partial's purpose.
+
+  @param {type} name - description
+  @param {type} [optional_name] - description
+
+  @example
+  {% render 'my-partial', name: 'Alice', count: 3 %}
+{% enddoc %}
+{% endraw %}
+```
+
+### Descriptions
+
+Write a plain-text description before any `@` annotations. You can also use `@description` anywhere in the block:
+
+```liquid
+{% raw %}
+{% doc %}
+  Renders a user avatar with an optional fallback image.
+
+  @description You can also place a description with this tag.
+
+  @param {string} url - The avatar image URL
+{% enddoc %}
+{% endraw %}
+```
+
+If multiple descriptions are provided, only the first one is shown in hover tooltips.
+
+### Parameters (`@param`)
+
+Declare each parameter the partial accepts:
+
+```
+@param {type} name - description
+@param {type} [optional_name] - description
+```
+
+| Component | Required | Details |
+|-----------|----------|---------|
+| `{type}` | Optional | One of the [supported types](#supported-parameter-types). |
+| `name` | Required | The parameter name. Wrap in `[]` to mark as optional. |
+| `description` | Optional | A short explanation after ` - `. |
+
+#### Supported parameter types
+
+| Type | Description |
+|------|-------------|
+| `string` | Text values |
+| `number` | Numeric values |
+| `boolean` | `true` / `false` values |
+| `object` | Complex Liquid objects or anything that is not a primitive |
+
+#### Required vs optional parameters
+
+A parameter without brackets is **required** — platformOS Check reports an error if it is not passed at the call site:
+
+```liquid
+{% raw %}
+{% doc %}
+  @param {string} title       - Required: must always be passed
+  @param {string} [subtitle]  - Optional: may be omitted
+{% enddoc %}
+{% endraw %}
+```
+
+Calling the partial:
+
+```liquid
+{% raw %}
+{% comment %}OK — title is provided{% endcomment %}
+{% render 'card', title: 'Hello' %}
+
+{% comment %}Error — required param 'title' is missing{% endcomment %}
+{% render 'card', subtitle: 'World' %}
+{% endraw %}
+```
+
+### Examples (`@example`)
+
+Show one or more usage examples. Multiple `@example` blocks are supported:
+
+```liquid
+{% raw %}
+{% doc %}
+  Price display partial.
+
+  @param {number} price - Price value in cents
+  @param {boolean} [show_compare_at] - Whether to show the compare-at price
+
+  @example
+  {% render 'price', price: product.price %}
+
+  @example
+  {% render 'price', price: variant.price, show_compare_at: true %}
+{% enddoc %}
+{% endraw %}
+```
+
+---
+
+## Full example
+
+```liquid
+{% raw %}
+{% doc %}
+  Renders a product card with title, price, and optional vendor.
+
+  @param {string} title - The product title
+  @param {number} price - The product price
+  @param {object} product - The full product object
+  @param {boolean} [show_vendor] - Whether to show the vendor name
+  @param {string} [badge_text] - Optional badge label
+
+  @example
+  {% render 'product/card',
+    title: product.title,
+    price: product.price,
+    product: product,
+    show_vendor: true
+  %}
+{% enddoc %}
+
+<div class="product-card">
+  <h2>{{ title }}</h2>
+  {% if badge_text != blank %}
+    <span class="badge">{{ badge_text }}</span>
+  {% endif %}
+  <p class="price">{{ price | money }}</p>
+  {% if show_vendor %}
+    <p class="vendor">{{ product.vendor }}</p>
+  {% endif %}
+</div>
+{% endraw %}
+```
+
+---
+
+## Editor features
+
+When the `doc` tag is present, the [platformOS Check VS Code extension](https://marketplace.visualstudio.com/items?itemName=platformOS.platformos-check-vscode) provides:
+
+- **Hover documentation** — see parameter descriptions when hovering over a `{% raw %}{% render %}{% endraw %}` call
+- **Code completion** — autocomplete parameter names at the call site
+- **Parameter validation** — warnings for missing required parameters and unrecognized argument names
+- **Type checking** — suggestions and warnings when literal values don't match the declared type
+
+---
+
+## Limitations
+
+### Dynamic partial names
+
+Validation is disabled when the partial name is a variable:
+
+```liquid
+{% raw %}
+{% comment %}Validation disabled — dynamic name{% endcomment %}
+{% assign partial = 'product/card' %}
+{% render partial, title: product.title %}
+
+{% comment %}Validation enabled — hardcoded name{% endcomment %}
+{% render 'product/card', title: product.title %}
+{% endraw %}
+```
+
+### Variable type checking
+
+Type checking is only applied to literal values (`"string"`, `42`, `true`). Variables are not statically type-checked:
+
+```liquid
+{% raw %}
+{% comment %}Not type-checked — price is a variable{% endcomment %}
+{% render 'price', price: product.price %}
+
+{% comment %}Type-checked — 100 is a literal number{% endcomment %}
+{% render 'price', price: 100 %}
+{% endraw %}
+```
+
+---
+
+## Related platformOS Check rules
+
+The following checks enforce correct usage of the `doc` tag:
+
+| Check | Description |
+|-------|-------------|
+| [UniqueDocParamNames](/developer-guide/platformos-check/checks/unique-doc-param-names) | Each `@param` name must be unique within a `doc` block |
+| [ValidDocParamTypes](/developer-guide/platformos-check/checks/valid-doc-param-types) | `@param` type annotations must be valid platformOS types |
+| [UnusedDocParam](/developer-guide/platformos-check/checks/unused-doc-param) | Declared `@param` entries must be used in the partial body |
+| [MissingRenderPartialArguments](/developer-guide/platformos-check/checks/missing-render-partial-arguments) | Required `@param` arguments must be provided at the call site |
+| [UnrecognizedRenderPartialArguments](/developer-guide/platformos-check/checks/unrecognized-render-partial-arguments) | Arguments at the call site must match declared `@param` names |
+| [ValidRenderPartialArgumentTypes](/developer-guide/platformos-check/checks/valid-render-partial-argument-types) | Argument types at the call site must match declared `@param` types |
+
+---
+
+## Resources
+
+- [platformOS Check Configuration](/developer-guide/platformos-check/platformos-check)
+- [Writing Custom Checks](/developer-guide/platformos-check/writing-custom-checks)
+- [Tags: render / include](/api-reference/liquid/include)
