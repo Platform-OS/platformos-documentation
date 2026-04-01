@@ -1,0 +1,69 @@
+---
+converter: markdown
+metadata:
+  title: ValidRenderPartialArgumentTypes
+  description: Reports type mismatches between arguments passed to a partial and the types declared in its doc tag.
+---
+
+## ValidRenderPartialArgumentTypes
+
+**Severity:** warning | **Type:** LiquidHtml | **Aliases:** `ValidRenderPartialParamTypes`
+
+This check ensures that arguments passed to a partial match the expected types declared in the partial's `{% raw %}{% doc %}{% endraw %}` tag. When a type mismatch is detected, the check reports it with a suggestion to fix the value.
+
+The check handles both named arguments (`{% raw %}{% render 'card', title: "Hello" %}{% endraw %}`) and the alias syntax (`{% raw %}{% render 'card' with 123 as count %}{% endraw %}`).
+
+Type checking is only performed when:
+
+1. The target partial has a `{% raw %}{% doc %}{% endraw %}` tag.
+2. The `@param` entry includes a type annotation (e.g. `@param {string} title`).
+3. The argument value is a literal (string, number, boolean) — variable lookups are not type-checked statically.
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```liquid
+{% raw %}
+{% comment %}app/views/partials/count-badge.liquid{% endcomment %}
+{% doc %}
+  @param {number} count - Number of items to display
+{% enddoc %}
+<span class="badge">{{ count }}</span>
+{% endraw %}
+```
+
+```liquid
+{% raw %}
+{% comment %}Calling site — passing a string where a number is expected{% endcomment %}
+{% render 'count-badge', count: "five" %}
+{% endraw %}
+```
+
+### &#x2713; Correct Code Example (Use this instead):
+
+```liquid
+{% raw %}
+{% render 'count-badge', count: 5 %}
+{% render 'count-badge', count: item.count %}
+{% endraw %}
+```
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+ValidRenderPartialArgumentTypes:
+  enabled: true
+  severity: warning
+```
+
+## Disabling This Check
+
+This check is safe to disable if your codebase passes values of different types intentionally and relies on Liquid's dynamic type coercion.
+
+## Resources
+
+- [LiquidDoc `doc` tag](https://documentation.platformos.com/developer-guide/platformos-check/platformos-check)
+- [platformOS `render` tag](https://documentation.platformos.com/api-reference/liquid/tags#render)

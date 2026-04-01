@@ -1,0 +1,77 @@
+---
+converter: markdown
+metadata:
+  title: NestedGraphQLQuery
+  description: Detects GraphQL queries placed inside loop tags, which causes the N+1 database query pattern.
+---
+
+## NestedGraphQLQuery
+
+**Severity:** warning | **Type:** LiquidHtml
+
+This check detects `{% raw %}{% graphql %}{% endraw %}` tags placed inside loop tags (`{% raw %}{% for %}{% endraw %}`, `{% raw %}{% tablerow %}{% endraw %}`), which causes one database request per loop iteration — the classic **N+1 pattern**. It also follows `{% raw %}{% function %}{% endraw %}` and `{% raw %}{% render %}{% endraw %}` calls **transitively** to detect indirect GraphQL queries.
+
+The N+1 problem often arises when dealing with related records. To address it, fetch all required data in a single query before the loop and pass it as a variable.
+
+**Exceptions:** GraphQL inside `{% raw %}{% background %}{% endraw %}` or `{% raw %}{% cache %}{% endraw %}` blocks within a loop is not flagged, as those contexts have different performance characteristics.
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+**Direct GraphQL in a loop:**
+
+```liquid
+{% raw %}
+{% assign arr = 'a,b,c' | split: ',' %}
+{% for el in arr %}
+  {% graphql g = 'my/graphql', el: el %}
+  {{ g.records.results[0].id }}
+{% endfor %}
+{% endraw %}
+```
+
+**Transitive GraphQL via function call in a loop:**
+
+```liquid
+{% raw %}
+{% for item in items %}
+  {% function result = 'lib/fetch_item_data', id: item.id %}
+{% endfor %}
+{% endraw %}
+```
+
+Where `lib/fetch_item_data` internally calls `{% raw %}{% graphql %}{% endraw %}`.
+
+### &#x2713; Correct Code Example (Use this instead):
+
+```liquid
+{% raw %}
+{% assign arr = 'a,b,c' | split: ',' %}
+{% graphql g = 'my/graphql', arr: arr %}
+{% for el in arr %}
+  {% comment %}Use data from g here{% endcomment %}
+{% endfor %}
+{% endraw %}
+```
+
+For related records, use the `related_records` approach to fetch all data in a single query.
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+NestedGraphQLQuery:
+  enabled: true
+  severity: warning
+```
+
+## Disabling This Check
+
+Ideally, there should be no need to disable this check. platformOS provides alternative solutions for all scenarios that would otherwise require a GraphQL query inside a loop.
+
+## Resources
+
+- [Loading Related Records](/developer-guide/records/loading-related-records)
+- [platformOS `graphql` tag](https://documentation.platformos.com/api-reference/liquid/tags#graphql)

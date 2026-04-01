@@ -1,0 +1,73 @@
+---
+converter: markdown
+metadata:
+  title: platformOS Check — Available Checks
+  description: Reference overview of all checks available in platformOS Check, grouped by file type.
+---
+
+## Available Checks
+
+You can run the following checks as part of platformOS Check. Each check identifies a specific problem or a place in your code where a best practice is not being followed.
+
+For configuration options, severity overrides, and how to disable checks per-file, see [platformOS Check Configuration](/developer-guide/platformos-check/platformos-check).
+
+## Liquid File Checks
+
+These checks analyze the style and validity of Liquid templates, including `.liquid` files in `app/views/pages/`, `app/views/partials/`, and `app/lib/`.
+
+| Check | Severity | Description |
+|-------|----------|-------------|
+| [DeprecatedFilter](/developer-guide/platformos-check/checks/deprecated-filter) | warning | Reports usage of deprecated Liquid filters |
+| [DeprecatedTag](/developer-guide/platformos-check/checks/deprecated-tag) | warning | Reports usage of deprecated Liquid tags |
+| [DuplicateFunctionArguments](/developer-guide/platformos-check/checks/duplicate-function-arguments) | warning | Reports duplicate argument names in `{% raw %}{% function %}{% endraw %}` calls |
+| [DuplicateRenderPartialArguments](/developer-guide/platformos-check/checks/duplicate-render-partial-arguments) | warning | Reports duplicate argument names in `{% raw %}{% render %}{% endraw %}` tags |
+| [GraphQLVariablesCheck](/developer-guide/platformos-check/checks/graphql-variables-check) | error | Validates that parameters passed to `{% raw %}{% graphql %}{% endraw %}` match the query's variable definitions |
+| [ImgWidthAndHeight](/developer-guide/platformos-check/checks/img-width-and-height) | error | Requires `width` and `height` attributes on `img` tags to prevent cumulative layout shift |
+| [InvalidHashAssignTarget](/developer-guide/platformos-check/checks/invalid-hash-assign-target) | error | Reports `{% raw %}{% hash_assign %}{% endraw %}` usage on variables that are not object types |
+| [LiquidHTMLSyntaxError](/developer-guide/platformos-check/checks/liquid-html-syntax-error) | error | Reports Liquid and HTML syntax errors |
+| [MetadataParamsCheck](/developer-guide/platformos-check/checks/metadata-params-check) | error | Validates that parameters passed to `{% raw %}{% render %}{% endraw %}` and `{% raw %}{% function %}{% endraw %}` match what the partial expects |
+| [MissingAsset](/developer-guide/platformos-check/checks/missing-asset) | error | Reports references to asset files that do not exist |
+| [MissingPage](/developer-guide/platformos-check/checks/missing-page) | warning | Reports links and form actions pointing to routes with no matching platformOS page |
+| [MissingPartial](/developer-guide/platformos-check/checks/missing-partial) | error | Reports references to partial, function, or GraphQL files that do not exist |
+| [MissingRenderPartialArguments](/developer-guide/platformos-check/checks/missing-render-partial-arguments) | error | Reports missing required arguments when rendering a partial that declares its parameters with a `{% raw %}{% doc %}{% endraw %}` tag |
+| [NestedGraphQLQuery](/developer-guide/platformos-check/checks/nested-graphql-query) | warning | Detects `{% raw %}{% graphql %}{% endraw %}` tags inside loop tags — the N+1 pattern — including transitive calls via `{% raw %}{% render %}{% endraw %}` and `{% raw %}{% function %}{% endraw %}` |
+| [OrphanedPartial](/developer-guide/platformos-check/checks/orphaned-partial) | warning | Reports partials that are not referenced by any other file |
+| [ParserBlockingScript](/developer-guide/platformos-check/checks/parser-blocking-script) | error | Reports `<script>` tags without `defer` or `async` that block HTML parsing |
+| [TranslationKeyExists](/developer-guide/platformos-check/checks/translation-key-exists) | error | Reports translation keys used in templates that are not defined in the default language file |
+| [UnclosedHTMLElement](/developer-guide/platformos-check/checks/unclosed-html-element) | warning | Reports unbalanced HTML tags in branching Liquid code |
+| [UndefinedObject](/developer-guide/platformos-check/checks/undefined-object) | warning | Reports references to variables that have not been defined |
+| [UniqueDocParamNames](/developer-guide/platformos-check/checks/unique-doc-param-names) | error | Reports duplicate `@param` names in `{% raw %}{% doc %}{% endraw %}` tags |
+| [UnknownFilter](/developer-guide/platformos-check/checks/unknown-filter) | error | Reports usage of Liquid filters that do not exist in the platformOS filter set |
+| [UnknownProperty](/developer-guide/platformos-check/checks/unknown-property) | error | Reports access to properties that do not exist on typed variables |
+| [UnrecognizedRenderPartialArguments](/developer-guide/platformos-check/checks/unrecognized-render-partial-arguments) | warning | Reports arguments passed to `{% raw %}{% render %}{% endraw %}` that are not declared in the partial's `{% raw %}{% doc %}{% endraw %}` tag |
+| [UnusedAssign](/developer-guide/platformos-check/checks/unused-assign) | warning | Reports variables assigned with `{% raw %}{% assign %}{% endraw %}` or `{% raw %}{% function %}{% endraw %}` that are never used |
+| [UnusedDocParam](/developer-guide/platformos-check/checks/unused-doc-param) | warning | Reports `@param` entries in `{% raw %}{% doc %}{% endraw %}` tags that are never used in the partial body |
+| [ValidDocParamTypes](/developer-guide/platformos-check/checks/valid-doc-param-types) | error | Reports `@param` type annotations in `{% raw %}{% doc %}{% endraw %}` tags that are not valid platformOS types |
+| [ValidRenderPartialArgumentTypes](/developer-guide/platformos-check/checks/valid-render-partial-argument-types) | warning | Reports type mismatches between arguments passed to `{% raw %}{% render %}{% endraw %}` and the types declared in the partial's `{% raw %}{% doc %}{% endraw %}` tag |
+| [VariableName](/developer-guide/platformos-check/checks/variable-name) | warning | Enforces a consistent variable naming convention (default: `snake_case`) |
+
+## GraphQL File Checks
+
+These checks analyze `.graphql` files and validate them against the platformOS schema. Run `pos-cli check update-docs` to keep the local schema up to date.
+
+| Check | Severity | Description |
+|-------|----------|-------------|
+| [GraphQLCheck](/developer-guide/platformos-check/checks/graphql-check) | error | Validates GraphQL query and mutation files for syntax errors and schema conformance |
+
+## JSON File Checks
+
+These checks analyze the syntax and content of `.json` files.
+
+| Check | Severity | Description |
+|-------|----------|-------------|
+| [ValidJSON](/developer-guide/platformos-check/checks/valid-json) | error | Reports JSON files with invalid syntax; validates against schema when available |
+| [JSONSyntaxError](/developer-guide/platformos-check/checks/json-syntax-error) | error | **Deprecated** — use `ValidJSON` instead |
+
+## YAML File Checks
+
+These checks analyze translation YAML files in `app/translations/`.
+
+| Check | Severity | Description |
+|-------|----------|-------------|
+| [MatchingTranslations](/developer-guide/platformos-check/checks/matching-translations) | error | Reports translation files where keys are missing compared to the default language file |
+| [ValidHTMLTranslation](/developer-guide/platformos-check/checks/valid-html-translation) | warning | Reports translation values that contain invalid HTML markup |

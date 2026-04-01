@@ -1,0 +1,69 @@
+---
+converter: markdown
+metadata:
+  title: UnknownProperty
+  description: Reports access to properties that do not exist on variables with a known type structure.
+---
+
+## UnknownProperty
+
+**Severity:** error | **Type:** LiquidHtml
+
+This check reports errors when accessing properties that do not exist on variables whose structure is known. The check uses the platformOS docset to determine which properties are available on objects like `context`, GraphQL result objects, and other typed variables.
+
+This catches typos in property names and helps you discover the correct API surface of platformOS objects.
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```liquid
+{% raw %}
+{{ context.curren_user.name }}
+{% endraw %}
+```
+
+`curren_user` is a typo — the correct property is `current_user`.
+
+```liquid
+{% raw %}
+{% graphql result = 'records/search' %}
+{{ result.records.result[0].id }}
+{% endraw %}
+```
+
+`result` is a typo — the correct property is `results`.
+
+### &#x2713; Correct Code Example (Use this instead):
+
+```liquid
+{% raw %}
+{{ context.current_user.name }}
+{% endraw %}
+```
+
+```liquid
+{% raw %}
+{% graphql result = 'records/search' %}
+{{ result.records.results[0].id }}
+{% endraw %}
+```
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+UnknownProperty:
+  enabled: true
+  severity: error
+```
+
+## Disabling This Check
+
+This check can be disabled for code that accesses dynamic properties using variable lookup patterns that cannot be statically analyzed.
+
+## Resources
+
+- [platformOS Context Variable](/developer-guide/variables/context-variable#displaying-the-context-object)
+- [platformOS Object Reference](https://documentation.platformos.com/api-reference/liquid/objects)

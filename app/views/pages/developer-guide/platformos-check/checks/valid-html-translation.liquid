@@ -1,0 +1,56 @@
+---
+converter: markdown
+metadata:
+  title: ValidHTMLTranslation
+  description: Reports invalid HTML markup inside YAML translation values.
+---
+
+## ValidHTMLTranslation
+
+**Severity:** warning | **Type:** YAML
+
+This check exists to prevent invalid HTML inside translation values. Translation strings that contain HTML markup are parsed and validated — if the HTML is malformed, it will cause rendering issues when the translation is used in templates.
+
+The check only runs on files inside the `translations/` directory.
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```yaml
+# app/translations/en/messages.yml
+en:
+  messages:
+    welcome: "Welcome, <strong>user<strong>!"
+```
+
+The `<strong>` tag is not closed correctly (missing `/`).
+
+### &#x2713; Correct Code Example (Use this instead):
+
+```yaml
+# app/translations/en/messages.yml
+en:
+  messages:
+    welcome: "Welcome, <strong>user</strong>!"
+    plain: "No HTML here, just text."
+```
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+ValidHTMLTranslation:
+  enabled: true
+  severity: warning
+```
+
+## Disabling This Check
+
+This check is safe to disable if your translation values intentionally contain HTML fragments that are only valid in context (e.g. partial tags meant to be combined at render time).
+
+## Resources
+
+- [platformOS Translations](/developer-guide/translations/translations)
+- [Multilanguage Pages](/developer-guide/translations/multilanguage-page)

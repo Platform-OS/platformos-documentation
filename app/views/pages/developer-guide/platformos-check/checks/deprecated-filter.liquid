@@ -1,0 +1,54 @@
+---
+converter: markdown
+metadata:
+  title: DeprecatedFilter
+  description: Reports usage of deprecated Liquid filters and encourages migration to their replacements.
+---
+
+## DeprecatedFilter
+
+**Severity:** warning | **Type:** LiquidHtml
+
+This check discourages the use of deprecated Liquid filters and aims to eliminate them from your codebase. When a deprecated filter is used, the check reports the offense and (where available) suggests the replacement filter.
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```liquid
+{% raw %}
+{{ product.name | url_encode }}
+{% endraw %}
+```
+
+Using a filter that has been deprecated in the platformOS Liquid docset.
+
+### &#x2713; Correct Code Example (Use this instead):
+
+Use the replacement filter indicated in the error message. The deprecation reason is included in the reported message to help you migrate.
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+DeprecatedFilter:
+  enabled: true
+  severity: warning
+```
+
+## Disabling This Check
+
+This check is safe to disable if you need to maintain backwards compatibility with older code during a migration period. Use the `platformos-check-disable` comment to suppress specific instances:
+
+```liquid
+{% raw %}
+{% # platformos-check-disable DeprecatedFilter %}
+{{ value | deprecated_filter }}
+{% # platformos-check-enable DeprecatedFilter %}
+{% endraw %}
+```
+
+## Resources
+
+- [platformOS Liquid Filters Reference](https://documentation.platformos.com/api-reference/liquid/platformos-filters)

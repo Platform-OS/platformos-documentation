@@ -1,0 +1,75 @@
+---
+converter: markdown
+metadata:
+  title: UnrecognizedRenderPartialArguments
+  description: Reports arguments passed to a render tag that are not declared in the partial's doc tag.
+---
+
+## UnrecognizedRenderPartialArguments
+
+**Severity:** warning | **Type:** LiquidHtml | **Aliases:** `UnrecognizedRenderPartialParams`
+
+This check ensures that no unknown arguments are used when rendering a partial that has a `{% raw %}{% doc %}{% endraw %}` tag. Passing arguments that the partial does not declare is likely a mistake — either the argument name is misspelled, or the partial's `{% raw %}{% doc %}{% endraw %}` tag needs to be updated.
+
+This check only runs when the target partial has a `{% raw %}{% doc %}{% endraw %}` tag. For partials without a `{% raw %}{% doc %}{% endraw %}` tag, see [MetadataParamsCheck](/developer-guide/platformos-check/checks/metadata-params-check).
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```liquid
+{% raw %}
+{% comment %}app/views/partials/user/card.liquid{% endcomment %}
+{% doc %}
+  @param {string} name - The user's display name
+{% enddoc %}
+<div>{{ name }}</div>
+{% endraw %}
+```
+
+```liquid
+{% raw %}
+{% comment %}Calling site — 'avatar_url' is not declared in the partial's doc tag{% endcomment %}
+{% render 'user/card', name: user.name, avatar_url: user.avatar %}
+{% endraw %}
+```
+
+### &#x2713; Correct Code Example (Use this instead):
+
+Either remove the unknown argument at the call site:
+
+```liquid
+{% raw %}
+{% render 'user/card', name: user.name %}
+{% endraw %}
+```
+
+Or declare the argument in the partial's `{% raw %}{% doc %}{% endraw %}` tag:
+
+```liquid
+{% raw %}
+{% doc %}
+  @param {string} name - The user's display name
+  @param {string} [avatar_url] - Optional avatar URL
+{% enddoc %}
+{% endraw %}
+```
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+UnrecognizedRenderPartialArguments:
+  enabled: true
+  severity: warning
+```
+
+## Disabling This Check
+
+This check can be disabled if you intentionally pass additional context to partials beyond what is declared in the `{% raw %}{% doc %}{% endraw %}` tag.
+
+## Resources
+
+- [platformOS `render` tag](https://documentation.platformos.com/api-reference/liquid/tags#render)
+- [LiquidDoc `doc` tag](https://documentation.platformos.com/developer-guide/platformos-check/platformos-check)

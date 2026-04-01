@@ -1,0 +1,55 @@
+---
+converter: markdown
+metadata:
+  title: TranslationKeyExists
+  description: Reports translation keys used in templates that are not defined in the default language file.
+---
+
+## TranslationKeyExists
+
+**Severity:** error | **Type:** LiquidHtml
+
+This check ensures that translation keys referenced with the `t` (or `translate`) filter are defined in the default language translation files. It helps prevent missing translation errors at runtime.
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```liquid
+{% raw %}
+{{ 'undefined.key' | t }}
+{{ 'nav.missing_label' | translate }}
+{% endraw %}
+```
+
+The keys `undefined.key` and `nav.missing_label` do not exist in the default translation files.
+
+### &#x2713; Correct Code Example (Use this instead):
+
+```liquid
+{% raw %}
+{{ 'nav.home' | t }}
+{{ 'nav.about' | t }}
+{% endraw %}
+```
+
+Where `nav.home` and `nav.about` are defined in your default language file (e.g. `app/translations/en/nav.yml`).
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+TranslationKeyExists:
+  enabled: true
+  severity: error
+```
+
+## Disabling This Check
+
+There should be no need to disable this check. For translation keys managed via the platformOS Admin UI (not stored in the codebase), use the appropriate configuration option in [app/config.yml](/developer-guide/platformos-workflow/codebase/config).
+
+## Resources
+
+- [platformOS Translations](/developer-guide/translations/translations)
+- [Multilanguage Pages](/developer-guide/translations/multilanguage-page)

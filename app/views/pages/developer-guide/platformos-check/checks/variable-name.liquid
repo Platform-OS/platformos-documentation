@@ -1,0 +1,77 @@
+---
+converter: markdown
+metadata:
+  title: VariableName
+  description: Enforces a consistent variable naming convention in Liquid templates.
+---
+
+## VariableName
+
+**Severity:** warning | **Type:** LiquidHtml
+
+This check enforces consistent variable naming conventions for `{% raw %}{% assign %}{% endraw %}` and `{% raw %}{% capture %}{% endraw %}` variables. By default it requires `snake_case`, but it can be configured to enforce `camelCase`, `PascalCase`, or `kebab-case`.
+
+Variables starting with `_` (underscore) are always exempt — they are treated as throwaway or private variables.
+
+## Examples
+
+The following examples use the default `snake_case` format.
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```liquid
+{% raw %}
+{% assign myVariable = "hello" %}
+{% assign MyVariable = "world" %}
+{% assign my-variable = "foo" %}
+{% endraw %}
+```
+
+### &#x2713; Correct Code Example (Use this instead):
+
+```liquid
+{% raw %}
+{% assign my_variable = "hello" %}
+{% assign page_title = "My Page" %}
+{% assign _throwaway = some_function %}
+{% endraw %}
+```
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+VariableName:
+  enabled: true
+  severity: warning
+  format: snake_case
+```
+
+### `format`
+
+The naming convention to enforce. Available options:
+
+| Value | Example |
+|-------|---------|
+| `snake_case` (default) | `my_variable_name` |
+| `camelCase` | `myVariableName` |
+| `PascalCase` | `MyVariableName` |
+| `kebab-case` | `my-variable-name` |
+
+Example configuration to enforce `camelCase`:
+
+```yaml
+VariableName:
+  enabled: true
+  severity: warning
+  format: camelCase
+```
+
+## Disabling This Check
+
+This check is safe to disable if your codebase uses mixed naming conventions or you prefer not to enforce a specific style.
+
+## Autofixing
+
+This check supports automatic fixing. Run `pos-cli check run -a` to automatically rename variables to the configured format.

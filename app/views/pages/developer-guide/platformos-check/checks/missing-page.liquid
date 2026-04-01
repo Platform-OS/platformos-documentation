@@ -1,0 +1,57 @@
+---
+converter: markdown
+metadata:
+  title: MissingPage
+  description: Reports links and form actions that point to routes with no corresponding platformOS page.
+---
+
+## MissingPage
+
+**Severity:** warning | **Type:** LiquidHtml
+
+This check reports `<a href>` links and `<form action>` attributes that point to routes for which no corresponding platformOS page exists. This helps catch broken navigation and form submissions before they reach production.
+
+The check builds a route table from all pages in your project and verifies that each URL pattern matches a known route. It also resolves Liquid `{% raw %}{% assign %}{% endraw %}` variables used as URLs when they can be statically determined.
+
+The check accounts for HTTP methods — form actions are checked against the method attribute (`GET`, `POST`, `PUT`, `PATCH`, `DELETE`), defaulting to `POST` for forms.
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```liquid
+{% raw %}
+<a href="/pages/that-does-not-exist">Click here</a>
+<form action="/submit/nonexistent" method="post">...</form>
+{% endraw %}
+```
+
+No platformOS page is defined for these routes.
+
+### &#x2713; Correct Code Example (Use this instead):
+
+```liquid
+{% raw %}
+<a href="/developer-guide/pages/creating-page">Creating a Page</a>
+<form action="/records/create" method="post">...</form>
+{% endraw %}
+```
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+MissingPage:
+  enabled: true
+  severity: warning
+```
+
+## Disabling This Check
+
+This check can be disabled for projects that use external routing or dynamically generated URLs that cannot be statically analyzed.
+
+## Resources
+
+- [platformOS Pages](/developer-guide/pages/pages)
+- [Creating a Page](/developer-guide/pages/creating-page)

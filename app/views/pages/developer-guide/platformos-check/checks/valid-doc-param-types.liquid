@@ -1,0 +1,59 @@
+---
+converter: markdown
+metadata:
+  title: ValidDocParamTypes
+  description: Reports parameter types in doc tags that are not valid platformOS types.
+---
+
+## ValidDocParamTypes
+
+**Severity:** error | **Type:** LiquidHtml
+
+This check ensures that type annotations in `{% raw %}{% doc %}{% endraw %}` tag `@param` entries are valid platformOS types. Invalid type names prevent tooling (autocomplete, type checking) from working correctly and indicate a mistake in the documentation.
+
+Valid types are derived from the platformOS docset and include primitive types (`string`, `number`, `boolean`) as well as platformOS-specific object types (e.g. `User`, `Record`, etc.).
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```liquid
+{% raw %}
+{% doc %}
+  @param {Integer} count - A count value
+  @param {txt} label - A label string
+{% enddoc %}
+{% endraw %}
+```
+
+`Integer` and `txt` are not valid platformOS types.
+
+### &#x2713; Correct Code Example (Use this instead):
+
+```liquid
+{% raw %}
+{% doc %}
+  @param {number} count - A count value
+  @param {string} label - A label string
+{% enddoc %}
+{% endraw %}
+```
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+ValidDocParamTypes:
+  enabled: true
+  severity: error
+```
+
+## Disabling This Check
+
+Disabling this check is not recommended. Run `pos-cli check update-docs` to refresh the platformOS docset if you are getting false positives after a platform update.
+
+## Resources
+
+- [LiquidDoc `doc` tag](https://documentation.platformos.com/developer-guide/platformos-check/platformos-check)
+- [pos-cli check update-docs](/developer-guide/platformos-check/platformos-check#cli-usage)

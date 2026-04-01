@@ -1,0 +1,50 @@
+---
+converter: markdown
+metadata:
+  title: DuplicateRenderPartialArguments
+  description: Reports duplicate argument names when rendering a partial.
+---
+
+## DuplicateRenderPartialArguments
+
+**Severity:** warning | **Type:** LiquidHtml | **Aliases:** `DuplicateRenderPartialParams`
+
+This check ensures that no duplicate argument names are provided when rendering a partial using the `{% raw %}{% render %}{% endraw %}` tag. Passing the same argument twice is always a mistake — only one value will be used at runtime.
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```liquid
+{% raw %}
+{% render 'card', title: "Hello", title: "World" %}
+{% endraw %}
+```
+
+The `title` argument is passed twice.
+
+### &#x2713; Correct Code Example (Use this instead):
+
+```liquid
+{% raw %}
+{% render 'card', title: "Hello" %}
+{% endraw %}
+```
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+DuplicateRenderPartialArguments:
+  enabled: true
+  severity: warning
+```
+
+## Disabling This Check
+
+Disabling this check is not recommended. Duplicate arguments are always a mistake.
+
+## Resources
+
+- [platformOS `render` tag](https://documentation.platformos.com/api-reference/liquid/tags#render)

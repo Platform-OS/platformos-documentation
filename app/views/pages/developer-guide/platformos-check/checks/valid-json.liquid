@@ -1,0 +1,58 @@
+---
+converter: markdown
+metadata:
+  title: ValidJSON
+  description: Reports JSON files that contain invalid JSON syntax or fail schema validation.
+---
+
+## ValidJSON
+
+**Severity:** error | **Type:** JSON | **Aliases:** `ValidJson`
+
+This check exists to prevent invalid JSON files in your platformOS application. It validates that all `.json` files in your project contain well-formed JSON. When a JSON schema is available for a particular file, the check also validates the content against that schema.
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```json
+{
+  "name": "My App",
+  "version": 1,
+  "tags": ["liquid", "platformos",]
+}
+```
+
+The trailing comma in the array is invalid JSON.
+
+```json
+{
+  name: "My App"
+}
+```
+
+Property names must be quoted strings in JSON.
+
+### &#x2713; Correct Code Example (Use this instead):
+
+```json
+{
+  "name": "My App",
+  "version": 1,
+  "tags": ["liquid", "platformos"]
+}
+```
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+ValidJSON:
+  enabled: true
+  severity: error
+```
+
+## Disabling This Check
+
+Disabling this check is not recommended. Invalid JSON files will cause errors at runtime.

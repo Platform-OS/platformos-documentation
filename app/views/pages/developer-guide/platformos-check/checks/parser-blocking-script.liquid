@@ -1,0 +1,92 @@
+---
+converter: markdown
+metadata:
+  title: ParserBlockingScript
+  description: Reports script tags that block HTML parsing and delay page rendering.
+---
+
+## ParserBlockingScript
+
+**Severity:** error | **Type:** LiquidHtml | **Aliases:** `ParserBlockingScriptTag`
+
+This check aims to eliminate parser-blocking JavaScript in your platformOS application.
+
+When a `<script>` tag lacks `defer` or `async` attributes, it blocks the browser's HTML parser. The browser must stop constructing the DOM, fetch the script, parse it, and execute it before continuing. This creates network congestion, interferes with resource priorities, and significantly delays page rendering — particularly on mobile and slow connections.
+
+JavaScript in platformOS apps should always progressively enhance the user experience. As a general rule:
+
+- Use `defer` when the execution order of scripts matters.
+- Use `async` when the execution order does not matter.
+- When in doubt, `defer` is the safer choice and provides most of the performance benefit.
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```liquid
+{% raw %}
+{% comment %}The script_tag filter outputs a parser-blocking script{% endcomment %}
+{{ 'app-code.js' | asset_url | script_tag }}
+
+{% comment %}jQuery loaded synchronously because inline scripts depend on ${% endcomment %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<button id="thing">Click me!</button>
+<script>
+  $('#thing').click(() => {
+    alert('Oh. Hi Mark!');
+  });
+</script>
+{% endraw %}
+```
+
+### &#x2713; Correct Code Example (Use this instead):
+
+```liquid
+{% raw %}
+{% comment %}Good: asset_url filter with defer{% endcomment %}
+<script src="{{ 'theme.js' | asset_url }}" defer></script>
+
+{% comment %}Good: async when order doesn't matter{% endcomment %}
+<script src="{{ 'analytics.js' | asset_url }}" async></script>
+
+{% comment %}Good: deferred jQuery with DOMContentLoaded{% endcomment %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" defer></script>
+<button id="thing">Click me!</button>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    $('#thing').click(() => {
+      alert('Oh. Hi Mark!');
+    });
+  });
+</script>
+
+{% comment %}Best: web native, no jQuery{% endcomment %}
+<button id="thing">Click Me</button>
+<script>
+  const button = document.getElementById('thing');
+  button.addEventListener('click', () => {
+    alert('Oh. Hi Mark!');
+  });
+</script>
+{% endraw %}
+```
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+ParserBlockingScript:
+  enabled: true
+  severity: error
+```
+
+## Disabling This Check
+
+This check should only be disabled with a `platformos-check-disable` comment when there is no alternative to using a parser-blocking script (for example, certain third-party analytics snippets that must run synchronously).
+
+## Resources
+
+- [Lighthouse: Eliminate render-blocking resources](https://web.dev/render-blocking-resources/)
+- [Using Static Assets](/developer-guide/assets/using-static-assets-pages)
+- [Adding JavaScript to Pages](/developer-guide/assets/adding-visuals-pages-javascript)

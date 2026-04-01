@@ -1,0 +1,358 @@
+---
+converter: markdown
+metadata:
+  title: Writing Custom platformOS Checks
+  description: Learn how to create, publish, and use custom platformOS Check extensions.
+---
+
+## Writing Custom Checks
+
+platformOS Check can be extended with custom checks written in JavaScript. This guide covers how to create a custom check package, share it via npm, and use it in your projects.
+
+Custom checks run everywhere platformOS Check runs — in the terminal via [pos-cli](https://github.com/Platform-OS/pos-cli), and in your editor via the [platformOS Check VS Code extension](https://marketplace.visualstudio.com/items?itemName=platformOS.platformos-check-vscode).
+
+## Overview
+
+1. [Creating a custom check package](#creating-a-custom-check-package)
+2. [Writing a check](#writing-a-check)
+3. [Providing a recommended configuration](#providing-a-recommended-configuration)
+4. [Sharing your package](#sharing-your-package)
+5. [Using a custom check package](#using-a-custom-check-package)
+
+## Creating a Custom Check Package
+
+### Naming your package
+
+Custom check packages must follow one of these naming conventions to be auto-discovered by platformOS Check:
+
+- `platformos-check-<name>` — e.g. `platformos-check-mycompany`
+- `@<scope>/platformos-check-<name>` — e.g. `@acme/platformos-check-style`
+
+Packages that match these patterns and are installed in `node_modules` are loaded automatically — no `require` entry needed in `.platformos-check.yml`.
+
+For packages with other names, add a `require` entry to your config:
+
+```yaml
+require:
+  - ./my-custom-checks/index.js
+```
+
+### Package structure
+
+Your package's `main` entry must export a `checks` array:
+
+```js
+// dist/index.js
+const NoHardcodedUrls = require('./checks/NoHardcodedUrls');
+const RequireAltText = require('./checks/RequireAltText');
+
+exports.checks = [
+  NoHardcodedUrls,
+  RequireAltText,
+];
+```
+
+A minimal `package.json`:
+
+```json
+{
+  "name": "@acme/platformos-check-style",
+  "description": "Custom platformOS Check rules for Acme",
+  "version": "1.0.0",
+  "main": "dist/index.js"
+}
+```
+
+## Writing a Check
+
+Each check is a plain JavaScript (or TypeScript) object with a `meta` descriptor and a `create` factory function.
+
+### Check structure
+
+```js
+const NoHardcodedUrls = {
+  meta: {
+    // Identifier used in config files and error messages
+    code: 'NoHardcodedUrls',
+    name: 'No hardcoded URLs',
+    docs: {
+      description: 'Encourages using Liquid variables for URLs instead of hardcoded strings.',
+      recommended: false,
+    },
+    // 'LiquidHtml' | 'JSON' | 'YAML' | 'GraphQL'
+    type: 'LiquidHtml',
+    // 0 = error, 1 = warning, 2 = info
+    severity: 1,
+    schema: {},
+    targets: [],
+  },
+
+  create(context) {
+    return {
+      async HtmlElement(node) {
+        const srcAttr = node.attributes.find(
+          (a) => a.name === 'src' || a.name === 'href'
+        );
+        // ... report offenses
+      },
+    };
+  },
+};
+
+module.exports = { checks: [NoHardcodedUrls] };
+```
+
+### The `context` object
+
+The `create(context)` factory receives a `context` object with these properties and methods:
+
+| Property / Method | Description |
+|---|---|
+| `context.report({ message, startIndex, endIndex, fix?, suggest? })` | Record an offense at the given position |
+| `context.file` | The current source code file being checked |
+| `context.settings` | Check-specific settings from `.platformos-check.yml` |
+| `context.fs` | Abstract file system — `readFile(uri)`, `readDirectory(uri)` |
+| `context.fileExists(uri)` | Returns `true` if the file exists |
+| `context.toRelativePath(uri)` | Converts an absolute URI to a relative path |
+| `context.toUri(relativePath)` | Converts a relative path to an absolute URI |
+| `context.getDefaultTranslations()` | Returns the default (English) translation data |
+| `context.platformosDocset` | Access to filters, tags, objects, and the GraphQL schema |
+
+### Reporting offenses
+
+```js
+context.report({
+  message: 'Hardcoded URL detected — use a Liquid variable instead.',
+  startIndex: node.position.start,
+  endIndex: node.position.end,
+});
+```
+
+To suggest a fix that the user can apply via their editor's code action:
+
+```js
+{% raw %}
+context.report({
+  message: 'Hardcoded URL detected.',
+  startIndex: node.position.start,
+  endIndex: node.position.end,
+  suggest: [
+    {
+      message: 'Extract to a variable',
+      fix: (corrector) => {
+        corrector.replace(
+          node.position.start,
+          node.position.end,
+          '{{ page_url }}'
+        );
+      },
+    },
+  ],
+});
+{% endraw %}
+```
+
+### Visitor methods
+
+The object returned by `create(context)` maps AST node types to visitor functions. The available visitor methods depend on the check's `type`.
+
+#### For `LiquidHtml` checks
+
+| Visitor | Called for |
+|---------|-----------|
+| `LiquidTag(node, ancestors)` | Every Liquid tag (`{% raw %}{% assign %}{% endraw %}`, `{% raw %}{% render %}{% endraw %}`, etc.) |
+| `LiquidVariable(node, ancestors)` | Every Liquid variable output (`{% raw %}{{ ... }}{% endraw %}`) |
+| `HtmlElement(node, ancestors)` | Every HTML element |
+| `HtmlRawNode(node, ancestors)` | Raw HTML nodes (`<script>`, `<style>`) |
+| `TextNode(node, ancestors)` | Text nodes |
+| `VariableLookup(node, ancestors)` | Variable access expressions |
+| `AssignMarkup(node, ancestors)` | `{% raw %}{% assign %}{% endraw %}` markup nodes |
+| `RenderMarkup(node, ancestors)` | `{% raw %}{% render %}{% endraw %}` markup nodes |
+| `FunctionMarkup(node, ancestors)` | `{% raw %}{% function %}{% endraw %}` markup nodes |
+| `LiquidDocParamNode(node, ancestors)` | `@param` entries inside `{% raw %}{% doc %}{% endraw %}` tags |
+| `onCodePathStart(file)` | Called once before the file is traversed |
+| `onCodePathEnd(file)` | Called once after the file has been fully traversed |
+
+Append `:exit` to any node type to visit it on the way **out** (after its children):
+
+```js
+return {
+  'HtmlElement': (node) => { /* entering */ },
+  'HtmlElement:exit': (node) => { /* leaving */ },
+};
+```
+
+#### For `JSON` and `YAML` checks
+
+| Visitor | Called for |
+|---------|-----------|
+| `Property(node, ancestors)` | Key-value pairs |
+| `Literal(node, ancestors)` | Scalar values (strings, numbers, booleans) |
+| `Object(node, ancestors)` | Object nodes |
+| `Array(node, ancestors)` | Array nodes |
+| `onCodePathStart(file)` | Before file traversal |
+| `onCodePathEnd(file)` | After file traversal |
+
+#### For `GraphQL` checks
+
+| Visitor | Called for |
+|---------|-----------|
+| `onCodePathEnd(file)` | After the file is processed (the full source is in `file.ast.content`) |
+
+### Configurable check options
+
+Use the `schema` field to declare configurable options. Values are available via `context.settings`:
+
+```js
+const schema = {
+  // SchemaProp.string(defaultValue)
+  format: { type: 'string', default: 'snake_case' },
+  max_length: { type: 'number', default: 100 },
+};
+
+const MyCheck = {
+  meta: {
+    code: 'MyCheck',
+    // ...
+    schema,
+  },
+  create(context) {
+    const { format, max_length } = context.settings;
+    return { /* ... */ };
+  },
+};
+```
+
+Users configure these options in `.platformos-check.yml`:
+
+```yaml
+MyCheck:
+  enabled: true
+  format: camelCase
+  max_length: 80
+```
+
+### Complete example
+
+```js
+// checks/NoHardcodedStrings.js
+const NoHardcodedStrings = {
+  meta: {
+    code: 'NoHardcodedStrings',
+    name: 'No hardcoded strings in HTML',
+    docs: {
+      description: 'Encourages use of translations instead of hardcoded strings.',
+      recommended: false,
+    },
+    type: 'LiquidHtml',
+    severity: 1,
+    schema: {
+      min_length: { type: 'number', default: 3 },
+    },
+    targets: [],
+  },
+
+  create(context) {
+    const { min_length } = context.settings;
+
+    return {
+      async TextNode(node) {
+        const text = node.value.trim();
+        const wordPattern = new RegExp(`[a-zA-Z]{${min_length},}`);
+
+        if (text.length > 0 && wordPattern.test(text)) {
+          context.report({
+            message: `Consider using a translation key for: "${text.substring(0, 50)}"`,
+            startIndex: node.position.start,
+            endIndex: node.position.end,
+          });
+        }
+      },
+    };
+  },
+};
+
+module.exports = { checks: [NoHardcodedStrings] };
+```
+
+## Providing a Recommended Configuration
+
+Include a `recommended.yml` file in your package root to provide default settings that users can extend:
+
+```yaml
+# recommended.yml
+NoHardcodedStrings:
+  enabled: true
+  severity: 1
+  min_length: 3
+RequireAltText:
+  enabled: true
+  severity: 0
+```
+
+Users extend it in `.platformos-check.yml`:
+
+```yaml
+extends:
+  - platformos-check:recommended
+  - '@acme/platformos-check-style/recommended.yml'
+```
+
+**Note:** the `.yml` file extension is required in the extends path.
+
+## Sharing Your Package
+
+Publish your package to npm:
+
+```bash
+npm publish
+```
+
+Packages named `platformos-check-*` or `@<scope>/platformos-check-*` are auto-discovered when installed in `node_modules` — users do not need to add a `require` entry in their config.
+
+## Using a Custom Check Package
+
+### Installing
+
+```bash
+npm install --save-dev @acme/platformos-check-style
+```
+
+### Configuring
+
+If the package follows the naming convention, it is discovered automatically. Otherwise, add a `require` entry:
+
+```yaml
+# .platformos-check.yml
+require:
+  - '@acme/platformos-check-style'
+
+extends:
+  - platformos-check:recommended
+  - '@acme/platformos-check-style/recommended.yml'
+
+# Override individual checks from the extension
+NoHardcodedStrings:
+  enabled: true
+  severity: warning
+  min_length: 5
+```
+
+For local development without publishing to npm:
+
+```yaml
+require:
+  - ./my-custom-checks/index.js
+
+NoHardcodedStrings:
+  enabled: true
+```
+
+## Resources
+
+- [platformOS Check Configuration](/developer-guide/platformos-check/platformos-check)
+- [Available Checks](/developer-guide/platformos-check/checks)
+- [pos-cli on GitHub](https://github.com/Platform-OS/pos-cli)
+- [platformOS Check VS Code Extension](https://marketplace.visualstudio.com/items?itemName=platformOS.platformos-check-vscode)
+- [platformos-check-common on GitHub](https://github.com/Platform-OS/platformos-tools/tree/master/packages/platformos-check-common)
+- [Example checks source code](https://github.com/Platform-OS/platformos-tools/tree/master/packages/platformos-check-common/src/checks)

@@ -1,0 +1,72 @@
+---
+converter: markdown
+metadata:
+  title: UnusedAssign
+  description: Reports assigned variables that are never used, helping to eliminate dead code.
+---
+
+## UnusedAssign
+
+**Severity:** warning | **Type:** LiquidHtml
+
+This check helps prevent bloat in your platformOS application by identifying variable definitions that are not used. It covers both `{% raw %}{% assign %}{% endraw %}` and `{% raw %}{% function %}{% endraw %}` assignments and aims to eliminate unnecessary code and surface user errors.
+
+Variables that start with `_` (underscore) are exempt from this check and can be used as throwaway or private variables.
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```liquid
+{% raw %}
+{% assign this_variable_is_not_used = 1 %}
+{% endraw %}
+```
+
+```liquid
+{% raw %}
+{% function this_variable_is_not_used = 'my_function' %}
+{% endraw %}
+```
+
+### &#x2713; Correct Code Example (Use this instead):
+
+```liquid
+{% raw %}
+{% assign this_variable_is_used = 1 %}
+{% if this_variable_is_used == 1 %}
+  <span>Hello!</span>
+{% endif %}
+{% endraw %}
+```
+
+```liquid
+{% raw %}
+{% function this_variable_is_used = 'my_function' %}
+{% if this_variable_is_used == 1 %}
+  <span>Hello!</span>
+{% endif %}
+{% endraw %}
+```
+
+If you need to call a function for its side effects without using the return value, start the variable name with an underscore:
+
+```liquid
+{% raw %}
+{% function _ignore_this_var = 'my_function' %}
+{% endraw %}
+```
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+UnusedAssign:
+  enabled: true
+  severity: warning
+```
+
+## Disabling This Check
+
+This check is safe to disable if you do not prioritize eliminating unused variables.
