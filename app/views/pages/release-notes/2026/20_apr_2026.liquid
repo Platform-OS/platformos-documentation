@@ -1,0 +1,77 @@
+---
+converter: markdown
+metadata:
+  title: Multiline tag arguments, faster pos-cli deploys, SSL skip option, context enhancements in background jobs
+  description: Apr 20, 2026
+  skip_contribute_button: true
+  last_edit: false
+slug: release-notes/20-APR-26
+---
+
+#### {{ page.metadata.description }}
+
+<h4 class="release-note release-note__improved">IMPROVED</h4>
+* **`context.environment` and `context.location.host` in background jobs**: Background jobs now receive the same `context.environment` (e.g., `production`, `staging`) and `context.location.host` values that are available in web requests. This makes it easier to branch logic by environment or build host-aware URLs from asynchronous code.
+
+* **`skip_ssl_verification` option for `api_call_send`**: The `api_call_send` mutation accepts a new `skip_ssl_verification` boolean in its options. When set to `true`, SSL certificate verification is skipped for HTTPS requests - useful when integrating with internal services that use self-signed certificates. Disabled by default.
+
+* **`assign` and `function` tags accept arguments in multiline**, for example:
+
+{% raw %}
+```liquid
+{% liquid
+  assign outer_key = "user"
+  assign inner_key = "name"
+  assign hash = {
+    outer_key: {
+      inner_key: "Alice"
+    }
+  }
+  echo hash
+%}
+```
+{% endraw %}
+
+* **`assign` tag supports string interpolation inside hash values**, for example:
+
+{% raw %}
+```liquid
+{% liquid
+  assign email = "ALICE@EXAMPLE.COM"
+  assign contact = { "email": "{{ email | downcase }}", "name": "{{ email | split: '@' | first }}" }
+  echo contact
+%}
+```
+{% endraw %}
+
+* **`[]` and `{}` empty array/hash literals can be used as argument values**, for example:
+
+{% raw %}
+```liquid
+{% assign arr = value | default: [] %}
+
+{% function result = 'my/function', array: [], hash: {} %}
+```
+{% endraw %}
+
+* **pos-cli deploy improvements:**
+  * **Significantly faster cold deploys**: Deploying a ~1,000-file application is now approximately **3× faster**. Benchmarked against a real-world pos application (5,883 files): cold deploy time dropped from ~11.8s to ~3.9s. Warm deploys (no file changes) are slightly faster thanks to a better algorithm for skipping unchanged files. It also affects the Instance Clone feature.
+  * **All validation errors reported at once**: When a deploy contains multiple invalid files, all errors are now collected and reported together in a single response instead of stopping at the first failure. This means you can fix all issues in one round rather than discovering them one by one.
+  * **Deploy report**: Each deploy now returns a structured report listing which files were upserted or deleted per resource type (partials, GraphQL queries, pages, assets, etc.), making it easier to understand exactly what changed. Requires `pos-cli` 6.0.0+.
+  * **`pos-cli deploy --dry-run` now includes assets**: Dry-run mode reports which assets would be added or removed without uploading them. Requires `pos-cli` 6.0.0+.
+  * **Automatic cleanup for public-only modules** _(opt-in, requires `auto_manage_public_only_modules: true` in `config.yml`)_: platformOS can now detect when a module contains only public files and, when it does, treat those files with the same lifecycle rules as regular application files - meaning files removed from the deploy are automatically deleted from the instance. Previously, module files were never deleted on deploy, which required adding each module name individually to the `modules_that_allow_delete_on_deploy` setting in the config. Because this changes deletion behaviour, it is disabled by default and must be explicitly opted into.
+
+* **Improved `asset_manifest` generation during `pos-cli pull`** - greatly improves internal memory management and performance of generating `asset_manifest` (which includes all Assets). This also affects the Instance Clone feature.
+
+* **Module handling:**
+  * **Warning when a declared module is missing**: If a module is listed in `pos-modules.lock.json` but its source files are missing from the deploy, a warning is now emitted.
+
+* **Unknown `app/config.yml` properties are now warnings, not errors**: If your `config.yml` contains a feature flag that does not exist in the target environment (for example when deploying from staging to a production environment that hasn't received that flag yet), the deploy no longer fails.
+
+* **Better error messages for duplicate translation keys**: When multiple translation files define the same key for the same locale, the reported error now lists each offending key alongside the specific files that defined it, instead of lumping all files together.
+
+* **Duplicate model name detection on deploy**: If two Model Schemas, Profile Types, or User Profiles resolve to the same parameterized name, the deploy now fails fast with a clear error listing the conflicting name and the files that introduced it.
+
+<h4 class="release-note release-note__fixed">FIXED</h4>
+
+* **`raw_url` handling for cloned instances**: When an asset's `raw_url` points at an instance CDN path (`/instances/N/assets/...`), the host and instance ID are now rewritten to match the current instance's CDN configuration. This fixes broken asset URLs on cloned instances. External `raw_url` values (without the instance path segment) continue to be served as-is.

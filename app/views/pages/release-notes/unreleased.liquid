@@ -11,58 +11,6 @@ metadata:
 
 <!-- <h4 class="release-note release-note__new">NEW</h4> -->
 
-<h4 class="release-note release-note__improved">IMPROVED</h4>
+<!-- <h4 class="release-note release-note__improved">IMPROVED</h4> -->
 
-* `assign` and `function` tags accept arguments in multiline, for example:
-
-{% raw %}
-```liquid
-{% liquid
-  assign outer_key = "user"
-  assign inner_key = "name"
-  assign hash = {
-    outer_key: {
-      inner_key: "Alice"
-    }
-  }
-  echo hash
-%}
-```
-{% endraw %}
-
-* `assign` tag supports string interpolation inside hash values, for example:
-
-{% raw %}
-```liquid
-{% liquid
-  assign email = "ALICE@EXAMPLE.COM"
-  assign contact = { "email": "{{ email | downcase }}", "name": "{{ email | split: '@' | first }}" }
-  echo contact
-%}
-```
-{% endraw %}
-
-* `[]` and `{}` empty array/hash literals can be used as argument values, for example:
-
-{% raw %}
-```liquid
-{% assign arr = value | default: [] %}
-
-{% function result = 'my/function', array: [], hash: {} %}
-```
-{% endraw %}
-
-* **pos-cli deploy improvements:**
-  * **Significantly faster cold deploys**: Deploying a ~1,000-file application is now approximately **3× faster**. Benchmarked against a real-world pos application (5,883 files): cold deploy time dropped from ~11.8s to ~3.9s. Warm deploys (no file changes) are slightly faster thanks to better algorithm of skipping unchanged files. It also affects Instance Clone feature.
-  * **All validation errors reported at once**: When a deploy contains multiple invalid files, all errors are now collected and reported together in a single response instead of stopping at the first failure. This means you can fix all issues in one round rather than discovering them one by one.
-  * **Deploy report**: Each deploy now returns a structured report listing which files were upserted or deleted per resource type (partials, GraphQL queries, pages, assets, etc.), making it easier to understand exactly what changed. Requires `pos-cli` 6.0.0+.
-  * **`pos-cli deploy --dry-run` now includes assets**: Dry-run mode reports which assets would be added or removed without uploading them. Requires `pos-cli` 6.0.0+.
-  * **Automatic cleanup for public-only modules** _(opt-in, requires `auto_manage_public_only_modules: true` in `config.yml`)_: platformOS can now detect when a module contains only public files and, when it does, treat those files with the same lifecycle rules as regular application files - meaning files removed from the deploy are automatically deleted from the instance. Previously, module files were never deleted on deploy, which required adding each module name individually to `modules_that_allow_delete_on_deploy` setting in the config. Because this changes deletion behaviour, it is disabled by default and must be explicitly opted into.
-
-* **Improved asset_manifest generation during `pos-cli pull`** - greatly improves internal memory management and performance of generating asset_manifest (which includes all Assets). This also affects Instance Clone feature.
-
-* **Module handling:**
-  * **Warning when a declared module is missing**: If a module is listed in `pos-modules.lock.json` but its source files are missing from the deploy, a warning is now emitted.
-
-* **Unknown `app/config.yml` properties are now warnings, not errors**: If your `config.yml` contains a feature flag that does not exist in the target environment (for example when deploying from staging to a production environment that hasn't received that flag yet), the deploy no longer fails.
 <!-- <h4 class="release-note release-note__fixed">FIXED</h4> -->
