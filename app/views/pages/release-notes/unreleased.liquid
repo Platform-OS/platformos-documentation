@@ -9,8 +9,16 @@ metadata:
 
 #### {{ page.metadata.description }}
 
-<!-- <h4 class="release-note release-note__new">NEW</h4> -->
+<h4 class="release-note release-note__new">NEW</h4>
 
-<!-- <h4 class="release-note release-note__improved">IMPROVED</h4> -->
+Added a `cache_control` argument to the `admin_assets_create` and `admin_asset_update` mutations. When provided, the value (for example `max-age=31536000, public`) is stored in the asset's `metadata` and applied as the `Cache-Control` header on the underlying object in the file storage provider (S3, R2, etc.), allowing CDNs and browsers to cache assets according to your policy.
+
+<h4 class="release-note release-note__improved">IMPROVED</h4>
+
+Improved performance of `related_records` by reducing object allocations, which can improve the performance even up to 4x.
+
+Changed internal implementation of cache invalidation for assets. The `updated=...` query parameter appended by the `asset_url` (and `asset_path`) filter is now derived from a per-instance `assets_updated_at` timestamp that is bumped whenever assets change, instead of being derived per asset. This means all asset URLs are invalidated together when any asset is updated, ensuring CDN caches stay consistent.
+
+Deprecated the `url` argument in the `admin_assets_create` mutation. Asset URLs are now derived from the asset `name` and the per-instance CDN, so the argument is ignored. Upload bytes via `admin_assets_presign_urls` first, then call `admin_assets_create` without the `url` argument. The argument will be removed in a future release.
 
 <!-- <h4 class="release-note release-note__fixed">FIXED</h4> -->
