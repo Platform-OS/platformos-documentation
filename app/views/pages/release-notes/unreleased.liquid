@@ -9,8 +9,49 @@ metadata:
 
 #### {{ page.metadata.description }}
 
-<!-- <h4 class="release-note release-note__new">NEW</h4> -->
+<h4 class="release-note release-note__new">NEW</h4>
 
-<!-- <h4 class="release-note release-note__improved">IMPROVED</h4> -->
+* **`asset_name_to_raw_url` filter**: Resolves an asset by its `name` to its `raw_url`, for example:
 
-<!-- <h4 class="release-note release-note__fixed">FIXED</h4> -->
+{% raw %}
+```liquid
+{{ 'logo.png' | asset_name_to_raw_url }}
+{%- comment -%} => https://example.com/instances/1/assets/logo.png {%- endcomment -%}
+```
+{% endraw %}
+
+  Returns the asset's raw URL, or `nil` when no asset with that name exists.
+
+* **`expires_in` argument for the `jwt_token` field**: The `User.jwt_token` GraphQL field accepts an optional `expires_in` (in seconds), letting you mint short- or long-lived tokens for a given use case. The value is clamped to a maximum of one year. When omitted, the token expires after the instance session timeout (the same source as the `{% raw %}{% sign_in %}{% endraw %}` tag).
+
+{% raw %}
+```graphql
+{
+  current_user {
+    jwt_token(expires_in: 3600)
+  }
+}
+```
+{% endraw %}
+
+<h4 class="release-note release-note__improved">IMPROVED</h4>
+
+* **JWT authentication hardening**: JWT tokens issued via the `jwt_token` field are now stronger by default:
+  * **Tokens now expire.** Newly issued tokens carry standard `iat` (issued-at) and `exp` (expiry) claims and are rejected once expired. By default they expire after the instance session timeout; use the new `expires_in` argument to override. _Note: previously issued tokens carried no expiry — integrations that relied on non-expiring tokens should re-issue tokens and account for expiry._
+  * **Issuer binding.** Tokens carry an `iss` (issuer) claim tied to the instance and verified on decode, so a token issued for one instance cannot be replayed against another even if a signing secret is shared or misconfigured. Legacy tokens without an `iss` claim continue to be accepted.
+  * **Revocation on password change.** Changing a user's password now advances a per-user invalidation watermark, so JWTs issued before the change stop being accepted.
+
+* **Cross-origin WebSocket (ActionCable) support**: WebSocket connections now resolve the platformOS instance (tenant) from the host the socket connects to - the same signal the HTTP layer uses - instead of only the `Origin` header. This lets cross-origin clients (for example an external editor served from a different origin) connect to the correct instance, while same-origin behaviour is preserved. Channels without an explicit `subscribed` authorization partial now require one for cross-origin connections rather than defaulting to open, and connections that cannot be matched to an instance are cleanly rejected instead of leaving the client retrying the subscription indefinitely.
+
+<h4 class="release-note release-note__fixed">FIXED</h4>
+
+* **`min` / `max` GraphQL aggregations now honor the requested field**: Previously `min` and `max` aggregations were computed against the record `id` regardless of the field requested, and could return a per-shard array instead of a single value. They now compute against the requested field and return a scalar `{ "value": x }`, consistent with `avg`.
+
+* **`hash_assign` tag parsing**: Fixed the `hash_assign` (please note it is deprecated though - use `assign` instead) tag's syntax matching so assignments are anchored to the start of the expression and nested bracket lookups (e.g. `hash[key1][key2] = value`) are parsed correctly.
+
+* **Postgres cardinality errors on deploy**: Deploys/imports containing certain associations and form configurations could fail with a low level Postgres cardinality error. These cases are now handled correctly.
+
+* **Stale asset MD5 during deploy**: Fixed edge cases introduced by the two-phase deploy refactoring that could leave stale MD5 cache entries, ensuring changed files are reliably detected and updated.
+
+* **Instance Clone resilient to individual asset failures**: A single asset that fails to copy (for example a missing or oversized file returning an HTTP error) no longer aborts the whole clone - the failure is rescued and logged so the remaining assets continue copying.
+
