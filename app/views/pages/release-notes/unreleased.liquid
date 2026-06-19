@@ -43,6 +43,8 @@ metadata:
 
 * **Cross-origin WebSocket (ActionCable) support**: WebSocket connections now resolve the platformOS instance (tenant) from the host the socket connects to - the same signal the HTTP layer uses - instead of only the `Origin` header. This lets cross-origin clients (for example an external editor served from a different origin) connect to the correct instance, while same-origin behaviour is preserved. Channels without an explicit `subscribed` authorization partial now require one for cross-origin connections rather than defaulting to open, and connections that cannot be matched to an instance are cleanly rejected instead of leaving the client retrying the subscription indefinitely.
 
+* **Updated internal dependencies**: Internal dependencies have been updated to keep the platform current and secure.
+
 <h4 class="release-note release-note__fixed">FIXED</h4>
 
 * **`min` / `max` GraphQL aggregations now honor the requested field**: Previously `min` and `max` aggregations were computed against the record `id` regardless of the field requested, and could return a per-shard array instead of a single value. They now compute against the requested field and return a scalar `{ "value": x }`, consistent with `avg`.
