@@ -62,6 +62,8 @@ const chat = function(){
 
 There are 4 callbacks handled by the subscription that allow you to react on certain events. You can add handlers for them when you create the subscription object:
 
+`connected` fires when the subscription is accepted, and `rejected` fires when it is denied. To find out *why* a subscription was rejected, read the `subscription_error` message in your `received` handler — see [Subscription outcomes and error handling](#subscription-outcomes-and-error-handling) below.
+
 ```javascript
 // modules/chat/src/js/chat.js
 import consumer from "./consumer";
@@ -129,6 +131,8 @@ modules/chat/public/views/partials/channels/conversate/subscribed.liquid
 ```
 In the pOS Marketplace Template, each user has a profile and the profile is linked with a conversation. If the conversation is found then we return `true` to confirm that the user can subscribe to this room.
 
+The partial must return the string `true` to authorize the subscription. Anything else denies it, and the client is rejected with the `unauthorized` code. If the partial itself raises a Liquid error, the subscription is rejected with the `subscribed_partial_error` code rather than being silently dropped — see [Subscription outcomes and error handling](#subscription-outcomes-and-error-handling).
+
 ### Step 6: Send messages
 
 To send a message, you need to call the `send` method on the subscription object you have created. This method takes Object as an argument.
@@ -184,6 +188,63 @@ modules/chat/public/views/partials/channels/conversate/receive.liquid
 In this example, we are retrieving the conversation object and creating a message object to persist data in the database.
 
 To avoid broadcasting (for example if the user is not authorized to add a message in a conversation or when an validation error is triggered) ensure the partial returns "false" (whitespace characters do not matter).
+
+### Subscription outcomes and error handling
+
+Every subscribe attempt resolves to an explicit verdict — the server never silently ignores a subscription request:
+
+| Outcome | Client callback | Meaning |
+| --- | --- | --- |
+| **Accepted** | `connected()` | The stream is established. This is the only outcome that grants access. |
+| **Rejected** | `received(data)` with a `subscription_error` payload, then `rejected()` | The subscription was denied; the payload explains why. |
+| **No verdict** | *(none)* | A transport/connection failure — **not** a denial. The JS client reconnects automatically. |
+
+Because the underlying ActionCable `reject_subscription` frame cannot carry a payload, the reason is delivered as an ordinary message **just before** the rejection. Read it in your `received` handler — the `rejected()` callback itself receives no arguments.
+
+```javascript
+{
+  received: function(data) {
+    // The rejection reason arrives as a normal message before `rejected()` fires.
+    if (data && data.type === 'subscription_error') {
+      module.lastError = data; // { type, code, message, retryable }
+      return;
+    }
+    module.showMessage(data);
+  },
+
+  rejected: function() {
+    const err = module.lastError;
+    // Only resubscribe later if the error is marked retryable.
+    module.blocked(err && err.message);
+  }
+}
+```
+
+The `subscription_error` payload looks like this:
+
+```json
+{
+  "type": "subscription_error",
+  "code": "unauthorized",
+  "message": "You are not authorized to subscribe to this room.",
+  "retryable": false
+}
+```
+
+Switch on `code` (stable, machine-readable), not on `message` (human-readable and may be generic):
+
+| `code` | When it happens | `retryable` |
+| --- | --- | --- |
+| `unauthorized` | The `subscribed.liquid` partial did not return `true` (or, for a cross-origin client, the channel has no `subscribed.liquid` partial). | `false` |
+| `instance_not_found` | The socket could not be matched to a platformOS instance. | `false` |
+| `subscribed_partial_error` | Your `subscribed.liquid` partial raised a Liquid error while being evaluated. | `false` |
+| `internal` | An unexpected server error. Retrying may succeed. | `true` |
+
+A few things to keep in mind:
+
+* `unauthorized`, `instance_not_found` and `internal` carry a **generic** `message` — no internal detail is leaked to the client.
+* For `subscribed_partial_error`, the detailed Liquid error is included in `message` only for **same-origin** (developer) connections, so you can debug your partial; third-party origins receive a generic message.
+* Treat a missing verdict (neither `connected()` nor `rejected()`) as a **transport** problem, not as "access denied" — reconnect with backoff rather than assuming the room is forbidden.
 
 ### Employing Cross-Site Request Forgery token validation
 
@@ -248,6 +309,10 @@ Yes, if that service handles websocket connections.
 3. Timeouts
 
 There is 5 seconds timeout for handling `subscribed.liquid` and `receive.liquid` partials.
+
+4. What happens if my `subscribed.liquid` partial has a bug?
+
+The subscription is rejected explicitly with the `subscribed_partial_error` code (the client's `rejected()` callback fires), instead of silently hanging. The detailed error message is sent back only to same-origin (developer) connections. See [Subscription outcomes and error handling](#subscription-outcomes-and-error-handling).
 
 5. How do you define a message?
 
