@@ -19,34 +19,72 @@ For consistency, we recommend using the best practices, conventions, and archite
 
 {% render "alert/warning", content: "Remember to add `.pos` to `.gitignore` to avoid token leak!" %}
 
-### Defining a module using template-values.json
+### Defining a module using pos-module.json
 
-What distinguishes a regular platformOS application from a module is a `template-values.json` file. You can place it either in the project root directory, or in the `modules/<your module name>`. We recommend choosing the first option.
+What distinguishes a regular platformOS application from a module is a `pos-module.json` file in the project root that declares a `machine_name`. This is a single, unified manifest — the platformOS equivalent of npm's `package.json` — that holds both your module's identity (`name`, `version`) and its `dependencies`.
 
-An example `template-values.json` file looks like this:
+{% render "alert/note", content: "Earlier versions of pos-cli kept this metadata inside `template-values.json`. That file is now used **only** for [module template variable substitution](/developer-guide/modules/templates); a module's identity and dependencies live in `pos-module.json`. If you have an existing module, run `pos-cli modules migrate` to move these fields automatically — see [Migrating from the legacy format](/developer-guide/modules/installing-a-module#migrating-from-the-legacy-app-pos-modules-json-format)." %}
+
+An example `pos-module.json` file looks like this:
 
 ```json
 {
-  "name": "Pos Module Core",
-  "machine_name": "core",
-  "type": "module",
-  "version": "1.5.3",
-  "dependencies": {}
+  "name": "Pos Module Payments",
+  "machine_name": "payments",
+  "version": "0.3.2",
+  "dependencies": {
+    "core": "^2.1.9"
+  },
+  "devDependencies": {
+    "tests": "^1.3.4"
+  }
 }
-
 ```
 
 | key   | description  |
 |---|---|
-| name  | it's a name that will be displayed in the [Partner Portal Module Marketplace](https://partners.platformos.com/marketplace/pos_modules)
-| machine_name  | this should correspond to the namespace that you will use for your module; if you choose `foo` as a machine name, we expect to find files in `modules/foo` directory, and the content of this directory will be released as a module archive. Partner Portal will ensure that your chosen `machine_name` is globally unique, to avoid module conflicts. |
-| version  | specifies the current version, used by `pos-cli modules push` to release a new module version  |
-| dependencies  | you can define dependencies here, in a way similar to how they are defined in [app/pos-module.json](/developer-guide/modules/installing-a-module#pos-modules-json-and-app-pos-modules-lock-json), for example if you would like to add core module as a dependency in version &ge; 1.0.0 and &lt; 2.0.0 you would use `"dependencies": { "core": "^1.0.0" }` |
+| name  | it's a name that will be displayed in the [Partner Portal Module Marketplace](https://partners.platformos.com/marketplace/pos_modules) |
+| machine_name  | this should correspond to the namespace that you will use for your module; if you choose `foo` as a machine name, we expect to find files in the `modules/foo` directory, and the content of this directory will be released as a module archive. Machine names are typically lowercase and may contain underscores (for example `payments_stripe`, `user_invites`). Partner Portal will ensure that your chosen `machine_name` is globally unique, to avoid module conflicts. |
+| version  | specifies the current version, used by `pos-cli modules version` and `pos-cli modules push` to release a new module version  |
+| dependencies  | modules your module needs at runtime, defined the same way as in a consuming project's [pos-module.json](/developer-guide/modules/installing-a-module#pos-module-json-and-pos-module-lock-json). For example, to depend on the core module in version &ge; 2.0.0 and &lt; 3.0.0 you would use `"dependencies": { "core": "^2.0.0" }`. These are installed automatically for anyone who installs your module. |
+| devDependencies  | modules needed only while developing or testing your module (for example the [tests module](/developer-guide/modules/platformos-modules/tests)) — they are **not** installed for consumers of your module. |
+
+The `type` field that older `template-values.json` files used is no longer required — it is deprecated, has no effect, and is stripped automatically during migration.
 
 {% capture warning %}
 Because the `machine_name` has to be globally unique and you will use it to reference all of your files, we recommend reserving the intended `machine_name` by [Creating a Module in Partner Portal Module Marketplace](/developer-guide/partner-portal/modules/sharing-module#step-2-upload-module-to-the-module-marketplace).
 {% endcapture %}
   {% render "alert/warning", content: warning %}
+
+## Post-install messages
+
+A module can ship **declarative** setup instructions that `pos-cli` prints right after the module is downloaded — for example, "run this generator to scaffold a layout". This is the platformOS analogue of RubyGems' `post_install_message` or Homebrew's caveats.
+
+{% capture postinstall_warning %}
+Post-install messages are **text only**. pos-cli never executes module-supplied code at install time — this deliberately avoids the npm `postinstall` supply-chain risk. If your module needs a command to be run, print the command so the user can copy and run it themselves.
+{% endcapture %}
+{% render "alert/warning", content: postinstall_warning %}
+
+Declare a short message in your module's `pos-module.json` under `postInstall.message`:
+
+```json
+{
+  "machine_name": "common-styling",
+  "version": "1.2.0",
+  "postInstall": {
+    "message": "common-styling installed.\n\nScaffold a layout:\n\n  pos-cli generate run modules/common-styling/generators/install\n"
+  }
+}
+```
+
+For longer instructions, omit `postInstall.message` and ship a `POST_INSTALL.md` file at the root of your module directory (`modules/<machine_name>/POST_INSTALL.md`) instead. It is used as a fallback and also renders on the Module Marketplace.
+
+How and when messages are shown:
+
+- Printed for every module **downloaded** during an install, including transitive dependencies installed for the first time, plus the explicitly named module on `pos-cli modules install <name>` (even if it is already installed).
+- `pos-cli modules install --frozen` (CI mode) prints nothing.
+- Module-supplied text is sanitised before printing (ANSI/OSC escape sequences and control characters are stripped) and is length-capped, so a message cannot take over the user's terminal.
+- Users can re-read a module's message at any time with `pos-cli modules show <name>` while the module is installed locally.
 
 ## Creating a new module in Partner Portal
 
@@ -54,19 +92,39 @@ Currently, it is not possible to create a new module using `pos-cli` — you can
 
 ## Releasing a new module version
 
-Once you create a new module version in the [Partner Portal Module Marketplace](https://partners.platformos.com/marketplace/pos_modules), you can easily release it. To do so, bump the version in [template-values.json](/developer-guide/modules/developing-a-new-module#defining-a-module-using-template-values-json) based on semantic versioning (most importantly, increment the major version if you are making a backward-incompatible change). After this, you can push the new version:
+Once you have created the module in the [Partner Portal Module Marketplace](https://partners.platformos.com/marketplace/pos_modules), releasing a new version is a two-step process: bump the version, then push.
+
+Bump the version with `pos-cli modules version`, which updates the `version` field in [pos-module.json](#defining-a-module-using-pos-module-json) following semantic versioning (most importantly, increment the major version if you are making a backward-incompatible change). Pass a bump type or an explicit version:
+
+```
+# Bump the major, minor, or patch segment (defaults to patch when no argument is given)
+pos-cli modules version patch
+
+# …or set an explicit version
+pos-cli modules version 2.0.0
+```
+
+`pos-cli modules version` also creates a git commit and tag for the new version. It refuses to run on a dirty working tree; use `--no-git` to skip the commit and tag. If your module still keeps a `template-values.json` with a `version` field, the new version is synced there too.
+
+Then push the new version:
 
 ```
 pos-cli modules push --email <your partner portal email>
 ```
 
-We will ask for your password to authenticate. If successful, the content of the `modules/<machine name>` directory will be zipped (and stored in the `tmp` directory if you would like to review it). It will include all directories, allowing you to include source code for your frontend assets, for example, or [generators](https://github.com/Platform-OS/pos-cli?tab=readme-ov-file#generators) to make it easier to use your module.
+We will ask for your password to authenticate. If successful, the content of the `modules/<machine name>` directory will be zipped (and stored in the `tmp` directory if you would like to review it). The archive includes your `pos-module.json` so the Marketplace can register the module's dependencies, along with all other directories — allowing you to include source code for your frontend assets, for example, or [generators](https://github.com/Platform-OS/pos-cli?tab=readme-ov-file#generators) to make it easier to use your module.
 
 All Partner Portal users who have at least one instance using your module will be notified by email about a new release.
 
 ### Releasing a beta version of a module
 
 If you don't want your new version to be a default version, you can also mark it as a beta version. It will still be possible to install it using `pos-cli modules install` by specifying the exact version of the module. To mark a version as a beta release, add `-beta.<version>`, for example:
+
+```
+pos-cli modules version 2.0.0-beta.1
+```
+
+which sets the `version` in `pos-module.json` to:
 
 ```
 "version": "2.0.0-beta.1"

@@ -7,6 +7,8 @@ metadata:
 
 With **module templates**, you can configure modules before deploying them to an environment. For example, you can specify the slug for a page (where the page will be available after the module is installed) upon installing the module.
 
+{% render "alert/note", content: "`template-values.json` is used **only** to provide values for these template variables. A module's identity and dependencies (`machine_name`, `version`, `name`, `dependencies`) now live in [`pos-module.json`](/developer-guide/modules/developing-a-new-module#defining-a-module-using-pos-module-json), not in `template-values.json`. If your `template-values.json` still contains those metadata fields, run `pos-cli modules migrate` to move them automatically." %}
+
 ## Configuration
 
 Values for variables have to be provided in the `template-values.json` file placed at the toplevel of the module:

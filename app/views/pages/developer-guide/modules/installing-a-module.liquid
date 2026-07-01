@@ -15,42 +15,75 @@ To install a module, go to the root directory of your project and type `pos-cli 
 
 You can find a list of available modules in the [Partner Portal Module Marketplace](https://partners.platformos.com/marketplace/pos_modules). You can also read more about the [official platformOS Modules](https://documentation.staging.oregon.platform-os.com/developer-guide/modules/platformos-modules), which have been developed by platformOS employees to help you build new applications on platformOS without worrying about the basics.
 
-### installing a specific version of a module
+### Installing a specific version of a module
 
 If you would like to install a specific module version, you can use similar syntax to `npm` — by adding `@` followed by the desired version number. For example, to install the core module version 1.5.1, use:
 
 `pos-cli modules install core@1.5.1`
 
 ```
-✔ Added module: core@1.5.3 to app/pos-modules.json
-✔ Modules lock file updated: app/pos-modules.lock.json
+✔ Added module: core@1.5.1 to dependencies in pos-module.json
 ```
 
-We will explain those two files in a next sections.
+By default (when you don't specify a version) pos-cli stores a caret range for the latest stable release, resolves the full dependency tree, and writes the resolved versions to `pos-module.lock.json`. We will explain those two files in the next section.
 
-## pos-modules.json and app/pos-modules.lock.json
+## pos-module.json and pos-module.lock.json
 
-platformOS keeps tracks of the modules that should be installed using `pos-modules.json` files. When you use the `pos-cli modules install` command, we will automatically add entry to the `pos-modules.json` file with the current version. It is equivalent to npm's `package.json` file. You can modify this file manually as well. We recommend that all modules follow [semantic versioning]()
+platformOS keeps track of the modules that should be installed using a single `pos-module.json` file in your project root. It is the platformOS equivalent of npm's `package.json`: when you run `pos-cli modules install`, an entry is added automatically to the `dependencies` object. You can also edit this file by hand. We recommend that all modules follow [semantic versioning](https://semver.org/).
 
-You can use both `~` and `^` before a module version.
+You can use both `~` and `^` before a module version:
 
-`~` will increment the `patch` version. For example, `~1.2.3` will use releases from 1.2.3 to &lt; 1.3.0.
+- `~` allows patch-level updates. For example, `~1.2.3` will use releases from 1.2.3 to &lt; 1.3.0.
+- `^` allows patch- and minor-level updates. For example, `^1.2.3` will use releases from 1.2.3 to &lt; 2.0.0.
+- An exact version (for example `1.2.3`) pins the module and is never updated automatically.
 
-`^` will increment both the `patch` and `minor` versions. For example, `^1.2.3` will use releases from 1.2.3 to &lt; 2.0.0.
-
-An example `pos-modules.json` file might look like this:
+An example `pos-module.json` file might look like this:
 
 ```json
 {
-  "modules": {
+  "dependencies": {
     "core": "^1.5.0",
     "user": "^2.0.0"
   }
 }
-
 ```
 
-The `pos-modules.lock.json` is equivalent to `package-lock.json` and should not be manually modified. It will be automatically generated and will lock compatible module versions, respecting their defined dependencies. Its purpose is to ensure that modules are not accidentally or automatically upgraded without explicit action.
+The same file can also carry a module's own identity (`machine_name`, `version`, `name`) when you are [developing a module](/developer-guide/modules/developing-a-new-module#defining-a-module-using-pos-module-json) — it is one unified manifest for both consuming and publishing modules.
+
+### Development dependencies
+
+Modules that are only needed while developing or testing your project (for example the [tests module](/developer-guide/modules/platformos-modules/tests)) can be tracked separately in a `devDependencies` object. Add one with the `--dev` flag:
+
+`pos-cli modules install tests --dev`
+
+### The lock file
+
+The `pos-module.lock.json` is equivalent to `package-lock.json` and should not be modified manually. It is generated automatically and locks the exact resolved version of every module and its transitive dependencies, along with the registry each module was resolved from. Its purpose is to ensure that modules are not accidentally or automatically upgraded without explicit action. Commit it to source control so teammates and CI get identical installs.
+
+For reproducible CI installs, use `pos-cli modules install --frozen`. This uses `pos-module.lock.json` as-is, performs no registry resolution, and fails fast if the lock file is missing or out of date.
+
+## Post-install messages
+
+Some modules ship short setup instructions that `pos-cli` prints right after the module is downloaded — for example, a reminder to run a generator that scaffolds a layout. This is similar to the notes RubyGems and Homebrew show after installing a package.
+
+{% include 'alert/note', content: 'These messages are text only — pos-cli never runs module-supplied code at install time. If a module needs a command to be run, it prints the command for you to copy and run yourself.' %}
+
+Messages are shown for every module downloaded during a run (including dependencies installed for the first time) and for the module you name explicitly on `pos-cli modules install <name>`. CI installs (`--frozen`) print nothing. You can re-read a module's message at any time, as long as the module is installed locally, with:
+
+`pos-cli modules show <module name>`
+
+## Migrating from the legacy app/pos-modules.json format
+
+Older projects tracked modules in `app/pos-modules.json` (with a top-level `modules` key) and kept module metadata inside `template-values.json`. Both are still read as a fallback, but you should migrate to the unified `pos-module.json` format with:
+
+`pos-cli modules migrate`
+
+This runs two independent, idempotent phases:
+
+- **Phase A** converts `app/pos-modules.json` → `pos-module.json` (the `modules` key becomes `dependencies`) and `app/pos-modules.lock.json` → `pos-module.lock.json`.
+- **Phase B** lifts `machine_name`, `version`, `name`, and `repository_url` out of `template-values.json` into `pos-module.json` and strips them from the source file (deleting it if it becomes empty). Any remaining [template variables](/developer-guide/modules/templates) are left untouched.
+
+When your project has more than one `modules/<name>/template-values.json`, target a specific module with `pos-cli modules migrate --name <machine_name>`. After migrating, commit the new `pos-module.json`.
 
 ## Downloading module source code
 
