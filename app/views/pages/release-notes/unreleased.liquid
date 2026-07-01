@@ -11,6 +11,34 @@ metadata:
 
 <h4 class="release-note release-note__new">NEW</h4>
 
+* **Multiline tag syntax**: Liquid tags can now span multiple lines, so long or deeply nested arguments can be formatted for readability instead of being crammed onto a single line. This works for tags across the board (`assign`, `function`, `include`, `background`, etc.), for example:
+
+{% raw %}
+```liquid
+{% function result = 'lib/create_order',
+   customer_id: customer.id,
+   items: [
+     { "sku": "ABC", "qty": 2 },
+     { "sku": "XYZ", "qty": 1 }
+   ],
+   note: "priority" %}
+```
+{% endraw %}
+
+* **JSON literal arguments**: JSON object and array literals - including nested structures, variables as values, and string interpolation - can now be passed directly as arguments to tags and filters, without first building them up with `assign` or `parse_json`, for example:
+
+{% raw %}
+```liquid
+{% include 'shared/card', data: { "title": "Hello", "tags": ["news", "featured"], "active": true } %}
+
+{% function total = 'lib/sum', numbers: [1, 2, 3] %}
+
+{% assign items = value | default: [] %}
+```
+{% endraw %}
+
 <h4 class="release-note release-note__improved">IMPROVED</h4>
+
+* **Better error handling with stack traces**: Errors raised while rendering Liquid now include a stack trace pointing at the file and line where the error occurred, instead of only a top-level message. The trace is captured through the same mechanism as the [log tag](/api-reference/liquid/platformos-tags#log), making it much easier to locate the source of a problem in your logs.
 
 <h4 class="release-note release-note__fixed">FIXED</h4>
