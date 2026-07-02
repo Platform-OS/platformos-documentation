@@ -31,6 +31,7 @@ metadata:
 |translation_keys_to_ignore                             |[]|Allows to list translation keys which will not be updated/delete on sync/deploy. It is most useful if you would like to change translations using UI and will not reflect it in your codebase. Translations will still be created if not defined.
 |validations_for_graph_queries                       |false|When the feature is enabled, platformOS performs additional consistency validations for specific GraphQL queries, with a primary focus on mutations. These validations are designed to verify that the developer's queries express a valid and well-defined intent. By enforcing these consistency checks, platformOS helps maintain data integrity and prevents unintended or ambiguous mutations from being executed. This feature serves as an additional layer of protection, ensuring that the queries submitted by developers are semantically correct and align with the intended behavior of the application.
 |websockets_require_csrf_token                                   |true|If disabled, the websocket connection will not check the CSRF token. By keeping this flag as `true`, connections to websocket will require CSRF token to be included in the parameters, increasing the security of your application.
+|websockets_require_subscribed_partial                           |true|If enabled, a WebSocket channel that has no `channels/<name>/subscribed` partial rejects every subscription (fail-closed) instead of falling back to the legacy open default that admits any same-origin subscriber. Regardless of this flag, a cross-origin connection is always rejected when there is no `subscribed` partial. See [Using WebSockets](/use-cases/using-websockets).
 |high_performance_sql_filtering                                   |false|If enabled, filtering on properties will use more efficient SQL queries behind the scenes. Default is false to maintain backward compatibility, but enabling it can lead to significant performance improvements for applications that heavily utilize property filtering. The optimization and backwards incompatibility is caused by removing extra casting to text, which in many scenarios is not necessary and prevents a default index on the column from being used.
 
 
@@ -51,6 +52,7 @@ string_interpolation: true
 sync_assets: true
 sync_translations: true
 websockets_require_csrf_token: true
+websockets_require_subscribed_partial: true
 high_performance_sql_filtering: true
 ---
 ```
