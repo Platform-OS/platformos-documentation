@@ -103,6 +103,37 @@ const chat = function(){
 }
 ```
 
+#### Handling rejected subscriptions
+
+The `rejected()` callback fires when the server refuses a subscription, but ActionCable's `reject_subscription` frame cannot carry a reason - so `rejected()` receives no arguments. To find out *why* a subscription was refused, platformOS sends a structured `subscription_error` message immediately before the rejection. Read it in your `received(data)` handler (correlated automatically to this subscription) and branch on its `type` so it isn't mistaken for an application message:
+
+```javascript
+received: function(data) {
+  if (data.type === 'subscription_error') {
+    // { type: 'subscription_error', code, message, retryable }
+    console.warn(`Subscription refused (${data.code}): ${data.message}`);
+    if (data.retryable) {
+      // a transient server error - resubscribing later may succeed
+    }
+    return;
+  }
+
+  // otherwise it's an application message
+  module.showMessage(data);
+}
+```
+
+The `code` field is a stable, machine-readable value you can switch on:
+
+| `code` | Meaning | `retryable` |
+|---|---|---|
+| `unauthorized` | The `subscribed` partial did not return `true`, or the channel has no `subscribed` partial and the connection is not allowed the open default (cross-origin, or `websockets_require_subscribed_partial` is enabled). | `false` |
+| `instance_not_found` | The connection could not be matched to a platformOS instance. | `false` |
+| `subscribed_partial_error` | Your `subscribed` partial raised a Liquid error. The detail is written to the marketplace error log under the `WebSocketSubscribeError` code (visible in the admin), never sent over the socket. | `false` |
+| `internal` | An unexpected server error. Retrying may help. | `true` |
+
+Messages sent to the client are always generic and never leak internal detail. If you receive neither a successful connection nor a `subscription_error` (only silence), treat it as a transport problem (dropped socket) and reconnect - not as a permission denial.
+
 ### Step 5: Secure room subscription
 
 To make sure that only authorized users can access certain rooms (for example, rooms for conversations where they are one of the pariticpants) you can use a partial that will be called when the user tries to subscribe to a certain room.
@@ -128,6 +159,8 @@ modules/chat/public/views/partials/channels/conversate/subscribed.liquid
 {% endraw %}
 ```
 In the pOS Marketplace Template, each user has a profile and the profile is linked with a conversation. If the conversation is found then we return `true` to confirm that the user can subscribe to this room.
+
+Because the `websockets_require_subscribed_partial` flag in [app/config.yml](/developer-guide/platformos-workflow/directory-structure/config) defaults to `true`, a channel *without* a `channels/:channel_name/subscribed.liquid` partial rejects every subscription with an `unauthorized` verdict - so adding this partial is how you authorize subscribers. You can restore the legacy open-by-default behaviour (any same-origin subscriber is admitted) by setting `websockets_require_subscribed_partial: false`, but this is not recommended. Regardless of the flag, a cross-origin connection is always rejected when the channel has no `subscribed` partial.
 
 ### Step 6: Send messages
 
