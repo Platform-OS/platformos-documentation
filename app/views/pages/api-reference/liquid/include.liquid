@@ -66,7 +66,7 @@ This makes `product` available as `card` inside the partial (the variable name m
 
 ## include
 
-The `include` tag is the older way to render partials. New code should prefer `render` — `include` is considered deprecated.
+The `include` tag renders a partial in the **caller's scope**. Prefer `render` for self-contained partials; use `include` when the partial needs access to the calling template's variables or must affect its control flow — for example helpers that redirect or set the response status of the including page, such as the `can_do_or_*` guards in `pos-module-user`.
 
 ### Key differences from `render`
 

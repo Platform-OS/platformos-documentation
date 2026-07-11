@@ -13,23 +13,27 @@ This check is aimed at eliminating the use of deprecated Liquid tags. When a dep
 
 ## Examples
 
+The list of deprecated tags comes from the [Liquid documentation](/api-reference/liquid/introduction). When a tag is marked as deprecated there, every usage is reported with the deprecation reason and the recommended replacement (when available).
+
 ### &#x2717; Incorrect Code Example (Avoid using this):
 
 ```liquid
 {% raw %}
-{% include 'my-partial' %}
+{% hash_assign user['name'] = 'John' %}
 {% endraw %}
 ```
 
-The `include` tag has been deprecated in favor of `render`.
+The `hash_assign` tag is deprecated — the [`assign`](/api-reference/liquid/variables) tag supports the same hash assignment syntax.
 
 ### &#x2713; Correct Code Example (Use this instead):
 
 ```liquid
 {% raw %}
-{% render 'my-partial' %}
+{% assign user['name'] = 'John' %}
 {% endraw %}
 ```
+
+Note that the `{% raw %}{% include %}{% endraw %}` tag is **not** deprecated in platformOS (unlike Shopify Liquid): it is the supported way to run a partial in the caller's scope, e.g. helpers that redirect or set the response status of the including page. Prefer [`render`](/api-reference/liquid/include) for self-contained partials.
 
 ## Configuration
 
@@ -48,7 +52,7 @@ Use the `platformos-check-disable` comment to suppress specific instances when m
 ```liquid
 {% raw %}
 {% # platformos-check-disable DeprecatedTag %}
-{% include 'legacy-partial' %}
+{% hash_assign user['name'] = 'John' %}
 {% # platformos-check-enable DeprecatedTag %}
 {% endraw %}
 ```
