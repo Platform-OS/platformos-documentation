@@ -49,6 +49,8 @@ metadata:
 
   Because the `reject_subscription` frame cannot carry a payload, the client should read this message in its `received(data)` handler and correlate it by subscription `identifier` - the `rejected()` callback receives no arguments. Messages sent to the client are always generic (no internal detail is leaked over the socket); a Liquid error raised inside your channel's `subscribed` partial is instead written to the error log under the `WebSocketSubscribeError` code, so you can debug it from the admin.
 
+* **Upgraded internal file upload library**: The underlying library that handles file uploads and processing (powering [user uploads](/developer-guide/user-uploads/user-uploads) and image versions) has been upgraded to its latest version. This brings upstream security patches, bug fixes, and performance improvements. No changes are required in your application - uploads continue to work exactly as before.
+
 * **New `websockets_require_subscribed_partial` feature flag**: This new [`app/config.yml`](/developer-guide/platformos-workflow/directory-structure/config) flag makes WebSocket channel authorization fail-closed - a channel with no `channels/<name>/subscribed` partial rejects every subscription instead of falling back to the legacy open default that admits any same-origin subscriber. It defaults to `true` (secure by default); set `websockets_require_subscribed_partial: false` in your `config.yml` to keep the legacy open behaviour. Regardless of this flag, a cross-origin connection without an authorizing `subscribed` partial is always rejected.
 
 <h4 class="release-note release-note__fixed">FIXED</h4>
