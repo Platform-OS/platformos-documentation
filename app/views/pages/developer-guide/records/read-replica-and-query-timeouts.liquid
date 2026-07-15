@@ -1,0 +1,84 @@
+---
+converter: markdown
+metadata:
+  title: Read Replica and Query Timeouts
+  description: Offload heavy read queries to a read replica database and control the database statement timeout per query with the options argument.
+---
+
+PostgreSQL-backed data queries accept an **`options`** argument that controls how the operation executes:
+
+* `read_replica` routes the operation to a **read replica** database, offloading heavy read traffic from the primary database.
+* `timeout` bounds how long the operation may occupy the database.
+
+The argument is accepted by the `records` and `users` queries, their deprecated equivalents (`models` and `user`), and `admin_versions`. Mutations do not accept it - the schema rejects `options` on any mutation.
+
+```graphql
+query get_products {
+  records(
+    per_page: 100,
+    filter: { table: { value: "product" } },
+    options: { read_replica: true, timeout: 10 }
+  ) {
+    total_entries
+    results {
+      id
+      properties
+    }
+  }
+}
+```
+
+Both options apply to the **whole operation**, not only the field they are passed on: if any root field of the query opts into the replica, all fields in that operation read from the replica, and when several fields pass a `timeout`, the largest value wins. Stored queries invoked from Liquid with the {% raw %}`{% graphql %}`{% endraw %} tag behave exactly the same as queries sent to the API - the options live in the query text itself.
+
+## Options
+
+| Option         | Type    | Default | Description |
+| -------------- | ------- | ------- | ----------- |
+| `read_replica` | Boolean | `false` | Execute the whole operation against the read replica database when one is configured; fall back to the primary database otherwise. |
+| `timeout`      | Int     | `19`    | Database statement timeout in seconds applied to the whole operation. Must be greater than 0. The default is one second less than the platform request timeout. |
+
+## Executing queries on a read replica
+
+When a read replica database is configured for the environment hosting your Instance, `read_replica: true` executes the query against the replica instead of the primary database. This is useful for heavy, read-only operations - large listings, search pages, reporting, data exports - that would otherwise compete with regular traffic for the primary database.
+
+The opt-in is designed to degrade gracefully, so it is always safe to pass:
+
+* If no replica is configured, the flag is ignored and the query runs on the primary database.
+* If the replica is unreachable when the query starts, the query transparently falls back to the primary database.
+* Inside a {% raw %}`{% transaction %}`{% endraw %} block the flag is ignored and reads stay on the primary database. A transaction must be able to see its own pending writes, which a replica - a separate server - never can, so routing reads away from the primary would break consistency.
+* Mutations can never opt in; their fields do not accept the argument.
+
+### Replica reads can be stale
+
+A replica follows the primary database with a small delay (replication lag) - typically milliseconds, but it can grow under load. A query opting into the replica right after a write may not see that write yet. Use `read_replica: true` on read-only paths, not in read-after-write flows:
+
+* Good fit: search results, listings, dashboards, reports, exports.
+* Poor fit: reading back a record you just created or updated in the same request.
+
+## Setting the statement timeout
+
+`timeout` sets the PostgreSQL statement timeout, in seconds, for the whole operation. If the database work exceeds it, the query is canceled and the error is reported in the result's `errors` key.
+
+A query that does not pass `options` at all keeps the platform's standard timeouts. As soon as you pass `options` - even an empty one - the operation runs under the `timeout` value, which defaults to 19 seconds (one second less than the platform request timeout). This lets you deliberately relax the limit for a known-heavy query:
+
+```graphql
+query heavy_report {
+  records(
+    per_page: 1000,
+    filter: { table: { value: "order" } },
+    options: { timeout: 30 }
+  ) {
+    results {
+      id
+      properties
+    }
+  }
+}
+```
+
+The value must be greater than 0 - a non-positive value is rejected with a validation error.
+
+## Related topics
+
+* [Records and Tables](/developer-guide/records/records-tables)
+* [Loading Related Records](/developer-guide/records/loading-related-records)
