@@ -1,0 +1,65 @@
+---
+converter: markdown
+metadata:
+  title: MissingContentForLayout
+  description: Ensures every layout outputs content_for_layout, which renders the page body.
+---
+
+## MissingContentForLayout
+
+**Severity:** error | **Type:** LiquidHtml
+
+`{% raw %}{{ content_for_layout }}{% endraw %}` is where platformOS injects the rendered page body. A layout that never references it renders its own chrome but drops the page content entirely — a correctness defect, not a style issue.
+
+This check runs only on layout files (`app/views/layouts/` and module layout directories); pages and partials are never flagged. Any reference to the `content_for_layout` variable clears the check, whether it is emitted with `{% raw %}{{ ... }}{% endraw %}`, `{% raw %}{% echo ... %}{% endraw %}`, or inside a `{% raw %}{% liquid %}{% endraw %}` block.
+
+Note that named slots rendered with `{% raw %}{% yield 'name' %}{% endraw %}` are a separate mechanism and do not substitute for `{% raw %}{{ content_for_layout }}{% endraw %}`.
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```liquid
+{% raw %}
+<!doctype html>
+<html>
+  <body>
+    <header>My Site</header>
+    {% yield 'footer' %}
+  </body>
+</html>
+{% endraw %}
+```
+
+### &#x2713; Correct Code Example (Use this instead):
+
+```liquid
+{% raw %}
+<!doctype html>
+<html>
+  <body>
+    <header>My Site</header>
+    {{ content_for_layout }}
+    {% yield 'footer' %}
+  </body>
+</html>
+{% endraw %}
+```
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+MissingContentForLayout:
+  enabled: true
+  severity: error
+```
+
+## Disabling This Check
+
+This check should not be disabled — a layout without `{% raw %}{{ content_for_layout }}{% endraw %}` silently drops the page body of every page rendered with it.
+
+## Suggestions
+
+This check offers a suggestion (available as a quick-fix in your editor): insert `{% raw %}{{ content_for_layout }}{% endraw %}` before the closing `</body>` tag, or at the end of the layout when it has no `<body>` element.

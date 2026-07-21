@@ -1,0 +1,70 @@
+---
+converter: markdown
+metadata:
+  title: ReservedVariableName
+  description: Disallows using reserved Liquid literals (true, false, nil, null, empty, blank) as variable names.
+---
+
+## ReservedVariableName
+
+**Severity:** error | **Type:** LiquidHtml
+
+Liquid reserves the literals `true`, `false`, `nil`, `null`, `empty`, and `blank`. Assigning to one of these names is silently accepted, but reading the name always returns the built-in literal — never the value you assigned. Code that assigns to a reserved literal therefore never works and always indicates a bug.
+
+This check reports reserved literals used as:
+
+- `{% raw %}{% assign %}{% endraw %}` targets
+- `{% raw %}{% capture %}{% endraw %}` targets
+- `{% raw %}{% parse_json %}{% endraw %}` targets
+- `{% raw %}{% function %}{% endraw %}` result variables
+- `{% raw %}{% graphql %}{% endraw %}` result variables (both file-based and inline)
+- `{% raw %}{% hash_assign %}{% endraw %}` targets
+- `{% raw %}{% for %}{% endraw %}` and `{% raw %}{% tablerow %}{% endraw %}` loop variables
+- `{% raw %}{% increment %}{% endraw %}` and `{% raw %}{% decrement %}{% endraw %}` counters
+- `{% raw %}{% background %}{% endraw %}` job id variables
+- `{% raw %}{% catch %}{% endraw %}` error variables (inside `{% raw %}{% try %}{% endraw %}` blocks)
+
+Reading the literals is of course still valid — comparisons like `{% raw %}{% if items == empty %}{% endraw %}` or assignments of the literal value like `{% raw %}{% assign flag = true %}{% endraw %}` are not reported. Names that merely contain a reserved word (e.g. `empty_result`) are also fine.
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```liquid
+{% raw %}
+{% assign empty = '{}' | parse_json %}
+{% comment %}'empty' still resolves to the empty literal — the parsed hash is lost{% endcomment %}
+{% function null = 'lib/queries/find', id: 1 %}
+{% for blank in items %}{{ blank }}{% endfor %}
+{% endraw %}
+```
+
+### &#x2713; Correct Code Example (Use this instead):
+
+```liquid
+{% raw %}
+{% assign empty_hash = '{}' | parse_json %}
+{% function result = 'lib/queries/find', id: 1 %}
+{% for item in items %}{{ item }}{% endfor %}
+
+{% comment %}Reading the literals is valid:{% endcomment %}
+{% if items == empty or name == blank %}
+  Nothing to show
+{% endif %}
+{% assign flag = true %}
+{% endraw %}
+```
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+ReservedVariableName:
+  enabled: true
+  severity: error
+```
+
+## Disabling This Check
+
+This check should not be disabled. Assigning to a reserved Liquid literal never has the intended effect — reading the name always returns the literal — so every offense it reports is a real defect.

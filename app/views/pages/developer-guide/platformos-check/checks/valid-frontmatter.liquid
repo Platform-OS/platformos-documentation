@@ -1,0 +1,80 @@
+---
+converter: markdown
+metadata:
+  title: ValidFrontmatter
+  description: Validates YAML frontmatter properties for known platformOS file types.
+---
+
+## ValidFrontmatter
+
+**Severity:** warning | **Type:** LiquidHtml
+
+This check validates the YAML frontmatter block of known platformOS file types: **Page**, **Layout**, **Partial**, **AuthorizationPolicy**, **Email**, **ApiCall**, **SMS**, and **FormConfiguration**.
+
+It reports:
+
+- **Missing required fields** — e.g. a notification file without a `name` key.
+- **Unknown fields** — keys that are not part of the file type's frontmatter schema (typo protection).
+- **Deprecated fields** — e.g. `layout_name` (use `layout`), `redirect_url` (use `redirect_to`), `layout_path` (use `layout`), `headers` (use `request_headers`), `return_to` (use `redirect_to`).
+- **Invalid enum values** — e.g. `method` must be one of `get`, `post`, `put`, `patch`, `delete`, `options`; `redirect_code` must be `301`, `302`, or `307`. Comparison is case-insensitive.
+- **`layout: false`** — a common gotcha: the YAML boolean `false` does *not* disable the layout, it falls back to the instance default. The check suggests replacing it with `layout: ''`, which explicitly disables layout rendering.
+- **Broken associations** — a `layout` that points to a layout file that does not exist, `authorization_policies` entries (on pages) without a matching policy file, and notification associations (`email_notifications`, `sms_notifications`, `api_call_notifications` on form configurations) without a matching notification file. Module-prefixed values (e.g. `modules/community/require_login`) are resolved inside the module's `public`/`private` directories.
+- **Deprecated `home.html.liquid`** — rename to `index.html.liquid` to serve as the root page.
+
+Values containing Liquid (e.g. `{% raw %}redirect_to: '/category/{{ context.params.slug }}'{% endraw %}`) are dynamic and skipped from static validation.
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```liquid
+{% raw %}
+---
+method: FETCH
+layout_name: my_layout
+redirect_url: /new-url
+---
+{% endraw %}
+```
+
+`FETCH` is not a valid `method`, and both `layout_name` and `redirect_url` are deprecated keys.
+
+### &#x2713; Correct Code Example (Use this instead):
+
+```liquid
+{% raw %}
+---
+method: get
+layout: my_layout
+redirect_to: /new-url
+---
+{% endraw %}
+```
+
+To render a page without any layout, use an empty string — not `false`:
+
+```liquid
+{% raw %}
+---
+layout: ''
+---
+{% endraw %}
+```
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+ValidFrontmatter:
+  enabled: true
+  severity: warning
+```
+
+## Disabling This Check
+
+This check can be disabled if your project intentionally uses custom frontmatter keys that the schema does not know about, though fixing typos and deprecated keys is usually the better option.
+
+## Suggestions
+
+For `layout: false`, the check offers a suggestion (available as a quick-fix in your editor) to replace the value with `''`.

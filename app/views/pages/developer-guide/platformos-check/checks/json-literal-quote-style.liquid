@@ -1,0 +1,57 @@
+---
+converter: markdown
+metadata:
+  title: JsonLiteralQuoteStyle
+  description: Enforces double-quoted string literals inside inline object and array literals.
+---
+
+## JsonLiteralQuoteStyle
+
+**Severity:** error | **Type:** LiquidHtml
+
+Inline object and array literals in platformOS Liquid (e.g. `{% raw %}{% assign a = {"a": 5} %}{% endraw %}`) must be valid JSON. Single-quoted strings are not valid JSON, so this check reports any single-quoted string used inside an inline object or array literal — whether as a key or as a value.
+
+Single-quoted strings outside of object/array literals (e.g. `{% raw %}{% assign s = 'hello' %}{% endraw %}`) are perfectly fine and are not reported.
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```liquid
+{% raw %}
+{% assign user = {'name': 'Anne'} %}
+{% assign ids = ['a', 'b', 'c'] %}
+{% assign mixed = {"count": 1, "label": 'items'} %}
+{% endraw %}
+```
+
+### &#x2713; Correct Code Example (Use this instead):
+
+```liquid
+{% raw %}
+{% assign user = {"name": "Anne"} %}
+{% assign ids = ["a", "b", "c"] %}
+{% assign mixed = {"count": 1, "label": "items"} %}
+
+{% comment %}Single quotes outside JSON literals are fine:{% endcomment %}
+{% assign greeting = 'hello' %}
+{% endraw %}
+```
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+JsonLiteralQuoteStyle:
+  enabled: true
+  severity: error
+```
+
+## Disabling This Check
+
+This check should not be disabled — single-quoted strings inside inline object/array literals are not valid JSON.
+
+## Autofixing
+
+This check supports automatic fixing. The fix replaces each single-quoted string with its double-quoted JSON equivalent (escaping the content where needed).
