@@ -66,6 +66,17 @@ query get_products {
 
   A directly-provided body is treated as final data: it is not parsed as a Liquid template before sending (your Liquid has already run by the time the mutation receives it). Bodies of [API Call notifications](/developer-guide/notifications/creating-api-call-notification) defined as files in `app/api_calls` are still rendered as Liquid templates, exactly as before.
 
+* **Deploy now auto-installs module dependencies declared in `pos-module.lock.json`** (2026-07-23): If a deploy's `pos-module.lock.json` declares a dependency module that isn't already installed on the target Instance - or is installed at a different version than the lock file pins - it's now downloaded from the registry recorded in the lock file's own `registries` map and installed as part of the same deploy, for example:
+
+```json
+{
+  "dependencies": { "core": "2.1.9", "user": "5.2.11" },
+  "registries": { "core": "https://partners.platformos.com", "user": "https://partners.platformos.com" }
+}
+```
+
+  This kicks in whenever a dependency's files are missing from the deploy archive - for example if you `.gitignore` your `modules/` directory and forget to run `pos-cli modules install` before deploying. A dependency already installed at the exact version the lock file declares is left untouched - no extra download. Since resolving a dependency this way costs an extra registry round trip at deploy time, the deploy report includes a warning recommending you run `pos-cli modules install` locally beforehand to keep your working directory in sync with the lock file and avoid the slowdown.
+
 <h4 class="release-note release-note__improved">IMPROVED</h4>
 
 * **`encrypt` filter honors an explicit IV**: The optional fourth argument of the `encrypt` filter (initialization vector) is now used for symmetric algorithms - previously it was accepted but ignored, and a random IV was always generated. Pass raw bytes matching the algorithm's IV length (e.g. 12 bytes for `aes-128-gcm`, 16 bytes for `aes-256-cbc`); when omitted, a random IV is generated as before. This enables schemes that derive the nonce deterministically, such as Web Push message encryption (RFC 8291):
