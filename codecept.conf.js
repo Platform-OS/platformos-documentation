@@ -27,9 +27,6 @@ exports.config = {
     retryFailedStep: {
       enabled: true
     },
-    tryTo: {
-      enabled: true
-    },
     screenshotOnFail: {
       enabled: true
     },
