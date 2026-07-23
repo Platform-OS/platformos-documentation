@@ -11,32 +11,6 @@ metadata:
 
 <h4 class="release-note release-note__new">NEW</h4>
 
-* **Multiline tag syntax**: Liquid tags can now span multiple lines, so long or deeply nested arguments can be formatted for readability instead of being crammed onto a single line. This works for tags across the board (`assign`, `function`, `include`, `background`, etc.), for example:
-
-{% raw %}
-```liquid
-{% function result = 'lib/create_order',
-   customer_id: customer.id,
-   items: [
-     { "sku": "ABC", "qty": 2 },
-     { "sku": "XYZ", "qty": 1 }
-   ],
-   note: "priority" %}
-```
-{% endraw %}
-
-* **JSON literal arguments**: JSON object and array literals - including nested structures, variables as values, and string interpolation - can now be passed directly as arguments to tags and filters, without first building them up with `assign` or `parse_json`, for example:
-
-{% raw %}
-```liquid
-{% include 'shared/card', data: { "title": "Hello", "tags": ["news", "featured"], "active": true } %}
-
-{% function total = 'lib/sum', numbers: [1, 2, 3] %}
-
-{% assign items = value | default: [] %}
-```
-{% endraw %}
-
 * **Read replica support and per-query database timeouts**: PostgreSQL-backed data queries - `records`, `users`, `admin_versions`, and the deprecated `models`/`user` - now accept an `options` argument that controls how the operation executes, for example:
 
 ```graphql
@@ -94,18 +68,6 @@ query get_products {
 
 <h4 class="release-note release-note__improved">IMPROVED</h4>
 
-* **Better error handling with stack traces**: Errors raised while rendering Liquid now include a stack trace pointing at the file and line where the error occurred, instead of only a top-level message. The trace is captured through the same mechanism as the [log tag](/api-reference/liquid/platformos-tags#log), making it much easier to locate the source of a problem in your logs.
-
-* **More reliable and secure [WebSocket](/use-cases/using-websockets) subscriptions**: Subscribing to a WebSocket channel now always resolves to an explicit verdict. Previously, an error raised while evaluating a subscription could bubble up and leave the client with no confirmation frame at all, causing it to resubscribe indefinitely. Now every rejected subscribe attempt receives a structured `subscription_error` message (delivered right before the `reject_subscription` frame) carrying:
-
-  * a stable, machine-readable `code` (`unauthorized`, `instance_not_found`, `subscribed_partial_error`, or `internal`) that your client can switch on,
-  * a human-readable `message`, and
-  * a `retryable` boolean telling the client whether resubscribing later may help.
-
-  Because the `reject_subscription` frame cannot carry a payload, the client should read this message in its `received(data)` handler and correlate it by subscription `identifier` - the `rejected()` callback receives no arguments. Messages sent to the client are always generic (no internal detail is leaked over the socket); a Liquid error raised inside your channel's `subscribed` partial is instead written to the error log under the `WebSocketSubscribeError` code, so you can debug it from the admin.
-
-* **Upgraded internal file upload library**: The underlying library that handles file uploads and processing (powering [user uploads](/developer-guide/user-uploads/user-uploads) and image versions) has been upgraded to its latest version. This brings upstream security patches, bug fixes, and performance improvements. No changes are required in your application - uploads continue to work exactly as before.
-
 * **`encrypt` filter honors an explicit IV**: The optional fourth argument of the `encrypt` filter (initialization vector) is now used for symmetric algorithms - previously it was accepted but ignored, and a random IV was always generated. Pass raw bytes matching the algorithm's IV length (e.g. 12 bytes for `aes-128-gcm`, 16 bytes for `aes-256-cbc`); when omitted, a random IV is generated as before. This enables schemes that derive the nonce deterministically, such as Web Push message encryption (RFC 8291):
 
 {% raw %}
@@ -124,8 +86,12 @@ query get_products {
 ```
 {% endraw %}
 
-* **New `websockets_require_subscribed_partial` feature flag**: This new [`app/config.yml`](/developer-guide/platformos-workflow/directory-structure/config) flag makes WebSocket channel authorization fail-closed - a channel with no `channels/<name>/subscribed` partial rejects every subscription instead of falling back to the legacy open default that admits any same-origin subscriber. It defaults to `true` (secure by default); set `websockets_require_subscribed_partial: false` in your `config.yml` to keep the legacy open behaviour. Regardless of this flag, a cross-origin connection without an authorizing `subscribed` partial is always rejected.
+* **Low-level Ruby errors get full Liquid diagnostics**: Errors that previously escaped Liquid's error handling entirely - for example a `FrozenError` from mutating a frozen hash, or a `NoMethodError` from calling an unsupported method inside a filter - are now wrapped into a proper Liquid error at the point they occur. They render with the usual `Liquid error (path:line): ...` prefix instead of a bare Ruby message, carry a full structured diagnostic in your instance logs (previously `data: nil`), and return a diagnostic JSON to `pos-cli` instead of a generic 500. The `{% try %}` tag's catch variable still exposes the original error class and message, and your error tracker still receives the original exception with its original backtrace.
 
 <h4 class="release-note release-note__fixed">FIXED</h4>
 
 * **`split` filter is idempotent for arrays and strict for hashes**: Applying `split` to a value that is already an Array now returns it unchanged. Previously the array was stringified (JSON-style, escaping quotes) and re-split, so re-applying `split` - for example in a loop - corrupted the values and doubled the string's size on every iteration. Applying `split` to a Hash now returns a clear argument error instead of garbage fragments produced by splitting its JSON representation.
+
+* **More accurate syntax error locations**: Parse errors in partials loaded via `{% render %}` now correctly point at the partial's own file and line instead of the file that included it. Writing `key: {{ my_var }}` inside a JSON literal (instead of `key: my_var`) now raises a clear, targeted syntax error instead of a misleading generic JSON parsing error. `{% include_form %}` also now records its own frame in the error diagnostic stack, so errors raised while rendering the form partial point to the correct location.
+
+* **Instance Clone no longer stalls on legitimately empty files**: A zero-byte file (for example the private-assets manifest of an instance with no private assets) was being treated as blank and silently dropped during upload, leaving its identifier and URL columns `nil`; the target instance's clone then crashed trying to open a `nil` URL and stayed stuck in `started` forever. Empty-but-existing remote files are now stored correctly.
