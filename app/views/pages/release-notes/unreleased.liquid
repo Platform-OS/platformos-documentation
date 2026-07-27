@@ -11,6 +11,34 @@ metadata:
 
 <h4 class="release-note release-note__new">NEW</h4>
 
+* **Read replica support and per-query database timeouts**: PostgreSQL-backed data queries - `records`, `users`, `admin_versions`, and the deprecated `models`/`user` - now accept an `options` argument that controls how the operation executes, for example:
+
+```graphql
+query get_products {
+  records(
+    per_page: 100,
+    filter: { table: { value: "product" } },
+    options: { read_replica: true, timeout: 10 }
+  ) {
+    total_entries
+    results { id properties }
+  }
+}
+```
+
+  * `read_replica: true` executes the whole operation against a read replica database when one is configured for the environment hosting your Instance, offloading heavy read-only work (listings, search, reporting, exports) from the primary database. Without a configured and reachable replica the flag is safely ignored and the query runs on the primary as before. Replica reads may be slightly stale due to replication lag, so opt in on read-only paths rather than right after a write; inside a {% raw %}`{% transaction %}`{% endraw %} block the flag is ignored to guarantee consistency, and mutations never accept the argument.
+  * `timeout` sets the database statement timeout in seconds for the whole operation - it defaults to 19 seconds (one second less than the platform request timeout) once `options` is passed, and the largest value wins when several fields in one query pass it. Queries that do not pass `options` keep the current default timeouts.
+
+  See [Read Replica and Query Timeouts](/developer-guide/records/read-replica-and-query-timeouts) for details.
+
 <h4 class="release-note release-note__improved">IMPROVED</h4>
 
+* **Filter argument errors get a location and a full diagnostic**: When a filter rejects its arguments - for example {% raw %}`{{ my_hash | array_add: 'x' }}`{% endraw %}, where the first argument must be an array - the failure is now reported through the same path as every other Liquid error. On Instances that don't run in `liquid_raise_mode` such an error was previously logged as a bare message with no location at all; it now renders with the usual `Liquid error (path:line): ...` prefix and carries a full structured diagnostic in your Instance logs, including the line of the failing filter and the whole {% raw %}`{% include %}`{% endraw %}/{% raw %}`{% function %}`{% endraw %} stack that led to it. The same located message is what {% raw %}`{% try %}`{% endraw %} exposes on its catch variable.
+
+  The filter itself still returns an empty string, so nothing else about the render changes: the enclosing tag completes ({% raw %}`{% assign %}`{% endraw %} sets its variable to an empty string, {% raw %}`{% return %}`{% endraw %} still returns from the function, {% raw %}`{% include %}`{% endraw %} still renders the partial), and the rest of the page renders as before.
+
+* **Repeated Liquid errors are logged once per render**: Errors that are reported without being raised are now de-duplicated by their rendered message, so a bad filter argument inside a {% raw %}`{% for %}`{% endraw %} loop produces a single log entry instead of one per iteration. Distinct failures are still logged separately, and are no longer lost when a later error ends the render before it finishes.
+
 <h4 class="release-note release-note__fixed">FIXED</h4>
+
+* **Casting and sanitization no longer stay disabled after a caught error**: While evaluating the value of {% raw %}`{% assign %}`{% endraw %}, {% raw %}`{% return %}`{% endraw %}, {% raw %}`{% graphql %}`{% endraw %}, {% raw %}`{% session %}`{% endraw %} or {% raw %}`{% print %}`{% endraw %}, Liquid temporarily turns off type casting and output sanitization. If an error was raised in that value and then caught - for example by {% raw %}`{% try %}`{% endraw %}, so the render continued - those switches were never turned back on, and every variable printed for the rest of the render skipped casting and HTML sanitization. They are now always restored.

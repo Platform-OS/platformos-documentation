@@ -1,7 +1,7 @@
 ---
 converter: markdown
 metadata:
-  title: Read replica support and query timeouts, Web Push encryption filters, binary API Call bodies, auto-installing module dependencies on deploy
+  title: Web Push encryption filters, binary API Call bodies, auto-installing module dependencies on deploy
   description: July 27, 2026
   skip_contribute_button: true
   last_edit: false
@@ -11,26 +11,6 @@ slug: release-notes/27-JUL-26
 #### {{ page.metadata.description }}
 
 <h4 class="release-note release-note__new">NEW</h4>
-
-* **Read replica support and per-query database timeouts**: PostgreSQL-backed data queries - `records`, `users`, `admin_versions`, and the deprecated `models`/`user` - now accept an `options` argument that controls how the operation executes, for example:
-
-```graphql
-query get_products {
-  records(
-    per_page: 100,
-    filter: { table: { value: "product" } },
-    options: { read_replica: true, timeout: 10 }
-  ) {
-    total_entries
-    results { id properties }
-  }
-}
-```
-
-  * `read_replica: true` executes the whole operation against a read replica database when one is configured for the environment hosting your Instance, offloading heavy read-only work (listings, search, reporting, exports) from the primary database. Without a configured and reachable replica the flag is safely ignored and the query runs on the primary as before. Replica reads may be slightly stale due to replication lag, so opt in on read-only paths rather than right after a write; inside a {% raw %}`{% transaction %}`{% endraw %} block the flag is ignored to guarantee consistency, and mutations never accept the argument.
-  * `timeout` sets the database statement timeout in seconds for the whole operation - it defaults to 19 seconds (one second less than the platform request timeout) once `options` is passed, and the largest value wins when several fields in one query pass it. Queries that do not pass `options` keep the current default timeouts.
-
-  See [Read Replica and Query Timeouts](/developer-guide/records/read-replica-and-query-timeouts) for details.
 
 * **`ecdh_compute` filter**: Computes an ECDH (Elliptic Curve Diffie-Hellman) shared secret from your EC private key and a peer's EC public key, for example:
 
