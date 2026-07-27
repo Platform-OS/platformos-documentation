@@ -22,7 +22,13 @@ Sometimes tokens get leaked by accidental copy & paste into Slack, or by commiti
 To generate a new token, you need to add the environment again in the same way as you did for the first time:
 
 ```
-pos-cli env add --url <url> <enviornment>
+pos-cli env add --url <url> <environment>
+```
+
+If the Instance is managed by a Partner Portal other than [partners.platformos.com](https://partners.platformos.com), pass the same `--partner-portal-url` you used originally, so the new token is requested from that portal:
+
+```
+pos-cli env add --url <url> --partner-portal-url <partner portal url> <environment>
 ```
 
 If you name your environment the same as before, it will be overwritten with the new token.
