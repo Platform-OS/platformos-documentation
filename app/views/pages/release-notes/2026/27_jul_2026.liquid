@@ -1,7 +1,7 @@
 ---
 converter: markdown
 metadata:
-  title: Web Push encryption filters, binary API Call bodies, auto-installing module dependencies on deploy
+  title: Read replica support and query timeouts, Web Push encryption filters, binary API Call bodies, auto-installing module dependencies on deploy
   description: July 27, 2026
   skip_contribute_button: true
   last_edit: false
@@ -11,6 +11,26 @@ slug: release-notes/27-JUL-26
 #### {{ page.metadata.description }}
 
 <h4 class="release-note release-note__new">NEW</h4>
+
+* **Read replica support and per-query database timeouts**: PostgreSQL-backed data queries - `records`, `users`, `admin_versions`, and the deprecated `models`/`user` - now accept an `options` argument that controls how the operation executes, for example:
+
+```graphql
+query get_products {
+  records(
+    per_page: 100,
+    filter: { table: { value: "product" } },
+    options: { read_replica: true, timeout: 10 }
+  ) {
+    total_entries
+    results { id properties }
+  }
+}
+```
+
+  * `read_replica: true` executes the whole operation against a read replica database when one is configured for the environment hosting your Instance, offloading heavy read-only work (listings, search, reporting, exports) from the primary database. Without a configured and reachable replica the flag is safely ignored and the query runs on the primary as before. Replica reads may be slightly stale due to replication lag, so opt in on read-only paths rather than right after a write; inside a {% raw %}`{% transaction %}`{% endraw %} block the flag is ignored to guarantee consistency, and mutations never accept the argument.
+  * `timeout` sets the database statement timeout in seconds for the whole operation - it defaults to 19 seconds (one second less than the platform request timeout) once `options` is passed, and the largest value wins when several fields in one query pass it. Queries that do not pass `options` keep the current default timeouts.
+
+  See [Read Replica and Query Timeouts](/developer-guide/records/read-replica-and-query-timeouts) for details.
 
 * **`ecdh_compute` filter**: Computes an ECDH (Elliptic Curve Diffie-Hellman) shared secret from your EC private key and a peer's EC public key, for example:
 
@@ -90,6 +110,12 @@ slug: release-notes/27-JUL-26
 
 * **Low-level Ruby errors get full Liquid diagnostics**: Errors that previously escaped Liquid's error handling entirely - for example a `FrozenError` from mutating a frozen hash, or a `NoMethodError` from calling an unsupported method inside a filter - are now wrapped into a proper Liquid error at the point they occur. They render with the usual `Liquid error (path:line): ...` prefix instead of a bare Ruby message, carry a full structured diagnostic in your instance logs (previously `data: nil`), and return a diagnostic JSON to `pos-cli` instead of a generic 500. The `{% raw %}{% try %}{% endraw %}` tag's catch variable still exposes the original error class and message, and your error tracker still receives the original exception with its original backtrace.
 
+* **Filter argument errors get a location and a full diagnostic**: When a filter rejects its arguments - for example {% raw %}`{{ my_hash | array_add: 'x' }}`{% endraw %}, where the first argument must be an array - the failure is now reported through the same path as every other Liquid error. On Instances that don't run in `liquid_raise_mode` such an error was previously logged as a bare message with no location at all; it now renders with the usual `Liquid error (path:line): ...` prefix and carries a full structured diagnostic in your Instance logs, including the line of the failing filter and the whole {% raw %}`{% include %}`{% endraw %}/{% raw %}`{% function %}`{% endraw %} stack that led to it. The same located message is what {% raw %}`{% try %}`{% endraw %} exposes on its catch variable.
+
+  The filter itself still returns an empty string, so nothing else about the render changes: the enclosing tag completes ({% raw %}`{% assign %}`{% endraw %} sets its variable to an empty string, {% raw %}`{% return %}`{% endraw %} still returns from the function, {% raw %}`{% include %}`{% endraw %} still renders the partial), and the rest of the page renders as before.
+
+* **Repeated Liquid errors are logged once per render**: Errors that are reported without being raised are now de-duplicated by their rendered message, so a bad filter argument inside a {% raw %}`{% for %}`{% endraw %} loop produces a single log entry instead of one per iteration. Distinct failures are still logged separately, and are no longer lost when a later error ends the render before it finishes.
+
 <h4 class="release-note release-note__fixed">FIXED</h4>
 
 * **`split` filter is idempotent for arrays and strict for hashes**: Applying `split` to a value that is already an Array now returns it unchanged. Previously the array was stringified (JSON-style, escaping quotes) and re-split, so re-applying `split` - for example in a loop - corrupted the values and doubled the string's size on every iteration. Applying `split` to a Hash now returns a clear argument error instead of garbage fragments produced by splitting its JSON representation.
@@ -97,3 +123,5 @@ slug: release-notes/27-JUL-26
 * **More accurate syntax error locations**: Parse errors in partials loaded via `{% raw %}{% render %}{% endraw %}` now correctly point at the partial's own file and line instead of the file that included it. Writing `key: {% raw %}{{ my_var }}{% endraw %}` inside a JSON literal (instead of `key: my_var`) now raises a clear, targeted syntax error instead of a misleading generic JSON parsing error. `{% raw %}{% include_form %}{% endraw %}` also now records its own frame in the error diagnostic stack, so errors raised while rendering the form partial point to the correct location.
 
 * **Instance Clone no longer stalls on legitimately empty files**: A zero-byte file (for example the private-assets manifest of an instance with no private assets) was being treated as blank and silently dropped during upload, leaving its identifier and URL columns `nil`; the target instance's clone then crashed trying to open a `nil` URL and stayed stuck in `started` forever. Empty-but-existing remote files are now stored correctly.
+
+* **Casting and sanitization no longer stay disabled after a caught error**: While evaluating the value of {% raw %}`{% assign %}`{% endraw %}, {% raw %}`{% return %}`{% endraw %}, {% raw %}`{% graphql %}`{% endraw %}, {% raw %}`{% session %}`{% endraw %} or {% raw %}`{% print %}`{% endraw %}, Liquid temporarily turns off type casting and output sanitization. If an error was raised in that value and then caught - for example by {% raw %}`{% try %}`{% endraw %}, so the render continued - those switches were never turned back on, and every variable printed for the rest of the render skipped casting and HTML sanitization. They are now always restored.
