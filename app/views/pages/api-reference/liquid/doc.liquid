@@ -102,6 +102,35 @@ Declare each parameter the partial accepts:
 | `number` | Numeric values |
 | `boolean` | `true` / `false` values |
 | `object` | Complex Liquid objects or anything that is not a primitive |
+| `array` | A list of values of any type, e.g. `[1, 2, 3]` or `["a", "b"]` |
+
+The name of an object from the [Liquid objects reference](/api-reference/liquid/objects) is also a valid type, for example `@param {page} current_page` or `@param {current_user} author`. The exceptions are the objects the platform supplies to a file directly, which are never passed as arguments: `context` (in scope everywhere), `content_for_layout` (layouts only), and `data` and `response` (api_calls only).
+
+#### Arrays
+
+Add a `[]` suffix to any type to describe an array whose items are all of that type:
+
+```liquid
+{% raw %}
+{% doc %}
+  @param {string[]} tags      - A list of tag names
+  @param {number[]} ids       - A list of numeric ids
+  @param {object[]} records   - A list of records
+{% enddoc %}
+{% endraw %}
+```
+
+Use the bare `array` type when the items are of mixed or unknown types:
+
+```liquid
+{% raw %}
+{% doc %}
+  @param {array} rows - Rows of arbitrary shape
+{% enddoc %}
+{% endraw %}
+```
+
+`object` also accepts an array value, since it stands for anything that is not a primitive. Prefer `array` or a `[]` suffix when you know the argument is a list — it documents the contract more precisely and lets platformOS Check catch a non-list being passed.
 
 #### Required vs optional parameters
 

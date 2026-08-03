@@ -183,18 +183,16 @@ The following checks are available in the `platformos-check:recommended` preset:
 | ImgWidthAndHeight | error | Requires width and height on img tags |
 | InvalidHashAssignTarget | error | Reports invalid hash assign targets |
 | JsonLiteralQuoteStyle | error | Enforces double quotes inside inline object/array literals |
-| JSONSyntaxError | error | Reports JSON syntax errors |
 | LiquidHTMLSyntaxError | error | Reports Liquid/HTML syntax errors |
 | MatchingTranslations | error | Validates translation keys match across locales |
 | MissingAsset | error | Reports references to missing assets |
 | MissingContentForLayout | error | Reports layouts that never output `content_for_layout` |
 | MissingPage | warning | Reports links pointing to routes with no matching page |
 | MissingPartial | error | Reports references to missing partials |
-| MissingRenderPartialArguments | error | Reports missing required arguments declared in `doc` tags |
+| MissingRenderPartialArguments | error | Reports missing required arguments declared in `doc` tags (partials WITH a `doc` tag) |
 | NestedGraphQLQuery | warning | Detects GraphQL queries inside loops (N+1 pattern) |
-| OrphanedPartial | warning | Reports partials that are not referenced anywhere |
 | ParserBlockingScript | error | Reports scripts that block HTML parsing |
-| PartialCallArguments | error | Validates arguments at render/function call sites (formerly `MetadataParamsCheck`) |
+| PartialCallArguments | error | Validates arguments at render/function call sites for partials with NO `doc` tag (formerly `MetadataParamsCheck`) |
 | ReservedVariableName | error | Reports reserved Liquid literals used as variable names |
 | TranslationKeyExists | error | Reports usage of non-existent translation keys |
 | UnclosedHTMLElement | warning | Reports unclosed HTML elements |
@@ -202,13 +200,12 @@ The following checks are available in the `platformos-check:recommended` preset:
 | UniqueDocParamNames | error | Reports duplicate @param names in LiquidDoc |
 | UnknownFilter | error | Reports usage of unknown Liquid filters |
 | UnknownProperty | error | Reports usage of unknown properties |
-| UnrecognizedRenderPartialArguments | warning | Reports unrecognized arguments in render tags |
+| UnrecognizedRenderPartialArguments | warning | Reports unrecognized arguments in render/function tags (partials WITH a `doc` tag) |
 | UnusedAssign | warning | Reports assigned but unused variables |
 | UnusedDocParam | warning | Reports @param tags for unused parameters |
 | ValidDocParamTypes | error | Validates @param type annotations |
 | ValidFrontmatter | warning | Validates YAML frontmatter for known platformOS file types |
 | ValidHTMLTranslation | warning | Validates HTML in translations |
-| ValidJSON | error | Validates JSON file contents |
 | ValidRenderPartialArgumentTypes | warning | Validates argument types passed to partials |
 | VariableName | warning | Enforces variable naming conventions (default: snake_case) |
 

@@ -17,7 +17,15 @@ Type checking is only performed when:
 
 1. The target partial has a `{% raw %}{% doc %}{% endraw %}` tag.
 2. The `@param` entry includes a type annotation (e.g. `@param {string} title`).
-3. The argument value is a literal (string, number, boolean) — variable lookups are not type-checked statically.
+3. The annotated type is one of `string`, `number`, `boolean`, `object` or `array` — object types from the [Liquid objects reference](/api-reference/liquid/objects) and `[]`-suffixed types are accepted in the annotation but not type-checked at the call site.
+4. The argument value is a literal (string, number, boolean, array) — variable lookups and filtered values are not type-checked statically, since their type cannot be determined without running the code.
+
+Two types are deliberately permissive:
+
+- `boolean` accepts any value, because every value in Liquid is truthy or falsy.
+- `object` accepts an array as well as an object, because it stands for anything that is not a primitive. Annotate a parameter as `array` when you want a non-list argument to be reported.
+
+`nil` and `null` are accepted for every type — they mean "no value".
 
 ## Examples
 
@@ -46,6 +54,27 @@ Type checking is only performed when:
 {% raw %}
 {% render 'count-badge', count: 5 %}
 {% render 'count-badge', count: item.count %}
+{% endraw %}
+```
+
+### Arrays
+
+```liquid
+{% raw %}
+{% comment %}app/views/partials/tag-list.liquid{% endcomment %}
+{% doc %}
+  @param {array} tags - Tags to display
+{% enddoc %}
+{% endraw %}
+```
+
+```liquid
+{% raw %}
+{% comment %}Error — expected array, got string{% endcomment %}
+{% render 'tag-list', tags: 'news' %}
+
+{% comment %}OK{% endcomment %}
+{% render 'tag-list', tags: ['news', 'events'] %}
 {% endraw %}
 ```
 

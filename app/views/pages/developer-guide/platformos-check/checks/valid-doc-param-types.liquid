@@ -11,7 +11,14 @@ metadata:
 
 This check ensures that type annotations in `{% raw %}{% doc %}{% endraw %}` tag `@param` entries are valid platformOS types. Invalid type names prevent tooling (autocomplete, type checking) from working correctly and indicate a mistake in the documentation.
 
-Valid types are derived from the platformOS docset and include primitive types (`string`, `number`, `boolean`) as well as platformOS-specific object types (e.g. `User`, `Record`, etc.).
+Valid types are derived from the platformOS docset. They are:
+
+- the primitive types `string`, `number` and `boolean`;
+- the generic types `object` (anything that is not a primitive) and `array` (a list of values of any type);
+- the name of an object from the [Liquid objects reference](/api-reference/liquid/objects), for example `page`, `current_user` or `params` — except the objects the platform supplies to a file directly and that are therefore never passed as arguments: `context` (in scope everywhere), `content_for_layout` (layouts only), and `data` and `response` (api_calls only);
+- any of the above with a `[]` suffix, to describe an array of that type — `string[]`, `number[]`, `object[]`.
+
+Type names are lowercase. `Integer`, `Float`, `Hash` and `String` are not platformOS types.
 
 ## Examples
 
@@ -35,6 +42,8 @@ Valid types are derived from the platformOS docset and include primitive types (
 {% doc %}
   @param {number} count - A count value
   @param {string} label - A label string
+  @param {number[]} ids - A list of numeric ids
+  @param {array} rows - A list of mixed values
 {% enddoc %}
 {% endraw %}
 ```

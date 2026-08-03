@@ -9,7 +9,9 @@ metadata:
 
 **Severity:** warning | **Type:** LiquidHtml | **Aliases:** `UnrecognizedRenderPartialParams`
 
-This check ensures that no unknown arguments are used when rendering a partial that has a `{% raw %}{% doc %}{% endraw %}` tag. Passing arguments that the partial does not declare is likely a mistake — either the argument name is misspelled, or the partial's `{% raw %}{% doc %}{% endraw %}` tag needs to be updated.
+This check ensures that no unknown arguments are used when calling a partial that has a `{% raw %}{% doc %}{% endraw %}` tag. Passing arguments that the partial does not declare is likely a mistake — either the argument name is misspelled, or the partial's `{% raw %}{% doc %}{% endraw %}` tag needs to be updated. Both `{% raw %}{% render %}{% endraw %}` and `{% raw %}{% function %}{% endraw %}` call sites are checked.
+
+`context` is in scope inside every partial, so a `{% raw %}{% doc %}{% endraw %}` tag has no reason to declare it. Passing it as an argument is redundant but is not reported as unknown. Objects the platform supplies only to a particular kind of file — `content_for_layout` in layouts, `data` and `response` in api_calls — are *not* in scope in a partial and must be declared like any other parameter.
 
 This check only runs when the target partial has a `{% raw %}{% doc %}{% endraw %}` tag. For partials without a `{% raw %}{% doc %}{% endraw %}` tag, see [PartialCallArguments](/developer-guide/platformos-check/checks/partial-call-arguments).
 
@@ -72,4 +74,5 @@ This check can be disabled if you intentionally pass additional context to parti
 ## Resources
 
 - [platformOS `render` tag](/api-reference/liquid/include#render)
+- [platformOS `function` tag](/api-reference/liquid/platformos-tags#function)
 - [LiquidDoc `doc` tag](/api-reference/liquid/doc)
