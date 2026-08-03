@@ -1,0 +1,59 @@
+---
+converter: markdown
+metadata:
+  title: Using GraphQL without Liquid
+  description: This guide explains how you can use GraphQL on platformOS without relying on Liquid, covering database management, integrations, and advanced functionality through GraphQL queries and mutations.
+---
+
+On platformOS, many tasks have traditionally been approached using **Liquid**. While Liquid remains a powerful tool, **GraphQL** offers another pathway to achieve nearly everything you need—without relying on Liquid. This article provides an overview of **how GraphQL can be used as the primary tool for interacting with platformOS** and explores how we're shifting toward more GraphQL-centric documentation and examples.
+
+### **The Two Journeys: Liquid vs. GraphQL**
+
+There are two main journeys developers can take when working with platformOS:
+
+1. **Liquid + GraphQL Journey**:  
+   This is the path we’ve traditionally documented. It involves using **Liquid** for rendering pages, layouts, and handling other frontend elements, with **GraphQL** acting as the engine that powers data queries and mutations.
+
+2. **GraphQL-Only Journey**:  
+   For those working with frameworks like **Next.js**, **Node.js**, or **Python**, Liquid might not be necessary. Instead, you can handle all your backend interactions with GraphQL alone, making calls to the **platformOS API** to manage your data, send emails, or trigger HTTP requests. This approach allows you to bypass Liquid entirely.
+
+## Why Shift the Focus to GraphQL?
+
+**GraphQL** is a flexible, efficient query language that allows developers to communicate directly with platformOS’ backend. It gives you control over your data: whether you need to read from or write to the database, interact with external services, or manage files. While much of our current documentation has been built around using Liquid, **almost everything is achievable through GraphQL**. For many developers, this can be a cleaner and more efficient approach.
+
+- [Introduction to GraphQL](https://graphql.org/learn)
+- [The Fullstack Tutorial for GraphQL](https://www.howtographql.com)
+
+## Exploring What’s Possible with GraphQL
+
+**GraphQL on platformOS** unlocks a range of powerful features for managing data and interacting with the platform's backend. Here's what you can achieve using GraphQL:
+
+- **Database Management (PostgreSQL)**: GraphQL allows you to define, manage, and query your **database schema** in platformOS. Through the **`schema/` directory**, you define the structure of your data (tables and fields) and use GraphQL queries and mutations to interact with this data. This involves managing **Records and Tables** (custom objects and their data). For more details, check out the [Building Contact Form with Records guide](/developer-guide/records/building-contact-form-with-records) and the [Records and Tables guide](/developer-guide/records/records-tables).
+
+- **[ElasticSearch](/developer-guide/json-documents/json-documents)**: GraphQL makes it easy to set up and interact with **ElasticSearch** for advanced search functionality. You can define search configurations and mappings directly via GraphQL to implement efficient search features for your data.
+
+- **[Activity Feeds](/developer-guide/activity-feeds/activity-feeds)**: Using GraphQL, you can manage **Activity Streams**, allowing you to track user activities and events. This functionality is useful for creating real-time updates, tracking notifications, and managing logs.
+
+- **[AI - Embeddings](/developer-guide/embeddings/embeddings)**: With GraphQL, you can manage **AI embeddings**, storing and retrieving vector representations of data for use in machine learning models or other AI-driven applications. This is particularly useful for developers looking to integrate AI functionalities into their platformOS projects.
+
+- **[User Uploads](/developer-guide/user-uploads/user-uploads)**: Handle **file uploads** easily through GraphQL, allowing users to upload, store, and manage files such as images, documents, and media without needing Liquid. This provides flexibility in managing files directly from the GraphQL API.
+
+- **[Creating an API Call Notification](/developer-guide/notifications/creating-api-call-notification)**: Use the `api_call_send` mutation to make HTTP requests from platformOS, enabling you to connect to external services or APIs, such as third-party applications, payment gateways, or external systems.
+
+- **[Creating an SMS Notification](/developer-guide/notifications/creating-sms-notification)**: Use the `sms_send` mutation to integrate with services like Twilio, sending SMS notifications when certain events occur (e.g., user sign-up).
+
+- **External Integrations**: In addition to the above, GraphQL allows you to send emails (`email_send` mutation) and trigger external APIs using `api_call_send`, providing a more API-driven approach to external service integrations without the need for Liquid templates.
+
+## Schema and GraphQL Without Liquid
+
+In the **schema** chapter of our developer guide, we’ve historically combined Liquid and GraphQL, which can be confusing. For example, in the [Building a Contact Form with Records](/developer-guide/records/building-contact-form-with-records) guide, we show how to create records using a combination of GraphQL and Liquid, but it can leave developers wondering if Liquid is necessary.
+
+Our goal moving forward is to **separate the two journeys**:
+- **Liquid + GraphQL**: Continue to provide tutorials that show how to use both technologies together.
+- **GraphQL-Only**: Highlight what’s possible with GraphQL on its own, focusing on **schema**, **queries**, and **mutations**.
+
+For developers asking if platformOS can be used **without Liquid**, the answer is: *yes, kind of*. You don’t need Liquid for handling the database, ElasticSearch, or managing integrations—but there are certain areas, like email templates, where Liquid is still required (for now). That said, we are working towards making email, API calls, and SMS functionality **fully accessible via GraphQL** without requiring Liquid templates.
+
+This will serve as a starting point for developers who want to explore the possibilities of platformOS without Liquid.
+
+Our goal moving forward is to ensure that developers can fully explore the **GraphQL-only journey** by providing tutorials, examples, and more documentation to show how **GraphQL** can manage everything from database interactions to integrations.
