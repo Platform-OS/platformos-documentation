@@ -9,13 +9,15 @@ metadata:
 
 **Severity:** error | **Type:** LiquidHtml | **Aliases:** `MissingRenderPartialParams`
 
-This check ensures that all required `@param` arguments declared in a partial's `{% raw %}{% doc %}{% endraw %}` tag are provided at the call site. It helps you catch missing required arguments at development time rather than at runtime. Both `{% raw %}{% render %}{% endraw %}` and `{% raw %}{% function %}{% endraw %}` call sites are checked.
+This check ensures that all required `@param` arguments declared in a partial's `{% raw %}{% doc %}{% endraw %}` tag are provided at the call site. It helps you catch missing required arguments at development time rather than at runtime. `{% raw %}{% render %}{% endraw %}`, `{% raw %}{% include %}{% endraw %}` and `{% raw %}{% function %}{% endraw %}` call sites are all checked, and each offense names the tag you actually wrote.
 
 A parameter is considered required when it is declared without square brackets around its name in the `{% raw %}{% doc %}{% endraw %}` tag (e.g. `@param {string} name` is required, `@param {string} [name]` is optional).
 
-The `{% raw %}{% doc %}{% endraw %}` tag is treated as the contract: a parameter it declares as required must be passed, even if the partial happens to supply its own fallback with the `| default` filter. If a parameter is genuinely optional, mark it as such in the `{% raw %}{% doc %}{% endraw %}` tag rather than relying on the fallback.
+The `{% raw %}{% doc %}{% endraw %}` tag is treated as the contract: a parameter it declares as required must be passed, even if the partial happens to supply its own fallback with the `| default` filter. If a parameter is genuinely optional, mark it as such in the `{% raw %}{% doc %}{% endraw %}` tag rather than relying on the fallback — [RequiredDocParamWithDefault](/developer-guide/platformos-check/checks/required-doc-param-with-default) reports the partials where the two disagree, so the fix lands on the file that can make it.
 
 This check only runs when the target partial has a `{% raw %}{% doc %}{% endraw %}` tag. For partials without a `{% raw %}{% doc %}{% endraw %}` tag, see [PartialCallArguments](/developer-guide/platformos-check/checks/partial-call-arguments).
+
+An `{% raw %}{% include %}{% endraw %}` site is bound by the contract too, even though `include` runs the partial in the caller's scope and the value could therefore be inherited. A declared parameter is a declared parameter: if the partial is meant to read the name from its caller rather than receive it, do not declare it. For an included partial with no `{% raw %}{% doc %}{% endraw %}` tag, where the parameter list can only be guessed at, the finding is a warning from [ImplicitIncludeArguments](/developer-guide/platformos-check/checks/implicit-include-arguments) instead.
 
 ## Examples
 

@@ -1,0 +1,76 @@
+---
+converter: markdown
+metadata:
+  title: ImplicitIncludeArguments
+  description: Reports a variable an included partial reads that the include does not pass, and so inherits from the caller's scope.
+---
+
+## ImplicitIncludeArguments
+
+**Severity:** warning | **Type:** LiquidHtml
+
+This check reports a variable an `{% raw %}{% include %}{% endraw %}`'d partial reads that the call site does not pass.
+
+Unlike `{% raw %}{% render %}{% endraw %}`, which runs a partial in a fresh scope, `{% raw %}{% include %}{% endraw %}` runs it in the **caller's** scope. A variable the partial reads and the call does not pass is therefore not missing — it resolves from the caller, and the page works. That is why this is a warning about explicitness rather than an error: nothing is broken, but a reader of the call site cannot see what the partial needs, and nothing warns you when the caller later stops defining it.
+
+**This check only runs when the included partial has NO `{% raw %}{% doc %}{% endraw %}` tag.** A `{% raw %}{% doc %}{% endraw %}` tag is a declared contract, and [MissingRenderPartialArguments](/developer-guide/platformos-check/checks/missing-render-partial-arguments) enforces it at an `{% raw %}{% include %}{% endraw %}` site as an error, exactly as it does at a `{% raw %}{% render %}{% endraw %}` site. Only the inferred case is a warning, because inference cannot tell a partial that deliberately shares its caller's scope from one that simply wanted an argument.
+
+The same shape at a `{% raw %}{% render %}{% endraw %}` site is an error from [PartialCallArguments](/developer-guide/platformos-check/checks/partial-call-arguments): there the variable really is undefined inside the partial, and the output is always empty.
+
+Objects the platform supplies are reported too. `content_for_layout` in a layout, or `forloop` inside the `{% raw %}{% for %}{% endraw %}` loop the include sits in, are exactly the inherited-scope reliance this check exists to surface — and each one can be passed explicitly.
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```liquid
+{% raw %}
+{% comment %}app/views/partials/order/row.liquid{% endcomment %}
+<td>{{ forloop.index }}</td>
+<td>{{ order.name }}</td>
+{% endraw %}
+```
+
+```liquid
+{% raw %}
+{% comment %}Calling site — 'forloop' works, but only by inheritance{% endcomment %}
+{% for order in orders %}
+  {% include 'order/row', order: order %}
+{% endfor %}
+{% endraw %}
+```
+
+### &#x2713; Correct Code Example (Use this instead):
+
+```liquid
+{% raw %}
+{% for order in orders %}
+  {% include 'order/row', order: order, forloop: forloop %}
+{% endfor %}
+{% endraw %}
+```
+
+The suggested fix passes the variable under its own name, which hands the partial the value it was already reading from the caller — the behavior does not change, only what the call site says about itself.
+
+If the partial does not actually need the caller's scope, `{% raw %}{% render %}{% endraw %}` is the better tag: it makes the parameter list the only way in, so the same omission becomes an error instead of a warning.
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+ImplicitIncludeArguments:
+  enabled: true
+  severity: warning
+```
+
+## Disabling This Check
+
+Disable this check if your codebase uses `{% raw %}{% include %}{% endraw %}` for scope sharing deliberately — helpers that read and write the caller's variables, or partials included from a layout that rely on what the layout defines. Disabling it does not affect the real errors: [PartialCallArguments](/developer-guide/platformos-check/checks/partial-call-arguments) keeps reporting missing arguments at `{% raw %}{% render %}{% endraw %}` and `{% raw %}{% function %}{% endraw %}` sites, keeps reporting arguments the partial never reads at an `{% raw %}{% include %}{% endraw %}` site, and [MissingRenderPartialArguments](/developer-guide/platformos-check/checks/missing-render-partial-arguments) keeps enforcing declared contracts everywhere.
+
+## Resources
+
+- [platformOS `include` tag](/api-reference/liquid/include)
+- [platformOS `render` tag](/api-reference/liquid/include#render)
+- [PartialCallArguments](/developer-guide/platformos-check/checks/partial-call-arguments)
+- [MissingRenderPartialArguments](/developer-guide/platformos-check/checks/missing-render-partial-arguments)

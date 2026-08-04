@@ -2,20 +2,30 @@
 converter: markdown
 metadata:
   title: UnknownProperty
-  description: Reports access to properties that do not exist on variables with a known type structure.
+  description: Reports access to properties that do not exist on variables whose structure the linter can determine.
 ---
 
 ## UnknownProperty
 
 **Severity:** error | **Type:** LiquidHtml
 
-This check reports errors when accessing properties that do not exist on variables whose structure is known. The check uses the platformOS docset to determine which properties are available on objects like `context`, GraphQL result objects, and other typed variables.
+This check reports reading a property that a value provably does not have — a typo, a field the GraphQL query did not select, or a key the partial you called never returns.
 
-This catches typos in property names and helps you discover the correct API surface of platformOS objects.
+It only speaks when it can prove the shape of a value. Where it cannot — a dynamic key, a value built by a filter it cannot see through, an argument it cannot resolve — it stays silent. **An absent offense is therefore not proof that a property exists**; when the check does report, it is because the shape it proved does not contain the property you read.
+
+## Where the shape comes from
+
+- **platformOS objects** — `context` and everything under it, from the docset the linter ships (refresh it with `pos-cli check update-docs`).
+- **GraphQL results** — the selection sets of the `.graphql` file a `{% raw %}{% graphql %}{% endraw %}` tag names. Fragment spreads (`...record`) and inline fragments (`... on Record`) are resolved, including transitively. Fields selected conditionally with `@include(if:)` / `@skip(if:)` are resolved against the argument values at the call site. List fields answer `first`, `last`, `size` and numeric indexes.
+- **Hash literals** — `{% raw %}{% assign settings = { "theme": "dark" } %}{% endraw %}` and `parse_json`.
+- **Partial return values** — `{% raw %}{% function %}{% endraw %}` analyzes the partial it calls, with your arguments bound, so a shape crosses the partial boundary. `{% raw %}{% include %}{% endraw %}` shares the caller's scope and is not a boundary.
+- **Writes** — `{% raw %}{% assign %}{% endraw %}`, `{% raw %}{% hash_assign %}{% endraw %}` and `{% raw %}{% function %}{% endraw %}` writing at a path (`{% raw %}{% hash_assign user['role'] = 'admin' %}{% endraw %}`) narrow a shape that is already known.
 
 ## Examples
 
 ### &#x2717; Incorrect Code Example (Avoid using this):
+
+A typo on a platformOS object:
 
 ```liquid
 {% raw %}
@@ -24,6 +34,8 @@ This catches typos in property names and helps you discover the correct API surf
 ```
 
 `curren_user` is a typo — the correct property is `current_user`.
+
+A typo on a GraphQL result:
 
 ```liquid
 {% raw %}
@@ -34,20 +46,91 @@ This catches typos in property names and helps you discover the correct API surf
 
 `result` is a typo — the correct property is `results`.
 
+A field the query did not select. Given this query, where `author` is selected only when `$include_author` is true:
+
+```graphql
+query find($id: ID!, $include_author: Boolean = false) {
+  records(per_page: 1, filter: { id: { value: $id } }) {
+    results {
+      ...post
+      author: related_record(table: ["profile"], join_on_property: "author_id") @include(if: $include_author) {
+        id
+      }
+    }
+  }
+}
+
+fragment post on Record {
+  id
+  created_at
+}
+```
+
+and this partial, which forwards the flag and returns one record:
+
+```liquid
+{% raw %}
+{% comment %}app/views/partials/lib/queries/posts/find.liquid{% endcomment %}
+{% liquid
+  graphql r = 'posts/find', id: id, include_author: include_author
+  return r.records.results.first
+%}
+{% endraw %}
+```
+
+a caller that does not ask for the author cannot read it:
+
+```liquid
+{% raw %}
+{% liquid
+  function post = 'lib/queries/posts/find', id: context.params.id
+  assign author_id = post.author.id
+%}
+{% endraw %}
+```
+
+`Unknown property 'author' on 'post'.` — the query declares `$include_author: Boolean = false`, the caller sent nothing, so `@include(if: $include_author)` excluded the field. Reading `post.created` would be reported too: `created_at` comes from the `post` fragment, and `created` is not in it.
+
 ### &#x2713; Correct Code Example (Use this instead):
 
 ```liquid
 {% raw %}
 {{ context.current_user.name }}
+
+{% graphql result = 'records/search' %}
+{{ result.records.results[0].id }}
+
+{% comment %}Ask for the field you intend to read:{% endcomment %}
+{% liquid
+  function post = 'lib/queries/posts/find', id: context.params.id, include_author: true
+  assign author_id = post.author.id
+%}
 {% endraw %}
 ```
 
-```liquid
-{% raw %}
-{% graphql result = 'records/search' %}
-{{ result.records.results[0].id }}
-{% endraw %}
-```
+For the query above, the same read is judged by what the call site passes:
+
+| Call site | `post.author` |
+| --- | --- |
+| `include_author: true` | accepted |
+| `include_author: false` | reported — the field is excluded |
+| argument omitted | reported — the query declares `Boolean = false` |
+| forwarded from a value the linter cannot resolve | accepted — unprovable, so nothing is claimed |
+| `author` absent from the query altogether | reported |
+
+`@skip(if:)` behaves as the inverse of `@include(if:)`.
+
+## When the check stays silent
+
+By design, so that it does not report code it cannot understand:
+
+- A variable whose value it cannot see into — the result of a filter it does not model, or a partial that mutates its arguments through an alias.
+- A dynamic property (`{% raw %}{{ record[field_name] }}{% endraw %}`) or a write to a dynamic key.
+- A property written in one branch of a conditional and read after it — a write inside `{% raw %}{% if %}{% endraw %}` is not treated as a fact about the code that follows.
+- An empty hash: `{ "errors": {} }` is a placeholder a partial fills later, not a hash with no keys, so anything may be read under `errors`.
+- A conditional GraphQL field whose flag it cannot resolve.
+- A custom GraphQL scalar such as `HashObject`, which holds a hash rather than a primitive.
+- An array whose item shape is unknown — `size` is answered, individual items are not.
 
 ## Configuration
 
@@ -61,9 +144,23 @@ UnknownProperty:
 
 ## Disabling This Check
 
-This check can be disabled for code that accesses dynamic properties using variable lookup patterns that cannot be statically analyzed.
+An offense usually means the property is genuinely absent, so prefer fixing the read — or the query, or the arguments you pass — over silencing it. The check already withholds judgment wherever it cannot prove a shape.
+
+When you do need to silence one, scope it to the line rather than the file. A `{% raw %}platformos-check-disable{% endraw %}` comment applies until the matching `{% raw %}platformos-check-enable{% endraw %}`, or to the end of the file if there is none — and one written without a check name silences every check, not just this one.
+
+```liquid
+{% raw %}
+{% liquid
+  # platformos-check-disable UnknownProperty
+  assign value = record[dynamic_key]
+  # platformos-check-enable UnknownProperty
+%}
+{% endraw %}
+```
 
 ## Resources
 
 - [platformOS Context Variable](/api-reference/liquid/platformos-objects#context)
 - [platformOS Object Reference](/api-reference/liquid/objects)
+- [Disable checks using Liquid comments](/developer-guide/platformos-check/platformos-check#disable-checks-using-liquid-comments)
+- [pos-cli check update-docs](/developer-guide/platformos-check/platformos-check#cli-usage)

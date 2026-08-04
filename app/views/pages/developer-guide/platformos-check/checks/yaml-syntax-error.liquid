@@ -1,0 +1,115 @@
+---
+converter: markdown
+metadata:
+  title: YAMLSyntaxError
+  description: Reports what the YAML parser could not read in a translation, config, or schema file.
+---
+
+## YAMLSyntaxError
+
+**Severity:** error | **Type:** YAML
+
+This check reports what the YAML parser complained about in a `.yml` file — translations, `app/config.yml`, model schemas, and every other YAML source the platform deploys.
+
+It exists because a broken YAML file is quiet. A Liquid file with a syntax error gets [LiquidHTMLSyntaxError](/developer-guide/platformos-check/checks/liquid-html-syntax-error); a YAML file got nothing, while every tool that reads it — the linter, the editor's translation links, the platform itself — quietly used less of it than you wrote.
+
+The most common finding is a **duplicated key**, which is what happens when two people add the same translation. YAML keeps the last value and discards the first, so one of the two translations you can see in the file is dead:
+
+```yaml
+en:
+  admin:
+    banner_mobile: Banner - Mobile     # dead — never rendered
+    banner_mobile: Mobile view Banner  # this is what visitors see
+```
+
+The check names the key and highlights the duplicate, so you can decide which value to keep.
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```yaml
+# app/translations/en/admin.yml — the same key twice
+en:
+  admin:
+    title: Admin
+    title: Admin panel
+```
+
+```yaml
+# app/config.yml — a setting overridden further down the file
+graphql_argument_type_mismatch_mode: ignore
+# ... 100 lines later ...
+graphql_argument_type_mismatch_mode: error
+```
+
+```yaml
+# app/translations/en/emails.yml — a second document; only the first is read
+en:
+  subject: Welcome
+---
+en:
+  body: Thanks for signing up   # ignored entirely
+```
+
+### &#x2713; Correct Code Example (Use this instead):
+
+```yaml
+# app/translations/en/admin.yml — one key, one value
+en:
+  admin:
+    title: Admin panel
+```
+
+```yaml
+# app/config.yml — the setting appears once
+graphql_argument_type_mismatch_mode: error
+```
+
+```yaml
+# app/translations/en/emails.yml — one document
+en:
+  subject: Welcome
+  body: Thanks for signing up
+```
+
+## What is not reported
+
+A trailing `---` is a document terminator, not a second document, and is not reported:
+
+```yaml
+---
+en:
+  subject: Welcome
+---
+```
+
+Many YAML generators end files this way and the platform reads them as one document, so the check stays silent. A second document with actual content is reported, because everything after the first document is ignored when the file is read.
+
+## Why it matters
+
+A file the parser complains about is not fully used, and the consequences show up somewhere else:
+
+- A duplicated translation key silently drops one of the two values. Whichever one you meant, half your edit is not live.
+- A duplicated key in `app/config.yml` silently drops a setting. An instance can run with a value you thought you had changed.
+- Other checks skip a file YAML complains about, so [MatchingTranslations](/developer-guide/platformos-check/checks/matching-translations) and [TranslationKeyExists](/developer-guide/platformos-check/checks/translation-key-exists) cannot compare its keys until it is fixed.
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+YAMLSyntaxError:
+  enabled: true
+  severity: error
+```
+
+## Disabling This Check
+
+Disabling this check is not recommended. It reports what a parser could not read, which no configuration can make correct.
+
+## Resources
+
+- [platformOS Translations](/developer-guide/translations/translations)
+- [app/config.yml](/developer-guide/platformos-workflow/codebase/config)
+- [LiquidHTMLSyntaxError](/developer-guide/platformos-check/checks/liquid-html-syntax-error) — the same job for Liquid files

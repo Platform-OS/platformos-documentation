@@ -1,0 +1,79 @@
+---
+converter: markdown
+metadata:
+  title: MissingDocParam
+  description: Reports a variable a partial reads from its caller without declaring it in its doc tag.
+---
+
+## MissingDocParam
+
+**Severity:** error | **Type:** LiquidHtml
+
+This check ensures that every input a partial reads from its caller is declared as a `@param` in the partial's `{% raw %}{% doc %}{% endraw %}` tag. It is the mirror of [UnusedDocParam](/developer-guide/platformos-check/checks/unused-doc-param): that check reports a parameter the doc declares and the partial never uses, this one reports a parameter the partial uses and the doc never declares.
+
+An undeclared input is a hole in the contract, not a detail. The call-site checks read the `{% raw %}{% doc %}{% endraw %}` tag as the complete parameter list, so a variable missing from it is simultaneously required by the implementation and impossible to pass: [UnrecognizedRenderPartialArguments](/developer-guide/platformos-check/checks/unrecognized-render-partial-arguments) reports it as an unknown argument at every call site that tries. The offense is reported on the partial, once per variable, at its first read — the file that can fix it.
+
+The check runs on partials only, since `{% raw %}{% doc %}{% endraw %}` applies to nothing else, and only where the doc declares at least one `@param`. A partial with no doc tag, or with a doc tag holding only an `@description` or `@example`, declares no contract; its parameter list is inferred from its source by [PartialCallArguments](/developer-guide/platformos-check/checks/partial-call-arguments) instead.
+
+Objects that are in scope inside every partial — `context`, `app` and friends — are never reported: nobody has to pass them.
+
+A name the partial itself defines but reads out of that definition's reach — a `{% raw %}{% for %}{% endraw %}` variable read after its loop, a value read before its `{% raw %}{% assign %}{% endraw %}` — is not an input, and no `@param` would fix it. [UndefinedObject](/developer-guide/platformos-check/checks/undefined-object) reports those.
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```liquid
+{% raw %}
+{% comment %}app/views/partials/user/card.liquid{% endcomment %}
+{% doc %}
+  @param {string} name - The user's display name
+{% enddoc %}
+<div class="card">
+  <h2>{{ name }}</h2>
+  <p>{{ headline }}</p>
+</div>
+{% endraw %}
+```
+
+`headline` is read but not declared, so no caller can pass it and the partial always renders it empty.
+
+### &#x2713; Correct Code Example (Use this instead):
+
+Declare the input:
+
+```liquid
+{% raw %}
+{% doc %}
+  @param {string} name - The user's display name
+  @param {string} [headline] - The user's headline
+{% enddoc %}
+<div class="card">
+  <h2>{{ name }}</h2>
+  <p>{{ headline }}</p>
+</div>
+{% endraw %}
+```
+
+Or, if the read was a mistake, remove it. The suggested fix inserts the declaration after the last existing `@param` and deliberately leaves out a type: a read says nothing about what a caller should pass, and a guessed type would be a claim [ValidDocParamTypes](/developer-guide/platformos-check/checks/valid-doc-param-types) and the type checks then act on. Fill it in yourself.
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+MissingDocParam:
+  enabled: true
+  severity: error
+```
+
+## Disabling This Check
+
+Disabling this check is not recommended: nothing else reports the hole, and a partial whose doc is incomplete misleads hover, completion and `platformos-check backfill-docs` as well as the call-site checks. If you do not want to declare a contract at all, remove the `@param` declarations from the doc tag — a partial with no declared parameters is checked against its own source instead.
+
+## Resources
+
+- [LiquidDoc `doc` tag](/api-reference/liquid/doc)
+- [UnusedDocParam](/developer-guide/platformos-check/checks/unused-doc-param)
+- [RequiredDocParamWithDefault](/developer-guide/platformos-check/checks/required-doc-param-with-default)
+- [PartialCallArguments](/developer-guide/platformos-check/checks/partial-call-arguments)

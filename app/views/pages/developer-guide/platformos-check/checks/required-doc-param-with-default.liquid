@@ -1,0 +1,80 @@
+---
+converter: markdown
+metadata:
+  title: RequiredDocParamWithDefault
+  description: Reports a doc parameter declared as required that the partial then reads through the default filter.
+---
+
+## RequiredDocParamWithDefault
+
+**Severity:** warning | **Type:** LiquidHtml
+
+This check reports a parameter a partial declares as required in its `{% raw %}{% doc %}{% endraw %}` tag and then reads through the `default` filter. Supplying the default is evidence that the partial handles the value being absent, so the declaration almost certainly meant `[param]`.
+
+A parameter is required when its name carries no square brackets: `@param {string} name` is required, `@param {string} [name]` is optional.
+
+The `{% raw %}{% doc %}{% endraw %}` tag is the contract, and [MissingRenderPartialArguments](/developer-guide/platformos-check/checks/missing-render-partial-arguments) enforces it as written — so until the declaration says otherwise, every call site that omits the argument is reported for a parameter the partial demonstrably handles. Those call sites cannot fix it; the partial can, and one edit here clears them all at once, along with what hover, completion and `platformos-check backfill-docs` tell everyone else about the parameter.
+
+The fix is applied automatically: it brackets the name in place and leaves the type and the description untouched. It is safe by construction, since making a parameter optional only widens what a caller may omit.
+
+Only the value the partial defaults counts. In `{% raw %}{% assign profile = profile | default: params.profile %}{% endraw %}` it is `profile` that the partial handles the absence of; `params` is merely what it falls back on, and is read precisely when `profile` is missing, which says nothing about whether `params` itself may be omitted.
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```liquid
+{% raw %}
+{% comment %}app/views/partials/forms/upload.liquid{% endcomment %}
+{% doc %}
+  @param {string} name - Name for the input holding the uploaded file URLs
+  @param {boolean} image_editor_enabled - Whether to enable the image editor
+  @param {string} aspect_ratio - Aspect ratio for cropping
+{% enddoc %}
+{% liquid
+  assign image_editor_enabled = image_editor_enabled | default: false
+  assign aspect_ratio = aspect_ratio | default: null
+%}
+{% endraw %}
+```
+
+Both parameters are declared as required, so `{% raw %}{% render 'forms/upload', name: 'photo' %}{% endraw %}` is reported twice for arguments the partial already handles.
+
+### &#x2713; Correct Code Example (Use this instead):
+
+```liquid
+{% raw %}
+{% doc %}
+  @param {string} name - Name for the input holding the uploaded file URLs
+  @param {boolean} [image_editor_enabled] - Whether to enable the image editor
+  @param {string} [aspect_ratio] - Aspect ratio for cropping
+{% enddoc %}
+{% liquid
+  assign image_editor_enabled = image_editor_enabled | default: false
+  assign aspect_ratio = aspect_ratio | default: null
+%}
+{% endraw %}
+```
+
+If the parameter really must be passed, drop the `| default` fallback instead — keeping both says two different things about the same parameter.
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+RequiredDocParamWithDefault:
+  enabled: true
+  severity: warning
+```
+
+## Disabling This Check
+
+This check is advice about a probable mistake rather than a defect in itself, and it is a warning for that reason: requiring a parameter while also defaulting it defensively is unusual, but it is a legitimate choice. Disable it if that is your house style — the call-site checks keep enforcing the contract exactly as declared either way.
+
+## Resources
+
+- [LiquidDoc `doc` tag](/api-reference/liquid/doc)
+- [platformOS `default` filter](/api-reference/liquid/filters#default)
+- [MissingRenderPartialArguments](/developer-guide/platformos-check/checks/missing-render-partial-arguments)
+- [MissingDocParam](/developer-guide/platformos-check/checks/missing-doc-param)

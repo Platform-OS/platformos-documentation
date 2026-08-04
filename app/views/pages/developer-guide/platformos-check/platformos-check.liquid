@@ -181,18 +181,21 @@ The following checks are available in the `platformos-check:recommended` preset:
 | GraphQLCheck | error | Validates GraphQL syntax |
 | GraphQLVariablesCheck | error | Validates GraphQL variables |
 | ImgWidthAndHeight | error | Requires width and height on img tags |
+| ImplicitIncludeArguments | warning | Reports a variable an `include`'d partial reads that the call does not pass, inheriting it from the caller scope |
 | InvalidHashAssignTarget | error | Reports invalid hash assign targets |
 | JsonLiteralQuoteStyle | error | Enforces double quotes inside inline object/array literals |
 | LiquidHTMLSyntaxError | error | Reports Liquid/HTML syntax errors |
 | MatchingTranslations | error | Validates translation keys match across locales |
 | MissingAsset | error | Reports references to missing assets |
 | MissingContentForLayout | error | Reports layouts that never output `content_for_layout` |
+| MissingDocParam | error | Reports a variable a partial reads without declaring it in its `doc` tag |
 | MissingPage | warning | Reports links pointing to routes with no matching page |
 | MissingPartial | error | Reports references to missing partials |
 | MissingRenderPartialArguments | error | Reports missing required arguments declared in `doc` tags (partials WITH a `doc` tag) |
 | NestedGraphQLQuery | warning | Detects GraphQL queries inside loops (N+1 pattern) |
 | ParserBlockingScript | error | Reports scripts that block HTML parsing |
 | PartialCallArguments | error | Validates arguments at render/function call sites for partials with NO `doc` tag (formerly `MetadataParamsCheck`) |
+| RequiredDocParamWithDefault | warning | Reports a required `doc` parameter the partial reads through the `default` filter |
 | ReservedVariableName | error | Reports reserved Liquid literals used as variable names |
 | TranslationKeyExists | error | Reports usage of non-existent translation keys |
 | UnclosedHTMLElement | warning | Reports unclosed HTML elements |
@@ -208,6 +211,7 @@ The following checks are available in the `platformos-check:recommended` preset:
 | ValidHTMLTranslation | warning | Validates HTML in translations |
 | ValidRenderPartialArgumentTypes | warning | Validates argument types passed to partials |
 | VariableName | warning | Enforces variable naming conventions (default: snake_case) |
+| YAMLSyntaxError | error | Reports what the YAML parser could not read, including duplicated keys |
 
 ## Writing custom checks
 

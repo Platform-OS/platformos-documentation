@@ -9,16 +9,18 @@ metadata:
 
 **Severity:** error | **Type:** LiquidHtml
 
-This check ensures that all required arguments are passed when calling `{% raw %}{% render %}{% endraw %}` or `{% raw %}{% function %}{% endraw %}` tags, and that no unknown arguments are passed.
+This check ensures that all required arguments are passed when calling `{% raw %}{% render %}{% endraw %}` or `{% raw %}{% function %}{% endraw %}` tags, and that no unknown arguments are passed at any call site, `{% raw %}{% include %}{% endraw %}` included.
 
 **This check only runs when the called partial has NO `{% raw %}{% doc %}{% endraw %}` tag.** With no declared contract to read, it infers one: it scans the partial body for undefined variables and treats them as the parameter list. When a partial does declare its parameters, the checks that read that declaration take over instead — [MissingRenderPartialArguments](/developer-guide/platformos-check/checks/missing-render-partial-arguments) for missing required arguments and [UnrecognizedRenderPartialArguments](/developer-guide/platformos-check/checks/unrecognized-render-partial-arguments) for unknown ones. Exactly one check reports each problem, so adding a `{% raw %}{% doc %}{% endraw %}` tag to a partial changes which check names the offense, not whether it is found.
+
+A **missing** argument is only reported for `{% raw %}{% render %}{% endraw %}` and `{% raw %}{% function %}{% endraw %}`, which run the partial in a fresh scope. `{% raw %}{% include %}{% endraw %}` runs it in the caller's scope, so a variable the partial reads and the call does not pass resolves from the caller and nothing is broken — that is a warning about explicitness from [ImplicitIncludeArguments](/developer-guide/platformos-check/checks/implicit-include-arguments), not an error from this check. An **unknown** argument is reported at an `{% raw %}{% include %}{% endraw %}` site just the same: passing something the partial never reads is a mistake whichever tag you used.
 
 How the parameter list is inferred:
 
 - A variable the partial reads directly is a **required** parameter.
 - A variable the partial reads through the `| default` filter is **optional** — the partial handles its own absence. This applies both to the defaulted variable and to the fallback value: in `{% raw %}{% assign profile = profile | default: params.profile %}{% endraw %}` both `profile` and `params` are optional, because a fallback is only read when the value it stands in for is missing.
 - `context` is in scope inside every partial, so it is never inferred as a parameter. Passing it as an argument is redundant but not reported as unknown.
-- Objects the platform supplies only to a *particular* kind of file are **not** in scope in a partial, and a partial reading one is reading a parameter somebody has to pass. `content_for_layout` exists only in layouts; `data` and `response` only in api_calls. A partial using `{% raw %}{{ data }}{% endraw %}` therefore requires a `data` argument.
+- Objects the platform supplies only to a *particular* kind of file are **not** in scope in a partial, and a partial reading one is reading a parameter somebody has to pass. `content_for_layout` exists only in layouts; `data` and `response` only in api_calls. A partial using `{% raw %}{{ data }}{% endraw %}` therefore requires a `data` argument. Reached by `{% raw %}{% include %}{% endraw %}` from a file that does have the object in scope, the same read is a warning rather than an error, since the value is inherited.
 
 > **Note:** This check was previously named `MetadataParamsCheck`. The old name is still accepted as an alias in `.platformos-check.yml`, but new configurations should use `PartialCallArguments`.
 
