@@ -17,6 +17,11 @@ Common Liquid syntax errors detected:
 - Malformed assignments (e.g. `{% raw %}{% assign foo = 1 }}{% endraw %}`)
 - Unknown tags
 - Invalid conditional syntax (e.g. using `|` instead of `.` for size checks)
+- Unknown comparison operators in conditions (e.g. `{% raw %}{% if var ctn "hello" %}{% endraw %}` — only `==`, `!=`, `>`, `<`, `>=`, `<=` and `contains` are valid; anything else raises `Unknown operator` when the page renders)
+- Incomplete conditions (a missing right-hand side like `{% raw %}{% if var == %}{% endraw %}`, or a trailing `and`/`or`)
+- Junk in conditions that the runtime silently ignores (filter pipes such as `{% raw %}{% if items | size > 0 %}{% endraw %}`, or JavaScript-style `&&`/`||`)
+- A misspelled or missing `in` keyword in loops (e.g. `{% raw %}{% for x inn arr %}{% endraw %}`)
+- Ignored values in `when` branches (e.g. `{% raw %}{% when 1 huh 2 %}{% endraw %}` — values must be separated by `,` or `or`)
 
 ## Examples
 
@@ -28,6 +33,8 @@ Common Liquid syntax errors detected:
 {% assign foo = 1 }}
 {% unknown %}
 {% if collection | size > 0 %}
+{% if var ctn "hello" %}
+{% for item inn items %}
 {% endraw %}
 ```
 
@@ -38,6 +45,8 @@ Common Liquid syntax errors detected:
 {% render 'muffin' %}
 {% assign foo = 1 %}
 {% if collection.size > 0 %}
+{% if var contains "hello" %}
+{% for item in items %}
 {% endraw %}
 ```
 

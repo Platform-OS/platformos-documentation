@@ -19,7 +19,7 @@ It reports:
 - **Invalid enum values** — e.g. `method` must be one of `get`, `post`, `put`, `patch`, `delete`, `options`; `redirect_code` must be `301`, `302`, or `307`. Comparison is case-insensitive.
 - **`layout: false`** — a common gotcha: the YAML boolean `false` does *not* disable the layout, it falls back to the instance default. The check suggests replacing it with `layout: ''`, which explicitly disables layout rendering.
 - **Broken associations** — a `layout` that points to a layout file that does not exist, `authorization_policies` entries (on pages) without a matching policy file, and notification associations (`email_notifications`, `sms_notifications`, `api_call_notifications` on form configurations) without a matching notification file. Module-prefixed values (e.g. `modules/community/require_login`) are resolved inside the module's `public`/`private` directories.
-- **Deprecated `home.html.liquid`** — rename to `index.html.liquid` to serve as the root page.
+- **Deprecated `home` page** — a page named `home` (e.g. `home.liquid` or `home.html.liquid`, directly under `views/pages/`, in a module too) serves the root route through a deprecated alias; rename it to `index` (e.g. `index.html.liquid`). Nested pages like `blog/home.liquid` serve their own route and are fine, and non-page files named `home` are not affected.
 
 Values containing Liquid (e.g. `{% raw %}redirect_to: '/category/{{ context.params.slug }}'{% endraw %}`) are dynamic and skipped from static validation.
 

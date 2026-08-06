@@ -820,6 +820,98 @@
     ]
   },
   {
+    "category": "conditional",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "You can use as many `elsif` tags as you need. They are evaluated in order, and the first one whose condition is met is rendered.",
+    "parameters": [],
+    "summary": "Adds another condition to an [`if`](/docs/api/liquid/tags/if) tag.",
+    "name": "elsif",
+    "syntax": "{% elsif condition %}\n  expression",
+    "syntax_keywords": [
+      {
+        "keyword": "condition",
+        "description": "The condition to evaluate."
+      },
+      {
+        "keyword": "expression",
+        "description": "The expression to render if the condition is met."
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/products/health-potion",
+        "raw_liquid": "{% if product.type == 'love-potion' %}\n  This is a love potion!\n{% elsif product.type == 'health-potion' %}\n  This is a health potion!\n{% else %}\n  This is a potion!\n{% endif %}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ]
+  },
+  {
+    "category": "conditional",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "You can use the `or` operator or a comma to test a single `when` tag against multiple values.",
+    "parameters": [],
+    "summary": "Specifies one of the values to compare against in a [`case`](/docs/api/liquid/tags/case) tag.",
+    "name": "when",
+    "syntax": "{% when value %}\n  expression",
+    "syntax_keywords": [
+      {
+        "keyword": "value",
+        "description": "The value to compare the case variable against."
+      },
+      {
+        "keyword": "expression",
+        "description": "The expression to render if the value matches."
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/products/health-potion",
+        "raw_liquid": "{% case product.type %}\n  {% when 'love-potion' %}\n    This is a love potion!\n  {% when 'health-potion', 'mana-potion' %}\n    This is a health or mana potion!\n  {% else %}\n    This is a potion!\n{% endcase %}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ]
+  },
+  {
+    "category": "iteration",
+    "deprecated": false,
+    "deprecation_reason": "",
+    "description": "Most useful inside a [`for` loop](/docs/api/liquid/tags/for), where it suppresses output for consecutive iterations that produce the same value.",
+    "parameters": [],
+    "summary": "Renders its contents only if the output differs from the previous iteration.",
+    "name": "ifchanged",
+    "syntax": "{% ifchanged %}\n  expression\n{% endifchanged %}",
+    "syntax_keywords": [
+      {
+        "keyword": "expression",
+        "description": "The expression to render when its output differs from the previous iteration."
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/collections/potions",
+        "raw_liquid": "{% for product in collection.products %}\n  {% ifchanged %}\n    {{ product.type }}\n  {% endifchanged %}\n  {{ product.title }}\n{% endfor %}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ]
+  },
+  {
     "category": "syntax",
     "deprecated": false,
     "deprecation_reason": "",
