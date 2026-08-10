@@ -21,6 +21,15 @@
       {%- endcomment -%}
       "deprecated": {{ item.deprecated | default: false | json }},
       "deprecation_reason": {{ item.deprecated_reason | default: '' | json }},
+      {%- comment -%}
+        The successor's registered NAME, for a consumer that acts on the deprecation instead of
+        displaying it: platformos-check renames a deprecated tag to it and, under
+        `pos-cli check run -a`, writes the result to the user's file unattended. It used to
+        read that name out of `deprecation_reason` — English prose — so rephrasing a sentence
+        moved the rename, or turned it off. Blank for a tags.json published by an older
+        platform version, which is the same fallback path the reason still serves.
+      {%- endcomment -%}
+      "deprecation_replacement": {{ item.deprecated_replacement | default: '' | json }},
       "description": {{ item.description | json }},
       "syntax": {{ item.syntax | json }},
       "platformOS": true,
