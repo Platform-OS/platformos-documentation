@@ -1,0 +1,56 @@
+---
+converter: markdown
+metadata:
+  title: Stale partial cache on large deploys, UTF-8 for non-HTML pages, boolean filters return false on argument error
+  description: August 12, 2026
+  skip_contribute_button: true
+  last_edit: false
+slug: release-notes/12-AUG-26
+---
+
+#### {{ page.metadata.description }}
+
+<h4 class="release-note release-note__improved">IMPROVED</h4>
+
+* **`parse_json` is deprecated, and every deprecated Liquid tag now names its replacement**: {% raw %}`{% parse_json %}`{% endraw %} is deprecated in favour of {% raw %}`{% assign %}`{% endraw %}, which [accepts a JSON literal directly](/api-reference/liquid/variables) and produces the same Hash. Note this is a rewrite rather than a rename - the tag body moves into the markup, and values interpolated with the `json` filter become plain expressions:
+
+{% raw %}
+```liquid
+{% parse_json car %}{ "type": "SUV", "gearbox": "AT" }{% endparse_json %}
+{% assign car = { "type": "SUV", "gearbox": "AT" } %}
+
+{% assign color = "red" %}
+{% parse_json data %}{ "color": {{ color | json }} }{% endparse_json %}
+{% assign data = { "color": color } %}
+```
+{% endraw %}
+
+  Separately, the published [Liquid tag reference](/api-reference/liquid/platformos-tags) now carries each deprecated tag's successor as a tag name rather than only inside the deprecation sentence, which is what [platformos-check](/developer-guide/platformos-check/checks/deprecated-tag)'s autofix renames to under `pos-cli check run -a` - previously it parsed that name out of English prose, so rephrasing a sentence could silently switch the fix off. The reference also now documents `execute_query` and `query_graph` (both deprecated in favour of {% raw %}`{% graphql %}`{% endraw %}), and the alternative spellings the platform registers for some tags: `context_rc`, `function_rc`, `return_rc`, `sign_in_rc`, `try_rc` and `render_form`.
+
+* **Upgraded WebSocket and serialization dependencies**
+
+<h4 class="release-note release-note__fixed">FIXED</h4>
+
+* **Deploys touching more than 250 partials no longer leave stale templates in the cache**: Partials are upserted in batches of 250, and the compiled-template cache was only expired for the *last* batch. Any deploy that changed more than 250 partials therefore left every partial outside that final batch serving its previous, compiled version on the web workers - the file on the Instance was new, the rendered output was not. Cache paths are now accumulated across every batch. Two related gaps in the same path are closed:
+
+  * Deleting a partial now expires the cache key derived from the row that is about to disappear, rather than one reconstructed from the file name afterwards, so a partial declaring a `path:` frontmatter alias is properly expired on deletion too.
+  * The `Duplicate pk` deploy warning - raised when two files map to the same identifier, for example `views/partials/abc.liquid` and `lib/abc.liquid` - is now emitted for collisions split across two batches. Previously the second batch silently overwrote the first batch's row with no warning at all. The warning lists every colliding file in deploy order, and the last file still wins.
+
+* **Two files claiming the same Table or Form name are rejected on deploys of any size**
+
+* **Boolean filters return `false`, not a truthy empty string, when their arguments are rejected**: This affects Instances that run with [`liquid_raise_mode`](/developer-guide/platformos-workflow/directory-structure/config) disabled. In that mode a filter that rejects its arguments reports the error and then hands a value back to the template so the render can carry on - and that value was always an empty string. Because `''` is **truthy** in Liquid, a filter that answers a yes/no question turned a rejected argument into a *passing* check - {% raw %}`{% if result %}`{% endraw %} took the **true** branch even though the filter had just failed. Every filter documented as returning a boolean now returns `false` when it rejects an argument:
+
+  `array_any`, `array_include`, `end_with`, `hcaptcha`, `is_date_before`, `is_date_in_past`, `is_email_valid`, `is_gpg_valid`, `is_token_valid`, `matches`, `start_with`
+
+  Only the value handed back on the rejection path changes. Valid arguments give exactly the same answer as before, the error is still reported to your Instance logs with its usual `Liquid error (path:line): ...` location and full diagnostic, and the documented blank-argument shortcuts stay silent - {% raw %}`{{ '' | matches: 'a' }}`{% endraw %} still returns null and {% raw %}`{{ '' | is_email_valid }}`{% endraw %} still returns `false`, neither of which is an argument error.
+
+  **We strongly recommend keeping `liquid_raise_mode` set to `true`, which is the default.** `false` is a safer answer than a truthy `''`, but it is still only the least bad one - for a failed check there is no correct value to return at all. Take {% raw %}`{{ 'not-a-date' | is_date_in_past }}`{% endraw %}: `true` and `false` are both wrong, because the question was never answered, and either one silently sends your code down a branch it should never have taken. The only way to be sure a failed filter does not quietly decide your control flow is to let it stop the render. With `liquid_raise_mode` on, a rejected argument raises `LiquidArgumentError` and returns a 500 with a full diagnostic, so no placeholder value ever reaches the rest of your logic and this whole class of problem cannot occur.
+
+  With it off, all the *other* filters still return `''` on an argument error, so whenever a filter's result decides control flow you must write {% raw %}`{% if result != blank %}`{% endraw %} rather than {% raw %}`{% if result %}`{% endraw %} - the latter is true for the empty string and will take the wrong branch. {% raw %}`{% if result != blank %}`{% endraw %} is the safe form for the boolean filters listed above too, since `false` is also blank in Liquid.
+
+* **Non-HTML page formats are served as UTF-8**: Pages rendered in a format other than `html` - `md`, `json`, `css`, `csv`, `ics`, `js`, `text` and `xml` - now send a charset in their `Content-Type` header, for example `text/markdown; charset=utf-8` instead of a bare `text/markdown`. Without it browsers and HTTP clients fell back to latin-1 and mangled every non-ASCII character, so accented letters and box-drawing characters in Markdown pages (such as the `└──` of a directory tree) rendered as garbage. This also brings Liquid pages in line with every other response the platform serves - an ordinary JSON API response has always carried the charset. HTML pages already sent it and are unaffected, binary formats such as `pdf` never carry one, and a page that sets its own `Content-Type` through `response_headers` still wins - use that if you need a different charset.
+
+* **[WebSocket](/use-cases/using-websockets) channel partials see your own channel name, and channel state survives to `unsubscribed`**: Two fixes to how a developer-chosen channel name travels through the WebSocket transport:
+
+  * `context.params.channel` in a `channels/.../subscribed` or `channels/.../receive` partial now reports the channel name the client subscribed with rather than the platform's internal handler name. A `subscribed` partial branching on it, for example {% raw %}`{% if context.params.channel == '...' %}`{% endraw %}. The internal `custom_channel_name` key is no longer exposed in `context.params` either.
+  * Channel state written during `subscribed` is now readable in `unsubscribed`, so teardown keyed on it - presence cleanup, last-seen writes - actually runs on disconnect for a custom-named channel instead of silently doing nothing.

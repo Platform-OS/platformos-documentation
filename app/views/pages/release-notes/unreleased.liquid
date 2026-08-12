@@ -9,16 +9,8 @@ metadata:
 
 #### {{ page.metadata.description }}
 
+<h4 class="release-note release-note__new">NEW</h4>
+
+<h4 class="release-note release-note__improved">IMPROVED</h4>
+
 <h4 class="release-note release-note__fixed">FIXED</h4>
-
-* **Boolean filters return `false`, not a truthy empty string, when their arguments are rejected**: This affects Instances that run with [`liquid_raise_mode`](/developer-guide/platformos-workflow/directory-structure/config) disabled. In that mode a filter that rejects its arguments reports the error and then hands a value back to the template so the render can carry on - and that value was always an empty string. Because `''` is **truthy** in Liquid, a filter that answers a yes/no question turned a rejected argument into a *passing* check - {% raw %}`{% if result %}`{% endraw %} took the **true** branch even though the filter had just failed. Every filter documented as returning a boolean now returns `false` when it rejects an argument:
-
-  `array_any`, `array_include`, `end_with`, `hcaptcha`, `is_date_before`, `is_date_in_past`, `is_email_valid`, `is_gpg_valid`, `is_token_valid`, `matches`, `start_with`
-
-  Only the value handed back on the rejection path changes. Valid arguments give exactly the same answer as before, the error is still reported to your Instance logs with its usual `Liquid error (path:line): ...` location and full diagnostic, and the documented blank-argument shortcuts stay silent - {% raw %}`{{ '' | matches: 'a' }}`{% endraw %} still returns null and {% raw %}`{{ '' | is_email_valid }}`{% endraw %} still returns `false`, neither of which is an argument error.
-
-  **We strongly recommend keeping `liquid_raise_mode` set to `true`, which is the default.** `false` is a safer answer than a truthy `''`, but it is still only the least bad one - for a failed check there is no correct value to return at all. Take {% raw %}`{{ 'not-a-date' | is_date_in_past }}`{% endraw %}: `true` and `false` are both wrong, because the question was never answered, and either one silently sends your code down a branch it should never have taken. The only way to be sure a failed filter does not quietly decide your control flow is to let it stop the render. With `liquid_raise_mode` on, a rejected argument raises `LiquidArgumentError` and returns a 500 with a full diagnostic, so no placeholder value ever reaches the rest of your logic and this whole class of problem cannot occur.
-
-  With it off, all the *other* filters still return `''` on an argument error, so whenever a filter's result decides control flow you must write {% raw %}`{% if result != blank %}`{% endraw %} rather than {% raw %}`{% if result %}`{% endraw %} - the latter is true for the empty string and will take the wrong branch. {% raw %}`{% if result != blank %}`{% endraw %} is the safe form for the boolean filters listed above too, since `false` is also blank in Liquid.
-
-* **Non-HTML page formats are served as UTF-8**: Pages rendered in a format other than `html` - `md`, `json`, `css`, `csv`, `ics`, `js`, `rss`, `svg`, `text` and `xml` - now send a charset in their `Content-Type` header, for example `text/markdown; charset=utf-8` instead of a bare `text/markdown`. Without it browsers and HTTP clients fell back to latin-1 and mangled every non-ASCII character, so accented letters and box-drawing characters in Markdown pages (such as the `└──` of a directory tree) rendered as garbage. HTML pages already sent the charset and are unaffected, and a page that sets its own `Content-Type` through `response_headers` still wins - use that if you need a different charset.
