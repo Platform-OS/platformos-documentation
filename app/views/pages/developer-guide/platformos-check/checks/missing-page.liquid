@@ -13,7 +13,36 @@ This check reports `<a href>` links and `<form action>` attributes that point to
 
 The check builds a route table from all pages in your project and verifies that each URL pattern matches a known route. It also resolves Liquid `{% raw %}{% assign %}{% endraw %}` variables used as URLs when they can be statically determined.
 
-The check accounts for HTTP methods — form actions are checked against the method attribute (`GET`, `POST`, `PUT`, `PATCH`, `DELETE`), defaulting to `POST` for forms.
+## HTTP methods
+
+A form is checked against its `method` attribute. A form with no `method` is a `GET`, exactly as the browser treats it — so a form that targets a `post` or `put` page must say so.
+
+To match a page whose method is not `GET` or `POST`, override the method with a hidden `_method` input:
+
+```liquid
+{% raw %}
+<form action="/posts/1" method="post">
+  <input type="hidden" name="_method" value="put">
+</form>
+{% endraw %}
+```
+
+**The override has to be literal markup.** The check does not follow `{% raw %}{% render %}{% endraw %}` or component tags to look for it, so a `_method` field produced by a partial is invisible and the form is read as a plain `POST`. Write the input directly in the form.
+
+## Response formats
+
+A page's format comes from its filename (`page.json.liquid`) or its `format` frontmatter, and a URL asks for a format with an extension (`/api/posts.json`).
+
+- An **HTML** page answers a request for any format. `app/views/pages/report.html.liquid` serves `/report`, `/report.json` and `/report.csv`.
+- A page of any **other** format answers only its own extension. `report.json.liquid` serves `/report.json`, and neither `/report.html` nor the extension-less `/report`.
+
+So a link to a JSON page needs the extension. `<a href="/api/posts">` does not reach `api/posts.json.liquid`, and the check reports it.
+
+## Platform-provided routes
+
+Some routes are served by the platform rather than by a page in your project, and the check never reports them: the error pages (`/404`, `/422`, `/500`, `/502`, `/504`), `/maintenance`, `/_maintenance` and `/_maintenance/new`, `/auth/:provider/callback`, `/auth/failure`, and `/api/graph`.
+
+These are exempt per method, not per path — `/_maintenance` accepts a `POST` only, so a link pointing a `GET` at it is still reported.
 
 ## Examples
 
@@ -23,10 +52,12 @@ The check accounts for HTTP methods — form actions are checked against the met
 {% raw %}
 <a href="/pages/that-does-not-exist">Click here</a>
 <form action="/submit/nonexistent" method="post">...</form>
+<a href="/api/posts">Posts</a>
+<form action="/posts/1" method="post">...</form>
 {% endraw %}
 ```
 
-No platformOS page is defined for these routes.
+The first two routes have no page at all. The third asks for HTML from a page that only serves JSON — `/api/posts.json` is the URL that reaches `api/posts.json.liquid`. The fourth is a `POST` to a page whose method is `put`, and it is missing the `_method` override that would make it one.
 
 ### &#x2713; Correct Code Example (Use this instead):
 
@@ -34,6 +65,10 @@ No platformOS page is defined for these routes.
 {% raw %}
 <a href="/developer-guide/pages/creating-page">Creating a Page</a>
 <form action="/records/create" method="post">...</form>
+<a href="/api/posts.json">Posts</a>
+<form action="/posts/1" method="post">
+  <input type="hidden" name="_method" value="put">
+</form>
 {% endraw %}
 ```
 
@@ -50,6 +85,8 @@ MissingPage:
 ## Disabling This Check
 
 This check can be disabled for projects that use external routing or dynamically generated URLs that cannot be statically analyzed.
+
+Before silencing an individual report, check whether the route really resolves — a missing format extension and a missing `_method` override both look like false positives and are not. A form submitted by JavaScript is the case that genuinely cannot be analyzed: the markup's `action` and `method` are not what the request uses. Making the markup describe the request the script sends is usually better than suppressing the check, because it keeps the two from drifting apart.
 
 ## Resources
 
