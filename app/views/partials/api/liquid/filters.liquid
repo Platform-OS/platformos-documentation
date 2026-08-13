@@ -1,6 +1,28 @@
+{%- comment -%}
+  Was `platformos_filters | concat: standard_filters`, a concatenation of two independently
+  maintained lists. That published `map` and `split` TWICE — the platform reopens both, so each
+  name appeared once from each list, and the standard entry carried no parameters at all. Nothing
+  broke only because the two happened to agree on the return type; a consumer looking a filter up
+  by name got whichever the sort happened to put first.
+
+  There is one list now. The platform publishes the WHOLE vocabulary in `data.filters`: its own
+  filters from `platform_filters.rb` and Liquid's own from `docs/liquid/standardfilters.rb`, both
+  documented as annotations in the application repository and serialized together by the YARD
+  generator, which is also where a name the platform reopens is resolved to the platform's
+  definition. So there is nothing left to concatenate here, and no name can appear twice.
+
+  `api/liquid/core_filters` and `api/liquid/standard_filters` are what this used to assemble, and are
+  deleted: the prose they carried now lives with the annotations, in the same place as the list of
+  filters, so a filter can no longer be dropped here by forgetting to describe it.
+{%- endcomment -%}
+{%- comment -%}
+  OUTPUT, not `return`: the page invokes this partial with `{% render %}`, which renders its output
+  and discards any returned value — only `{% function %}` captures a `return`. Written as a `return`,
+  this published an EMPTY array while every piece below it was correct, which is the worst shape a
+  defect here can take: `filters.json` is how a consumer decides whether a filter exists, so an empty
+  one reports every filter in every file as unknown and blocks the write.
+{%- endcomment -%}
 {% liquid
   function filters = 'api/liquid/platformos_filters', data: data
-  function standard_filters = 'api/liquid/standard_filters'
 %}
-
-{{ filters | concat: standard_filters | array_sort_by: 'name' }}
+{{ filters | array_sort_by: 'name' }}

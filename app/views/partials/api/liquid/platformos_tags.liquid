@@ -13,14 +13,18 @@
     {
       "category": "{{ item.category | default: 'platformOS' }}",
       {%- comment -%}
-        `deprecated` is a boolean and `deprecated_reason` is the text, both straight from the
-        generator. This used to read `deprecation_reason` off `item.deprecated`, which is not
-        the reason — a deprecated tag published `deprecation_reason: "true"` while `deprecated`
-        itself stayed false, so consumers saw a tag that was deprecated in one field and
-        current in the other.
+        `deprecated` is a boolean and the reason is the text, both straight from the generator.
+        This used to read `deprecation_reason` off `item.deprecated`, which is not the reason — a
+        deprecated tag published `deprecation_reason: "true"` while `deprecated` itself stayed
+        false, so consumers saw a tag that was deprecated in one field and current in the other.
+
+        Both fields are now read through under the name they are published as: the generator used
+        to emit `deprecated_*` and this partial renamed them, which left the only statement that
+        the two spellings are one field here, in a third repository. The `deprecated_*` fallback
+        serves a tags.json produced by an older platform version.
       {%- endcomment -%}
       "deprecated": {{ item.deprecated | default: false | json }},
-      "deprecation_reason": {{ item.deprecated_reason | default: '' | json }},
+      "deprecation_reason": {{ item.deprecation_reason | default: item.deprecated_reason | default: '' | json }},
       {%- comment -%}
         The successor's registered NAME, for a consumer that acts on the deprecation instead of
         displaying it: platformos-check renames a deprecated tag to it and, under
@@ -29,7 +33,7 @@
         moved the rename, or turned it off. Blank for a tags.json published by an older
         platform version, which is the same fallback path the reason still serves.
       {%- endcomment -%}
-      "deprecation_replacement": {{ item.deprecated_replacement | default: '' | json }},
+      "deprecation_replacement": {{ item.deprecation_replacement | default: item.deprecated_replacement | default: '' | json }},
       "description": {{ item.description | json }},
       "syntax": {{ item.syntax | json }},
       "platformOS": true,
