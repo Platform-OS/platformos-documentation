@@ -1,0 +1,104 @@
+---
+converter: markdown
+metadata:
+  title: ValidFilterArgumentTypes
+  description: Reports a value passed to a Liquid filter — the piped value included — whose type contradicts the type the platformOS documentation publishes for it.
+---
+
+## ValidFilterArgumentTypes
+
+**Severity:** warning | **Type:** LiquidHtml
+
+This check ensures that a value passed to a Liquid filter has the type the platformOS documentation publishes for it. It is the filter counterpart of [ValidTagArgumentTypes](/developer-guide/platformos-check/checks/valid-tag-argument-types) and shares the same type inference and the same compatibility rules.
+
+**The piped value is checked too**, because the documentation publishes it as the filter's first argument — the same way `arity` counts it. That is where the mistake this check exists for usually is:
+
+```liquid
+{% raw %}
+{{ 123 | hash_add_key: 'hello', 'world' }}
+{% endraw %}
+```
+
+platformOS answers that with `hash_add_key filter - first argument must be a hash, received: 123` and the page returns a 500, so a published type here is a contract the runtime enforces rather than a hint.
+
+## What is and is not reported
+
+The expected types come from the [Liquid filters reference](/api-reference/liquid/filters) and from nowhere else. platformOS Check never guesses a type. A value is only reported when:
+
+1. The filter is documented with a `parameters` entry for that position or name.
+2. That entry publishes a real type rather than `untyped`.
+3. The value is a literal, or an expression ending in a filter whose return type the documentation publishes — a bare variable lookup (`{% raw %}{{ maybe_a_hash | hash_keys }}{% endraw %}`) cannot be typed without running the code and is never reported.
+
+`untyped` means **any type is accepted**, and it is how the documentation says so. Every argument of every filter Liquid itself provides is `untyped`, because those **coerce rather than refuse** — `{% raw %}{{ 5 | upcase }}{% endraw %}` renders `5`, `{% raw %}{{ '5' | minus: 1 }}{% endraw %}` renders `4`, `{% raw %}{{ h | round }}{% endraw %}` renders `0` — so nothing is reported about them. The platform's own filters mostly do refuse, and those are the ones this check can speak about.
+
+A parameter may also name **several** types, and then a value is only reported when it matches none of them. `strftime` accepts a string, a number of seconds, a Date or a Time and raises on anything else, so all four are published and all four pass.
+
+### `object` means a Hash
+
+On a filter parameter, `object` is the Hash spelling and an array is not one:
+
+```liquid
+{% raw %}
+{% assign list = 'a,b' | split: ',' %}
+{{ list | hash_add_key: 'hello', 'world' }}
+{% endraw %}
+```
+
+is `hash_add_key filter - first argument must be a hash, received: ["a", "b"]` at render time, and is reported. A filter that takes either publishes both — `to_xml` and `www_form_encode` are `object, array` — so `{% raw %}{{ list | to_xml }}{% endraw %}` is correct and silent. Note this differs from `object` in a `{% raw %}{% doc %}{% endraw %}` block, where it means "some structured value" and does accept an array.
+
+Two more silences worth knowing:
+
+- `nil` is accepted for every type — it means "no value", not a wrong one.
+- A **variadic** parameter gathers every remaining argument, so its published type describes the collection while each argument written at the call site is an element of it. `{% raw %}{{ hash | hash_dig: 'a', 'b' }}{% endraw %}` passes two strings to a parameter published as an array, and is correct.
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```liquid
+{% raw %}
+{{ 123 | hash_add_key: 'hello', 'world' }}
+
+{{ 'a,b,c' | array_add: 'd' }}
+
+{{ hash | hash_add_key: 5, 'world' }}
+{% endraw %}
+```
+
+### &#x2713; Correct Code Example (Use this instead):
+
+```liquid
+{% raw %}
+{% assign hash = {"hello": "world"} %}
+{{ hash | hash_add_key: 'goodbye', 'world' }}
+
+{% assign array = 'a,b,c' | split: ',' %}
+{{ array | array_add: 'd' }}
+
+{% comment %}A filtered value is typed by its last filter{% endcomment %}
+{{ payload | parse_json | hash_keys }}
+
+{% comment %}A bare variable is never reported — its type is unknown here{% endcomment %}
+{{ maybe_a_hash | hash_keys }}
+{% endraw %}
+```
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+ValidFilterArgumentTypes:
+  enabled: true
+  severity: warning
+```
+
+## Disabling This Check
+
+This check is safe to disable if you rely on a filter coercing a value to the type it needs. Note that the platform's own filters generally do not coerce — they raise `Liquid::ArgumentError`, which fails the whole page.
+
+## Resources
+
+- [platformOS Liquid filters reference](/api-reference/liquid/filters)
+- [ValidTagArgumentTypes](/developer-guide/platformos-check/checks/valid-tag-argument-types)
+- [ValidRenderPartialArgumentTypes](/developer-guide/platformos-check/checks/valid-render-partial-argument-types)

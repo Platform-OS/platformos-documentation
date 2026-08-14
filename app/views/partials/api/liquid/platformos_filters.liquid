@@ -4,10 +4,17 @@
     {% liquid
       assign first_param_type = item.params[0].types[0] | downcase | default: 'untyped'
       # `variable` is the language server's name for the "accepts anything" bucket, and it selects
-      # filters with `syntax.startsWith(inputType)`. `PseudoType` has no `object` member, so an
-      # `object | …` syntax would match no bucket and those filters would never be offered.
+      # filters with `syntax.startsWith(inputType)`. `PseudoType` has no `object` or `untyped` member,
+      # so either spelling published verbatim matches no bucket and those filters are never offered.
+      #
+      # BOTH map here, and they do NOT mean the same thing in the document any more: `object` is a
+      # Hash, `untyped` is "more than one type is accepted". They agree only about this one question —
+      # which filters to offer for a value whose type the editor cannot pin down — and `untyped` is
+      # exactly the answer "any of them". The 20 filters whose input became `untyped` when the platform
+      # separated the two senses are `append`, `minus`, `to_time` and friends; without this branch each
+      # would publish `untyped | append` and drop out of completion everywhere.
       case first_param_type
-      when 'object'
+      when 'object', 'untyped'
         assign first_param_type = 'variable'
       endcase
 

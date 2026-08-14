@@ -11,7 +11,7 @@ metadata:
 
 This check ensures that an argument passed to a Liquid tag has the type the platformOS documentation publishes for that argument. It is the tag counterpart of [ValidRenderPartialArgumentTypes](/developer-guide/platformos-check/checks/valid-render-partial-argument-types), which judges `{% raw %}{% render %}{% endraw %}` arguments against a partial's `{% raw %}{% doc %}{% endraw %}` block, and it shares the same type inference and the same compatibility rules.
 
-The expected types come from the [Liquid tags reference](/api-reference/liquid/tags) and from nowhere else. platformOS Check never guesses a type: **an argument the documentation does not type is not reported, whatever is passed to it.** Today the documented vocabulary is small — a loop's `limit`, `offset` and `cols` are published as numbers, and every other tag argument is published untyped — so this check is quiet by design and starts reporting as the documentation grows.
+The expected types come from the [Liquid tags reference](/api-reference/liquid/tags) and from nowhere else. platformOS Check never guesses a type: **an argument the documentation does not type is not reported, whatever is passed to it.** How much that leaves is the documentation's business rather than the check's, and it grows without a new release of platformOS Check.
 
 An argument is only type-checked when:
 
