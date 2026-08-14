@@ -3,17 +3,9 @@
   {%- for item in data.filters -%}
     {% liquid
       assign first_param_type = item.params[0].types[0] | downcase | default: 'untyped'
-      # `object` becomes `variable`, which is what `hash` used to become here, and it is not
-      # cosmetic: the language server offers a filter for the value piped into it by testing
-      # `syntax.startsWith(inputType)`, and `variable` is its name for the "accepts anything"
-      # bucket. `PseudoType` has no `object` member, so `options('object')` is never called —
-      # published verbatim, `object | hash_merge` matches no bucket at all and the 25 filters
-      # taking a hash or an untyped value would quietly stop being offered anywhere.
-      #
-      # The platform's unified vocabulary publishes `object` where this document used to receive
-      # `hash` (16 filters) and `untyped` (10), so this one branch covers both old spellings and
-      # keeps the published `syntax` identical to what production serves today. Teaching the
-      # language server to infer `object` instead is the better end state — TASK-51.1's other half.
+      # `variable` is the language server's name for the "accepts anything" bucket, and it selects
+      # filters with `syntax.startsWith(inputType)`. `PseudoType` has no `object` member, so an
+      # `object | …` syntax would match no bucket and those filters would never be offered.
       case first_param_type
       when 'object'
         assign first_param_type = 'variable'
@@ -23,115 +15,68 @@
     %}
     {
       {%- comment -%}
-        `data.filters` is now the WHOLE vocabulary — the platform's filters and Liquid's own, both
-        documented in the application repository (`platform_filters.rb` and
-        `docs/liquid/standardfilters.rb`) and serialized into one array by the YARD generator. There
-        is no second list to concatenate and no name that can appear in both, so this partial
-        publishes every filter a template can call.
-
-        `platformOS` distinguishes them, and is present only on the platform's own: the language
-        server reads the KEY's presence to pick the reference page to link, so publishing `false`
-        would send every core filter to the platformos-filters page.
+        `platformOS` marks the platform's own filters and is ABSENT on Liquid's: the language server
+        reads the KEY's presence to pick which reference page to link.
       {%- endcomment -%}
       "category": {% if item.platformOS %}"platformOS"{% else %}"liquid"{% endif %},
-      {%- comment -%}
-        `deprecated` is a boolean and the reason is the text, both straight from the
-        generator. This used to read `item.deprecated.size > 0` and publish
-        `item.deprecated | join: ', '` as the reason, which was the contract from before the
-        generator emitted a boolean — and a boolean has no `size`, so EVERY filter published
-        `deprecated: false`, while the reason became the stringified boolean. 116 filters
-        published the reason `"false"` and the six genuinely deprecated ones published `"true"`,
-        so the only way downstream could tell a deprecated filter from a current one was to
-        match that word. The prose the generator had all along was dropped on the floor.
-
-        This is the same defect the tags partial carries a note about having fixed. It was
-        fixed there and not here.
-      {%- endcomment -%}
       "deprecated": {{ item.deprecated | default: false | json }},
       {%- comment -%}
-        Read through under the name it is published as. The generator used to emit
-        `deprecated_reason`/`deprecated_replacement` and this partial renamed them, so the only
-        statement that the two spellings are one field lived here, in a third repository — and
-        anything consuming the platform's filters.json directly lost both fields with nothing to
-        notice. The generator now emits `deprecation_*` itself.
-
-        The `deprecated_*` fallback is for a filters.json produced by a platform version from
-        before that change, which is the same reason the reason field has a fallback at all.
+        Read through under the name they are published as; the `deprecated_*` fallback serves a
+        filters.json from a platform version before the generator emitted `deprecation_*`.
       {%- endcomment -%}
       "deprecation_reason": {{ item.deprecation_reason | default: item.deprecated_reason | default: '' | json }},
       {%- comment -%}
-        The successor's registered NAME, for a consumer that acts on the deprecation instead of
-        displaying it: platformos-check offers to rename a deprecated filter to it. That rename
-        was matched out of the English reason with a "replaced by [`name`]" pattern which none
-        of the six real reasons uses — so it was never once offered, and nothing failed, because
-        a fix that is not suggested looks exactly like a fix nobody asked for.
-
-        Blank for a filters.json published by an older platform version, which is the same
-        fallback path the reason still serves.
+        The successor's registered NAME: platformos-check renames a deprecated filter to it.
       {%- endcomment -%}
       "deprecation_replacement": {{ item.deprecation_replacement | default: item.deprecated_replacement | default: '' | json }},
       "description": {{ item.description | json }},
-      {%- comment -%}
-        Was `item.decription` — a typo, so the value was always blank and the fallback always
-        won. The fallback reads the RETURN description, which is the only sentence most of these
-        filters have: 92 of 122 carry no `@description` at all.
-      {%- endcomment -%}
       "summary": {{ item.description | default: default_description | json }},
       "syntax": "{% print first_param_type %} | {% print item.name %}",
       {% if item.platformOS %}"platformOS": true,{% endif %}
       "name": {{ item.name | json }},
       {%- comment -%}
-        `{% if %}`, not `| default: '[]'`. An empty array is BLANK in Liquid, so `default:`
-        substitutes the string `'[]'`, and `| json` then publishes the two-character string "[]"
-        where an array belongs. Every filter without aliases got that, and a consumer iterating
-        the field saw two entries, `[` and `]`.
+        `{% if %}`, not `| default: '[]'`: an empty array is blank in Liquid, so `default:` would
+        substitute the two-character STRING "[]" where an array belongs.
       {%- endcomment -%}
       "aliases": {% if item.aliases %}{{ item.aliases | json }}{% else %}[]{% endif %},
       {%- comment -%}
-        How many arguments the filter accepts, the piped input included. `FilterArity` in
-        platformos-check refuses a call outside this range and the MCP write gate blocks on it,
-        so it is part of the contract, not a display detail.
+        `FilterArity` refuses a call outside this range, so it is contract, not display. `max` is
+        null for a variadic filter — "cannot refuse an argument", not "unknown".
 
-        It was previously absent, and recovering it downstream meant over-applying all 206
-        filters against a live instance and reading the runtime's own complaint — which could
-        not answer for the four that take a splat. `max` is null for exactly those: it means
-        "cannot refuse an argument", which is a different statement from "unknown".
-
-        `{% if %}` rather than `default:` because 0 is a legitimate `max` and is truthy in
-        Liquid, while nil is not — `default:` would turn a real 0 into null.
+        `{% if %}` rather than `default:`, because 0 is a legitimate `max` and truthy in Liquid
+        while nil is not, so `default:` would turn a real 0 into null.
       {%- endcomment -%}
       "arity": {
         "min": {{ item.arity.min | json }},
         "max": {% if item.arity.max %}{{ item.arity.max | json }}{% else %}null{% endif %}
       },
+      {%- comment -%}
+        Whether the `positional: false` entries below are ALL the named arguments the filter takes —
+        the one field here a consumer may act on by REFUSING a template. Three states: absent means
+        nobody has said, and is not a synonym for either answer.
+
+        `{% if %}`, not `| default:`: Liquid's `default` substitutes for `false` as readily as for
+        nil, which would publish every open filter as closed.
+      {%- endcomment -%}
+      {% if item.named_parameters_exhaustive == true %}"named_parameters_exhaustive": true,{% endif %}
+      {% if item.named_parameters_exhaustive == false %}"named_parameters_exhaustive": false,{% endif %}
       "parameters": [
         {% for param in item.params %}
           {
             "description": {{ param.description | json }},
             "name": {{ param.name | json }},
-            {%- comment -%}
-              Was hardcoded `false` for every parameter of every filter, which is the reason
-              arity had to be measured downstream instead of read. It comes from the method
-              signature now, not from the annotation: 13 filters have an `@param` list that
-              disagrees with the parameters they actually take, `encode` documenting its two
-              encoding arguments in the opposite order to the one it accepts.
-            {%- endcomment -%}
             "required": {{ param.required | default: false | json }},
             "variadic": {{ param.variadic | default: false | json }},
             "default": {{ param.default | default: '' | json }},
             {%- comment -%}
-              "pass this by position, not as `name: value`". The language server reads
-              `!positional` as "this is a named argument", so while the field was absent every
-              filter argument was offered as `name: value`, including the ones that only work
-              positionally.
+              "pass this by position, not as `name: value`" — the language server completes and
+              hovers the false ones as the filter's named arguments. True when absent, for a
+              filters.json from before the platform emitted named arguments at all.
 
-              Defaults to true rather than false: Liquid cannot reach a Ruby keyword parameter at
-              all, so a published filter parameter is always positional, and for a filters.json
-              from before the generator emitted this, true is the answer for every filter in it.
-              The named arguments a filter really accepts are its trailing options Hash, whose
-              keys are the `@option` entries — not these.
+              NOT `| default: true`, which substitutes for `false` exactly as it does for nil and so
+              turned every named argument back into a positional one.
             {%- endcomment -%}
-            "positional": {{ param.positional | default: true | json }},
+            "positional": {% if param.positional == false %}false{% else %}true{% endif %},
             "types": {% if param.types %}{{ param.types | json }}{% else %}[]{% endif %}
           }{% unless forloop.last %},{% endunless %}
         {% endfor %}

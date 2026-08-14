@@ -96,15 +96,18 @@ Declare each parameter the partial accepts:
 
 #### Supported parameter types
 
+{% assign cache_key = context.version | append: '-doc-param-types' %}
+{% cache cache_key %}
+{%- capture url -%}https://deidcfp1yn7c2.cloudfront.net/platform_docs/{{ context.version }}/liquid_doc.json{%- endcapture -%}
+{%- assign vocabulary = url | download_file | parse_json -%}
 | Type | Description |
 |------|-------------|
-| `string` | Text values |
-| `number` | Numeric values |
-| `boolean` | `true` / `false` values |
-| `object` | Complex Liquid objects or anything that is not a primitive |
-| `array` | A list of values of any type, e.g. `[1, 2, 3]` or `["a", "b"]` |
+{% for type in vocabulary.param_types %}| `{{ type.name }}` | {{ type.description }} |
+{% endfor %}{% endcache %}
 
-The name of an object from the [Liquid objects reference](/api-reference/liquid/objects) is also a valid type, for example `@param {page} current_page` or `@param {current_user} author`. The exceptions are the objects the platform supplies to a file directly, which are never passed as arguments: `context` (in scope everywhere), `content_for_layout` (layouts only), and `data` and `response` (api_calls only).
+This table is the platform's own type vocabulary, published as [liquid_doc.json](/api/liquid/liquid_doc.json) and read by platformOS Check — so a type listed here is a type it accepts, and the two cannot disagree.
+
+The name of an object from the [platformOS objects reference](/api-reference/liquid/platformos-objects) is also a valid type, for example `@param {page} current_page` or `@param {current_user} author`. The exceptions are the objects the platform supplies to a file directly, which are never passed as arguments: `context` (in scope everywhere), `content_for_layout` (layouts only), and `data` and `response` (api_calls only).
 
 #### Arrays
 

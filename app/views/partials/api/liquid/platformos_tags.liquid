@@ -13,47 +13,58 @@
     {
       "category": "{{ item.category | default: 'platformOS' }}",
       {%- comment -%}
-        `deprecated` is a boolean and the reason is the text, both straight from the generator.
-        This used to read `deprecation_reason` off `item.deprecated`, which is not the reason — a
-        deprecated tag published `deprecation_reason: "true"` while `deprecated` itself stayed
-        false, so consumers saw a tag that was deprecated in one field and current in the other.
-
-        Both fields are now read through under the name they are published as: the generator used
-        to emit `deprecated_*` and this partial renamed them, which left the only statement that
-        the two spellings are one field here, in a third repository. The `deprecated_*` fallback
-        serves a tags.json produced by an older platform version.
+        Read through under the names they are published as; the `deprecated_*` fallback serves a
+        tags.json from a platform version before the generator emitted `deprecation_*`.
       {%- endcomment -%}
       "deprecated": {{ item.deprecated | default: false | json }},
       "deprecation_reason": {{ item.deprecation_reason | default: item.deprecated_reason | default: '' | json }},
       {%- comment -%}
-        The successor's registered NAME, for a consumer that acts on the deprecation instead of
-        displaying it: platformos-check renames a deprecated tag to it and, under
-        `pos-cli check run -a`, writes the result to the user's file unattended. It used to
-        read that name out of `deprecation_reason` — English prose — so rephrasing a sentence
-        moved the rename, or turned it off. Blank for a tags.json published by an older
-        platform version, which is the same fallback path the reason still serves.
+        The successor's registered NAME: platformos-check renames a deprecated tag to it and, under
+        `pos-cli check run -a`, writes the result unattended.
       {%- endcomment -%}
       "deprecation_replacement": {{ item.deprecation_replacement | default: item.deprecated_replacement | default: '' | json }},
       "description": {{ item.description | json }},
       "syntax": {{ item.syntax | json }},
       "platformOS": true,
       "name": "{{item.name}}",
+      {%- comment -%}
+        The TYPES the generator published, passed through — the same treatment
+        `platformos_filters.liquid` gives a filter argument, and for the same reason: this file is
+        a transport, not an author.
+
+        It used to emit the literal `["untyped"]` for every tag argument, and that one line was the
+        whole reason 67 of the 72 published tag parameters carried no type while every `@param` in
+        `app/lib/liquify/tags/*.rb` upstream already declared one. `{% cache 'k', expire: 20 %}`
+        annotates `expire [number]`; a consumer reading this endpoint was told it could be anything.
+        platformos-check's `ValidTagArgumentTypes` reads exactly this field and reports nothing for
+        `untyped`, so the effect was a check that could never fire.
+
+        `{% if %}`, not `| default:`, matching the filters partial: an empty array is a legitimate
+        published value and `default` would substitute for it.
+      {%- endcomment -%}
       "parameters": [
         {% for param in item.params %}
           {
           "description": {{ param.description | json }},
             "name": {{ param.name | json }},
             "required": {{ param.required | default: false | json }},
-            "types": ["untyped"]
+            "types": {% if param.types %}{{ param.types | json }}{% else %}[]{% endif %},
+            "array_value": {{ param.array_value | default: '' | json }}
           }{% unless forloop.last %},{% endunless %}
         {% endfor %}
       ],
+      {%- comment -%}
+        The same element shape a filter's return type is published in — `type`, singular, as a
+        string — so a consumer has one shape to read rather than two. Empty for every tag today:
+        the tag generator emits no `returns`, so this loop runs zero times and the array says
+        "the documentation does not say", never "no return type".
+      {%- endcomment -%}
       "return_type": [
         {% for return_type in item.returns %}
           {
-            "types": ["untyped"],
+            "type": "{% print return_type.types | join: ', ' | downcase %}",
             "name": "",
-            "description": {{return_type.description | json }},
+            "description": {{ return_type.description | json }},
             "array_value": ""
           }{% unless forloop.last %},{% endunless %}
         {% endfor %}

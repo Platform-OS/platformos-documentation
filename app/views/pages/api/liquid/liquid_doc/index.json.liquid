@@ -1,0 +1,6 @@
+{% assign cache_key = context.version | append: '-lsp-liquid-doc-json' %}
+{% cache cache_key %}
+  {%- capture url -%}https://deidcfp1yn7c2.cloudfront.net/platform_docs/{{ context.version }}/liquid_doc.json{%- endcapture -%}
+  {% assign data = url | download_file | parse_json: raw_text: true %}
+  {{ data }}
+{% endcache %}

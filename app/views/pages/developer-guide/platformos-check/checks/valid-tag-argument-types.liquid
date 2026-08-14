@@ -1,0 +1,73 @@
+---
+converter: markdown
+metadata:
+  title: ValidTagArgumentTypes
+  description: Reports arguments passed to a Liquid tag whose type contradicts the type the platformOS documentation publishes for them.
+---
+
+## ValidTagArgumentTypes
+
+**Severity:** warning | **Type:** LiquidHtml
+
+This check ensures that an argument passed to a Liquid tag has the type the platformOS documentation publishes for that argument. It is the tag counterpart of [ValidRenderPartialArgumentTypes](/developer-guide/platformos-check/checks/valid-render-partial-argument-types), which judges `{% raw %}{% render %}{% endraw %}` arguments against a partial's `{% raw %}{% doc %}{% endraw %}` block, and it shares the same type inference and the same compatibility rules.
+
+The expected types come from the [Liquid tags reference](/api-reference/liquid/tags) and from nowhere else. platformOS Check never guesses a type: **an argument the documentation does not type is not reported, whatever is passed to it.** Today the documented vocabulary is small — a loop's `limit`, `offset` and `cols` are published as numbers, and every other tag argument is published untyped — so this check is quiet by design and starts reporting as the documentation grows.
+
+An argument is only type-checked when:
+
+1. The tag is documented with a `parameters` entry of that name.
+2. That entry publishes a real type rather than `untyped`.
+3. The value is a literal, or an expression ending in a filter whose return type the documentation publishes — a bare variable lookup (`limit: page_size`) cannot be typed without running the code and is never reported.
+
+`nil` and `null` are accepted for every type — they mean "no value". `boolean` accepts any value, because every value in Liquid is truthy or falsy.
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```liquid
+{% raw %}
+{% for item in items limit: 'ten' %}
+  {{ item }}
+{% endfor %}
+{% endraw %}
+```
+
+### &#x2713; Correct Code Example (Use this instead):
+
+```liquid
+{% raw %}
+{% for item in items limit: 10 %}
+  {{ item }}
+{% endfor %}
+
+{% comment %}A filtered value is typed by its last filter{% endcomment %}
+{% for item in items limit: items | size %}
+  {{ item }}
+{% endfor %}
+
+{% comment %}A bare variable is never reported — its type is unknown here{% endcomment %}
+{% for item in items limit: page_size %}
+  {{ item }}
+{% endfor %}
+{% endraw %}
+```
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+ValidTagArgumentTypes:
+  enabled: true
+  severity: warning
+```
+
+## Disabling This Check
+
+This check is safe to disable if you rely on Liquid coercing an argument to the type a tag needs.
+
+## Resources
+
+- [platformOS Liquid tags reference](/api-reference/liquid/tags)
+- [ValidRenderPartialArgumentTypes](/developer-guide/platformos-check/checks/valid-render-partial-argument-types)

@@ -21,34 +21,74 @@
   <p>{{ description | join: ', ' }}</p>
 {% endif %}
 
+{%- comment -%}
+  The named arguments — `t: default: 'Missing'` — are parameters with `positional: false`. They used
+  to arrive nested as `p.options`, which is still the shape an older platform version publishes, and
+  this page renders per `context.version`, so both are read below.
+
+  Counted in a loop, not selected with `| where: 'positional', false`: `where` cannot match a `false`
+  target, and `false` is the only value that marks a named argument.
+{%- endcomment -%}
+{%- assign named_options_count = 0 -%}
+{%- for p in params -%}
+  {%- if p.positional == false -%}{%- assign named_options_count = named_options_count | plus: 1 -%}{%- endif -%}
+{%- endfor -%}
+
 {% if params.size > 0 %}
   <h4>Params</h4>
   <ul>
     {% for p in params %}
-      <li>
-        {{ p.name }}
+      {% unless p.positional == false %}
+        <li>
+          {{ p.name }}
 
-        ({%- for t in p.types -%}
-            {{- t  -}}
-          {%- endfor -%})
-        {% if p.description.size > 1 %} - {{ p.description }}{% endif %}
-        {% if p.default and p.options == blank  %} - default: {{ p.default }}{% endif %}
-        {% if p.options.size > 0 %}
-          <ul>
-            {% for o in p.options %}
-              <li>
-                {{ o.name }}
-                ({%- for t in o.types -%}
-                    {{- t  -}}
-                  {%- endfor -%})
-                {% if o.description.size > 1 %} - {{ o.description }}{% endif %}
-              </li>
-            {% endfor %}
-          </ul>
-        {% endif %}
-      </li>
+          ({%- for t in p.types -%}
+              {{- t  -}}
+            {%- endfor -%})
+          {% if p.description.size > 1 %} - {{ p.description }}{% endif %}
+          {% if p.default and p.options == blank  %} - default: {{ p.default }}{% endif %}
+          {% if p.options.size > 0 %}
+            <ul>
+              {% for o in p.options %}
+                <li>
+                  {{ o.name }}
+                  ({%- for t in o.types -%}
+                      {{- t  -}}
+                    {%- endfor -%})
+                  {% if o.description.size > 1 %} - {{ o.description }}{% endif %}
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </li>
+      {% endunless %}
     {% endfor %}
   </ul>
+{% endif %}
+
+{% if named_options_count > 0 %}
+  <h4>Named options</h4>
+  <ul>
+    {% for o in params %}
+      {% if o.positional == false %}
+        <li>
+          {{ o.name }}
+          ({%- for t in o.types -%}
+              {{- t  -}}
+            {%- endfor -%})
+          {% if o.description.size > 1 %} - {{ o.description }}{% endif %}
+        </li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+{% endif %}
+
+{%- comment -%}
+  Said only when the filter says it. Absent means nobody has stated whether the list is complete,
+  which is a different claim from either answer.
+{%- endcomment -%}
+{% if item.named_parameters_exhaustive == false %}
+  <p>Keys other than these are accepted too.</p>
 {% endif %}
 
 {% if returns.size > 0 %}

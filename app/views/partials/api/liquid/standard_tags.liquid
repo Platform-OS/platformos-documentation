@@ -294,6 +294,44 @@
     "category": "syntax",
     "deprecated": false,
     "deprecation_reason": "",
+    "description": "Content inside a `doc` block is never rendered. It is read by platformOS Check and by editor tooling, which use the\nannotations to validate a partial's arguments, complete them at the call site, and show its documentation on hover.\n\nThe annotations a block may carry, and the types a `@param` may name, are published in\n[liquid_doc.json](/api/liquid/liquid_doc.json). See the [doc tag reference](/api-reference/liquid/doc) for the full syntax.",
+    "parameters": [
+
+    ],
+    "summary": "Documents a partial's arguments, inline, for tooling to read.",
+    "name": "doc",
+    "syntax": "{% doc %}\n  @param {type} name - description\n{% enddoc %}",
+    "syntax_keywords": [
+      {
+        "keyword": "@param",
+        "description": "An argument the partial accepts. Square brackets around the name make it optional."
+      },
+      {
+        "keyword": "@example",
+        "description": "How the partial is called. May be repeated."
+      },
+      {
+        "keyword": "@description",
+        "description": "What the partial does."
+      }
+    ],
+    "examples": [
+      {
+        "name": "",
+        "description": "",
+        "syntax": "",
+        "path": "/",
+        "raw_liquid": "{% doc %}\n  @description Renders a user avatar.\n\n  @param {string} url - The avatar image URL\n  @param {number} [size] - The width in pixels\n\n  @example\n  {% render 'avatar', url: current_user.avatar_url, size: 64 %}\n{% enddoc %}",
+        "parameter": false,
+        "display_type": "text",
+        "show_data_tab": true
+      }
+    ]
+  },
+  {
+    "category": "syntax",
+    "deprecated": false,
+    "deprecation_reason": "",
     "description": "Using the `echo` tag is the same as wrapping an expression in curly brackets (`{{` and `}}`). However, unlike the curly\nbracket method, you can use the `echo` tag inside [`liquid` tags](/docs/api/liquid/tags/liquid).\n\n&gt; Tip:\n&gt; You can use [filters](/docs/api/liquid/filters) on expressions inside `echo` tags.",
     "parameters": [
 

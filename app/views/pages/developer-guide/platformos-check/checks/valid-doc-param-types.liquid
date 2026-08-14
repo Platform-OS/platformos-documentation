@@ -11,12 +11,15 @@ metadata:
 
 This check ensures that type annotations in `{% raw %}{% doc %}{% endraw %}` tag `@param` entries are valid platformOS types. Invalid type names prevent tooling (autocomplete, type checking) from working correctly and indicate a mistake in the documentation.
 
-Valid types are derived from the platformOS docset. They are:
+Valid types are read from the platformOS docset, which publishes them in [liquid_doc.json](/api/liquid/liquid_doc.json) — so this check accepts exactly the types the platform documents, and the [`doc` tag reference](/api-reference/liquid/doc#supported-parameter-types) lists them with their descriptions. They are:
 
 - the primitive types `string`, `number` and `boolean`;
+- `date` and `time`, the types `to_date` and `to_time` return;
 - the generic types `object` (anything that is not a primitive) and `array` (a list of values of any type);
-- the name of an object from the [Liquid objects reference](/api-reference/liquid/objects), for example `page`, `current_user` or `params` — except the objects the platform supplies to a file directly and that are therefore never passed as arguments: `context` (in scope everywhere), `content_for_layout` (layouts only), and `data` and `response` (api_calls only);
+- the name of an object from the [platformOS objects reference](/api-reference/liquid/platformos-objects), for example `page`, `current_user` or `params` — except the objects the platform supplies to a file directly and that are therefore never passed as arguments: `context` (in scope everywhere), `content_for_layout` (layouts only), and `data` and `response` (api_calls only);
 - any of the above with a `[]` suffix, to describe an array of that type — `string[]`, `number[]`, `object[]`.
+
+A docset published before `liquid_doc.json` existed carries no type list, and then this check reports nothing rather than reporting every annotation as invalid.
 
 Type names are lowercase. `Integer`, `Float`, `Hash` and `String` are not platformOS types.
 
