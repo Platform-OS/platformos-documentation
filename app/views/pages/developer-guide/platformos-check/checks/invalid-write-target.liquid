@@ -1,0 +1,114 @@
+---
+converter: markdown
+metadata:
+  title: InvalidWriteTarget
+  description: Reports a write into a container — through a subscript or with '<<' — against a target the runtime rejects.
+---
+
+## InvalidWriteTarget
+
+**Severity:** error | **Type:** LiquidHtml
+
+Some writes go *into* a container rather than replacing it. This check reports one whose target cannot accept it, which raises at runtime.
+
+Two rules, and three tags spell both:
+
+| Write | Needs |
+| --- | --- |
+| `{% raw %}{% assign h['k'] = v %}{% endraw %}`, `{% raw %}{% hash_assign h['k'] = v %}{% endraw %}`, `{% raw %}{% function h['k'] = 'partial' %}{% endraw %}` | a **Hash** with a key, or an **Array** with a numeric index |
+| `{% raw %}{% assign a << v %}{% endraw %}`, `{% raw %}{% function a << 'partial' %}{% endraw %}` | an **Array** |
+
+The two rules are not the same rule. A subscript write accepts a Hash and refuses a scalar; `{% raw %}<<{% endraw %}` accepts an Array and refuses a **Hash**.
+
+A dot target is a key: `{% raw %}{% assign h.k = v %}{% endraw %}` writes the key `k`, so an Array refuses it exactly as it refuses `h['k']`.
+
+> `{% raw %}{% hash_assign %}{% endraw %}` is deprecated — prefer `{% raw %}{% assign %}{% endraw %}`, which reaches the same runtime setter and accepts more target spellings. See [DeprecatedTag](/developer-guide/platformos-check/checks/deprecated-tag).
+
+### How the target's type is known
+
+From the [documented](/api-reference/liquid/platformos-filters) return type of whatever assigned it, and from the tag that assigned it:
+
+- `{% raw %}{% assign x = 1 %}{% endraw %}` — **number**; `"hello"` — **string**; `true` — **boolean**; `(1..5)` — **range**
+- `{% raw %}{% assign x = list | split: "," %}{% endraw %}` — **array**, from the last filter in the chain
+- `{% raw %}{% assign x = {"a": 1} %}{% endraw %}` or `{% raw %}{% parse_json x %}{}{% endparse_json %}{% endraw %}` — **object**
+- `{% raw %}{% graphql x = 'query' %}{% endraw %}` — **object**; `{% raw %}{% capture x %}{% endraw %}` — **string**
+
+The type is tracked per scope: a write inside an `{% raw %}{% if %}{% endraw %}` branch is not a fact after it, and a `{% raw %}{% for %}{% endraw %}` variable does not inherit the type of the name it shadows.
+
+**Nothing is reported when the type is unknown** — a `{% raw %}{% render %}{% endraw %}` argument, a filter the documentation does not carry a return type for, a variable assigned in another file. Silence is not approval.
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```liquid
+{% raw %}
+{% assign counter = 0 %}
+{% assign counter['key'] = "value" %}
+{% endraw %}
+```
+
+`counter` is a number — the runtime raises `counter is 0, expected Hash or Array`.
+
+```liquid
+{% raw %}
+{% assign items = "a,b,c" | split: "," %}
+{% assign items['key'] = "value" %}
+{% endraw %}
+```
+
+`items` is an Array, so it wants an index — the runtime raises `items is an Array, expected index, key was provided`.
+
+```liquid
+{% raw %}
+{% parse_json data %}{}{% endparse_json %}
+{% assign data << "value" %}
+{% endraw %}
+```
+
+`data` is a Hash — the runtime raises `data is {}, expected Array`. `{% raw %}<<{% endraw %}` appends to an Array.
+
+### &#x2713; Correct Code Example (Use this instead):
+
+```liquid
+{% raw %}
+{% parse_json data %}{}{% endparse_json %}
+{% assign data['key'] = "value" %}
+{% assign data.other = "value" %}
+{% endraw %}
+```
+
+```liquid
+{% raw %}
+{% assign items = "a,b,c" | split: "," %}
+{% assign items[0] = "value" %}
+{% assign items << "value" %}
+{% endraw %}
+```
+
+Writing into a container does not replace it, so a Hash stays a Hash and an Array stays an Array for every later write.
+
+## What is not reported
+
+- **A nested subscript** — `{% raw %}{% assign x[0]['k'] = v %}{% endraw %}`. The runtime checks the *intermediate* value, which requires knowing the type of `x[0]`; the first subscript is still checked.
+- **An append through a subscript** — `{% raw %}{% assign x['k'] << v %}{% endraw %}` — for the same reason: the runtime checks the value at the subscript, not the container.
+- **A subscript that only resolves at runtime** — `{% raw %}{% assign x[y] = v %}{% endraw %}` on an Array, since neither Array rule can be ruled out.
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+InvalidWriteTarget:
+  enabled: true
+  severity: error
+```
+
+## Disabling This Check
+
+Disabling this check is not recommended — every case it reports raises at runtime.
+
+## Resources
+
+- [platformOS `assign` and `hash_assign` tags](/api-reference/liquid/platformos-tags#hash-assign)
+- [LiquidHTMLSyntaxError](/developer-guide/platformos-check/checks/liquid-html-syntax-error), which reports a `hash_assign` target the platform cannot parse at all — one ending in a dot, or one with no subscript
