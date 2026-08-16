@@ -4,6 +4,12 @@
   {%- assign description = item.description -%}
   {%- assign params = item.params -%}
   {%- assign examples = item.examples -%}
+  {%- comment -%}
+    Both spellings, exactly as `filter.liquid` reads them: `returns` is what the generator
+    serializes and `return_type` is what `platformos_tags.liquid` transports it as, so this
+    template renders a tag whichever of the two documents it is handed.
+  {%- endcomment -%}
+  {%- assign returns = item.returns | default: item.return_type -%}
 
   {% if description %}
     <p>{{ description | strip_html }}</p>
@@ -34,6 +40,25 @@
         {% endfor %}
       </tbody>
     </table>
+  {% endif %}
+
+  {% if returns.size > 0 %}
+    <h4>Returns</h4>
+    <p>
+      {% for r in returns %}
+        <strong>
+          {% for t in r.types %}
+            {{ t }}{% unless forloop.last %},{% endunless %}
+          {% else %}
+            {% if r.type != blank %}{{ r.type }}{% endif %}
+          {% endfor %}
+        </strong>
+
+        {% if r.description.size > 1 %}
+          - {{ r.description }}
+        {% endif %}
+      {% endfor %}
+    </p>
   {% endif %}
 
   {% if examples.size > 0 %}

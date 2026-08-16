@@ -55,9 +55,15 @@
       ],
       {%- comment -%}
         The same element shape a filter's return type is published in — `type`, singular, as a
-        string — so a consumer has one shape to read rather than two. Empty for every tag today:
-        the tag generator emits no `returns`, so this loop runs zero times and the array says
-        "the documentation does not say", never "no return type".
+        string — so a consumer has one shape to read rather than two.
+
+        The tag generator emits `returns` now, from a `@return` annotation on the handler class,
+        and only for the tags whose return the implementation guarantees. A tag nobody has
+        established one for loops zero times here and publishes `[]`, which reads as "the
+        documentation does not say" — never as "no return type".
+
+        This is what platformos-check reads to know that `{% graphql g = … %}` leaves a Hash in
+        `g`. While every entry was empty it carried its own measured table of four tags instead.
       {%- endcomment -%}
       "return_type": [
         {% for return_type in item.returns %}
