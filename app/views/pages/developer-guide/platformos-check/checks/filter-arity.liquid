@@ -1,0 +1,62 @@
+---
+converter: markdown
+metadata:
+  title: FilterArity
+  description: Reports a known filter called with too few or too many arguments, which raises Liquid::ArgumentError at render time.
+---
+
+## FilterArity
+
+**Severity:** error | **Type:** LiquidHtml
+
+This check reports a filter that exists but is called with the wrong number of arguments.
+
+platformOS raises `Liquid::ArgumentError` when it happens, so the page returns a 500 rather than rendering with a missing value. It is the same failure class as [UnknownFilter](/developer-guide/platformos-check/checks/unknown-filter), and it is reported for the same reason.
+
+**The piped value counts as one argument.** In `{% raw %}{{ a | hash_merge: b }}{% endraw %}`, the filter receives two: `a` and `b`.
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```liquid
+{% raw %}
+{{ null | hash_merge }}
+{% endraw %}
+```
+
+`hash_merge` accepts exactly two arguments and is given one — the piped value alone. At render time this raises `Liquid::ArgumentError: wrong number of arguments (given 1, expected 2)`.
+
+### &#x2713; Correct Code Example (Use this instead):
+
+```liquid
+{% raw %}
+{% assign a = {"x": 1} %}
+{% assign b = {"y": 2} %}
+{{ a | hash_merge: b }}
+{% endraw %}
+```
+
+## What is not reported
+
+Arity comes from the published filter documentation. A filter for which no arity is documented produces **nothing** — so a gap in the documentation cannot make this check refuse working code.
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+FilterArity:
+  enabled: true
+  severity: error
+```
+
+## Disabling This Check
+
+Disabling this check is not recommended. Every finding it produces is a page that returns a 500 when the template renders.
+
+## Resources
+
+- [Liquid Filters Reference](/api-reference/liquid/filters)
+- [platformOS Filters Reference](/api-reference/liquid/platformos-filters)
+- [UnknownFilter](/developer-guide/platformos-check/checks/unknown-filter)

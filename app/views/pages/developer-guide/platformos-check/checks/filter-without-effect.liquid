@@ -1,0 +1,70 @@
+---
+converter: markdown
+metadata:
+  title: FilterWithoutEffect
+  description: Reports a filter applied in a platformOS tag operand or argument, where the runtime never applies it and the value is used unfiltered.
+---
+
+## FilterWithoutEffect
+
+**Severity:** warning | **Type:** LiquidHtml
+
+This check reports a filter written somewhere the platform **silently ignores** it.
+
+The deploy converter accepts the file and nothing raises. platformOS parses a tag's markup with its own scanner, which does not apply filters — so the value arrives **unfiltered** and the page renders with the wrong data. That silence is what makes it worth a check: there is no error to trace back.
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```liquid
+{% raw %}
+{% cache 'key' | upcase %}
+  body
+{% endcache %}
+{% endraw %}
+```
+
+The cache key is `key`, not `KEY`. The filter is parsed as part of the markup and discarded.
+
+### &#x2713; Correct Code Example (Use this instead):
+
+```liquid
+{% raw %}
+{% assign k = 'key' | upcase %}
+{% cache k %}
+  body
+{% endcache %}
+{% endraw %}
+```
+
+Apply the filter in an `{% raw %}{% assign %}{% endraw %}` and pass the assigned variable.
+
+## Where filters DO apply
+
+A filter works where the whole value is a Liquid variable:
+
+- output and assignment — `{% raw %}{{ … }}{% endraw %}`, `{% raw %}{% assign %}{% endraw %}`, `{% raw %}{% echo %}{% endraw %}`, `{% raw %}{% print %}{% endraw %}`, `{% raw %}{% return %}{% endraw %}`, `{% raw %}{% session %}{% endraw %}`;
+- an argument whose value **is** a JSON literal — `{% raw %}{% log 'm', data: {"a": 1} | json %}{% endraw %}`;
+- a trailing filter after `{% raw %}{% graphql res = 'file' %}{% endraw %}`, which filters the **result**.
+
+A trailing filter on `{% raw %}{% function %}{% endraw %}` or `{% raw %}{% background %}{% endraw %}`, or on the inline `{% raw %}{% graphql %}{% endraw %}` block, only looks like that last case and is discarded — filter the result in a following `{% raw %}{% assign %}{% endraw %}` instead.
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+FilterWithoutEffect:
+  enabled: true
+  severity: warning
+```
+
+## Disabling This Check
+
+Disabling this check is not recommended. Nothing else reports it: the file deploys, the page renders, and the only symptom is a value that was never filtered.
+
+## Resources
+
+- [Liquid Filters Reference](/api-reference/liquid/filters)
+- [platformOS Tags Reference](/api-reference/liquid/platformos-tags)

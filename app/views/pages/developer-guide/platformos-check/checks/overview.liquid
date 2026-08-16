@@ -21,6 +21,8 @@ These checks analyze the style and validity of Liquid templates, including `.liq
 | [DeprecatedTag](/developer-guide/platformos-check/checks/deprecated-tag) | warning | Reports usage of deprecated Liquid tags |
 | [DuplicateFunctionArguments](/developer-guide/platformos-check/checks/duplicate-function-arguments) | warning | Reports duplicate argument names in `{% raw %}{% function %}{% endraw %}` calls |
 | [DuplicateRenderPartialArguments](/developer-guide/platformos-check/checks/duplicate-render-partial-arguments) | warning | Reports duplicate argument names in `{% raw %}{% render %}{% endraw %}` tags |
+| [FilterArity](/developer-guide/platformos-check/checks/filter-arity) | error | Reports a known filter called with the wrong number of arguments — platformOS raises `Liquid::ArgumentError` at render time |
+| [FilterWithoutEffect](/developer-guide/platformos-check/checks/filter-without-effect) | warning | Reports a filter in a tag operand or argument, where the runtime never applies it and the value is used unfiltered |
 | [GraphQLVariablesCheck](/developer-guide/platformos-check/checks/graphql-variables-check) | error | Validates that parameters passed to `{% raw %}{% graphql %}{% endraw %}` match the query's variable definitions |
 | [ImgWidthAndHeight](/developer-guide/platformos-check/checks/img-width-and-height) | error | Requires `width` and `height` attributes on `img` tags to prevent cumulative layout shift |
 | [ImplicitIncludeArguments](/developer-guide/platformos-check/checks/implicit-include-arguments) | warning | Reports a variable an `{% raw %}{% include %}{% endraw %}`'d partial reads that the call site does not pass, and so inherits from the caller's scope — working, but invisible at the call site |
@@ -68,6 +70,7 @@ These checks analyze YAML files: translations in `app/translations/`, and — fo
 
 | Check | Severity | Description |
 |-------|----------|-------------|
+| [DuplicateYAMLKey](/developer-guide/platformos-check/checks/duplicate-yaml-key) | warning | Reports a key defined twice in one mapping, where the earlier value is silently discarded |
 | [MatchingTranslations](/developer-guide/platformos-check/checks/matching-translations) | error | Reports translation files where keys are missing compared to the default language file |
 | [ValidHTMLTranslation](/developer-guide/platformos-check/checks/valid-html-translation) | warning | Reports translation values that contain invalid HTML markup |
-| [YAMLSyntaxError](/developer-guide/platformos-check/checks/yaml-syntax-error) | error | Reports what the YAML parser could not read, including a duplicated key whose earlier value is silently discarded |
+| [YAMLSyntaxError](/developer-guide/platformos-check/checks/yaml-syntax-error) | error | Reports what the YAML parser could not read — the file is rejected on deploy, which fails the whole changeset |

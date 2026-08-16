@@ -1,0 +1,75 @@
+---
+converter: markdown
+metadata:
+  title: DuplicateYAMLKey
+  description: Reports a YAML key defined more than once in the same mapping, where the earlier value is silently discarded.
+---
+
+## DuplicateYAMLKey
+
+**Severity:** warning | **Type:** YAML
+
+This check reports a key that appears more than once in the same YAML mapping.
+
+The file still deploys. YAML keeps the **last** value, so the earlier one is silently discarded — which is why this is easy to miss: nothing fails, a translation or a schema property simply has a value you did not intend.
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```yaml
+en:
+  greeting: Hi
+  greeting: Hello
+```
+
+`greeting` is defined twice. The file deploys, `greeting` resolves to `Hello`, and `Hi` is discarded without a warning from the platform.
+
+### &#x2713; Correct Code Example (Use this instead):
+
+```yaml
+en:
+  greeting: Hallo
+  farewell: Tschuss
+```
+
+## Keys that look different but are the same
+
+platformOS reads YAML **1.1** (Ruby's Psych), which resolves several unquoted scalars to the same value. These are one key, not two:
+
+```yaml
+fr:
+  yes: Oui
+  true: Vrai
+```
+
+Under YAML 1.1 `yes` and `true` are both the boolean `true`, so the second entry overwrites the first. The same applies to `no`/`false`, `on`/`off`, and to numeric forms such as `014` and `12` (the first is octal).
+
+Quote a key you mean literally:
+
+```yaml
+fr:
+  "yes": Oui
+  "true": Vrai
+```
+
+Look-alike detection is not exhaustive, so this check finding nothing does not prove two keys are distinct. A repeat of the **same spelling** is always reported.
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+DuplicateYAMLKey:
+  enabled: true
+  severity: warning
+```
+
+## Disabling This Check
+
+Disabling this check is not recommended. It reports a value that is being thrown away, which no other check or platform error will tell you about.
+
+## Resources
+
+- [Translations](/developer-guide/translations/translations)
+- [Records and Tables](/developer-guide/records/records-tables)
