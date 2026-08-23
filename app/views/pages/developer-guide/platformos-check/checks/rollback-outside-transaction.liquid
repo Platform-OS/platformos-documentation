@@ -1,0 +1,162 @@
+---
+converter: markdown
+metadata:
+  title: RollbackOutsideTransaction
+  description: Reports a rollback tag that is reached outside a transaction block, directly or through a render, function or background call.
+---
+
+## RollbackOutsideTransaction
+
+**Severity:** error | **Type:** LiquidHtml
+
+`{% raw %}{% rollback %}{% endraw %}` only has meaning inside `{% raw %}{% transaction %}{% endraw %}`. Reached anywhere else, the platform raises `rollback performed outside of transaction` — so this is a guaranteed runtime error, not a style preference.
+
+### Why the offense lands on the caller
+
+A partial cannot know whether it is running inside a transaction: the same file is correct under one call site and broken under another.
+
+```liquid
+{% raw %}
+{% comment %}fine — the caller opens the transaction{% endcomment %}
+{% transaction %}{% function _ = 'commands/order/place' %}{% endtransaction %}
+
+{% comment %}raises — the same partial, no transaction{% endcomment %}
+{% function _ = 'commands/order/place' %}
+{% endraw %}
+```
+
+The transaction state is only known at the **root** of a render tree, so that is where this check reports. A rollback written in a partial is never reported where it is written. Instead the check follows `{% raw %}{% render %}{% endraw %}`, `{% raw %}{% include %}{% endraw %}`, `{% raw %}{% theme_render_rc %}{% endraw %}`, `{% raw %}{% function %}{% endraw %}` and `{% raw %}{% background %}{% endraw %}` calls from the files whose state it does know, and reports on the call site, naming the chain it followed:
+
+```
+{% raw %}
+Rendering 'order/wrapper' reaches a {% rollback %} that is not inside a {% transaction %} block
+(order/wrapper → order/place). At runtime the platform raises "rollback performed outside of transaction".
+{% endraw %}
+```
+
+### Which files have a known state
+
+| File type | State at the top of the file | Why |
+| --- | --- | --- |
+| Page, Layout, Email, ApiCall, Sms | no transaction | Nothing wraps the render — a bare rollback here always raises |
+| Migration | inside a transaction | Migrations run inside one already, so a bare `{% raw %}{% rollback %}{% endraw %}` in a migration is **valid** and is not reported |
+| Partial (`views/partials/`, `lib/`) | unknown | The caller decides — this is why the check descends render trees |
+| FormConfiguration, Authorization | unknown | A form can be submitted programmatically from a GraphQL mutation, so its callbacks and policies may run inside the caller's transaction |
+
+### Two tags interrupt the transaction
+
+**`{% raw %}{% background %}{% endraw %}` never inherits a transaction.** A background job is only queued after the transaction that scheduled it commits, so it always runs outside one. A rollback under a `{% raw %}{% background %}{% endraw %}` block, or in a partial a `{% raw %}{% background %}{% endraw %}` schedules, is reported from **any** file — including a partial and including code already wrapped in `{% raw %}{% transaction %}{% endraw %}`.
+
+**`{% raw %}{% content_for %}{% endraw %}` bodies are never reported.** The body runs where the matching `{% raw %}{% yield %}{% endraw %}` is, which may be in another file, so where it is written proves nothing about its transaction state.
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+**A rollback with no transaction around it:**
+
+```liquid
+{% raw %}
+{% comment %}app/views/pages/orders/create.liquid{% endcomment %}
+{% liquid
+  function order = 'commands/order/create', total: 100
+  unless order.valid
+    rollback
+  endunless
+%}
+{% endraw %}
+```
+
+**A partial that rolls back, called without a transaction:**
+
+```liquid
+{% raw %}
+{% comment %}app/views/pages/orders/create.liquid{% endcomment %}
+{% function order = 'commands/order/place', total: 100 %}
+{% endraw %}
+```
+
+```liquid
+{% raw %}
+{% comment %}app/lib/commands/order/place.liquid{% endcomment %}
+{% liquid
+  function order = 'modules/core/commands/execute', mutation_name: 'order/create', object: object
+  unless order.valid
+    rollback
+  endunless
+%}
+{% endraw %}
+```
+
+**A rollback inside a background job:**
+
+```liquid
+{% raw %}
+{% transaction %}
+  {% background %}
+    {% comment %}the job runs after this transaction commits, so it is never inside one{% endcomment %}
+    {% rollback %}
+  {% endbackground %}
+{% endtransaction %}
+{% endraw %}
+```
+
+### &#x2713; Correct Code Example (Use this instead):
+
+**Wrap the work that must roll back:**
+
+```liquid
+{% raw %}
+{% liquid
+  transaction
+    function order = 'commands/order/create', total: 100
+    unless order.valid
+      rollback
+    endunless
+  endtransaction
+%}
+{% endraw %}
+```
+
+**Or open the transaction at the call site, so the partial can stay reusable:**
+
+```liquid
+{% raw %}
+{% comment %}app/views/pages/orders/create.liquid{% endcomment %}
+{% transaction %}
+  {% function order = 'commands/order/place', total: 100 %}
+{% endtransaction %}
+{% endraw %}
+```
+
+**Give a background job its own transaction:**
+
+```liquid
+{% raw %}
+{% background %}
+  {% transaction %}
+    {% function order = 'commands/order/place', total: 100 %}
+  {% endtransaction %}
+{% endbackground %}
+{% endraw %}
+```
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+RollbackOutsideTransaction:
+  enabled: true
+  severity: error
+```
+
+## Disabling This Check
+
+There should be no reason to disable this check. Every offense it reports is code that raises when it runs. It is deliberately conservative: a partial's rollback is only reported once a caller proves it runs outside a transaction, a partial named by a variable is never followed, and file types whose transaction state cannot be determined are left alone — so a silence is not a guarantee that a rollback is correctly placed.
+
+## Resources
+
+- [platformOS `transaction` tag](/api-reference/liquid/platformos-tags#transaction)
+- [platformOS `rollback` tag](/api-reference/liquid/platformos-tags#rollback)
+- [platformOS `background` tag](/api-reference/liquid/platformos-tags#background)
