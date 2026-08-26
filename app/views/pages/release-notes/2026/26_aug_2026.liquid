@@ -1,0 +1,94 @@
+---
+converter: markdown
+metadata:
+  title: Backslash escapes in string literals, escape_regex filter, deprecated filter aliases, deploy-time error locations, Ruby 4
+  description: August 26, 2026
+  skip_contribute_button: true
+  last_edit: false
+slug: release-notes/26-AUG-26
+---
+
+#### {{ page.metadata.description }}
+
+<h4 class="release-note release-note__new">NEW</h4>
+
+* **String literals accept backslash escapes - and a literal backslash must now be doubled**: A backslash inside a Liquid string literal escapes the character after it, so the delimiter can appear inside a literal of the same kind, and `\\` is one literal backslash:
+
+{% raw %}
+```liquid
+{{ "say \"hi\"" }}          => say "hi"
+{{ 'it\'s here' }}          => it's here
+{{ 'a\\b' }}                => a\b
+```
+{% endraw %}
+
+  Only the two delimiters and the backslash itself are escape targets. Any other `\X` stays exactly as written, so patterns and paths are unaffected - `'\d+'`, `'\.'`, `'\['` and `'C:\temp'` all mean what they always did. The rule applies everywhere markup is parsed: {% raw %}`{% assign %}`{% endraw %}, filter arguments, {% raw %}`{% if %}`{% endraw %} / {% raw %}`{% unless %}`{% endraw %} / {% raw %}`{% case %}`{% endraw %} conditions, {% raw %}`{% render %}`{% endraw %} / {% raw %}`{% include %}`{% endraw %} / {% raw %}`{% function %}`{% endraw %} attributes, {% raw %}`{% cycle %}`{% endraw %} values and {% raw %}`{% for %}`{% endraw %} / {% raw %}`{% tablerow %}`{% endraw %} sources. See [Types](/api-reference/liquid/types).
+
+  **This is a breaking change for one spelling.** {% raw %}`'\'`{% endraw %} and {% raw %}`"\"`{% endraw %} are no longer one-backslash strings - the backslash escapes the closing quote, so the literal never terminates. Use the doubled form instead:
+
+{% raw %}
+```liquid
+{% assign a = value | remove: '\' %}             {% comment %} before {% endcomment %}
+{% assign a = value | remove: '\\' %}            {% comment %} after  {% endcomment %}
+
+{% assign b = value | replace: "\", "%5C" %}     {% comment %} before {% endcomment %}
+{% assign b = value | replace: "\\", "%5C" %}    {% comment %} after  {% endcomment %}
+```
+{% endraw %}
+
+  Most occurrences are rejected at deploy with `Liquid syntax error (line N): Unexpected character ...`, so a deploy tells you where they are. A literal that contains `\\`, `\"` or `\'` parses either way and changes value instead, so search your code for those three sequences before deploying.
+
+* **`escape_regex` filter**: Escapes every character that has a special meaning in a regular expression, so the result matches the input literally. Use it on any value that goes into a pattern for [replace_regex](/api-reference/liquid/platformos-filters#replace_regex), [matches](/api-reference/liquid/platformos-filters#matches) or [regex_matches](/api-reference/liquid/platformos-filters#regex_matches):
+
+{% raw %}
+```liquid
+{{ 'Jane.Doe' | escape_regex }} => Jane\.Doe
+
+{% liquid
+  assign safe = mention | escape_regex
+  assign pattern = '@\[' | append: safe | append: '\]'
+  assign output = body | replace_regex: pattern, link
+%}
+```
+{% endraw %}
+
+<h4 class="release-note release-note__improved">IMPROVED</h4>
+
+* **Liquid errors reported at deploy name the line they are on**: A syntax error, an unknown tag or an unknown filter in a file being deployed is now reported as `Liquid syntax error (line 4): Unknown filters: not_a_filter`.
+
+* **Every alias is published as a deprecated spelling of its canonical filter**: The [filter reference](/api-reference/liquid/platformos-filters) now lists each alias as an entry of its own, marked deprecated, carrying the canonical filter's own arity and parameters so no working call is refused, and naming a successor that is not itself deprecated. [platformos-check](/developer-guide/platformos-check/checks/deprecated-filter)'s deprecation check matches a filter's **name**, so expect your editor to start flagging spellings it used to accept in silence, among them `compact`, `select`, `reject`, `detect`, `any`, `sort_by`, `group_by`, `flatten`, `dig`, `fetch`, `to_json`, `markdownify`, `nl2br`, `translate`, `localize` and `to_hash`. **Every one of them keeps working** - this is published metadata and an autofix target (`pos-cli check run -a`), not a removal.
+
+  `t`, `t_escape` and `l` are the canonical spellings of the translation and localization filters, and `translate`, `translate_escape` and `localize` are the deprecated aliases. Their error messages still say `translate filter - ...`: they name what the filter does, and templates assert on them.
+
+* **Filter and tag arguments publish their types**: The declared type of each argument and of the return value (`string`, `number`, `boolean`, `object`, `array`, `string[]`, a drop name, ...), whether an argument is required, whether it is passed positionally or as `name: value`, and how many arguments the filter accepts. Tag arguments previously published `untyped` for all of them.
+
+* **`parse_json` filter is deprecated**: {% raw %}`{% assign %}`{% endraw %} [takes a JSON literal directly](/api-reference/liquid/variables) and produces the same Hash with no string in between. Note this is a rewrite rather than a rename - the quoted JSON becomes markup, and a value that was interpolated into the string with the `json` filter becomes a plain expression:
+
+{% raw %}
+```liquid
+{% assign object = '{ "name": "foo", "bar": {} }' | parse_json %}
+{% assign object = { "name": "foo", "bar": {} } %}
+
+{% assign name = "foo" %}
+{% assign object = '{ "name": {{ name | json }} }' | parse_json %}
+{% assign object = { "name": name } %}
+```
+{% endraw %}
+
+  The rewrite covers JSON written in the **template**. A JSON document that arrives at **runtime** - an `api_call` response body, `download_file` output - reaches Liquid as a string, and {% raw %}`{% assign %}`{% endraw %} stores exactly the string it was given, so `parse_json` remains the step that turns one into a Hash and is not going anywhere for that use.
+
+* **Ruby 4**: The platform now runs on Ruby 4.0.
+
+* **Deploy reports the state of the asset phase**: A release now carries `asset_status` - `in_progress` from the moment its asset manifest is accepted, then `success` or `error` - so a client can tell whether asset processing has finished. The deploy report, the asset status and the asset report each merge into the stored report instead of overwriting one another.
+
+<h4 class="release-note release-note__fixed">FIXED</h4>
+
+* **{% raw %}`{% return %}`{% endraw %} and {% raw %}`{% redirect_to %}`{% endraw %} work inside {% raw %}`{% for %}`{% endraw %} and {% raw %}`{% tablerow %}`{% endraw %} loops**: A {% raw %}`{% return %}`{% endraw %} returns the value of the iteration it ran in, stops the loop, and propagates out of nested loops and out of {% raw %}`{% tablerow %}`{% endraw %}; {% raw %}`{% redirect_to %}`{% endraw %} stops the loop and the rest of the template. {% raw %}`{% break %}`{% endraw %} and {% raw %}`{% continue %}`{% endraw %} are unchanged. A {% raw %}`{% return %}`{% endraw %} inside an {% raw %}`{% include %}`{% endraw %}d partial still goes nowhere, which is by design - {% raw %}`{% function %}`{% endraw %} is what collects a returned value.
+
+* **A `%}` written in a comment no longer truncates a {% raw %}`{% liquid %}`{% endraw %} tag**: Inside {% raw %}`{% liquid %}`{% endraw %} a line starting with `#` is a comment that runs to the end of that line. `%}`, {% raw %}`}}`{% endraw %}, {% raw %}`{%`{% endraw %} and anything else after a `#` is comment content wherever on the line it sits, and only a `%}` outside a comment closes the tag. A tag whose every `%}` is commented out is reported as unterminated - {% raw %}`Tag '{%' was not properly terminated`{% endraw %} - exactly like a tag written with no `%}` at all.
+
+* **Asset URLs containing percent-encoded characters**: The still-encoded request path is now forwarded upstream, so assets whose names contain spaces or other escaped characters load.
+
+* **Uniqueness locks are released when a job ends abnormally**: Deploys, exports, imports, instance clones and Elasticsearch reindexing take a uniqueness lock so two of them cannot run at once. A lock left behind by a job that did not finish is now reaped, and lock lifetime is capped at an hour, so the next run of the same job starts as usual.
+
+* **A request body that cannot be parsed answers 400 or 501, and is logged**: A body that reaches the application still wrapped in a transfer coding it never got to decode answers `501`; a body that is simply malformed answers `400`. The message says which of the two it was and what to do about it, and the failure is logged with the URL, the content type, the declared length and the parser class - never the body itself.
