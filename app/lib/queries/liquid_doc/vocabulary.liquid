@@ -1,0 +1,11 @@
+{% comment %}
+  Returns the platform's liquid_doc.json vocabulary (parameter types, etc.) for the
+  running platform version. This lives in a plain partial on purpose: pages rendered
+  with `converter: markdown` autolink bare URLs, so a URL captured inline there
+  arrives at download_file wrapped in an <a> tag.
+{% endcomment %}
+{% liquid
+  assign url = 'https://deidcfp1yn7c2.cloudfront.net/platform_docs/' | append: context.version | append: '/liquid_doc.json'
+  assign vocabulary = url | download_file | parse_json
+  return vocabulary
+%}
