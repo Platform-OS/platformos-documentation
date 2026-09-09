@@ -13,20 +13,4 @@ metadata:
 
 <h4 class="release-note release-note__improved">IMPROVED</h4>
 
-* **Upgraded internal YAML parser** (2026-08-25): The library that reads the front matter of every Liquid file and every deployed `.yml` file (`app/config.yml`, `app/user.yml`, translations, model schemas, activity streams, profile and transactable types) has been upgraded. It differs from the previous one in what it does with input that cannot be represented safely: the old library rewrote such input in silence, the new one refuses the file, and the deploy tells you which one it is.
-
-  Three spellings that used to deploy are now rejected. In each of them the value that reached your instance was never the one written in the file:
-
-```yaml
-status: :draft            # deployed as the string ":draft"
-thing: !ruby/object:Foo   # deployed as a plain object, with the tag dropped
-other: *missing           # deployed as nothing
-```
-
-  The error names the fix in each case: remove the colon in front of the value, remove the `!ruby/object` line, or give every `*name` reference a matching `&name` anchor. **Deploy to staging to find these** - nothing else reports them, and a file that carries one has been deploying a value other than the one it reads.
-
-  Everything a configuration file legitimately uses is unchanged: anchors (`&name`), aliases (`*name`) and the merge key (`<<:`) still resolve, and a timestamp like `2026-08-25` still becomes a date.
-
 <h4 class="release-note release-note__fixed">FIXED</h4>
-
-* **A JSON body that cannot be parsed answers with a JSON error** (2026-08-31): A request that declares `Content-Type: application/json` and sends a body that cannot be parsed now gets the JSON envelope, `{"status":400,"error":"There was a problem in the JSON you submitted: ..."}`, instead of a bare line of text. Which of the two you got used to depend on the response format the client asked for rather than on what it sent. A body declared as something other than JSON still answers in text, now with an explicit `Content-Type: text/plain`. The `400` and `501` statuses are unchanged.
