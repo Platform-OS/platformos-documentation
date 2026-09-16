@@ -1,7 +1,7 @@
 ---
 converter: markdown
 metadata:
-  title: Two-factor authentication for pos-cli and the Instance API, error responses keep the format the page committed, dynamic cache without a layout
+  title: Two-factor authentication for pos-cli and the Instance API, error responses keep the page's content type, dynamic cache without a layout
   description: September 16, 2026
   skip_contribute_button: true
   last_edit: false
@@ -12,47 +12,36 @@ slug: release-notes/16-SEP-26
 
 <h4 class="release-note release-note__new">NEW</h4>
 
-* **Two-factor authentication for pos-cli and the Instance API**: When the Partner Portal account that owns an API token belongs to a Partner with two-factor authentication enabled, that token now needs a **two-factor session** before it can be used against an Instance. The requirement is per-Partner, set on the Partner Portal - nothing changes for a Partner that has not enabled it, and there is no per-Instance setting to look for.
+* **Two-factor authentication for `pos-cli` and the Instance API**: When the Partner Portal account that owns an API token belongs to a Partner with two-factor authentication enabled, the token now needs a two-factor session before it can be used against an instance. The requirement is set per Partner on the Partner Portal; nothing changes for Partners who have not enabled it.
+  * **Affected commands.** Every `pos-cli` command that talks to an instance: `deploy`, `sync`, `exec`, `exec-graphql`, `exec-liquid`, `constants`, `data export` / `import`, `migrations`, `logs`, `pull`, and the GUI. Read-only commands are included, since a GraphQL query and `pos-cli data export` both return instance data.
+  * **Prompting.** `deploy` and `sync` ask for a code before uploading anything; other commands ask when the instance refuses the request, then retry it. The code is exchanged with the Partner Portal directly and never sent to the instance.
+  * **Sessions.** A session lasts 8 hours and is scoped to a single instance, so a session for staging does not work against production. It is cached per environment in `.pos` under `two_factor_session`, and writing it sets the file's permissions to `0600`.
+  * **Automation.** Pass `--otp-code` (or set `POS_PORTAL_OTP_CODE`) to skip the prompt. In CI, set `POS_PORTAL_SESSION_TOKEN` to a session minted elsewhere.
+  * **Exemptions.** API keys issued by the instance itself are unaffected, as they belong to no Partner Portal user.
+  * _Note: update `pos-cli` before enabling the requirement for your Partner - older versions cannot complete the exchange._
 
-  It covers every `pos-cli` command that talks to an Instance - `deploy`, `sync`, `exec`, `exec-graphql`, `exec-liquid`, `constants`, `data export`/`import`, `migrations`, `logs`, `pull` and the GUI. Reads are not exempt: a GraphQL query and `pos-cli data export` both hand over the whole database, so the requirement protects the environment rather than only its source code.
-
-  `pos-cli` handles the exchange. `deploy` and `sync` ask for the code up front, before any upload starts; other commands ask when the Instance refuses and then retry the request. A code is never sent to the Instance - `pos-cli` trades it with the Partner Portal directly and presents the resulting session token to the Instance, which sees an ordinary `Authorization: Token <...>` header.
-
-  A session lasts **8 hours** and is **scoped to one Instance**, so a session proved for staging is not a credential for production. It is cached per environment in `.pos` under `two_factor_session`, and writing it sets that file to mode `0600`.
-
-  For automation:
-
-```bash
-pos-cli deploy staging --otp-code 123456   # or POS_PORTAL_OTP_CODE
-POS_PORTAL_SESSION_TOKEN=<token> pos-cli deploy production   # CI, session minted elsewhere
-```
-
-  **API keys issued by the Instance itself are exempt** - they belong to no Portal user, so there is no enrollment to check, and they are machine credentials created deliberately rather than something a copied `.pos` file hands over.
-
-  If you call the Instance API with your own tooling, the refusal is a `401` that names itself, so you can tell it from an expired or revoked token - the two need opposite responses, step up versus re-authenticate:
+  Custom API clients receive a `401` naming the reason, so it can be distinguished from an expired or revoked token:
 
 ```json
 {"error":"two_factor_required","errors":["A two-factor session is required to use this instance"]}
 ```
 
-  A `401` with no `error` key still means what it always did: the token is invalid, expired or revoked. Update `pos-cli` to the latest version before a Partner enables the requirement; an older one has no way to answer the refusal.
+  A `401` without an `error` key still means the token is invalid, expired, or revoked.
 
 <h4 class="release-note release-note__improved">IMPROVED</h4>
 
-* **An error response keeps the format the page already committed**: A page commits its content type before it renders - from its own format, or from `{% response_headers %}` while the body renders. Whatever rendered after that point used to negotiate the format a second time against the `Accept` header, and the two disagreeing produced an error about the error rather than the error itself. The format is now resolved once, from what is already decided, and a format nothing recognizes answers as `text/plain` instead of failing.
+* **Error responses keep the content type the page already set**: A page sets its content type before rendering, either from its own format or via {% raw %}`{% response_headers %}`{% endraw %}. Anything rendered afterwards used to negotiate the format again against the `Accept` header, which failed when the two disagreed. The format is now taken from what the response already committed, and unrecognized formats render as `text/plain`. Errors on `.js` pages are returned as a JSON string literal instead of bare text, so the browser no longer parses an error message as script.
 
-  One case is worth calling out: a `.js` page commits `application/javascript`, so whoever loaded it parses the response as script. An error message is now sent as a JSON string literal rather than as bare text, so a failing `.js` page no longer delivers its own error message to the browser as executable code.
+* **Clearer response when an instance has no object storage configured**: Requesting a presigned upload URL returned no response at all, and `pos-cli sync` reported `fetch failed`. The endpoint now returns `501` with a `direct_upload_unavailable` error, and `pos-cli` falls back to uploading assets through the instance.
 
-* **Direct upload says so when an Instance has no object storage**: `pos-cli sync` against a local Instance started without object storage used to fail with `fetch failed` and no response at all - the presign request had nothing to sign, and the resulting error escaped before any response was written. The endpoint now answers `501` with `direct_upload_unavailable` and a message naming the fix, and `pos-cli` falls back to sending assets through the Instance instead of retrying.
-
-* **Asset URLs are host-relative when the Instance serves its own assets**: With local storage, assets live on the same box the app runs on and are served from there, so asset URLs are now host-relative. A stray `ASSET_HOST` inherited from a Docker stack no longer points local asset URLs at a CDN that has never seen those files, and an unset `ASSET_HOST` no longer raises from every page that renders an `asset_url`. Instances with a CDN in front of a bucket keep rendering absolute URLs exactly as before.
+* **Host-relative asset URLs with local storage**: When an instance serves its own assets from disk, `asset_url` now returns a host-relative URL. Previously an `ASSET_HOST` inherited from another environment pointed those URLs at a CDN that never received the files, and an unset `ASSET_HOST` raised an error on every page calling `asset_url`. Instances using a CDN are unaffected.
 
 <h4 class="release-note release-note__fixed">FIXED</h4>
 
-* **A dynamically cached page with no layout is served from cache again**: A page that combined `dynamic_cache` with an empty `layout` rendered correctly on the first request and then failed on every cache hit, because re-applying the layout to the cached body required a layout to exist. A page that declares no layout is now served from cache as-is. This is what made a cached `sitemap.xml` - or any cached page declaring `layout: ""` - break after its first request.
+* **Dynamically cached pages without a layout**: A page combining `dynamic_cache` with an empty `layout` rendered correctly on the first request, then failed on every cache hit because reapplying the layout to the cached body required a layout to exist. Pages that declare no layout are now served from cache as-is. This affected cached `sitemap.xml` pages and any other page declaring `layout: ""`.
 
-* **The layout no longer rebuilds the Liquid context on every dynamic cache hit**: The layout was constructing a second Liquid context and re-parsing the layout value on each request. It now reuses the context the body render already built.
+* **Redundant Liquid context on dynamic cache hits**: The layout built a second Liquid context and reparsed the layout value on every request. It now reuses the context built for the page body.
 
-* **A Partner Portal URL on a non-default port is stored with its port**: An Instance registered against a Partner Portal on a non-default port dropped the port when recording it, sending every later token validation to `:80`/`:443`. Those failed with a connection error that surfaced as a plain `401`, indistinguishable from a bad token. Local setups and private stacks were affected; `partners.platformos.com` is on 443, so production was not.
+* **Partner Portal URLs on non-default ports**: An instance registered against a Partner Portal running on a non-default port dropped the port when storing the URL, sending later token validations to `:80` / `:443`. These failed with a connection error that surfaced as a plain `401`, indistinguishable from an invalid token. Local setups and private stacks were affected; production was not.
 
-* **IP spoofing and missing parameter errors are logged under their own names**: The two exception classes were swapped in the low-level error log, so an IP spoofing attempt was recorded as a missing parameter and vice versa. The HTTP statuses they return, `403` and `406`, were correct and are unchanged.
+* **Swapped exception names in low-level error logs**: IP spoofing attempts were logged as missing parameter errors and vice versa. The `403` and `406` statuses returned were correct and are unchanged.
