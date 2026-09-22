@@ -8,6 +8,8 @@ metadata:
 In this guide we will show you how to integrate WebSockets into your application based on the chat functionality we implemented for the [pOS Marketplace Template](/developer-guide/pos-marketplace-template/core-concepts).
 [WebSocket](https://en.wikipedia.org/wiki/WebSocket) is a protocol for real-time communication between a client and a server. It allows to build an interactive UI where data can be updated from the server without the need of doing http requests. Each client can subscribe to multiple channels and rooms. Messages sent to a certain room are then broadcasted to all subscribers of that room. The pOS implementation of Websockets uses [ActionCable](https://guides.rubyonrails.org/action_cable_overview.html).
 
+A client that only needs to *receive* broadcasts - a notification feed, a live counter, a dashboard - can subscribe over [Server-Sent Events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) instead, with no WebSocket library at all. See *Following a room with Server-Sent Events (SSE)* below.
+
 ## Requirements
 
 To understand this topic, you should be familiar with:
@@ -238,6 +240,90 @@ const csrfToken = () => {
   return token;
 }
 ```
+
+### Following a room with Server-Sent Events (SSE)
+
+A browser does not have to open a WebSocket to follow a room. The same channel is also reachable over [Server-Sent Events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) at `/anycable-events`, through the browser's built-in [`EventSource`](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) - no `@rails/actioncable` package, no consumer, no build step.
+
+Nothing changes on the platformOS side. An SSE subscriber goes through the same `channels/conversate/subscribed.liquid` partial from *Step 5: Secure room subscription*, obeys the same `websockets_require_subscribed_partial` and `websockets_require_csrf_token` flags, and receives the same broadcasts - including the ones sent from the backend with the `channel_send_message` mutation described in the next section.
+
+The trade-off is that SSE is server-to-client only: it can read a room, it cannot write to one. Use it for notification feeds, live counters, dashboards and any other broadcast-only stream, and keep the WebSocket transport for chat, where the client also sends.
+
+```javascript
+// modules/chat/src/js/notifications-stream.js
+
+const notificationsStream = function(){
+
+  // cache 'this' value not to be overwritten later
+  const module = this;
+
+  module.createStream = () => {
+    // The *whole* identifier, as URL-encoded JSON - see the warning below.
+    const identifier = JSON.stringify({
+      channel: 'conversate',            // channel name
+      room_id: module.conversationId    // room ID
+    });
+
+    const url = `/anycable-events?identifier=${encodeURIComponent(identifier)}`
+      + `&authenticity_token=${encodeURIComponent(csrfToken())}`;
+
+    module.source = new EventSource(url);
+
+    module.source.addEventListener('confirm_subscription', () => {
+      // the room is open - the equivalent of the connected() callback
+      module.settings.messageList.classList.remove('is-loading');
+    });
+
+    module.source.onmessage = (event) => {
+      // event.data is the broadcast payload itself
+      module.showMessage(JSON.parse(event.data));
+    };
+
+    module.source.onerror = () => {
+      if (module.source.readyState === EventSource.CLOSED) {
+        // the browser has given up - the subscription was refused, or the token
+        // is no longer valid. Retrying this URL cannot help, see below.
+        module.blocked();
+      }
+      // otherwise readyState is CONNECTING and the browser is already retrying
+    };
+  };
+
+  module.closeStream = () => module.source.close();
+}
+```
+
+`csrfToken()` is the helper from the previous section, and `showMessage` / `blocked` are the same handlers the WebSocket subscription uses in Step 4.
+
+#### Always send the full identifier
+
+The endpoint also accepts a `?channel=conversate` shorthand, but that form carries **only** the channel name. `?channel=conversate&room_id=12` reaches the server as `{"channel":"conversate"}` - `room_id` is dropped on the way - so `context.params.room_id` in your `subscribed` partial is blank and every client using the shorthand ends up in one shared room instead of its own. Always build the full `identifier` JSON, as in the example above.
+
+#### Callback equivalents
+
+| `subscriptions.create` callback | `EventSource` |
+|---|---|
+| `connected()` | the `confirm_subscription` event (the stream opens with a `welcome` event first) |
+| `received(data)` | `onmessage`, where `event.data` is the payload itself - there is no Action Cable envelope to unwrap |
+| `rejected()` | `onerror` with `readyState === EventSource.CLOSED` - the server answers the request with `401` |
+| `disconnected()` | `onerror` with `readyState === EventSource.CONNECTING` - the browser is already reconnecting on its own |
+
+Do not count on receiving the structured `subscription_error` message described in *Handling rejected subscriptions* here: on this transport the refusal arrives as the HTTP `401` above, which is why the handler branches on `readyState` rather than on a payload. The reason is still recorded in your Instance logs exactly as before - a `subscribed` partial that raises is logged under the `WebSocketSubscribeError` code.
+
+#### The CSRF token, and why a reconnect needs a fresh one
+
+`EventSource` cannot set request headers, so when `websockets_require_csrf_token` is enabled the token goes in the query string, exactly as it does in the WebSocket URL. Two things follow from that:
+
+* An **anonymous** visitor - the usual audience for a read-only stream - is never given the `CSRF-TOKEN` cookie, so the token has to be templated into the page for the `csrfToken()` helper to find. Render it into the meta tag with {% raw %}`{{ context.authenticity_token }}`{% endraw %}.
+* The browser's own reconnect replays the URL the `EventSource` was constructed with, so it can never pick up a newer token. Once the session behind that token is gone - a logout, an expiry - the stream is refused for good and `readyState` stays `CLOSED`. Recovering means constructing a **new** `EventSource` with a freshly read token, not waiting for the built-in retry.
+
+#### What SSE cannot do
+
+*Step 6: Send messages* and *Step 7: Set server callback on received message* have no SSE equivalent: an `EventSource` has no `send()`, and `channels/conversate/receive.liquid` is never invoked for an SSE client. A channel that defines a `receive` partial is still perfectly subscribable this way - a conversation with two-way WebSocket chat can be *read* over SSE in parallel - it is only the sending half that is missing.
+
+#### A note on `Origin`
+
+Browsers send **no** `Origin` header at all on a same-origin `EventSource` request - unlike a WebSocket handshake, which always carries one - and add it only when the request is cross-origin. platformOS therefore reads a missing `Origin` on this transport as same-origin, and evaluates a cross-origin `EventSource` exactly as it evaluates a WebSocket. This only matters for a channel with no `subscribed` partial running with `websockets_require_subscribed_partial: false`, where being same-origin is what admits the subscriber; with a `subscribed` partial in place - the recommended setup - your own authorization decides, on every transport.
 
 ### GraphQL mutation to broadcast to a channel and a room
 

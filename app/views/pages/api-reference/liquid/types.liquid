@@ -88,6 +88,42 @@ Hello {{ name }}
 
 {% include 'alert/note', content: 'String interpolation is enabled by default on new instances. On existing instances it must be enabled explicitly by adding `string_interpolation: true` to your `config.yml`, as it can potentially break your site — any double-quoted strings containing literal `{{ }}` text will start being interpolated.' %}
 
+### Escapes
+
+A backslash inside a string literal escapes the character after it, so a delimiter can appear inside a literal of the same kind:
+
+```liquid
+{% raw %}
+{{ "say \"hi\"" }}          => say "hi"
+{{ 'it\'s here' }}          => it's here
+{{ 'a\\b' }}                => a\b
+{% endraw %}
+```
+
+Only the two delimiters and the backslash itself are escape targets. Any other `\X` stays exactly as written, so patterns and paths are unaffected — `'\d+'`, `'\.'`, `'\['` and `'C:\temp'` all mean what they always did.
+
+A literal whose whole body is a single backslash is a special case: {% raw %}`'\'`{% endraw %} and {% raw %}`"\"`{% endraw %} are one backslash, not an escaped closing quote.
+
+```liquid
+{% raw %}
+{% assign a = value | remove: '\' %}            {% comment %} one backslash {% endcomment %}
+{% assign b = value | replace: "\", "%5C" %}    {% comment %} one backslash {% endcomment %}
+{% assign c = value | append: '\'' %}           {% comment %} an apostrophe  {% endcomment %}
+{% endraw %}
+```
+
+The special case is exactly three characters wide. A longer literal that ends in a backslash still escapes the closing quote, and the literal never terminates — {% raw %}`'\ : \'`{% endraw %} is rejected at deploy with `Liquid syntax error (line N): Unexpected character ...`. Write the trailing backslash as {% raw %}`'\ : \\'`{% endraw %}.
+
+A backslash on the **replacement** side of [replace](/api-reference/liquid/filters#replace) is read a second time by the replacement engine, which also treats a doubled backslash as one. Doubling every backslash in a value therefore needs eight of them:
+
+```liquid
+{% raw %}
+{% assign d = value | replace: '\', '\\\\\\\\' %}   {% comment %} a\b => a\\b {% endcomment %}
+{% endraw %}
+```
+
+{% include 'alert/note', content: 'Prefer [escape_regex](/api-reference/liquid/platformos-filters#escape_regex) over a chain of `replace:` calls when you are building a pattern — it escapes every character that is special in a regular expression, and there is no second round of backslash handling to account for.' %}
+
 ## Number
 
 Numbers include floats and integers:
