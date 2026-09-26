@@ -42,6 +42,19 @@ We expect you to have up to a thousand configuration files for [Forms](/develope
 For API calls triggered from a web request context (synchronous), the default timeout is 5 seconds. You should not increase this timeout beyond 8 seconds because the page itself times out after 9 seconds (this is customizable in Private Stack).
 The default timeout for Api Call trigger from a background job context (asynchronous) is 8 seconds. The soft limit (customizable in Private Stack) is 180 seconds.
 
+### Remote Files
+
+Several features download a file from a URL on your behalf before using it. Each has a size limit that is enforced while the file downloads, so it also applies when the remote server does not declare a `Content-Length`:
+
+| Feature | Limit |
+|---|---|
+| `form_data` in the `api_call_send` mutation | 50MB in total for all files and values of one request, up to 100 parts, and up to 10 files downloaded by `url` |
+| API Call Notifications with a `*_multipart` request type | 20MB in total for all files of one request |
+| Email Notification attachments | 20MB in total for all attachments of one email, up to 10 attachments |
+| [`download_file`](/api-reference/liquid/platformos-filters#download_file) filter | 1MB by default; raise it with the `max_size` argument, up to 50MB |
+
+The 50MB limit is customizable in Private Stack. If you need to send larger files to a third-party system, consider letting the user upload them directly to that system, or pass a URL the system can fetch the file from itself.
+
 
 ### Schema (Tables and Properties)
 

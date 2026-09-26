@@ -32,8 +32,48 @@ source.onmessage = (event) => showMessage(JSON.parse(event.data));
 
   One subtlety worth knowing if your channel has no `subscribed` partial and you run with `websockets_require_subscribed_partial: false`, where same-origin is what admits a subscriber: browsers send **no** `Origin` header at all on a same-origin `EventSource` (they only add it to cross-origin requests), so on this transport an absent `Origin` is read as same-origin. A cross-origin `EventSource` does send the header and is evaluated exactly as a WebSocket is. An `Origin` that is present but opaque - `null` from a sandboxed iframe, a `file://` page - stays untrusted on every transport.
 
+* **`multipart/form-data` requests with `api_call_send`** (2026-09-23): The `api_call` argument of the `api_call_send` mutation accepts a new `form_data` list, so you can upload files to an external API - for example a document together with a JSON description of it - without hand-building a `POST_MULTIPART` body - see [Sending Files Using API Calls](/developer-guide/notifications/sending-binary-file-using-api-call-notification#sending-files-with-form_data). Each part has a `name` and exactly one of a text `value` or a `file`; a file is given either by `url` (downloaded before the request is sent, e.g. the URL of an uploaded property) or by `content_base64` (for content generated in Liquid). Parts are sent in the order you list them and names may repeat (e.g. `files[]`).
+
+```graphql
+mutation upload($url: String!, $headers: HashObject, $photo_url: String!, $file_info: String!) {
+  api_call_send(
+    api_call: {
+      url: $url
+      method: "POST"
+      headers: $headers
+      form_data: [
+        { name: "uploadedFile", file: { url: $photo_url, filename: "photo.jpeg", content_type: "image/jpeg" } }
+        { name: "fileInfo", value: $file_info, content_type: "application/json" }
+      ]
+    }
+  ) {
+    response { status body }
+  }
+}
+```
+
+  * **Methods.** `form_data` works with `POST`, `PUT` and `PATCH`, and cannot be combined with `body` - the mutation returns `api_call accepts either body or form_data, not both`.
+  * **Content-Type is set for you.** The `multipart/form-data` header, including its boundary, is generated automatically; a `Content-Type` you pass in `headers` is ignored for `form_data` requests, so a header copied from a `curl` example will not break the body.
+  * **Optional fields.** `file.filename` defaults to the last segment of the `url` (or `file`), and `file.content_type` to `application/octet-stream`. A text part's `content_type` is only sent when you set it.
+  * **Limits.** A request can have up to 100 parts and download at most 10 files by `url`; all files and values together share a 50MB limit, which is enforced while the files download.
+  * **Logs.** The Sent Notifications entry records a summary of the parts - names, file URLs, filenames and content types, and shortened text values - never the file contents.
+
 <h4 class="release-note release-note__improved">IMPROVED</h4>
+
+* **`pos-cli` and the Instance API report a Partner Portal outage as an outage** (2026-09-16): An Instance checks every API token with the Partner Portal. While the Portal was briefly unreachable - during a deploy, a restart or rate limiting - the check had no answer, yet the Instance responded with the same `401` as for a revoked token, and `pos-cli` suggested running `pos-cli env refresh-token`, which could not help. The Instance now responds `503 Service Unavailable` with a `Retry-After` header and the error code `partner_portal_unavailable`, together with a message explaining that the token itself is fine. An up-to-date `pos-cli` waits and retries instead of failing the command, so a deploy started during a short Portal outage pauses rather than fails. A `401` or `403` from the Portal is still reported as `401`, and nothing is authorized while the token cannot be verified.
+
+* **More reliable Instance creation from the Partner Portal** (2026-09-24): Finishing the setup of a new Instance is now retried after a short, temporary failure, and the result is always reported back to the Partner Portal once retries are exhausted. Previously a single hiccup could leave the Instance shown as pending in the Partner Portal indefinitely.
+
+* **The `download_file` size limit is enforced during the download** (2026-09-23): The `max_size` argument of the [`download_file`](/api-reference/liquid/platformos-filters#download_file) filter was checked only against the `Content-Length` the remote server declared, so a server that omitted the header - or did not support `HEAD` requests - could send a file of any size. The limit is now applied to the bytes actually received, and the download stops as soon as it is exceeded. The maximum you can request remains 50MB.
 
 <h4 class="release-note release-note__fixed">FIXED</h4>
 
 * **A WebSocket message no longer needs the CSRF token repeated in the subscription identifier** (2026-09-22): With `websockets_require_csrf_token` on (the default for new Instances), the token checked for every `subscription.send(...)` was read from the subscription identifier alone. A client that passed its token in the consumer URL - `createConsumer('/websocket?authenticity_token=...')`, which is what the [guide](/use-cases/using-websockets) shows - connected fine but had its first message refused, and the socket closed with `Can't verify CSRF token authenticity.` The token the socket was opened with is now used whenever the identifier carries none; supplying it in the identifier still works, and still takes precedence.
+
+* **An API key shared across Instances is no longer refused on all but one of them** (2026-09-21): An API key presented to several Instances - such as the Partner Portal's Main Access key - could be answered with `401` on every Instance except the first one that checked it, for up to 10 minutes. Each Instance now verifies the key for itself.
+
+* **`.txt` pages are always served as `text/plain`** (2026-09-21): A page with the `txt` format, such as `robots.txt`, was returned as `text/html` to clients that send `Accept: */*` - which includes `curl`, `fetch()` and search engine crawlers. It is now served as `text/plain` regardless of the `Accept` header.
+
+* **Default Instance domains stay out of search engines, assets included** (2026-09-21): The `X-Robots-Tag: noindex, nofollow` header that keeps an Instance's default platformOS domain (for example `my-app.staging.oregon.platform-os.com`) out of search results is now sent on every response from that domain, including assets and error pages, not only on pages. Your own custom domains are not affected.
+
+* **A missing asset returns `404`** (2026-09-21): Requesting an asset that does not exist now returns `404 Not Found` instead of `403 Forbidden`.
