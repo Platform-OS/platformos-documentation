@@ -9,7 +9,7 @@ Up to this point, you have implemented **authentication** in your example applic
 
 The next step is **authorization**. This determines *what an authenticated user is allowed to do*. Before we protect the `/admin` page created earlier, we need to understand how platformOS manages permissions.
 
-The User module uses a flexible Role-Based Access Control (RBAC) system. It is based on three core concepts:
+The User Module uses a flexible Role-Based Access Control (RBAC) system. It is based on three core concepts:
 
 * **Profiles** (each user has one)
 * **Roles** (assigned to profiles)
@@ -31,7 +31,6 @@ This object exists only when a valid session cookie is present. You used it earl
 
 Authorization determines whether the authenticated user has permission to perform an action.
 
-This object exists only when a valid session cookie is present. You used it earlier to display dynamic navigation.
 The User Module provides helpers such as:
 
 {% raw %}
@@ -62,34 +61,31 @@ For learning purposes, you will **not** use the built-in `admin` role.
 Instead, you’ll create your own custom role so you can see how RBAC works end-to-end.
 
 
-## Preparing Your Own Permissions Override
+## Your Permissions Override
 
-The User Module defines default permissions internally. Since module files must **never** be edited directly, you would need to [overwrite a module file](/developer-guide/modules/modules#overwriting-a-module-file).
+The User Module defines default permissions internally. Since module files must **never** be edited directly, you customize them by [overwriting a module file](/developer-guide/modules/modules#overwriting-a-module-file): you place a copy of the file under the same path, but in the `app/` directory instead of `modules/`.
 
-Create it by copying the permissions file from the module into your `app/` directory:
+You already did this when you ran the User Module installer in the [Quick Start Guide](/tutorials/user-management) and agreed to copy the default RBAC permissions file. The installer created the following file for you:
 
-Run: 
+```
+app/modules/user/public/lib/queries/role_permissions/permissions.liquid
+```
+<br>
 
-<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
-mkdir -p app/modules/user/public/lib/queries/role_permissions
-cp modules/user/public/lib/queries/role_permissions/permissions.liquid \
-   app/modules/user/public/lib/queries/role_permissions/permissions.liquid
-</code></pre>
-
-This creates an overwrite that allows you to define your own roles and permissions without modifying module files directly. The most important thing when working with overwrites is that the path of the overwrite should be the same as the module file that we are overwriting, but in the `app/` directly instead of `modules`.
-
-From this point forward, platformOS will automatically prioritizes your `app` version of the permission file:
+platformOS automatically gives priority to your `app/` version of the permissions file:
 
 ```
 app/modules/user/.../permissions.liquid   ← your version (active)
 modules/user/.../permissions.liquid       ← module version (ignored)
 ```
 
+{% include 'alert/tip', content: 'If you skipped this step in the installer, run <code>pos-cli generate run modules/user/generators/install</code> again and answer <strong>Yes</strong> when asked to copy the RBAC permissions file. You can answer <strong>No</strong> to the remaining questions.' %}
+
 {% include 'alert/tutorial', content: 'For additional setup details and configuration options, refer to the <a href="https://github.com/Platform-OS/pos-modules/tree/master/pos-module-user?tab=readme-ov-file#setup" target="_blank">User Module README</a> on GitHub.' %}
 
 ## Understanding the Permissions File
 
-Open the newly copied file. It contains a JSON structure describing each role and its permissions.
+Open the permissions file. It contains a JSON structure describing each role and its permissions.
 
 #### app/modules/user/public/lib/queries/role_permissions/permissions.liquid
 
@@ -113,9 +109,7 @@ Open the newly copied file. It contains a JSON structure describing each role an
 ```
 {% endraw %}
 
-Each key is a **role name**, and each value is an array of **permissions**, which are just strings. You can now extend this file with your own custom roles.
-
-You can now extend this file with your own custom roles and permissions.
+Each key is a **role name**, and each value is an array of **permissions**, which are just strings. You can now extend this file with your own custom roles and permissions.
 
 ## Creating a Custom Role
 
@@ -132,7 +126,7 @@ resource.action
 ```
 <br>
 
-The resource identifies the part of the application being controlled. It is the same `resource` that we recommend to use as a [naming convention for naming your endpoints](/developer-guide/modules/platformos-modules#resourceful-route-naming-convention)
+The resource identifies the part of the application being controlled. It is the same `resource` that we recommend using in the [resourceful route naming convention](/developer-guide/modules/platformos-modules#resourceful-route-naming-convention) for your endpoints.
 The action describes what the role is allowed to do with that resource.
 
 For example:
@@ -146,7 +140,7 @@ You are free to choose the level of granularity. A common and practical guidelin
 
 For this tutorial, you only need a single permission: `admin.view`. This will allow the role to access the admin page you created earlier.
 
-Open your overridden permissions file and add a new role:
+Open your permissions file and add a new role:
 
 ```json
 "manager": ["admin.view"]
