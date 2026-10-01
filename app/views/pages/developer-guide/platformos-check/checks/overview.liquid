@@ -67,10 +67,11 @@ These checks analyze `.graphql` files and validate them against the platformOS s
 
 ## YAML File Checks
 
-These checks analyze YAML files: translations in `app/translations/`, and — for `YAMLSyntaxError` — every other YAML source the platform deploys, including `app/config.yml` and model schemas.
+These checks analyze YAML files: translations in `app/translations/`, the schemas that declare properties (`app/schema/`, `app/transactable_types/`, `app/user_profile_types/` and `app/user.yml`), and — for `YAMLSyntaxError` — every other YAML source the platform deploys, including `app/config.yml`.
 
 | Check | Severity | Description |
 |-------|----------|-------------|
+| [ConflictingSchemaPropertyType](/developer-guide/platformos-check/checks/conflicting-schema-property-type) | warning | Reports a property name declared with one type in one schema and a different type in another — the platform resolves property types by name across every schema, so both declarations answer together |
 | [DuplicateYAMLKey](/developer-guide/platformos-check/checks/duplicate-yaml-key) | warning | Reports a key defined twice in one mapping, where the earlier value is silently discarded |
 | [MatchingTranslations](/developer-guide/platformos-check/checks/matching-translations) | error | Reports translation files where keys are missing compared to the default language file |
 | [ValidHTMLTranslation](/developer-guide/platformos-check/checks/valid-html-translation) | warning | Reports translation values that contain invalid HTML markup |

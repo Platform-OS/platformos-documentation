@@ -11,22 +11,93 @@ metadata:
 
 <h4 class="release-note release-note__new">NEW</h4>
 
-<h4 class="release-note release-note__improved">IMPROVED</h4>
+* **Subscribe to a channel over Server-Sent Events** (2026-09-22): A page can now open a [WebSocket channel](/use-cases/using-websockets) with [`EventSource`](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) instead of a WebSocket, at `/anycable-events`. There is nothing to enable on the Instance and no channel code to change: an SSE subscriber drives exactly the same backend path a WebSocket subscriber does, so your `channels/:channel_name/subscribed.liquid` partial authorizes it as before, the `websockets_require_subscribed_partial` and `websockets_require_csrf_token` flags in [app/config.yml](/developer-guide/platformos-workflow/directory-structure/config) apply unchanged, and broadcasts - including those sent from the `channel_send_message` GraphQL mutation - reach SSE and WebSocket subscribers alike.
 
-* **Upgraded internal YAML parser** (2026-08-25): The library that reads the front matter of every Liquid file and every deployed `.yml` file (`app/config.yml`, `app/user.yml`, translations, model schemas, activity streams, profile and transactable types) has been upgraded. It differs from the previous one in what it does with input that cannot be represented safely: the old library rewrote such input in silence, the new one refuses the file, and the deploy tells you which one it is.
+```javascript
+const identifier = JSON.stringify({ channel: 'conversate', room_id: '12' });
+const url = `/anycable-events?identifier=${encodeURIComponent(identifier)}`
+  + `&authenticity_token=${encodeURIComponent(token)}`;
 
-  Three spellings that used to deploy are now rejected. In each of them the value that reached your instance was never the one written in the file:
-
-```yaml
-status: :draft            # deployed as the string ":draft"
-thing: !ruby/object:Foo   # deployed as a plain object, with the tag dropped
-other: *missing           # deployed as nothing
+const source = new EventSource(url);
+source.onmessage = (event) => showMessage(JSON.parse(event.data));
 ```
 
-  The error names the fix in each case: remove the colon in front of the value, remove the `!ruby/object` line, or give every `*name` reference a matching `&name` anchor. **Deploy to staging to find these** - nothing else reports them, and a file that carries one has been deploying a value other than the one it reads.
+  The stream opens with `welcome` and `confirm_subscription` events, and each broadcast then arrives as a plain `message` event whose `data` is the payload itself - not the Action Cable envelope a WebSocket client unwraps. Five things differ from the WebSocket transport:
 
-  Everything a configuration file legitimately uses is unchanged: anchors (`&name`), aliases (`*name`) and the merge key (`<<:`) still resolve, and a timestamp like `2026-08-25` still becomes a date.
+  * **Pass the whole identifier as URL-encoded JSON.** The `?channel=conversate&room_id=12` shorthand carries only the channel name; `room_id` is dropped before the server ever sees it, so every client that uses the shorthand ends up in one shared `room_id: null` room instead of its own. Any per-room channel must use `identifier`.
+  * **The connection is read-only.** SSE is server-to-client only: there is no counterpart to `subscription.send()`, and a `channels/:channel_name/receive.liquid` partial is never invoked over this transport. A channel that defines one is still perfectly subscribable over SSE - a room with two-way WebSocket chat can be read this way in parallel - it is only the sending half that has no SSE equivalent.
+  * **The CSRF token travels in the query string.** `EventSource` cannot set request headers, so with `websockets_require_csrf_token` on (the default for new Instances) the token goes in the URL as `authenticity_token`, exactly as it already does for the WebSocket URL. An anonymous visitor - the usual case for a read-only broadcast stream - is not given the `CSRF-TOKEN` cookie, so template the token into the page with {% raw %}`{{ context.authenticity_token }}`{% endraw %} instead.
+  * **Native reconnect will not refresh the token.** `EventSource` retries the URL it was constructed with, so once a token goes stale (a logout, a new session) the built-in retry can only fail. Handle `onerror` by constructing a *new* `EventSource` with a fresh token.
+  * **A refused subscription ends the stream.** There is no `rejected()` callback here - the server answers `401` and the stream closes, which surfaces as `onerror`. Rejection reasons are recorded in your Instance logs as before, including the `WebSocketSubscribeError` entry written when a `subscribed` partial raises.
+
+  One subtlety worth knowing if your channel has no `subscribed` partial and you run with `websockets_require_subscribed_partial: false`, where same-origin is what admits a subscriber: browsers send **no** `Origin` header at all on a same-origin `EventSource` (they only add it to cross-origin requests), so on this transport an absent `Origin` is read as same-origin. A cross-origin `EventSource` does send the header and is evaluated exactly as a WebSocket is. An `Origin` that is present but opaque - `null` from a sandboxed iframe, a `file://` page - stays untrusted on every transport.
+
+* **`multipart/form-data` requests with `api_call_send`** (2026-09-23): The `api_call` argument of the `api_call_send` mutation accepts a new `form_data` list, so you can upload files to an external API - for example a document together with a JSON description of it - without hand-building a `POST_MULTIPART` body - see [Sending Files Using API Calls](/developer-guide/notifications/sending-binary-file-using-api-call-notification#sending-files-with-form_data). Each part has a `name` and exactly one of a text `value` or a `file`; a file is given either by `url` (downloaded before the request is sent, e.g. the URL of an uploaded property) or by `content_base64` (for content generated in Liquid). Parts are sent in the order you list them and names may repeat (e.g. `files[]`).
+
+```graphql
+mutation upload($url: String!, $headers: HashObject, $photo_url: String!, $file_info: String!) {
+  api_call_send(
+    api_call: {
+      url: $url
+      method: "POST"
+      headers: $headers
+      form_data: [
+        { name: "uploadedFile", file: { url: $photo_url, filename: "photo.jpeg", content_type: "image/jpeg" } }
+        { name: "fileInfo", value: $file_info, content_type: "application/json" }
+      ]
+    }
+  ) {
+    response { status body }
+  }
+}
+```
+
+  * **Methods.** `form_data` works with `POST`, `PUT` and `PATCH`, and cannot be combined with `body` - the mutation returns `api_call accepts either body or form_data, not both`.
+  * **Content-Type is set for you.** The `multipart/form-data` header, including its boundary, is generated automatically; a `Content-Type` you pass in `headers` is ignored for `form_data` requests, so a header copied from a `curl` example will not break the body.
+  * **Optional fields.** `file.filename` defaults to the last segment of the `url` (or `file`), and `file.content_type` to `application/octet-stream`. A text part's `content_type` is only sent when you set it.
+  * **Limits.** A request can have up to 100 parts and download at most 10 files by `url`; all files and values together share a 50MB limit, which is enforced while the files download.
+  * **Logs.** The Sent Notifications entry records a summary of the parts - names, file URLs, filenames and content types, and shortened text values - never the file contents.
+
+* **Read your Instance logs with the `admin_logs` GraphQL query** (2026-09-29): The entries you write with the [`log` tag](/best-practices/qa/creating-application-logs) - the same ones `pos-cli logs` streams - can now be queried from GraphQL, so you can build a log viewer into your own admin pages. Each entry has an `id`, `type`, `message`, `data` and `created_at`, and results are always returned oldest first.
+
+```graphql
+query logs($last_id: ID) {
+  admin_logs(
+    filter: {
+      id: { range: { gt: $last_id } }
+      type: { value: "payment" }
+      message: { contains: "declined" }
+    }
+  ) {
+    id
+    type
+    message
+    data
+    created_at
+  }
+}
+```
+
+  * **Following the log.** Without a lower `id` bound you get the latest matching entries (20 by default); with `id: { range: { gt: <id of the last entry you saw> } }` you get only the entries after it (up to 500 by default). Pass the last `id` back on each call to poll for new entries. `per_page` is capped at 500.
+  * **Filtering.** `type` and `message` accept the usual `StringFilter` operators. `value` is an exact match, while `contains`, `starts_with` and `ends_with` ignore case unless you set `case_sensitive: true`. Filters are applied to the most recent part of the log (about the latest 1000 entries), not its whole history.
+<h4 class="release-note release-note__improved">IMPROVED</h4>
+
+* **`pos-cli` and the Instance API report a Partner Portal outage as an outage** (2026-09-16): An Instance checks every API token with the Partner Portal. While the Portal was briefly unreachable - during a deploy, a restart or rate limiting - the check had no answer, yet the Instance responded with the same `401` as for a revoked token, and `pos-cli` suggested running `pos-cli env refresh-token`, which could not help. The Instance now responds `503 Service Unavailable` with a `Retry-After` header and the error code `partner_portal_unavailable`, together with a message explaining that the token itself is fine. An up-to-date `pos-cli` waits and retries instead of failing the command, so a deploy started during a short Portal outage pauses rather than fails. A `401` or `403` from the Portal is still reported as `401`, and nothing is authorized while the token cannot be verified.
+
+* **More reliable Instance creation from the Partner Portal** (2026-09-24): Finishing the setup of a new Instance is now retried after a short, temporary failure, and the result is always reported back to the Partner Portal once retries are exhausted. Previously a single hiccup could leave the Instance shown as pending in the Partner Portal indefinitely.
+
+* **The `download_file` size limit is enforced during the download** (2026-09-23): The `max_size` argument of the [`download_file`](/api-reference/liquid/platformos-filters#download-file) filter was checked only against the `Content-Length` the remote server declared, so a server that omitted the header - or did not support `HEAD` requests - could send a file of any size. The limit is now applied to the bytes actually received, and the download stops as soon as it is exceeded. The maximum you can request remains 50MB.
 
 <h4 class="release-note release-note__fixed">FIXED</h4>
 
-* **A JSON body that cannot be parsed answers with a JSON error** (2026-08-31): A request that declares `Content-Type: application/json` and sends a body that cannot be parsed now gets the JSON envelope, `{"status":400,"error":"There was a problem in the JSON you submitted: ..."}`, instead of a bare line of text. Which of the two you got used to depend on the response format the client asked for rather than on what it sent. A body declared as something other than JSON still answers in text, now with an explicit `Content-Type: text/plain`. The `400` and `501` statuses are unchanged.
+* **A WebSocket message no longer needs the CSRF token repeated in the subscription identifier** (2026-09-22): With `websockets_require_csrf_token` on (the default for new Instances), the token checked for every `subscription.send(...)` was read from the subscription identifier alone. A client that passed its token in the consumer URL - `createConsumer('/websocket?authenticity_token=...')`, which is what the [guide](/use-cases/using-websockets) shows - connected fine but had its first message refused, and the socket closed with `Can't verify CSRF token authenticity.` The token the socket was opened with is now used whenever the identifier carries none; supplying it in the identifier still works, and still takes precedence.
+
+* **An API key shared across Instances is no longer refused on all but one of them** (2026-09-21): An API key presented to several Instances - such as the Partner Portal's Main Access key - could be answered with `401` on every Instance except the first one that checked it, for up to 10 minutes. Each Instance now verifies the key for itself.
+
+* **`.txt` pages are always served as `text/plain`** (2026-09-21): A page with the `txt` format, such as `robots.txt`, was returned as `text/html` to clients that send `Accept: */*` - which includes `curl`, `fetch()` and search engine crawlers. It is now served as `text/plain` regardless of the `Accept` header.
+
+* **Default Instance domains stay out of search engines, assets included** (2026-09-21): The `X-Robots-Tag: noindex, nofollow` header that keeps an Instance's default platformOS domain (for example `my-app.staging.oregon.platform-os.com`) out of search results is now sent on every response from that domain, including assets and error pages, not only on pages. Your own custom domains are not affected.
+
+* **A missing asset returns `404`** (2026-09-21): Requesting an asset that does not exist now returns `404 Not Found` instead of `403 Forbidden`.
+
+* **`admin_background_jobs` refuses a `timestamp` filter that is not a date** (2026-09-29): A `timestamp` value that could not be read as a date or time, such as `gt: "tomorow"`, was treated as zero, so the query quietly matched every job, or none. The query now returns the error `timestamp must be a date or a time, got: ...`.

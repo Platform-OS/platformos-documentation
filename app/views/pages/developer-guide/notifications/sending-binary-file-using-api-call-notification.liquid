@@ -1,11 +1,11 @@
 ---
 converter: markdown
 metadata:
-  title: Sending a Binary File Using an API Call Notification
-  description: This guide will help you send a file using an API Call Notification.
+  title: Sending Files Using API Calls
+  description: This guide will help you send files to an external API as a multipart/form-data request.
 ---
 
-This guide will help you send a file using an API Call Notification.
+This guide will help you send files to an external API as a `multipart/form-data` request - the format a browser uses for a form with a file input, and the one most upload endpoints expect.
 
 ## Requirements
 This is an advanced tutorial. To follow it, you should be familiar with basic platformOS concepts, HTML, Liquid, APIs and Forms, and the topics in the Get Started section, especially topics related to Notifications.
@@ -14,10 +14,150 @@ This is an advanced tutorial. To follow it, you should be familiar with basic pl
 * [APIs and Forms](/api-reference/rest-api)
 * [Get Started: Creating an API Call Notification](/developer-guide/notifications/creating-api-call-notification)
 
-## Steps
-Sending a binary file using an API Call Notification is a special case of creating a regular API Call Notification as described in [Get Started: Creating an API Call Notification](/developer-guide/notifications/creating-api-call-notification). This tutorial describes the difference between a regular request and sending a file, so it consists of only one step.
+## Choosing an approach
 
-1. Create API Call Notification
+There are two ways to send a multipart request:
+
+* **`form_data` in the `api_call_send` mutation** (recommended) - describe the request directly in GraphQL. Parts can be files or text values with their own content type, they are sent in the order you list them, names may repeat, and a file can come from a URL or from base64 content generated in Liquid.
+* **An API Call Notification with a `*_multipart` request type** - describe the request in an `app/api_calls` template file. It sends files by URL only, with no text parts, and each file needs a unique name.
+
+## Sending files with form_data
+
+### Step 1: Create the mutation
+
+Pass the request details in the `api_call` argument of the [api_call_send](/api-reference/graphql/rootmutation.html) mutation, with `form_data` in place of `body`. This example uploads a photo together with a JSON description of it, as an API that stores documents against a record might expect:
+
+##### app/graphql/api_calls/upload_document.graphql
+
+```graphql
+mutation upload_document(
+  $url: String!
+  $headers: HashObject
+  $file_url: String!
+  $file_name: String!
+  $file_info: String!
+) {
+  api_call_send(
+    api_call: {
+      url: $url
+      method: "POST"
+      headers: $headers
+      form_data: [
+        { name: "uploadedFile", file: { url: $file_url, filename: $file_name, content_type: "image/jpeg" } }
+        { name: "fileInfo", value: $file_info, content_type: "application/json" }
+      ]
+    }
+  ) {
+    response {
+      status
+      body
+    }
+    errors {
+      message
+    }
+  }
+}
+```
+
+Each element of `form_data` is one part of the request body:
+
+| Field | Description |
+|---|---|
+| `name` | Required. The form field name. Names may repeat, e.g. `files[]`. |
+| `value` | A text value, sent verbatim. |
+| `content_type` | The Content-Type of a `value` part, e.g. `application/json`. Omitted from the part when not set. |
+| `file` | A file. |
+
+A part sets exactly one of `value` or `file`. A `file` sets exactly one of `url` or `content_base64`:
+
+| Field | Description |
+|---|---|
+| `url` | The URL the file is downloaded from before the request is sent, e.g. the URL of an [uploaded](/developer-guide/properties/uploads) property. |
+| `content_base64` | The file content, base64-encoded - for files generated in Liquid. |
+| `filename` | The filename the external API receives. Defaults to the last segment of `url`, or `file`. |
+| `content_type` | The Content-Type of the file. Defaults to `application/octet-stream`. |
+
+### Step 2: Invoke the mutation
+
+```liquid
+{% raw %}
+{% parse_json headers %}
+  { "Authorization": "Bearer {{ context.constants.DOCUMENTS_API_TOKEN }}" }
+{% endparse_json %}
+
+{% parse_json file_info %}
+  [{ "fileName": "photo.jpeg", "description": "Front of the building" }]
+{% endparse_json %}
+{% assign file_info_json = file_info | json %}
+
+{% graphql result = 'api_calls/upload_document',
+  url: 'https://api.example.com/records/42/documents',
+  headers: headers,
+  file_url: record.properties.photo.url,
+  file_name: 'photo.jpeg',
+  file_info: file_info_json
+%}
+{% endraw %}
+```
+
+The request the external API receives contains the photo, followed by the JSON part:
+
+```
+POST /records/42/documents HTTP/1.1
+Authorization: Bearer ...
+Content-Type: multipart/form-data; boundary=...
+
+--...
+Content-Disposition: form-data; name="uploadedFile"; filename="photo.jpeg"
+Content-Type: image/jpeg
+
+<file content>
+--...
+Content-Disposition: form-data; name="fileInfo"
+Content-Type: application/json
+
+[{"fileName":"photo.jpeg","description":"Front of the building"}]
+--...--
+```
+
+### Sending a file generated in Liquid
+
+A file that does not exist anywhere yet, such as a CSV report, can be sent as base64 content instead of a URL:
+
+```liquid
+{% raw %}
+{% capture csv %}id,name
+1,Michael
+2,Anna
+{% endcapture %}
+{% assign content = csv | base64_encode %}
+
+{% graphql result, content: content %}
+  mutation upload_report($content: String!) {
+    api_call_send(
+      api_call: {
+        url: "https://api.example.com/reports"
+        method: "PUT"
+        form_data: [{ name: "report", file: { content_base64: $content, filename: "report.csv", content_type: "text/csv" } }]
+      }
+    ) {
+      response { status }
+      errors { message }
+    }
+  }
+{% endgraphql %}
+{% endraw %}
+```
+
+### Things to know
+
+* **Methods.** `form_data` works with `POST`, `PUT` and `PATCH`.
+* **Either `body` or `form_data`.** A request cannot set both.
+* **Content-Type is set for you.** The `multipart/form-data` header and its boundary are generated from the body. A `Content-Type` in `headers` is ignored for `form_data` requests, so a header copied from an API's `curl` example does not break the request.
+* **Limits.** A request can have up to 100 parts and download up to 10 files by `url`. All files and values of one request share a 50MB limit. See [Limitations](/developer-guide/limitations#remote-files).
+* **Logs.** The Sent Notifications entry for the request records the part names, file URLs, filenames and content types, and shortened text values - never the content of a file.
+
+## Sending files with an API Call Notification
 
 ### Step 1: Create API Call Notification
 
@@ -54,5 +194,7 @@ This defines a POST request to the endpoint, which would send two binary files. 
   }
 }
 ```
+
+All files of one request share a 20MB limit.
 
 {% include 'alert/warning', content: 'If url includes special characters, for example & [which is the case for private uploads] please make sure to use the `html_safe` filter.' %}

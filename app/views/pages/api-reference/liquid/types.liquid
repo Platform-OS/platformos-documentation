@@ -18,7 +18,7 @@ Declare a string by wrapping a variable's value in single or double quotes:
 
 ### String interpolation
 
-{% include 'alert/note', content: 'This feature requires the `string_interpolation: true` flag in `config.yml`. See [Single vs double quotes](#single-vs-double-quotes) for details.' %}
+{% include 'alert/note', content: 'This feature is enabled by default on new instances; existing instances need the `string_interpolation: true` flag in `config.yml`. See [Single vs double quotes](#single-vs-double-quotes) for details.' %}
 
 Double-quoted strings support interpolation using the {% raw %}`{{ }}`{% endraw %} syntax. This lets you embed variables, property access, and filters directly inside strings:
 
@@ -82,11 +82,49 @@ Single-quoted strings **never** interpolate. Use single quotes when you need lit
 #### Output
 
 ```liquid
+{% raw %}
 Hello Alice
 Hello {{ name }}
+{% endraw %}
 ```
 
 {% include 'alert/note', content: 'String interpolation is enabled by default on new instances. On existing instances it must be enabled explicitly by adding `string_interpolation: true` to your `config.yml`, as it can potentially break your site — any double-quoted strings containing literal `{{ }}` text will start being interpolated.' %}
+
+### Escapes
+
+A backslash inside a string literal escapes the character after it, so a delimiter can appear inside a literal of the same kind:
+
+```liquid
+{% raw %}
+{{ "say \"hi\"" }}          => say "hi"
+{{ 'it\'s here' }}          => it's here
+{{ 'a\\b' }}                => a\b
+{% endraw %}
+```
+
+Only the two delimiters and the backslash itself are escape targets. Any other `\X` stays exactly as written, so patterns and paths are unaffected — `'\d+'`, `'\.'`, `'\['` and `'C:\temp'` all mean what they always did.
+
+A backslash right before the closing quote must be doubled, even when it is the whole literal: in {% raw %}`'\'`{% endraw %} and {% raw %}`"\"`{% endraw %} the backslash escapes the closing quote, so the literal never terminates.
+
+```liquid
+{% raw %}
+{% assign a = value | remove: '\\' %}           {% comment %} one backslash {% endcomment %}
+{% assign b = value | replace: "\\", "%5C" %}   {% comment %} one backslash {% endcomment %}
+{% assign c = value | append: '\'' %}           {% comment %} an apostrophe  {% endcomment %}
+{% endraw %}
+```
+
+The same applies to a longer literal that ends in a single backslash. Both {% raw %}`'\'`{% endraw %} and {% raw %}`'\ : \'`{% endraw %} are rejected at deploy with `Liquid syntax error (line N): Unexpected character ...`. Write the trailing backslash doubled: {% raw %}`'\\'`{% endraw %} and {% raw %}`'\ : \\'`{% endraw %}.
+
+A backslash on the **replacement** side of [replace](/api-reference/liquid/filters#replace) is read a second time by the replacement engine, which also treats a doubled backslash as one. Doubling every backslash in a value therefore needs eight of them:
+
+```liquid
+{% raw %}
+{% assign d = value | replace: '\\', '\\\\\\\\' %}   {% comment %} a\b => a\\b {% endcomment %}
+{% endraw %}
+```
+
+{% include 'alert/note', content: 'Prefer [escape_regex](/api-reference/liquid/platformos-filters#escape-regex) over a chain of `replace:` calls when you are building a pattern — it escapes every character that is special in a regular expression, and there is no second round of backslash handling to account for.' %}
 
 ## Number
 
@@ -172,8 +210,8 @@ To access a value of an object, you can use dot notation or if you would like to
 ```liquid
 {% raw %}
 {{ my_object.hello }}
-{%- assign var = 'hello' -%}
-{{ my_object[val] }}
+{% assign var = 'hello' -%}
+{{ my_object[var] }}
 {% endraw %}
 ```
 
@@ -222,7 +260,13 @@ To access all the items in an array, you can loop through each item in the array
 #### Output
 
 ```liquid
-Tobi Laura Tetsuro Adam
+  Tobi
+
+  Laura
+
+  Tetsuro
+
+  Adam
 ```
 
 ### Accessing specific items in arrays
@@ -264,7 +308,7 @@ You can also use the `split` filter to break a string into an array of substring
 ```liquid
 {% raw %}
 {% assign arr = '1,2,3,4,5' | split: ',' %}
-{{ arr }} => [1, 2, 3, 4, 5]
+{{ arr }} => ["1", "2", "3", "4", "5"]
 {% endraw %}
 ```
 
@@ -283,7 +327,7 @@ To append elements, use the `<<` operator:
 
 #### contains
 
-You can check for the presence of a substring in a string, but `contains` can also check for the presence of a string in an array of strings. You can use it only for searching strings. You cannot use it to check for an object in an array of objects.
+`contains` checks for a substring in a string, or for an item in an array. An array item matches when it is equal to the value, so this works for strings, numbers and hashes alike.
 
 ```liquid
 {% raw %}
@@ -294,18 +338,22 @@ You can check for the presence of a substring in a string, but `contains` can al
 {% endraw %}
 ```
 
-#### any
-You can check if the given array contains at least one of the queried string/number.
+#### array_any
+
+You can check if the given array contains at least one of the queried string/number. `any` is a deprecated alias of [array_any](/api-reference/liquid/platformos-filters#array-any).
 
 ##### params
 
 - array (Array) - array to search in - default: []
 - query (StringNumber) - String/Number compared to each item in the given array - default: 'true'
 
+`{% raw %}{% if %}{% endraw %}` does not apply filters: `{% raw %}{% if site.users | array_any: 'Tobi' %}{% endraw %}` only checks that `site.users` is truthy, so it is true even for a name that is not in the array. Assign the result first:
+
 ```liquid
 {% raw %}
 {% comment %} site.users = ["Tobi", "Laura", "Tetsuro", "Adam"] {% endcomment %}
-{% if site.users | any: 'Tobi' %}
+{% assign tobi_found = site.users | array_any: 'Tobi' %}
+{% if tobi_found %}
   Tobi is in users.
 {% endif %}
 {% endraw %}
@@ -331,14 +379,15 @@ In the example below, the string “Tobi” is not a boolean, but it is truthy i
 {% endraw %}
 ```
 
-Strings, even when empty, are truthy. The example below will result in empty HTML tags if `settings.fp_heading` is empty:
+Strings, even when empty, are truthy. The example below results in empty HTML tags, because `heading` is an empty string:
 
 #### Input
 
 ```liquid
 {% raw %}
-{% if settings.fp_heading %}
-  <h1>{{ settings.fp_heading }}</h1>
+{% assign heading = "" %}
+{% if heading %}
+  <h1>{{ heading }}</h1>
 {% endif %}
 {% endraw %}
 ```
@@ -346,7 +395,7 @@ Strings, even when empty, are truthy. The example below will result in empty HTM
 #### Output
 
 ```liquid
-<h1></h1>
+  <h1></h1>
 ```
 
 ### Falsy

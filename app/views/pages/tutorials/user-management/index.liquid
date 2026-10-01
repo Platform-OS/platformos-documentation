@@ -1,7 +1,7 @@
 ---
 metadata:
-  title: Build an User Management Application
-  description: Follow these step-by-step tutorials to build an example user management application using pOS User Module.
+  title: Build a User Management Application
+  description: Follow these step-by-step tutorials to build an example user management application using the platformOS User Module.
 converter: markdown
 ---
 
@@ -9,8 +9,8 @@ converter: markdown
 
 In this tutorial, you will learn how to build a simple user management application using the **[platformOS User Module](https://github.com/Platform-OS/pos-modules/tree/master/pos-module-user)**. The goal is to understand how authentication works on platformOS, explore the built-in pages provided by the module, and prepare your project for future features such as roles, profile updates, and two-factor authentication.
 
-We will begin with a clean instance, install the User Module, apply Common Styling, and create a minimal homepage.
-In the next chapters, we will extend this foundation step by step to add navigation, login/logout, and user-aware layouts.
+We will begin with a clean instance, install and set up the User Module using its installer, and create a minimal homepage.
+In the next chapters, we will extend this foundation step by step to add navigation, sign in/sign out, and user-aware layouts.
 
 {% include 'alert/tip', content: 'You can browse the source code of the User Module in the <a href="https://github.com/Platform-OS/pos-modules/tree/master/pos-module-user">pos-module-user repository</a> to see every page and helper it provides.' %}
 
@@ -29,7 +29,7 @@ For more details, refer to the [Create an instance](/get-started/installation-an
 
 ## Step 2: Create your project folder
 
-Create the directory for your project and initialize an empty platformOS project:
+Create the directory for your project and navigate to it:
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
 mkdir user-module-test-00
@@ -46,63 +46,62 @@ Connect your local project to your new instance:
 pos-cli env add --url https://user-module-test-00.staging.oregon.platform-os.com staging
 </code></pre>
 
-A browser window will open prompting you to authorize the connection. For further explanation, see [Authenticate your environment](/get-started/working-with-the-code-and-files/#authenticate-your-environment).
+A browser window opens and prompts you to authorize the connection. For further explanation, see [Authenticate your environment](/get-started/working-with-the-code-and-files/#authenticate-your-environment).
 
 ## Step 4: Install the User Module
 
-To work with authentication and profiles, your application needs the User Module. Install it with the following command, which will also automatically download the module source code and all its dependencies:
+To work with authentication and profiles, your application needs the User Module. Install it with the following command, which downloads the module source code together with all its dependencies ([core](https://github.com/Platform-OS/pos-modules/tree/master/pos-module-core) and [common-styling](https://github.com/Platform-OS/pos-modules/tree/master/pos-module-common-styling)):
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
 pos-cli modules install user
 </code></pre>
 
-As this is a fresh project folder, you may be prompted to create the standard `app/` directory structure. Confirm when asked, for example:
+As this is a fresh project folder, you may be prompted to create the standard `app/` directory. Confirm when asked, for example:
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
-The directory /Users/alexpozsar/platformos/user-module-test-02/app does not exist. Do you want to create it? (y/n):y
+The directory /Users/you/platformos/user-module-test-00/app does not exist. Do you want to create it? (y/n): y
 </code></pre>
 
-After the module is installed, deploy your project:
+The command also creates the `app/pos-modules.json` file, which keeps track of the modules installed in your project.
+
+## Step 5: Run the User Module installer
+
+The User Module ships with an `install` generator that takes care of the setup steps you would otherwise have to do by hand. Run it from your project root:
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+pos-cli generate run modules/user/generators/install
+</code></pre>
+
+The installer asks a few questions and performs only the steps you agree to. For this tutorial, answer as follows:
+
+| **Question** | **Answer** | **What it does** |
+| ------------ | ---------- | ---------------- |
+| Generate a starter `app/views/layouts/application.liquid`? | **Yes** | Creates a layout with the `pos-app` class, loads [Common Styling](https://github.com/Platform-OS/pos-modules/tree/master/pos-module-common-styling), and displays flash notifications (toasts). If your project already has layouts, the installer asks which of them to update instead. |
+| Copy the default RBAC permissions file into `app/`? | **Yes** | Creates an [overwrite](/developer-guide/modules/modules#overwriting-a-module-file) of the permissions file in `app/modules/user/public/lib/queries/role_permissions/permissions.liquid` and adds `core` and `user` to `modules_that_allow_delete_on_deploy` in `app/config.yml`. You will use this file in the [Roles and Permissions](/tutorials/user-management/roles-and-permissions) chapter. |
+| Generate a migration that sets the `USER_DEFAULT_ROLE` constant? | **Yes**, keep the default `member` | Writes a [migration](/developer-guide/platformos-workflow/directory-structure#migrations) to `app/migrations` that sets the role assigned automatically to every new user. The migration runs on your next deploy. |
+| Create a superadmin user now? | **No** | Deploys your project to the environment you pick, then creates a user with the `superadmin` role there. You do not need one for this tutorial, but you can use this option in your own projects. The installer only asks this question if you have added at least one environment with `pos-cli env add`. |
+
+{% include 'alert/tip', content: 'If you create a superadmin, the installer sends the password directly to your instance and never writes it to a file. Store it somewhere safe.' %}
+
+Now deploy your project, which also runs the `USER_DEFAULT_ROLE` migration:
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
 pos-cli deploy staging
 </code></pre>
 
-At this point, your instance includes all necessary endpoints: login, registration, password reset, two-factor authentication, OAuth handlers, and more. You will connect these pages to your application later through navigation.
-
-## Step 5: Create the necessary folders
-
-Before adding your own pages, set up the basic directory structure your application will use.
-In platformOS, page templates live inside the `app/views/pages` directory, so start by creating it:
+From now on, you can also keep your instance up to date automatically while you work:
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
-mkdir -p app/views/pages
-mkdir -p app/views/layouts
+pos-cli sync staging
 </code></pre>
 
-The `-p` flag allows you to create nested directories in one step.
+At this point, your instance includes all the endpoints you need: sign in, registration, password reset, two-factor authentication, OAuth handlers, and more. You will link to these pages from your application's navigation later in the tutorial.
 
-{% include 'alert/tip', content: 'Learn more about the recommended directory layout in the <a href="/developer-guide/platformos-workflow/directory-structure">Directory Structure</a> section of the Developer Guide.' %}
+{% include 'alert/tutorial', content: 'Want to know what the installer does under the hood, or prefer to set everything up by hand? Follow the manual steps in the <a href="https://github.com/Platform-OS/pos-modules/tree/master/pos-module-user#setup" target="_blank">Setup section of the User Module README</a>.' %}
 
-You can have multiple files with the same path across modules and overrides. Clear structure helps you stay oriented and makes it easier to understand how your application is composed.
+## Step 6: Review the layout
 
-### Create the layout file
-
-Next, create the default layout that all pages will use:
-
-```
-app/views/layouts/application.liquid
-```
-
-You will add navigation and UI elements here as you progress through the tutorial.
-
-## Step 6: Configure Common Styling
-
-The [Common Styling](https://github.com/Platform-OS/pos-modules/tree/master/pos-module-common-styling) module is installed automatically as a dependency of the User Module. However, for its design system to take effect, you need to **activate and configure it** in your main layout.
-
-Common Styling provides the base CSS, form styling, and UI components used across all platformOS modules, including the pages that come with the User Module. By loading it in your layout, you ensure that the login, registration, and profile pages look consistent and match the styling of your own application.
-
-Open your application layout and replace its content with the following:
+Open the layout generated by the installer:
 
 #### app/views/layouts/application.liquid
 
@@ -111,54 +110,60 @@ Open your application layout and replace its content with the following:
 ```liquid
 <!DOCTYPE html>
 <html class="pos-app">
- <head>
-   <meta charset="utf-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <meta content="authenticity_token" name="csrf-param">
-   <meta content="{{ form_authenticity_token }}" name="csrf-token">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=yes">
+    <title>{% if context.page.metadata.title %}{{ context.page.metadata.title }}{% else %}platformOS{% endif %}</title>
 
-   {% comment %} Default platformOS styles {% endcomment %}
-   {% render 'modules/common-styling/init' %}
-   <link rel="stylesheet" href="{{ 'modules/user/style/pos-user-form.css' | asset_url }}">
+    {% comment %} platformOS common-styling: loads the design system CSS/JS into the page head {% endcomment %}
+    {% render 'modules/common-styling/init', reset: true %}
+  </head>
+  <body>
+    {{ content_for_layout }}
 
-   {% comment %} Custom project styles {% endcomment %}
-   <link rel="stylesheet" href="{{ 'style/app.css' | asset_url }}">
+    {% liquid
+      function flash = 'modules/core/commands/session/get', key: 'sflash', clear: null
+      if context.location.pathname != flash.from or flash.force_clear
+        function _ = 'modules/core/commands/session/clear', key: 'sflash'
+      endif
 
-   <script>
-     if (typeof window.pos !== 'object') {
-       window.pos = {};
-       window.pos.modules = {};
-       window.pos.translations = {};
-     }
-   </script>
-
-   <title>User Management Application | platformOS</title>
- </head>
-
- <body>
-   {{ content_for_layout }}
-
-{% liquid
-  render 'modules/common-styling/toasts'
-%}
-
-   <script src="{{ 'scripts/app.js' | asset_url }}"></script>
- </body>
+      render 'modules/common-styling/toasts', autohide: null, delay: null, message: flash.message, severity: flash.severity
+    %}
+  </body>
 </html>
 ```
 
 {% endraw %}
 
-Save and deploy (or sync) the changes.
+Common Styling provides the base CSS, form styling, and UI components used across all platformOS modules, including the pages that come with the User Module. Loading it in your layout ensures that the sign-in, registration, and profile pages look consistent with the rest of your application. The `modules/common-styling/init` partial also creates the global `window.pos` JavaScript namespace and exposes the CSRF token used by the module's forms.
+
+To apply the User Module's form styles as well, add the following line right after the `modules/common-styling/init` render tag:
+
+{% raw %}
+
+```liquid
+<link rel="stylesheet" href="{{ 'modules/user/style/pos-user-form.css' | asset_url }}">
+```
+
+{% endraw %}
+
+You will add navigation and other UI elements to this layout as you progress through the tutorial.
 
 {% include 'alert/tutorial', content: 'For advanced configuration and customization options, refer to the <a href="https://github.com/Platform-OS/pos-modules/tree/master/pos-module-common-styling">Common Styling documentation</a>, or visit the built-in <code>/style-guide</code> page on your instance to explore all available components.' %}
 
-
 ## Step 7: Create the Homepage
 
-Now that the environment is set up, create the homepage of your project: `app/views/pages/index.liquid`
+Now that the environment is set up, create the homepage of your project. In platformOS, pages live in the `app/views/pages` directory, so create it first:
 
-Add the following content:
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+mkdir -p app/views/pages
+</code></pre>
+
+The `-p` flag creates nested directories in one step.
+
+{% include 'alert/tip', content: 'Learn more about the recommended directory layout in the <a href="/developer-guide/platformos-workflow/directory-structure">Directory Structure</a> section of the Developer Guide.' %}
+
+Then create the `app/views/pages/index.liquid` file with the following content:
 
 #### app/views/pages/index.liquid
 
@@ -173,7 +178,7 @@ Add the following content:
 </p>
 ```
 
-Deploy/sync your changes and reload your instance to confirm the page loads correctly. If Common Styling is configured correctly, the heading and text should display using the default typography and spacing:
+Deploy or sync your changes and reload your instance to confirm the page loads correctly. If Common Styling is configured correctly, the heading and text should display using the default typography and spacing:
 
 <img loading="lazy" src="{{ 'images/tutorials/user-management/home-page-first.png' | asset_url }}" alt="Homepage of the example platformOS User Management Application">
 

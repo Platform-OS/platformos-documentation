@@ -1,0 +1,148 @@
+---
+converter: markdown
+metadata:
+  title: ConflictingSchemaPropertyType
+  description: Reports a property name declared with one type in one schema and a different type in another, which the platform resolves as a single ambiguous name.
+---
+
+## ConflictingSchemaPropertyType
+
+**Severity:** warning | **Type:** YAML
+
+This check reports a property **name** that is declared with one type in one schema and a different type in another.
+
+It reads every schema in the project that defines `properties:` — Tables (`app/schema/*.yml`), transactable types (`app/transactable_types/*.yml`), user profile types (`app/user_profile_types/*.yml`) and `app/user.yml` — including the ones that come from modules, because a module deploys into the same instance as the app.
+
+## Why two unrelated schemas are one fact
+
+The platform looks a property's type up **by name**, and the lookup takes no owning schema. Every declaration of that name — in any Table, profile, transactable or `user.yml`, in the app or in a module — answers together, instance-wide.
+
+So two types for one name is not a local inconsistency between two schemas that never meet. It changes how that name resolves for **every** query in the instance, including queries against a schema neither file touches. Neither file is wrong on its own, which is why no per-file rule can see the problem, and why this check is reported at **both** declarations: the conflict is the pair, and you may be reading either one.
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```yaml
+# app/schema/access_token.yml
+name: access_token
+properties:
+  - name: expires_at
+    type: string
+```
+
+```yaml
+# app/schema/order.yml — a different Table, and that is the point
+name: order
+properties:
+  - name: expires_at
+    type: integer
+```
+
+Both files deploy. `expires_at` now has two answers, and which one a given query resolves to is not something either schema says.
+
+### &#x2713; Correct Code Example (Use this instead):
+
+Either agree on one type for the name:
+
+```yaml
+# app/schema/access_token.yml
+name: access_token
+properties:
+  - name: expires_at
+    type: datetime
+```
+
+```yaml
+# app/schema/order.yml
+name: order
+properties:
+  - name: expires_at
+    type: datetime
+```
+
+Or give the two properties names of their own:
+
+```yaml
+# app/schema/access_token.yml
+name: access_token
+properties:
+  - name: token_expires_at
+    type: datetime
+```
+
+```yaml
+# app/schema/order.yml
+name: order
+properties:
+  - name: order_expires_at
+    type: integer
+```
+
+## What it costs
+
+A `range` filter on a property compiles to a **text** comparison (`properties->>'name'`) for as long as every declared type of that name is `string`, `date` or `datetime`. One declaration outside that set switches it to a **jsonb** comparison (`properties->'name'`), and the value you filter by is then coerced to JSON:
+
+```
+range: { gt: "2026-09-15T12:03:07+0000" }   ->  invalid input syntax for type json.  Token "-09" is invalid.
+range: { gt: "2026" }                       ->  parses as a JSON number, matches nothing, reports no error
+```
+
+Adding an unrelated `expires_at: integer` to a second schema therefore breaks a working query against the **first** one, with nothing about that schema having changed. The second line is the worse of the two: a value that happens to parse as JSON raises nothing and silently returns no rows.
+
+The `property_type:` argument does not rescue it — the `range` filter ignores it.
+
+## Fixing a conflict
+
+A conflict is reported once per declaring file, so the pair above produces two offenses and fixing either side clears both. Where a name is declared in more files than two, each message names every other type once, at one file that declares it — enough to go and read it, without listing every schema involved.
+
+Which side to change is a data question, not a style one — both renaming a property and changing its type affect records that already exist:
+
+- **Converging on one type** is handled for you where the conversion is possible, and raises where it is not. See [Changing a property type in an existing Table with data](/developer-guide/properties/properties#changing-a-property-type-in-an-existing-table-with-data).
+- **Renaming** has no built-in equivalent: you add the new property, copy the data, then remove the old one. See [Changing a property name in an existing Table with data](/developer-guide/properties/properties#changing-a-property-name-in-an-existing-table-with-data).
+
+Sharing one name across schemas on purpose — the same `email: string` on several profiles — is a normal pattern and is not reported, as long as the type agrees everywhere.
+
+## What is not reported
+
+- **Schemas that agree.** `name: string` in every Table is the common case and says nothing.
+- **A type the platform does not accept at all.** That belongs to `InvalidSchemaPropertyType`: a schema with an unaccepted type fails the whole deploy, so it never becomes one of the declarations a query resolves against, and warning about it twice would be noise.
+- **A module file that an app copy shadows.** Copying `modules/blog/public/schema/post.yml` to `app/modules/blog/public/schema/post.yml` and changing a type there is the normal way to overwrite an installed module's property. Only the copy deploys, so that is one declaration, not two. The copy is still compared against every other schema.
+- **A property with no `name`, no `type`, or a Liquid-interpolated `type`** such as `type: "{% raw %}{{ context.type }}{% endraw %}"` — there is nothing to compare literally.
+- **A file YAML cannot parse.** It contributes no declarations at all and is left to [YAMLSyntaxError](/developer-guide/platformos-check/checks/yaml-syntax-error); guessing at its types would report a conflict against something nobody wrote.
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+ConflictingSchemaPropertyType:
+  enabled: true
+  severity: warning
+```
+
+## Disabling This Check
+
+A `{% raw %}platformos-check-disable{% endraw %}` comment is a Liquid comment and has no effect in a `.yml` file. This check is turned off in `.platformos-check.yml`:
+
+```yaml
+ConflictingSchemaPropertyType:
+  enabled: false
+```
+
+Ignoring one of the two files does not silence the conflict, because the other file still reports it — and its message still names the ignored file:
+
+```yaml
+ConflictingSchemaPropertyType:
+  ignore:
+    - app/schema/access_token.yml
+```
+
+Lower the severity rather than disabling the check if the conflict is one you have decided to live with. It is a warning and not an error on purpose: a conflict deploys successfully, and `string` beside `date` is ambiguous without breaking any query today.
+
+## Resources
+
+- [Properties](/developer-guide/properties/properties)
+- [Records and Tables](/developer-guide/records/records-tables)
+- [Filtering Properties with GraphQL](/developer-guide/properties/properties#filtering-properties-with-graphql)
+- [platformOS Check Configuration](/developer-guide/platformos-check/platformos-check)
