@@ -1,0 +1,26 @@
+{%- comment -%}
+  Renders the parameter type vocabulary from the platform's liquid_doc.json as an HTML
+  table. This is a partial rather than markdown in the page because the markdown
+  converter runs before Liquid: it autolinks bare URLs (which breaks a download URL
+  captured inline) and parses table rows before a loop can emit them.
+{%- endcomment -%}
+{%- assign cache_key = context.version | append: '-doc-param-types' -%}
+{%- cache cache_key -%}
+  {%- function vocabulary = 'queries/liquid_doc/vocabulary' -%}
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for type in vocabulary.param_types %}
+      <tr>
+        <td><code>{{ type.name }}</code></td>
+        <td>{{ type.description | markdown }}</td>
+      </tr>
+      {%- endfor %}
+    </tbody>
+  </table>
+{%- endcache -%}
