@@ -24,8 +24,6 @@ slug: release-notes/26-AUG-26
 
   Only the two delimiters and the backslash itself are escape targets. Any other `\X` stays exactly as written, so patterns and paths are unaffected - `'\d+'`, `'\.'`, `'\['` and `'C:\temp'` all mean what they always did. The rule applies everywhere markup is parsed: {% raw %}`{% assign %}`{% endraw %}, filter arguments, {% raw %}`{% if %}`{% endraw %} / {% raw %}`{% unless %}`{% endraw %} / {% raw %}`{% case %}`{% endraw %} conditions, {% raw %}`{% render %}`{% endraw %} / {% raw %}`{% include %}`{% endraw %} / {% raw %}`{% function %}`{% endraw %} attributes, {% raw %}`{% cycle %}`{% endraw %} values and {% raw %}`{% for %}`{% endraw %} / {% raw %}`{% tablerow %}`{% endraw %} sources. See [Types](/api-reference/liquid/types).
 
-  {% include 'alert/note', content: 'Superseded: a literal whose whole body is a single backslash was restored to its old meaning in a later release. The doubled forms below still work, but they are no longer required. See [Types](/api-reference/liquid/types#escapes).' %}
-
   **This is a breaking change for one spelling.** {% raw %}`'\'`{% endraw %} and {% raw %}`"\"`{% endraw %} are no longer one-backslash strings - the backslash escapes the closing quote, so the literal never terminates. Use the doubled form instead:
 
 {% raw %}
@@ -40,7 +38,7 @@ slug: release-notes/26-AUG-26
 
   Most occurrences are rejected at deploy with `Liquid syntax error (line N): Unexpected character ...`, so a deploy tells you where they are. A literal that contains `\\`, `\"` or `\'` parses either way and changes value instead, so search your code for those three sequences before deploying.
 
-* **`escape_regex` filter**: Escapes every character that has a special meaning in a regular expression, so the result matches the input literally. Use it on any value that goes into a pattern for [replace_regex](/api-reference/liquid/platformos-filters#replace_regex), [matches](/api-reference/liquid/platformos-filters#matches) or [regex_matches](/api-reference/liquid/platformos-filters#regex_matches):
+* **`escape_regex` filter**: Escapes every character that has a special meaning in a regular expression, so the result matches the input literally. Use it on any value that goes into a pattern for [replace_regex](/api-reference/liquid/platformos-filters#replace-regex), [matches](/api-reference/liquid/platformos-filters#matches) or [regex_matches](/api-reference/liquid/platformos-filters#regex-matches):
 
 {% raw %}
 ```liquid

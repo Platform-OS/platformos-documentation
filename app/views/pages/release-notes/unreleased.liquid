@@ -86,7 +86,7 @@ query logs($last_id: ID) {
 
 * **More reliable Instance creation from the Partner Portal** (2026-09-24): Finishing the setup of a new Instance is now retried after a short, temporary failure, and the result is always reported back to the Partner Portal once retries are exhausted. Previously a single hiccup could leave the Instance shown as pending in the Partner Portal indefinitely.
 
-* **The `download_file` size limit is enforced during the download** (2026-09-23): The `max_size` argument of the [`download_file`](/api-reference/liquid/platformos-filters#download_file) filter was checked only against the `Content-Length` the remote server declared, so a server that omitted the header - or did not support `HEAD` requests - could send a file of any size. The limit is now applied to the bytes actually received, and the download stops as soon as it is exceeded. The maximum you can request remains 50MB.
+* **The `download_file` size limit is enforced during the download** (2026-09-23): The `max_size` argument of the [`download_file`](/api-reference/liquid/platformos-filters#download-file) filter was checked only against the `Content-Length` the remote server declared, so a server that omitted the header - or did not support `HEAD` requests - could send a file of any size. The limit is now applied to the bytes actually received, and the download stops as soon as it is exceeded. The maximum you can request remains 50MB.
 
 <h4 class="release-note release-note__fixed">FIXED</h4>
 

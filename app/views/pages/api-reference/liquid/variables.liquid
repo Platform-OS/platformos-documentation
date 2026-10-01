@@ -176,7 +176,7 @@ This also works with nested arrays:
 {"items":["a","b"]}
 ```
 
-{% include 'alert/note', content: 'The `assign` tag replaces the deprecated [hash_assign tag](/api-reference/liquid/platformos-tags#hash-assign) for hash/array operations. You no longer need `hash_assign` or `parse_json` with empty `{}` strings to work with [your own objects](/api-reference/liquid/platformos-objects#your-own-objects).' %}
+{% include 'alert/note', content: 'The `assign` tag replaces the deprecated [hash_assign tag](/api-reference/liquid/platformos-tags#hash-assign) for hash/array operations. You no longer need `hash_assign` or `parse_json` with empty `{}` strings to work with [your own objects](/api-reference/liquid/types#hash-object).' %}
 
 ## capture
 
@@ -185,7 +185,7 @@ Variables that you create using `capture` are stored as strings, so it works exa
 
 ## parse_json
 
-It is platformOS specific tag, which allows you to [create your own objects](/api-reference/liquid/platformos-objects#your-own-objects). It works similarly to [capture](/api-reference/liquid/variables#capture).
+It is platformOS specific tag, which allows you to [create your own objects](/api-reference/liquid/types#hash-object). It works similarly to [capture](/api-reference/liquid/variables#capture).
 
 {% include 'alert/tip', content: 'Consider using `assign` with hash/array literals instead: `{% assign about_me = { "name": "Alice", "age": 35 } %}`. The `assign` tag supports variables as values, so `parse_json` is rarely needed. See the [assign tag](#assign) section for details.' %}
 
