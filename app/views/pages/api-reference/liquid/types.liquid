@@ -327,7 +327,7 @@ To append elements, use the `<<` operator:
 
 #### contains
 
-You can check for the presence of a substring in a string, but `contains` can also check for the presence of a string in an array of strings. You can use it only for searching strings. You cannot use it to check for an object in an array of objects.
+`contains` checks for a substring in a string, or for an item in an array. An array item matches when it is equal to the value, so this works for strings, numbers and hashes alike.
 
 ```liquid
 {% raw %}
@@ -338,18 +338,22 @@ You can check for the presence of a substring in a string, but `contains` can al
 {% endraw %}
 ```
 
-#### any
-You can check if the given array contains at least one of the queried string/number.
+#### array_any
+
+You can check if the given array contains at least one of the queried string/number. `any` is a deprecated alias of [array_any](/api-reference/liquid/platformos-filters#array-any).
 
 ##### params
 
 - array (Array) - array to search in - default: []
 - query (StringNumber) - String/Number compared to each item in the given array - default: 'true'
 
+`{% raw %}{% if %}{% endraw %}` does not apply filters: `{% raw %}{% if site.users | array_any: 'Tobi' %}{% endraw %}` only checks that `site.users` is truthy, so it is true even for a name that is not in the array. Assign the result first:
+
 ```liquid
 {% raw %}
 {% comment %} site.users = ["Tobi", "Laura", "Tetsuro", "Adam"] {% endcomment %}
-{% if site.users | any: 'Tobi' %}
+{% assign tobi_found = site.users | array_any: 'Tobi' %}
+{% if tobi_found %}
   Tobi is in users.
 {% endif %}
 {% endraw %}
@@ -391,7 +395,7 @@ Strings, even when empty, are truthy. The example below results in empty HTML ta
 #### Output
 
 ```liquid
-<h1></h1>
+  <h1></h1>
 ```
 
 ### Falsy
