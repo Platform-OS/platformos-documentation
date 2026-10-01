@@ -96,14 +96,7 @@ Declare each parameter the partial accepts:
 
 #### Supported parameter types
 
-{% assign cache_key = context.version | append: '-doc-param-types' %}
-{% cache cache_key %}
-{%- capture url -%}https://deidcfp1yn7c2.cloudfront.net/platform_docs/{{ context.version }}/liquid_doc.json{%- endcapture -%}
-{%- assign vocabulary = url | download_file | parse_json -%}
-| Type | Description |
-|------|-------------|
-{% for type in vocabulary.param_types %}| `{{ type.name }}` | {{ type.description }} |
-{% endfor %}{% endcache %}
+{% render 'reference/liquid/doc-param-types' %}
 
 This table is the platform's own type vocabulary, published as [liquid_doc.json](/api/liquid/liquid_doc.json) and read by platformOS Check — so a type listed here is a type it accepts, and the two cannot disagree.
 

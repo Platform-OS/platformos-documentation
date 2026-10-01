@@ -2,13 +2,13 @@
 converter: markdown
 metadata:
   title: Liquid - Data Sanitization
-  description: How to data is sanitized by default in Liquid
+  description: How data is sanitized by default in Liquid
 ---
 
 {% include 'alert/important', content: 'Ensure the `escape_output_instead_of_sanitize` flag is set to `true` in <a href="/developer-guide/platformos-workflow/directory-structure/config">app/config.yml</a> - this is the default setting for all new instances' %}
 
 When you display data, from user input or from external sources, it is important to sanitize output before displaying it on a website to avoid [XSS](https://en.wikipedia.org/wiki/Cross-site_scripting) attacks.
-In Liquid on platformOS, we escape every variable output when you use {% raw %}`{{  }}` and `{% echo %}` tag.{% endraw %} markups.
+In Liquid on platformOS, every variable you output with {% raw %}`{{ }}`{% endraw %} or the {% raw %}`{% echo %}`{% endraw %} tag is escaped.
 
 ### Input
 ```liquid
@@ -20,11 +20,9 @@ In Liquid on platformOS, we escape every variable output when you use {% raw %}`
 ```
 
 ### Output (not processed by browser)
-```liquid
-{% assign user_name = '<a href="http://platformos.com">Click Me</a><h1>x</h1>' %}
-
-<h2>{{ user_name }}</h2>
-````
+<pre class="raw-output">
+&lt;h2&gt;&amp;lt;a href=&amp;quot;https://www.platformos.com&amp;quot;&amp;gt;Click Me&amp;lt;/a&amp;gt;&lt;/h2&gt;
+</pre>
 
 In this case, HTML tags are not processed by the browser, so the link is not a clickable link.
 
@@ -32,7 +30,7 @@ In this case, HTML tags are not processed by the browser, so the link is not a c
 
 In situations when you want to display content as it is, you can use:
 
-### [html_safe](/api-reference/liquid/platformos-filters#html_safe) filter to mark variable as safe and bypass sanitization.
+### [html_safe](/api-reference/liquid/platformos-filters#html-safe) filter to mark variable as safe and bypass sanitization.
 
 ### Input
 ```liquid
@@ -44,7 +42,7 @@ In situations when you want to display content as it is, you can use:
 
 The above code will generate a clickable link.
 
-### [print](/api-reference/liquid/platformos-filters#html_safe) tag to skip sanitizing.
+### [print](/api-reference/liquid/platformos-tags#print) tag to skip sanitizing.
 
 The previous method marks the whole variable as safe to be printed, but it might not be the case - for example, you might want to store in a variable safe and unsafe part at the same time. In this scenario, the `print` tag will work as expected:
 
@@ -68,6 +66,6 @@ The "I will be executed" alert will appear on page load, but "I should be escape
 
 You can also run HTML/JavaScript sanitization on variables before passing them to tags/filters:
 
-- [escape_javascript](/api-reference/liquid/platformos-filters#escape_javascript)
-- [raw_escape_string](/api-reference/liquid/platformos-filters#raw_escape_string)
+- [escape_javascript](/api-reference/liquid/platformos-filters#escape-javascript)
+- [raw_escape_string](/api-reference/liquid/platformos-filters#raw-escape-string)
 - [sanitize](/api-reference/liquid/platformos-filters#sanitize)
