@@ -170,3 +170,5 @@ The workflow uses secrets for MPKIT_URL, MPKIT_EMAIL, and MPKIT_TOKEN.
 - GraphQL queries are executed with `{% graphql %}` tag
 - Forms are rendered with `{% include_form %}`
 - Layouts use `{% yield %}` for content injection
+
+
