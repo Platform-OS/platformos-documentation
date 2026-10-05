@@ -80,6 +80,7 @@ query logs($last_id: ID) {
 
   * **Following the log.** Without a lower `id` bound you get the latest matching entries (20 by default); with `id: { range: { gt: <id of the last entry you saw> } }` you get only the entries after it (up to 500 by default). Pass the last `id` back on each call to poll for new entries. `per_page` is capped at 500.
   * **Filtering.** `type` and `message` accept the usual `StringFilter` operators. `value` is an exact match, while `contains`, `starts_with` and `ends_with` ignore case unless you set `case_sensitive: true`. Filters are applied to the most recent part of the log (about the latest 1000 entries), not its whole history.
+
 <h4 class="release-note release-note__improved">IMPROVED</h4>
 
 * **`pos-cli` and the Instance API report a Partner Portal outage as an outage** (2026-09-16): An Instance checks every API token with the Partner Portal. While the Portal was briefly unreachable - during a deploy, a restart or rate limiting - the check had no answer, yet the Instance responded with the same `401` as for a revoked token, and `pos-cli` suggested running `pos-cli env refresh-token`, which could not help. The Instance now responds `503 Service Unavailable` with a `Retry-After` header and the error code `partner_portal_unavailable`, together with a message explaining that the token itself is fine. An up-to-date `pos-cli` waits and retries instead of failing the command, so a deploy started during a short Portal outage pauses rather than fails. A `401` or `403` from the Portal is still reported as `401`, and nothing is authorized while the token cannot be verified.
@@ -101,3 +102,5 @@ query logs($last_id: ID) {
 * **A missing asset returns `404`** (2026-09-21): Requesting an asset that does not exist now returns `404 Not Found` instead of `403 Forbidden`.
 
 * **`admin_background_jobs` refuses a `timestamp` filter that is not a date** (2026-09-29): A `timestamp` value that could not be read as a date or time, such as `gt: "tomorow"`, was treated as zero, so the query quietly matched every job, or none. The query now returns the error `timestamp must be a date or a time, got: ...`.
+
+* **Log entries no longer go missing** (2026-09-29): Some entries written with the [`log` tag](/best-practices/qa/creating-application-logs), as well as errors logged for your Instance, were occasionally lost, so they never appeared in your logs and could not be fetched with `pos-cli logs`. A single failed delivery to the service that forwards your logs could cause entries after it to be lost too. The connection to that service now recovers on its own after a failure, so one failed delivery no longer affects the entries that follow.
