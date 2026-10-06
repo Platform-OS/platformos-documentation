@@ -11,6 +11,37 @@ metadata:
 
 <h4 class="release-note release-note__new">NEW</h4>
 
+* **Stable names for the `_rc` GraphQL fields**: The 12 fields that only had a release-candidate name are now also available under a stable name. The new names take the same arguments and return the same result:
+
+  | Deprecated name | Stable name |
+  | --- | --- |
+  | `documents_rc` | `documents` |
+  | `documents_insert_rc` | `documents_insert` |
+  | `documents_upsert_rc` | `documents_upsert` |
+  | `documents_bulk_upsert_rc` | `documents_bulk_upsert` |
+  | `documents_delete_rc` | `documents_delete` |
+  | `embeddings_rc` | `embeddings` |
+  | `embedding_create_rc` | `embedding_create` |
+  | `embedding_update_rc` | `embedding_update` |
+  | `embedding_delete_rc` | `embedding_delete` |
+  | `admin_search_index_rc` | `admin_search_index` |
+  | `records_create_rc` | `records_create` |
+  | `records_count_rc` (field of `Table`) | `records_count` |
+
+  The `_rc` names still work, so your existing queries don't need to change. They are now marked as deprecated, so switch to the stable names when you next edit those queries.
+
 <h4 class="release-note release-note__improved">IMPROVED</h4>
 
+* **Complete GraphQL schema documentation**: Every query, mutation, argument, field, input type, enum value and scalar in the GraphQL schema now has a description. The descriptions cover default values, limits and errors, and you can read them in GraphiQL and in the [GraphQL API reference](/api-reference/graphql/glossary). Deprecated fields now say which field to use instead.
+* **GraphQL categories**: Every root query and mutation now belongs to a category. There are two new categories: **Notifications** (`api_call_send`, `email_send`, `sms_send`) and **Uploads** (presigned upload URLs and `upload_delete`).
+* **New deprecations**: These fields still work, but are now marked as deprecated:
+  * `admin_model_schemas`, `admin_transactable_schemas` and `admin_user_profile_schemas`: use `admin_tables` instead.
+  * `admin_forms`: use a page with a GraphQL mutation instead.
+  * `authentications` on `User`: use the `pos-module-oauth-*` modules instead ([Google](https://github.com/Platform-OS/pos-modules/tree/master/pos-module-oauth-google), [Facebook](https://github.com/Platform-OS/pos-modules/tree/master/pos-module-oauth-facebook), [GitHub](https://github.com/Platform-OS/pos-modules/tree/master/pos-module-oauth-github)).
+* **Corrected deprecation messages**: The deprecation messages of `admin_translation_delete` and `admin_translation_update` pointed at each other's replacement. `admin_translation_update` now points to `admin_translation_set`, and `admin_translation_delete` points to `admin_translation_unset`.
+
 <h4 class="release-note release-note__fixed">FIXED</h4>
+
+* **`sync: true` on `*_delete_all` mutations**: Mutations such as `records_delete_all`, `users_delete_all` and `admin_pages_delete_all` ignored the `sync` argument and always deleted in the background. With `sync: true` the records are now deleted before the mutation returns.
+* **`content_type.starts_with` in presigned upload URLs**: `property_upload_presigned_url` ignored `presign_url: { content_type: { starts_with: "..." } }`, so files of any type could be uploaded. With `include_content_type: true` the upload is now restricted to files whose `Content-Type` starts with the given prefix. Without `include_content_type`, `starts_with` still has no effect, so existing upload forms that don't send a `Content-Type` field keep working.
+* **Property filters inside `or` in the `models` query**: Inside an `or` filter, a property filter ignored the table selected with `model_schema_name`. If another table had a property with the same name but a different type, the property could be treated as the wrong type, and operators such as `array_contains` returned wrong results or failed.
