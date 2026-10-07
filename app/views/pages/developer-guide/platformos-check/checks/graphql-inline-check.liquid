@@ -1,0 +1,78 @@
+---
+converter: markdown
+metadata:
+  title: GraphQLInlineCheck
+  description: Validates an inline {% graphql %} query or mutation against the platformOS schema.
+---
+
+## GraphQLInlineCheck
+
+**Severity:** error | **Type:** LiquidHtml
+
+This check validates the body of an inline `{% raw %}{% graphql %}…{% endgraphql %}{% endraw %}` block against the platformOS schema, the same way [GraphQLCheck](/developer-guide/platformos-check/checks/graphql-check) validates a `.graphql` file.
+
+`GraphQLCheck` cannot see these bodies. The GraphQL source type is reached only from the `.graphql` file extension, so an inline query travels inside a Liquid file and no GraphQL-typed check ever receives it. Without this check, a query that references a field which does not exist, or passes a variable of the wrong type, is approved inline while the identical query in a `.graphql` file is an error.
+
+The check requires an up-to-date local copy of the platformOS GraphQL schema. Run `pos-cli check update-docs` to download the latest schema.
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```liquid
+{% raw %}
+{% graphql result %}
+  query {
+    records(per_page: 20) {
+      results { nonexistent_field }
+    }
+  }
+{% endgraphql %}
+{% endraw %}
+```
+
+The query is syntactically valid and fails when executed, because `nonexistent_field` is not a field on the type.
+
+### &#x2713; Correct Code Example (Use this instead):
+
+```liquid
+{% raw %}
+{% graphql result %}
+  query {
+    records(per_page: 20, filter: { table: { value: "note" } }) {
+      results { id }
+    }
+  }
+{% endgraphql %}
+{% endraw %}
+```
+
+## What is not reported
+
+Two cases are deliberately left alone:
+
+- **A body that interpolates Liquid.** If the block contains `{% raw %}{{ … }}{% endraw %}` or `{% raw %}{% … %}{% endraw %}`, the document's shape depends on values that are only known at render time, so there is nothing to validate. This holds even when the interpolation sits inside a string literal and the raw text happens to parse as GraphQL.
+- **A body that does not parse.** platformOS parses GraphQL with its own parser, which differs from the one this check uses in measured ways, so a body that fails to parse here is not reported as an error.
+
+Deprecated members are not reported by this check either — that is [DeprecatedGraphQLFieldInline](/developer-guide/platformos-check/checks/deprecated-graphql-field-inline), which is a warning, because a deprecated query still runs while an invalid one does not.
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+GraphQLInlineCheck:
+  enabled: true
+  severity: error
+```
+
+## Disabling This Check
+
+Disabling this check is not recommended. Run `pos-cli check update-docs` to refresh the schema if you are getting false positives after a platformOS update.
+
+## Resources
+
+- [GraphQLCheck](/developer-guide/platformos-check/checks/graphql-check)
+- [DeprecatedGraphQLFieldInline](/developer-guide/platformos-check/checks/deprecated-graphql-field-inline)
+- [platformOS GraphQL API Reference](/api-reference/graphql/g/query)
+- [pos-cli check update-docs](/developer-guide/platformos-check/platformos-check#cli-usage)
