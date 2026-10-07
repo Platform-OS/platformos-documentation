@@ -18,11 +18,13 @@ These checks analyze the style and validity of Liquid templates, including `.liq
 | Check | Severity | Description |
 |-------|----------|-------------|
 | [DeprecatedFilter](/developer-guide/platformos-check/checks/deprecated-filter) | warning | Reports usage of deprecated Liquid filters |
+| [DeprecatedGraphQLFieldInline](/developer-guide/platformos-check/checks/deprecated-graphql-field-inline) | warning | Reports an inline `{% raw %}{% graphql %}{% endraw %}` query using a schema member marked `@deprecated` — the inline half of `DeprecatedGraphQLField`, which cannot see these bodies |
 | [DeprecatedTag](/developer-guide/platformos-check/checks/deprecated-tag) | warning | Reports usage of deprecated Liquid tags |
 | [DuplicateFunctionArguments](/developer-guide/platformos-check/checks/duplicate-function-arguments) | warning | Reports duplicate argument names in `{% raw %}{% function %}{% endraw %}` calls |
 | [DuplicateRenderPartialArguments](/developer-guide/platformos-check/checks/duplicate-render-partial-arguments) | warning | Reports duplicate argument names in `{% raw %}{% render %}{% endraw %}` tags |
 | [FilterArity](/developer-guide/platformos-check/checks/filter-arity) | error | Reports a known filter called with the wrong number of arguments — platformOS raises `Liquid::ArgumentError` at render time |
 | [FilterWithoutEffect](/developer-guide/platformos-check/checks/filter-without-effect) | warning | Reports a filter in a tag operand or argument, where the runtime never applies it and the value is used unfiltered |
+| [GraphQLInlineCheck](/developer-guide/platformos-check/checks/graphql-inline-check) | error | Validates an inline `{% raw %}{% graphql %}{% endraw %}` body against the schema — `GraphQLCheck` is GraphQL-typed and never sees it |
 | [GraphQLVariablesCheck](/developer-guide/platformos-check/checks/graphql-variables-check) | error | Validates that parameters passed to `{% raw %}{% graphql %}{% endraw %}` match the query's variable definitions |
 | [ImgWidthAndHeight](/developer-guide/platformos-check/checks/img-width-and-height) | error | Requires `width` and `height` attributes on `img` tags to prevent cumulative layout shift |
 | [ImplicitIncludeArguments](/developer-guide/platformos-check/checks/implicit-include-arguments) | warning | Reports a variable an `{% raw %}{% include %}{% endraw %}`'d partial reads that the call site does not pass, and so inherits from the caller's scope — working, but invisible at the call site |
@@ -63,6 +65,7 @@ These checks analyze `.graphql` files and validate them against the platformOS s
 
 | Check | Severity | Description |
 |-------|----------|-------------|
+| [DeprecatedGraphQLField](/developer-guide/platformos-check/checks/deprecated-graphql-field) | warning | Reports a `.graphql` operation using a field, argument, enum value or input field the schema marks `@deprecated` — it still runs, so nothing else reports it |
 | [GraphQLCheck](/developer-guide/platformos-check/checks/graphql-check) | error | Validates GraphQL query and mutation files for syntax errors and schema conformance |
 
 ## YAML File Checks
