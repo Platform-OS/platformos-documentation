@@ -59,3 +59,12 @@
     </li>
   {% endfor %}
 {% endif %}
+
+<li class="{% if cp contains '/partner-portal' %}active{% endif %}">
+  <a href="/api-reference/partner-portal/api">Partner Portal API</a>
+
+  <ul class="submenu">
+    {% include "shared/nav/link", href: "/api-reference/partner-portal/api", text: "Instances, Partners, Modules, Billing" %}
+    {% include "shared/nav/link", href: "/api-reference/partner-portal/api/dns", text: "Domains and DNS" %}
+  </ul>
+</li>
