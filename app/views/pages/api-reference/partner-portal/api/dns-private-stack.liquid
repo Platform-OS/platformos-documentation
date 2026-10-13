@@ -1,0 +1,404 @@
+---
+metadata:
+  title: Partner Portal API - Domains and DNS (private stack)
+  description: Provision custom domains and manage DNS records of your Instance on a private stack programmatically using the Cloudflare-based Domains / DNS API of its Partner Portal.
+  toc: true
+converter: markdown
+---
+
+{{ page.metadata.description }}
+
+{% include 'alert/note', content: 'This page applies to Instances hosted on a <strong>private stack</strong>, where DNS is backed by Cloudflare and the API is served by the Partner Portal of that stack. Instances on the shared, multi-tenant stack managed through [partners.platformos.com](https://partners.platformos.com) use the AWS-based DNS service documented on [Domains and DNS (shared stack)](/api-reference/partner-portal/api/dns-shared-stack).' %}
+
+The Domains / DNS API provisions customer domains onto private stack infrastructure, which is backed by Cloudflare. This page is the contract integrators build against. For the other Partner Portal endpoints (Instances, Partners, Modules, Billing) see the [Partner Portal API](/api-reference/partner-portal/api) reference. If you prefer to configure domains manually through the Partner Portal UI, follow the guides for a [custom domain using the platformOS DNS service](/developer-guide/partner-portal/domains/platformos/resolving-www-of-root-domain) or a [custom domain using an external DNS service](/developer-guide/partner-portal/domains/external/resolving-www-of-root-domain).
+
+All endpoints live under `[[PORTAL_URL]]/api`, where `[[PORTAL_URL]]` is the URL of the Partner Portal that manages your private stack, for example `https://portal.example.com`.
+
+## Authentication and authorization
+
+Every endpoint accepts any of the following bearer tokens in the `Authorization` header, checked in this order:
+
+- **OAuth 2 access token**
+- **JWT** obtained from `POST /api/authenticate` (see the [Partner Portal API](/api-reference/partner-portal/api#post-api-authenticate) reference)
+- **User token** from your Partner Portal profile
+
+```
+Authorization: Bearer [[TOKEN]]
+```
+
+The acting user must have **write** access to the Instance identified by `instance_uuid`. This currently applies to all endpoints, including the read-only ones (see [Known limitations](#known-limitations)).
+
+## Variables used in examples
+
+| variable | description |
+|---|---|
+| `[[PORTAL_URL]]` | URL of the Partner Portal managing your private stack, for example `https://portal.example.com` |
+| `[[TOKEN]]` | OAuth 2 access token, JWT or user token |
+| `[[UUID]]` | UUID of the production Instance |
+| `[[DOMAIN_NAME]]` | the domain, for example `example.com` |
+
+## Concepts
+
+### setup_type
+
+Defines how the domain is wired:
+
+- `domain-full`: platformOS owns the Cloudflare DNS zone. The only thing the customer has to do is delegate the name servers at their registrar. All DNS records are managed through this API. The name must be a **registrable root domain** (`example.com`, not `sub.example.com`), because Cloudflare rejects subdomain zones (Cloudflare error 1116).
+- `domain-external`: the customer keeps their current DNS provider and adds the records this API tells them to: a routing `CNAME`/`ALIAS` or `A` record plus `_acme-challenge` validation `CNAME` records.
+
+### extra_dns_records
+
+Customer DNS records that platformOS manages inside a `domain-full` zone: `MX`, `TXT` (SPF, DKIM), service `CNAME`s, `SRV`, and so on.
+
+### www redirect
+
+When `enable_www_redirect` is on, `www.[[DOMAIN_NAME]]` is the canonical host and the apex domain answers with a `302` redirect to it. Enabling it provisions a second custom hostname for `www`.
+
+### Asynchronous processing
+
+One **DnsProvision** record per domain tracks the desired state (`config`) and the lifecycle (`status`). All mutations are **asynchronous**: the API persists your intent, enqueues a worker, and returns immediately. Poll the status endpoint afterwards.
+
+## GET /api/domains
+
+Lists all domains of the Instance together with their full status payloads.
+
+```bash
+curl -H "Authorization: Bearer [[TOKEN]]" \
+  "[[PORTAL_URL]]/api/domains?instance_uuid=[[UUID]]&version=2"
+```
+
+| query parameter | description |
+|---|---|
+| `instance_uuid` | required |
+| `version` | send `2` to get all records. Without it the **legacy shape** is returned: identical, except the auto-added `www` `CNAME` record is filtered out of `attributes.config.extra_dns_records` and `details.extra_dns_records` |
+
+New integrations should always send `version=2`.
+
+## GET /api/domains/status
+
+Returns the status payload of a single domain. The `name` query parameter selects the domain. Returns `404` with `{"errors":"Domain not found"}` for unknown names.
+
+```bash
+curl -H "Authorization: Bearer [[TOKEN]]" \
+  "[[PORTAL_URL]]/api/domains/status?instance_uuid=[[UUID]]&name=[[DOMAIN_NAME]]&version=2"
+```
+
+| query parameter | description |
+|---|---|
+| `instance_uuid` | required |
+| `name` | required, the domain name |
+| `version` | see `GET /api/domains` |
+
+### Status payload
+
+Both `GET /api/domains` and `GET /api/domains/status` return this shape per domain:
+
+```json
+{
+  "status": "ready",
+  "substatus": null,
+  "locked": false,
+  "has_pending": false,
+  "last_operation_status": {
+    "operation": "apply",
+    "status": "success",
+    "message": ["Apply complete"],
+    "requested_at": "2026-07-28 09:12:44 +0000"
+  },
+  "www_redirect": { "enabled": true },
+  "attributes": {
+    "domain_name": "example.com",
+    "instance_uuid": "[[UUID]]",
+    "setup_type": "domain-full",
+    "data_center": "ps-platformos.com",
+    "config": {
+      "enable_www_redirect": true,
+      "extra_dns_records": [
+        { "name": "mail", "type": "MX", "ttl": 3600, "records": ["10 mail.example.com"] },
+        { "name": "www", "type": "CNAME", "ttl": 3600, "records": ["example.com"] }
+      ],
+      "_domains": [
+        { "name": "example.com", "redirect_code": 302, "redirect_to": "https://www.example.com", "use_as_default": false },
+        { "name": "www.example.com", "redirect_code": null, "redirect_to": null, "use_as_default": true }
+      ]
+    }
+  },
+  "details": {
+    "status": "ready",
+    "zone_status": "active",
+    "hostname_status": "active",
+    "dns_zone_name_servers": ["ns1.example-dns.com", "ns2.example-dns.com"],
+    "dns_verification_records": [
+      {
+        "resource_record_name": "_acme-challenge.example.com",
+        "resource_record_type": "CNAME",
+        "resource_record_value": "example.com.1a2b3c4d.dcv.cloudflare.com"
+      }
+    ],
+    "private_lb_cname": "cname.ps-platformos.com",
+    "_lb_dns_name": "lb-123456.us-east-1.elb.amazonaws.com",
+    "lb_public_ip": "203.0.113.10",
+    "extra_dns_records": [
+      { "name": "mail", "type": "MX", "ttl": 3600, "fqdn": "mail.example.com", "proxied": false, "id": ["a1b2c3"], "records": ["10 mail.example.com"] },
+      { "name": "www", "type": "CNAME", "ttl": 1, "fqdn": "www.example.com", "proxied": true, "id": ["d4e5f6"], "records": ["example.com"] }
+    ]
+  }
+}
+```
+
+### Status payload fields
+
+| field | description |
+|---|---|
+| `status` | lifecycle status of the domain, see [Status lifecycle](#status-lifecycle). An empty string means the entry exists but was never provisioned |
+| `substatus` | additive detail: `ssl_validation_pending` or `null` |
+| `locked` | `true` while a worker job is running for this domain |
+| `has_pending` | `true` when some desired record is not live yet |
+| `last_operation_status` | the last operation: `operation`, `status`, `message` (array) and `requested_at` |
+| `www_redirect.enabled` | `true` if the apex domain redirects to `www` |
+| `attributes` | the **desired state**: `domain_name`, `instance_uuid`, `setup_type`, `data_center` and `config` |
+| `attributes.config.extra_dns_records` | the managed records you requested |
+| `attributes.config.enable_www_redirect` | the requested www redirect setting |
+| `attributes.config._domains` | the domain entries of the Instance with their redirect and `use_as_default` settings |
+| `details` | the **observed state** in the DNS system. `null` until the first provisioning run |
+| `details.zone_status` | Cloudflare zone status (`domain-full`) |
+| `details.hostname_status` | Cloudflare custom hostname status |
+| `details.dns_zone_name_servers` | `domain-full`: the name server pair the customer has to delegate to |
+| `details.dns_verification_records` | the records the **customer must create** at their DNS provider to prove ownership (`domain-external`) |
+| `details.private_lb_cname` | `domain-external`: the routing target for the `CNAME`/`ALIAS` record |
+| `details._lb_dns_name` | the AWS load balancer name, usable as an `ALIAS` target in Route 53 |
+| `details.lb_public_ip` | the `A` record fallback for an apex that cannot use `ALIAS` |
+| `details.extra_dns_records` | the live managed records with their `fqdn`, Cloudflare `id`, `records` values and `proxied` flag |
+
+{% include 'alert/note', content: 'TXT values in `details.extra_dns_records[].records` may come back wrapped in double quotes, for example `"\"v=spf1 ...\""`. This is the canonical form Cloudflare stores. Treat quoted and unquoted values as equal.' %}
+
+{% include 'alert/note', content: 'For entries that were never provisioned, such as the `www.` sibling rows, `attributes` omits `setup_type` and `data_center` entirely. Guard on key presence, not on `null`.' %}
+
+## POST /api/domains
+
+Creates a domain or **updates** an existing one. The endpoint works like an upsert keyed by `name`: if the domain exists it is updated, otherwise it is created.
+
+```bash
+curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer [[TOKEN]]" \
+  -d '{
+    "instance_uuid": "[[UUID]]",
+    "name": "example.com",
+    "setup_type": "domain-full",
+    "use_as_default": true,
+    "enable_www_redirect": true,
+    "extra_dns_records": [
+      { "name": "mail", "type": "MX", "ttl": 3600, "records": ["10 mail.example.com"] },
+      { "name": "", "type": "TXT", "ttl": 300, "records": ["v=spf1 include:_spf.example.com ~all"] }
+    ],
+    "confirm_destructive": false
+  }' \
+  "[[PORTAL_URL]]/api/domains"
+```
+
+### Request parameters
+
+| parameter | type | description |
+|---|---|---|
+| `instance_uuid` | string, required | UUID of the production Instance |
+| `name` | string, required | the domain name. Lowercased server-side |
+| `setup_type` | string, required | `domain-full` or `domain-external`, see [Concepts](#concepts) |
+| `use_as_default` | boolean | make this the default domain of the Instance |
+| `enable_www_redirect` | boolean, optional | redirect the apex to `www`. For an existing domain, omitting it preserves the current setting. When `true`, a `www` `CNAME` record pointing at the apex is added to the submitted record set if it is missing |
+| `extra_dns_records` | array, optional | the **complete** set of managed records for a `domain-full` zone, see below |
+| `confirm_destructive` | boolean, optional | must be `true` to let a bulk deletion of managed records through, see below |
+
+Each entry of `extra_dns_records` is an object:
+
+| field | description |
+|---|---|
+| `name` | record name without the root domain, lowercase `[a-z0-9_.-]`. Blank or `@` means the apex |
+| `type` | one of `A`, `TXT`, `ALIAS`, `CNAME`, `MX`, `PTR`, `SRV`, `SPF`, `NS` |
+| `ttl` | required, TTL in seconds |
+| `records` | array of values. `CNAME` and `ALIAS` accept **exactly one** value. `MX` values are `"<priority> <host>"`. `SRV` values are `"<priority> <weight> <port> <target>"`. Surrounding double quotes are stripped on input |
+| `proxied` | optional boolean, request a Cloudflare-proxied record, see below |
+
+### extra_dns_records is the full desired state
+
+{% include 'alert/important', content: '`extra_dns_records` is <strong>full state, not a patch</strong>. The submitted array replaces the stored set and records absent from it are <strong>deleted</strong> from the zone on the next apply. Omitting the key entirely is treated as an empty array, which is a delete-all intent that the destructive guard will block. Always send the complete desired set.' %}
+
+Read the current set from `attributes.config.extra_dns_records` in the status payload, modify it, and send it back whole. Only flag-only updates, such as toggling `enable_www_redirect`, skip the record reconciliation.
+
+### Destructive change guard
+
+A payload whose diff would delete **all** managed records, **5 or more** records at once, or **more than half** of the set is rejected with `422` and nothing is persisted:
+
+```json
+{
+  "errors": ["Destructive DNS change blocked: ... would delete: ..."]
+}
+```
+
+The message lists the records that would be deleted. If the deletion is intentional, re-send the same payload with `"confirm_destructive": true`.
+
+### Validation errors
+
+Invalid payloads return `422` with per-record errors:
+
+```json
+{
+  "errors": {
+    "base": {},
+    "dns_records": [{}]
+  }
+}
+```
+
+`base` holds errors about the domain itself and `dns_records` holds one object per submitted record, in the same order as the request.
+
+### proxied records
+
+Set `proxied: true` on a record to request an orange-cloud, Cloudflare-proxied record. A typical use is a subdomain inside a `domain-full` zone that hosts another site set up as an external domain.
+
+- Only valid on `A`, `CNAME` and `ALIAS` records. Other types return `422`, because proxying DNS-consumed record types is meaningless.
+- Cloudflare forces the TTL of proxied records to auto (`1`). The submitted `ttl` is ignored while the record is proxied.
+- Only proxy records whose traffic is HTTP(S) and whose target is reachable through Cloudflare. Proxying a target that lives in another Cloudflare account can produce Cloudflare error 1014.
+- `CNAME` records that chain into the platform entry point (the `www` record and any record pointing at the zone apex) are proxied automatically, regardless of this flag. An explicit `false` does not override that. This keeps resolution working on Android system DNS clients, see [Changelog](#changelog).
+- `details.extra_dns_records[].proxied` reflects the live proxy status.
+
+### Responses
+
+| status | meaning |
+|---|---|
+| `200` | the request was accepted. The body contains the provision snapshot under `data` (`status`, `attributes.config`, `locked` and so on), a `message`, and echoes your payload under `requested`. Provisioning continues asynchronously, poll `GET /api/domains/status` |
+| `409` | the domain is currently being deleted. Retry shortly |
+| `422` | validation error or destructive change blocked, see above |
+
+## POST /api/domains/:name/refresh
+
+Forces Cloudflare to re-attempt ownership and SSL validation, which clears the Cloudflare retry backoff. Call it after the customer has added the requested DNS records.
+
+```bash
+curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer [[TOKEN]]" \
+  -d '{"instance_uuid": "[[UUID]]", "name": "[[DOMAIN_NAME]]"}' \
+  "[[PORTAL_URL]]/api/domains/[[DOMAIN_NAME]]/refresh"
+```
+
+| status | meaning |
+|---|---|
+| `200` | returns the current status payload under `data` immediately. The re-check runs asynchronously. Also returned, as a no-op, when a job is already running |
+| `409` | the domain has no provision yet |
+
+## DELETE /api/domains/:name
+
+Tears the domain down asynchronously: custom hostnames, managed records and, for `domain-full`, the zone itself. The domain and its `www.` sibling are removed from the Instance configuration. No confirmation flag is required.
+
+```bash
+curl -X DELETE -H "Authorization: Bearer [[TOKEN]]" \
+  "[[PORTAL_URL]]/api/domains/[[DOMAIN_NAME]]?instance_uuid=[[UUID]]"
+```
+
+The response contains `data.status` set to `destroying`.
+
+{% include 'alert/note', content: 'A `domain-full` domain registered through <strong>Cloudflare Registrar</strong> cannot have its zone deleted (Cloudflare error 1315). The custom hostnames and every record platformOS managed are still removed and the domain is released from the Instance, but the zone itself stays in the customer Cloudflare account.' %}
+
+## Removed endpoints
+
+- `GET /api/domains/request_log` was **removed in July 2026** together with the legacy DNS service and now returns `404`. Operation history is available through `last_operation_status` in the status payload.
+
+## Status lifecycle
+
+| status | meaning | what to do |
+|---|---|---|
+| `""` (empty string) | the entry exists but was never provisioned, for example `www.` sibling rows | skip these when iterating |
+| `initializing` | provisioning has started | wait |
+| `reparking_domain` | `domain-full` only: waiting for the name server delegation | have the customer delegate the domain to `details.dns_zone_name_servers` at their registrar |
+| `ownership_verification_pending` | waiting for ownership validation | have the customer create the records from `details.dns_verification_records` and the routing records, then call `POST /api/domains/:name/refresh` |
+| `ownership_verification_pending` with `substatus: ssl_validation_pending` | ownership is verified, the certificate is still being issued | wait |
+| `ready` | the domain is live | nothing |
+| `destroying` | the domain is being torn down | wait, the entry disappears when done |
+| `not_found`, `unknown`, `validation_timed_out` | attention needed | verify the records at the DNS provider, call refresh, and contact support if it does not recover |
+
+Poll with backoff. The transitions depend on DNS changes made by the customer and on Cloudflare validation, so there is no upper bound on how long a domain stays pending. Surface `details.dns_verification_records` and the routing records to the customer while the domain is pending.
+
+## What the customer must configure
+
+### domain-full
+
+Delegate the name servers at the registrar to the pair in `details.dns_zone_name_servers`. Nothing else is needed: all records are managed through this API.
+
+### domain-external, provider supports ALIAS or CNAME flattening at the apex
+
+| name | type | value |
+|---|---|---|
+| `[[DOMAIN_NAME]]` | `ALIAS` or flattened `CNAME` | `details.private_lb_cname` |
+| `www.[[DOMAIN_NAME]]` | `CNAME` | `details.private_lb_cname` |
+| `_acme-challenge.[[DOMAIN_NAME]]` | `CNAME` | from `details.dns_verification_records` |
+| `_acme-challenge.www.[[DOMAIN_NAME]]` | `CNAME` | from `details.dns_verification_records` |
+
+### domain-external, A record only provider (apex cannot reach Cloudflare)
+
+| name | type | value |
+|---|---|---|
+| `[[DOMAIN_NAME]]` | `A` | `details.lb_public_ip` |
+| `www.[[DOMAIN_NAME]]` | `CNAME` | `details.private_lb_cname` |
+| `_acme-challenge.www.[[DOMAIN_NAME]]` | `CNAME` | from `details.dns_verification_records` |
+
+In this variant the load balancer redirects the apex to `www` over plain HTTP, and HTTPS is served on `www` only.
+
+{% include 'alert/important', content: 'Always read the routing target from `details.private_lb_cname` instead of hard-coding it. Since July 2026 the target is `cname.<parent zone>`. The previous `_fallback.<parent zone>` target keeps resolving, but domains still pointing at it fail on Android system DNS clients. Repoint them.' %}
+
+## Quickstart: onboarding flow
+
+The example below onboards a `domain-external` domain with the www redirect. Set `TOKEN` and `UUID` first, and replace `[[PORTAL_URL]]` with the URL of your Partner Portal.
+
+```bash
+BASE=[[PORTAL_URL]]/api   # the Partner Portal of your private stack
+AUTH="Authorization: Bearer $TOKEN"
+
+# 1. Create the domain
+curl -X POST "$BASE/domains" -H "$AUTH" -H 'Content-Type: application/json' -d '{
+  "instance_uuid": "'$UUID'", "name": "customer.com",
+  "setup_type": "domain-external", "use_as_default": true,
+  "enable_www_redirect": true }'
+
+# 2. Read what the customer must configure
+curl "$BASE/domains/status?instance_uuid=$UUID&name=customer.com&version=2" -H "$AUTH" \
+  | jq '.details | {private_lb_cname, lb_public_ip, dns_verification_records}'
+
+# 3. The customer adds the records at their DNS provider (see the tables above)
+
+# 4. Nudge validation once the records are in place
+curl -X POST "$BASE/domains/customer.com/refresh" -H "$AUTH" -H 'Content-Type: application/json' \
+  -d '{"instance_uuid": "'$UUID'", "name": "customer.com"}'
+
+# 5. Poll until ready
+curl "$BASE/domains/status?instance_uuid=$UUID&name=customer.com&version=2" -H "$AUTH" | jq .status
+# "ownership_verification_pending" (with substatus "ssl_validation_pending") then "ready"
+
+# 6. Tear down when no longer needed
+curl -X DELETE "$BASE/domains/customer.com?instance_uuid=$UUID" -H "$AUTH"
+```
+
+For `domain-full` the flow is the same with `"setup_type": "domain-full"` and a registrable root domain. Steps 2 and 3 become "delegate the name servers to `details.dns_zone_name_servers`", and `extra_dns_records` carries the mail and service records of the customer.
+
+## Changelog
+
+### July 2026
+
+1. **`GET /api/domains/request_log` removed**. It returns `404`. Use `last_operation_status` in the status payload instead.
+2. **Destructive change guard**. Payloads that would bulk-delete managed records now return `422` with the list of records that would be deleted. Intentional clears must send `"confirm_destructive": true`. Previously such payloads executed silently.
+3. **TXT values in canonical quoted form**. TXT records are stored and echoed the way Cloudflare stores them, wrapped in double quotes. Treat quoted and unquoted values as equal.
+4. **`substatus` field added** (additive). `ssl_validation_pending` distinguishes "ownership verified, certificate pending" within `ownership_verification_pending`.
+5. **`proxied` flag on `extra_dns_records`** (optional, additive), see the `POST /api/domains` section. `details.extra_dns_records` now includes the live proxy status.
+6. **Routing target renamed**. `private_lb_cname` now returns `cname.<parent zone>` instead of `_fallback.<parent zone>`. The Android system resolver rejects DNS names containing underscore labels anywhere in a CNAME answer chain, so a customer domain chained through `_fallback.*` fails to resolve for Android visitors using system DNS, while working on desktop, iOS and any browser using DNS over HTTPS. The legacy target keeps resolving indefinitely, but is no longer issued to new setups. Existing external domains still pointing at it remain affected on Android until the customer repoints the CNAME at their DNS provider. Both targets route identically on the platform side.
+7. **Managed-zone CNAMEs chaining into the platform are proxied automatically**. In `domain-full` zones, the `www` record and any record pointing at the zone apex are now Cloudflare-proxied (TTL auto). Proxied records are flattened at the edge, so resolvers receive direct `A` answers and never see the chain. DNS answers for `www.[[DOMAIN_NAME]]` changed shape, serving is unchanged. These records are re-proxied on every apply and cannot be switched off.
+8. **`POST /api/domains/:name/refresh` added**, see above.
+9. **One-time configuration convergence**. The fleet-wide apply on 2026-07-27 also brought live any records that were configured in the Partner Portal but had never propagated. If a customer reports a subdomain or DKIM record changing on that date, check `last_operation_status` before treating it as an error: the recorded configuration simply took effect.
+10. **Planned, not yet live**: a `409` conflict response for concurrent domain-list updates. Clients should already treat `409` as retryable.
+
+### Earlier changes
+
+- **2024-01-18**: API versioning. The management of `www` records changed, but the API stayed backward compatible: the `www` `CNAME` record is hidden from responses by default. Send `version=2` to receive all records.
+- **2023-11-20**: the www redirect became optional, see `enable_www_redirect`.
+
+## Known limitations
+
+These are tracked and will change. Do not rely on them:
+
+- The read endpoints (`GET /api/domains` and `GET /api/domains/status`) currently require **write** access to the Instance.
+- `POST /api/domains` treats `extra_dns_records` as full state, while the DNS editor in the Partner Portal UI merges changes into the existing set. Aligning the two behaviors is planned.

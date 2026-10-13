@@ -1,0 +1,334 @@
+---
+metadata:
+  title: Partner Portal API - Domains and DNS (shared stack)
+  description: Manage the domains of your Instance on the shared platformOS stack programmatically using the AWS-based Partner Portal DNS API.
+  toc: true
+converter: markdown
+---
+
+{{ page.metadata.description }}
+
+{% include 'alert/note', content: 'This page applies to Instances hosted on the shared, multi-tenant platformOS stack managed through [partners.platformos.com](https://partners.platformos.com), where DNS is AWS-based. Instances hosted on a private stack use the Cloudflare-based API documented on [Domains and DNS (private stack)](/api-reference/partner-portal/api/dns-private-stack).' %}
+
+## release notes
+
+### 2024-01-22
+- updated domain status response [exaple](#domain-status-response) and [fields description](#response-fields-description)
+- BUGFIX: last_operation_status did not show last entry
+
+### 2024-01-18
+- API Versioning
+  Although we have changed the management of www records, the API has remained backward compatible. For example, the www CNAME record is hidden in replies by default.
+  To access www records, please include the version=2 parameter in requests.
+
+### 2024-01-11
+- SPF record has been removed from available types in Partner Portal
+- added information about [www redirection](#domain-status-response) to `/api/domain/status`.
+  key `www_redirect.enabled: <BOOLEAN>`
+
+### 2023-11-20
+- www redirection is optional from now on. See [enable_www_redirect](#enable_www_redirect)
+
+### 2019-12-11
+- added `/api/domains/request_log` [endpoint](#fetch-log-for-a-specific-request)
+- added missing [data](#domain-status-response) to `/api/domain/status` [redirection and use_as_default settings]
+- added [description](#create-domain-response) for create-domain response
+- fixed issue with slow `/api/domain/status` endpoint
+  `_changelog` property has been removed from the response and will be provided
+  as a separate endpoint
+
+## roadmap TBD
+
+- DNS records instant validation
+- display information about default domain on top level also
+- allow email verification
+
+## about variables in code snippets
+
+| variable | description  |
+|----------|--------------|
+| [[TOKEN]]    | PP-JWT |
+| [[UUID]]     | PRODUCTION INSTANCE UUID |
+| [[VERSION]]  | API Version, empty or 2 to get all records |
+
+## GET /api/domains?instance_uuid=[[UUID]]&version=[[VERSION]]
+get all domains for instance
+
+    Authorization: [[TOKEN]]
+
+## GET /api/domains/status?instance_uuid=[[UUID]]&name=[[DOMAIN_NAME]]&version=[[VERSION]]
+get a [[DOMAIN_NAME]] domain data
+
+    Authorization: [[TOKEN]]
+
+### Domain Status Response
+
+```json
+{
+    "has_pending": true,
+    "last_operation_status": {
+        "command": "apply",
+        "instance_uuid___domain": "4fedfa5c-89ea-4a04-9699-a7b98b8d2e8f___loremup.com",
+        "message": [
+            "Error: [ERR]: Error building changeset: InvalidChangeBatch: [Invalid Resource Record: 'FATAL problem: DomainLabelTooLong (Domain label is too long) encountered with 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'', Unparseable CNAME encountered]"
+        ],
+        "request_params": "{\"extra_dns_records\"=>[{\"id\"=>\"XXXXXXXXXXXXX6_api_CNAME\", \"ttl\"=>3600, \"name\"=>\"api\", \"type\"=>\"CNAME\", \"records\"=>[\"loremup.com\"]}, {\"id\"=>\"XXXXXXXXXXXXX6_www2_CNAME\", \"ttl\"=>3600, \"name\"=>\"www2\", \"type\"=>\"CNAME\", \"records\"=>[\"loremup.com\"]}, {\"id\"=>\"XXXXXXXXXXXXX6_docs_CNAME\", \"ttl\"=>7200, \"name\"=>\"docs\", \"type\"=>\"CNAME\", \"records\"=>[\"loremup.com\"]}, {\"id\"=>\"XXXXXXXXXXXXXX__TXT\", \"ttl\"=>300, \"name\"=>\"\", \"type\"=>\"TXT\", \"records\"=>[\"loremup.com\", \"extraquoted\"]}, {\"id\"=>\"XXXXXXXXXXXXX6_txt_TXT\", \"ttl\"=>300, \"name\"=>\"txt\", \"type\"=>\"TXT\", \"records\"=>[\"loremup.com\", \"extraquoted\"]}, {\"id\"=>\"XXXXXXXXXXXXX6_www_CNAME\", \"ttl\"=>3600, \"name\"=>\"www\", \"type\"=>\"CNAME\", \"records\"=>[\"loremup.com\"]}, {\"ttl\"=>\"3600\", \"name\"=>\"txt2\", \"type\"=>\"CNAME\", \"records\"=>[\"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"]}]}",
+        "request_uuid": "fdf6aa6a-4f6c-48b6-b97c-a6b3cc8d89f9",
+        "requested_at": "2024-01-22 15:44:01 +0000",
+        "status": "error"
+    },
+    "locked": false,
+    "status": "ready",
+    "www_redirect": {
+        "enabled": true
+    },
+
+    "attributes": {
+        "config": {
+            "_domains": [
+                {
+                    "name": "loremup.com",
+                    "redirect_code": 302,
+                    "redirect_to": "https://www.loremup.com",
+                    "use_as_default": false
+                },
+                {
+                    "name": "www.loremup.com",
+                    "redirect_code": null,
+                    "redirect_to": null,
+                    "use_as_default": true
+                }
+            ],
+            "extra_dns_records": [
+                {
+                    "id": "XXXXXXXXXXXXX6_api_CNAME",
+                    "name": "api",
+                    "records": [
+                        "loremup.com"
+                    ],
+                    "ttl": 3600,
+                    "type": "CNAME"
+                },
+                {
+                    "id": "XXXXXXXXXXXXX6_docs_CNAME",
+                    "name": "docs",
+                    "records": [
+                        "loremup.com"
+                    ],
+                    "ttl": 7200,
+                    "type": "CNAME"
+                },
+                {
+                    "id": "XXXXXXXXXXXXX6_txt_TXT",
+                    "name": "txt",
+                    "records": [
+                        "loremup.com",
+                        "extraquoted"
+                    ],
+                    "ttl": 300,
+                    "type": "TXT"
+                },
+                {
+                    "name": "txt2",
+                    "records": [
+                        "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                    ],
+                    "ttl": "3600",
+                    "type": "CNAME"
+                }
+            ]
+        },
+        "data_center": "production-sydney",
+        "domain_name": "loremup.com",
+        "instance_uuid": "4fedfa5c-89ea-4a04-9699-a7b98b8d2e8f",
+        "setup_type": "domain-full"
+    },
+    "details": {
+        "_lb_dns_name": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.ap-southeast-2.elb.amazonaws.com",
+        "dns_zone_name_servers": [
+            "xxxxxxxxxxxxxxxx0.org",
+            "xxxxxxxxxxxxxxxx1.co.uk",
+            "xxxxxxxxxxxxxxxx.com",
+            "xxxxxxxxxxxxxxxx.net"
+        ],
+        "extra_dns_records": [
+            {
+                "fqdn": "txt.loremup.com",
+                "id": "XXXXXXXXXXXXX6_txt_TXT",
+                "name": "txt",
+                "records": [
+                    "extraquoted",
+                    "loremup.com"
+                ],
+                "ttl": 300,
+                "type": "TXT"
+            },
+            {
+                "fqdn": "api.loremup.com",
+                "id": "XXXXXXXXXXXXX6_api_CNAME",
+                "name": "api",
+                "records": [
+                    "loremup.com"
+                ],
+                "ttl": 3600,
+                "type": "CNAME"
+            },
+            {
+                "fqdn": "docs.loremup.com",
+                "id": "XXXXXXXXXXXXX6_docs_CNAME",
+                "name": "docs",
+                "records": [
+                    "loremup.com"
+                ],
+                "ttl": 7200,
+                "type": "CNAME"
+            },
+            {
+                "fqdn": null,
+                "id": null,
+                "name": "txt2",
+                "records": [
+                    "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                ],
+                "ttl": 3600,
+                "type": "CNAME"
+            }
+        ],
+        "status": "ready"
+    }
+  }
+```
+
+### Response fields description
+
+| field name | description |
+|-------------|-------------|
+| attributes | configuration requested to be applied |
+| details | current state is pOS DNS system |
+| status | status of domain: see breakdown below |
+| www_redirect.enabled | true if the domain redirects to www subdomain. |
+| has_pending <boolean> | A general flag indicating whether any of the additional DNS records are pending. A DNS record is pending if its body does not contain an ID or the ID is null |
+| **last_operation_status** ||
+| last_operation_status.message | error message if any |
+| last_operation_status.request_params | body of request |
+| last_operation_status.request_uuid | uuid of last request |
+| last_operation_status.requested_at | datetime of request |
+| last_operation_status.status | status of operation: error or ready |
+
+### Domain statuses by setup_type:
+
+#### domain-external
+
+| status                         | response key | action requested |
+|--------------------------------|--------------|--|
+| ownership_verification_pending | `details.dns_verification_records`| the key contains CNAME records to be added to 3rd party DNS Zone
+| ready                          | `detail.private_lb_cname`| the key contains ALIAS to be used as a target for your domain - to set in 3rd part DNS Zone
+
+#### domain-full
+
+| status                         | response key | action requested |
+|--------------------------------|--------------|--|
+|reparking_domain| `details.dns_zone_name_servers`| re-configure your domain Name Servers to
+| ready          | |  None. Domain is set. |
+
+
+## POST /api/domains
+
+there is only single endpoint for either creating or updating domain and works like upsert: if domain exists then will be updated otherwise will be created
+
+### create a domain hosted on platformOS
+
+    Authorization: [[TOKEN]]
+    Content-Type: application/json
+    {
+      "instance_uuid": "[[UUID]]",
+      "name": "loremup.com",
+      "setup_type": "domain-full",
+      "enable_www_redirect": true
+      "use_as_default": true,
+      "extra_dns_records": [
+        { "name": "api", "type": "CNAME", "records": ["loremup.com"], "ttl": 3600 },
+        { "name": "docs", "type": "CNAME", "records": ["loremup.com"], "ttl": 7200 }
+      ]
+    }
+
+### request payload parameters:
+#### setup_type
+[STRING, required, allowed values: domain-full OR domain-external]
+
+- domain-full
+  Domain Zone.
+  Choose this option if you want to create a DNS Zone and manage the DNS through the Partner Portal. You can fully configure your domain, add any necessary DNS records, add MX records for mail boxes, etc all here.
+
+- domain-external
+  External DNS management.
+  Choose this option if you want to manage the DNS through a 3rd party solution. After confirming right to your domain, you will be provided a Load Balancer DNS Name [FQDN] to which you will need to point your domain, within your 3rd party solution.<br>NOTE: your DNS solution must provide for the acceptance of Fully Qualified Domain Names!
+
+#### enable_www_redirect
+[BOOLEAN]
+
+if `true` the www redirection will be set up.
+(As a result of requesting `[[domain]]` you will be redirected to `www.[[domain]]`)
+Additionally `www.[[domain]]` CNAME record will be automatically added to the `extra_dns_records`.
+
+#### extra_dns_records [OBJECT]
+
+array of DNS records to be created in the DNS ZONE
+
+- name
+  Record name without root domain
+- type
+  A TXT ALIAS CNAME MX PTR SRV SPF NS
+- ttl
+  TTL
+- records
+  array of values
+
+### create external-type domain
+
+    POST /api/domains
+    Authorization: [[TOKEN]]
+    Content-Type: application/json
+
+    {
+      "instance_uuid": "[[UUID]]",
+      "name": "loremup.com",
+      "setup_type": "domain-external",
+      "enable_www_redirect": true
+    }
+
+### response
+
+a domain creation is an asynchronous process so a direct response does not contain
+information about if request was either successful or failed
+
+however the create-domain response contains `request_uuid` which can be used as
+parameter in `/api/domains/request_log`
+
+    {
+      "data": {
+        "request_uuid": "4fc76ae6-fccf-4713-b5fc-30344f7a0128"
+      },
+      "message": "We are processing your request."
+    }
+
+where user can find more information
+
+
+## GET /api/domains/request_log?instance_uuid=[[UUID]]&name=[[domain]]&request_uuid=[[REQUEST_UUID]]
+fetch log for a specific request
+
+    Authorization: [[TOKEN]]
+    Content-Type: application/json
+
+    {
+      "data": {
+        "status": "done",
+        "message": [
+          "Apply complete! Resources: 4 added, 1 changed, 16 destroyed."
+        ],
+        "requested_at": "2019-12-11 17:04:21 +0000",
+        "request_uuid": "59583fff-793f-44a1-9e75-f08e3aaca013",
+        "instance_uuid__domain": "4fedfa5c-89ea-4a04-9699-a7b98b8d2e8f___loremup.com",
+        "request_params": null
+      }
