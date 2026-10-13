@@ -59,3 +59,13 @@
     </li>
   {% endfor %}
 {% endif %}
+
+<li class="{% if cp contains '/partner-portal' %}active{% endif %}">
+  <a href="/api-reference/partner-portal/api">Partner Portal API</a>
+
+  <ul class="submenu">
+    {% include "shared/nav/link", href: "/api-reference/partner-portal/api", text: "Instances, Partners, Modules, Billing" %}
+    {% include "shared/nav/link", href: "/api-reference/partner-portal/api/dns-shared-stack", text: "Domains and DNS: shared stack (AWS)" %}
+    {% include "shared/nav/link", href: "/api-reference/partner-portal/api/dns-private-stack", text: "Domains and DNS: private stack (Cloudflare)" %}
+  </ul>
+</li>
