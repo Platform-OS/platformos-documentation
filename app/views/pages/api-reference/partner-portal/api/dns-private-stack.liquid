@@ -414,6 +414,10 @@ For `domain-full` the flow is the same with `"setup_type": "domain-full"` and a 
 2. **Failed teardowns are visible.** A domain whose teardown failed stays at `destroying` with the error in `last_operation_status`; a repeat `DELETE` retries. `POST /api/domains` and `POST /api/domains/:name/refresh` answer `409` for a domain that is being deleted.
 3. **Routing-only domains.** A name added with `POST /api/tasks/instance/set-domains` is listed in the Partner Portal as "Routing only", with view and delete and a page that offers the DNS setup. See [Routing-only domains](#routing-only-domains).
 4. **Apex routing record.** The apex record the apply writes into a new `domain-full` zone points at `cname.<parent zone>`, the same label `details.private_lb_cname` hands out. Existing zones are not rewritten; both labels route identically.
+5. **No changes while a job is running.** While a DNS job holds a domain, the Partner Portal hides the configuration form, the validation re-check, the admin refresh and the delete button on the domain's page, and a delete request is refused. Previously a delete clicked during an apply removed the domain from routing while the job skipped the teardown.
+6. **"Delete DNS Zone" button restored.** The button on a domain's page in the Partner Portal had not rendered since the inline DNS rewrite, leaving only the superadmin link.
+7. **Opening the `www.` entry of a domain.** Opening the `www.` entry directly in the Partner Portal showed a "not provisioned" page whose setup links and delete acted on the live domain. It now opens the domain's own page.
+8. **Customer domains containing the stack's host name.** A customer domain whose name merely contained the stack's host name, such as `my-example-stack.com` on a stack at `example-stack.com`, was shown as the system domain with no view and no delete. The check is now exact.
 
 ### July 2026
 
