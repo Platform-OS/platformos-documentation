@@ -52,11 +52,21 @@ Customer DNS records that platformOS manages inside a `domain-full` zone: `MX`, 
 
 ### www redirect
 
-When `enable_www_redirect` is on, `www.[[DOMAIN_NAME]]` is the canonical host and the apex domain answers with a `302` redirect to it. Enabling it provisions a second custom hostname for `www`.
+When `enable_www_redirect` is on, `www.[[DOMAIN_NAME]]` is the canonical host and the apex domain redirects to it: with a `301` served by the Cloudflare zone for `domain-full`, with a `302` served by the platform for `domain-external`. Enabling it provisions a second custom hostname for `www`.
 
 ### Asynchronous processing
 
 One **DnsProvision** record per domain tracks the desired state (`config`) and the lifecycle (`status`). All mutations are **asynchronous**: the API persists your intent, enqueues a worker, and returns immediately. Poll the status endpoint afterwards.
+
+### Existing zones are adopted
+
+For `domain-full`, the apply first looks for a zone of that name in the Cloudflare account of the stack. If one exists, it is **adopted**: the domain is bound to it as it is, and only when no such zone exists is a new one created. This is what happens for a domain registered through Cloudflare Registrar in that account, whose zone has to live there, and for any zone created by hand before the domain was added.
+
+In an adopted zone the apply writes only its own records: the routing record at the apex, the `www` record, the `_acme-challenge` delegation record for certificate validation, and the records you send in `extra_dns_records`. Everything else in the zone is left alone, and the zone is never deleted, see [DELETE /api/domains/:name](#delete-api-domains-name).
+
+### Routing-only domains
+
+`POST /api/tasks/instance/set-domains`, the generic command endpoint, replaces the list of hostnames the Instance answers to and sets **routing only**. A name added that way gets no DNS zone, no custom hostname and no certificate: `GET /api/domains/status` returns `status: ""` and `details: null` for it, and the Partner Portal lists it as "Routing only" with view and delete. To add a domain whose DNS and certificate the Portal manages, use `POST /api/domains` with a `setup_type`. `DELETE /api/domains/:name` removes a routing-only domain too, together with its `www.` sibling, as does sending `set-domains` again without the name.
 
 ## GET /api/domains
 
@@ -150,7 +160,7 @@ Both `GET /api/domains` and `GET /api/domains/status` return this shape per doma
 
 | field | description |
 |---|---|
-| `status` | lifecycle status of the domain, see [Status lifecycle](#status-lifecycle). An empty string means the entry exists but was never provisioned |
+| `status` | lifecycle status of the domain, see [Status lifecycle](#status-lifecycle). An empty string means the entry exists but was never provisioned: a `www.` sibling row or a [routing-only domain](#routing-only-domains) |
 | `substatus` | additive detail: `ssl_validation_pending` or `null` |
 | `locked` | `true` while a worker job is running for this domain |
 | `has_pending` | `true` when some desired record is not live yet |
@@ -160,7 +170,7 @@ Both `GET /api/domains` and `GET /api/domains/status` return this shape per doma
 | `attributes.config.extra_dns_records` | the managed records you requested |
 | `attributes.config.enable_www_redirect` | the requested www redirect setting |
 | `attributes.config._domains` | the domain entries of the Instance with their redirect and `use_as_default` settings |
-| `details` | the **observed state** in the DNS system. `null` until the first provisioning run |
+| `details` | the **observed state** in the DNS system. `null` until the first provisioning run, and always `null` for a routing-only domain |
 | `details.zone_status` | Cloudflare zone status (`domain-full`) |
 | `details.hostname_status` | Cloudflare custom hostname status |
 | `details.dns_zone_name_servers` | `domain-full`: the name server pair the customer has to delegate to |
@@ -223,6 +233,12 @@ Each entry of `extra_dns_records` is an object:
 
 Read the current set from `attributes.config.extra_dns_records` in the status payload, modify it, and send it back whole. Only flag-only updates, such as toggling `enable_www_redirect`, skip the record reconciliation.
 
+### Records that already exist in the zone
+
+This matters for an [adopted zone](#existing-zones-are-adopted) that already carries records. A submitted record that collides with one already in the zone, same name and type for `A`, `AAAA` and `CNAME`, or an identical value for `TXT` and `NS`, is **taken over**: the existing record is updated to the submitted value and is managed by the Portal from then on, which includes being removed on delete. A `TXT` record whose value differs from the existing one at the same name does not collide and is created next to it.
+
+{% include 'alert/important', content: 'For a zone that already carries mail records, leave `MX`, SPF and DMARC out of `extra_dns_records` unless you want the Portal to own them. Re-sending an existing record hands it to the Portal and a later delete removes it; sending an SPF record whose text differs from the existing one creates a second SPF record, which makes SPF validation fail.' %}
+
 ### Destructive change guard
 
 A payload whose diff would delete **all** managed records, **5 or more** records at once, or **more than half** of the set is rejected with `422` and nothing is persisted:
@@ -281,11 +297,11 @@ curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer [[TOK
 | status | meaning |
 |---|---|
 | `200` | returns the current status payload under `data` immediately. The re-check runs asynchronously. Also returned, as a no-op, when a job is already running |
-| `409` | the domain has no provision yet |
+| `409` | the domain has no provision yet, or it is being deleted: a re-check would overwrite the `destroying` status |
 
 ## DELETE /api/domains/:name
 
-Tears the domain down asynchronously: custom hostnames, managed records and, for `domain-full`, the zone itself. The domain and its `www.` sibling are removed from the Instance configuration. No confirmation flag is required.
+Tears the domain down asynchronously and removes the domain and its `www.` sibling from the Instance configuration. No confirmation flag is required.
 
 ```bash
 curl -X DELETE -H "Authorization: Bearer [[TOKEN]]" \
@@ -294,7 +310,21 @@ curl -X DELETE -H "Authorization: Bearer [[TOKEN]]" \
 
 The response contains `data.status` set to `destroying`.
 
-{% include 'alert/note', content: 'A `domain-full` domain registered through <strong>Cloudflare Registrar</strong> cannot have its zone deleted (Cloudflare error 1315). The custom hostnames and every record platformOS managed are still removed and the domain is released from the Instance, but the zone itself stays in the customer Cloudflare account.' %}
+### What a delete removes and keeps
+
+In every case the custom hostnames are removed and the records the Portal manages are deleted: the records it created from `extra_dns_records`, the records it [took over](#records-that-already-exist-in-the-zone), the routing record at the apex, the `www` record, the `_acme-challenge` delegation record and its own apex-to-`www` redirect rule.
+
+What happens to a `domain-full` zone depends on who created it:
+
+- A zone the apply created is deleted.
+- A zone that already existed in the Cloudflare account when the domain was set up is **kept**, whatever the registrar. The records above are stripped out of it; the records and redirect rules that were there before are untouched, and so are the zone settings the apply turned on. The Portal decides from its own record of whether it created the zone, with the creation date of the zone as a backstop for domains set up before that record existed.
+- A zone that is already gone is skipped.
+
+A domain registered through **Cloudflare Registrar** always falls under the second case: its zone has to stay in the registering account and Cloudflare refuses to delete it (error 1315). There is no separate call to detach a domain while leaving its zone; for a pre-existing zone, `DELETE` is effectively that.
+
+### Failed teardown
+
+A teardown that fails leaves the domain at `destroying`. `last_operation_status` carries the error (`operation: "destroy"`, `status: "failed"`), the Partner Portal shows it on the domain, and a repeat `DELETE` retries. While a domain is `destroying`, `POST /api/domains` for that name and `POST /api/domains/:name/refresh` answer `409`, since either would overwrite the status and leave a failed teardown looking healthy.
 
 ## Removed endpoints
 
@@ -304,13 +334,13 @@ The response contains `data.status` set to `destroying`.
 
 | status | meaning | what to do |
 |---|---|---|
-| `""` (empty string) | the entry exists but was never provisioned, for example `www.` sibling rows | skip these when iterating |
+| `""` (empty string) | the entry exists but was never provisioned: `www.` sibling rows, [routing-only domains](#routing-only-domains) | skip these when iterating |
 | `initializing` | provisioning has started | wait |
 | `reparking_domain` | `domain-full` only: waiting for the name server delegation | have the customer delegate the domain to `details.dns_zone_name_servers` at their registrar |
 | `ownership_verification_pending` | waiting for ownership validation | have the customer create the records from `details.dns_verification_records` and the routing records, then call `POST /api/domains/:name/refresh` |
 | `ownership_verification_pending` with `substatus: ssl_validation_pending` | ownership is verified, the certificate is still being issued | wait |
 | `ready` | the domain is live | nothing |
-| `destroying` | the domain is being torn down | wait, the entry disappears when done |
+| `destroying` | the domain is being torn down | wait, the entry disappears when done. If it stays, `last_operation_status` says why and a repeat `DELETE` retries, see [Failed teardown](#failed-teardown) |
 | `not_found`, `unknown`, `validation_timed_out` | attention needed | verify the records at the DNS provider, call refresh, and contact support if it does not recover |
 
 Poll with backoff. The transitions depend on DNS changes made by the customer and on Cloudflare validation, so there is no upper bound on how long a domain stays pending. Surface `details.dns_verification_records` and the routing records to the customer while the domain is pending.
@@ -377,6 +407,13 @@ curl -X DELETE "$BASE/domains/customer.com?instance_uuid=$UUID" -H "$AUTH"
 For `domain-full` the flow is the same with `"setup_type": "domain-full"` and a registrable root domain. Steps 2 and 3 become "delegate the name servers to `details.dns_zone_name_servers`", and `extra_dns_records` carries the mail and service records of the customer.
 
 ## Changelog
+
+### October 2026
+
+1. **Existing zones are kept on delete.** A `domain-full` zone that already existed in the Cloudflare account when the domain was set up, a Cloudflare Registrar domain above all, is no longer deleted. The Portal's records are stripped out of it and the customer's own records and redirect rules stay. Previously such a delete failed on the zone (Cloudflare error 1315 for Registrar domains) and left the domain stuck at `destroying`. See [DELETE /api/domains/:name](#delete-api-domains-name).
+2. **Failed teardowns are visible.** A domain whose teardown failed stays at `destroying` with the error in `last_operation_status`; a repeat `DELETE` retries. `POST /api/domains` and `POST /api/domains/:name/refresh` answer `409` for a domain that is being deleted.
+3. **Routing-only domains.** A name added with `POST /api/tasks/instance/set-domains` is listed in the Partner Portal as "Routing only", with view and delete and a page that offers the DNS setup. See [Routing-only domains](#routing-only-domains).
+4. **Apex routing record.** The apex record the apply writes into a new `domain-full` zone points at `cname.<parent zone>`, the same label `details.private_lb_cname` hands out. Existing zones are not rewritten; both labels route identically.
 
 ### July 2026
 
