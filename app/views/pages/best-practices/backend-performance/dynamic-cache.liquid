@@ -5,7 +5,7 @@ metadata:
   description: Detailed description of dynamic page cache, with examples.
 ---
 
-**Dynamic cache** works similarly to static cache, you can use it to cache the whole page, but the difference is that it triggers authorization, so it works for logged in users as well.
+**Dynamic cache** lets you cache the whole page. Authorization still runs on every request, so it works for logged in users as well. The cache is shared by all application servers, so every visitor gets consistent results.
 
 Whenever you change something on the page and deploy it, the cache will be invalidated.
 In reality, it's rarely possible to cache the whole page or layout (this is why `layout` is `false` by default).
