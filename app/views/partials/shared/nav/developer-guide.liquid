@@ -38,6 +38,17 @@
   </ul>
 </li>
 
+<li class="{% if cp contains '/developer-guide/ai/' %}active{% endif %}">
+  <a href="/developer-guide/ai/ai">AI - Agent Kit</a>
+  {% if cp contains '/developer-guide/ai/' %}
+    <ul class="submenu">
+      {% include "shared/nav/link", href: "/developer-guide/ai/ai", text: "Overview" %}
+      {% include "shared/nav/link", href: "/developer-guide/ai/mcp-servers", text: "MCP Servers" %}
+      {% include "shared/nav/link", href: "/developer-guide/ai/agent-playbook", text: "platformOS Agent Playbook" %}
+    </ul>
+  {% endif %}
+</li>
+
 <li class="{% if cp contains 'developer-guide/platformos-check' %}active{% endif %}">
   <a href="/developer-guide/platformos-check/platformos-check">platformOS Check</a>
   <ul class="submenu">

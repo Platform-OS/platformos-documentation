@@ -1,0 +1,117 @@
+---
+metadata:
+  title: MCP Servers
+  description: The four platformOS MCP servers - the instance server and its tool profiles, the validation server, and the hosted Liquid and GraphQL knowledge servers.
+converter: markdown
+---
+
+Four MCP servers make up the platformOS agent surface. [`pos-cli ai init`](/get-started/ai-assisted-development#set-up-your-ai-tool) registers them for you; this page is what each one is and how to configure it.
+
+## platformos-cli — the instance server
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+pos-cli mcp
+</code></pre>
+
+Operations against a platformOS instance. It runs on your machine, under your own credentials, and `pos-cli ai init` registers it as:
+
+```json
+{
+  "platformos-cli": {
+    "command": "pos-cli-mcp",
+    "args": ["--profile", "dev", "--no-http"]
+  }
+}
+```
+
+### Tool profiles
+
+Every tool costs tokens on every request, for every agent, so the server does not expose all of them by default to AI tools. Three profiles are built in:
+
+| Profile | Tools | For |
+|---|---|---|
+| `full` | 30 | the default when you run `pos-cli mcp` yourself |
+| `dev` | 10 | what `pos-cli ai init` writes — day-to-day coding |
+| `none` | 0 | a starting point for `--include-tools` |
+
+`dev` holds exactly the ten tools a coding session needs: `envs-list`, `check-run`, `deploy-dry-run`, `deploy-start`, `job-status`, `graphql-exec`, `liquid-exec`, `page-fetch`, `logs-fetch` and `unit-tests-run`.
+
+`full` adds the twenty that belong to less frequent work: `generators-*`, `migrations-*`, `data-import`, `data-export`, `data-clean`, `data-validate`, `sync-file`, `uploads-push`, `constants-*`, `env-add`, and the Partner Portal tools `instance-create`, `partners-list`, `partner-get` and `endpoints-list`.
+
+Adjust the selection per run, or per project in `tools.config.json`:
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+pos-cli mcp --profile dev --include-tools data-export
+pos-cli mcp --profile full --exclude-tools data-clean
+pos-cli mcp-config --profile dev
+</code></pre>
+
+`pos-cli mcp-config` prints the resolved selection without starting anything: every exposed tool with its description, every hidden one with the reason, and the instructions the client is sent. A tool outside the selection is not registered at all, so calling it by name fails exactly like a name that matches no tool.
+
+{% include 'alert/important', content: 'An unknown profile or tool name, a name given to both `--include-tools` and `--exclude-tools`, or a selection that ends up empty is an error that stops the server before it starts. Which tools an agent can reach is a security decision, so a typo fails closed rather than quietly exposing the default set.' %}
+
+### Credentials
+
+The server never takes an instance URL as a tool argument — the URL comes from the resolved credentials, so a name an agent read somewhere cannot redirect your token. Credentials resolve in this order:
+
+1. explicit `url` + `email` + `token` passed to the tool
+2. the `.pos` environment named in the call
+3. `MPKIT_URL` / `MPKIT_EMAIL` / `MPKIT_TOKEN`
+4. the first entry in `.pos`
+
+Step 4 is the only one that names no instance, so a tool that could **change** an instance refuses it when `.pos` holds more than one environment, and the error lists them. With exactly one environment, the change lands there with nothing asked.
+
+### Transports
+
+`pos-cli mcp` serves MCP over stdio and over HTTP at `127.0.0.1:5910/mcp`. AI tools use stdio, which is why `pos-cli ai init` writes `--no-http`.
+
+{% include 'alert/warning', content: 'The HTTP transport has no authentication: whoever can reach the port runs every enabled tool with the platformOS credentials of this machine. It binds to `127.0.0.1` by default and validates the `Host` and `Origin` of every request. Do not bind it to a public interface.' %}
+
+## platformos-supervisor — the validation server
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+pos-cli-supervisor
+</code></pre>
+
+One tool: `validate_code`. It checks Liquid, GraphQL and YAML **in memory**, so it is called with the content that is about to be written rather than with a file on disk. Skipping it is the most common cause of broken platformOS code.
+
+Two fields carry the verdict:
+
+- **`must_fix_before_write`** — `true` means the file will not parse, will raise at runtime, or will be rejected by the deploy converter, which fails the *whole* changeset rather than one file. `false` means nothing known-fatal was found; it is not a statement that the code is correct.
+- **`status`** — `ok`, `warning`, `error`, or **`not_applicable`**. The last one means the file was never checked and carries no opinion at all; `not_applicable_reason` says why. `misplaced_source` is the one to watch: a platformOS source file somewhere nothing will load it.
+
+Send every file of one change in a single call. Files in one call can reference each other, so a new partial resolves for the page that renders it; sent separately, that same page is reported as rendering a missing partial.
+
+{% include 'alert/note', content: 'A clean result does not mean a GraphQL document is correct — it checks the document against the schema. Resolver rules the schema does not encode, such as `record_delete` requiring `table`, pass validation and fail at runtime.' %}
+
+## The hosted knowledge servers
+
+Two servers answer questions about the published platformOS reference. They take **no credentials and run no code**, so the entry is identical for every project and every machine — which is what makes registering them globally sensible.
+
+```json
+{
+  "platformos-liquid": {
+    "type": "http",
+    "url": "https://pos-mcp-tools.ps-01-platformos.com/liquid-mcp"
+  },
+  "platformos-graphql": {
+    "type": "http",
+    "url": "https://pos-mcp-tools.ps-01-platformos.com/graphql-mcp"
+  }
+}
+```
+
+**`platformos-liquid`** searches and returns the exact signature of every platformOS Liquid tag, filter and object, plus language topics such as whitespace control and output escaping. platformOS Liquid is its own dialect, so a filter an agent half-remembers from somewhere else is how it writes code that renders empty.
+
+**`platformos-graphql`** searches the GraphQL schema: operations, types, arguments, nullability, and the platformOS usage notes the schema itself does not state.
+
+They are a network dependency the two local servers do not have, which is why they are optional. Decline them with `--no-docs`, or scope them with `--docs project` / `--docs global`.
+
+## The full tool reference
+
+Each tool's arguments, result shape and failure modes are documented next to the code, where they cannot drift from it:
+
+- [docs/MCP_TOOLS.md](https://github.com/Platform-OS/pos-cli/blob/master/docs/MCP_TOOLS.md) — every tool, in detail
+- [docs/MCP_COVERAGE.md](https://github.com/Platform-OS/pos-cli/blob/master/docs/MCP_COVERAGE.md) — every pos-cli capability and whether it is exposed as a tool, with the reason
+
+{% render 'alert/next', content: 'platformOS Agent Playbook', url: '/developer-guide/ai/agent-playbook' %}

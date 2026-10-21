@@ -1,0 +1,83 @@
+---
+metadata:
+  title: platformOS Agent Playbook
+  description: The part of the platformOS Agent Kit that runs inside Claude Code - the order of work, per-directory rules, topic files, the platformOS coding agent, and a diagnostics hook.
+converter: markdown
+---
+
+The **platformOS Agent Playbook** is one part of the [platformOS Agent Kit](/developer-guide/ai/ai): the part that lives in your project rather than on a server.
+
+The [MCP servers](/developer-guide/ai/mcp-servers) give an agent the ability to look platformOS up and to act on an instance. The Playbook is what tells it which facts matter, in what order to work, and what it must not do. It unpacks to a `.claude/` directory in your project root.
+
+## What is in it
+
+| Path | What it holds |
+|---|---|
+| `CLAUDE.md` | The order of work and the prohibitions, loaded on every request |
+| `rules/` | Eleven per-directory rule files, loaded when the agent opens a file in that directory — pages, partials, layouts, commands, queries, GraphQL, schema and translations |
+| `knowledge/` | Fifteen topic files, loaded on demand: Liquid syntax, filters, tags and data; GraphQL reads and writes; requests and context; deploy and operations; translations; YAML and schema; verifying and debugging |
+| `agents/platformos-coding-agent.md` | The platformOS coding agent — see below |
+| `hooks/`, `diagnostics.json` | A hook that attaches the documented platformOS rule, and its fix, to a validation finding |
+| `settings.json` | Makes the coding agent the default, wires up the hook, and sets a status line showing the model and environment in use |
+
+## The platformOS coding agent
+
+`agents/platformos-coding-agent.md` defines a named agent whose job is writing and changing platformOS code — Liquid, GraphQL, YAML schema, translations and deploys. `settings.json` makes it the **default agent for the project**, so it handles platformOS work without you having to select it.
+
+Why a dedicated agent rather than rules alone: a general-purpose agent treats "write the file" as the task and verification as optional. This one carries the platform's working order inside its own definition, so the order survives even when the request is a one-liner.
+
+## The order of work
+
+`CLAUDE.md` states one sequence, and the prohibitions exist to protect it:
+
+1. **Look it up.** Any tag, filter, object, GraphQL operation or type the agent is not sure of, through the Liquid and GraphQL knowledge servers.
+2. **Validate the buffer.** `validate_code`, with the content about to be written, and every file of one change in a single call so they resolve against each other.
+3. **Write the files.**
+4. **Preview, then deploy.** A dry run first, because a non-partial deploy removes everything live that the project does not contain.
+5. **Make a real request.** Fetching the page is the only thing that proves it works.
+6. **Read the data back.** A mutation can return an error payload and leave the record untouched.
+
+The rule it spends the most words on is the one hardest to resist: **writing a file and deploying it to find out whether it works is prohibited.** That puts unvalidated code on an instance, and a deploy is not a test.
+
+## What it asserts, and why so little
+
+The Playbook is deliberately narrow. A fact earns a place in it only when it **fails silently** — no error, no warning, no failed deploy — *and* no tool in the toolchain catches it. Anything a linter already reports does not need to occupy an agent's attention.
+
+What is left is the set of platformOS behaviours that look like working code:
+
+- Everything lives under `context.` — a bare `{% raw %}{{ product }}{% endraw %}` renders empty and never raises.
+- `{% raw %}{% graphql %}{% endraw %}` must appear above every use of its result; below, the result renders blank with no error.
+- `record_delete` needs `table`, or the delete fails and the record survives.
+- Array and hash filters return a new value; discarding the result leaves the original untouched.
+- A filter in a tag *argument* is silently dropped and still deploys.
+- `{% raw %}{% response_status 404 %}{% endraw %}` sets a status; assigning `context.statusCode` renders fine and still answers `200`.
+- A missing translation key renders `translation missing: en.x.y` as visible page copy, with a `200`.
+- Nothing checks record ownership: a by-id update or delete will happily write to another user's row.
+- CSRF is not enforced for you — an unverified POST still runs, anonymously.
+
+## Install it
+
+Answer yes when [`pos-cli ai init`](/get-started/ai-assisted-development#set-up-your-ai-tool) offers it, or pass the flag:
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+pos-cli ai init --tool claude --agent-playbook
+</code></pre>
+
+By hand, which is also how you update it:
+
+<pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
+curl -fsSL https://documentation.platformos.com/assets/platformos-agent-playbook.zip -o playbook.zip
+unzip -o playbook.zip &amp;&amp; rm playbook.zip
+</code></pre>
+
+It unpacks straight to `.claude/`, with no nested directory to flatten. `-o` overwrites without asking, so it replaces every Playbook file **including any you have edited**; drop the `-o` and unzip elsewhere if you want to diff first.
+
+## Why Claude Code only
+
+`CLAUDE.md`, `rules/`, `agents/`, `hooks/` and `settings.json` are Claude Code's own layout, and no other tool reads it. Installing the Playbook elsewhere would write a directory the tool ignores, so `pos-cli ai init` offers it for Claude Code and says so plainly if you ask for it alongside another tool.
+
+The rest of the Agent Kit is not Claude-specific: Cursor, VS Code, opencode and anything else that speaks MCP get the same four servers and the same tools. Only the Playbook is tied to one client's format.
+
+{% include 'alert/important', content: 'An existing `.claude/` directory is never replaced. It holds your own rules, settings and any edits you have made, and unpacking over it would overwrite them. `pos-cli ai init` leaves it alone and prints the download link so you can merge in the parts you want.' %}
+
+{% render 'alert/next', content: 'AI-Assisted Development in Get Started', url: '/get-started/ai-assisted-development' %}
