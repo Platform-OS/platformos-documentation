@@ -24,7 +24,7 @@ The servers are covered in [MCP Servers](/developer-guide/ai/mcp-servers). The P
 
 ## Why a platform needs this
 
-platformOS Liquid is a fork of Shopify Liquid with its own tags, filters and GraphQL shapes. The characteristic failure is not an error — it is code that deploys, answers `200`, and quietly does the wrong thing:
+platformOS Liquid is its own dialect, with tags and filters other implementations do not have, and platformOS has GraphQL shapes of its own. The characteristic failure is not an error — it is code that deploys, answers `200`, and quietly does the wrong thing:
 
 - A bare `{% raw %}{{ product }}{% endraw %}` renders empty rather than raising, because everything lives under `context.`.
 - `{% raw %}{% assign list = list | array_add: item %}{% endraw %}` works, and dropping the assignment leaves the array empty.
@@ -35,15 +35,17 @@ None of that is discoverable by trying harder. It needs a lookup — which is wh
 
 ## How the pieces fit together
 
-A well-behaved agent working on platformOS follows the same order a careful developer does:
+The [Agent Playbook](/developer-guide/ai/agent-playbook) sets out one order of work, and almost every step of it is a tool one of these servers provides:
 
-1. **Look it up.** Any tag, filter, object, GraphQL operation or type it is not certain of, through the Liquid and GraphQL knowledge servers.
-2. **Validate the buffer.** `validate_code`, with the content it is about to write, and with every file of one change sent in a single call so they can reference each other.
-3. **Write the files.**
-4. **Preview, then deploy.** `deploy-dry-run` to see what would change, then `deploy-start`.
-5. **Make a real request.** Fetching the page is the only thing that proves it works, because most of what breaks here answers `200` with the wrong content.
-6. **Read the data back.** A mutation can return an error payload and leave the record untouched.
+| Step | Served by |
+|---|---|
+| Look the symbol up | `platformos-liquid`, `platformos-graphql` |
+| Validate the buffer before writing | `validate_code` |
+| Write the files | the editor, not a server |
+| Preview, then deploy | `deploy-dry-run`, `deploy-start` |
+| Make a real request | `page-fetch` |
+| Read the data back | `graphql-exec` |
 
-Steps 1, 2, 4, 5 and 6 each correspond to a tool the servers provide. The [Agent Playbook](/developer-guide/ai/agent-playbook) is what tells an agent to follow the order at all.
+The servers make the order possible; the Playbook is what makes an agent follow it.
 
 {% render 'alert/next', content: 'MCP Servers', url: '/developer-guide/ai/mcp-servers' %}

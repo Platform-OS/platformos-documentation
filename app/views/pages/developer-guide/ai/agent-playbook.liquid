@@ -60,7 +60,7 @@ What is left is the set of platformOS behaviours that look like working code:
 Answer yes when [`pos-cli ai init`](/get-started/ai-assisted-development#set-up-your-ai-tool) offers it, or pass the flag:
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
-pos-cli ai init --tool claude --agent-kit
+pos-cli ai init --tool claude --agent-playbook
 </code></pre>
 
 By hand, which is also how you update it:
@@ -70,7 +70,7 @@ curl -fsSL https://documentation.platformos.com/assets/platformos-agent-playbook
 unzip -o playbook.zip &amp;&amp; rm playbook.zip
 </code></pre>
 
-It unpacks straight to `.claude/`, with no nested directory to flatten.
+It unpacks straight to `.claude/`, with no nested directory to flatten. `-o` overwrites without asking, so it replaces every Playbook file **including any you have edited**; drop the `-o` and unzip elsewhere if you want to diff first.
 
 ## Why Claude Code only
 
