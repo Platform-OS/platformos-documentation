@@ -2,30 +2,35 @@
 converter: markdown
 metadata:
   title: User Uploads in platformOS
-  description: Why and how platformOS implements direct S3 upload
+  description: Why and how platformOS implements direct upload to S3-compatible storage
 ---
 
 File upload is often an important part of a web service or application. Usually files are uploaded to the application server, and then the server sends them to S3 (or any other cloud storage). Nowadays, more tech-savvy companies are moving away from this method for a couple of reasons: speed, cost, and security.
 
-Direct S3 upload is a way for developers to deliver a faster experience for their users while decreasing infrastructure cost. In this article we explain why we chose to take advantage of this technology.
+Direct upload to storage is a way for developers to deliver a faster experience for their users while decreasing infrastructure cost. In this article we explain why we chose to take advantage of this technology.
 
 ## Advantages
 
 - **Less load on the application server** - Cost
 
-  Because files are sent directly to S3, the application server is not under load, no matter how many of those files are sent. This means platformOS can offer lower prices - we use less servers than traditional solutions.
+  Because files are sent directly to storage, the application server is not under load, no matter how many of those files are sent. This means platformOS can offer lower prices - we use less servers than traditional solutions.
 
 - **Fewer middlemen** - Speed, cost
-  When a user uploads files directly to S3 and skips the application server in the middle, the uploaded files are faster on the target location. In the traditional solution, files have to be uploaded twice, once from the user to the application server, then from the server to S3. Usually the second upload was placed in a background job (asynchronous), to queue uploads when there is a lot of them. No queues (that can be flooded) means, that there is one attack vector less if someone tried to DDoS our infrastructure.
+  When a user uploads files directly to storage and skips the application server in the middle, the uploaded files are faster on the target location. In the traditional solution, files have to be uploaded twice, once from the user to the application server, then from the server to storage. Usually the second upload was placed in a background job (asynchronous), to queue uploads when there is a lot of them. No queues (that can be flooded) means, that there is one attack vector less if someone tried to DDoS our infrastructure.
 
 - **Less bandwidth used** - Cost
-  Because files are going straight to S3, platformOS is not using bandwidth to first receive a file, just to upload it again to S3. The larger the scale, the larger the savings.
+  Because files are going straight to storage, platformOS is not using bandwidth to first receive a file, just to upload it again. The larger the scale, the larger the savings.
 
 - **No file processing** - Security
   Security holes in file uploads are often used to break into a web application. Eliminating the application server completely from this equation and separating those concerns means that there is, again, one attack vector less for the attacker to exploit.
 
 - **Bigger file size limits**
-  When files are processed and forwarded by the application server, you want to keep them as small as possible, again, to mitigate attack vector and queue size. Direct S3 upload is constrained only by AWS S3 limits, which is **5GB** (gigabytes) for single file upload when using single part upload, and **5TB** (terabytes) when uploading multi part. For download, there is no limit - as long as you can upload a file, you can download it. [Read more](https://docs.aws.amazon.com/AmazonS3/latest/dev/UploadingObjects.html).
+  When files are processed and forwarded by the application server, you want to keep them as small as possible, again, to mitigate attack vector and queue size. Direct upload is constrained only by the limits of the storage provider, plus any maximum file size you configure on the property. platformOS stores files in S3-compatible object storage, and the limits depend on the provider used by the stack hosting your Instance. For example:
+
+  * [Amazon S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/upload-objects.html): up to **5 GB** in a single upload, and up to **50 TB** per object with multipart upload.
+  * [Cloudflare R2](https://developers.cloudflare.com/r2/platform/limits/): up to **5 GiB** in a single upload, and about **5 TiB** per object with multipart upload.
+
+  Uploads routed through a [Cloudflare Worker](https://developers.cloudflare.com/workers/platform/limits/) are also subject to the request body limit of the Cloudflare plan, from 100 MB up to 5 GB. For download, there is no limit - as long as you can upload a file, you can download it.
 
 - **Less moving parts**
   There is no better code than no code. We believe that removing things that can go wrong from a system improves the reliability of said system. It is easy to imagine, in an old paradigm, how a file could get uploaded to the application server, but for some reason it did not get uploaded to a storage. Software is very complicated and those things happen all the time. We try hard to give them as little chance to happen as possible, and the easiest way of achieving that is to have less of them.
@@ -41,7 +46,7 @@ This is a high level description of what happens in a successful file upload flo
 <img loading="lazy" src="{{ 'images/developer-guide/user-uploads/flowchart-attachments.svg' | asset_url }}" alt="Diagram showing the Attachments flow. Steps detailed after image.">
 
 1. Application: Presign URL requested via GraphQL
-To be able to upload a file to S3, our server is creating a presigned URL. What you as a developer need to do is to get the URL using the `property_upload_presigned_url` mutation and point it to a record and property that it will be using. For example, you can define a record `documents` and property `resume` with type `upload` in `app/schema/documents.yml`:
+To be able to upload a file to storage, our server is creating a presigned URL. What you as a developer need to do is to get the URL using the `property_upload_presigned_url` mutation and point it to a record and property that it will be using. For example, you can define a record `documents` and property `resume` with type `upload` in `app/schema/documents.yml`:
 
 ```yaml
 name: documents
