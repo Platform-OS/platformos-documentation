@@ -1,0 +1,49 @@
+---
+metadata:
+  title: AI - Agent Kit
+  description: How platformOS exposes itself to AI coding agents - the MCP servers, the validation gate, the knowledge servers, and the platformOS Agent Kit.
+converter: markdown
+---
+
+The **platformOS Agent Kit** is everything platformOS gives an AI coding agent: a setup command, four [MCP](https://modelcontextprotocol.io/) servers, and the Agent Playbook that runs inside the editor. Together they are what makes an agent able to work on a platformOS project without guessing.
+
+If you only want to switch it on, start with [AI-Assisted Development](/get-started/ai-assisted-development) in Get Started. This section is the reference.
+
+## The pieces
+
+| Piece | Command | Role |
+|---|---|---|
+| Setup wizard | `pos-cli ai init` | Registers the servers below in your AI tool's own configuration file |
+| Instance server | `pos-cli mcp` | Operations on an instance: deploy, logs, GraphQL, Liquid, pages, tests, lint |
+| Validation server | `pos-cli-supervisor` | One tool, `validate_code`, run **before** a file is written |
+| Liquid knowledge | hosted | Every Liquid tag, filter and object, looked up by name |
+| GraphQL knowledge | hosted | Every GraphQL operation and type, with arguments and nullability |
+| [platformOS Agent Playbook](/developer-guide/ai/agent-playbook) | downloaded | The order of work, per-directory rules, topic files and a platformOS coding agent |
+
+The servers are covered in [MCP Servers](/developer-guide/ai/mcp-servers). The Playbook has [its own page](/developer-guide/ai/agent-playbook).
+
+## Why a platform needs this
+
+platformOS Liquid is a fork of Shopify Liquid with its own tags, filters and GraphQL shapes. The characteristic failure is not an error — it is code that deploys, answers `200`, and quietly does the wrong thing:
+
+- A bare `{% raw %}{{ product }}{% endraw %}` renders empty rather than raising, because everything lives under `context.`.
+- `{% raw %}{% assign list = list | array_add: item %}{% endraw %}` works, and dropping the assignment leaves the array empty.
+- `{% raw %}{% graphql %}{% endraw %}` placed below its own result renders blank with no error.
+- A missing translation key renders `translation missing: en.x.y` as visible page copy, with a `200` status.
+
+None of that is discoverable by trying harder. It needs a lookup — which is what the two knowledge servers are for — and a gate that reads the buffer before it reaches disk, which is what `validate_code` is for.
+
+## How the pieces fit together
+
+A well-behaved agent working on platformOS follows the same order a careful developer does:
+
+1. **Look it up.** Any tag, filter, object, GraphQL operation or type it is not certain of, through the Liquid and GraphQL knowledge servers.
+2. **Validate the buffer.** `validate_code`, with the content it is about to write, and with every file of one change sent in a single call so they can reference each other.
+3. **Write the files.**
+4. **Preview, then deploy.** `deploy-dry-run` to see what would change, then `deploy-start`.
+5. **Make a real request.** Fetching the page is the only thing that proves it works, because most of what breaks here answers `200` with the wrong content.
+6. **Read the data back.** A mutation can return an error payload and leave the record untouched.
+
+Steps 1, 2, 4, 5 and 6 each correspond to a tool the servers provide. The [Agent Playbook](/developer-guide/ai/agent-playbook) is what tells an agent to follow the order at all.
+
+{% render 'alert/next', content: 'MCP Servers', url: '/developer-guide/ai/mcp-servers' %}
