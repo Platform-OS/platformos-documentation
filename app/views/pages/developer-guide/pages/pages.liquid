@@ -52,6 +52,7 @@ Explanation:
 | ------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------- | -------- |
 | authorization_policies | Array of authorization policies run before rendering the page |                                                              |               | No       |
 | converter              |                                                              | markdown                                                   |               | No       |
+| format                 | Defines the format of the page. You can also set it in the file name, for example `orders.json.liquid`; if both are set, this property wins. See [Formats](#formats) and [Accessing different formats](#accessing-different-formats). | html<br />xml<br />csv<br />json<br />rss<br />css<br />js<br />txt<br />text<br />ics | html | No       |
 | layout            | Defines which layout from `views/layouts/` you would like to use for pages with html format. <br /><br />If you don't want to use any layout, set it to an empty string. It will be equivalent to just rendering page content.<br /><br />Note: Currently, excluding this property altogether will cause the page to use the layout last used for the current page. If no layout has been used, it will use the default `application` layout. |                                                              | `application` | No       |
 | max_deep_level         | Defines what is the intended nesting level of the slug. For example, if the slug is `test` and you set max deep level to 1, then path like /test/something will raise 404. However, if you set it to 2, then it will render the page. This is useful for SEO to avoid duplicated content.                                                               | positive integer                                                               |3               | No       |
 | metadata               | Object that you can define and access via `context.page.metadata` in different places |                                                              |               | No       |
@@ -96,7 +97,7 @@ This means `subdomain: subdomain1.example2.example3` will match a request coming
 
 ## Formats
 
-To define which format the endpoint will be available for, place `.<format>` before the file extension.
+To define which format the endpoint will be available for, place `.<format>` before the file extension, or set the `format` property in the page configuration. If you set both, the `format` property wins. If you set neither, the page uses the `html` format.
 
 | Format name | Example filename           |
 | ----------- | -------------------------- |
@@ -108,6 +109,7 @@ To define which format the endpoint will be available for, place `.<format>` bef
 | css       | datepicker.css.liquid      |
 | js        | server-constants.js.liquid |
 | txt       | notes.txt.liquid           |
+| text      | notes.text.liquid          |
 | ics       | calendar.ics.liquid           |
 
 
@@ -141,7 +143,54 @@ Will be accessible under the URL: `https://example.com/hello.txt`
 Hello world
 ```
 
-Note that the `html` format is implicit, default, you don't need to specify it in the URL or the file name.
+The `html` format is the default, so you don't need to specify it in the URL or the file name.
+
+### How platformOS picks the format of a request
+
+To decide which page answers a request, platformOS first works out the format of the request:
+
+1. **The extension in the URL.** If the URL ends with a format extension, for example `/hello.csv` or `/api/orders.json`, that format is used, whatever headers the client sends.
+2. **The `Accept` header.** If the URL has no extension, the format is taken from the request's `Accept` header, for example `Accept: application/json` selects `json`. The header is only used if it lists specific types, or is exactly `*/*`:
+   * `Accept: */*` on its own, which `curl`, Postman and `fetch()` send by default, means "any format".
+   * An `Accept` header that mixes `*/*` with other types is ignored, and the request is treated as `html`. Browsers send headers like this, and so do some HTTP libraries: for example, axios sends `application/json, text/plain, */*` by default. Requests with the `X-Requested-With: XMLHttpRequest` header are the exception: their `Accept` header is always used.
+3. **The default `html` format.** If the request has no `Accept` header, or its `Accept` header is ignored, it is treated as an `html` request.
+
+The format of the request then decides which page is rendered:
+
+* A page in a format other than `html` answers only requests in its own format, or requests that accept any format (`Accept: */*`). `json` and `js` pages are interchangeable here: each also answers requests for the other format.
+* An `html` page answers `html` requests. It is also a fallback for requests in any other format, but only if no page in that format exists for the slug. For example, `/about.json` renders `about.html.liquid` if there is no `about.json.liquid`. To limit `html` pages to URLs without an extension or with `.html`, enable [`html_format_exact_match`](/developer-guide/platformos-workflow/directory-structure/config) in `app/config.yml`.
+* If the slug has pages in several formats and the request accepts any format (`Accept: */*`), a page that is not `html` is rendered. For example, if `hello` has both an `html` and a `json` page, `curl https://example.com/hello` returns the `json` one, while a browser gets the `html` one.
+* If no page matches, platformOS returns a **404 Page Not Found** error, even though the page exists in another format.
+
+The response is sent with the content type of the format from the URL extension, or the page's own format if the URL has no extension. You can read the format of the current request in Liquid with `context.params.format`.
+
+#### Example: a JSON endpoint returning 404
+
+You have a page that receives webhooks from an external service. It has no `html` version:
+
+##### app/views/pages/api/webhooks/inbound.liquid
+
+```liquid
+---
+method: post
+format: json
+---
+{ "status": "ok" }
+```
+
+| Request | Result |
+| ------- | ------ |
+| `curl -X POST https://example.com/api/webhooks/inbound` (sends `Accept: */*`) | The page is rendered |
+| `curl -X POST -H 'Accept: application/json' https://example.com/api/webhooks/inbound` | The page is rendered |
+| `curl -X POST -H 'Accept:' https://example.com/api/webhooks/inbound` (no `Accept` header) | **404** - the request is treated as `html` and there is no `html` version of the page |
+| `curl -X POST -H 'Accept: application/json, text/plain, */*' https://example.com/api/webhooks/inbound` | **404** - the `Accept` header mixes `*/*` with other types, so it is ignored and the request is treated as `html` |
+| `curl -X POST -H 'Accept:' https://example.com/api/webhooks/inbound.json` | The page is rendered - the extension sets the format |
+
+This is why an endpoint can work when you test it with `curl` or Postman, but return 404 when a third-party service calls it. Some services, for example SendGrid Inbound Parse, send no `Accept` header at all.
+
+{% include 'alert/tip', content: 'When you give the URL of a non-HTML page to a third-party service (webhooks, callbacks, feeds), include the format extension, for example `https://example.com/api/webhooks/inbound.json`. The request then reaches your page no matter which headers the service sends. Query parameters go after the extension: `/api/webhooks/inbound.json?token=abc`. The same applies to your own JavaScript: call `/api/orders.json` rather than relying on the `Accept` header.' %}
+
+If you can't change the URL the service calls, change the page to the `html` format. An `html` page also answers requests in other formats when no page in that format exists. If you change the format of an existing page, for example from `html` to `json`, check the clients that call it without an extension - they may start getting 404 errors.
 
 
 ## Method
