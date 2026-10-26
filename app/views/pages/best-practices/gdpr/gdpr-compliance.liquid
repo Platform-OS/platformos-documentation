@@ -51,7 +51,7 @@ The regulation expects data controllers to ensure the security of personal data.
 
 You have to consider data breaches and their consequences, have a data breach response plan that ensures you can inform your users about the data breach promptly, and report the data breach to your supervisory authority in less than 72 hours.
 
-We use [Amazon Elastic Compute Cloud (Amazon EC2)](https://aws.amazon.com/ec2/) as server infrastructure, and [Amazon Simple Storage Service (Amazon S3)](https://aws.amazon.com/s3/) for data storage. All AWS services including these are GDPR compliant, learn more about them in detail in their [GDPR Center](https://aws.amazon.com/compliance/gdpr-center/).
+For details on how platformOS hosts, encrypts, backs up and recovers your data, see [Security and Disaster Recovery](/developer-guide/about-platformos/security-drp).
 
 ## Data erasure
 
@@ -63,7 +63,7 @@ When complying to the data erasure requirement, the main goal is to delete the p
 
 If you cannot immediately overwrite the backup data, you have to put it "beyond use". You have to ensure that data in backup archives is encrypted, and won’t be restored. You should also inform the users about how long you will retain the data in the backup.
 
-{% include 'alert/note', content: 'In platformOS, we keep backup archives for 30 days as a default.' %}
+{% include 'alert/note', content: 'In platformOS, database backups are kept for up to 8 weeks by default, so deleted data can remain in backup archives for that period. See <a href="/developer-guide/about-platformos/security-drp#backups">Backups</a> for details.' %}
 
 In platformOS, we have soft delete as a safety option for the most critical cases, but if you want to have a backup and restore functionality other than what we offer, you can implement your own feature. You can build your own data erasure solution using Records, GraphQL and Liquid: you can use a third-party API encryption service against our endpoint, and flag sensitive data for later deletion.
 

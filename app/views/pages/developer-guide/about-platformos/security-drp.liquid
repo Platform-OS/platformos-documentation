@@ -2,101 +2,75 @@
 converter: markdown
 metadata:
   title: Security and Disaster Recovery
-  description: This article outlines the steps platformOS takes to ensure security and provide disaster recovery.
+  description: How platformOS hosts, protects, backs up and recovers your applications and data.
 ---
 
-This article outlines the steps platformOS takes to ensure security and provide disaster recovery. It’s a high-level overview taken from the comprehensive internal Disaster Recovery Plan managed by our DevOps team.
+This article summarizes how platformOS protects your applications and data, and how it recovers from failures. Policies, audit reports and detailed security documentation are available in the [platformOS Trust Center](https://trust.platformos.com/).
 
-## Security Management System
+## Hosting
 
-platformOS has invested heavily in its **Information Security Management System (ISMS)** and built a set of security policies and processes to protect your data and assets.
+platformOS runs on managed Kubernetes. By default, we recommend Oracle Cloud Infrastructure (OCI), but platformOS can be deployed on any major cloud provider, such as Amazon Web Services (AWS), Google Cloud or Microsoft Azure, for example when a client has contractual obligations to use a specific provider.
 
-* Multiple network abstraction layers for isolation
-* Co-location of data centers around the world
-* Third party penetration testing
-* Virus and malware scanning
+Applications run either on the shared platform or on a **dedicated private stack**, where the cluster, network, databases, search, secrets store and file storage are reserved for a single client. Both are multi-tenant: a private stack can host any number of the client's instances, and on either platform each instance is isolated from the others at the application level.
 
-We currently provide the choice for you to deploy your websites, SaaS products and applications on both [Amazon Web Services (AWS)](https://aws.amazon.com) and [Google Cloud](https://cloud.google.com) hosting services (Azure is coming soon), so we will refer to their respective services when discussing specific aspects of security.
+## Network and traffic
 
-Learn more:
+* On dedicated private stacks, public traffic passes through Cloudflare, which provides DNS, TLS and DDoS mitigation. A web application firewall can be enabled per stack.
+* Traffic is distributed by the load balancing service of the chosen cloud provider to the ingress layer, which terminates TLS, redirects HTTP to HTTPS, sets HSTS and other security headers, and applies rate limits.
+* Databases, cache and search have no public endpoints and are reachable only from inside the cluster.
+* Administrative access to the infrastructure requires an individually named identity with multi-factor authentication.
 
-* [AWS Cloud Security](https://aws.amazon.com/security/): As an AWS partner, we ensure your sites and applications will benefit from AWS data centers and a network architected to protect your information, identities, applications, and devices. With AWS, we meet core security and compliance requirements, such as data locality, protection, and confidentiality with our comprehensive services and features.
-* [Google Cloud Security](https://cloud.google.com/security): We take advantage of the same secure-by-design infrastructure, built-in protection, and global network that Google uses to protect your information, identities, applications, and devices.
+## Data protection
 
-Some of our clients have contractual obligations to host services on specific IaaS (Infrastructure as a Service) providers — platformOS ensures your code runs securely, with redundancy and backups.
-Existing channel partners can [request](https://documentation.platformos.com/developer-guide/support-ticketing#email) our security master document for more information.
+* **In transit:** all traffic is served over HTTPS.
+* **At rest:** disks, databases, file storage and backups are encrypted by the infrastructure provider. Sensitive values, such as constants and integration credentials, are additionally encrypted at the application level.
+* **Passwords:** stored as bcrypt hashes. Applications can enable two-factor authentication with time-based one-time passwords (TOTP) for their users.
+* **File uploads:** uploads use signed, short-lived authorizations that confine each file to the instance that issued it. Allowed file types and maximum file sizes are enforced on upload, and private files are only accessible through signed URLs that expire.
 
-## Data backups
+## Backups
 
-platformOS automatically backs up your applications and databases using real-time READ REPLICAs which exist across multiple Zones for further physical disaster recovery within a data-center.
-Additionally, incremental transaction logs, daily and weekly backups are taken.
+platformOS operates its own PostgreSQL clusters and backs up the platform database to three independent locations:
 
-The retention period for monthly backups is 60 days.
-These processes are internal to the platformOS DevOps team.
+| Copy | Schedule | Default retention |
+|---|---|---|
+| Inside the cluster | Weekly full backup and continuous transaction log archiving | 7 weekly backups |
+| Off-cluster object storage | Weekly full backup, daily incremental backups and continuous transaction log archiving | 8 weekly backups |
+| A second cloud provider | Daily database dump | 30 days, write-protected |
 
-For developers and Channel Partners building Software as a Service solutions on top of platformOS, there’s additional options for taking off-site backups and managing data removal.
-
-Learn more:
-
-* [Data Backup and Removal](https://documentation.platformos.com/developer-guide/records/data-backup-removal): Learn about how deleted data is backed up and when it is removed permanently. Includes explanation of automatic and manual permanent removal.
-* [Data Export](https://documentation.platformos.com/developer-guide/data-import-export/export#content): Using either the CLI or the raw export API. This can be useful when test data is needed for a service, e.g. in a staging environment or off-site backups of your choosing.
-* [GDPR Compliance in platformOS](https://documentation.platformos.com/best-practices/gdpr/gdpr-compliance): Learn how platformOS approaches GDPR as just one of many compliance requirements and ensures that your project can easily comply with any number of government legislated privacy rules.
-* [AWS Backup](https://aws.amazon.com/backup/): AWS Backup is a fully managed backup service that makes it easy to centralize and automate the backup of data across AWS services.
-* [Google Cloud Backups](https://cloud.google.com/sql/docs/mysql/backup-recovery/backups ): How backups of your Cloud SQL instance work, and how they can be used to restore your data to the same or another instance.
-
-## Load balancing and redundancy
-
-We use **application load balancers** that are best suited for load balancing of HTTP and HTTPS traffic and provide advanced request routing targeted at the delivery of modern application architectures, including microservices and containers.
-
-On AWS, operating at the individual request level (Layer 7), Application Load Balancer routes traffic to targets within Amazon Virtual Private Cloud (Amazon VPC) based on the content of the request. A similar approach is used with GCP, leveraging their various Global and Regional Load Balancing.
-
-Behind the Load Balancers are clusters of application and database servers.
-These are both pooled or dedicated. Dedicated servers are purchased by clients who require a single tenant or additional server capacity for specific sites or application end-points, above and beyond the standard hosting plans.
+Continuous transaction log archiving allows the database to be restored to any point in time within the retention window, with at most about one minute of data loss. Backup jobs are monitored, and a failed or overdue backup raises an alert to the on-call team. Search indexes are rebuilt from the database and are not backed up separately. Backup schedules and retention for dedicated private stacks can be agreed per engagement.
 
 Learn more:
 
-* [AWS Load Balancers](https://aws.amazon.com/elasticloadbalancing): Learn about Application, Network, and Classic Load Balancers.
-* [Google Cloud Load Balancing](https://cloud.google.com/load-balancing): High performance, scalable load balancing on Google Cloud Platform.
+* [Data Backup and Removal](/developer-guide/records/data-backup-removal): How deleted data is backed up and when it is removed permanently.
+* [Data Export](/developer-guide/data-import-export/export): Export your data using pos-cli or the export API, for example for off-site backups of your choosing.
+* [GDPR Compliance in platformOS](/best-practices/gdpr/gdpr-compliance): How platformOS helps your project comply with privacy regulations.
 
+## High availability
+
+* The database runs as a cluster with a primary instance, read replicas and automatic failover.
+* Application servers scale automatically with load.
+* The entire infrastructure is defined as code and can be rebuilt from version control.
 
 ## Disaster recovery
-We have compiled a Disaster Recovery Plan (DPR) that includes:
 
-* Guidelines for determining plan activation 
-* Technical response flow and recovery strategy
-* Guidelines for recovery procedures
-* References to key Business Resumption Plans and technical dependencies 
-* Rollback procedures that will be implemented to return to standard operating state
-* Checklists outlining considerations for escalation, incident management, and plan activation
+The Disaster Recovery Plan (DRP) defines the following recovery objectives:
 
-The overall disaster recovery strategy of platformOS is summarized in the table below.
+| Failure | Recovery time objective (RTO) | Recovery point objective (RPO) |
+|---|---|---|
+| Database primary failure | About 1 minute (automatic failover) | About 1 minute |
+| Data corruption or an erroneous change | Under 30 minutes (point-in-time restore) | About 1 minute |
+| Loss of the cluster | 24 hours | About 1 minute |
+| Loss of the cloud region | 24 hours | Up to 24 hours |
 
-| Data Center Disruption                                                | Significant Dependency Disruption                            | Significant network or other issues                                             |
-|-----------------------------------------------------------------------|------------------------------------------------------------------------------------|---------------------------------------------------------------------------------|
-| Failover to alternate Data Center                                     | Reroute core functions to backup / alternate zone                                  | Reroute operations to backup processing unit / service (load balancing, caching) |
-| Reroute core processes to another Data Center (without full failover) | Participate in recovery strategies as available                                    | Wait for service to be restored, communicate with core stakeholders as needed   |
-| Operate at a deprecated service level                                 | Wait for the restoration of service, provide communication as needed to stakeholders |                                                                                 |
-| Take no action                                                        |                                                                                    |                                                                                 |
+### Restoration testing
 
+Backup restoration is tested quarterly, and after any change to the backup setup. Each test:
 
-A disaster recovery event can be broken out into three phases, the response, the resumption, and the restoration:
+1. Restores the off-cluster backup into a new, isolated database cluster, without affecting production.
+2. Recovers it to a defined point in time.
+3. Compares every table row by row against a snapshot of production taken for that point.
+4. Checks data integrity, indexes and schema, and confirms the restored data is accessible through the application.
 
-* **Response Phase**: The immediate actions following a significant event.
-    * On call personnel paged
-    * Decision made around recovery strategies to be taken
-    * Full recovery team identified
-* **Resumption Phase**: Activities necessary to resume services after the team has been notified.
-    * Recovery procedures implemented
-    * Coordination with other departments executed as needed
-* **Restoration Phase**: Tasks taken to restore service to previous levels.
-    * Rollback procedures implemented
-    * Operations restored
+Recent tests restored the production database to the requested point in time well within the recovery time objective, with no data loss and no differences from production.
 
-Learn more:
-
-* [AWS Disaster Recovery](https://aws.amazon.com/disaster-recovery/): AWS supports many disaster recovery architectures, from those built for smaller workloads to enterprise solutions that enable rapid failover at scale. AWS provides a set of cloud-based disaster recovery services that enable fast recovery of your IT infrastructure and data.
-* [Disaster Recovery on Google Cloud](https://medium.com/google-cloud/hosting-web-applications-on-google-cloud-an-overview-87d0962931a3) - Miniseries by Priyanka Vergadia
-
-
-platformOS supports many global brands, including Intel, Hallmark, Spark.co.nz.
-These brands also perform rigorous 3rd party penetration testing and require specific best practices to be adhered to. We’re proud to have an exceptional track record of over 5+ years servicing these clients.
+Current service status is published at [status.platformos.dev](https://status.platformos.dev).
