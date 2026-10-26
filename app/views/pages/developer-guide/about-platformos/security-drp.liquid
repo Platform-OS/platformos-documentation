@@ -15,7 +15,7 @@ Applications run either on the shared platform or on a **dedicated private stack
 
 ## Network and traffic
 
-* Public traffic passes through Cloudflare, which provides DNS, TLS and DDoS mitigation. A web application firewall can be enabled per stack.
+* On dedicated private stacks, public traffic passes through Cloudflare, which provides DNS, TLS and DDoS mitigation. A web application firewall can be enabled per stack.
 * Traffic is distributed by the load balancing service of the chosen cloud provider to the ingress layer, which terminates TLS, redirects HTTP to HTTPS, sets HSTS and other security headers, and applies rate limits.
 * Databases, cache and search have no public endpoints and are reachable only from inside the cluster.
 * Administrative access to the infrastructure requires an individually named identity with multi-factor authentication.
