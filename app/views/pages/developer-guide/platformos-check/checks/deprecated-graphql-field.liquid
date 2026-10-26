@@ -1,0 +1,78 @@
+---
+converter: markdown
+metadata:
+  title: DeprecatedGraphQLField
+  description: Reports a GraphQL operation using a field, argument, enum value or input field the schema marks deprecated.
+---
+
+## DeprecatedGraphQLField
+
+**Severity:** warning | **Type:** GraphQL
+
+This check reports a `.graphql` file that uses a schema member marked `@deprecated`. A deprecated member still works — the query executes and returns data — so nothing else in the toolchain reports it, and the code keeps running until the member is removed.
+
+The message is the schema's own `@deprecated(reason:)` text, so it names the replacement platformOS publishes rather than wording of its own. All four deprecation kinds are reported: fields, field arguments, enum values and input object fields.
+
+The check requires an up-to-date local copy of the platformOS GraphQL schema. Run `pos-cli check update-docs` to download the latest schema.
+
+No autofix or suggestion is offered. A successor named in a deprecation reason is rarely a drop-in rename — moving from `models` to `records` also changes argument names, the filter input type and the shape of the result — so a mechanical replacement would produce a query that no longer validates.
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```graphql
+query {
+  models(per_page: 20, filter: { name: { value: "note" } }) {
+    results {
+      id
+    }
+  }
+}
+```
+
+`RootQuery.models` is deprecated. The query runs and returns records, and the only signal is this check.
+
+### &#x2713; Correct Code Example (Use this instead):
+
+```graphql
+query {
+  records(per_page: 20, filter: { table: { value: "note" } }) {
+    results {
+      id
+    }
+  }
+}
+```
+
+Note that the replacement is not a rename: `records` takes `table` where `models` takes `name`.
+
+## Inline `{% raw %}{% graphql %}{% endraw %}` blocks
+
+This check is GraphQL-typed, so it only sees `.graphql` files. A query written inline in a Liquid template is covered by [DeprecatedGraphQLFieldInline](/developer-guide/platformos-check/checks/deprecated-graphql-field-inline) instead.
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+DeprecatedGraphQLField:
+  enabled: true
+  severity: warning
+```
+
+## Disabling This Check
+
+This check is safe to disable while you are maintaining code against an older platform version, or during a migration where the deprecated form is still deliberate.
+
+```yaml
+DeprecatedGraphQLField:
+  enabled: false
+```
+
+## Resources
+
+- [platformOS GraphQL API Reference](/api-reference/graphql/g/query)
+- [GraphQLCheck](/developer-guide/platformos-check/checks/graphql-check)
+- [DeprecatedGraphQLFieldInline](/developer-guide/platformos-check/checks/deprecated-graphql-field-inline)
+- [pos-cli check update-docs](/developer-guide/platformos-check/platformos-check#cli-usage)

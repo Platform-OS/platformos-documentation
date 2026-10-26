@@ -1,0 +1,80 @@
+---
+converter: markdown
+metadata:
+  title: DeprecatedGraphQLFieldInline
+  description: Reports an inline {% graphql %} query using a field, argument, enum value or input field the schema marks deprecated.
+---
+
+## DeprecatedGraphQLFieldInline
+
+**Severity:** warning | **Type:** LiquidHtml
+
+This check is the inline half of [DeprecatedGraphQLField](/developer-guide/platformos-check/checks/deprecated-graphql-field). It reports a schema member marked `@deprecated` used inside an inline `{% raw %}{% graphql %}…{% endgraphql %}{% endraw %}` block.
+
+Two checks rather than one, because severity is a property of the check and these are not the same severity. An invalid query fails when it executes; a deprecated query runs and returns data. Reporting both under one code would make every deprecation an error, or every invalid inline query a warning.
+
+Inline bodies use deprecated members at more than twice the rate of `.graphql` documents, so this is where most of the deprecated surface in a real application is.
+
+The message is the schema's own `@deprecated(reason:)` text, and the offense is reported on the deprecated name inside the `.liquid` file. The check requires an up-to-date local copy of the platformOS GraphQL schema. Run `pos-cli check update-docs` to download the latest schema.
+
+## Examples
+
+### &#x2717; Incorrect Code Example (Avoid using this):
+
+```liquid
+{% raw %}
+{% graphql result %}
+  query {
+    models(per_page: 20, filter: { name: { value: "note" } }) {
+      results { id }
+    }
+  }
+{% endgraphql %}
+{% endraw %}
+```
+
+`RootQuery.models` is deprecated. The page renders and returns data; nothing fails.
+
+### &#x2713; Correct Code Example (Use this instead):
+
+```liquid
+{% raw %}
+{% graphql result %}
+  query {
+    records(per_page: 20, filter: { table: { value: "note" } }) {
+      results { id }
+    }
+  }
+{% endgraphql %}
+{% endraw %}
+```
+
+## What is not reported
+
+The same two exclusions as [GraphQLInlineCheck](/developer-guide/platformos-check/checks/graphql-inline-check): a body that interpolates Liquid is not validated, and a body that does not parse is left alone.
+
+## Configuration
+
+The default configuration for this check:
+
+```yaml
+DeprecatedGraphQLFieldInline:
+  enabled: true
+  severity: warning
+```
+
+## Disabling This Check
+
+This check is safe to disable while you are maintaining code against an older platform version, or during a migration where the deprecated form is still deliberate.
+
+```yaml
+DeprecatedGraphQLFieldInline:
+  enabled: false
+```
+
+## Resources
+
+- [DeprecatedGraphQLField](/developer-guide/platformos-check/checks/deprecated-graphql-field)
+- [GraphQLInlineCheck](/developer-guide/platformos-check/checks/graphql-inline-check)
+- [platformOS GraphQL API Reference](/api-reference/graphql/g/query)
+- [pos-cli check update-docs](/developer-guide/platformos-check/platformos-check#cli-usage)
