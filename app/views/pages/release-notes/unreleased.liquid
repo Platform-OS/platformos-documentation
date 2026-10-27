@@ -13,4 +13,23 @@ metadata:
 
 <h4 class="release-note release-note__improved">IMPROVED</h4>
 
+* Modules are never removed together with their records by accident. When a module disappears from the lock file, `pos-cli deploy -p` (partial deploy) and `pos-cli sync` no longer remove it. Removing a module whose tables still hold records is now rejected as a whole with a clear error, and nothing is deleted.
+* Creating and updating pages with large content is much faster. For example, saving a page of several megabytes no longer takes seconds.
+* Liquid filters handle empty input consistently. `extract_url_params`, `expand_url_template`, `humanize`, `translate`, `translate_escape`, `video_params`, `querify`, `useragent` and `url_to_qrcode_svg` now return an empty value for blank input instead of reporting an argument error. Many other filters now accept `nil` without failing.
+* The `parse_json` tag treats an empty body (including whitespace-only HTML entities) as an empty hash, the same way the `parse_json` filter does.
+* Liquid filters now have limits on how much data they generate, so a single call can't exhaust resources:
+  * `advanced_format`: the total of widths and precisions is capped at 1,000,000.
+  * `format_number` and `encrypt`: `precision` and `pad_payload_right` are capped at 1,000,000.
+  * `random_string`, `pad_left` and `array_in_groups_of`: arguments must be whole numbers up to 1,000,000.
+  * `gzip_decompress`: output is capped at 50 MB.
+  * `hash_diff`: very large comparisons are rejected with a hint to pass `use_lcs: false`.
+* `array_add`, `array_prepend` and `hash_add_key` now also catch indirect self-references (for example, adding a hash that already contains the target). Previously these made rendering fail.
+* `is_gpg_valid` and the GraphQL `GpgKey` validation return the same results, and validating many keys no longer slows them down.
+* Clearer error messages for invalid arguments in `force_encoding`, `encode`, `advanced_format`, `gzip_decompress`, `pad_left` and `digest`. `hash_dig` now returns `nil` when called with invalid arguments.
+
 <h4 class="release-note release-note__fixed">FIXED</h4>
+
+* `pos-cli sync` now returns an error when a file can't be deleted because records still depend on it. Previously it reported success.
+* Constants cache is cleared correctly after `pos-cli data clean --include-schema`. Previously, `context.constants` could still return the old values until adding a new constant.
+* Requests to form and API endpoints with nested parameters where a plain value is expected (for example, `form_id[$ne]=1`) now get a 4xx response instead of a 500 error.
+* Multipart requests whose parameter names use an incompatible character encoding (for example, UTF-16) now get a `400 Bad Request` instead of a 500 error.
