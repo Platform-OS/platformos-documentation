@@ -58,6 +58,8 @@ When `enable_www_redirect` is on, `www.[[DOMAIN_NAME]]` is the canonical host an
 
 One **DnsProvision** record per domain tracks the desired state (`config`) and the lifecycle (`status`). All mutations are **asynchronous**: the API persists your intent, enqueues a worker, and returns immediately. Poll the status endpoint afterwards.
 
+The Partner Portal also re-reads the status of every domain that is not `ready` from Cloudflare on its own: every minute during the first hour after the domain was added, every 15 minutes after that. Polling picks up the changes without a refresh call.
+
 ### Existing zones are adopted
 
 For `domain-full`, the apply first looks for a zone of that name in the Cloudflare account of the stack. If one exists, it is **adopted**: the domain is bound to it as it is, and only when no such zone exists is a new one created. This is what happens for a domain registered through Cloudflare Registrar in that account, whose zone has to live there, and for any zone created by hand before the domain was added.
@@ -112,8 +114,8 @@ Both `GET /api/domains` and `GET /api/domains/status` return this shape per doma
   "last_operation_status": {
     "operation": "apply",
     "status": "success",
-    "message": ["Apply complete"],
-    "requested_at": "2026-07-28 09:12:44 +0000"
+    "message": ["apply completed"],
+    "requested_at": "2026-07-28T09:12:44Z"
   },
   "www_redirect": { "enabled": true },
   "attributes": {
@@ -172,7 +174,7 @@ Both `GET /api/domains` and `GET /api/domains/status` return this shape per doma
 | `attributes.config._domains` | the domain entries of the Instance with their redirect and `use_as_default` settings |
 | `details` | the **observed state** in the DNS system. `null` until the first provisioning run, and always `null` for a routing-only domain |
 | `details.zone_status` | Cloudflare zone status (`domain-full`) |
-| `details.hostname_status` | Cloudflare custom hostname status |
+| `details.hostname_status` | status of the certificate of the Cloudflare custom hostname, for example `pending_validation` or `active` |
 | `details.dns_zone_name_servers` | `domain-full`: the name server pair the customer has to delegate to |
 | `details.dns_verification_records` | the records the **customer must create** at their DNS provider to prove ownership (`domain-external`) |
 | `details.private_lb_cname` | `domain-external`: the routing target for the `CNAME`/`ALIAS` record |
@@ -296,8 +298,20 @@ curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer [[TOK
 
 | status | meaning |
 |---|---|
-| `200` | returns the current status payload under `data` immediately. The re-check runs asynchronously. Also returned, as a no-op, when a job is already running |
+| `200` | returns the current status payload under `data` immediately. The re-check runs asynchronously. Also returned while a job is running for the domain: the re-check runs once that job is done |
 | `409` | the domain has no provision yet, or it is being deleted: a re-check would overwrite the `destroying` status |
+
+### Cooldown
+
+Cloudflare is asked to re-check a domain at most once every 15 minutes. A refresh within that window still answers `200` and still refreshes the stored status, but does not call Cloudflare. Its `last_operation_status.message` says so and gives the time from which Cloudflare can be asked again, for example:
+
+```
+reset_validation skipped: Cloudflare was asked to re-check this domain at 02:43 UTC; it can be asked again from 02:58 UTC. Status refreshed.
+```
+
+{% include 'alert/important', content: 'Call refresh <strong>once</strong>, after the customer has added the DNS records, not on a timer. Repeated re-checks do not speed up validation: a burst of them once got the certificate order of a pending domain torn down. Cloudflare keeps retrying validation on its own, and the Partner Portal re-reads the status of every domain that is not ready, every minute during its first hour and every 15 minutes after that.' %}
+
+A re-check of a certificate order that Cloudflare has given up on or removed, `details.hostname_status` of `validation_timed_out`, `expired`, `deactivated` or `deleted`, starts a new order.
 
 ## DELETE /api/domains/:name
 
@@ -305,8 +319,13 @@ Tears the domain down asynchronously and removes the domain and its `www.` sibli
 
 ```bash
 curl -X DELETE -H "Authorization: Bearer [[TOKEN]]" \
-  "[[PORTAL_URL]]/api/domains/[[DOMAIN_NAME]]?instance_uuid=[[UUID]]"
+  "[[PORTAL_URL]]/api/domains/[[DOMAIN_NAME]]?instance_uuid=[[UUID]]&name=[[DOMAIN_NAME]]"
 ```
+
+| query parameter | description |
+|---|---|
+| `instance_uuid` | required |
+| `name` | required, the domain name. It selects the domain: the `:name` path segment is not read, and without this parameter the answer is `404` with `{"errors":"Domain not found"}` |
 
 The response contains `data.status` set to `destroying`.
 
@@ -337,7 +356,7 @@ A teardown that fails leaves the domain at `destroying`. `last_operation_status`
 | `""` (empty string) | the entry exists but was never provisioned: `www.` sibling rows, [routing-only domains](#routing-only-domains) | skip these when iterating |
 | `initializing` | provisioning has started | wait |
 | `reparking_domain` | `domain-full` only: waiting for the name server delegation | have the customer delegate the domain to `details.dns_zone_name_servers` at their registrar |
-| `ownership_verification_pending` | waiting for ownership validation | have the customer create the records from `details.dns_verification_records` and the routing records, then call `POST /api/domains/:name/refresh` |
+| `ownership_verification_pending` | waiting for ownership validation | have the customer create the records from `details.dns_verification_records` and the routing records, then call `POST /api/domains/:name/refresh` once |
 | `ownership_verification_pending` with `substatus: ssl_validation_pending` | ownership is verified, the certificate is still being issued | wait |
 | `ready` | the domain is live | nothing |
 | `destroying` | the domain is being torn down | wait, the entry disappears when done. If it stays, `last_operation_status` says why and a repeat `DELETE` retries, see [Failed teardown](#failed-teardown) |
@@ -392,7 +411,7 @@ curl "$BASE/domains/status?instance_uuid=$UUID&name=customer.com&version=2" -H "
 
 # 3. The customer adds the records at their DNS provider (see the tables above)
 
-# 4. Nudge validation once the records are in place
+# 4. Nudge validation once the records are in place (once, not on a timer)
 curl -X POST "$BASE/domains/customer.com/refresh" -H "$AUTH" -H 'Content-Type: application/json' \
   -d '{"instance_uuid": "'$UUID'", "name": "customer.com"}'
 
@@ -401,12 +420,19 @@ curl "$BASE/domains/status?instance_uuid=$UUID&name=customer.com&version=2" -H "
 # "ownership_verification_pending" (with substatus "ssl_validation_pending") then "ready"
 
 # 6. Tear down when no longer needed
-curl -X DELETE "$BASE/domains/customer.com?instance_uuid=$UUID" -H "$AUTH"
+curl -X DELETE "$BASE/domains/customer.com?instance_uuid=$UUID&name=customer.com" -H "$AUTH"
 ```
 
 For `domain-full` the flow is the same with `"setup_type": "domain-full"` and a registrable root domain. Steps 2 and 3 become "delegate the name servers to `details.dns_zone_name_servers`", and `extra_dns_records` carries the mail and service records of the customer.
 
 ## Changelog
+
+### November 2026
+
+1. **New domains show `ready` sooner.** A domain added within the last hour has its status re-read from Cloudflare every minute instead of every 15 minutes, so it typically shows `ready` within a minute or two of Cloudflare finishing it. A domain older than an hour that is not ready is still re-read every 15 minutes. See [Asynchronous processing](#asynchronous-processing).
+2. **Refresh cooldown.** `POST /api/domains/:name/refresh` asks Cloudflare to re-check a domain at most once every 15 minutes. A refresh within that window still answers `200` and refreshes the status, and `last_operation_status.message` says it was skipped. See [Cooldown](#cooldown).
+3. **A deleted certificate order recovers.** A re-check of a domain whose certificate order Cloudflare has deleted starts a new order. Previously the domain stayed pending until the order was renewed by hand in Cloudflare.
+4. **`DELETE` examples corrected.** `DELETE /api/domains/:name` has always required the `name` query parameter; the examples on this page left it out and got `404`. The API itself did not change.
 
 ### October 2026
 
