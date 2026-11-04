@@ -1,0 +1,116 @@
+---
+converter: markdown
+metadata:
+  title: Scheduling Recurring Background Jobs
+  description: Learn how to run a background job on a schedule, for example every day, and how to stop or change the schedule.
+---
+
+platformOS doesn't have a built-in scheduler for recurring jobs, but you can build one with background jobs: a job that schedules the next runs of your work, and then schedules itself again.
+
+This tutorial builds a report that runs every day.
+
+## Requirements
+
+* You know how to [create a background job in Liquid](/developer-guide/background-jobs/creating-background-job-liquid).
+* You understand the [limit on jobs scheduled by other jobs](/developer-guide/background-jobs/background-job-limitations#jobs-scheduled-by-other-jobs).
+
+## How it works
+
+The simplest approach, a job that does its work and schedules itself for tomorrow, stops after about 1000 days, because each job it schedules counts as one more step in the same chain. See [Jobs scheduled by other jobs](/developer-guide/background-jobs/background-job-limitations#jobs-scheduled-by-other-jobs).
+
+Instead, split the work into two jobs:
+
+* **The scheduler** runs once a month. It schedules the daily job for each of the next 30 days, and then schedules itself to run again in 30 days.
+* **The daily job** does the actual work and doesn't schedule anything.
+
+Only the scheduler schedules itself, so the chain grows by one step per month, not per day, and lasts for about 1000 months. The 30 daily jobs are all scheduled by the same scheduler, so they don't use up the limit.
+
+To be able to stop or change the schedule, every run of the scheduler passes a **schedule ID** to the jobs it creates. The current schedule ID is stored in a [constant](/api-reference/liquid/platformos-objects#context-constants), and the daily job only does its work if its schedule ID is still the current one.
+
+## Step 1: Create the daily job
+
+```liquid
+{% raw %}
+{% comment %}app/views/partials/jobs/daily_report.liquid{% endcomment %}
+{% liquid
+  if schedule_id == context.constants.DAILY_REPORT_SCHEDULE_ID
+    # ... generate the report here
+    log 'Report generated', type: 'daily-report'
+  else
+    log 'Skipped a job from an inactive schedule', type: 'daily-report'
+  endif
+%}
+{% endraw %}
+```
+
+## Step 2: Create the scheduler
+
+```liquid
+{% raw %}
+{% comment %}app/views/partials/jobs/schedule_daily_report.liquid{% endcomment %}
+{% liquid
+  if schedule_id == context.constants.DAILY_REPORT_SCHEDULE_ID
+    # Schedule the next run of the scheduler first, so that an error below doesn't stop the schedule
+    background job_id = 'jobs/schedule_daily_report', delay: 43200, priority: 'low', source_name: 'schedule-daily-report', schedule_id: schedule_id
+
+    for day in (1..30)
+      assign delay = day | minus: 1 | times: 1440
+      background job_id = 'jobs/daily_report', delay: delay, priority: 'low', source_name: 'daily-report', schedule_id: schedule_id
+    endfor
+  endif
+%}
+{% endraw %}
+```
+
+`delay` is in minutes: `1440` is one day, and `43200` is 30 days. The first daily job runs right away and the last one 29 days later. On day 30, the scheduler runs again and schedules the next 30 days.
+
+## Step 3: Start the schedule
+
+Start the schedule from a page, for example an admin page protected by an [authorization policy](/developer-guide/authorization-policy/authorization-policy). It generates a new schedule ID, stores it in the constant, and starts the scheduler:
+
+```graphql
+{% raw %}
+# app/graphql/constants/set.graphql
+mutation set_constant($name: String!, $value: String!) {
+  constant_set(name: $name, value: $value) {
+    name
+  }
+}
+{% endraw %}
+```
+
+```liquid
+{% raw %}
+{% comment %}app/views/pages/admin/start-daily-report.liquid{% endcomment %}
+{% liquid
+  assign schedule_id = '' | uuid
+  graphql _ = 'constants/set', name: 'DAILY_REPORT_SCHEDULE_ID', value: schedule_id
+  background job_id = 'jobs/schedule_daily_report', priority: 'low', source_name: 'schedule-daily-report', schedule_id: schedule_id
+
+  echo 'Daily report scheduled'
+%}
+{% endraw %}
+```
+
+A job started from a page begins a new chain, so the schedule starts with the full limit.
+
+## Changing or stopping the schedule
+
+To **change** the schedule, update the scheduler and visit the start page again. The new schedule ID replaces the old one, so the jobs that the old schedule already created run, see that their schedule ID is no longer current, and do nothing.
+
+To **stop** the schedule, set the constant to a different value, or delete it.
+
+If you want to remove the inactive jobs from the queue as well, delete them with [GraphQL](/developer-guide/background-jobs/managing-background-jobs-graphql#deleting-many-background-jobs), filtering by `source_name`. This step is optional: inactive jobs don't do any work.
+
+[Stopping](/developer-guide/background-jobs/managing-background-jobs-graphql#stopping-a-running-background-job) a run that is in progress ends only that run. Because the scheduler schedules its next run first, the schedule goes on. To end the schedule, change the constant as described above.
+
+{% include 'alert/tip', content: 'Instead of a constant, you can keep your schedules in a table, and make the job check that the record of its schedule still exists. Deleting the record cancels all of its jobs.' %}
+
+## Making the job safe to run more than once
+
+Background jobs can run more than once, for example when a failed job is retried, when a schedule is started twice, or when you run a job again after stopping it. Write the daily job so that a second run doesn't cause harm: for example, store the date of the last report and skip the work if today's report already exists.
+
+## Next steps
+
+* [Background Job Limitations](/developer-guide/background-jobs/background-job-limitations)
+* [Managing Background Jobs with GraphQL](/developer-guide/background-jobs/managing-background-jobs-graphql)

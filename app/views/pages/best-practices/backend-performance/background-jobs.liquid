@@ -97,6 +97,10 @@ You can choose a priority for your job based on its time-sensitivity and estimat
 The background tag creates a completely new execution context, so you will only have access to variables explicitly provided to the background tag: "data" and "hey". Note that you will not have access to the "my_data" variable. Also note
 that the result of this background tag will not be rendered, and you will not have access to any variable inside the background tag.
 
+## Scheduling a job from another job
+
+A background job can schedule other background jobs, including itself, but every chain of such jobs has a limit. See [Background Job Limitations](/developer-guide/background-jobs/background-job-limitations#jobs-scheduled-by-other-jobs), and [Scheduling Recurring Background Jobs](/developer-guide/background-jobs/scheduling-recurring-background-jobs) to run a job on a schedule.
+
 ## Example 1 - high priority job
 
 Download a JSON file and put its value into the record field. In this example, we will download the JSON file with currency rates for USD and put the resulted JSON into a database to use it further down the road.

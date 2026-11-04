@@ -1,0 +1,46 @@
+---
+converter: markdown
+metadata:
+  title: Background Jobs
+  description: Background jobs run your Liquid code outside of the HTTP request, so slow or non-critical work doesn't make your users wait.
+---
+
+A **background job** is a piece of Liquid code that platformOS runs asynchronously, outside of the HTTP request that created it. The request finishes and the response is sent to the user right away, while the job waits in a queue and runs on its own, either as soon as possible or after a delay you choose.
+
+You create background jobs with the [background Liquid tag](/api-reference/liquid/platformos-tags#background), and you can list, stop, retry, and delete them with [GraphQL](/developer-guide/background-jobs/managing-background-jobs-graphql) or in the pos-cli GUI.
+
+## When to use background jobs
+
+Use a background job when the work doesn't need to finish before you respond to the user:
+
+* **Slow operations**: calling third-party APIs, downloading and parsing files, generating PDFs, or processing many records. A page has to render within a few seconds, while a background job can run for minutes. As a rule of thumb, move any work that can take more than about one second to a background job.
+* **Non-critical side effects**: sending emails, notifying external systems, or updating statistics. If they fail, the user's request still succeeds, and you can retry the job.
+* **Delayed work**: sending a reminder an hour after sign-up, or expiring an offer after 24 hours.
+* **Recurring work**: refreshing data from an external API every day. See [Scheduling Recurring Background Jobs](/developer-guide/background-jobs/scheduling-recurring-background-jobs).
+
+Don't use a background job when the user needs the result in the response, for example to validate a form or display data on the page.
+
+## How a background job runs
+
+* **It starts from scratch.** The job doesn't share variables with the code that scheduled it. It only gets the variables you explicitly pass to the `background` tag, plus `context`. When you run a partial as a job, `context` has limited content: for example, `context.constants` and `context.location` are available, but `context.current_user` and `context.params` are not, because a job doesn't belong to any request. Pass the values you need as variables.
+* **Its output is discarded.** Anything the job renders is not shown anywhere. Use the [log tag](/best-practices/qa/creating-application-logs) to see what your job is doing.
+* **It runs in a queue chosen by its priority.** The priority decides how quickly the job gets picked up and how long it may run. See [Priorities](#priorities).
+* **It is not retried by default.** If the job raises an error, it fails. You can ask platformOS to retry a failed job with the `max_attempts` option.
+
+## Priorities
+
+Each job runs in one of three queues. Choose the priority based on how time-sensitive the job is and how long it can take. A job that exceeds the timeout of its priority is stopped, whether it has finished or not.
+
+| Priority  | Timeout   | Use for |
+|-----------|-----------|---------|
+| `high`    | 1 minute  | Short jobs that should happen as soon as possible. This is the default. |
+| `default` | 5 minutes | Jobs that can take more than a minute. |
+| `low`     | 1 hour    | Jobs that aren't time-sensitive, and long-running jobs. |
+
+## Next steps
+
+* [Creating a Background Job in Liquid](/developer-guide/background-jobs/creating-background-job-liquid)
+* [Managing Background Jobs with GraphQL](/developer-guide/background-jobs/managing-background-jobs-graphql)
+* [Scheduling Recurring Background Jobs](/developer-guide/background-jobs/scheduling-recurring-background-jobs)
+* [Background Job Limitations](/developer-guide/background-jobs/background-job-limitations)
+* [Best Practices: Background Jobs](/best-practices/backend-performance/background-jobs)
