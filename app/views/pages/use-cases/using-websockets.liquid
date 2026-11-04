@@ -130,7 +130,7 @@ The `code` field is a stable, machine-readable value you can switch on:
 | `code` | Meaning | `retryable` |
 |---|---|---|
 | `unauthorized` | The `subscribed` partial did not return `true`, or the channel has no `subscribed` partial and the connection is not allowed the open default (cross-origin, or `websockets_require_subscribed_partial` is enabled). | `false` |
-| `instance_not_found` | The connection could not be matched to a platformOS instance. | `false` |
+| `instance_not_found` | The domain the connection was opened on no longer belongs to the Instance it was opened for (for example, the domain was moved to another Instance while the connection was open). A connection to a domain that belongs to no Instance is not established at all: it is closed with a `disconnect` message (`reason: "unauthorized"`, `reconnect: false`) before any subscription is attempted. | `false` |
 | `subscribed_partial_error` | Your `subscribed` partial raised a Liquid error. The detail is written to the marketplace error log under the `WebSocketSubscribeError` code (visible in the admin), never sent over the socket. | `false` |
 | `internal` | An unexpected server error. Retrying may help. | `true` |
 

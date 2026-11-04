@@ -1,0 +1,54 @@
+---
+converter: markdown
+metadata:
+  title: Background Job Limitations
+  description: Limits that apply to background jobs - execution time, payload size, number of scheduled jobs, and jobs scheduled by other jobs.
+---
+
+This page lists the limits that apply to [background jobs](/developer-guide/background-jobs/background-jobs). For limits that apply to the rest of platformOS, see [Limitations](/developer-guide/limitations).
+
+## Execution time
+
+A job that runs longer than the timeout of its [priority](/developer-guide/background-jobs/background-jobs#priorities) is stopped, whether it has finished or not:
+
+| Priority  | Timeout   |
+|-----------|-----------|
+| `high`    | 1 minute  |
+| `default` | 5 minutes |
+| `low`     | 1 hour    |
+
+If your work takes longer, split it into smaller jobs, for example one job per batch of records.
+
+An API call made from a background job has a timeout of 8 seconds by default.
+
+## Payload size
+
+Everything you pass to a job is stored until the job runs, and has to be read back to run it. Keep the payload below `100KB`. Pass IDs, not whole records or result sets, and let the job load the data it needs.
+
+## Number of scheduled jobs
+
+We expect you to have up to a few thousand jobs scheduled to run in the future at any time. If you need to process more items, schedule jobs that each process a batch of items, rather than one job per item.
+
+## Jobs scheduled by other jobs
+
+A background job can schedule other background jobs, including itself. To protect your Instance from jobs that keep scheduling each other forever, every chain of jobs is limited to **1000** steps:
+
+* A job scheduled from a page or a form starts a new chain.
+* A job scheduled by another background job is the next step in that job's chain.
+* When a chain reaches the limit, the job that tries to schedule the next one fails with the error `background stack call is too deep`, which you can find in the logs, and the next job isn't scheduled.
+
+The limit counts steps, not time: a job scheduled with a `delay` counts the same as one that runs immediately.
+
+The limit only grows along a single chain. Jobs scheduled by the same job don't count against each other: if a job schedules 30 other jobs, each of them is one step further than the job that scheduled them, not 30 steps further. This means you can schedule many jobs from one place, for example in a `for` loop, without using up the limit.
+
+For example, a job that schedules itself for the next day stops after about 1000 days. To run something on a schedule for longer, see [Scheduling Recurring Background Jobs](/developer-guide/background-jobs/scheduling-recurring-background-jobs).
+
+## Retries
+
+A failed job isn't retried unless you set `max_attempts`. A job that schedules itself and fails before it does so stops its chain, so schedule the next run at the beginning of the job.
+
+## Cancelling and stopping jobs
+
+You can [delete](/developer-guide/background-jobs/managing-background-jobs-graphql#deleting-a-background-job) a job that is scheduled, waiting for a retry, or dead. `admin_background_jobs_delete_all` deletes at most 100 jobs per call.
+
+You can [stop](/developer-guide/background-jobs/managing-background-jobs-graphql#stopping-a-running-background-job) a job that is running. It stops within a few seconds, wherever it is. Changes inside an unfinished `transaction` are rolled back, but everything else the job did before the stop stays done, and a stopped job isn't retried. A job that started a few seconds ago may not be listed as running yet, and can't be stopped until it is.

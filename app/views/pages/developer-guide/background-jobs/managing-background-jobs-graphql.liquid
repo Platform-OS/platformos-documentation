@@ -1,0 +1,183 @@
+---
+converter: markdown
+metadata:
+  title: Managing Background Jobs with GraphQL
+  description: Learn how to list, stop, delete, and retry background jobs with GraphQL, and what happens when you stop a job that is running.
+---
+
+You create background jobs with the [background Liquid tag](/developer-guide/background-jobs/creating-background-job-liquid). Once they're created, you can manage them with GraphQL:
+
+* [`admin_background_jobs`](/api-reference/graphql/admin/queries/admin-background-jobs) lists jobs.
+* [`admin_background_job_stop`](/api-reference/graphql/admin/mutations/admin-background-job-stop) stops a job that is running.
+* [`admin_background_job_delete`](/api-reference/graphql/admin/mutations/admin-background-job-delete) deletes one job.
+* [`admin_background_jobs_delete_all`](/api-reference/graphql/admin/mutations/admin-background-jobs-delete-all) deletes the jobs that match a filter.
+* [`admin_background_job_retry`](/api-reference/graphql/admin/mutations/admin-background-job-retry) runs a failed job again.
+
+You can run these from Liquid with the [graphql tag](/api-reference/liquid/platformos-tags#graphql), or from the [pos-cli GUI](/developer-guide/pos-cli/developing-graphql-queries-using-pos-cli-gui).
+
+{% include 'alert/note', content: 'There is no GraphQL mutation that creates a background job. To run GraphQL in the background, put the `graphql` tag inside a background job. See [Running GraphQL in a background job](/developer-guide/background-jobs/creating-background-job-liquid#running-graphql-in-a-background-job).' %}
+
+## Job types
+
+Every job is in one of the following states, which you choose with the `type` filter:
+
+| Type        | Jobs |
+|-------------|------|
+| `SCHEDULED` | Jobs scheduled to run in the future, using `delay`. This is the default. |
+| `RUNNING`   | Jobs being processed right now. |
+| `RETRY`     | Jobs that failed and are waiting to be retried. |
+| `DEAD`      | Jobs that failed and won't be retried any more. |
+
+A job scheduled without a `delay` goes straight to the queue and doesn't appear as `SCHEDULED`. You will see it as `RUNNING` while it runs.
+
+## Listing background jobs
+
+This query returns the scheduled jobs with a given `source_name`:
+
+```graphql
+{% raw %}
+# app/graphql/background_jobs/search.graphql
+query search_background_jobs($source_name: String!) {
+  admin_background_jobs(
+    per_page: 100
+    filter: {
+      type: SCHEDULED
+      source_name: { value: $source_name }
+    }
+  ) {
+    total_entries
+    results {
+      id
+      source_name
+      queue
+      run_at
+      arguments
+    }
+  }
+}
+{% endraw %}
+```
+
+```liquid
+{% raw %}
+{% liquid
+  graphql jobs = 'background_jobs/search', source_name: 'daily-report'
+  log jobs, type: 'background-jobs'
+%}
+{% endraw %}
+```
+
+The `id` of a job is the value that the `background` tag assigned to its variable (`job_id` in `background job_id = 'jobs/my_job'`).
+
+You can also filter jobs by:
+
+* `id`: a single job.
+* `timestamp`: the time of the job's next step. It filters by `run_at` for `SCHEDULED` jobs, by `retry_at` for `RETRY` jobs, and by `dead_at` for `DEAD` jobs. For example, `timestamp: { lt: "2026-12-01" }` returns jobs scheduled to run before December 1st.
+* `or`: a list of filters, of which at least one has to match.
+
+The `source_name` filter is case-sensitive. Only `type`, `id`, `source_name`, `timestamp`, and `or` filter jobs. The other fields of the filter have no effect.
+
+To find out why jobs failed, query the `DEAD` jobs and read their `error_class` and `error_message` fields.
+
+The query returns up to 100 jobs per page and up to 50 pages.
+
+## Deleting a background job
+
+To cancel a single job, delete it by its ID:
+
+```graphql
+{% raw %}
+# app/graphql/background_jobs/delete.graphql
+mutation delete_background_job($id: ID!) {
+  admin_background_job_delete(id: $id) {
+    id
+  }
+}
+{% endraw %}
+```
+
+You can delete jobs that are `SCHEDULED`, `RETRY`, or `DEAD`. A job that is already running can't be deleted, but you can [stop it](#stopping-a-running-background-job).
+
+## Deleting many background jobs
+
+To delete all jobs that match a filter, use `admin_background_jobs_delete_all`. It takes the same filter as `admin_background_jobs`:
+
+```graphql
+{% raw %}
+# app/graphql/background_jobs/delete_all.graphql
+mutation delete_background_jobs($source_name: String!) {
+  admin_background_jobs_delete_all(
+    filter: {
+      type: SCHEDULED
+      source_name: { value: $source_name }
+    }
+  ) {
+    results {
+      id
+    }
+  }
+}
+{% endraw %}
+```
+
+{% include 'alert/important', content: 'One call deletes at most 100 jobs. If more jobs match your filter, call the mutation again until `results` is empty.' %}
+
+## Stopping a running background job
+
+To stop a job that is running right now, use its ID:
+
+```graphql
+{% raw %}
+# app/graphql/background_jobs/stop.graphql
+mutation stop_background_job($id: ID!) {
+  admin_background_job_stop(id: $id) {
+    id
+  }
+}
+{% endraw %}
+```
+
+You can also stop a job from the [pos-cli GUI](/developer-guide/pos-cli/developing-graphql-queries-using-pos-cli-gui): open **Background jobs**, set **Type** to **Running**, open the menu next to the job, and click **Stop background job**.
+
+Only `RUNNING` jobs created with the `background` tag can be stopped (see [Jobs that cannot be stopped](#jobs-that-cannot-be-stopped)). To cancel a job that hasn't started yet, [delete it](#deleting-a-background-job) instead. A job that started a few seconds ago may not be listed as running yet. Until it is, `admin_background_job_stop` returns the error `Job not found`, so wait a moment and try again.
+
+The mutation returns as soon as the stop is requested. The job usually stops within a few seconds, and leaves the list of running jobs a few seconds after that.
+
+### What happens when you stop a job
+
+* **It stops wherever it is**, which can be in the middle of its code. This can be between two tags, or while it waits for a database query or an [API call](/developer-guide/notifications/creating-api-call-notification). A query that is running is cancelled. An API call isn't waited for, but the request may already have reached the other service, which can still process it.
+* **Changes inside an unfinished transaction are rolled back.** If the job is inside a [`transaction`](/api-reference/liquid/platformos-tags#transaction) tag that hasn't finished, everything the transaction changed is undone, and the background jobs scheduled inside it are never scheduled.
+* **Everything else the job has done stays done.** Records saved outside a transaction, emails sent, API calls made, and background jobs scheduled outside a transaction are not undone. Jobs the stopped job has already scheduled still run.
+* **`try` doesn't catch the stop.** The `catch` block of a [`try`](/api-reference/liquid/platformos-tags#try) tag doesn't run, but its `ensure` block does.
+* **The job isn't retried.** A stopped job doesn't count as failed: it isn't retried, even with `max_attempts`, and it doesn't become `DEAD`.
+* **The stop is logged.** The [logs](/best-practices/qa/creating-application-logs) get an entry of type `BackgroundJobStopped` with the message `Background job <id> stopped with admin_background_job_stop`.
+
+{% include 'alert/important', content: 'A job that schedules its own next run stops its chain if you stop it before it schedules the next run. This is another reason to schedule the next run at the beginning of the job. See [Scheduling Recurring Background Jobs](/developer-guide/background-jobs/scheduling-recurring-background-jobs).' %}
+
+A job is safest to stop when stopping it at any point leaves your data consistent. Do work that has to happen all together inside a `transaction`, and write long jobs so that you can run them again after a stop, for example by processing records in batches and skipping the ones that are already done.
+
+### Jobs that cannot be stopped
+
+Only jobs created with the [background](/api-reference/liquid/platformos-tags#background) tag can be stopped. Deploys, data exports, imports and cleans, and copying an Instance also run as background jobs of your Instance, so they are listed as running jobs too, but they can't be stopped: `admin_background_job_stop` returns the error `Job not found` for them, and the pos-cli GUI shows no stop button next to them.
+
+## Retrying a failed background job
+
+A job that failed and won't be retried any more is `DEAD`. To run it again, retry it by its ID:
+
+```graphql
+{% raw %}
+# app/graphql/background_jobs/retry.graphql
+mutation retry_background_job($id: ID!) {
+  admin_background_job_retry(id: $id) {
+    id
+  }
+}
+{% endraw %}
+```
+
+Only `DEAD` jobs can be retried this way.
+
+## Next steps
+
+* [Scheduling Recurring Background Jobs](/developer-guide/background-jobs/scheduling-recurring-background-jobs)
+* [Background Job Limitations](/developer-guide/background-jobs/background-job-limitations)
