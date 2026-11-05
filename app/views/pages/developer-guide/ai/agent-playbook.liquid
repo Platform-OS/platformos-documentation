@@ -7,11 +7,11 @@ converter: markdown
 
 The **platformOS Agent Playbook** is one part of the [platformOS Agent Kit](/developer-guide/ai/ai): the part that lives in your project rather than on a server.
 
-The [MCP servers](/developer-guide/ai/mcp-servers) give an agent the ability to look platformOS up and to act on an instance. The Playbook is what tells it which facts matter, in what order to work, and what it must not do. It unpacks to a single directory in your project root — `.claude/`, `.opencode/`, `.pi/` or `.codex/`, depending on the tool.
+The [MCP servers](/developer-guide/ai/mcp-servers) give an agent the ability to look platformOS up and to act on an instance. The Playbook is what tells it which facts matter, in what order to work, and what it must not do. It unpacks to a single directory in your project root — `.claude/`, `.cursor/`, `.opencode/`, `.pi/` or `.codex/`, depending on the tool, or `platformos-playbook/` for a tool we have no wiring for.
 
 ## What is in it
 
-The paths below are the Claude Code layout; the other tools' equivalents are in [One Playbook, four wirings](#one-playbook-four-wirings).
+The paths below are the Claude Code layout; the other tools' equivalents are in [One Playbook, six wirings](#one-playbook-six-wirings).
 
 | Path | What it holds |
 |---|---|
@@ -63,9 +63,11 @@ Answer yes when [`pos-cli ai init`](/get-started/ai-assisted-development#set-up-
 
 <pre class="command-line" data-user="user" data-host="host"><code class="language-bash">
 pos-cli ai init --tool claude --agent-playbook
+pos-cli ai init --tool cursor --agent-playbook
 pos-cli ai init --tool opencode --agent-playbook
 pos-cli ai init --tool pi --agent-playbook
 pos-cli ai init --tool codex --agent-playbook
+pos-cli ai init --tool other --agent-playbook
 </code></pre>
 
 By hand, which is also how you update it:
@@ -75,31 +77,37 @@ curl -fsSL https://documentation.platformos.com/assets/platformos-agent-playbook
 unzip -o playbook.zip &amp;&amp; rm playbook.zip
 </code></pre>
 
-For the other tools, fetch the archive named for it from the same place: `platformos-agent-playbook-opencode.zip`, `platformos-agent-playbook-pi.zip` or `platformos-agent-playbook-codex.zip`.
+For the other tools, fetch the archive named for it from the same place: `platformos-agent-playbook-cursor.zip`, `platformos-agent-playbook-opencode.zip`, `platformos-agent-playbook-pi.zip`, `platformos-agent-playbook-codex.zip`, or `platformos-agent-playbook-portable.zip` for anything else.
 
 Each archive unpacks straight to its own directory, with no nested directory to flatten. `-o` overwrites without asking, so it replaces every Playbook file **including any you have edited**; drop the `-o` and unzip elsewhere if you want to diff first.
 
-## One Playbook, four wirings
+## One Playbook, six wirings
 
-All four archives carry the same platformOS knowledge, compiled from the same source. What differs is how that knowledge reaches the agent, because the tools provide different mechanisms.
+Every archive carries the same platformOS knowledge, compiled from the same source. What differs is how that knowledge reaches the agent, because the tools provide different mechanisms.
 
-| | Claude Code | opencode | pi | Codex |
-|---|---|---|---|---|
-| Installs into | `.claude/` | `.opencode/` | `.pi/` | `.codex/` |
-| Agent definition | `agents/` + `settings.json` | `agents/` + `default_agent` | `APPEND_SYSTEM.md` | `AGENTS.md` |
-| Always-on rules | `CLAUDE.md` | the `instructions` key | `APPEND_SYSTEM.md` | `AGENTS.md` |
-| Per-directory rules | native: a rule's `paths` field | the Playbook's plugin | the Playbook's extension | an index to read from |
-| Diagnostics on a finding | a `PostToolUse` hook | the same plugin | the same extension | — |
+| | Claude Code | Cursor | opencode | pi | Codex | Other |
+|---|---|---|---|---|---|---|
+| Installs into | `.claude/` | `.cursor/` | `.opencode/` | `.pi/` | `.codex/` | `platformos-playbook/` |
+| Agent definition | `agents/` + `settings.json` | an always-applied rule | `agents/` + `default_agent` | `APPEND_SYSTEM.md` | `AGENTS.md` | `AGENTS.md` |
+| Always-on rules | `CLAUDE.md` | `alwaysApply: true` rules | the `instructions` key | `APPEND_SYSTEM.md` | `AGENTS.md` | `AGENTS.md` |
+| Per-directory rules | native: a rule's `paths` field | native: a rule's `globs` field | the Playbook's plugin | the Playbook's extension | an index to read from | an index to read from |
+| Diagnostics on a finding | a `PostToolUse` hook | — | the same plugin | the same extension | — | — |
 
-The per-directory rules are the interesting difference, and the reason there are four columns rather than one.
+The per-directory rules are the interesting difference, and the reason there are six columns rather than one.
 
-Claude Code loads a rule file only when you open a file its `paths` field matches, so a rule about pages arrives when a page is opened and costs nothing otherwise. **opencode and pi have no equivalent**, so their archives ship a small plugin that reimplements it: it watches which file each tool call touched, matches it against each rule's `globs`, and delivers the rule once per session. The same plugin explains a `validate_code` finding from the same table the Claude Code hook reads. Both plugins share one delivery module, so the two cannot drift apart, and neither has any dependencies.
+**Claude Code and Cursor both load them natively.** Claude Code reads a rule file only when you open a file its `paths` field matches, so a rule about pages arrives when a page is opened and costs nothing otherwise. Cursor does the same with `globs`: a `.cursor/rules/*.mdc` file is attached when a matching file is in context. Neither archive needs a plugin.
+
+**opencode and pi have no equivalent**, so their archives ship a small plugin that reimplements it: it watches which file each tool call touched, matches it against each rule's `globs`, and delivers the rule once per session. The same plugin explains a `validate_code` finding from the same table the Claude Code hook reads. Both plugins share one delivery module, so the two cannot drift apart, and neither has any dependencies.
 
 **Codex has no lazy mechanism at all.** It builds its instruction chain once at startup, from the project root down to your working directory, and a nested `AGENTS.md` is read only when Codex is *started* in that directory — not when a file there is touched. Its whole chain is also capped at 32 KiB, which it truncates silently. So the Codex archive ships its rules as files with an index in `AGENTS.md` naming which to read before working in a given directory. That relies on the agent following the index rather than on the harness, which is the honest trade for what Codex provides.
 
-Cursor, VS Code and anything else that speaks MCP get the whole rest of the Agent Kit — the same four servers and the same tools. Only the Playbook needs a per-tool layout.
+**The portable archive assumes no mechanism whatsoever.** It is for a tool this Playbook has not been wired to, so it takes the Codex approach — one always-on file plus an index of rules to read — and unpacks to `platformos-playbook/`, a directory of its own, because a hand-unzip has no installer to stop it overwriting your `AGENTS.md`. Its `README.md` says how to point a tool at it. Each rule file still carries its `globs`, so a tool that does have path-scoped instructions can be wired up to use them.
 
-{% include 'alert/important', content: 'An existing `.claude/`, `.opencode/`, `.pi/` or `.codex/` directory is never replaced, and neither is an existing `AGENTS.md`. They hold your own rules, settings and any edits you have made, and unpacking over them would overwrite them. `pos-cli ai init` leaves them alone and prints the download link so you can merge in the parts you want.' %}
+Two things no archive can do for Cursor or the portable case: neither Cursor nor a tool we know nothing about documents a **project-level default agent**, so the coding agent's instructions travel as always-on rules rather than as an agent that is selected for you. And Cursor's hook mechanism is not documented, so no diagnostics hook is shipped for it — the table above says `—` rather than guessing.
+
+**VS Code gets no Playbook.** Copilot does read path-scoped instructions natively (`.github/instructions/*.instructions.md` with an `applyTo` glob), but VS Code runs two agent harnesses whose support for them differs, so there is no single layout that works for both. It gets the whole rest of the Agent Kit — the same four servers and the same tools.
+
+{% include 'alert/important', content: 'An existing `.claude/`, `.cursor/`, `.opencode/`, `.pi/`, `.codex/` or `platformos-playbook/` directory is never replaced, and neither is an existing `AGENTS.md`. They hold your own rules, settings and any edits you have made, and unpacking over them would overwrite them. `pos-cli ai init` leaves them alone and prints the download link so you can merge in the parts you want.' %}
 
 ## Two tools where the Playbook can be installed and inert
 

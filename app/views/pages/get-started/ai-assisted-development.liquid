@@ -13,7 +13,7 @@ All of it together is the **platformOS Agent Kit**: a setup command, four MCP se
 
 ## What you get
 
-`pos-cli ai init` sets up two kinds of thing: four MCP servers, and — for Claude Code, opencode, pi and Codex — the Agent Playbook. [MCP](https://modelcontextprotocol.io/) is the protocol AI tools use to call external tools; your tool starts the servers itself and you never run them by hand.
+`pos-cli ai init` sets up two kinds of thing: four MCP servers, and — for every tool but VS Code — the Agent Playbook. [MCP](https://modelcontextprotocol.io/) is the protocol AI tools use to call external tools; your tool starts the servers itself and you never run them by hand.
 
 | Piece | Runs | What it gives the agent |
 |---|---|---|
@@ -39,7 +39,7 @@ It asks up to three questions:
 
 1. **Which AI tool do you use?** — Claude Code, Cursor, VS Code, opencode, pi, Codex, or Other. "Other" prints a JSON snippet to paste into any MCP-capable tool yourself.
 2. **Also register the documentation servers?** — the hosted Liquid and GraphQL reference, for this project or for all your projects.
-3. **Also install the platformOS Agent Playbook?** — offered for Claude Code, opencode, pi and Codex; see the next section.
+3. **Also install the platformOS Agent Playbook?** — offered for every tool but VS Code; see the next section.
 
 Two tools are asked one extra question. **opencode** is asked which configuration format to write, unless your `opencode.json` already uses one. **Codex** is asked whether to mark the project trusted in your global configuration, because it reads nothing from `.codex/` until you do.
 
@@ -49,10 +49,12 @@ Each tool keeps its MCP configuration in its own file, and `pos-cli ai init` wri
 |---|---|---|
 | Claude Code | `.mcp.json` | `~/.claude.json` |
 | Cursor | `.cursor/mcp.json` | `~/.cursor/mcp.json` |
-| VS Code | `.vscode/mcp.json` | printed for you to paste — its path depends on your platform and build |
+| VS Code | `.vscode/mcp.json` | the installed build's `User/mcp.json` — or printed for you to paste if no build is found |
 | opencode | `opencode.json` | `~/.config/opencode/opencode.json` |
 | pi | `.pi/mcp.json` | `~/.pi/agent/mcp.json` |
 | Codex | `.codex/config.toml` | `~/.codex/config.toml` |
+
+VS Code keeps its user configuration in a per-build directory — `Code`, `Code - Insiders` or `VSCodium` — so `pos-cli ai init` looks for the one that is installed and writes there. Rather than guess a path no build would read, it prints the snippet when it finds none.
 
 Codex is the only one of these whose configuration is **TOML** rather than JSON. pos-cli appends one table per server — `[mcp_servers.platformos-cli]` and so on — rather than reparsing the file, so your comments and formatting are never rewritten.
 
@@ -64,24 +66,24 @@ To skip the questions — in a setup script, for instance:
 pos-cli ai init --tool claude                  # local + documentation servers
 pos-cli ai init --tool cursor --docs global    # documentation servers for all projects
 pos-cli ai init --tool claude --no-docs        # local servers only
-pos-cli ai init --tool claude --agent-playbook # also install the Agent Playbook
+pos-cli ai init --tool cursor --agent-playbook # also install the Agent Playbook
 </code></pre>
 
 ## Install the platformOS Agent Playbook
 
-The servers above let an agent look platformOS up, check code before it is written, and act on your instance. The **platformOS Agent Playbook** is the part of the Agent Kit that tells it which facts matter and in what order to work. It unpacks to a single directory in your project — `.claude/`, `.opencode/`, `.pi/` or `.codex/`, depending on the tool — and contains:
+The servers above let an agent look platformOS up, check code before it is written, and act on your instance. The **platformOS Agent Playbook** is the part of the Agent Kit that tells it which facts matter and in what order to work. It unpacks to a single directory in your project — `.claude/`, `.cursor/`, `.opencode/`, `.pi/` or `.codex/`, depending on the tool, or `platformos-playbook/` for a tool we have no wiring for — and contains:
 
 - **The order of work and the prohibitions**, loaded on every request — look the symbol up, validate the buffer, write, preview, deploy, fetch the page, read the data back. Writing a file and deploying it to find out whether it works is prohibited.
 - **Per-directory rules**, loaded when the agent opens a file in that directory — pages, partials, layouts, commands, queries, GraphQL, schema and translations.
 - **Topic files** it can consult on demand, covering the platformOS behaviour that fails silently and that no linter reports.
-- **The platformOS coding agent**, a named agent for writing and changing platformOS code. The Playbook makes it the **default agent for the project**, so it handles platformOS work without you selecting it.
-- **A diagnostics hook** that attaches the documented platformOS rule, and its fix, to a validation finding — so a terse error message arrives with the explanation beside it.
+- **The platformOS coding agent**, a named agent for writing and changing platformOS code. Where the tool allows it — Claude Code and opencode — the Playbook makes it the **default agent for the project**, so it handles platformOS work without you selecting it. Where it does not, the same instructions are always loaded instead.
+- **A diagnostics hook** that attaches the documented platformOS rule, and its fix, to a validation finding — so a terse error message arrives with the explanation beside it. Claude Code, opencode and pi have one; Cursor and Codex do not, because neither documents a mechanism for it.
 
 With the Playbook installed, your tool starts with that agent already selected — here, Claude Code:
 
 <img loading="lazy" src="{{ 'images/get-started/ai-assisted-development/coding-agent.png' | asset_url }}" alt="Claude Code starting in a project with the Playbook installed, showing platformos-coding-agent as the active agent" width="889" height="597">
 
-There is one archive per tool, because the directory layout belongs to the tool. All four carry the same platformOS knowledge; what differs is the wiring, which [the Playbook reference](/developer-guide/ai/agent-playbook) sets out. Cursor and VS Code get no Playbook — but the four MCP servers are not tool-specific, and every tool gets all of them.
+There is one archive per tool, because the directory layout belongs to the tool. They all carry the same platformOS knowledge; what differs is the wiring, which [the Playbook reference](/developer-guide/ai/agent-playbook) sets out. VS Code is the one option with no Playbook: Copilot reads path-scoped instructions natively, but VS Code runs two agent harnesses whose support for them differs, so there is no single layout that works. The four MCP servers are not tool-specific, and every tool gets all of them.
 
 Answer yes to the third question, or pass `--agent-playbook`; `--no-agent-playbook` declines without asking.
 
@@ -94,7 +96,7 @@ curl -fsSL https://documentation.platformos.com/assets/platformos-agent-playbook
 unzip -q playbook.zip -d playbook-tmp &amp;&amp; rm playbook.zip
 </code></pre>
 
-That leaves the Playbook at `playbook-tmp/.claude/`, next to your own `.claude/` rather than on top of it. For the other tools, fetch the archive named for it from the same place: `platformos-agent-playbook-opencode.zip`, `platformos-agent-playbook-pi.zip` or `platformos-agent-playbook-codex.zip`.
+That leaves the Playbook at `playbook-tmp/.claude/`, next to your own `.claude/` rather than on top of it. For the other tools, fetch the archive named for it from the same place: `platformos-agent-playbook-cursor.zip`, `platformos-agent-playbook-opencode.zip`, `platformos-agent-playbook-pi.zip`, `platformos-agent-playbook-codex.zip`, or `platformos-agent-playbook-portable.zip` for a tool none of the others fit.
 
 ## Check that it works
 
