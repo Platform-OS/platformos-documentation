@@ -1,0 +1,17 @@
+---
+metadata:
+  skip_sitemap: true
+  skip_llms: true
+---
+{%- liquid
+  # Read by `pos-cli ai init` (lib/agentPlaybook.js). asset_url adds the deploy's cache buster, so these
+  # links change with every deploy; the plain /assets/ URLs can stay cached at the CDN for a year.
+  assign names = 'platformos-agent-playbook-checksums.json,platformos-agent-playbook.zip,platformos-agent-playbook-cursor.zip,platformos-agent-playbook-opencode.zip,platformos-agent-playbook-pi.zip,platformos-agent-playbook-codex.zip,platformos-agent-playbook-portable.zip' | split: ','
+  assign files = {}
+  for name in names
+    assign files[name] = name | asset_url
+  endfor
+  assign index = {}
+  assign index['files'] = files
+-%}
+{{ index }}
