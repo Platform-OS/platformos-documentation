@@ -13,7 +13,7 @@ metadata:
 
 <h4 class="release-note release-note__improved">IMPROVED</h4>
 
-* **Modules are never removed together with their records by accident** (2026-10-27): When a module disappears from the lock file, `pos-cli deploy -p` (partial deploy) and `pos-cli sync` no longer remove it. Removing a module whose tables still hold records is now rejected as a whole with a clear error, and nothing is deleted.
+* **Database queries stop when a request times out** (2026-10-30): A query started by a page or GraphQL request that runs past the request timeout is now cancelled instead of continuing in the background and slowing down later requests.
 * **Creating and updating pages with large content is much faster** (2026-10-21): For example, saving a page of several megabytes no longer takes seconds.
 * **Liquid filters handle empty input consistently** (2026-10-14): `extract_url_params`, `expand_url_template`, `humanize`, `translate`, `translate_escape`, `video_params`, `querify`, `useragent` and `url_to_qrcode_svg` now return an empty value for blank input instead of reporting an argument error. Many other filters now accept `nil` without failing.
 * **The `parse_json` tag treats an empty body as an empty hash** (2026-10-14): An empty body, including one made only of whitespace HTML entities, now returns an empty hash, the same way the `parse_json` filter does.
@@ -29,6 +29,8 @@ metadata:
 
 <h4 class="release-note release-note__fixed">FIXED</h4>
 
+* **Deploys no longer lose a page that shares its URL with another file** (2026-10-30): When an app page was added on the same route as a module page, removing the app page later also removed the module page, and redeploying didn't bring it back.
+* **Asset URLs change after `pos-cli data clean --include-schema`** (2026-10-28): Previously, redeploying the same asset files could keep serving the old cached content.
 * **`pos-cli sync` now returns an error when a file can't be deleted because records still depend on it** (2026-10-27): Previously it reported success.
 * **Constants cache is cleared correctly after `pos-cli data clean --include-schema`** (2026-10-21): Previously, `context.constants` could still return the old values until adding a new constant.
 * **Nested parameters no longer cause a 500 error** (2026-10-14): Requests to form and API endpoints with nested parameters where a plain value is expected (for example, `form_id[$ne]=1`) now get a 4xx response instead of a 500 error.
