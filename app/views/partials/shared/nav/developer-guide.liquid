@@ -313,6 +313,19 @@
   {% endif %}
 </li>
 
+<li class="{% if cp contains '/developer-guide/background-jobs' %}active{% endif %}">
+  <a href="/developer-guide/background-jobs/background-jobs">Background Jobs</a>
+  {% if cp contains '/developer-guide/background-jobs' %}
+    <ul class="submenu">
+      {% include "shared/nav/link", href: "/developer-guide/background-jobs/background-jobs", text: "Background Jobs" %}
+      {% include "shared/nav/link", href: "/developer-guide/background-jobs/creating-background-job-liquid", text: "Creating a Background Job in Liquid" %}
+      {% include "shared/nav/link", href: "/developer-guide/background-jobs/managing-background-jobs-graphql", text: "Managing Background Jobs with GraphQL" %}
+      {% include "shared/nav/link", href: "/developer-guide/background-jobs/scheduling-recurring-background-jobs", text: "Scheduling Recurring Background Jobs" %}
+      {% include "shared/nav/link", href: "/developer-guide/background-jobs/background-job-limitations", text: "Limitations" %}
+    </ul>
+  {% endif %}
+</li>
+
 <li class="{% if cp contains 'authorization' %}active{% endif %}">
   <a href="/developer-guide/authorization-policy/authorization-policy">Authorization Policy</a>
   {% if cp contains 'authorization' %}

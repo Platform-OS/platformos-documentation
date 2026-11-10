@@ -1,0 +1,112 @@
+---
+converter: markdown
+metadata:
+  title: Creating a Background Job in Liquid
+  description: Learn how to schedule a background job with the background Liquid tag, pass data to it, delay it, and retry it on failure.
+---
+
+You create background jobs with the [background Liquid tag](/api-reference/liquid/platformos-tags#background). This tutorial shows you how to run a partial as a background job, pass data to it, and configure its delay, priority, and retries.
+
+## Requirements
+
+* You are familiar with [pages](/developer-guide/pages/pages) and [partials](/developer-guide/pages/reusing-code-across-multiple-pages).
+* You know [what background jobs are and when to use them](/developer-guide/background-jobs/background-jobs).
+
+## Step 1: Create the partial with the job's code
+
+Put the code you want to run in the background into a partial. In this example, the job downloads currency rates and logs them:
+
+```liquid
+{% raw %}
+{% comment %}app/views/partials/jobs/refresh_currency_rates.liquid{% endcomment %}
+{% liquid
+  assign url = 'https://example.com/currency-rates.json?currency=' | append: currency
+  assign rates = url | download_file | parse_json
+
+  log rates, type: 'refresh-currency-rates'
+%}
+{% endraw %}
+```
+
+The partial only has access to the variables you pass to it in the next step, here `currency`.
+
+## Step 2: Schedule the job
+
+Use the `background` tag with the path of the partial. The tag schedules the job, assigns the job's ID to the variable on the left, and returns immediately, without waiting for the job to run:
+
+```liquid
+{% raw %}
+{% comment %}app/views/pages/refresh-rates.liquid{% endcomment %}
+{% liquid
+  background job_id = 'jobs/refresh_currency_rates', currency: 'USD', priority: 'low', source_name: 'refresh-currency-rates'
+
+  echo 'Rates will be refreshed shortly. Job ID: ' | append: job_id
+%}
+{% endraw %}
+```
+
+Every argument, including the options below, is available in the partial as a variable. Pass only the data you need: IDs and small values, not whole result sets. See [Limitations](/developer-guide/background-jobs/background-job-limitations).
+
+## Options
+
+| Option         | Description |
+|----------------|-------------|
+| `delay`        | Number of minutes to wait before running the job. Fractions are allowed: `0.5` is 30 seconds. Defaults to `0`, which means as soon as possible. |
+| `priority`     | `high`, `default` or `low`. Defaults to `high`. See [Priorities](/developer-guide/background-jobs/background-jobs#priorities). |
+| `max_attempts` | How many times to retry the job if it fails. By default, a failed job isn't retried. |
+| `source_name`  | Your label for the job. Use it to find the job with [GraphQL](/developer-guide/background-jobs/managing-background-jobs-graphql) later. |
+
+## Running a job with a delay
+
+To run a job later, set `delay` in minutes. This job sends a reminder one day after sign-up:
+
+```liquid
+{% raw %}
+{% liquid
+  background job_id = 'jobs/send_reminder', delay: 1440, priority: 'low', source_name: 'signup-reminder', user_id: user.id
+%}
+{% endraw %}
+```
+
+Store the `job_id` if you might need to cancel the job before it runs. You can delete it with the [`admin_background_job_delete`](/developer-guide/background-jobs/managing-background-jobs-graphql#deleting-a-background-job) mutation.
+
+## Inline syntax
+
+You can also put the job's code directly between `{% raw %}{% background %}{% endraw %}` and `{% raw %}{% endbackground %}{% endraw %}`:
+
+```liquid
+{% raw %}
+{% background priority: 'low', source_name: 'refresh-currency-rates', currency: 'USD' %}
+  {% log currency, type: 'refresh-currency-rates' %}
+{% endbackground %}
+{% endraw %}
+```
+
+With the inline syntax, the job gets a copy of most of the `context` of the code that scheduled it, as it was at that moment, for example `context.current_user` and `context.params`.
+
+We recommend the partial syntax: the job's code lives in its own file, you get the job's ID back, and you can schedule the same job from many places.
+
+## Running GraphQL in a background job
+
+A background job can run any Liquid, including the [graphql tag](/api-reference/liquid/platformos-tags#graphql), so this is how you run mutations in the background:
+
+```liquid
+{% raw %}
+{% comment %}app/views/partials/jobs/apply_discount.liquid{% endcomment %}
+{% liquid
+  graphql result = 'products/apply_discount', id: product_id, discount: discount
+  log result, type: 'apply-discount'
+%}
+{% endraw %}
+```
+
+## Scheduling jobs inside transactions
+
+If you schedule a job inside a [transaction](/api-reference/liquid/platformos-tags#transaction), the job is added to the queue only after the transaction is committed, so it always sees the data the transaction created. If the transaction is rolled back, the job is never scheduled. This also means that a job scheduled inside a transaction doesn't appear in `admin_background_jobs` until the transaction ends.
+
+The same applies when a job is [stopped](/developer-guide/background-jobs/managing-background-jobs-graphql#stopping-a-running-background-job) while it's inside a transaction: the transaction is rolled back, and the jobs scheduled inside it are never scheduled. Put the work that has to happen all together, or not at all, inside a transaction.
+
+## Next steps
+
+* [Managing Background Jobs with GraphQL](/developer-guide/background-jobs/managing-background-jobs-graphql)
+* [Scheduling Recurring Background Jobs](/developer-guide/background-jobs/scheduling-recurring-background-jobs)

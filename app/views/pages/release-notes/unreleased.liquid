@@ -11,6 +11,8 @@ metadata:
 
 <h4 class="release-note release-note__new">NEW</h4>
 
+* **Stop a running background job** (2026-11-09): The new [`admin_background_job_stop`](/api-reference/graphql/admin/mutations/admin-background-job-stop) GraphQL mutation, and a stop button for running jobs in the pos-cli GUI, stop a job created with the `background` tag within a few seconds, wherever it is. Changes inside an unfinished `transaction` are rolled back, the job isn't retried, and the stop is logged. Deploys, data exports, data imports and other jobs platformOS runs for you can't be stopped. See [Stopping a running background job](/developer-guide/background-jobs/managing-background-jobs-graphql#stopping-a-running-background-job).
+
 <h4 class="release-note release-note__improved">IMPROVED</h4>
 
 * **Database queries stop when a request times out** (2026-10-30): A query started by a page or GraphQL request that runs past the request timeout is now cancelled instead of continuing in the background and slowing down later requests.
@@ -29,6 +31,7 @@ metadata:
 
 <h4 class="release-note release-note__fixed">FIXED</h4>
 
+* **`pos-cli deploy` shows an error when processing a deploy's assets fails** (2026-11-04): Previously the error wasn't passed on to pos-cli, so the failure went unreported.
 * **Deploys no longer lose a page that shares its URL with another file** (2026-10-30): When an app page was added on the same route as a module page, removing the app page later also removed the module page, and redeploying didn't bring it back.
 * **Asset URLs change after `pos-cli data clean --include-schema`** (2026-10-28): Previously, redeploying the same asset files could keep serving the old cached content.
 * **`pos-cli sync` now returns an error when a file can't be deleted because records still depend on it** (2026-10-27): Previously it reported success.
