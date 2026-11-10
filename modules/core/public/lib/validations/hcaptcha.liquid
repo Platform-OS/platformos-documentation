@@ -1,0 +1,14 @@
+{% comment %}
+  params: @hcaptcha_params
+          @key
+          @c
+{% endcomment %}
+
+{% liquid
+  assign hcaptcha_solved =  hcaptcha_params | hcaptcha
+  unless hcaptcha_solved
+    assign key = key | default: "modules/core/validation.hcaptcha"
+    function c = 'modules/core/helpers/register_error', contract: c, field_name: 'hcaptcha', key: key
+  endunless
+  return c
+%}

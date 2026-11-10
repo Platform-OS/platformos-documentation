@@ -1,0 +1,9 @@
+{% comment %}
+  Required params:
+    - name string
+    - value string
+{% endcomment %}
+{% liquid
+  graphql result = 'modules/core/variable/set', name: name, value: value
+  return result.variable
+%}

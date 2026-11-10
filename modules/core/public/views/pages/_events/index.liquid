@@ -1,0 +1,11 @@
+---
+layout: modules/core/basic
+slug: _events
+---
+{% liquid
+  if context.environment == 'staging' or context.environment == 'development'
+    function events = 'modules/core/queries/events/search', limit: 50
+
+    render 'modules/core/events/list', events: events
+  endif
+%}

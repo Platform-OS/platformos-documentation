@@ -1,0 +1,31 @@
+{% comment %}
+  params: @field_name
+          @property_name
+          @property_value
+          @scope_name
+          @scope_value
+          @exclude_name
+          @exclude_value
+          @ids
+          @not_ids
+          @table
+          @key
+          @c
+{% endcomment %}
+{% liquid
+  assign property_name = property_name | default: ''
+  assign property_value = property_value | default: ''
+  assign scope_name = scope_name | default: ''
+  assign scope_value = scope_value | default: ''
+  assign exclude_name = exclude_name | default: ''
+  assign exclude_value = exclude_value | default: ''
+  assign key = key | default: 'modules/core/validation.not_exist'
+
+  graphql r = 'modules/core/records/count', ids: ids, not_ids: not_ids, property_name: property_name, property_value: property_value, table: table, scope_name: scope_name, scope_value: scope_value, exclude_name: exclude_name, exclude_value: exclude_value
+
+  assign count = r.records.total_entries
+  if count == 0
+    function c = 'modules/core/helpers/register_error', contract: c, field_name: field_name, key: key
+  endif
+  return c
+%}

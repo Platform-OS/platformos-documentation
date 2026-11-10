@@ -1,0 +1,31 @@
+{% comment %}
+  Required params:
+    - name string
+    - default any
+      the default vaue of the variable
+    - type string (optional)
+      it can be: array, integer, float, boolean, object
+{% endcomment %}
+{% liquid
+  assign value = context.constants[name] | default: default, allow_false: true
+
+  case type
+  when 'boolean'
+    if value == 'true' or value == true
+      return true
+    else
+      return false
+    endif
+  when 'integer'
+    assign value = value | plus: 0
+    return value
+  when 'float'
+    assign value = value | plus: 0
+    return value
+  when 'array'
+    assign value = value | split: ','
+    return value
+  else
+    return value
+  endcase
+%}

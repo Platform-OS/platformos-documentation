@@ -1,0 +1,7 @@
+{% liquid
+  assign page = page | to_positive_integer: 1
+
+  graphql r = 'modules/openai/embeddings/search', limit: limit, page: page, metadata: metadata, related_to: related_to
+
+  return r.embeddings
+%}

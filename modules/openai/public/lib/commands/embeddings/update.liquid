@@ -1,0 +1,11 @@
+{% liquid
+  function object = 'modules/openai/commands/embeddings/update/build', object: object, id: id
+  function object = 'modules/openai/commands/embeddings/update/check', object: object
+
+  if object.valid
+    function object = 'modules/openai/commands/embeddings/update/execute', object: object
+  endif
+
+  return object
+%}
+

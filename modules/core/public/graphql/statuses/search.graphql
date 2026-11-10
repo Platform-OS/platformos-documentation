@@ -1,0 +1,45 @@
+query search(
+  $id: ID
+  $limit: Int!
+  $page: Int!
+  $name: String
+  $timestamp: String
+  $reference_id: String
+  $reference_schema: String
+  $requester_id: String
+) {
+  statuses: records(
+    per_page: $limit
+    page: $page
+    filter: {
+      id: { value: $id }
+      table: { value: "modules/core/status" }
+      properties: [
+        { name: "name", value: $name }
+        { name: "timestamp", value: $timestamp }
+        { name: "reference_id", value: $reference_id }
+        { name: "reference_schema", value: $reference_schema }
+        { name: "requester_id", value: $requester_id }
+      ]
+    }
+    sort: [{ created_at: { order: DESC } }]
+  ) {
+    total_entries
+    has_next_page
+    has_previous_page
+    current_page
+
+    results {
+      id
+      created_at
+      type: table
+
+      name: property(name: "name")
+      timestamp: property(name: "timestamp")
+      reference_id: property(name: "reference_id")
+      reference_schema: property(name: "reference_schema")
+      payload: property(name: "payload")
+      requester_id: property(name: "requester_id")
+    }
+  }
+}

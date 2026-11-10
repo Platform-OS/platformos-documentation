@@ -1,0 +1,10 @@
+{% liquid
+  assign page = page | to_positive_integer: 1
+  assign uuids = uuids | default: null
+
+  graphql r = 'modules/core/events/search', limit: limit, page: page, uuids: uuids
+
+  assign events = r.activities
+
+  return events
+%}

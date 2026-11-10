@@ -1,0 +1,14 @@
+{% parse_json object %}
+  {
+    "name": {{ name | json }},
+    "timestamp": {{ timestamp | default: 'now' | to_time | json }},
+    "reference_id": {{ reference_id | json }},
+    "reference_schema": {{ reference_schema | json }},
+    "payload": {{ payload | json }},
+    "requester_id": {{ requester_id | json }}
+  }
+{% endparse_json %}
+
+{% liquid
+  return object
+%}

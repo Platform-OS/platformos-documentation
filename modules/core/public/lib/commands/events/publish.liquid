@@ -1,0 +1,23 @@
+{% liquid
+  if delay > 0
+    log 'use metadata.delay in the consumer file instead of passing it to modules/core/commands/events/publish', type: 'DEPRECATION'
+  endif
+  if max_attempts
+    log 'use metadata.max_attempts in the consumer file instead of passing it to modules/core/commands/events/publish', type: 'DEPRECATION'
+  endif
+
+  unless type
+    log 'type is required', type: 'ERROR: modules/core/commands/events publish'
+    return null
+  endunless
+  unless object
+    log 'object is required', type: 'ERROR: modules/core/commands/events publish'
+    return null
+  endunless
+
+  assign source_name = 'modules/core/commands/events/create:' | append: type
+
+  background job_id = "modules/core/commands/events/create", source_name: source_name, priority: 'high', type: type, object: object, deprecated_max_attempts: max_attempts, deprecated_delay: delay
+
+  return job_id
+%}

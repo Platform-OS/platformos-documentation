@@ -1,0 +1,11 @@
+{% liquid
+  assign _stop = 'now' | to_time
+  assign _diff = _start | time_diff: _stop
+  if env
+    log _diff, type: type, env: env
+  else
+    log _diff, type: type
+  endif
+
+  return true
+%}

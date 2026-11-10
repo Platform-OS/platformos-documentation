@@ -1,0 +1,5 @@
+{% liquid
+  assign value = value | json
+  graphql _ = 'modules/core/session/set', name: key, value: value
+  return true
+%}

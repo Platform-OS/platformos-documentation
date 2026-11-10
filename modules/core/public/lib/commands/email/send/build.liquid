@@ -1,0 +1,13 @@
+{% parse_json object %}
+  {
+    "layout": {{ object.layout | default: 'modules/core/mailer' | json }},
+    "from": {{ object.from | json }},
+    "to": {{ object.to | json }},
+    "subject": {{ object.subject | json }},
+    "cc": {{ object.cc | json }},
+    "bcc": {{ object.bcc | json }},
+    "partial": {{ object.partial | json }},
+    "data": {{ object.data | json }}
+  }
+{% endparse_json %}
+{% return object %}

@@ -1,0 +1,5 @@
+{% assign token = token | default: authenticity_token | default: context.authenticity_token %}
+{% unless token %}
+  <small>Liquid Error AuthenticityTokenNotFound</small>
+{% endunless %}
+<input type="hidden" name="authenticity_token" value="{{ token }}">

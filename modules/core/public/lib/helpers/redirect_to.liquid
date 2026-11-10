@@ -1,0 +1,42 @@
+{% liquid
+  if url == blank and context.session.return_to != blank
+    assign url = context.session.return_to
+  endif
+
+  if context.params.return_to
+    assign url = context.params.return_to | url_decode
+  endif
+
+  assign url = url | default: '/'
+
+  assign not_start_with_slash = url | matches: '^(?!\/)(.+)'
+  assign wrong_url = url | matches: '^\/\/'
+  if not_start_with_slash or wrong_url
+    assign url = '/'
+  endif
+
+
+  # platformos-check-disable ConvertIncludeToRender
+  include 'modules/core/helpers/flash/publish', notice: notice, error: error, info: info
+  # platformos-check-enable ConvertIncludeToRender
+
+  if format == 'json'
+    assign response_json = null | hash_merge: type: 'redirect', url: url
+    if object.valid
+      echo response_json
+    else
+      response_status 422
+      assign res = '{ "errors": {} }' | parse_json
+      hash_assign res['errors'] = response_json.errors
+
+      echo res
+    endif
+
+  else
+    redirect_to url
+  endif
+
+  break
+%}
+
+

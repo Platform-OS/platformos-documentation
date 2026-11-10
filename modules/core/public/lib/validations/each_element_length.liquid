@@ -1,0 +1,35 @@
+{% comment %}
+  params: @object
+          @field_name
+          @c
+          @minimum
+          @maximum
+          @is
+{% endcomment %}
+{% liquid
+
+  for el in object[field_name]
+
+    assign size = el.size
+
+    if minimum != null and size < minimum
+      assign message = 'modules/core/validation.length.minimum' | t: count: minimum, value: size
+      function c = 'modules/core/helpers/register_error', contract: c, field_name: field_name, message: message
+    endif
+
+    if maximum != null and size > maximum
+      assign message = 'modules/core/validation.length.maximum' | t: count: maximum, value: size
+      assign message = el | append: ' ' | append: message
+      function c = 'modules/core/helpers/register_error', contract: c, field_name: field_name, message: message
+    endif
+
+    if is != null and size != is
+      assign message = 'modules/core/validation.length.is' | t: count: is, value: size
+      function c = 'modules/core/helpers/register_error', contract: c, field_name: field_name, message: message
+    endif
+
+  endfor
+
+  return c
+
+%}

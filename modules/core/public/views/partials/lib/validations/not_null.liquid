@@ -1,0 +1,15 @@
+{% comment %}
+  params: @object
+          @field_name
+          @c
+          @key[optional]
+{% endcomment %}
+
+{% liquid
+  log 'Use modules/core/validations/not_null instead of modules/core/lib/validations/not_null ', type: 'DEPRECATION'
+  if object[field_name] == null
+    assign key = key | default: "modules/core/validation.null"
+    function c = 'modules/core/lib/helpers/register_error', contract: c, field_name: field_name, key: key
+  endif
+  return c
+%}

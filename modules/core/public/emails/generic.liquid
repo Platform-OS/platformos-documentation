@@ -1,0 +1,13 @@
+---
+from:     "{{ data.from }}"
+layout:   "{{ data.layout }}"
+to:       "{{ data.to }}"
+cc:       "{{ data.cc }}"
+bcc:      "{{ data.bcc }}"
+subject:  "{{ data.subject }}"
+---
+{% liquid
+  # platformos-check-disable
+  include data.partial, data: data.data
+  # platformos-check-enable
+%}

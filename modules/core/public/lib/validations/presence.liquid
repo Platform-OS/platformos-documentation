@@ -1,0 +1,14 @@
+{% comment %}
+  params: @object
+          @field_name
+          @c
+          @key[optional]
+{% endcomment %}
+
+{% liquid
+  if object[field_name] == blank
+    assign key = key | default: "modules/core/validation.blank"
+    function c = 'modules/core/helpers/register_error', contract: c, field_name: field_name, key: key
+  endif
+  return c
+%}

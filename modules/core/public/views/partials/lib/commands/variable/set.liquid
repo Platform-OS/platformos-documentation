@@ -1,0 +1,10 @@
+{% comment %}
+  Required params:
+    - name string
+    - value string
+{% endcomment %}
+{% liquid
+  log 'Use modules/core/commands/variable/set instead of modules/core/lib/commands/variable/set', type: 'DEPRECATION'
+  graphql result = 'modules/core/variable/set', name: name, value: value
+  return result.variable
+%}

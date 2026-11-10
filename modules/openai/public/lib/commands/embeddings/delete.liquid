@@ -1,0 +1,12 @@
+{% liquid
+
+  function object = 'modules/openai/commands/embeddings/delete/build', object: object, id: id
+  function object = 'modules/openai/commands/embeddings/delete/check', object: object
+
+  if object.valid
+    function object = 'modules/core/commands/execute', mutation_name: 'modules/openai/embeddings/delete', object: object, selection: 'embedding_delete'
+  endif
+
+  return object
+%}
+

@@ -1,0 +1,21 @@
+{% comment %}
+  params: @object
+          @field_name
+          @c
+          @array
+          @key[optional]
+{% endcomment %}
+
+{% liquid
+  log 'Use modules/core/validations/elements_included instead of modules/core/lib/validations/elements_included ', type: 'DEPRECATION'
+  for val in object[field_name]
+    unless array contains val
+      assign key = key | default: "modules/core/validation.array.not_included"
+      assign message = key | t: value: val
+      function c = 'modules/core/lib/helpers/register_error', contract: c, field_name: field_name, message: message
+    endunless
+  endfor
+
+  return c
+%}
+

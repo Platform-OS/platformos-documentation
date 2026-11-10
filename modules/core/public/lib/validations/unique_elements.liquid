@@ -1,0 +1,19 @@
+{% comment %}
+  params: @object
+          @field_name
+          @c
+          @minimum
+          @maximum
+          @is
+{% endcomment %}
+{% liquid
+
+  assign unique_count = object[field_name] | uniq | size
+
+  if unique_count != object[field_name].size
+    assign key = key | default: 'modules/core/validation.array.not_unique'
+    function c = 'modules/core/helpers/register_error', contract: c, field_name: field_name, key: key
+  endif
+
+  return c
+%}

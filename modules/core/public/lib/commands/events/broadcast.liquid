@@ -1,0 +1,24 @@
+{% liquid
+  if object.type == blank
+    log 'ERROR: events broadcast type blank'
+    return null
+  endif
+  assign priorities = 'low,default,high' | split: ','
+
+  assign name = 'consumers/' | append: object.type | append: '/'
+  graphql consumers = 'modules/core/events/consumers', name: name | fetch: "admin_liquid_partials" | fetch: "results"
+
+  hash_assign object['consumers'] = consumers
+  for consumer in consumers
+    assign priority = 'default'
+    if priorities contains consumer.metadata.priority
+      assign priority = consumer.metadata.priority
+    endif
+    assign max_attempts =  consumer.metadata.max_attempts | default: deprecated_max_attempts | default: 9
+    assign delay =  consumer.metadata.delay | default: deprecated_delay | default: 0
+
+    background _id = consumer.path, event: object, priority: priority, delay: delay, max_attempts: max_attempts
+  endfor
+
+  return object
+%}

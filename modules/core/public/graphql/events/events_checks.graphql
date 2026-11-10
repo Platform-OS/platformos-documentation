@@ -1,0 +1,11 @@
+query events_checks($name: String) {
+  admin_liquid_partials(
+    filter: {
+      path: { ends_with: $name }
+    }
+  ) {
+    results {
+      path
+    }
+  }
+}

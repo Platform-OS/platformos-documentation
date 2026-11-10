@@ -1,0 +1,18 @@
+{% liquid
+  function object = 'modules/core/commands/email/send/build', object: object
+  function object = 'modules/core/commands/email/send/check', object: object
+
+  if object.valid
+    graphql r = 'modules/core/email/send', template: 'modules/core/generic', data: object
+    if r.errors
+      log r.errors, type: 'errors.graphql.invalid'
+
+      hash_assign object['valid'] = false
+      hash_assign object['errors'] = r.errors
+    endif
+  else
+    log object.errors, type: 'payload validation error in core: commands/email'
+  endif
+
+  return object
+%}

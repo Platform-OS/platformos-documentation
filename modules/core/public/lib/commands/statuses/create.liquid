@@ -1,0 +1,30 @@
+{% comment %}
+  Creates a status object.
+
+  Params:
+    - name: String
+      the name of the status. For example: 'app.status.transaction.failed'
+    - reference_id
+    - requester_id
+      the ID of the requester. It can be a user ID or 'stripe_webhook' or anything else that represents who stored the status
+    - timestamp (optional)
+    - reference_schema (optional)
+    - payload (optional)
+    - delay (optional)
+    - max_attempts (optional)
+{% endcomment %}
+{%  liquid
+  function object = 'modules/core/commands/statuses/create/build', name: name, timestamp: timestamp, reference_id: reference_id, reference_schema: reference_schema, payload: payload, requester_id: requester_id
+  function object = 'modules/core/commands/statuses/create/check', object: object
+
+  if object.valid
+    function object = 'modules/core/commands/execute', mutation_name: 'modules/core/statuses/create' object: object
+    if object.valid
+      function _ = 'modules/core/commands/events/publish', type: 'status_created', object: object, delay: delay, max_attempts: max_attempts
+    endif
+  else
+    log object, 'showme STATUS-INVALID'
+  endif
+
+  return object
+%}

@@ -1,0 +1,27 @@
+query embeddings($limit: Int = 2000, $page: Int = 1, $metadata: [JsonbFilter!], $related_to: [Float!]) {
+  embeddings: embeddings_rc(
+    per_page: $limit,
+    page: $page
+    filter: { metadata: $metadata }
+    sort: {
+      embedding: {
+        order: euclidean
+        embedding: $related_to
+      }
+    }
+
+  )
+  {
+    total_entries
+    has_next_page
+    has_previous_page
+    total_pages
+    results {
+      id
+      metadata
+      embedding
+      content
+      token_count
+    }
+  }
+}

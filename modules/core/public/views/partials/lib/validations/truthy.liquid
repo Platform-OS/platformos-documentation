@@ -1,0 +1,15 @@
+{% comment %}
+  params: @object
+          @field_name
+          @c
+          @key[optional]
+{% endcomment %}
+
+{% liquid
+  log 'Use modules/core/validations/truthy instead of modules/core/lib/validations/truthy ', type: 'DEPRECATION'
+  unless object[field_name]
+    assign key = key | default: "modules/core/validation.not_truthy"
+    function c = 'modules/core/lib/helpers/register_error', contract: c, field_name: field_name, key: key
+  endunless
+  return c
+%}

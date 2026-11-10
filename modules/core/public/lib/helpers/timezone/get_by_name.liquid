@@ -1,0 +1,21 @@
+{% comment %}
+  params:
+  - name: string
+
+returns a timezone object in the following format:
+{
+  "formatted_name":"(GMT-12:00) International Date Line West",
+  "formatted_offset":"-12:00",
+  "name":"International Date Line West",
+  "utc_offset":-43200,
+  "abbreviation":"-12",
+  "friendly_name_with_region":"Etc - GMT+12",
+  "friendly_name_without_region":"GMT+12"
+}
+{% endcomment %}
+{% liquid
+  function timezones = 'modules/core/helpers/timezone/get_all'
+  assign timezone = timezones | array_detect: name: name
+
+  return timezone
+%}

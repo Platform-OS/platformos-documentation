@@ -1,0 +1,15 @@
+{% comment %}
+  Find a status object.
+
+  Params:
+    - id: String
+{% endcomment %}
+{% liquid
+  if id == blank
+    return null
+  endif
+
+  graphql r  = 'modules/core/statuses/search', id: id, limit: 1, page: 1
+
+  return r.statuses.results.first
+%}

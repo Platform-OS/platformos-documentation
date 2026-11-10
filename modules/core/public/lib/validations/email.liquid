@@ -1,0 +1,15 @@
+{% comment %}
+  params: @object
+          @field_name
+          @c
+          @key[optional]
+{% endcomment %}
+
+{% liquid
+  assign valid_email = object[field_name] | is_email_valid
+  unless valid_email
+    assign key = key | default: "modules/core/validation.email"
+    function c = 'modules/core/helpers/register_error', contract: c, field_name: field_name, key: key
+  endunless
+  return c
+%}

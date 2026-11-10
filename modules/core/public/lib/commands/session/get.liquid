@@ -1,0 +1,11 @@
+{% liquid
+  if context.session[key] != blank
+    assign value = context.session[key] | parse_json
+    if clear
+      graphql _ = 'modules/core/session/delete', name: key
+    endif
+
+    return value
+  endif
+  return null
+%}

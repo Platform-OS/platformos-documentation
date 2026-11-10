@@ -1,0 +1,28 @@
+{% comment %}
+  Required params:
+    - type string
+      it can be: all, module, theme
+{% endcomment %}
+{% liquid
+  function registry = 'modules/core/lib/commands/hook/fire', hook: 'module_info', merge_to_object: false
+
+  case type
+    when 'module'
+      assign modules = '[]' | parse_json
+      for module in registry
+        if module.type == 'module'
+          assign modules = modules | add_to_array: module
+        endif
+      endfor
+      return modules
+    when 'theme'
+      assign themes = '[]' | parse_json
+      for module in registry
+        if module.type == 'theme'
+          assign themes = themes | add_to_array: module
+        endif
+      endfor
+      return themes
+  endcase
+  return registry
+%}

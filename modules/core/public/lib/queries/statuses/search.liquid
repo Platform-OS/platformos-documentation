@@ -1,0 +1,25 @@
+{% comment %}
+  Creates a status object.
+
+  Params:
+    - page
+      default: 1
+    - limit
+      default: 20
+    - id
+    - name: String
+      the name of the status. For example: 'app.status.transaction.failed'
+    - reference_id
+    - requester_id
+      the ID of the requester. It can be a user ID or 'stripe_webhook' or anything else that represents who stored the status
+    - timestamp (optional)
+    - reference_schema (optional)
+{% endcomment %}
+{% liquid
+  assign page = page | to_positive_integer: 1
+  assign limit = limit | default: 20
+
+  graphql r = 'modules/core/statuses/search', limit: limit, page: page, id: id, name: name, reference_id: reference_id, requester_id: requester_id, reference_schema: reference_schema, timestamp: timestamp
+
+  return r.statuses
+%}

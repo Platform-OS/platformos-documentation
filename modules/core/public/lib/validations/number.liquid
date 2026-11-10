@@ -1,0 +1,62 @@
+{% comment %}
+  params: @object
+          @field_name
+          @c
+          @number
+          @lt  - less than
+          @lte - less than or equal
+          @gt  - greater than
+          @gte - greater than or equal
+          @eq  - equal
+          @ne  - not equal
+{% endcomment %}
+{% liquid
+  assign number = number | default: object[field_name]
+%}
+{% capture test1 %}{{ number }}{% endcapture %}
+{% capture test2 %}{{ test1 | plus: 0 }}{% endcapture %}
+{% liquid
+  if test1 != test2
+    assign message = message | default: 'modules/core/validation.number.invalid' | t: value: number
+    function c = 'modules/core/helpers/register_error', contract: c, field_name: field_name, message: message
+
+    return c
+  endif
+
+  assign number = number | plus: 0
+
+  if lt != null and number >= lt
+    assign message = message_lt | default: 'modules/core/validation.number.lt' | t: count: lt, value: number
+    function c = 'modules/core/helpers/register_error', contract: c, field_name: field_name, message: message
+  endif
+
+  if lte == blank
+    assign lte = 2147483647
+  endif
+  if number > lte
+    assign message = message_lte | default: 'modules/core/validation.number.lte' | t: count: lte, value: number
+    function c = 'modules/core/helpers/register_error', contract: c, field_name: field_name, message: message
+  endif
+
+  if gt != null and number <= gt
+    assign message = message_gt | default: 'modules/core/validation.number.gt' | t: count: gt, value: number
+    function c = 'modules/core/helpers/register_error', contract: c, field_name: field_name, message: message
+  endif
+
+  if gte != null and number < gte
+    assign message = message_gte | default: 'modules/core/validation.number.gte' | t: count: gte, value: number
+    function c = 'modules/core/helpers/register_error', contract: c, field_name: field_name, message: message
+  endif
+
+  if eq != null and number != eq
+    assign message = message_eq | default: 'modules/core/validation.number.eq' | t: count: eq, value: number
+    function c = 'modules/core/helpers/register_error', contract: c, field_name: field_name, message: message
+  endif
+
+  if ne != null and number == ne
+    assign message = message_ne | default: 'modules/core/validation.number.ne' | t: count: ne, value: number
+    function c = 'modules/core/helpers/register_error', contract: c, field_name: field_name, message: message
+  endif
+
+  return c
+%}

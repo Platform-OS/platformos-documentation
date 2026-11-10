@@ -1,0 +1,10 @@
+<div class="w-full mx-auto container p-2 bg-gray-200">
+  <h1>Events</h1>
+  {{ events.results.size }} / {{ events.total_entries }}
+  {% for event in events.results %}
+    {% render 'modules/core/events/event_card', event: event.payload %}
+    <hr/>
+  {% else %}
+    <h3>no events found</h3>
+  {% endfor %}
+</div>

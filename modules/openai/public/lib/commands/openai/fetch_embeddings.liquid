@@ -1,0 +1,17 @@
+{% liquid
+
+  function object = 'modules/openai/commands/openai/fetch_embeddings/build', object: object
+  function object = 'modules/openai/commands/openai/fetch_embeddings/check', object: object
+
+  if object.valid
+    function object = 'modules/core/commands/execute', mutation_name: 'modules/core/api_calls/send', object: object, selection: 'api_call'
+    assign json_body = object.response.body | parse_json
+    if object.response.status != 200
+      assign err = 'modules/openai fetch embeddings error: ' | append: json_body.error
+      log err, type: 'ERROR'
+    endif
+
+  endif
+
+  return json_body
+%}

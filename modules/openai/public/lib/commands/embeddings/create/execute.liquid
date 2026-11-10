@@ -1,0 +1,9 @@
+{% liquid
+  graphql r = 'modules/openai/embeddings/create', args: object
+
+  assign object = r.embedding_create
+  hash_assign object['valid'] = true
+
+  return object
+%}
+

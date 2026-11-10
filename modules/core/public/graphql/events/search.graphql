@@ -1,0 +1,14 @@
+query ac($limit: Int = 100 $page: Int = 1 $uuids: [String!]) {
+  activities: activities(
+    per_page: $limit,
+    page: $page
+    uuids: $uuids
+    sort: { created_at: { order: DESC } }
+  ){
+    total_entries
+    total_pages
+    results {
+      payload
+    }
+  }
+}

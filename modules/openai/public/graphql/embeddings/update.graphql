@@ -1,0 +1,18 @@
+mutation embedding_update($id: ID!, $embedding: [Float!]!, $content: String!, $metadata: HashObject, $token_count: Int){
+  embedding_update: embedding_update_rc(
+    id: $id
+    embedding: {
+      embedding: $embedding
+      content: $content
+      metadata: $metadata
+      token_count: $token_count
+    }
+  )
+  {
+    id
+    embedding
+    content
+    metadata
+    token_count
+  }
+}

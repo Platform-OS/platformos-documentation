@@ -1,0 +1,20 @@
+{% comment %}
+  params: @object
+          @field_name
+          @c
+          @check_function
+{% endcomment %}
+
+{% liquid
+  assign value = value | default: object[field_name]
+  if value
+    function check_object = check_function, object: value
+    if check_object.valid != true
+      function c = 'modules/core/helpers/register_error', contract: c, field_name: field_name, key: 'modules/core/validation.invalid'
+      assign errors_key = field_name | append: '_errors'
+      hash_assign c['errors'][errors_key] = check_object.errors
+    endif
+  endif
+
+  return c
+%}

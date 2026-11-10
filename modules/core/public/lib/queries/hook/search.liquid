@@ -1,0 +1,11 @@
+{% comment %}
+  Get a list of all hook impltementation paths.
+  Params:
+    - hook: string
+      the hook's name with '/' prefix for example '/hook_user_create'.
+{% endcomment %}
+
+{% liquid
+  graphql implementations = 'modules/core/hook/search', hook: hook
+  return implementations.admin_liquid_partials.results
+%}

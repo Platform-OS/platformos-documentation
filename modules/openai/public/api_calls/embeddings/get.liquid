@@ -1,0 +1,14 @@
+---
+request_headers: >
+  {% liquid
+    assign headers = '{ "Content-Type": "application/json"}' | parse_json
+    assign bearer = 'Bearer ' | append: context.constants['modules/openai/OPENAI_SECRET_TOKEN']
+    hash_assign headers['Authorization'] = bearer
+  %}
+  {{ headers }}
+to: "https://api.openai.com/v1/embeddings"
+---
+{
+  "input": data.input,
+  "model": "text-embedding-ada-002"
+}

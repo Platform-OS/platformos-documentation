@@ -1,0 +1,53 @@
+{% liquid
+  assign event_slim = event | deep_clone
+  assign _ = event_slim | hash_delete_key: 'object'
+  assign _ = event_slim | hash_delete_key: 'actor'
+  assign _ = event_slim | hash_delete_key: 'target'
+  assign _ = event_slim | hash_delete_key: 'id'
+  assign _ = event_slim | hash_delete_key: 'uuid'
+  assign _ = event_slim | hash_delete_key: 'date'
+  assign _ = event_slim | hash_delete_key: 'valid'
+  assign _ = event_slim | hash_delete_key: 'errors'
+  assign _ = event_slim | hash_delete_key: 'attributed_to'
+  assign _ = event_slim | hash_delete_key: 'type'
+  assign consumers = event_slim | hash_delete_key: 'consumers'
+%}
+<div id="event-{{ event.uuid }}" class="rounded m-2 p-2 text-xs">
+  <div class="mb-2">
+    Event: <strong>{{ event.type }}</strong> <strong>{{ event.object.name | replace: "app.statuses.", "" }}</strong>
+  </div>
+  <div class="float-right">
+    Date: {{ event.date | l }}
+  </div>
+  <div>
+    Attributes: <br/>
+
+    <div style="display: none;" class="json">{{ event_slim }}</div>
+    <code>
+      <pre></pre>
+    </code>
+
+    <script>
+      var event = document.querySelector('#event-{{ event.uuid }}');
+      var pre = event.querySelector('pre');
+      var json = event.querySelector('.json');
+      pre.innerHTML = JSON.stringify(JSON.parse(json.textContent), null, 2);
+    </script>
+  </div>
+  <div>UUID: {{ event.uuid }} </div>
+  {% if consumers %}
+    <div>
+      Consumers:
+      <ul>
+        {% for consumer in consumers %}
+          <li>{{ consumer.path }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+  <span class="float-right">
+    <a href="/_events/{{ event.uuid }}/trigger">show</a> |
+    <a href="/_events/{{ event.uuid }}/trigger?trigger=1">broadcast</a> |
+    <!-- <a href="/_events/{{ event.uuid }}/duplicate">duplicate</a> -->
+  </span>
+</div>

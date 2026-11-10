@@ -1,0 +1,15 @@
+{% comment %}
+  Implements hook_module_info.
+{% endcomment %}
+{% parse_json info %}
+{
+  "name": "<%= &name =%>",
+  "machine_name": "<%= &machine_name =%>",
+  "type": "<%= &type =%>",
+  "version": "<%= &version =%>"
+}
+{% endparse_json %}
+
+{% liquid
+  return info
+%}

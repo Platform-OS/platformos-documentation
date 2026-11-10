@@ -1,0 +1,22 @@
+{% liquid
+  assign c = '{ "errors": {}, "valid": true }' | parse_json
+
+  function c = 'modules/core/validations/presence', c: c, object: object, field_name: 'type'
+  function c = 'modules/core/validations/presence', c: c, object: object, field_name: 'date'
+
+  assign name = 'events/' | append: object.type
+  graphql event_check_partial = 'modules/core/events/events_checks', name: name | fetch: "admin_liquid_partials" | fetch: "results" | first
+  if event_check_partial
+    function event_result = event_check_partial.path, event: object
+    if event_result.valid != true
+      hash_assign c['errors']['object'] = event_result.errors
+      hash_assign c['valid'] = false
+    endif
+  else
+    assign message = 'There is no such event: ' | append: object.type | append: '. Please add event check in events/' | append: object.type
+    function c = 'modules/core/helpers/register_error', contract: c, field_name: type, message: message
+  endif
+
+  assign object = object | hash_merge: c
+  return object
+%}

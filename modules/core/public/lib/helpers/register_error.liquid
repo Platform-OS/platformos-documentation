@@ -1,0 +1,27 @@
+{% comment %}
+  @params
+    contract - { errors: {}, valid: true }
+    field_name
+    message:
+    key: i18n to be resolved into message
+{% endcomment %}
+
+{% liquid
+  assign key = key | default: null
+  assign message = message | default: null
+  if key
+    assign msg = key | t
+  else
+    assign msg = message
+  endif
+
+  assign errors = contract.errors
+
+  assign field_errors = errors[field_name] | default: '[]' | parse_json
+  assign field_errors = field_errors | add_to_array: msg
+
+  hash_assign errors[field_name] = field_errors
+  hash_assign contract['valid'] = false
+
+  return contract
+%}

@@ -1,0 +1,21 @@
+{% comment %}
+  hook: string
+    the hook name without hook_ prefix and _alter suffix.
+  params_to_modify: object
+    the object that will be passed to the alter hook to modify
+  params: object
+    the object that will be passed to the alter hook to give extra information
+{% endcomment %}
+{% liquid
+  assign original_params = params_to_modify | deep_clone
+
+  assign hook = '/hook_' | append: hook | append: '_alter'
+  function implementations = 'modules/core/queries/hook/search', hook: hook
+
+  for implementation in implementations
+    function _ = implementation.path, params_to_modify: params_to_modify, params: params
+  endfor
+
+  assign result = '{}' | parse_json | hash_merge: original_params: original_params
+  return result
+%}

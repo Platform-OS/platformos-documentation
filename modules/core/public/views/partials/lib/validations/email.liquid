@@ -1,0 +1,16 @@
+{% comment %}
+  params: @object
+          @field_name
+          @c
+          @key[optional]
+{% endcomment %}
+
+{% liquid
+  log 'Use modules/core/validations/email instead of modules/core/lib/validations/email ', type: 'DEPRECATION'
+  assign valid_email = object[field_name] | is_email_valid
+  unless valid_email
+    assign key = key | default: "modules/core/validation.email"
+    function c = 'modules/core/lib/helpers/register_error', contract: c, field_name: field_name, key: key
+  endunless
+  return c
+%}

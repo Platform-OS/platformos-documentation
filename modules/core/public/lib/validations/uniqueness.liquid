@@ -1,0 +1,28 @@
+{% liquid
+  assign key = key | default: 'modules/core/validation.taken'
+  assign value = object[field_name]
+  if value != blank
+    if object.id != blank
+      assign not_ids = object.id | split: ','
+    endif
+    if scope_name
+      assign scope_value = object[scope_name]
+    else
+      assign scope_name = ''
+    endif
+
+    if exclude_name
+      assign exclude_value = object[exclude_name]
+    else
+      assign exclude_name = ''
+    endif
+
+    graphql r = 'modules/core/records/count', property_name: field_name, property_value: value, not_ids: not_ids, table: table, scope_name: scope_name, scope_value: scope_value, exclude_name: exclude_name, exclude_value: exclude_value
+
+    assign count = r.records.total_entries
+    if count > 0
+      function c = 'modules/core/helpers/register_error', contract: c, field_name: field_name, key: key
+    endif
+  endif
+  return c
+%}

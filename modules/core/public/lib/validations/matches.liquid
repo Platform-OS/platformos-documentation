@@ -1,0 +1,19 @@
+{% comment %}
+  params: @object
+          @field_name
+          @regexp
+          @c
+          @message
+{% endcomment %}
+{% liquid
+  if allow_blank and object[field_name] == blank
+    return c
+  endif
+
+  assign matches = object[field_name] | matches: regexp
+  if matches != true
+    assign message = message | default: 'modules/core/validation.matches' | t
+    function c = 'modules/core/helpers/register_error', contract: c, field_name: field_name, message: message
+  endif
+  return c
+%}

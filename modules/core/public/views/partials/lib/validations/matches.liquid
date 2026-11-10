@@ -1,0 +1,20 @@
+{% comment %}
+  params: @object
+          @field_name
+          @regexp
+          @c
+          @message
+{% endcomment %}
+{% liquid
+  log 'Use modules/core/validations/matches instead of modules/core/lib/validations/matches ', type: 'DEPRECATION'
+  if allow_blank and object[field_name] == blank
+    return c
+  endif
+
+  assign matches = object[field_name] | matches: regexp
+  if matches != true
+    assign message = message | default: 'modules/core/validation.matches' | t
+    function c = 'modules/core/lib/helpers/register_error', contract: c, field_name: field_name, message: message
+  endif
+  return c
+%}

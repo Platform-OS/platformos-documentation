@@ -1,0 +1,67 @@
+{% comment %}
+  params: @object
+          @field_name
+          @c
+          @date
+          @can_be_past
+{% endcomment %}
+{% liquid
+  assign date = date | default: object[field_name] | to_date
+
+  assign is_past =  date | is_date_in_past
+  assign now = 'now' | to_date
+
+  if date > now
+    assign is_future = true
+  else
+    assign is_future = false
+  endif
+
+  if can_be_past == false and is_past
+    assign message = message_can_be_past | default: 'modules/core/validation.date.can_be_past' | t: count: can_be_past, value: date
+    function c = 'modules/core/helpers/register_error', contract: c, field_name: field_name, message: message
+  endif
+
+  if can_be_future == false and is_future
+    assign message = message_can_be_future | default: 'modules/core/validation.date.can_be_future' | t: count: can_be_future, value: date
+    function c = 'modules/core/helpers/register_error', contract: c, field_name: field_name, message: message
+  endif
+
+  if lt != null
+    assign lt = lt | to_date
+    if date >= lt
+      assign localized_date = lt | l
+      assign message = message_lt | default: 'modules/core/validation.date.lt' | t: date: localized_date, value: date
+      function c = 'modules/core/helpers/register_error', contract: c, field_name: field_name, message: message
+    endif
+  endif
+
+  if lte != null
+    assign lte = lte | to_date
+    if date > lte
+      assign localized_date = lte | l
+      assign message = message_lte | default: 'modules/core/validation.date.lte' | t: date: localized_date, value: date
+      function c = 'modules/core/helpers/register_error', contract: c, field_name: field_name, message: message
+    endif
+  endif
+
+  if gt != null
+    assign gt = gt | to_date
+    if date <= gt
+      assign localized_date = gt | l
+      assign message = message_gt | default: 'modules/core/validation.date.gt' | t: date: localized_date, value: date
+      function c = 'modules/core/helpers/register_error', contract: c, field_name: field_name, message: message
+    endif
+  endif
+
+  if gte != null
+    assign gte = gte | to_date
+    if date < gte
+      assign localized_date = gte | l
+      assign message = message_gte | default: 'modules/core/validation.date.gte' | t: date: localized_date, value: date
+      function c = 'modules/core/helpers/register_error', contract: c, field_name: field_name, message: message
+    endif
+  endif
+
+  return c
+%}

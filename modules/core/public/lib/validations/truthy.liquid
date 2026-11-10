@@ -1,0 +1,14 @@
+{% comment %}
+  params: @object
+          @field_name
+          @c
+          @key[optional]
+{% endcomment %}
+
+{% liquid
+  unless object[field_name]
+    assign key = key | default: "modules/core/validation.not_truthy"
+    function c = 'modules/core/helpers/register_error', contract: c, field_name: field_name, key: key
+  endunless
+  return c
+%}

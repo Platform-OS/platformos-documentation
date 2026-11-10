@@ -1,0 +1,20 @@
+---
+layout: modules/core/basic
+slug: _events/:uuid/trigger
+---
+{% liquid
+  if context.environment == 'staging' or context.environment == 'development'
+    function event = 'modules/core/queries/events/find', uuid: context.params.uuid
+
+    if context.params.trigger
+      function event = 'modules/core/commands/events/broadcast', object: event
+      echo 'BROADCASTED'
+    else
+      assign name = 'consumers/' | append: event.type | append: '/'
+      graphql consumers = 'modules/core/events/consumers', name: name | fetch: "admin_liquid_partials" | fetch: "results"
+      hash_assign event['consumers'] = consumers
+    endif
+
+    render 'modules/core/events/show', event: event
+  endif
+%}

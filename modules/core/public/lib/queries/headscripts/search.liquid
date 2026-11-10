@@ -1,0 +1,5 @@
+{% liquid
+  function headscript_implementations = 'modules/core/commands/hook/fire', hook: 'headscripts', merge_to_object: false
+  assign results = headscript_implementations | join: ''
+  return results | html_safe
+%}

@@ -1,0 +1,10 @@
+---
+request_type: "{{ data.request_type }}"
+request_headers: '{{ data.headers | json }}'
+to: "{{ data.to }}"
+---
+{% liquid
+  function url = 'modules/core/helpers/hash_to_x_form_encoded', payload: data.payload
+  print url
+%}
+

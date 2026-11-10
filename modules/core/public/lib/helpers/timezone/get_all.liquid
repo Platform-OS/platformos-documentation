@@ -1,0 +1,18 @@
+{% comment %}
+  we need the to_json | parse_json hack because time_zones.all is an array of TimeZoneDrop (not an object)
+  this prevents us from using array filters or pass the timezone as reference (return it from a function, etc)
+  should be fixed on the platform level
+{% endcomment %}
+{% comment %}
+Returns an array of timezone objects in the following format:
+{
+  "formatted_name":"(GMT-12:00) International Date Line West",
+  "formatted_offset":"-12:00",
+  "name":"International Date Line West",
+  "utc_offset":-43200,
+  "abbreviation":"-12",
+  "friendly_name_with_region":"Etc - GMT+12",
+  "friendly_name_without_region":"GMT+12"
+}
+{% endcomment %}
+{% return context.globals.time_zones.all | to_json | parse_json %}

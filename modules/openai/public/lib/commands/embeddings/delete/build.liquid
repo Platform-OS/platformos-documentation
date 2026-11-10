@@ -1,0 +1,7 @@
+{% liquid
+  assign id = id | default: object.id
+  assign embedding = '{}' | parse_json
+  hash_assign embedding['id'] = id
+
+  return embedding
+%}

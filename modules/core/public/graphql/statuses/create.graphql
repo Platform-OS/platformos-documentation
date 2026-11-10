@@ -1,0 +1,34 @@
+mutation create_status(
+  $name: String!
+  $timestamp: String!
+  $reference_id: String!
+  $reference_schema: String
+  $payload: String
+  $requester_id: String!
+) {
+  record: record_create(
+    record: {
+      table: "modules/core/status"
+      properties: [
+        { name: "name", value: $name }
+        { name: "timestamp", value: $timestamp }
+        { name: "reference_id", value: $reference_id }
+        { name: "reference_schema", value: $reference_schema }
+        { name: "payload", value: $payload }
+        { name: "requester_id", value: $requester_id }
+      ]
+    }
+  ) {
+    id
+    created_at
+    deleted_at
+    type: table
+
+    name: property(name: "name")
+    timestamp: property(name: "timestamp")
+    reference_id: property(name: "reference_id")
+    reference_schema: property(name: "reference_schema")
+    payload: property(name: "payload")
+    requester_id: property(name: "requester_id")
+  }
+}

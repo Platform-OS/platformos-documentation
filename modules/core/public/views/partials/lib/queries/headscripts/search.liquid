@@ -1,0 +1,6 @@
+{% liquid
+  log 'Use queries/headscripts/search instead of lib/queries/headscripts/search', type: 'DEPRECATION'
+  function headscript_implementations = 'modules/core/lib/commands/hook/fire', hook: 'headscripts', merge_to_object: merge_to_object
+  assign results = headscript_implementations | join: ''
+  return results | html_safe
+%}

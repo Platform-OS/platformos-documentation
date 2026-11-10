@@ -1,0 +1,21 @@
+{% comment %}
+  params: @given
+          @expected
+          @field_name
+          @c
+{% endcomment %}
+{% liquid
+  log 'Use modules/core/validations/equal instead of modules/core/lib/validations/equal ', type: 'DEPRECATION'
+  if given != expected
+
+    if message == blank and key == blank
+      if not_verbose
+        assign message = 'modules/core/validation.equal_not_verbose' | t
+      else
+        assign message = 'modules/core/validation.equal' | t: given: given, expected: expected
+      endif
+    endif
+    function c = 'modules/core/lib/helpers/register_error', contract: c, field_name: field_name, message: message, key: key
+  endif
+  return c
+%}
