@@ -313,19 +313,6 @@
   {% endif %}
 </li>
 
-<li class="{% if cp contains '/developer-guide/background-jobs' %}active{% endif %}">
-  <a href="/developer-guide/background-jobs/background-jobs">Background Jobs</a>
-  {% if cp contains '/developer-guide/background-jobs' %}
-    <ul class="submenu">
-      {% include "shared/nav/link", href: "/developer-guide/background-jobs/background-jobs", text: "Background Jobs" %}
-      {% include "shared/nav/link", href: "/developer-guide/background-jobs/creating-background-job-liquid", text: "Creating a Background Job in Liquid" %}
-      {% include "shared/nav/link", href: "/developer-guide/background-jobs/managing-background-jobs-graphql", text: "Managing Background Jobs with GraphQL" %}
-      {% include "shared/nav/link", href: "/developer-guide/background-jobs/scheduling-recurring-background-jobs", text: "Scheduling Recurring Background Jobs" %}
-      {% include "shared/nav/link", href: "/developer-guide/background-jobs/background-job-limitations", text: "Limitations" %}
-    </ul>
-  {% endif %}
-</li>
-
 <li class="{% if cp contains 'authorization' %}active{% endif %}">
   <a href="/developer-guide/authorization-policy/authorization-policy">Authorization Policy</a>
   {% if cp contains 'authorization' %}
@@ -335,6 +322,23 @@
       {% include "shared/nav/link", href: "/developer-guide/authorization-policy/associating-authorization-policy-form", text: "Associating an Authorization Policy with Form" %}
       {% include "shared/nav/link", href: "/developer-guide/authorization-policy/associating-authorization-policy-page", text: "Associating an Authorization Policy with a Page" %}
       {% include "shared/nav/link", href: "/developer-guide/authorization-policy/handling-violated-authorization-policy", text: "Handling a Violated Authorization Policy" %}
+    </ul>
+  {% endif %}
+</li>
+
+
+<li class="pt-6 mt-6 mb-2 text-base border-t topic-group border-pos-divider">
+  <h3 class="text-base uppercase">Background Jobs</h3>
+</li>
+<li class="{% if cp contains '/developer-guide/background-jobs' %}active{% endif %}">
+  <a href="/developer-guide/background-jobs/background-jobs">Background Jobs</a>
+  {% if cp contains '/developer-guide/background-jobs' %}
+    <ul class="submenu">
+      {% include "shared/nav/link", href: "/developer-guide/background-jobs/background-jobs", text: "Background Jobs" %}
+      {% include "shared/nav/link", href: "/developer-guide/background-jobs/creating-background-job-liquid", text: "Creating a Background Job in Liquid" %}
+      {% include "shared/nav/link", href: "/developer-guide/background-jobs/managing-background-jobs-graphql", text: "Managing Background Jobs with GraphQL" %}
+      {% include "shared/nav/link", href: "/developer-guide/background-jobs/scheduling-recurring-background-jobs", text: "Scheduling Recurring Background Jobs" %}
+      {% include "shared/nav/link", href: "/developer-guide/background-jobs/background-job-limitations", text: "Limitations" %}
     </ul>
   {% endif %}
 </li>
