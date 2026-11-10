@@ -72,7 +72,7 @@ The `id` of a job is the value that the `background` tag assigned to its variabl
 You can also filter jobs by:
 
 * `id`: a single job.
-* `timestamp`: the time of the job's next step. It filters by `run_at` for `SCHEDULED` jobs, by `retry_at` for `RETRY` jobs, and by `dead_at` for `DEAD` jobs. For example, `timestamp: { lt: "2026-12-01" }` returns jobs scheduled to run before December 1st.
+* `timestamp`: the time of the job's next step. It filters by `run_at` for `SCHEDULED` jobs, by `retry_at` for `RETRY` jobs, by `dead_at` for `DEAD` jobs, and by the time the job started for `RUNNING` jobs. For example, `timestamp: { lt: "2026-12-01" }` returns jobs scheduled to run before December 1st.
 * `or`: a list of filters, of which at least one has to match.
 
 The `source_name` filter is case-sensitive. Only `type`, `id`, `source_name`, `timestamp`, and `or` filter jobs. The other fields of the filter have no effect.
@@ -139,9 +139,9 @@ mutation stop_background_job($id: ID!) {
 
 You can also stop a job from the [pos-cli GUI](/developer-guide/pos-cli/developing-graphql-queries-using-pos-cli-gui): open **Background jobs**, set **Type** to **Running**, open the menu next to the job, and click **Stop background job**.
 
-Only `RUNNING` jobs created with the `background` tag can be stopped (see [Jobs that cannot be stopped](#jobs-that-cannot-be-stopped)). To cancel a job that hasn't started yet, [delete it](#deleting-a-background-job) instead. A job that started a few seconds ago may not be listed as running yet. Until it is, `admin_background_job_stop` returns the error `Job not found`, so wait a moment and try again.
+Only `RUNNING` jobs created with the `background` tag can be stopped (see [Jobs that cannot be stopped](#jobs-that-cannot-be-stopped)). To cancel a job that hasn't started yet, [delete it](#deleting-a-background-job) instead. The list of running jobs can be up to 10 seconds old, so a job that started in the last 10 seconds may not be listed as running yet. Until it is, `admin_background_job_stop` returns the error `Job not found`, so wait a moment and try again.
 
-The mutation returns as soon as the stop is requested. The job usually stops within a few seconds, and leaves the list of running jobs a few seconds after that.
+The mutation returns as soon as the stop is requested. The job usually stops within a few seconds, and leaves the list of running jobs up to 10 seconds after that. For the same reason, the mutation can return a job that has just finished on its own. That job isn't affected, and neither is any later run of it.
 
 ### What happens when you stop a job
 

@@ -53,7 +53,7 @@ Every argument, including the options below, is available in the partial as a va
 |----------------|-------------|
 | `delay`        | Number of minutes to wait before running the job. Fractions are allowed: `0.5` is 30 seconds. Defaults to `0`, which means as soon as possible. |
 | `priority`     | `high`, `default` or `low`. Defaults to `high`. See [Priorities](/developer-guide/background-jobs/background-jobs#priorities). |
-| `max_attempts` | How many times to retry the job if it fails. By default, a failed job isn't retried. |
+| `max_attempts` | How many times to retry the job if it fails, up to `9`. A larger value is treated as `9`. Defaults to `0`, which means a failed job isn't retried. |
 | `source_name`  | Your label for the job. Use it to find the job with [GraphQL](/developer-guide/background-jobs/managing-background-jobs-graphql) later. |
 
 ## Running a job with a delay

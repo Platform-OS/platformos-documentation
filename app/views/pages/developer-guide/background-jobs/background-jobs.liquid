@@ -29,13 +29,13 @@ Don't use a background job when the user needs the result in the response, for e
 
 ## Priorities
 
-Each job runs in one of three queues. Choose the priority based on how time-sensitive the job is and how long it can take. A job that exceeds the timeout of its priority is stopped, whether it has finished or not.
+Each job runs in one of three queues. Choose the priority based on how time-sensitive the job is and how long it can take. A job that runs longer than the maximum run time of its priority can be stopped before it finishes.
 
-| Priority  | Timeout   | Use for |
-|-----------|-----------|---------|
-| `high`    | 1 minute  | Short jobs that should happen as soon as possible. This is the default. |
-| `default` | 5 minutes | Jobs that can take more than a minute. |
-| `low`     | 1 hour    | Jobs that aren't time-sensitive, and long-running jobs. |
+| Priority  | Maximum run time | Use for |
+|-----------|------------------|---------|
+| `high`    | 1 minute         | Short jobs that should happen as soon as possible. This is the default. |
+| `default` | 5 minutes        | Jobs that can take more than a minute. |
+| `low`     | 4 hours          | Jobs that aren't time-sensitive, and long-running jobs. |
 
 ## Next steps
 

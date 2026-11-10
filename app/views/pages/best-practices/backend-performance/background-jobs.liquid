@@ -72,13 +72,13 @@ Background jobs should be used as performance improvement everytime the work is 
 
 ## Priorities
 
-You can choose a priority for your job based on its time-sensitivity and estimated time of computation needed. All of them have different timeouts after the job will be killed no matter if it has finished or not.
+You can choose a priority for your job based on its time-sensitivity and estimated time of computation needed. Each priority has a different maximum run time. A job that runs longer than that can be stopped before it finishes.
 
-| Priority | Timeout   |
-|----------------|-----------|
-| high           | 1 minute  |
-| default        | 5 minutes |
-| low            | 1 hour   |
+| Priority       | Maximum run time |
+|----------------|------------------|
+| high           | 1 minute         |
+| default        | 5 minutes        |
+| low            | 4 hours          |
 
 
 * If you need something to happen as soon as possible, choose the `high` priority.
@@ -132,7 +132,7 @@ Download a JSON file and put its value into the record field. In this example, w
 {% endraw %}
 ```
 
-This whole operation, because it was pushed out to background job, will not block rendering of the page, hence standard request timeout is not applied to it. It can run as long as the timeout of this particular priority - 1 minute.
+This whole operation, because it was pushed out to background job, will not block rendering of the page, hence standard request timeout is not applied to it. It can run as long as the maximum run time of this particular priority - 1 minute.
 
 ## Example 2 - normal priority job
 
