@@ -11,6 +11,21 @@ metadata:
 
 <h4 class="release-note release-note__new">NEW</h4>
 
+* **The `context` tag accepts a region or script after the language** (2026-11-12): For example, `{% context language: 'en-GB' %}`, `pt-BR`, `es-419` or `zh-Hant`. Translations are looked up under exactly that locale, and fall back to the language when fallbacks are on. An invalid language is reported and no longer applied.
+
 <h4 class="release-note release-note__improved">IMPROVED</h4>
 
+* **A value that contains itself fails where it's used, with a clear Liquid error** (2026-11-12): `hash_assign`, `assign` with `<<`, `array_add`, `array_prepend` and `hash_add_key` no longer reject a hash or array that ends up containing itself. Outputting it, or passing it to `json`, `deep_clone`, `hash_merge`, `hash_diff`, `log` or GraphQL arguments, reports `value contains itself or is nested too deeply`, which `{% try %}` can catch. Values nested too deeply are reported the same way.
+* **The `session` tag refuses to store a value that contains itself** (2026-11-12): Previously the value was stored and broke every later request of that visitor.
+* **A `graphql` tag inside a loop or a partial rendered many times looks up its query once per request** (2026-11-12): A deprecation warning for a short query name is now logged once, not on every iteration.
+
 <h4 class="release-note release-note__fixed">FIXED</h4>
+
+* **Forms inside `{% cache %}` keep a valid CSRF token** (2026-11-12): When the same `cache` tag was rendered more than once in a request (for example, in a loop or a partial rendered several times), the cached output could still contain an earlier request's token, so the form was rejected on submit.
+* **`{% try %}` runs its `catch` block only for its own error** (2026-11-12): Inside a loop, an iteration that succeeded after a failed one no longer runs the `catch` block. A `try` in a partial that is also rendered inside the same `try` now catches its error instead of raising it again.
+* **`{% transaction %}` uses its own `timeout` every time it runs** (2026-11-12): Previously, a `transaction` tag in a loop or a partial rendered several times kept the timeout from its first run.
+* **Writing to `context.constants` or translations returns a Liquid error** (2026-11-12): For example, `c is read-only`. Previously it caused a 500 error. `context.globals.time_zones` is now read-only too.
+* **`form_for` with the removed `form_for_type` attribute no longer fails** (2026-11-12): The attribute is ignored.
+* **An inline `graphql` query with only whitespace no longer runs another query** (2026-11-12): Previously, it could run the query of a `graphql` partial included earlier in the request.
+* **Errors in `{% background %}` name the right line when the opening tag spans several lines** (2026-11-12)
+* **Clearer errors for invalid arguments in `sign_in` and `hash_assign`** (2026-11-12): `sign_in` with a non-numeric `timeout_in_minutes` (for example, `true` or an array) reports `timeout_in_minutes must be a number`. `hash_assign` with an array index that is an undefined variable reports that the index is `null`.
