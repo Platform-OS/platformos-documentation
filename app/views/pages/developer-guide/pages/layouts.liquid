@@ -27,6 +27,20 @@ At a minimum, the content of the layout should look like this:
 
 This layout only renders the content of the page, and is equivalent of passing `layout: ''` in the page definition.
 
+## Built-in layouts
+
+platformOS provides two layouts on every Instance, without any file in your codebase: `application` for Pages and `mailer` for Email Notifications. Each of them renders only the content it receives, exactly like the minimal example above.
+
+A built-in layout is used only as long as your Instance has no layout with the same name. As soon as you deploy your own `views/layouts/application.liquid` or `views/layouts/mailer.liquid`, your layout is used instead.
+
+This has a few consequences:
+
+* A Page that uses the `application` layout on an Instance which does not have its own renders only the content of the page, with status `200` and without any error. This includes Pages without the `layout` property, because `application` is the default value of the [default_layout setting](/developer-guide/platformos-workflow/directory-structure/config).
+* Built-in layouts are not stored on your Instance, so the `admin_liquid_layouts` GraphQL query does not return them. If you check whether a layout exists, treat `application` and `mailer` as always present.
+* Any other layout has to exist on your Instance. A Page or an Email Notification with a `layout` that does not exist is rejected with the `Could not find Layout` error when you deploy or sync it. A `layout` computed with Liquid is not checked.
+
+If a layout is removed after the Pages using it were deployed, those Pages are still served, without a layout, and an entry of type `Liquid Missing Template error` is added to the Instance logs (`pos-cli logs`). An Email Notification whose layout does not exist is not sent, and a `MailNotSent` error is added to the logs.
+
 ## Usual example
 
 The most common use case of layouts is to place something before and after the content of the page:
