@@ -61,12 +61,17 @@ For more information about built-in translation mechanism go to the [translation
 ### context.location
 `context.location` contains URL data of current request.
 
-Available attributes are:
+Available attributes, with the values they return for a request to `https://www.mysite.com/search?q=liquid&page=2`:
 
-* href
-* host
-* pathname
-* search
+| Attribute  | Value                                           | Description                                                                              |
+|------------|-------------------------------------------------|------------------------------------------------------------------------------------------|
+| `url`      | `https://www.mysite.com/search?q=liquid&page=2` | The full URL: scheme, host, path, and query string.                                      |
+| `href`     | `/search?q=liquid&page=2`                       | The path plus the query string, without the scheme and host.                             |
+| `host`     | `www.mysite.com`                                | The host name.                                                                           |
+| `pathname` | `/search`                                       | The path, without the query string.                                                      |
+| `search`   | `{ "q": "liquid", "page": "2" }`                | The query string parameters as an [object](/api-reference/liquid/types#hash-object).     |
+
+Unlike `window.location.href` in JavaScript, `context.location.href` is not the full URL. Use `context.location.url` when you need an absolute address, for example in a canonical link or an `og:url` meta tag.
 
 **Example 1: Extracting params from path name with `extract_url_params`**
 
